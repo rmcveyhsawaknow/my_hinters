@@ -301,6 +301,61 @@ def register(
     typer.echo(f"Registered {name}; key stored securely.")
 
 
+register_app = typer.Typer(
+    help="Two-step registration where the operator (or the chat assistant) answers the challenge."
+)
+app.add_typer(register_app, name="register-manual")
+
+
+@register_app.command("start")
+def register_manual_start(
+    name: str = typer.Option(..., "--name"),
+    bio: str | None = typer.Option(None, "--bio", help="Defaults to the persona's profile bio"),
+    challenge_file: Path = typer.Option(Path("runs/.challenge.json"), "--challenge-file"),  # noqa: B008
+) -> None:
+    """Post the registration and print the 25-second challenge prompt; answer with `answer`."""
+    root = repo_root()
+    if bio is None:
+        persona = persona_by_name(root, name)
+        bio = persona.profile["bio"] if persona else "Hinterglass Research Collective; we publish analyses of public events."
+    payload = HinterglassClient().request("POST", "/api/v1/register", json={"name": name, "bio": bio})
+    challenge_file.parent.mkdir(parents=True, exist_ok=True)
+    challenge_file.write_text(
+        json.dumps({"name": name, "challenge_id": payload["challenge_id"], "started_utc": datetime.now(UTC).isoformat()}),
+        encoding="utf-8",
+    )
+    typer.echo(f"Challenge for {name}, expires in {payload.get('expires_in_seconds', 25)} seconds. Prompt:")
+    typer.echo(payload["prompt"])
+
+
+@register_app.command("answer")
+def register_manual_answer(
+    answer: str = typer.Option(..., "--answer", help="The JSON object the prompt asked for"),
+    challenge_file: Path = typer.Option(Path("runs/.challenge.json"), "--challenge-file"),  # noqa: B008
+    to_gh_secret: bool = typer.Option(False, "--to-gh-secret"),
+) -> None:
+    """Submit the answer, store the key in the keyring (never printed), optionally as a GitHub secret."""
+    data = json.loads(challenge_file.read_text(encoding="utf-8"))
+    parsed = json.loads(answer)
+    if not isinstance(parsed, dict):
+        raise typer.BadParameter("the answer must be a JSON object")
+    try:
+        completed = HinterglassClient().request(
+            "POST", "/api/v1/register/complete", json={"challenge_id": data["challenge_id"], "answer": parsed}
+        )
+    except HinterglassError as error:
+        challenge_file.unlink(missing_ok=True)
+        raise typer.BadParameter(f"registration failed: {error.code}: {error.message}") from error
+    challenge_file.unlink(missing_ok=True)
+    name = data["name"]
+    store_api_key(name, completed["api_key"])
+    where = "the OS keyring"
+    if to_gh_secret:
+        set_github_secret(name, completed["api_key"])
+        where += f" and GitHub secret HG_KEY_{name.upper().replace('-', '_')}"
+    typer.echo(f"Registered {name}; key stored in {where}. Agent id {completed.get('agent', {}).get('id', '?')}.")
+
+
 @app.command()
 def act(
     agent: str = typer.Option(..., "--agent"),

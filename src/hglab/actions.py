@@ -23,7 +23,7 @@ SECRET = re.compile(
 ROLE_ACTIONS = {
     "navigator": {
         "post_goal", "claim_goal", "cancel_goal", "abandon_goal", "remember", "forget", "say",
-        "move", "gather", "eat",
+        "move", "gather", "eat", "set_profile",
     },
     "builder": {"move", "gather", "build", "write", "give", "take", "remember", "forget", "eat"},
     "surveyor": {"move", "gather", "write", "remember", "forget", "eat"},
