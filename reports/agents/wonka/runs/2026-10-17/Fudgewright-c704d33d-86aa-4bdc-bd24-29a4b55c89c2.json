@@ -1,0 +1,142 @@
+{
+  "run_id": "c704d33d-86aa-4bdc-bd24-29a4b55c89c2",
+  "agent": "Fudgewright",
+  "role": "navigator+builder+broker",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-17T21:21:19.177643+00:00",
+  "tick": 6281,
+  "summary": "Fudgewright (gentle): work shift: building",
+  "actions": [
+    {
+      "action": "build",
+      "x": 66,
+      "y": 74,
+      "type": "road"
+    },
+    {
+      "action": "move",
+      "x": 66,
+      "y": 74
+    },
+    {
+      "action": "gather",
+      "kind": "fiber"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"gentle\",\"since_tick\":5943,\"glow\":50,\"inputs\":{\"inspiration\":{\"value\":3.3,\"tick\":6125,\"explanation\":\"hope from mrs-bucket 3\"},\"suspicion\":{\"value\":0.0,\"tick\":6125,\"explanation\":\"bluster from grandpa-joe 0\"},\"discernment\":{\"value\":0.0,\"tick\":6125,\"explanation\":\"bluster from grandpa-joe 0\"},\"hope\":{\"value\":3.3,\"tick\":6125,\"explanation\":\"Hope 3: contribution 5, uplift 0, resilience 0 (decayed over a day).\"},\"bluster\":{\"value\":0.0,\"tick\":6125,\"explanation\":\"Bluster 0: 0 claim(s) against own work 0, 0% of the team's logged work claimed.\"}},\"wakes\":7,\"rests\":0,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":6281,\"visited\":[\"62,64\",\"66,72\",\"65,71\",\"67,75\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":6280,\"pace\":\"steady\",\"day\":{\"all\":538,\"building\":216,\"trade_goals\":32,\"talk\":20,\"factions\":1,\"movement\":269},\"hour\":{\"all\":27},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 6281,
+    "you": {
+      "id": 3,
+      "name": "Fudgewright",
+      "x": 67,
+      "y": 75,
+      "energy": 100,
+      "inventory": {
+        "wood": 15,
+        "fiber": 1,
+        "stone": 5,
+        "berries": 5
+      },
+      "home": {
+        "x": 65,
+        "y": 71
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "wonka",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "navigator",
+    "builder",
+    "broker"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 27,
+      "building": 6,
+      "trade_goals": 0,
+      "talk": 4,
+      "factions": 0,
+      "movement": 17
+    },
+    "day": {
+      "all": 538,
+      "building": 216,
+      "trade_goals": 32,
+      "talk": 20,
+      "factions": 1,
+      "movement": 269
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "gentle",
+  "approach": "build",
+  "reasons": [
+    "materials in hand for a road at (66, 74)",
+    "walk to (66, 74) beside the fiber node at (65, 74), then gather"
+  ],
+  "energy_before": 100,
+  "berries_before": 5,
+  "energy_spent": 9,
+  "activity_energy": {
+    "build": 5.0,
+    "explore": 1.0,
+    "gather": 3.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "gentle",
+    "glow": 50,
+    "wakes": 7,
+    "rests": 0,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}

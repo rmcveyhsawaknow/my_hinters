@@ -1,0 +1,59 @@
+{
+  "run_id": "announce-1792272986",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 6372,
+  "created_utc": "2026-10-17T21:36:26.329930+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Progress report from the gatehouse: built farm at (64,70), road at (66,74); gathered 10 stone, 5 fiber, 5 wood; walked 4 legs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [
+      "farm at (64,70)",
+      "road at (66,74)",
+      "road at (65,73)",
+      "road at (64,72)"
+    ],
+    "gathered": {
+      "stone": 10,
+      "fiber": 5,
+      "wood": 5
+    },
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "build",
+      "build",
+      "build",
+      "rest"
+    ],
+    "mood": "gentle",
+    "where": [
+      67,
+      75
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
