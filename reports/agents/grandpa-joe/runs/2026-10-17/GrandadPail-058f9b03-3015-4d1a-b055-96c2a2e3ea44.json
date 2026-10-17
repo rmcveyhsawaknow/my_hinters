@@ -1,0 +1,117 @@
+{
+  "run_id": "058f9b03-3015-4d1a-b055-96c2a2e3ea44",
+  "agent": "GrandadPail",
+  "role": "envoy+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-17T22:28:22.106979+00:00",
+  "tick": 6684,
+  "summary": "GrandadPail (in_bed): work shift: walking to the team site",
+  "actions": [
+    {
+      "action": "move",
+      "x": 63,
+      "y": 73
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"in_bed\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":9,\"rests\":7,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":6684,\"visited\":[\"65,61\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":6682,\"pace\":\"quickening\",\"day\":{\"all\":663,\"building\":272,\"trade_goals\":32,\"talk\":31,\"factions\":1,\"movement\":327},\"hour\":{\"all\":108},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 6684,
+    "you": {
+      "id": 5,
+      "name": "GrandadPail",
+      "x": 65,
+      "y": 61,
+      "energy": 100,
+      "inventory": {
+        "wood": 5,
+        "berries": 15
+      },
+      "home": null
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "grandpa-joe",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "envoy",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 108,
+      "building": 50,
+      "trade_goals": 0,
+      "talk": 11,
+      "factions": 0,
+      "movement": 47
+    },
+    "day": {
+      "all": 663,
+      "building": 272,
+      "trade_goals": 32,
+      "talk": 31,
+      "factions": 1,
+      "movement": 327
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "in_bed",
+  "approach": "migrate",
+  "reasons": [
+    "38 tiles from The Chocolate Factory: walk toward it"
+  ],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 12,
+  "activity_energy": {
+    "explore": 12.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "in_bed",
+    "glow": 50,
+    "wakes": 9,
+    "rests": 7,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}

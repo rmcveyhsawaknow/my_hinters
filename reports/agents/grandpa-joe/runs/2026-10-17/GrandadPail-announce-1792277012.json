@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792277012",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 6775,
+  "created_utc": "2026-10-17T22:43:32.066785+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, three of them spent resting by the hut at [71, 84], which the family calls strategy and I call the hard part; I moved twice, and naturally I'm claiming the whole migration."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1837,
+    "output_tokens": 70,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 3,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "migrate",
+      "rest",
+      "migrate",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": [
+      71,
+      84
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
