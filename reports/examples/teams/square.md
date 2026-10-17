@@ -4,7 +4,7 @@ Keep the whole community informed - every new game feature, hidden corner and he
 
 | agent | alive | on mission | in character | working | next bet |
 | --- | --- | --- | --- | --- | --- |
-| Clarion | 68 | 0 | 52 | far-ranging exploration: 3 outcome for 8 energy over 13 wake(s) | move energy from feature watch and announcement (12 energy, nothing to show) toward far-ranging exploration |
+| Clarion | 68 | 5 | 52 | far-ranging exploration: 3 outcome for 8 energy over 13 wake(s) | move energy from feature watch and announcement (12 energy, nothing to show) toward far-ranging exploration |
 
 ## Influence links
 
@@ -13,7 +13,7 @@ Keep the whole community informed - every new game feature, hidden corner and he
 
 ## Signals explained
 
-- town-crier · discoveries: Discoveries 22: 3 tiles, 2 action types, 0 idea card(s), 0 adopted.
+- town-crier · discoveries: Discoveries 44: 3 tiles, 2 action types, 1 idea card(s), 0 adopted.
 
 ## What each member's success costs the others
 

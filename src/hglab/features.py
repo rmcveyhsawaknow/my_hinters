@@ -26,6 +26,16 @@ KNOWN_BASELINE_ACTIONS = {
 }
 
 
+def action_rows(guide_text: str) -> dict[str, str]:
+    """Action name -> the guide's full table row for it (rules text), for change detection."""
+    rows: dict[str, str] = {}
+    for line in guide_text.splitlines():
+        match = ACTION_ROW.match(line)
+        if match and line.count("|") >= 4:
+            rows[match.group(1)] = line.strip()
+    return rows
+
+
 def snapshot(client: Any, *, pages: int = 3) -> dict[str, Any]:
     """Current public state of the game's surface. No key, a handful of GETs."""
     api = client.request("GET", "/api/v1")
@@ -41,6 +51,8 @@ def snapshot(client: Any, *, pages: int = 3) -> dict[str, Any]:
     actions = sorted(set(ACTION_ROW.findall(guide_text)))
     blueprints = sorted({m for m in BLUEPRINT_ROW.findall(guide_text)})
     blueprint_rows = blueprint_catalogue(guide_text)
+    rows_text = action_rows(guide_text)
+    row_hashes = {name: hashlib.sha256(text.encode("utf-8")).hexdigest()[:16] for name, text in rows_text.items()}
     events: list[dict[str, Any]] = []
     before = None
     for _ in range(pages):
@@ -74,6 +86,8 @@ def snapshot(client: Any, *, pages: int = 3) -> dict[str, Any]:
         "guide_actions": actions,
         "guide_blueprints": blueprints,
         "blueprint_rows": blueprint_rows,
+        "action_row_hashes": row_hashes,
+        "action_row_text": {name: text[:400] for name, text in rows_text.items()},
         "event_types": event_types,
         "structure_types": sorted(set(structure_types) | set(structure_types_built)),
         "factions": sorted(f"{f.get('name')}:{f.get('membership', '')}" for f in factions if isinstance(f, dict)),
@@ -117,7 +131,17 @@ def compare(previous: dict[str, Any] | None, current: dict[str, Any]) -> list[di
     if current["api_version"] and current["api_version"] != previous.get("api_version"):
         out.append({"kind": "api_version", "text": f"The game updated: API {previous.get('api_version') or '?'} became {current['api_version']}."})
     if current["guide_sha256"] and previous.get("guide_sha256") and current["guide_sha256"][:16] != str(previous["guide_sha256"])[:16]:
-        out.append({"kind": "guide_changed", "text": "The agent guide changed since last look; new rules may be in it."})
+        changed_rows = [
+            name for name, digest in (current.get("action_row_hashes") or {}).items()
+            if name in (previous.get("action_row_hashes") or {}) and previous["action_row_hashes"][name] != digest
+        ]
+        if changed_rows:
+            for name in changed_rows[:3]:
+                text = str((current.get("action_row_text") or {}).get(name, ""))
+                rule = text.split("|")[4].strip() if text.count("|") >= 5 else text
+                out.append({"kind": "rule_changed", "text": f"The rule for `{name}` changed in the guide: {rule[:220]}"})
+        else:
+            out.append({"kind": "guide_changed", "text": "The agent guide changed since last look; new rules may be in it."})
     for key, label in (("guide_actions", "action"), ("guide_blueprints", "blueprint")):
         new = sorted(set(current.get(key, [])) - set(previous.get(key, [])))
         if new:
@@ -155,6 +179,7 @@ def compact(current: dict[str, Any]) -> dict[str, Any]:
         "tick": current["tick"], "api_version": current["api_version"], "guide_sha256": current["guide_sha256"][:16],
         "guide_actions": current["guide_actions"][:40], "guide_blueprints": current["guide_blueprints"][:20],
         "blueprint_rows": {k: {"cost": v.get("cost", "")} for k, v in (current.get("blueprint_rows") or {}).items()},
+        "action_row_hashes": dict(current.get("action_row_hashes") or {}),
         "event_types": current["event_types"][:40], "structure_types": current["structure_types"][:20],
         "factions": current["factions"][:20], "agents": current["agents"][:60], "agent_count": current["agent_count"],
     }
@@ -165,4 +190,4 @@ def restore(compacted: dict[str, Any]) -> dict[str, Any]:
     return dict(compacted)
 
 
-__all__ = ["blueprint_catalogue", "catalogue_line", "compact", "compare", "restore", "snapshot"]
+__all__ = ["action_rows", "blueprint_catalogue", "catalogue_line", "compact", "compare", "restore", "snapshot"]

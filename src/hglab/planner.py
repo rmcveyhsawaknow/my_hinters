@@ -118,6 +118,37 @@ def materials_ok(inventory: dict[str, int], blueprint: str) -> bool:
     return all(int(inventory.get(item, 0)) >= qty for item, qty in BLUEPRINTS[blueprint].items())
 
 
+def reachable_storage(persona: Persona, position: tuple[int, int], view: WorldView, faction: str | None = None) -> dict[str, int]:
+    """Items in storehouses within one tile that this agent may take from (own, public, same faction).
+
+    The guide (API 0.18.0): build is paid from the pack first and the rest from such storehouses.
+    """
+    total: dict[str, int] = {}
+    for structure in view.structures:
+        if structure.get("type") != "storehouse":
+            continue
+        if chebyshev(position, (int(structure.get("x", -99)), int(structure.get("y", -99)))) > 1:
+            continue
+        owner = str(structure.get("owner", "")).casefold()
+        policy = str(structure.get("policy") or "private")
+        allowed = owner == persona.name.casefold() or policy == "public" or (
+            policy == "faction" and faction and str(structure.get("faction") or "") == faction
+        )
+        if not allowed:
+            continue
+        storage = structure.get("storage") if isinstance(structure.get("storage"), dict) else {}
+        for item, qty in storage.items():
+            total[str(item)] = total.get(str(item), 0) + int(qty or 0)
+    return total
+
+
+def with_storage(inventory: dict[str, int], storage: dict[str, int]) -> dict[str, int]:
+    merged = dict(inventory)
+    for item, qty in storage.items():
+        merged[item] = merged.get(item, 0) + qty
+    return merged
+
+
 def shortfall(inventory: dict[str, int], blueprint: str) -> dict[str, int]:
     return {
         item: qty - int(inventory.get(item, 0))
@@ -364,24 +395,18 @@ def _plan_monument(persona: Persona, inventory: dict[str, int], position: tuple[
     """Cairn's recipe: stone and ore split between pack and an adjacent own storehouse."""
     if "monument" not in (persona.knobs.get("build_priority") or []):
         return None
-    for structure in view.structures:
-        if structure.get("type") != "storehouse" or str(structure.get("owner", "")).casefold() != persona.name.casefold():
-            continue
-        where = (int(structure["x"]), int(structure["y"]))
-        if chebyshev(position, where) > 1:
-            continue
-        storage = structure.get("storage") if isinstance(structure.get("storage"), dict) else {}
-        stone = inventory.get("stone", 0) + int(storage.get("stone", 0))
-        ore = inventory.get("ore", 0) + int(storage.get("ore", 0))
-        if stone < 50 or ore < 10:
-            continue
-        for tile in neighbours(*position):
-            if view.free_tile(*tile) and chebyshev(tile, where) <= 1:
-                return (
-                    [{"action": "build", "type": "monument", "x": tile[0], "y": tile[1], "text": f"Raised by {persona.name}. A character in the collective's story."}],
-                    f"storehouse at {where} plus the pack hold {stone} stone and {ore} ore: the monument recipe",
-                    "build_monument",
-                )
+    storage = reachable_storage(persona, position, view)
+    stone = inventory.get("stone", 0) + storage.get("stone", 0)
+    ore = inventory.get("ore", 0) + storage.get("ore", 0)
+    if stone < 50 or ore < 10 or not storage:
+        return None
+    for tile in neighbours(*position):
+        if view.free_tile(*tile):
+            return (
+                [{"action": "build", "type": "monument", "x": tile[0], "y": tile[1], "text": f"Raised by {persona.name}. A character in the collective's story."}],
+                f"pack plus the storehouse beside me hold {stone} stone and {ore} ore: the monument recipe (build pays the rest from storehouses within one tile)",
+                "build_monument",
+            )
     return None
 
 
@@ -530,8 +555,9 @@ def _plan_build(
 ) -> tuple[list[dict[str, Any]], str, str] | None:
     priority = list(persona.knobs.get("build_priority") or DEFAULT_BUILD_PRIORITY)
     owned = [s for s in view.structures if str(s.get("owner", "")).casefold() == persona.name.casefold()]
+    available = with_storage(inventory, reachable_storage(persona, position, view))
     for blueprint in priority:
-        if blueprint not in BLUEPRINTS or not materials_ok(inventory, blueprint):
+        if blueprint not in BLUEPRINTS or not materials_ok(available, blueprint):
             continue
         if blueprint in {"sign", "monument"}:
             continue  # text-bearing builds need fresh words: the model-backed planner's job
@@ -915,4 +941,4 @@ def _summary(persona: Persona, mood: str, approach: str | None) -> str:
     }.get(approach, approach.replace("_", " "))
 
 
-__all__ = ["BLUEPRINTS", "WorldView", "materials_ok", "plan_wake", "shortfall"]
+__all__ = ["BLUEPRINTS", "WorldView", "materials_ok", "plan_wake", "reachable_storage", "shortfall", "with_storage"]
