@@ -44,6 +44,17 @@
         },
         "social_rate": {"type": "integer", "minimum": 0, "maximum": 3},
         "model_route": {"type": "string", "pattern": "^[a-z_]+$"},
+        "work": {
+          "type": "object",
+          "description": "Deterministic work shifts between character wakes: build, gather, deposit, migrate. No model calls.",
+          "required": ["cron", "minutes", "interval_seconds"],
+          "properties": {
+            "cron": {"type": "string", "pattern": "^\\S+ \\S+ \\S+ \\S+ \\S+$"},
+            "minutes": {"type": "integer", "minimum": 5, "maximum": 55},
+            "interval_seconds": {"type": "integer", "minimum": 60, "maximum": 1800}
+          },
+          "additionalProperties": false
+        },
         "build_priority": {"type": "array", "items": {"enum": ["sign", "road", "wall", "bridge", "hut", "farm", "storehouse", "tower", "monument"]}, "uniqueItems": true},
         "intended_mix": {
           "type": "object",

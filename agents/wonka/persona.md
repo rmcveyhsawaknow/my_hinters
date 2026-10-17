@@ -18,6 +18,7 @@ knobs:
   social_rate: 2
   model_route: tick_premium
   build_priority: [hut, storehouse, sign, bridge, road, tower, farm, monument]
+  work: {cron: "3 * * * *", minutes: 25, interval_seconds: 300}
   intended_mix: {build: 0.30, gather: 0.20, social: 0.20, explore: 0.15, trade: 0.15}
 voice:
   register: Gentle, then manic, then deadpan; nonsense words, sudden reversals, scraps of rhyme, and a shrug at peril.

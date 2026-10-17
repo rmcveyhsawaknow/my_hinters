@@ -71,7 +71,7 @@ jobs:
       - name: Keepalive (observe, verify if challenged, record presence)
         env:
           AGENT: ${{ inputs.agent }}
-        run: hglab keepalive --agent "$AGENT"
+        run: hglab keepalive --agent "$AGENT" --scheduled
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -133,6 +133,38 @@ jobs:
           AGENT: ${{ inputs.agent }}
         run: bash scripts/publish_reports.sh runs "$AGENT"
 
+  shift:
+    if: inputs.job == 'shift'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install .
+      - name: Mask and export the identity key, shifts need no model key
+        env:
+          HINTERGLASS_KEY: ${{ secrets.hg_key }}
+          AGENT: ${{ inputs.agent }}
+        run: |
+          if [ -z "$HINTERGLASS_KEY" ]; then echo "Missing identity key." >&2; exit 1; fi
+          printf '::add-mask::%s\n' "$HINTERGLASS_KEY"
+          name="$(hglab persona secret-name --agent "$AGENT")"
+          printf '%s=%s\n' "$name" "$HINTERGLASS_KEY" >> "$GITHUB_ENV"
+      - name: Work shift (build, gather, deposit, migrate)
+        env:
+          AGENT: ${{ inputs.agent }}
+        run: hglab shift --agent "$AGENT" --scheduled
+      - name: Publish compact run records
+        if: always()
+        env:
+          AGENT: ${{ inputs.agent }}
+        run: bash scripts/publish_reports.sh runs "$AGENT"
+
   pulse:
     if: inputs.job == 'pulse'
     runs-on: ubuntu-latest
@@ -158,6 +190,8 @@ jobs:
         env:
           AGENT: ${{ inputs.agent }}
         run: hglab pulse --agent "$AGENT" --fetch-public --judge
+      - name: Prune run records older than 14 days
+        run: hglab reports prune --days 14
       - name: Publish reports
         run: bash scripts/publish_reports.sh reports "${{ inputs.agent }}"
       - name: Summary

@@ -17,6 +17,7 @@ knobs:
   territory: {mode: stay_inside, radius: 6, teammate: tinker-bell, fallback: near_teammate}
   social_rate: 2
   build_priority: [hut, farm, storehouse, bridge, wall, road]
+  work: {cron: "39 * * * *", minutes: 25, interval_seconds: 300}
   intended_mix: {build: 0.40, gather: 0.35, social: 0.15, explore: 0.05, trade: 0.05}
 voice:
   register: Cheerful, steady, a little showy about courage; greets everyone; calm in conflict; counts what the stores hold.

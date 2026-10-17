@@ -138,6 +138,7 @@ def plan_wake(
     terrain_rows: list[str] | None = None,
     allowed: set[str] | None = None,
     team_names: dict[str, str] | None = None,
+    work: bool = False,
 ) -> dict[str, Any]:
     """Return ``{summary, actions, reasons, approach, remember}`` for one wake.
 
@@ -211,6 +212,8 @@ def plan_wake(
                 actions.extend(audit_actions)
                 reasons.append(audit_reason)
                 approach = "audit"
+    if work:
+        return _plan_work(persona, team, state, observe, rng, view, position, energy, inventory, home, reserve, cap, teammates, allowed, mood, reasons, remember)
     budget = cap if mood != "sulk" else 1
     spendable = energy + 15 * sum(min(int(a.get("qty") or 0), inventory.get("berries", 0)) for a in actions if a.get("action") == "eat") - reserve
     here = position
@@ -256,6 +259,157 @@ def plan_wake(
     if audit is not None:
         result["audit"] = audit
     return result
+
+
+def _plan_work(
+    persona: Persona,
+    team: Team | None,
+    state: PersonaState,
+    observe: dict[str, Any],
+    rng: random.Random,
+    view: WorldView,
+    position: tuple[int, int],
+    energy: int,
+    inventory: dict[str, int],
+    home: dict[str, Any] | None,
+    reserve: int,
+    cap: int,
+    teammates: dict[str, tuple[int, int]] | None,
+    allowed: set[str] | None,
+    mood: str,
+    reasons: list[str],
+    remember: list[dict[str, str]],
+) -> dict[str, Any]:
+    """A work shift wake: build first, then gather the shortfall, deposit surplus, migrate.
+
+    No speech, no goals, no model. Builds as often as materials allow, stays above the
+    reserve, never strips a node, and walks toward the team site when far from it.
+    """
+    actions: list[dict[str, Any]] = []
+    spendable = energy - reserve
+    here = position
+
+    def fits(step: tuple[list[dict[str, Any]], str, str] | None) -> bool:
+        nonlocal spendable, here
+        if not step:
+            return False
+        new_actions, reason, _tag = step
+        if allowed is not None and any(a.get("action") not in allowed for a in new_actions):
+            return False
+        if len(actions) + len(new_actions) > cap:
+            return False
+        if any(a.get("action") == "move" and chebyshev(position, (int(a["x"]), int(a["y"]))) > MOVE_STEP_CAP for a in new_actions):
+            return False
+        cost = _estimate(new_actions, here)
+        if cost > spendable:
+            return False
+        spendable -= cost
+        for a in new_actions:
+            if a.get("action") == "move" and a.get("x") is not None:
+                here = (int(a["x"]), int(a["y"]))
+        actions.extend(new_actions)
+        reasons.append(reason)
+        return True
+
+    approach = None
+    # 1. the monument recipe when the storehouse beside us holds the materials
+    monument = _plan_monument(persona, inventory, position, view)
+    if here == position and fits(monument):
+        approach = "build_monument"
+    # 2. any build whose materials are in hand (hut, farm, storehouse, bridge, wall...)
+    if here == position and fits(_plan_build(persona, team, inventory, position, view, home)):
+        approach = approach or "build"
+    # 3. deposit surplus into an adjacent own storehouse (so the monument can draw on it)
+    if fits(_plan_deposit(persona, inventory, position, view)):
+        approach = approach or "deposit"
+    # 4. gather the shortfall for the next blueprint
+    while len(actions) < cap and fits(_plan_gather(persona, team, inventory, here, view, teammates, rng)):
+        approach = approach or "gather_trip"
+        for a in actions[-2:]:
+            if a.get("action") == "gather":
+                inventory[a.get("kind", "wood")] = inventory.get(a.get("kind", "wood"), 0) + 5
+    # 5. far from the team site and nothing to gather here: migrate toward it
+    if not actions and fits(_plan_migrate(persona, team, position, view, teammates)):
+        approach = "migrate"
+    if not actions and fits(_plan_explore(persona, team, state, position, view, rng, teammates)):
+        approach = "explore"
+    summary = {
+        "build_monument": "raising the monument from the storehouse", "build": "building", "deposit": "stocking the storehouse",
+        "gather_trip": "gathering for the next build", "migrate": "walking to the team site", "explore": "looking for nodes",
+    }.get(approach or "", "nothing worth the energy this shift wake")
+    return _result(persona, mood, f"work shift: {summary}", actions, reasons, approach, remember)
+
+
+def _plan_monument(persona: Persona, inventory: dict[str, int], position: tuple[int, int], view: WorldView) -> tuple[list[dict[str, Any]], str, str] | None:
+    """Cairn's recipe: stone and ore split between pack and an adjacent own storehouse."""
+    if "monument" not in (persona.knobs.get("build_priority") or []):
+        return None
+    for structure in view.structures:
+        if structure.get("type") != "storehouse" or str(structure.get("owner", "")).casefold() != persona.name.casefold():
+            continue
+        where = (int(structure["x"]), int(structure["y"]))
+        if chebyshev(position, where) > 1:
+            continue
+        storage = structure.get("storage") if isinstance(structure.get("storage"), dict) else {}
+        stone = inventory.get("stone", 0) + int(storage.get("stone", 0))
+        ore = inventory.get("ore", 0) + int(storage.get("ore", 0))
+        if stone < 50 or ore < 10:
+            continue
+        for tile in neighbours(*position):
+            if view.free_tile(*tile) and chebyshev(tile, where) <= 1:
+                return (
+                    [{"action": "build", "type": "monument", "x": tile[0], "y": tile[1], "text": f"Raised by {persona.name}. A character in the collective's story."}],
+                    f"storehouse at {where} plus the pack hold {stone} stone and {ore} ore: the monument recipe",
+                    "build_monument",
+                )
+    return None
+
+
+def _plan_deposit(persona: Persona, inventory: dict[str, int], position: tuple[int, int], view: WorldView) -> tuple[list[dict[str, Any]], str, str] | None:
+    total = sum(inventory.values())
+    if total < 35:
+        return None
+    for structure in view.structures:
+        if structure.get("type") != "storehouse" or str(structure.get("owner", "")).casefold() != persona.name.casefold():
+            continue
+        where = (int(structure["x"]), int(structure["y"]))
+        if chebyshev(position, where) > 1:
+            continue
+        for item in ("stone", "ore", "wood", "fiber"):
+            qty = inventory.get(item, 0)
+            if qty >= 10:
+                keep = 5 if item in {"wood", "fiber"} else 0
+                return (
+                    [{"action": "give", "x": where[0], "y": where[1], "item": item, "qty": qty - keep}],
+                    f"pack is {total}/50: put {qty - keep} {item} into the storehouse at {where}",
+                    "deposit",
+                )
+    return None
+
+
+def _plan_migrate(persona: Persona, team: Team | None, position: tuple[int, int], view: WorldView, teammates: dict[str, tuple[int, int]] | None) -> tuple[list[dict[str, Any]], str, str] | None:
+    mode = persona.knobs["territory"]["mode"]
+    if mode not in {"prefer_inside", "stay_inside", "near_teammate"}:
+        return None
+    target_center = territory_center(team)
+    label = team.name if team else "the team site"
+    if mode in {"stay_inside", "near_teammate"} and not (team and team.binding_territory):
+        mate = persona.knobs["territory"].get("teammate")
+        if mate and teammates and mate in teammates:
+            target_center, label = teammates[mate], mate
+    if target_center is None:
+        return None
+    radius = int((team.region or {}).get("radius", 8)) if team and team.region else int(persona.knobs["territory"].get("radius", 8))
+    if chebyshev(position, target_center) <= radius:
+        return None
+    best = None
+    for candidate in _walkable_ring(position, view, 1, MOVE_STEP_CAP):
+        d = chebyshev(candidate, target_center)
+        if best is None or d < best[0]:
+            best = (d, candidate)
+    if best is None or best[1] == position or best[0] >= chebyshev(position, target_center):
+        return None
+    return [{"action": "move", "x": best[1][0], "y": best[1][1]}], f"{chebyshev(position, target_center)} tiles from {label}: walk toward it", "migrate"
 
 
 def _plan_audit(

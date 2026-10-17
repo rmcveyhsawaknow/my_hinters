@@ -33,11 +33,17 @@ def retro_cron(persona: Persona) -> str:
     return f"{(minute + 45) % 60} 6 * * 0"
 
 
+def work_cron(persona: Persona) -> str | None:
+    work = persona.knobs.get("work")
+    return str(work["cron"]) if work else None
+
+
 def caller_text(persona: Persona) -> str:
     tick = persona.knobs["cadence"]["cron"]
     keepalive = keepalive_cron(persona)
     pulse = pulse_cron(persona)
     retro = retro_cron(persona)
+    work = work_cron(persona)
     secret = persona.secret_name
     variable = persona.variable_name
     jitter = int(persona.knobs["cadence"]["jitter_minutes"])
@@ -46,8 +52,10 @@ def caller_text(persona: Persona) -> str:
         f" || (github.event.schedule == '{tick}' && 'tick')"
         f" || (github.event.schedule == '{pulse}' && 'pulse')"
         f" || (github.event.schedule == '{retro}' && 'retro')"
-        " || 'keepalive' }}"
+        + (f" || (github.event.schedule == '{work}' && 'shift')" if work else "")
+        + " || 'keepalive' }}"
     )
+    work_line = f"    - cron: \"{work}\"  # work shift: deterministic building and gathering\n" if work else ""
     return (
         HEADER.format(slug=persona.slug)
         + f"name: Agent {persona.name}\n\n"
@@ -57,12 +65,13 @@ def caller_text(persona: Persona) -> str:
         f"    - cron: \"{keepalive}\"  # keepalive: verification never lapses\n"
         f"    - cron: \"{pulse}\"  # daily pulse\n"
         f"    - cron: \"{retro}\"  # weekly retrospective proposal\n"
-        "  workflow_dispatch:\n"
+        + work_line
+        + "  workflow_dispatch:\n"
         "    inputs:\n"
         "      job:\n"
         "        description: Which job to run\n"
         "        type: choice\n"
-        "        options: [keepalive, tick, pulse, retro]\n"
+        "        options: [keepalive, tick, pulse, retro, shift]\n"
         "        default: tick\n"
         "      dry_run:\n"
         "        description: Plan without acting (tick only)\n"
@@ -134,4 +143,4 @@ def generate_callers(root: Path, *, check: bool = False) -> tuple[list[str], lis
     return done, problems
 
 
-__all__ = ["caller_path", "caller_text", "existing_callers", "generate_callers", "keepalive_cron", "pulse_cron", "retro_cron"]
+__all__ = ["caller_path", "caller_text", "existing_callers", "generate_callers", "keepalive_cron", "pulse_cron", "retro_cron", "work_cron"]

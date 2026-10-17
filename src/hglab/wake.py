@@ -206,12 +206,13 @@ def persona_wake(
     usage: dict[str, Any] | None = None,
     budget_hold: str = "",
     environment: dict[str, Any] | None = None,
+    work: bool = False,
 ) -> dict[str, Any]:
     if role is not None and role not in persona.roles:
         raise ValueError(f"{persona.slug} does not wear the {role} hat")
     worn = role or "+".join(persona.roles)
     allowed = allowed_for(worn)
-    extras: dict[str, Any] = {"persona": persona.slug, "team": persona.team, "planner": planner_mode, "scheduled": scheduled, "hats": list(persona.roles) if role is None else [role]}
+    extras: dict[str, Any] = {"persona": persona.slug, "team": persona.team, "planner": planner_mode, "scheduled": scheduled, "hats": list(persona.roles) if role is None else [role], "work": work}
     if budget_hold:
         extras["budget_hold"] = budget_hold
     context: dict[str, Any] = {}
@@ -235,13 +236,17 @@ def persona_wake(
         names = {personas[m].name.casefold(): m for m in (team.members if team else ()) if m in personas}
         step_mood(persona, state, observe, team, rng, member_names=set(names))
         mode = decide_wake_mode(persona, state, observe, rng)
-        mates = teammates if teammates is not None else teammate_positions(observe, team, personas)
+        if work and mode in {"burst", "distracted"}:
+            mode = "act"
+        mates = dict(teammates or {})
+        for slug_, pos_ in teammate_positions(observe, team, personas).items():
+            mates[slug_] = pos_  # what is in view beats a stale roster
         plan = plan_wake(
             persona, team, state, observe, mode, rng,
-            teammates=mates, terrain_rows=terrain_rows, allowed=allowed, team_names=names,
+            teammates=mates, terrain_rows=terrain_rows, allowed=allowed, team_names=names, work=work,
         )
         used = "heuristic"
-        if planner_mode == "llm" and llm_call is not None and mode != "rest":
+        if planner_mode == "llm" and llm_call is not None and mode != "rest" and not work:
             candidate, error = _llm_plan(observe, state, mode, plan, llm_call, env)
             if error is not None:
                 extras["llm_error"] = error[:300]
@@ -345,6 +350,7 @@ def persona_wake(
         usage=usage,
         validators=[knob_validator],
         record_extra=extras,
+        compact=work,
     )
     return record
 

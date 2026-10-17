@@ -57,6 +57,11 @@ def cron_fires_per_day(cron: str) -> int:
 
 def scheduled_wakes(persona: Persona, runs: list[dict[str, Any]], now_tick: int, window_ticks: int) -> int:
     per_day = cron_fires_per_day(persona.knobs["cadence"]["cron"])
+    work = persona.knobs.get("work")
+    if work and any(r.get("work") for r in runs):
+        # shifts count once the agent has actually started working shifts in this window
+        per_shift = max(1, int(work["minutes"]) * 60 // int(work["interval_seconds"]))
+        per_day += cron_fires_per_day(work["cron"]) * per_shift
     covered = window_ticks
     if runs:
         first = min(int(r.get("tick", now_tick) or now_tick) for r in runs)
