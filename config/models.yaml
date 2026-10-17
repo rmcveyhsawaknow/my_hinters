@@ -1,0 +1,17 @@
+routes:
+  challenge:
+    provider: anthropic
+    model: claude-opus-5-5
+    effort: low
+  tick:
+    provider: anthropic
+    model: claude-opus-5-5
+    effort: low
+  science:
+    provider: anthropic
+    model: claude-opus-5-5
+    effort: high
+  review:
+    provider: openai
+    model: TODO
+    effort: high

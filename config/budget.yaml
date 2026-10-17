@@ -1,0 +1,6 @@
+tick:
+  max_llm_calls: 2
+  max_output_tokens: 1600
+digest:
+  max_llm_calls: 10
+  max_output_tokens: 8000

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["name", "title", "mission", "embodied", "allowed_actions", "skills", "model_route", "cadence", "outputs", "hands_off_to"],
+  "properties": {
+    "name": {"type": "string", "pattern": "^[a-z][a-z-]+$"},
+    "title": {"type": "string"},
+    "mission": {"type": "string"},
+    "embodied": {"type": "boolean"},
+    "allowed_actions": {"type": "array", "items": {"type": "string"}},
+    "skills": {"type": "array", "items": {"type": "string"}},
+    "model_route": {"type": "string"},
+    "cadence": {"type": "string"},
+    "outputs": {"type": "array", "items": {"type": "string"}},
+    "hands_off_to": {"type": "array", "items": {"type": "string"}}
+  }
+}
