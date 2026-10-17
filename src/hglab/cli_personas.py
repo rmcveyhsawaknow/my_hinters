@@ -217,6 +217,9 @@ def persona_tick(
     terrain = load_terrain_rows(terrain_path) if terrain_path.is_file() else None
     lease = acquire(client, persona.name)
     if lease is None:
+        if scheduled:
+            typer.echo(f"{persona.name}: lease held by another runtime (local play or an overlapping job); skipping this wake")
+            raise typer.Exit(code=0)
         raise typer.BadParameter(f"identity {persona.name} already has an active lease")
     llm_call = None
     if planner == "llm":
@@ -416,8 +419,8 @@ def shift_command(
             wakes += 1
             energy = int(record.get("energy_before", 0) or 0) - int(record.get("energy_spent", 0) or 0)
             typer.echo(f"  wake {wakes}: {record.get('summary', '')} · {len(record['actions'])} action(s), energy about {energy}, approach {record.get('approach')}")
-        except typer.BadParameter as exc:
-            typer.echo(f"  wake skipped: {exc}")
+        except (typer.BadParameter, typer.Exit) as exc:
+            typer.echo(f"  wake skipped: {getattr(exc, 'message', None) or 'lease held elsewhere'}")
             energy = 100
         if max_wakes is not None and wakes >= max_wakes:
             break
@@ -851,6 +854,7 @@ def retro_proposals(persona: Persona, pulse: dict[str, Any]) -> list[str]:
 def keepalive_command(
     agent: str = typer.Option(..., "--agent"),
     fixture: Path | None = typer.Option(None, "--fixture"),  # noqa: B008
+    scheduled: bool = typer.Option(False, "--scheduled", help="Exit cleanly when the lease is held elsewhere"),
 ) -> None:
     """Observe, answer a verification challenge if one is pending, record presence. No LLM otherwise."""
     root = root_dir()
@@ -865,6 +869,9 @@ def keepalive_command(
         client = HinterglassClient(api_key=api_key)
     lease = acquire(client, name)
     if lease is None:
+        if scheduled:
+            typer.echo(f"{name}: lease held by another runtime; skipping this keepalive")
+            raise typer.Exit(code=0)
         raise typer.BadParameter(f"identity {name} already has an active lease")
     usage = {"calls": 0, "input_tokens": 0, "output_tokens": 0}
     status = "ok"
