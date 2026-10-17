@@ -416,8 +416,10 @@ def persona_prompt(
         " adapt to the pace (build and gather when quiet, answer and trade when peers are active), react to"
         " teammates' and peers' public moves honestly, and prefer actions that progress your intent given what"
         " changed since your last wake. Propose 0-3 in-character actions within the knobs; the notebook state"
-        " update is added for you. Public lines must be fresh, never copied; never name or mock other operators'"
-        " agents. Set approach to a short tag from the metrics spec when one fits. If the digest changed your"
+        " update is added for you. Include exactly one public say each wake that tells your story or your plan"
+        " in character (the collective reads the Talk feed to see you are alive); the validator enforces the"
+        " hourly caps, so never add a second. Public lines must be fresh, never copied, PG-13; never name or mock"
+        " other operators' agents. Set approach to a short tag from the metrics spec when one fits. If the digest changed your"
         " thinking, say so in journal_note; if your profile text, knobs, metrics or skills should change, put one"
         " sentence per change in adaptation_proposals (humans review them weekly).\n" + base
     )

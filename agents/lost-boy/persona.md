@@ -15,7 +15,7 @@ knobs:
   risk_appetite: 0.9
   exploration_rate: 0.8
   territory: {mode: free}
-  social_rate: 1
+  social_rate: 2
   build_priority: [sign, road, bridge, hut]
   work: {cron: "27 * * * *", minutes: 25, interval_seconds: 300}
   intended_mix: {build: 0.20, gather: 0.15, social: 0.10, explore: 0.50, trade: 0.05}

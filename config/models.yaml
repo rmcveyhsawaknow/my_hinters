@@ -16,6 +16,11 @@ routes:
     provider: anthropic
     model: claude-sonnet-5-5
     effort: low
+  # One public line at the end of a work shift: tiny prompt, cheapest model.
+  talk:
+    provider: anthropic
+    model: claude-haiku-5-5
+    effort: low
   # Analyst roles and experiments.
   science:
     provider: anthropic

@@ -117,7 +117,7 @@ def test_social_rate_and_team_budget_cap_public_speech():
     with pytest.raises(ValueError, match="at most 2 time"):
         enforce_knobs([say], joe, team, observe, recent_say_count=2)
     with pytest.raises(ValueError, match="public-speech budget"):
-        enforce_knobs([say], joe, team, observe, recent_say_count=0, team_recent_says=5)
+        enforce_knobs([say], joe, team, observe, recent_say_count=0, team_recent_says=team.social_budget["says_per_hour"])
     with pytest.raises(ValueError, match="under 240 characters"):
         enforce_knobs([{"action": "say", "text": "x" * 250}], joe, team, observe)
     events = [{"type": "say", "actor": "Fudgewright", "tick": 100}, {"type": "say", "actor": "MotherPail", "tick": 300}, {"type": "say", "actor": "Peregrine", "tick": 300}, {"type": "say", "actor": "Fudgewright", "tick": 1}]

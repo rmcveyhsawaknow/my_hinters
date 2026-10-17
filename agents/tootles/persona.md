@@ -15,7 +15,7 @@ knobs:
   risk_appetite: 0.4
   exploration_rate: 0.6
   territory: {mode: prefer_outside, radius: 8}
-  social_rate: 1
+  social_rate: 2
   build_priority: [hut, road, sign, tower, monument]
   work: {cron: "33 * * * *", minutes: 25, interval_seconds: 300}
   intended_mix: {build: 0.15, gather: 0.25, social: 0.05, explore: 0.50, trade: 0.05}

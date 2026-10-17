@@ -24,7 +24,7 @@ def test_pulse_snapshot_matches_committed_examples(tmp_path):
         generated = (out / relative).read_text(encoding="utf-8")
         assert generated == path.read_text(encoding="utf-8"), f"{relative} differs from the committed example"
     for slug, pulse in pulses.items():
-        assert pulse["metric_version"] == 1
+        assert pulse["metric_version"] >= 1
         assert 0 <= pulse["alive"]["score"] <= 100
         assert "day" in (out / "agents" / slug / "pulse.md").read_text(encoding="utf-8").splitlines()[1]
 

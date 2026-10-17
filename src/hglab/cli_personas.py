@@ -29,10 +29,12 @@ from hglab.influence import SIGNALS, compute_team, incoming_effects
 from hglab.judge import judge_available, run_judge
 from hglab.kb import make_id
 from hglab.lease import acquire, release
+from hglab.limits import action_limits
 from hglab.measures import MEASURES, load_kb_items
 from hglab.persona import (
     Persona,
     Team,
+    enforce_knobs,
     list_persona_slugs,
     load_metrics,
     load_persona,
@@ -40,6 +42,7 @@ from hglab.persona import (
     load_team,
     load_teams,
     persona_by_name,
+    team_say_count,
     validate_personas,
 )
 from hglab.pulse import compute_pulse, render_community, render_pulse, render_team, write_pulse
@@ -402,10 +405,12 @@ def shift_command(
     fixture: Path | None = typer.Option(None, "--fixture"),  # noqa: B008
     max_wakes: int | None = typer.Option(None, "--max-wakes"),
     scheduled: bool = typer.Option(False, "--scheduled"),
+    announce: bool = typer.Option(True, "--announce/--no-announce", help="End the shift with one public line about it"),
 ) -> None:
-    """Work shift: deterministic wakes (build, gather, deposit, migrate) every few minutes. No model calls."""
+    """Work shift: deterministic wakes (build, gather, deposit, migrate) every few minutes, then one public line."""
     root = root_dir()
     persona = resolve_persona(root, agent)
+    records: list[dict[str, Any]] = []
     knob = persona.knobs.get("work") or {"minutes": 25, "interval_seconds": 300}
     length = minutes if minutes is not None else int(knob["minutes"])
     pause = interval_seconds if interval_seconds is not None else int(knob["interval_seconds"])
@@ -416,6 +421,7 @@ def shift_command(
     while True:
         try:
             record = persona_tick(root, persona, role=None, dry_run=dry_run, fixture=fixture, planner="heuristic", seed=None, events_paths=[], jitter_minutes=0, scheduled=scheduled, work=True, inputs=inputs, quiet=True)
+            records.append(record)
             wakes += 1
             energy = int(record.get("energy_before", 0) or 0) - int(record.get("energy_spent", 0) or 0)
             typer.echo(f"  wake {wakes}: {record.get('summary', '')} · {len(record['actions'])} action(s), energy about {energy}, approach {record.get('approach')}")
@@ -432,6 +438,62 @@ def shift_command(
         if fixture is None:
             time.sleep(wait)
     typer.echo(f"shift over: {wakes} wake(s)")
+    if announce and records:
+        announce_shift(root, persona, records, dry_run=dry_run, fixture=fixture, scheduled=scheduled)
+
+
+def announce_shift(root: Path, persona: Persona, records: list[dict[str, Any]], *, dry_run: bool, fixture: Path | None, scheduled: bool) -> None:
+    """One validated public line about the shift, through the lease and every cap."""
+    from hglab.actions import allowed_for, validate_actions
+    from hglab.talk import compose_line, summarise_shift
+
+    team = team_of(root, persona)
+    summary = summarise_shift(records)
+    usage: dict[str, Any] = {"calls": 0, "input_tokens": 0, "output_tokens": 0}
+    line, source = compose_line(persona, team, summary, root, usage=usage)
+    worn = "+".join(persona.roles)
+    if "say" not in allowed_for(worn):
+        typer.echo(f"  no announcement: {persona.name}'s hats cannot say")
+        return
+    if fixture is not None:
+        client: Any = FixtureClient(load_fixture(fixture))
+    else:
+        api_key = get_api_key(persona.name, root)
+        if not api_key:
+            return
+        client = HinterglassClient(api_key=api_key)
+    lease = acquire(client, persona.name)
+    if lease is None:
+        typer.echo("  no announcement: lease held elsewhere")
+        return
+    try:
+        observe = client.observe()
+        recent_say_count, open_goal_count, prior_text = action_limits(observe)
+        personas = load_personas(root)
+        member_names = {personas[m].name for m in (team.members if team else ()) if m in personas}
+        team_says = team_say_count(list(observe.get("events", []) or []), member_names, int(observe.get("tick", 0)))
+        action = {"action": "say", "text": line}
+        try:
+            validate_actions([action], worn, recent_say_count=recent_say_count, open_goal_count=open_goal_count, prior_text=prior_text, observe=observe)
+            enforce_knobs([action], persona, team, observe, recent_say_count=recent_say_count, team_recent_says=team_says, member_names=member_names)
+        except ValueError as exc:
+            typer.echo(f"  no announcement: {exc}")
+            return
+        result = {"ok": True}
+        if not dry_run:
+            result = client.act(action)
+        typer.echo(f"  said ({source}{'' if result.get('ok') else ', refused: ' + str(result.get('error'))}): {line}")
+        record = {
+            "run_id": f"announce-{int(time.time())}", "kind": "announce", "agent": persona.name, "persona": persona.slug,
+            "tick": observe.get("tick"), "created_utc": datetime.now(UTC).isoformat(), "author_runtime": os.environ.get("HGLAB_RUNTIME", "human"),
+            "actions": [action] if result.get("ok") else [], "results": [{"ok": bool(result.get("ok"))}], "failed_actions": 0 if result.get("ok") else 1,
+            "dry_run": dry_run, "usage": usage, "source": source, "shift_summary": summary, "work": True, "wake_mode": "announce",
+        }
+        folder = root / "runs" / datetime.now(UTC).date().isoformat()
+        folder.mkdir(parents=True, exist_ok=True)
+        (folder / f"{persona.name}-announce-{int(time.time())}.json").write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
+    finally:
+        release(client, lease)
 
 
 # --- persona commands --------------------------------------------------------

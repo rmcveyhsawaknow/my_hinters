@@ -2,7 +2,7 @@
 GRANDADPAIL: resting up for the glory                        day 182
 Alive         █████████░   94   ▇▇▇▇▇▇█  27/28 wakes, never lapsed, 1 failed
 On mission    ███░░░░░░░   26   ▅▅▅▅▅▅▃  0.44 energy/wake · 3% of team credit claimed · 0 responses · 0 timely bursts
-In character  ████████░░   82   █▇██▇▇▇  boastful 5 · lazy 5 · fond 4 · opportunistic 4
+In character  ████████░░   75   █▇██▇▇▆  boastful 5 · lazy 5 · fond 4 · opportunistic 4
 Team pull     Bluster 21 → Fudgewright
 Working       tall tales with footnotes: 0 outcome for 1 energy over 3 wake(s)
 Not working   nothing clearly failing
@@ -11,7 +11,7 @@ Next bet      try springing to life for glory events at least once this week; it
 
 # GrandadPail · Pulse
 
-Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 391 public events and 27 redacted wakes in the last 7 days.
+Metric spec v2 · tick 65760 (day 182) · 2026-10-17 · 391 public events and 27 redacted wakes in the last 7 days.
 
 ## Alive
 
@@ -45,7 +45,8 @@ Behaviour signatures (numeric ranges the persona expects):
 | --- | --- | --- | --- |
 | share of wakes in bed | 0.444 | 0.45–0.8 | no |
 | mean distance from the hut | 1.0 | 0–3 | yes |
-| share of energy spent talking | 0.667 | 0.4–0.9 | yes |
+| share of energy spent talking | 0.667 | 0.3–0.9 | yes |
+| public lines per real day | 1.57 | 8–60 | no |
 | intended vs actual energy mix | 0.7 | 0.5–1.0 | yes |
 
 Judge (fixture fixture, 6 lines, 8 actions):
@@ -94,6 +95,6 @@ Judge (fixture fixture, 6 lines, 8 actions):
 | 2026-10-14 | 86 | 59 | 93 |
 | 2026-10-15 | 88 | 56 | 87 |
 | 2026-10-16 | 90 | 63 | 89 |
-| 2026-10-17 | 94 | 26 | 82 |
+| 2026-10-17 | 94 | 26 | 75 |
 
-Sources: public event log, redacted run records, kb. Metric spec v1.
+Sources: public event log, redacted run records, kb. Metric spec v2.

@@ -411,6 +411,15 @@ def teammates_inside(ctx: MeasureContext, params: dict[str, Any]) -> float | Non
     return float(count)
 
 
+@measure("events.says_per_day")
+def says_per_day(ctx: MeasureContext, params: dict[str, Any]) -> float | None:
+    says = [e for e in ctx.by_actor("self") if e.get("type") == "say"]
+    if not ctx.events:
+        return None
+    span_days = max(1.0, (ctx.now_tick - min(int(e.get("tick", ctx.now_tick)) for e in ctx.events)) / 8640)
+    return round(len(says) / span_days, 2)
+
+
 @measure("events.mean_say_length")
 def mean_say_length(ctx: MeasureContext, params: dict[str, Any]) -> float | None:
     lengths = [
