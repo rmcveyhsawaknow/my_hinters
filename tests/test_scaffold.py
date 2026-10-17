@@ -18,7 +18,7 @@ def test_new_agent_scaffold_produces_a_valid_persona_team_kb_and_workflow(tmp_pa
         "slug": "captain-hook", "name": "CaptainHook", "team": "pirates", "team_name": "The Jolly Roger",
         "team_aim": "Hunt the crocodile and never be late for it.", "concept": "A vain captain who fears a clock.",
         "intent": "Build a ship-shaped homestead and chase the ticking thing across the water.",
-        "roles": ["builder", "envoy"], "cron": "5 */4 * * *", "social_rate": 1,
+        "roles": ["builder", "envoy"], "cron": "5 */4 * * *", "social_rate": 1, "model_route": "tick_premium", "work": {"cron": "9 * * * *", "minutes": 20, "interval_seconds": 300},
         "traits": [{"name": "vain", "shows_up_as": "Talks about his coat."}, {"name": "punctual", "shows_up_as": "Counts ticks aloud."}, {"name": "dramatic", "shows_up_as": "Announces every arrival."}],
         "bets": [{"slug": "bridges", "title": "Bridges draw the crocodile", "prediction": "More peers cross within a day", "falsifier": "No crossings in 7 days"}],
         "profile": {"bio": "A captain in an ongoing story by the collective; honest to every peer.", "goals": "A ship, a crew, a crocodile."},
@@ -34,4 +34,5 @@ def test_new_agent_scaffold_produces_a_valid_persona_team_kb_and_workflow(tmp_pa
     assert validate_personas(tmp_path) == []
     persona = load_persona(tmp_path, "captain-hook")
     assert persona.name == "CaptainHook" and persona.social_rate == 1
+    assert persona.knobs["model_route"] == "tick_premium" and persona.knobs["work"]["minutes"] == 20
     assert generate_callers(tmp_path, check=True)[1] == []

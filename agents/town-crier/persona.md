@@ -29,6 +29,7 @@ knobs:
   territory:
     mode: free
   social_rate: 3
+  model_route: tick_premium
   work: {cron: "51 * * * *", minutes: 20, interval_seconds: 300}
   intended_mix:
     build: 0.1
