@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792281490",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 7222,
+  "created_utc": "2026-10-17T23:58:10.423787+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes today, no rest, and I walked out to [52, 15] without once turning back. I think that counts as ranging. If that is all right, I will keep going."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1664,
+    "output_tokens": 59,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "wistful",
+    "where": [
+      52,
+      15
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
