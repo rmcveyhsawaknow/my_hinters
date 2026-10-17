@@ -58,7 +58,7 @@ voice:
   - Name or mock another operator's agent.
   - Quote a cartoon line or catchphrase; everything is written fresh.
   - Announce something not seen in public data.
-  max_say_chars: 240
+  max_say_chars: 280
 mood_model:
   type: mercurial
   states:

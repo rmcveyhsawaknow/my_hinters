@@ -15,6 +15,9 @@ import re
 from typing import Any
 
 ACTION_ROW = re.compile(r"^\|\s*`([a-z_]+)`\s*\|", re.MULTILINE)
+BLUEPRINT_TABLE_ROW = re.compile(
+    r"^\|\s*`([a-z_]+)`\s*\|\s*([^|]*?)\s*\|\s*(\d+)\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|$", re.MULTILINE
+)
 BLUEPRINT_ROW = re.compile(r"^\|\s*`(sign|road|wall|bridge|hut|farm|storehouse|tower|monument|cache|[a-z_]+)`\s*\|\s*(?:wood|stone|ore|fiber|berries|system|none)", re.MULTILINE)
 KNOWN_BASELINE_ACTIONS = {
     "observe", "act", "move", "gather", "build", "demolish", "say", "whisper", "write", "give", "take", "eat",
@@ -37,6 +40,7 @@ def snapshot(client: Any, *, pages: int = 3) -> dict[str, Any]:
         guide_text = ""
     actions = sorted(set(ACTION_ROW.findall(guide_text)))
     blueprints = sorted({m for m in BLUEPRINT_ROW.findall(guide_text)})
+    blueprint_rows = blueprint_catalogue(guide_text)
     events: list[dict[str, Any]] = []
     before = None
     for _ in range(pages):
@@ -69,6 +73,7 @@ def snapshot(client: Any, *, pages: int = 3) -> dict[str, Any]:
         "guide_sha256": hashlib.sha256(guide_text.encode("utf-8")).hexdigest() if guide_text else "",
         "guide_actions": actions,
         "guide_blueprints": blueprints,
+        "blueprint_rows": blueprint_rows,
         "event_types": event_types,
         "structure_types": sorted(set(structure_types) | set(structure_types_built)),
         "factions": sorted(f"{f.get('name')}:{f.get('membership', '')}" for f in factions if isinstance(f, dict)),
@@ -78,15 +83,37 @@ def snapshot(client: Any, *, pages: int = 3) -> dict[str, Any]:
     }
 
 
+def blueprint_catalogue(guide_text: str) -> dict[str, dict[str, str]]:
+    """Blueprint name -> cost, hp, terrain, function, from the guide's build table."""
+    rows: dict[str, dict[str, str]] = {}
+    for name, cost, hp, terrain, function in BLUEPRINT_TABLE_ROW.findall(guide_text):
+        if name in {"type", "action"} or not any(word in cost for word in ("wood", "stone", "ore", "fiber", "berries", "system")):
+            continue
+        rows[name] = {"cost": cost.strip(), "hp": hp, "terrain": terrain.strip(), "function": function.strip()[:80]}
+    return rows
+
+
+def catalogue_line(rows: dict[str, dict[str, str]]) -> str:
+    """One sentence listing what can be built and what it costs (system-made caches aside)."""
+    parts = [f"{name} ({row['cost']})" for name, row in rows.items() if "system" not in row["cost"]]
+    return f"{len(parts)} things can be built: " + ", ".join(parts) + "."
+
+
 def compare(previous: dict[str, Any] | None, current: dict[str, Any]) -> list[dict[str, str]]:
     """Discoveries since the previous snapshot, each with a kind and one plain sentence."""
     out: list[dict[str, str]] = []
+    rows = current.get("blueprint_rows") or {}
     if previous is None:
         out.append({"kind": "first_look", "text": f"First look: API {current['api_version']}, {current['agent_count']} agents, {len(current['event_types'])} event types seen, {len(current['structure_types'])} structure types standing."})
+        if rows:
+            out.append({"kind": "blueprint_catalogue", "text": catalogue_line(rows)})
         undocumented = sorted(set(current["event_types"]) - _documented_events(current))
         if undocumented:
             out.append({"kind": "unpublished_event_type", "text": "Event types in the log that the guide does not describe: " + ", ".join(undocumented) + "."})
         return out
+    previous_rows = previous.get("blueprint_rows") or {}
+    if rows and previous_rows and any(rows.get(k, {}).get("cost") != v.get("cost") for k, v in previous_rows.items() if k in rows):
+        out.append({"kind": "blueprint_cost_changed", "text": "A blueprint's cost changed in the guide: " + catalogue_line(rows)})
     if current["api_version"] and current["api_version"] != previous.get("api_version"):
         out.append({"kind": "api_version", "text": f"The game updated: API {previous.get('api_version') or '?'} became {current['api_version']}."})
     if current["guide_sha256"] and previous.get("guide_sha256") and current["guide_sha256"][:16] != str(previous["guide_sha256"])[:16]:
@@ -94,7 +121,8 @@ def compare(previous: dict[str, Any] | None, current: dict[str, Any]) -> list[di
     for key, label in (("guide_actions", "action"), ("guide_blueprints", "blueprint")):
         new = sorted(set(current.get(key, [])) - set(previous.get(key, [])))
         if new:
-            out.append({"kind": f"new_{label}", "text": f"New {label}{'s' if len(new) > 1 else ''} in the guide: " + ", ".join(f"`{n}`" for n in new) + "."})
+            detail = ", ".join(f"`{n}`" + (f" ({rows[n]['cost']})" if n in rows else "") for n in new)
+            out.append({"kind": f"new_{label}", "text": f"New {label}{'s' if len(new) > 1 else ''} in the guide: {detail}."})
     new_events = sorted(set(current["event_types"]) - set(previous.get("event_types", [])))
     if new_events:
         documented = _documented_events(current)
@@ -126,6 +154,7 @@ def compact(current: dict[str, Any]) -> dict[str, Any]:
     return {
         "tick": current["tick"], "api_version": current["api_version"], "guide_sha256": current["guide_sha256"][:16],
         "guide_actions": current["guide_actions"][:40], "guide_blueprints": current["guide_blueprints"][:20],
+        "blueprint_rows": {k: {"cost": v.get("cost", "")} for k, v in (current.get("blueprint_rows") or {}).items()},
         "event_types": current["event_types"][:40], "structure_types": current["structure_types"][:20],
         "factions": current["factions"][:20], "agents": current["agents"][:60], "agent_count": current["agent_count"],
     }
@@ -136,4 +165,4 @@ def restore(compacted: dict[str, Any]) -> dict[str, Any]:
     return dict(compacted)
 
 
-__all__ = ["compact", "compare", "restore", "snapshot"]
+__all__ = ["blueprint_catalogue", "catalogue_line", "compact", "compare", "restore", "snapshot"]

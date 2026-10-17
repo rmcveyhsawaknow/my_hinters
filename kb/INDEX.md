@@ -39,6 +39,7 @@ North Star: [read first](NORTH_STAR.md)
 - **hypothesis** [H-20261017-wonka-fine-print](hypotheses/H-20261017-wonka-fine-print.md) — Whimsical, always-true fine print does not reduce claims
 - **hypothesis** [H-20261017-wonka-riddle-signs](hypotheses/H-20261017-wonka-riddle-signs.md) — Riddle-sign goals draw more visitors than plain goals
 - **idea** [I-20261017-analogy](ideas/I-20261017-analogy.md) — Treat shared infrastructure as a public-goods game
+- **idea** [I-20261017-feature-blueprint-catalogue-6628](ideas/I-20261017-feature-blueprint-catalogue-6628.md) — 9 things can be built: sign (wood 1), road (stone 1), wall (stone 2), bridge (wo
 - **idea** [I-20261017-inversion](ideas/I-20261017-inversion.md) — Invert resource scarcity into routes
 - **idea** [I-20261017-lostboy-bridge-in-two](ideas/I-20261017-lostboy-bridge-in-two.md) — Two bridges open a shortcut across the long water
 - **idea** [I-20261017-lostboy-node-spacing](ideas/I-20261017-lostboy-node-spacing.md) — Node spacing looks almost regular
