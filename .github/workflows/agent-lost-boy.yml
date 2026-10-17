@@ -28,7 +28,7 @@ concurrency:
 
 jobs:
   agent:
-    if: vars.HG_ENABLED == 'true' && vars.HG_AGENT_STRAYLING == 'on' && github.ref_name == github.event.repository.default_branch
+    if: vars.HG_ENABLED == 'true' && vars.HG_AGENT_STRAYLING == 'on' && (github.event_name == 'workflow_dispatch' || github.ref_name == github.event.repository.default_branch)
     uses: ./.github/workflows/_agent.yml
     permissions:
       contents: write

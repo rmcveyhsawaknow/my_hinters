@@ -359,6 +359,8 @@ def _plan_build(
     for blueprint in priority:
         if blueprint not in BLUEPRINTS or not materials_ok(inventory, blueprint):
             continue
+        if blueprint in {"sign", "monument"}:
+            continue  # text-bearing builds need fresh words: the model-backed planner's job
         if blueprint == "hut" and home:
             continue
         if blueprint == "storehouse" and any(s.get("type") == "storehouse" for s in owned):

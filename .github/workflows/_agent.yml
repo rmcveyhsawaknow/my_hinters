@@ -161,10 +161,12 @@ jobs:
       - name: Publish reports
         run: bash scripts/publish_reports.sh reports "${{ inputs.agent }}"
       - name: Summary
+        env:
+          AGENT: ${{ inputs.agent }}
         run: |
           {
-            echo "### Pulse for ${{ inputs.agent }}"
-            sed -n '1,12p' "reports/agents/${{ inputs.agent }}/pulse.md"
+            echo "### Pulse for $AGENT"
+            if [ -f "reports/agents/$AGENT/pulse.md" ]; then sed -n '1,12p' "reports/agents/$AGENT/pulse.md"; else echo "no pulse written"; fi
           } >> "$GITHUB_STEP_SUMMARY"
 
   retro:

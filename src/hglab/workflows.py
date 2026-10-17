@@ -75,7 +75,7 @@ def caller_text(persona: Persona) -> str:
         "  cancel-in-progress: false\n\n"
         "jobs:\n"
         "  agent:\n"
-        f"    if: vars.HG_ENABLED == 'true' && vars.{variable} == 'on' && github.ref_name == github.event.repository.default_branch\n"
+        f"    if: vars.HG_ENABLED == 'true' && vars.{variable} == 'on' && (github.event_name == 'workflow_dispatch' || github.ref_name == github.event.repository.default_branch)\n"
         f"    uses: ./.github/workflows/{REUSABLE}\n"
         "    permissions:\n"
         "      contents: write\n"

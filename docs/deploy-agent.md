@@ -20,7 +20,9 @@ variables say so.
 a dry-run option, only that agent's secret passed explicitly (`HG_KEY_<AGENT>`, plus the
 two model keys), and the guard
 `vars.HG_ENABLED == 'true' && vars.HG_AGENT_<AGENT> == 'on'`. `hglab sync --check` (run
-by CI) fails if a persona lacks a caller or a caller lacks a persona.
+by CI) fails if a persona lacks a caller or a caller lacks a persona. Schedules fire only on
+the default branch; a `workflow_dispatch` may run from any branch (`--ref`), which is how a
+feature branch gets its Actions dry run before merge.
 
 Reports and redacted run records live on the `reports` branch; `hglab reports pull`
 brings them into your local `reports/`. The old matrix heartbeat is retired: one path.
