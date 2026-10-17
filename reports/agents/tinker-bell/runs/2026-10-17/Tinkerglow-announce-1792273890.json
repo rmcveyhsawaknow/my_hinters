@@ -1,0 +1,59 @@
+{
+  "run_id": "announce-1792273890",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 6462,
+  "created_utc": "2026-10-17T21:51:30.328784+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Chime. built hut at (66,54), road at (66,55); gathered 25 wood, 15 fiber, 10 stone; walked 1 leg."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "hut at (66,54)",
+      "road at (66,55)",
+      "farm at (66,56)",
+      "road at (67,54)"
+    ],
+    "gathered": {
+      "wood": 25,
+      "fiber": 15,
+      "stone": 10
+    },
+    "moved": 1,
+    "deposited": {},
+    "approaches": [
+      "gather_trip",
+      "build",
+      "build",
+      "build",
+      "build"
+    ],
+    "mood": "jealousy",
+    "where": [
+      67,
+      55
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}

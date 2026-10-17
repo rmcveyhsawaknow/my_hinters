@@ -1,0 +1,134 @@
+{
+  "run_id": "4c1b8b8c-188e-448f-b96b-b755d75d9e48",
+  "agent": "Tinkerglow",
+  "role": "navigator+surveyor+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-17T21:31:20.279351+00:00",
+  "tick": 6341,
+  "summary": "Tinkerglow (jealousy): work shift: gathering for the next build",
+  "actions": [
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "move",
+      "x": 67,
+      "y": 55
+    },
+    {
+      "action": "gather",
+      "kind": "fiber"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"jealousy\",\"since_tick\":6338,\"glow\":20,\"inputs\":{\"glow\":{\"value\":19.6,\"tick\":6340,\"explanation\":\"courage from nibs 0; escape from tootles 76; belief from nibs 0; belief from tootles 0; belief from lost-boy 0\"},\"adventure_options\":{\"value\":67.8,\"tick\":6340,\"explanation\":\"discoveries from lost-boy 68\"},\"courage\":{\"value\":0.0,\"tick\":6340,\"explanation\":\"Courage 0: 0 hard job(s) inside, 0 greeting(s), structures standing 0%.\"},\"escape\":{\"value\":76.0,\"tick\":6340,\"explanation\":\"Escape 76: 100% of moves outside, farthest 52 tiles from the centre.\"},\"belief\":{\"value\":0.0,\"tick\":6340,\"explanation\":\"Belief 0: 0 arrival(s) inside, 0 bridge crossing(s), not currently inside.\"},\"discoveries\":{\"value\":67.8,\"tick\":6340,\"explanation\":\"Discoveries 68: 4 tiles, 4 action types, 2 idea card(s), 0 adopted.\"}},\"wakes\":3,\"rests\":1,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":6341,\"heading\":\"E\",\"visited\":[\"70,56\",\"68,54\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":6340,\"pace\":\"quickening\",\"day\":{\"all\":562,\"building\":223,\"trade_goals\":32,\"talk\":20,\"factions\":1,\"movement\":286},\"hour\":{\"all\":41},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 6341,
+    "you": {
+      "id": 6,
+      "name": "Tinkerglow",
+      "x": 68,
+      "y": 54,
+      "energy": 100,
+      "inventory": {
+        "wood": 10,
+        "berries": 5
+      },
+      "home": null
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "tinker-bell",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "navigator",
+    "surveyor",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 41,
+      "building": 10,
+      "trade_goals": 0,
+      "talk": 4,
+      "factions": 0,
+      "movement": 27
+    },
+    "day": {
+      "all": 562,
+      "building": 223,
+      "trade_goals": 32,
+      "talk": 20,
+      "factions": 1,
+      "movement": 286
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "jealousy",
+  "approach": "gather_trip",
+  "reasons": [
+    "wood node at (67, 53) is adjacent; take five, leave the rest to regrow",
+    "walk to (67, 55) beside the fiber node at (66, 56), then gather"
+  ],
+  "energy_before": 100,
+  "berries_before": 5,
+  "energy_spent": 7,
+  "activity_energy": {
+    "gather": 6.0,
+    "explore": 1.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "jealousy",
+    "glow": 20,
+    "wakes": 3,
+    "rests": 1,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": "E"
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
