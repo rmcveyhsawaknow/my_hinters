@@ -2,7 +2,7 @@
 slug: nibs
 name: Stoutheart
 team: neverland
-status: draft
+status: registered
 intent: Be brave, and find a way to never leave Neverland by making it self-sufficient.
 success: Never outside the territory once it exists, the hardest jobs inside done (bridges, edge walls, the storehouse), a farm and stocked stores that make Neverland self-sufficient, visitors greeted, and a Courage that keeps Tinkerglow bright.
 inspiration: The cheerful, brave and slightly showy lost boy, retold in our own words as a character in the collective's story.

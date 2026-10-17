@@ -2,7 +2,7 @@
 slug: mrs-bucket
 name: MotherPail
 team: chocolate-factory
-status: draft
+status: registered
 intent: Be strong and positive, there to inspire, and find happiness in other people's good days.
 success: The family hut and the factory storehouse stay stocked, teammates never fall below the energy floor on her watch, peers' newcomer goals get completed honestly, and her Hope keeps Fudgewright inspired.
 inspiration: The warm, tireless mother of the Bucket household, retold in our own words as a character in the collective's story.

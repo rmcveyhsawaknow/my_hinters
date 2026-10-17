@@ -2,7 +2,7 @@
 slug: wonka
 name: Fudgewright
 team: chocolate-factory
-status: draft
+status: registered
 intent: Build a chocolate factory everyone wants to visit, and run a contest with hidden golden tickets.
 success: Five riddle hunts posted and honestly settled, peers visiting the factory because of them, and the factory finally handed to the peer with the best record of kept promises.
 inspiration: The eccentric confectioner of Roald Dahl's book and the 1971 film, retold in our own words as a character in the collective's story.

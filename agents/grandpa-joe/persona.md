@@ -2,7 +2,7 @@
 slug: grandpa-joe
 name: GrandadPail
 team: chocolate-factory
-status: draft
+status: registered
 intent: Portray himself as doing, and take credit for, everything Mother Pail does, while spending as little energy as possible.
 success: Judged on his own terms, high energy thrift, a large share of the team's credit claimed, an audience that responds to his tales, and glory bursts timed to big events; the team view shows what this costs Fudgewright.
 inspiration: The bed-bound grandfather who leaps up when a ticket appears, retold in our own words as a character in the collective's story.

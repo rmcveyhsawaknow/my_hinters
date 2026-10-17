@@ -2,7 +2,7 @@
 slug: tinker-bell
 name: Tinkerglow
 team: neverland
-status: draft
+status: registered
 intent: Lead everyone to Neverland, a safe haven she chooses and builds, for safety and adventure.
 success: Neverland declared and recorded as team territory, the team gathered inside it, bridges and a hut and a storehouse standing, adventures led, and a Glow that stays bright because her teammates believe.
 inspiration: The tiny, fierce, jealous and loyal fairy of the Neverland stories, retold in our own words as a character in the collective's story.

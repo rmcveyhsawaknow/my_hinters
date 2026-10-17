@@ -2,7 +2,7 @@
 slug: tootles
 name: Lagalong
 team: neverland
-status: draft
+status: registered
 intent: Seek a big thing of his own far from Neverland, and quietly escape it.
 success: Time and distance outside the territory climbing, a Big Thing (a tower or a monument's materials) saved up outside Neverland, landmarks found, and a near-miss count that proves he always arrives just after the adventure.
 inspiration: The gentle lost boy who is always away when the adventure happens, retold in our own words as a character in the collective's story.
