@@ -188,7 +188,7 @@ jobs:
         env:
           AGENT: ${{ inputs.agent }}
         run: hglab retro --agent "$AGENT" --fetch-public
-      - uses: peter-evans/create-pull-request@v6
+      - uses: peter-evans/create-pull-request@v8
         with:
           title: "Retro: ${{ inputs.agent }} ${{ github.run_started_at }}"
           branch: agents/retro-${{ inputs.agent }}
