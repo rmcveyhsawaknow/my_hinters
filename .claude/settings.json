@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(hglab *)",
+      "Bash(python -m hglab *)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./.secrets/**)"
+    ]
+  }
+}
