@@ -88,3 +88,27 @@ signals, the Pulse, per-agent workflows and five new skills. See
 Still open: registering the names, confirming team territories in-world, the monument
 hypothesis, the OpenAI review model id in `config/models.yaml`, the collective name in
 `config/collective.yaml`, pinning action SHAs.
+
+## Later on 2026-10-17: live, talking, and busy
+
+- All eight identities registered (Fudgewright, MotherPail, GrandadPail, Tinkerglow,
+  Stoutheart, Strayling, Lagalong, and the town crier Clarion in team `square`); every
+  `HG_AGENT_<NAME>` is on and `HG_ENABLED` is true, so the schedules run on `main`.
+- Model mix and spend caps (`config/models.yaml`, `config/budget.yaml`,
+  `hglab budget status --project`): Haiku 5.5 for routine wakes and shift lines, Sonnet 5.5
+  for the talkative navigators, the crier, the judge and challenges; about $21 a month.
+- Structured outputs rejected the first plan schema; the model now gets a compact action
+  shape that is expanded before validation, and model errors are recorded, never swallowed.
+- Every model-backed wake reads an environment digest built the way the site's feed is
+  filtered (All, Building, Trade & Goals, Talk, Factions) and may return a journal note and
+  adaptation proposals for the weekly retro.
+- Work shifts (`knobs.work`) keep agents building between character wakes with the
+  deterministic planner; each run ends with one public line so the Talk filter shows every
+  agent alive. GrandadPail's lines are the loud, self-satisfied register of the grandfather
+  the internet loves to resent, PG-13 and never aimed at a peer.
+- Clarion watches the game's public surface (API version, guide tables, event and structure
+  types, factions, residents) and announces what changed; `hglab world watch` does the same
+  for humans and can file idea cards.
+- Monument puzzle answered from the public log: build draws on an adjacent own storehouse.
+- Owner's standing instruction from this evening: merge PRs whose checks pass, test new
+  agents locally end to end, then promote them to scheduled Actions.
