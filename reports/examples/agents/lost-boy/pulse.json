@@ -25,8 +25,8 @@
   }
  },
  "on_mission": {
-  "score": 54,
-  "detail": "novelty 71 · 0 filed · 0 adopted · ledger 8 · 36% distracted",
+  "score": 62,
+  "detail": "novelty 71 · 2 filed · 0 adopted · ledger 8 · 36% distracted",
   "rows": [
    {
     "id": "novelty",
@@ -41,11 +41,11 @@
    {
     "id": "discoveries_filed",
     "label": "discoveries filed",
-    "value": 0.0,
+    "value": 2.0,
     "target": 6,
     "weight": 0.25,
-    "progress": 0.0,
-    "shown": "0 filed",
+    "progress": 0.3333333333333333,
+    "shown": "2 filed",
     "measure": "kb.count"
    },
    {
@@ -162,7 +162,7 @@
   }
  },
  "team_pull": {
-  "detail": "Belief 23 → TinkerBell · Discoveries 47 → TinkerBell",
+  "detail": "Belief 23 → TinkerBell · Discoveries 73 → TinkerBell",
   "sent": [
    {
     "from": "lost-boy",
@@ -185,10 +185,10 @@
     "plain_english": "Every discovery the Lost Boy files becomes an adventure Tinker Bell can lead.",
     "weight": 1.0,
     "half_life_hours": 72.0,
-    "value": 46.9,
-    "decayed_value": 46.9,
+    "value": 72.7,
+    "decayed_value": 72.7,
     "age_ticks": 0,
-    "explanation": "Discoveries 47: 14 tiles, 4 action types, 0 idea card(s), 0 adopted."
+    "explanation": "Discoveries 73: 14 tiles, 4 action types, 2 idea card(s), 0 adopted."
    }
   ],
   "received": [],
@@ -208,11 +208,11 @@
     "label": "forty percent distraction roll",
     "wakes": 0,
     "energy": 0,
-    "outcome": 0.0,
-    "per_energy": null,
+    "outcome": 2.0,
+    "per_energy": 2.0,
     "hypothesis": "H-20261017-lostboy-distraction",
-    "bet_status": "missing",
-    "bet_title": null
+    "bet_status": "proposed",
+    "bet_title": "A forty percent distraction roll files more adopted discoveries than ten percent"
    },
    {
     "id": "bold_trips",
@@ -222,8 +222,8 @@
     "outcome": 8.0,
     "per_energy": 0.111,
     "hypothesis": "H-20261017-lostboy-risk-ledger",
-    "bet_status": "missing",
-    "bet_title": null
+    "bet_status": "proposed",
+    "bet_title": "Bold long trips net positive items per energy"
    },
    {
     "id": "odd_builds",
@@ -293,19 +293,19 @@
    "date": "2026-10-17",
    "metric_version": 1,
    "alive": 82,
-   "on_mission": 54,
+   "on_mission": 62,
    "in_character": 82,
    "tick": 65760
   }
  ],
  "signals": {
   "discoveries": {
-   "value": 46.9,
-   "explanation": "Discoveries 47: 14 tiles, 4 action types, 0 idea card(s), 0 adopted.",
+   "value": 72.7,
+   "explanation": "Discoveries 73: 14 tiles, 4 action types, 2 idea card(s), 0 adopted.",
    "parts": {
     "new_tiles": 14.0,
     "action_types": 4.0,
-    "ideas_filed": 0.0,
+    "ideas_filed": 2.0,
     "adopted": 0.0
    },
    "tick": 65760

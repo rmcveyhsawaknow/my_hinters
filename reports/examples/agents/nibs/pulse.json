@@ -226,8 +226,8 @@
     "outcome": 3.0,
     "per_energy": 0.091,
     "hypothesis": "H-20261017-nibs-self-sufficiency",
-    "bet_status": "missing",
-    "bet_title": null
+    "bet_status": "proposed",
+    "bet_title": "A farm plus a stocked storehouse keeps Neverland above the floor"
    },
    {
     "id": "greetings",
@@ -237,8 +237,8 @@
     "outcome": 1.0,
     "per_energy": 1.0,
     "hypothesis": "H-20261017-nibs-greetings",
-    "bet_status": "missing",
-    "bet_title": null
+    "bet_status": "proposed",
+    "bet_title": "Greeting visitors earns replies and return visits"
    },
    {
     "id": "edge_walls",

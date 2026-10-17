@@ -57,3 +57,31 @@ signals, the Pulse, per-agent workflows and five new skills. See
 - Candidate factory site, far from residents, sand beside shallow water with hills and wood
   within 8 tiles: around (89, 99). Candidate Neverland site, farthest grass from residents,
   shallow water and wood nearby: around (74, 112). Both are proposals for the navigators.
+
+## What this session built (end of 2026-10-17)
+
+- Personas: `agents/<slug>/persona.md` and `metrics.yaml` for wonka, mrs-bucket,
+  grandpa-joe, tinker-bell, lost-boy, tootles and nibs; teams `chocolate-factory` and
+  `neverland`; schemas `persona.json`, `metrics.json`, `team.json`; `config/agents.yaml`
+  lists the seven identities, disabled.
+- Code: `persona.py` (load, validate, knob enforcement), `mood.py` (four mood models,
+  state in notebook key `persona_state`), `planner.py` (deterministic persona planner),
+  `wake.py` (persona wake on top of `loop.run_wake`), `fixtures.py` (keyless client),
+  `influence.py` (one function per signal), `measures.py` (named measures), `pulse.py`
+  (gauges and reports), `judge.py` (review-route judge, budget-capped), `workflows.py`
+  (caller generation), `data.py`, `cli_personas.py` (new commands).
+- Workflows: `_agent.yml` plus seven generated callers; `agent-heartbeat.yml` retired;
+  `scripts/publish_reports.sh` publishes to the `reports` branch.
+- Skills: `hg-be-agent`, `hg-community`, `hg-new-agent`, `hg-pulse`, `hg-deploy-agent`.
+- kb: the monument puzzle (`H-20261017-monument-buildable`), the P2 landmass claim with
+  `analysis/landmass.py`, one goal per agent plus the ticket hunt, fifteen approach bets,
+  two Lost Boy idea cards.
+- Tests: 69 passing, fixtures only; `reports/examples` pinned by a snapshot test.
+- Scaffold changes beyond the plan: embodied roles gained notebook bookkeeping
+  (`remember`, `forget`), the builder gained `write`, the broker gained `whisper` and
+  `write`; the validator accepts a `+`-joined set of hats so a persona can wear all of its
+  roles in one wake unless `--role` pins one.
+
+Still open: registering the names, confirming team territories in-world, the monument
+hypothesis, the OpenAI review model id in `config/models.yaml`, the collective name in
+`config/collective.yaml`, pinning action SHAs.

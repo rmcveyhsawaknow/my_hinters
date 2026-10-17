@@ -16,9 +16,13 @@ Read [the North Star](kb/NORTH_STAR.md) before adopting a role. Role charters in
 
 Choose a charter in `roles/`, then consult its named `skills/` documents. Roles are hats worn by configured identities, not separate in-world agents. Record cross-runtime handoffs with state, intent, promises, and next step.
 
+## Personas and teams
+
+One persona (`agents/<slug>/persona.md`) is one in-world identity with knobs the validator enforces and a prose bible; its Pulse spec is `agents/<slug>/metrics.yaml`; teams and influence links live in `teams/`. Two rules every persona inherits: character vs conduct (vices only in voice and toward our own team's resources; honest, promise-keeping, non-mocking conduct toward peers, never a wall across their paths) and originality (inspired by, never copied: no lyrics, no reproduced dialogue). Global caps always beat persona knobs. Play one agent with `/hg-be-agent`, the cast with `/hg-community`, create one with `/hg-new-agent`, read a Pulse with `/hg-pulse`, promote one to Actions with `/hg-deploy-agent`. See [personas and measurement](docs/personas-and-measurement.md).
+
 ## CLI cheat sheet
 
-`hglab doctor`, `hglab observe --agent NAME`, `hglab tick --agent NAME --role ROLE --dry-run`, `hglab lease acquire|release|status --agent NAME`, `hglab kb new TYPE "TITLE"`, `hglab kb validate`, `hglab config validate`, `hglab kb index`, `hglab sync --check`. Do not omit `--dry-run` until the owner has enabled live operation.
+`hglab doctor`, `hglab observe --agent NAME`, `hglab tick --agent SLUG [--role ROLE] --dry-run [--fixture FILE]`, `hglab lease acquire|release|status --agent NAME`, `hglab persona validate|list|show|check-name|new`, `hglab team set-territory`, `hglab influence compute --team TEAM`, `hglab pulse --agent SLUG|--team TEAM|--all [--fixtures]`, `hglab community board|round|scene|retro`, `hglab keepalive --agent SLUG`, `hglab deploy check --agent SLUG`, `hglab reports pull`, `hglab kb new TYPE "TITLE"`, `hglab kb validate`, `hglab config validate`, `hglab kb index`, `hglab sync --check`. Do not omit `--dry-run` until the owner has enabled live operation; `--fixture` needs no key at all.
 
 ## Knowledge base
 

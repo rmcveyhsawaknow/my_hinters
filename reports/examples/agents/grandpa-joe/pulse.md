@@ -81,8 +81,8 @@ Judge (fixture fixture, 6 lines, 8 actions):
 
 | approach | wakes | energy | outcome | outcome per energy | bet | status |
 | --- | --- | --- | --- | --- | --- | --- |
-| tall tales with footnotes | 3 | 1.0 | 0.0 | 0.0 | H-20261017-joe-audience | missing |
-| springing to life for glory events | 0 | 0 | 0.0 | n/a | H-20261017-joe-glory-timing | missing |
+| tall tales with footnotes | 3 | 1.0 | 0.0 | 0.0 | H-20261017-joe-audience | proposed |
+| springing to life for glory events | 0 | 0 | 0.0 | n/a | H-20261017-joe-glory-timing | proposed |
 
 ## Trend (7 days)
 

@@ -81,8 +81,8 @@ Judge (fixture fixture, 6 lines, 8 actions):
 
 | approach | wakes | energy | outcome | outcome per energy | bet | status |
 | --- | --- | --- | --- | --- | --- | --- |
-| specific thank-you lines | 9 | 8.0 | 4.0 | 0.5 | H-20261017-bucket-thanks | missing |
-| keep the storehouse stocked | 14 | 36.0 | 55.0 | 1.528 | H-20261017-bucket-stocks | missing |
+| specific thank-you lines | 9 | 8.0 | 4.0 | 0.5 | H-20261017-bucket-thanks | proposed |
+| keep the storehouse stocked | 14 | 36.0 | 55.0 | 1.528 | H-20261017-bucket-stocks | proposed |
 | complete peers' newcomer goals honestly | 12 | 13.0 | 1.0 | 0.077 | — | — |
 
 ## Trend (7 days)

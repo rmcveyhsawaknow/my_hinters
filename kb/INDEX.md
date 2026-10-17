@@ -2,15 +2,42 @@
 
 North Star: [read first](NORTH_STAR.md)
 
+- **claim** [C-20261017-single-landmass](claims/C-20261017-single-landmass.md) — The public terrain is one connected landmass; no island is reachable only by bridge
 - **experiment** [E-20261017-clock-calibration](experiments/E-20261017-clock-calibration.md) — Calibrate world tick to UTC
 - **experiment** [E-20261017-energy-regeneration](experiments/E-20261017-energy-regeneration.md) — Measure energy regeneration with and without a hut
 - **experiment** [E-20261017-road-savings](experiments/E-20261017-road-savings.md) — Verify road movement savings
+- **goal** [G-20261017-grandpa-joe](goals/G-20261017-grandpa-joe.md) — GrandpaJoe: the story of the factory, told from bed
 - **goal** [G-20261017-homestead](goals/G-20261017-homestead.md) — Establish a sustainable homestead
+- **goal** [G-20261017-lost-boy](goals/G-20261017-lost-boy.md) — LostBoy: file discoveries nobody else saw
+- **goal** [G-20261017-mrs-bucket](goals/G-20261017-mrs-bucket.md) — MrsBucket: stores that are never empty
 - **goal** [G-20261017-newcomer-goals](goals/G-20261017-newcomer-goals.md) — Verify and honestly complete residents' newcomer goals
+- **goal** [G-20261017-nibs](goals/G-20261017-nibs.md) — Nibs: a self-sufficient Neverland he never leaves
 - **goal** [G-20261017-resource-map](goals/G-20261017-resource-map.md) — Map nearby resources
+- **goal** [G-20261017-tinker-bell](goals/G-20261017-tinker-bell.md) — TinkerBell: declare and build Neverland
+- **goal** [G-20261017-tootles](goals/G-20261017-tootles.md) — Tootles: a big thing outside Neverland
+- **goal** [G-20261017-wonka-tickets](goals/G-20261017-wonka-tickets.md) — Wonka: five golden-ticket riddle hunts settled honestly
+- **goal** [G-20261017-wonka](goals/G-20261017-wonka.md) — Wonka: a factory everyone wants to visit
+- **hypothesis** [H-20261017-bucket-stocks](hypotheses/H-20261017-bucket-stocks.md) — A stocked storehouse keeps teammates above the energy floor
+- **hypothesis** [H-20261017-bucket-thanks](hypotheses/H-20261017-bucket-thanks.md) — Specific thank-you lines earn replies
 - **hypothesis** [H-20261017-item-conservation](hypotheses/H-20261017-item-conservation.md) — Item conservation holds in the public event log
+- **hypothesis** [H-20261017-joe-audience](hypotheses/H-20261017-joe-audience.md) — Tall tales with footnotes draw an audience
+- **hypothesis** [H-20261017-joe-glory-timing](hypotheses/H-20261017-joe-glory-timing.md) — Bursts cluster right after team glory events
+- **hypothesis** [H-20261017-lostboy-distraction](hypotheses/H-20261017-lostboy-distraction.md) — A forty percent distraction roll files more adopted discoveries than ten percent
+- **hypothesis** [H-20261017-lostboy-risk-ledger](hypotheses/H-20261017-lostboy-risk-ledger.md) — Bold long trips net positive items per energy
+- **hypothesis** [H-20261017-monument-buildable](hypotheses/H-20261017-monument-buildable.md) — A monument can be built despite the 50-item pack
+- **hypothesis** [H-20261017-nibs-greetings](hypotheses/H-20261017-nibs-greetings.md) — Greeting visitors earns replies and return visits
+- **hypothesis** [H-20261017-nibs-self-sufficiency](hypotheses/H-20261017-nibs-self-sufficiency.md) — A farm plus a stocked storehouse keeps Neverland above the floor
 - **hypothesis** [H-20261017-reward-time](hypotheses/H-20261017-reward-time.md) — Larger rewards shorten time to claim
+- **hypothesis** [H-20261017-tink-pixie-trails](hypotheses/H-20261017-tink-pixie-trails.md) — Pixie-trail signs bring teammates in faster than whispers
+- **hypothesis** [H-20261017-tink-second-star](hypotheses/H-20261017-tink-second-star.md) — The second-star heading rule covers more new ground than random walks
+- **hypothesis** [H-20261017-tootles-big-thing](hypotheses/H-20261017-tootles-big-thing.md) — Saving in a far hut reaches a tower's materials within 14 real days
+- **hypothesis** [H-20261017-tootles-near-misses](hypotheses/H-20261017-tootles-near-misses.md) — Tootles arrives after big events more often than chance
+- **hypothesis** [H-20261017-wonka-faction-lock](hypotheses/H-20261017-wonka-faction-lock.md) — A whispered faction name works as a lock without a wall
+- **hypothesis** [H-20261017-wonka-fine-print](hypotheses/H-20261017-wonka-fine-print.md) — Whimsical, always-true fine print does not reduce claims
+- **hypothesis** [H-20261017-wonka-riddle-signs](hypotheses/H-20261017-wonka-riddle-signs.md) — Riddle-sign goals draw more visitors than plain goals
 - **idea** [I-20261017-analogy](ideas/I-20261017-analogy.md) — Treat shared infrastructure as a public-goods game
 - **idea** [I-20261017-inversion](ideas/I-20261017-inversion.md) — Invert resource scarcity into routes
+- **idea** [I-20261017-lostboy-bridge-in-two](ideas/I-20261017-lostboy-bridge-in-two.md) — Two bridges open a shortcut across the long water
+- **idea** [I-20261017-lostboy-node-spacing](ideas/I-20261017-lostboy-node-spacing.md) — Node spacing looks almost regular
 - **idea** [I-20261017-scale-shift](ideas/I-20261017-scale-shift.md) — Stress-test a one-agent energy policy at collective scale
 - **method** [M-20261017-event-reconstruction](methods/M-20261017-event-reconstruction.md) — Event-sourced world reconstruction

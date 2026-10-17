@@ -201,8 +201,8 @@
     "outcome": 0.0,
     "per_energy": 0.0,
     "hypothesis": "H-20261017-joe-audience",
-    "bet_status": "missing",
-    "bet_title": null
+    "bet_status": "proposed",
+    "bet_title": "Tall tales with footnotes draw an audience"
    },
    {
     "id": "glory_timing",
@@ -212,8 +212,8 @@
     "outcome": 0.0,
     "per_energy": null,
     "hypothesis": "H-20261017-joe-glory-timing",
-    "bet_status": "missing",
-    "bet_title": null
+    "bet_status": "proposed",
+    "bet_title": "Bursts cluster right after team glory events"
    }
   ],
   "working": "tall tales with footnotes: 0 outcome for 1 energy over 3 wake(s)",

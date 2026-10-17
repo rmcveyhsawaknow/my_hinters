@@ -224,8 +224,8 @@
     "outcome": 2.0,
     "per_energy": 0.143,
     "hypothesis": "H-20261017-tootles-near-misses",
-    "bet_status": "missing",
-    "bet_title": null
+    "bet_status": "proposed",
+    "bet_title": "Tootles arrives after big events more often than chance"
    },
    {
     "id": "save_outside",
@@ -235,8 +235,8 @@
     "outcome": 35.0,
     "per_energy": 1.458,
     "hypothesis": "H-20261017-tootles-big-thing",
-    "bet_status": "missing",
-    "bet_title": null
+    "bet_status": "proposed",
+    "bet_title": "Saving in a far hut reaches a tower's materials within 14 real days"
    }
   ],
   "working": "saving materials in a far hut: 35 outcome for 24 energy over 7 wake(s)",

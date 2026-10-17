@@ -5,7 +5,7 @@ Tinker Bell chooses and builds Neverland, a safe haven recorded as team territor
 | agent | alive | on mission | in character | working | next bet |
 | --- | --- | --- | --- | --- | --- |
 | TinkerBell | 85 | 61 | 92 | second-star exploration rule: 10 outcome for 31 energy over 4 wake(s) | keep testing second-star exploration rule; it has the best outcome per unit of energy |
-| LostBoy | 82 | 54 | 82 | unusual builds: 71 outcome for 24 energy over 9 wake(s) | try forty percent distraction roll at least once this week; it has a bet but no wakes |
+| LostBoy | 82 | 62 | 82 | unusual builds: 71 outcome for 24 energy over 9 wake(s) | try forty percent distraction roll at least once this week; it has a bet but no wakes |
 | Tootles | 87 | 87 | 95 | saving materials in a far hut: 35 outcome for 24 energy over 7 wake(s) | keep testing saving materials in a far hut; it has the best outcome per unit of energy |
 | Nibs | 92 | 72 | 70 | farm plus stocked storehouse: 3 outcome for 33 energy over 12 wake(s) | try greeting visitors at least once this week; it has a bet but no wakes |
 
@@ -19,12 +19,12 @@ Tinker Bell chooses and builds Neverland, a safe haven recorded as team territor
 | nibs | belief | 42 | tinker-bell | glow | Nibs arriving where she pointed, using her bridges and staying inside is Belief, and Belief sets her Glow. |
 | tootles | belief | 0 | tinker-bell | glow | Even Tootles crossing her bridges or returning inside counts as Belief. |
 | lost-boy | belief | 23 | tinker-bell | glow | The Lost Boy wandering back inside or over a bridge counts as Belief. |
-| lost-boy | discoveries | 47 | tinker-bell | adventure_options | Every discovery the Lost Boy files becomes an adventure Tinker Bell can lead. |
+| lost-boy | discoveries | 73 | tinker-bell | adventure_options | Every discovery the Lost Boy files becomes an adventure Tinker Bell can lead. |
 
 ## Signals explained
 
 - tinker-bell · belief: Belief 40: 3 arrival(s) inside, 0 bridge crossing(s), staying inside.
-- lost-boy · discoveries: Discoveries 47: 14 tiles, 4 action types, 0 idea card(s), 0 adopted.
+- lost-boy · discoveries: Discoveries 73: 14 tiles, 4 action types, 2 idea card(s), 0 adopted.
 - lost-boy · belief: Belief 23: 4 arrival(s) inside, 0 bridge crossing(s), not currently inside.
 - tootles · escape: Escape 71: 100% of moves outside, farthest 42 tiles from the centre.
 - tootles · belief: Belief 0: 0 arrival(s) inside, 0 bridge crossing(s), not currently inside.

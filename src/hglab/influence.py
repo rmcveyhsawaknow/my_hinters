@@ -12,7 +12,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-from hglab.measures import HARD_BUILDS, MeasureContext, saturate
+from hglab.measures import HARD_BUILDS, MeasureContext, adopted_from, ideas_by, saturate
 from hglab.persona import Persona, Team, chebyshev
 
 DAY_TICKS = 8640  # one real day of ticks (360 ticks per in-world day, 24 in-world days)
@@ -232,11 +232,8 @@ def discoveries(ctx: MeasureContext) -> SignalResult:
     """New ground, new action types, idea cards filed, and cards others adopted."""
     tiles = len({(x, y) for _, x, y in ctx.self_positions()})
     kinds = len({e.get("type") for e in ctx.by_actor("self")})
-    ideas = sum(1 for i in ctx.kb_items if i.get("type") == "idea" and ctx.persona.slug in (i.get("roles") or []))
-    adopted = sum(
-        1 for i in ctx.kb_items
-        if i.get("type") in {"hypothesis", "experiment"} and any(ctx.persona.slug in str(link) for link in i.get("links") or [])
-    )
+    ideas = len(ideas_by(ctx.kb_items, ctx.persona.slug))
+    adopted = adopted_from(ctx.kb_items, ctx.persona.slug)
     parts = {"new_tiles": float(tiles), "action_types": float(kinds), "ideas_filed": float(ideas), "adopted": float(adopted)}
     raw = 0.5 * tiles + 3 * kinds + 10 * ideas + 15 * adopted
     value = saturate(raw, 30)

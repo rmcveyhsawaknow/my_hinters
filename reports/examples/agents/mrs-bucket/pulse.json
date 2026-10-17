@@ -198,8 +198,8 @@
     "outcome": 4.0,
     "per_energy": 0.5,
     "hypothesis": "H-20261017-bucket-thanks",
-    "bet_status": "missing",
-    "bet_title": null
+    "bet_status": "proposed",
+    "bet_title": "Specific thank-you lines earn replies"
    },
    {
     "id": "stock_the_storehouse",
@@ -209,8 +209,8 @@
     "outcome": 55.0,
     "per_energy": 1.528,
     "hypothesis": "H-20261017-bucket-stocks",
-    "bet_status": "missing",
-    "bet_title": null
+    "bet_status": "proposed",
+    "bet_title": "A stocked storehouse keeps teammates above the energy floor"
    },
    {
     "id": "newcomer_goals",

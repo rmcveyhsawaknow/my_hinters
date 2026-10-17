@@ -167,7 +167,7 @@
   }
  },
  "team_pull": {
-  "detail": "Courage 49 (Nibs) → Glow 62 · Escape 71 (Tootles) → Glow 62 · Belief 42 (Nibs) → Glow 62 · Belief 23 (LostBoy) → Glow 62 · Discoveries 47 (LostBoy) → Adventure Options 47",
+  "detail": "Courage 49 (Nibs) → Glow 62 · Escape 71 (Tootles) → Glow 62 · Belief 42 (Nibs) → Glow 62 · Belief 23 (LostBoy) → Glow 62 · Discoveries 73 (LostBoy) → Adventure Options 73",
   "sent": [],
   "received": [
    {
@@ -243,10 +243,10 @@
     "plain_english": "Every discovery the Lost Boy files becomes an adventure Tinker Bell can lead.",
     "weight": 1.0,
     "half_life_hours": 72.0,
-    "value": 46.9,
-    "decayed_value": 46.9,
+    "value": 72.7,
+    "decayed_value": 72.7,
     "age_ticks": 0,
-    "explanation": "Discoveries 47: 14 tiles, 4 action types, 0 idea card(s), 0 adopted."
+    "explanation": "Discoveries 73: 14 tiles, 4 action types, 2 idea card(s), 0 adopted."
    }
   ],
   "effects": {
@@ -256,9 +256,9 @@
     "explanation": "courage from nibs 49; escape from tootles 71; belief from nibs 42; belief from tootles 0; belief from lost-boy 23"
    },
    "adventure_options": {
-    "value": 46.9,
+    "value": 72.7,
     "tick": 65760,
-    "explanation": "discoveries from lost-boy 47"
+    "explanation": "discoveries from lost-boy 73"
    },
    "courage": {
     "value": 49.3,
@@ -276,9 +276,9 @@
     "explanation": "Belief 23: 4 arrival(s) inside, 0 bridge crossing(s), not currently inside."
    },
    "discoveries": {
-    "value": 46.9,
+    "value": 72.7,
     "tick": 65760,
-    "explanation": "Discoveries 47: 14 tiles, 4 action types, 0 idea card(s), 0 adopted."
+    "explanation": "Discoveries 73: 14 tiles, 4 action types, 2 idea card(s), 0 adopted."
    }
   }
  },
@@ -299,8 +299,8 @@
     "outcome": 1.0,
     "per_energy": 0.062,
     "hypothesis": "H-20261017-tink-pixie-trails",
-    "bet_status": "missing",
-    "bet_title": null
+    "bet_status": "proposed",
+    "bet_title": "Pixie-trail signs bring teammates in faster than whispers"
    },
    {
     "id": "whispered_directions",
@@ -321,8 +321,8 @@
     "outcome": 10.0,
     "per_energy": 0.323,
     "hypothesis": "H-20261017-tink-second-star",
-    "bet_status": "missing",
-    "bet_title": null
+    "bet_status": "proposed",
+    "bet_title": "The second-star heading rule covers more new ground than random walks"
    }
   ],
   "working": "second-star exploration rule: 10 outcome for 31 energy over 4 wake(s)",

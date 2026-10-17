@@ -658,12 +658,30 @@ def state_value(ctx: MeasureContext, params: dict[str, Any]) -> float | None:
     return float(value) if isinstance(value, (int, float)) else None
 
 
+def ideas_by(kb_items: list[dict[str, Any]], slug: str) -> set[str]:
+    """IDs of idea cards filed by a persona (its slug appears in the card's roles)."""
+    return {str(i.get("id")) for i in kb_items if i.get("type") == "idea" and slug in (i.get("roles") or [])}
+
+
+def adopted_from(kb_items: list[dict[str, Any]], slug: str, kinds: set[str] | None = None) -> int:
+    """Hypotheses or experiments whose links cite one of the persona's idea cards."""
+    ideas = ideas_by(kb_items, slug)
+    kinds = kinds or {"hypothesis", "experiment"}
+    return sum(
+        1 for item in kb_items
+        if item.get("type") in kinds and any(idea in str(link) for link in item.get("links") or [] for idea in ideas)
+    )
+
+
 @measure("kb.count")
 def kb_count(ctx: MeasureContext, params: dict[str, Any]) -> float | None:
     kind = params.get("type")
     roles_needle = params.get("roles_contains")
     links_needle = params.get("links_contains")
+    adopted_by = params.get("adopted_from_ideas_by")
     title_needle = str(params.get("title_contains", "")).casefold()
+    if adopted_by:
+        return float(adopted_from(ctx.kb_items, str(adopted_by), {kind} if kind else None))
     count = 0
     for item in ctx.kb_items:
         if kind and item.get("type") != kind:
@@ -719,4 +737,4 @@ def saturate(raw: float, scale: float) -> float:
     return round(100 * (1 - math.exp(-raw / scale)), 1)
 
 
-__all__ = ["MEASURES", "MeasureContext", "load_kb_items", "measure", "saturate"]
+__all__ = ["MEASURES", "MeasureContext", "adopted_from", "ideas_by", "load_kb_items", "measure", "saturate"]

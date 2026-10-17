@@ -84,8 +84,8 @@ Judge (fixture fixture, 6 lines, 8 actions):
 
 | approach | wakes | energy | outcome | outcome per energy | bet | status |
 | --- | --- | --- | --- | --- | --- | --- |
-| ranging ever farther | 6 | 14.0 | 2.0 | 0.143 | H-20261017-tootles-near-misses | missing |
-| saving materials in a far hut | 7 | 24.0 | 35.0 | 1.458 | H-20261017-tootles-big-thing | missing |
+| ranging ever farther | 6 | 14.0 | 2.0 | 0.143 | H-20261017-tootles-near-misses | proposed |
+| saving materials in a far hut | 7 | 24.0 | 35.0 | 1.458 | H-20261017-tootles-big-thing | proposed |
 
 ## Trend (7 days)
 

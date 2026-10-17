@@ -85,9 +85,9 @@ Judge (fixture fixture, 6 lines, 8 actions):
 
 | approach | wakes | energy | outcome | outcome per energy | bet | status |
 | --- | --- | --- | --- | --- | --- | --- |
-| riddle signs | 6 | 19.0 | 4.0 | 0.211 | H-20261017-wonka-riddle-signs | missing |
-| whispered faction name as the lock | 13 | 44.0 | 0.0 | 0.0 | H-20261017-wonka-faction-lock | missing |
-| whimsical fine print | 3 | 1.0 | 3.0 | 3.0 | H-20261017-wonka-fine-print | missing |
+| riddle signs | 6 | 19.0 | 4.0 | 0.211 | H-20261017-wonka-riddle-signs | proposed |
+| whispered faction name as the lock | 13 | 44.0 | 0.0 | 0.0 | H-20261017-wonka-faction-lock | proposed |
+| whimsical fine print | 3 | 1.0 | 3.0 | 3.0 | H-20261017-wonka-fine-print | proposed |
 | walls | 0 | 0 | 4.0 | 4.0 | — | — |
 
 ## Trend (7 days)

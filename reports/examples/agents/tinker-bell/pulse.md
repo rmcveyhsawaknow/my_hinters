@@ -3,7 +3,7 @@ TINKERBELL: a safe haven, and everyone in it                 day 182
 Alive         ████████░░   85   ██████▇  53/56 wakes, never lapsed, 2 failed, 2 rate-limited
 On mission    ██████░░░░   61   ▄▄▄▄▄▄▅  1/3 inside · 2/6 built · 7 led · Glow 58 · 100% one-emotion wakes
 In character  █████████░   92   ▇▆▇▆▆▇▇  fierce 4 · loyal 5 · jealous 4 · vain 3
-Team pull     Courage 49 (Nibs) → Glow 62 · Escape 71 (Tootles) → Glow 62 · Belief 42 (Nibs) → Glow 62 · Belief 23 (LostBoy) → Glow 62 · Discoveries 47 (LostBoy) → Adventure Options 47
+Team pull     Courage 49 (Nibs) → Glow 62 · Escape 71 (Tootles) → Glow 62 · Belief 42 (Nibs) → Glow 62 · Belief 23 (LostBoy) → Glow 62 · Discoveries 73 (LostBoy) → Adventure Options 73
 Working       second-star exploration rule: 10 outcome for 31 energy over 4 wake(s)
 Not working   whispered directions: 1 outcome for 49 energy over 12 wake(s)
 Next bet      keep testing second-star exploration rule; it has the best outcome per unit of energy
@@ -68,12 +68,12 @@ Judge (fixture fixture, 6 lines, 8 actions):
 | received | belief | nibs → tinker-bell | 42 | glow | Nibs arriving where she pointed, using her bridges and staying inside is Belief, and Belief sets her Glow. |
 | received | belief | tootles → tinker-bell | 0 | glow | Even Tootles crossing her bridges or returning inside counts as Belief. |
 | received | belief | lost-boy → tinker-bell | 23 | glow | The Lost Boy wandering back inside or over a bridge counts as Belief. |
-| received | discoveries | lost-boy → tinker-bell | 47 | adventure_options | Every discovery the Lost Boy files becomes an adventure Tinker Bell can lead. |
+| received | discoveries | lost-boy → tinker-bell | 73 | adventure_options | Every discovery the Lost Boy files becomes an adventure Tinker Bell can lead. |
 
 - Courage 49: 2 hard job(s) inside, 4 greeting(s), structures standing 100%.
 - Escape 71: 100% of moves outside, farthest 42 tiles from the centre.
 - Belief 23: 4 arrival(s) inside, 0 bridge crossing(s), not currently inside.
-- Discoveries 47: 14 tiles, 4 action types, 0 idea card(s), 0 adopted.
+- Discoveries 73: 14 tiles, 4 action types, 2 idea card(s), 0 adopted.
 
 ## Community lens (informational, never ranked)
 
@@ -90,9 +90,9 @@ Judge (fixture fixture, 6 lines, 8 actions):
 
 | approach | wakes | energy | outcome | outcome per energy | bet | status |
 | --- | --- | --- | --- | --- | --- | --- |
-| pixie-trail signs | 5 | 16.0 | 1.0 | 0.062 | H-20261017-tink-pixie-trails | missing |
+| pixie-trail signs | 5 | 16.0 | 1.0 | 0.062 | H-20261017-tink-pixie-trails | proposed |
 | whispered directions | 12 | 49.0 | 1.0 | 0.02 | — | — |
-| second-star exploration rule | 4 | 31.0 | 10.0 | 0.323 | H-20261017-tink-second-star | missing |
+| second-star exploration rule | 4 | 31.0 | 10.0 | 0.323 | H-20261017-tink-second-star | proposed |
 
 ## Trend (7 days)
 

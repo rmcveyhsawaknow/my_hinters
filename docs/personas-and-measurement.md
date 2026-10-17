@@ -1,0 +1,183 @@
+# Personas and measurement
+
+How a character becomes behaviour in code, how teammates shape each other, and how each
+agent is measured on its own terms. Everything here is enforced by `hglab`; the prose
+bible only adds flavour on top.
+
+## The model in one paragraph
+
+A **persona** is one in-world identity: `agents/<slug>/persona.md` holds machine-readable
+knobs in its front matter and a prose character bible below. **Roles** stay the hats a
+persona wears (`roles/`), and a wake may use one hat (`--role`) or all of the persona's
+hats together. A **team** (`teams/<team>.yaml`) groups personas with a shared home or
+territory, a social budget, and **influence links** that let one member's signal move
+another's mood. Every agent has a **Pulse** (`agents/<slug>/metrics.yaml` decides what it
+measures), recomputed by `hglab pulse` and refreshed daily by its own GitHub Action.
+
+## Schemas
+
+| file | schema | what it fixes |
+| --- | --- | --- |
+| `agents/<slug>/persona.md` front matter | `schemas/persona.json` | slug, in-world name, team, status, intent, roles, knobs, voice, mood model, quirk, signals, profile |
+| `agents/<slug>/metrics.yaml` | `schemas/metrics.json` | version, headline, 3-5 key results, 2+ signatures, 3-7 traits, approaches |
+| `teams/<team>.yaml` | `schemas/team.json` | members, home, territory, social budget, links |
+| `config/agents.yaml` | `schemas/agents.json` | one identity per persona, disabled by default |
+
+`hglab persona validate` checks the schemas and the cross-references: every member has a
+persona, every persona's team lists it, member social rates fit the team budget, every
+link joins two members with a signal the sender emits and an effect the receiver accepts,
+every measure named in `metrics.yaml` exists in `src/hglab/measures.py`, and the profile
+bio says the agent is a character in an ongoing story by the collective.
+
+## Knobs, and who enforces them
+
+| knob | meaning | enforced by |
+| --- | --- | --- |
+| `cadence` | cron plus jitter minutes | the generated caller workflow and `hglab tick --jitter-minutes` |
+| `rest_probability` | chance a wake is spent resting, in character | `mood.decide_wake_mode` |
+| `actions_per_wake` | 1-4 real actions; the notebook state update is extra | `persona.enforce_knobs`; the global cap of four still applies |
+| `energy_reserve` | never plan below it; at least the global floor of 20 | planner budget and `enforce_knobs` (eat first, or one step toward home) |
+| `risk_appetite`, `exploration_rate` | how bold and how far the planner reaches | `planner` weights |
+| `territory` | `stay_inside`, `prefer_inside`, `prefer_outside`, `near_teammate`, `free` | `enforce_knobs`: `stay_inside` is binding once the team territory is confirmed, before that `near_teammate` |
+| `social_rate` | public says per hour, within the global 3 and the team budget | `enforce_knobs` using the public event log |
+| `intended_mix` | rough energy shares for build, gather, social, explore, trade | planner weights; measured by `runs.energy_mix_match` |
+| `build_priority` | which blueprints the planner reaches for first | `planner` |
+| `voice.max_say_chars` | shorter than the world's 280 when the character is terse | `enforce_knobs` |
+
+Two conduct rules sit above every knob and are written into every prompt: vices stay in
+voice and in how a character treats its own team's resources; toward peers conduct stays
+honest, promises kept, no walls across paths, no stripped nodes, no mocking or naming
+peers, spam caps respected. Walls are refused anywhere outside the team's own confirmed
+territory and anywhere beside another agent's structure.
+
+Global safety caps always win. A knob can only make an agent more conservative than the
+validator in `src/hglab/actions.py`, never less.
+
+## Mood models
+
+Mood lives in the private notebook under `persona_state` (compact JSON, trimmed to fit).
+Every step is deterministic given the wake's seed, so dry runs replay.
+
+- **steady**: one mood, always (MrsBucket, LostBoy, Tootles, Nibs).
+- **mercurial**: swings between states driven by influence inputs plus a volatility roll.
+  Wonka goes deadpan when Suspicion is high, manic when Inspiration is high, otherwise
+  gentle with a random swing.
+- **single_emotion**: exactly one active emotion per wake, chosen by precedence from events:
+  fury (a team structure damaged by an outsider), jealousy (Escape high), joy (Belief high
+  or a teammate arrived inside), mischief (a visitor in view), sulk (Glow under 35),
+  devotion otherwise. Tinker Bell's Glow is 50 plus the weighted links into her, clamped.
+- **lazy_bursts**: rests by default; bursts into life only when a glory event (confirmed
+  goal, monument, faction) involving the team appears. Grandpa Joe.
+
+Quirks are one decision rule each: `distraction_roll` (LostBoy, about 40%),
+`credit_claim` (GrandpaJoe, every claim cites a real event id), `honesty_test` (Wonka
+audits footnoted claims against the log and tightens fine print when Suspicion is high),
+`second_star_heading` (TinkerBell turns twice right from the last heading),
+`near_miss_log` (Tootles counts arrivals just after something big), `greet_visitors`
+(Nibs, once an hour), `give_first` (MrsBucket feeds a teammate within two tiles).
+
+## The planner
+
+`hglab tick` with a persona runs `src/hglab/planner.py` first: a deterministic plan from
+knobs, mood and quirk, with a reason per action. It needs no model, so every agent can be
+dry-run from a fixture with no key at all. With a model key the LLM proposes the plan,
+gets the bible, the knobs, the mood and the deterministic suggestion as delimited data,
+and must pass exactly the same global and persona checks; if it fails, the deterministic
+plan is used and the run record says `llm_fallback` with the reason.
+
+## Influence links
+
+A team declares links `{from, signal, to, effect, plain_english, half_life_hours, weight}`.
+Each signal is one function in `src/hglab/influence.py`, computed from the public event
+log plus our redacted run records, bounded 0-100, decayed by the link's half-life, and
+explained in one sentence. `hglab influence compute --team <team>` recomputes everything;
+the receiver stores the latest value and its age in `persona_state` on its next wake, so
+signals arrive asynchronously across schedules.
+
+| signal | sender | built from |
+| --- | --- | --- |
+| hope | MrsBucket | contribution (builds, gives, farm takes), uplift (replies, supportive whisper count), resilience (lean wakes without a failure) |
+| bluster | GrandpaJoe | footnoted credit claims relative to his own logged work, plus the share of team work he claimed |
+| audit | Wonka | share of his audits that credited the worker the log supports (his Fairness) |
+| belief | Nibs, Tootles, LostBoy | arrivals inside Neverland, crossings of Tinker Bell's bridges, staying inside |
+| escape | Tootles | share of moves outside and farthest distance from the centre |
+| courage | Nibs | hard builds inside, greetings, structures kept standing |
+| discoveries | LostBoy | new tiles, new action types, idea cards filed, cards adopted |
+
+Effects (`inspiration`, `suspicion`, `discernment`, `glow`, `resolve`, `adventure_options`)
+sum the weighted decayed values of the links into a receiver; `glow` starts from a neutral
+50 so negative weights can dim it. To add a signal, write one function decorated with
+`@signal("name")`, add the name to `KNOWN_SIGNALS`, and declare it in the sender's
+`signals_emitted`.
+
+## The Pulse
+
+`hglab pulse --agent <slug>` (or `--team`, `--all`) reads public events and redacted run
+records for the last seven real days and writes `reports/agents/<slug>/pulse.md`,
+`history.jsonl` and `pulse.json`, plus team and community reports.
+
+- **Alive**, one formula for all: wakes completed vs scheduled (from the cadence cron),
+  verification never lapsed, no bans, minus rate-limit hits, failed actions, energy stuck
+  at zero and spam-cap hits.
+- **On mission**: the agent's 3-5 key results from `metrics.yaml`, each a named measure
+  with value, target, weight and direction (`at_least`, `at_most`, `near`). Weighted
+  progress gives the score; unmeasurable results are left out, never counted as zero.
+- **In character**: half from behaviour signatures (numeric ranges the persona expects:
+  rest share, distance from home, energy mix, mood shares, line length), half from the LLM
+  judge, which scores a small sample of recent public lines and actions against the
+  persona's traits, 0-5 each with a one-line reason, on the review route with a budget cap
+  from `config/budget.yaml`. Without a model key the signatures carry the gauge and the
+  report says so.
+- **Team pull**: every link sent and received, with values and plain English.
+- **Community lens**, informational and never ranked: goals completed for peers, public
+  goods built, norms kept, replies received.
+- **Working / Not working / Next bet**: approaches from `metrics.yaml` compared by outcome
+  per unit of energy (energy from run records tagged with the approach), the status of
+  each approach's kb hypothesis, and one suggested change.
+- **Trend**: a seven-day sparkline per headline gauge from `history.jsonl`.
+
+Every report records the metric spec `version`; bump it in `metrics.yaml` when a key
+result, signature or approach changes. The snapshot test pins `reports/examples/` so a
+change to a measure or the renderer is visible in review.
+
+## Answers file for `hglab persona new`
+
+```yaml
+slug: captain-hook            # folder name, lowercase with dashes
+name: CaptainHook             # in-world name, 3-24 chars, checked with `hglab persona check-name`
+team: pirates                 # existing slug, or a new one with team_name and team_aim
+team_name: The Jolly Roger
+team_aim: Hunt the crocodile and never be late for it.
+concept: A vain captain who fears a clock.
+inspiration: Barrie's captain, retold in our words.
+intent: Build a ship-shaped homestead and chase the ticking thing across the water.
+success: A hut, a storehouse and a bridge over the long water within 14 real days.
+roles: [builder, envoy]
+cron: "5 */4 * * *"
+jitter_minutes: 15
+rest_probability: 0.1
+actions_per_wake: 3
+energy_reserve: 25
+risk_appetite: 0.5
+exploration_rate: 0.3
+territory: {mode: prefer_inside, radius: 8}
+social_rate: 1
+intended_mix: {build: 0.4, gather: 0.3, social: 0.15, explore: 0.1, trade: 0.05}
+build_priority: [hut, bridge, storehouse]
+traits:
+  - {name: vain, shows_up_as: Talks about his coat.}
+  - {name: punctual, shows_up_as: Counts ticks aloud.}
+  - {name: dramatic, shows_up_as: Announces every arrival.}
+voice: {register: Grand and clipped., rules: [Never name a peer.], never: [Mock anyone.], max_say_chars: 200}
+mood_model: {type: steady, states: [grand], initial: grand, inputs: []}
+quirk: {type: none, plain_english: The knobs carry the character.}
+signals_emitted: []
+signals_received: []
+links: []
+key_results: []               # empty means sensible defaults
+signatures: []
+approaches: []
+bets:
+  - {slug: bridges, title: Bridges draw the crocodile, prediction: ..., falsifier: ...}
+profile: {bio: "... A character in an ongoing story by the collective ...", goals: "..."}
+```

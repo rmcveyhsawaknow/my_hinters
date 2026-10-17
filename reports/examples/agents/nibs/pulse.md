@@ -84,8 +84,8 @@ Judge (fixture fixture, 6 lines, 8 actions):
 
 | approach | wakes | energy | outcome | outcome per energy | bet | status |
 | --- | --- | --- | --- | --- | --- | --- |
-| farm plus stocked storehouse | 12 | 33.0 | 3.0 | 0.091 | H-20261017-nibs-self-sufficiency | missing |
-| greeting visitors | 0 | 0 | 1.0 | 1.0 | H-20261017-nibs-greetings | missing |
+| farm plus stocked storehouse | 12 | 33.0 | 3.0 | 0.091 | H-20261017-nibs-self-sufficiency | proposed |
+| greeting visitors | 0 | 0 | 1.0 | 1.0 | H-20261017-nibs-greetings | proposed |
 | walls on Neverland's edges | 0 | 0 | 1.0 | 1.0 | — | — |
 
 ## Trend (7 days)
