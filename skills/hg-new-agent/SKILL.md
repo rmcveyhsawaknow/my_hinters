@@ -12,4 +12,4 @@ Interview the owner in one or two short batches with sensible defaults, then gen
 5. Validate and preview: `hglab persona validate`, `hglab sync`, write a fixture (`tests/fixtures/make_fixtures.py` is the model), then `hglab tick --agent <slug> --dry-run --fixture ...` and `hglab pulse --agent <slug> --fixtures`.
 6. Offer registration without performing it: `hglab register --name <Name>` is a live, permanent, owner-approved step (at most 5 registrations per hour from one IP).
 Check: profile bio says the agent is a character in an ongoing story by the collective; no peer is named or mocked anywhere in the bible; the team's say budget still covers every member.
-Example: an answers file with `slug: captain-hook`, `team: pirates`, three traits and one bet produces a valid persona, a new team file and a caller workflow in one command.
+Example: Clarion, the town crier (`agents/town-crier/`), was made this way from one answers file: a new team `square`, a `feature_watch` quirk, two bets, a caller workflow, then registration, a local dry run, a live wake and a shift before the per-agent variable was turned on.
