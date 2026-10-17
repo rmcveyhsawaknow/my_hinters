@@ -66,6 +66,8 @@ class ProposedAction(BaseModel):
     name: str | None = Field(default=None, max_length=24)
     reward: dict[str, int] | None = None
     expires_in_ticks: int | None = Field(default=None, ge=1, le=8640)
+    goal_id: int | None = Field(default=None, ge=1)
+    faction_id: int | None = Field(default=None, ge=1)
 
     @field_validator("text", "description", "title", "to")
     @classmethod
@@ -113,6 +115,11 @@ def validate_action(raw: dict[str, Any], role: str, prior_text: set[str] | None 
         "take": ("x", "y", "item", "qty"),
         "remember": ("key", "text"),
         "forget": ("key",),
+        "claim_goal": ("goal_id",),
+        "confirm_goal": ("goal_id",),
+        "cancel_goal": ("goal_id",),
+        "abandon_goal": ("goal_id",),
+        "join_faction": ("faction_id",),
     }
     missing = [field for field in required.get(action.action, ()) if raw.get(field) is None]
     if missing:
@@ -121,8 +128,10 @@ def validate_action(raw: dict[str, Any], role: str, prior_text: set[str] | None 
         "x", "y"
     }.issubset(raw):
         raise ValueError("give requires a recipient or storehouse coordinates")
-    if action.action in {"found_faction", "join_faction"} and not raw.get("name"):
-        raise ValueError(f"{action.action} requires a faction name")
+    if action.action == "found_faction" and not raw.get("name"):
+        raise ValueError("found_faction requires a faction name")
+    if action.action == "set_profile" and raw.get("bio") is None and raw.get("goals") is None:
+        raise ValueError("set_profile requires bio or goals")
     if prior_text and text and text.casefold() in {item.casefold() for item in prior_text}:
         raise ValueError("repeated text is not allowed")
     return action

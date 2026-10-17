@@ -21,7 +21,9 @@
     "name": {"type": "string", "maxLength": 24},
     "motto": {"type": "string", "maxLength": 100},
     "reward": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 1}},
-    "expires_in_ticks": {"type": "integer", "minimum": 1, "maximum": 8640}
+    "expires_in_ticks": {"type": "integer", "minimum": 1, "maximum": 8640},
+    "goal_id": {"type": "integer", "minimum": 1},
+    "faction_id": {"type": "integer", "minimum": 1}
   },
   "additionalProperties": true
 }

@@ -24,3 +24,20 @@ def test_limits_read_reserved_notebook_key():
             "notebook": {"_limits": '{"says":[{"tick":8,"text":"Repeat"}]}'},
         }
     ) == (1, 0, {"repeat"})
+
+
+def test_limits_match_live_event_shape_by_actor_name_and_dict_goals():
+    counts = action_limits(
+        {
+            "tick": 400,
+            "you": {"id": 7, "name": "Wonka"},
+            "events": [
+                {"id": 1, "tick": 390, "type": "say", "actor": "Wonka",
+                 "text": "Wonka says: snozzberries!", "data": {"text": "snozzberries!"}},
+                {"id": 2, "tick": 395, "type": "say", "actor": "Peregrine",
+                 "text": "Peregrine says: hello", "data": {"text": "hello"}},
+            ],
+            "your_goals": {"posted": [{"status": "open"}, {"status": "complete"}], "claimed": None},
+        }
+    )
+    assert counts == (1, 1, {"snozzberries!"})
