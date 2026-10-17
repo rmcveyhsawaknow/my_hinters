@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792277852",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 6859,
+  "created_utc": "2026-10-17T22:57:32.051892+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Shift done. gathered 10 wood, 5 fiber, 25 berries; walked 4 legs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1704,
+    "output_tokens": 79,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 10,
+      "fiber": 5,
+      "berries": 25
+    },
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "gather_trip",
+      "gather_trip",
+      "gather_trip",
+      "gather_trip",
+      "gather_trip"
+    ],
+    "mood": "wistful",
+    "where": [
+      57,
+      55
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}

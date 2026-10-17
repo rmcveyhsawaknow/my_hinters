@@ -1,0 +1,137 @@
+{
+  "run_id": "cf698c00-96d6-4e71-81ff-87edc06aa525",
+  "agent": "Lagalong",
+  "role": "surveyor+builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-17T22:37:19.093379+00:00",
+  "tick": 6737,
+  "summary": "Lagalong (wistful): work shift: gathering for the next build",
+  "actions": [
+    {
+      "action": "move",
+      "x": 58,
+      "y": 56
+    },
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"wistful\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":8,\"rests\":3,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":6737,\"visited\":[\"71,70\",\"61,60\",\"58,56\",\"60,58\",\"59,57\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":6736,\"pace\":\"quickening\",\"day\":{\"all\":672,\"building\":276,\"trade_goals\":32,\"talk\":32,\"factions\":1,\"movement\":331},\"hour\":{\"all\":91},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 6737,
+    "you": {
+      "id": 11,
+      "name": "Lagalong",
+      "x": 59,
+      "y": 57,
+      "energy": 100,
+      "inventory": {
+        "fiber": 1,
+        "berries": 10
+      },
+      "home": {
+        "x": 60,
+        "y": 58
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "tootles",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 91,
+      "building": 46,
+      "trade_goals": 0,
+      "talk": 11,
+      "factions": 0,
+      "movement": 34
+    },
+    "day": {
+      "all": 672,
+      "building": 276,
+      "trade_goals": 32,
+      "talk": 32,
+      "factions": 1,
+      "movement": 331
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "wistful",
+  "approach": "gather_trip",
+  "reasons": [
+    "walk to (58, 56) beside the wood node at (59, 55), then gather",
+    "wood node at (59, 55) is adjacent; take five, leave the rest to regrow"
+  ],
+  "energy_before": 100,
+  "berries_before": 10,
+  "energy_spent": 7,
+  "activity_energy": {
+    "explore": 1.0,
+    "gather": 6.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "wistful",
+    "glow": 50,
+    "wakes": 8,
+    "rests": 3,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_outside",
+    "walls_inside_territory"
+  ]
+}

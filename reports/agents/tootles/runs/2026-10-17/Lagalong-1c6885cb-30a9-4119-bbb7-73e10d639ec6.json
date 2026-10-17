@@ -1,0 +1,130 @@
+{
+  "run_id": "1c6885cb-30a9-4119-bbb7-73e10d639ec6",
+  "agent": "Lagalong",
+  "role": "surveyor+builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-17T22:42:21.101352+00:00",
+  "tick": 6767,
+  "summary": "Lagalong (wistful): work shift: gathering for the next build",
+  "actions": [
+    {
+      "action": "move",
+      "x": 60,
+      "y": 58
+    },
+    {
+      "action": "gather",
+      "kind": "fiber"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"wistful\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":9,\"rests\":3,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":6767,\"visited\":[\"71,70\",\"61,60\",\"58,56\",\"60,58\",\"59,57\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":6766,\"pace\":\"quickening\",\"day\":{\"all\":672,\"building\":276,\"trade_goals\":32,\"talk\":32,\"factions\":1,\"movement\":331},\"hour\":{\"all\":78},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 6767,
+    "you": {
+      "id": 11,
+      "name": "Lagalong",
+      "x": 58,
+      "y": 56,
+      "energy": 100,
+      "inventory": {
+        "wood": 10,
+        "fiber": 1,
+        "berries": 10
+      },
+      "home": {
+        "x": 60,
+        "y": 58
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "tootles",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 78,
+      "building": 40,
+      "trade_goals": 0,
+      "talk": 10,
+      "factions": 0,
+      "movement": 28
+    },
+    "day": {
+      "all": 672,
+      "building": 276,
+      "trade_goals": 32,
+      "talk": 32,
+      "factions": 1,
+      "movement": 331
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "wistful",
+  "approach": "gather_trip",
+  "reasons": [
+    "walk to (60, 58) beside the fiber node at (61, 59), then gather"
+  ],
+  "energy_before": 100,
+  "berries_before": 10,
+  "energy_spent": 5,
+  "activity_energy": {
+    "explore": 2.0,
+    "gather": 3.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "wistful",
+    "glow": 50,
+    "wakes": 9,
+    "rests": 3,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_outside",
+    "walls_inside_territory"
+  ]
+}
