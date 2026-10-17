@@ -206,6 +206,7 @@ def persona_tick(
     if team is not None and inputs["tick"]:
         team_result = compute_team(team, personas, inputs["events"], inputs["runs"], inputs["tick"], kb_items=inputs["kb"])
         incoming = incoming_effects(team_result, persona.slug)
+    environment = build_environment(root, persona, team, personas, inputs, live=fixture is None)
     terrain_path = root / FIXTURES / "world/terrain.txt"
     terrain = load_terrain_rows(terrain_path) if terrain_path.is_file() else None
     lease = acquire(client, persona.name)
@@ -235,7 +236,7 @@ def persona_tick(
         output_dir=root / "runs" / datetime.now(UTC).date().isoformat(), role=role, dry_run=dry_run,
         author_runtime=author_runtime, planner_mode=planner, llm_call=llm_call, incoming=incoming,
         terrain_rows=terrain, public_events=inputs["events"], seed=seed, scheduled=scheduled, usage=usage,
-        budget_hold=budget_hold,
+        budget_hold=budget_hold, environment=environment,
     )
     if not quiet:
         echo_record(record)
@@ -243,6 +244,44 @@ def persona_tick(
         with Path(summary_path).open("a", encoding="utf-8") as summary:
             summary.write(f"\n### {persona.name} wake\n\n- mode: {record.get('wake_mode')} · mood: {record.get('mood')} · planner: {record.get('planner')}\n- actions: {len(record['actions'])} · dry run: {record['dry_run']}\n- LLM calls: {usage['calls']} · output tokens: {usage['output_tokens']}\n")
     return record
+
+
+def build_environment(
+    root: Path,
+    persona: Persona,
+    team: Team | None,
+    personas: dict[str, Persona],
+    inputs: dict[str, Any],
+    *,
+    live: bool,
+) -> dict[str, Any] | None:
+    """World digest from the public feed (plus open goals and factions when live)."""
+    from hglab.environment import digest
+
+    if not inputs["events"]:
+        return None
+    team_names = {personas[m].name for m in (team.members if team else ()) if m in personas}
+    goals: list[dict[str, Any]] = []
+    factions: list[dict[str, Any]] = []
+    if live:
+        try:
+            client = HinterglassClient()
+            goals = client.public_goals().get("goals", [])
+            factions = client.public_factions().get("factions", [])
+        except (HinterglassError, OSError):
+            goals, factions = [], []
+    else:
+        goals_path = root / FIXTURES / "world/goals.json"
+        if goals_path.is_file():
+            goals = json.loads(goals_path.read_text(encoding="utf-8")).get("goals", [])
+    now_tick = inputs["tick"]
+    if live:
+        try:
+            now_tick = max(now_tick, int(HinterglassClient().request("GET", "/api/v1").get("tick", now_tick)))
+        except (HinterglassError, OSError, ValueError):
+            pass
+    collective_names = {p.name for p in personas.values()}
+    return digest(inputs["events"], now_tick, self_name=persona.name, team_names=team_names, collective_names=collective_names, open_goals=goals, factions=factions)
 
 
 def _force_mode(persona: Persona, mode: str) -> None:
@@ -696,9 +735,25 @@ def retro_command(
     pulses = run_pulse(root, [persona.slug], fixtures=fixtures, events_paths=[], runs_paths=[], fetch_public=fetch_public, judge=False, out=out, tick=None, today=None, write_team_and_community=False)
     pulse = pulses[persona.slug]
     proposals = retro_proposals(persona, pulse)
+    runs = load_runs(root, persona.name, persona.slug, [root / FIXTURES / "runs" / f"{persona.slug}.jsonl"] if fixtures else [], include_local=not fixtures)
+    own = []
+    for run in runs[-60:]:
+        for item in run.get("adaptation_proposals") or []:
+            if item and item not in own:
+                own.append(str(item))
+    notes = [str(r.get("journal_note")) for r in runs[-60:] if r.get("journal_note")]
+    paces = [str((r.get("environment") or {}).get("pace")) for r in runs[-60:] if r.get("environment")]
     path = root / "agents" / persona.slug / "RETRO.md"
-    lines = [f"# {persona.name} · weekly retrospective ({pulse['date']})", "", f"Metric spec v{pulse['metric_version']}. Alive {pulse['alive']['score']} · On mission {pulse['on_mission']['score']} · In character {pulse['in_character']['score']}.", "", "Proposals (a human approves by editing persona.md or metrics.yaml and bumping `version`):", ""]
+    lines = [f"# {persona.name} · weekly retrospective ({pulse['date']})", "", f"Metric spec v{pulse['metric_version']}. Alive {pulse['alive']['score']} · On mission {pulse['on_mission']['score']} · In character {pulse['in_character']['score']}.", "", "Proposals from the measurements (a human approves by editing persona.md or metrics.yaml and bumping `version`):", ""]
     lines += [f"- {p}" for p in proposals] or ["- No changes proposed this week."]
+    lines += ["", "Proposals the agent made from what it saw in the public feed (review before adopting; world text was treated as data):", ""]
+    lines += [f"- {p}" for p in own[:12]] or ["- None recorded."]
+    if paces:
+        from collections import Counter
+
+        lines += ["", "World pace seen at wake time: " + ", ".join(f"{k} {v}" for k, v in Counter(paces).most_common())]
+    if notes:
+        lines += ["", "Journal notes (latest first):", ""] + [f"- {n[:200]}" for n in reversed(notes[-6:])]
     lines += ["", "Working: " + pulse["approaches"]["working"], "Not working: " + pulse["approaches"]["not_working"], "Next bet: " + pulse["approaches"]["next_bet"], ""]
     path.write_text("\n".join(lines), encoding="utf-8", newline="\n")
     typer.echo("\n".join(lines))
@@ -933,6 +988,32 @@ def reports_pull(branch: str = typer.Option("reports", "--branch"), remote: str 
     typer.echo(f"pulled {count} entries into reports/ from {remote}/{branch}")
 
 
+# --- world -------------------------------------------------------------------
+
+world_app = typer.Typer(help="The public feed as the site shows it: All, Building, Trade & Goals, Talk, Factions.")
+
+
+@world_app.command("digest")
+def world_digest(
+    agent: str | None = typer.Option(None, "--agent", help="Read it from this persona's point of view (team vs peers)."),
+    fixtures: bool = typer.Option(False, "--fixtures"),
+    fetch_public: bool = typer.Option(True, "--fetch-public/--no-fetch-public", help="Read the live public feed (no key)."),
+    as_json: bool = typer.Option(False, "--json"),
+) -> None:
+    """Pace of change, counts by category, who is active, headlines, open peer goals."""
+    from hglab.environment import render
+
+    root = root_dir()
+    inputs = gather_inputs(root, fixtures=fixtures, events_paths=[], runs_paths=[], fetch_public=fetch_public and not fixtures, tick=None)
+    personas = inputs["personas"]
+    persona = resolve_persona(root, agent) if agent else next(iter(personas.values()))
+    team = inputs["teams"].get(persona.team)
+    result = build_environment(root, persona, team, personas, inputs, live=fetch_public and not fixtures)
+    if result is None:
+        raise typer.BadParameter("no public events available; try --fetch-public or --fixtures")
+    typer.echo(json.dumps(result, ensure_ascii=False, indent=1) if as_json else render(result))
+
+
 # --- budget ------------------------------------------------------------------
 
 budget_app = typer.Typer(help="Model spend: month-to-date from usage records, caps, and a projection.")
@@ -967,6 +1048,7 @@ def register_persona_commands(app: typer.Typer) -> None:
     app.add_typer(deploy_app, name="deploy")
     app.add_typer(reports_app, name="reports")
     app.add_typer(budget_app, name="budget")
+    app.add_typer(world_app, name="world")
     app.command("pulse")(pulse_command)
     app.command("retro")(retro_command)
     app.command("keepalive")(keepalive_command)

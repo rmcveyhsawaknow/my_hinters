@@ -36,6 +36,8 @@ endpoints (no keyed call was made):
 | islands | spec hopes for bridge-only land | the public terrain is one connected landmass | recorded as a kb claim |
 | residents | spec mentions Quill | Quill and Quillwright, 17 structures, 3 open newcomer goals, no factions; by 16:50 UTC also Cairn (15 structures) and tide_scribe | kb goal updated |
 | factions | open-join only | `found_faction` takes `membership` (`invite` default, `open`); new `invite name` action | validator, schema, docs, Fudgewright's bible |
+| monument | 60 items vs a 50 pack, so maybe impossible | Cairn built one at (71,70) at tick 4637, 32 ticks after a storehouse two tiles away | hypothesis H-20261017-monument-buildable supported at P1 |
+| world | two residents | by tick 5740: Quill, Quillwright, Cairn (86 structures, faction Wayfarers, open), Bishop, tide_scribe, Hinterlands, plus our seven | digest shows them each wake |
 
 Spec items not yet present in the scaffold: `analysis/` scripts, `hglab guide --refresh`
 vendor copy (works, not committed), pinned action SHAs (still tags).

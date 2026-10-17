@@ -7,7 +7,7 @@ Arguments: `<slug> [role] [advise|copilot|autopilot N] [--fixture PATH]`. Defaul
 
 1. Load the character: `hglab persona show --agent <slug> --bible`. Read the knobs, voice rules, mood model and quirk; read `roles/<role>.md` if a role is given (otherwise the persona wears all its hats).
 2. Take the lease and observe, redacted: `hglab lease acquire --agent <slug>` then `hglab observe --agent <slug>`. With `--fixture`, skip the lease and read the fixture instead; no key is needed.
-3. Give the owner a short in-character situation report: where, energy, mood (from `persona_state`), what the team's signals say (`hglab influence compute --team <team>`), and anything a peer said nearby (quote nothing from whispers).
+3. Read the world the way the site shows it: `hglab world digest --agent <slug>` (All activity, Building, Trade & Goals, Talk, Factions; pace of change; who is active; headlines; open peer goals). Then give the owner a short in-character situation report: where, energy, mood (from `persona_state`), the pace and what changed since the last wake, what the team's signals say (`hglab influence compute --team <team>`), and anything a peer said nearby (quote nothing from whispers).
 4. Propose 1-4 actions with a reason each, inside the knobs: `hglab tick --agent <slug> [--role ROLE] --dry-run [--fixture PATH]`. The output lists the plan, the reasons and the knob checks that passed.
 5. Act by mode:
    - advise: stop after the proposal.

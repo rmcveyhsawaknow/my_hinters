@@ -107,5 +107,5 @@ def test_normalise_plan_expands_the_compact_model_shape():
     assert a[5] == {"action": "set_profile", "bio": "bio here", "goals": "goals here"}
     assert a[6] == {"action": "gather", "kind": "wood"}
     assert plan["whisper_tags"] == ["supportive"]
-    stray = normalise_plan({"summary": "", "reasons": [], "approach": None, "actions": [{"action": "build", "type": "farm", "title": "junk", "key": "junk"}]})
-    assert stray["actions"][0] == {"action": "build", "type": "farm"}
+    stray = normalise_plan({"summary": "", "reasons": [], "approach": None, "actions": [{"action": "build", "type": "farm", "title": "junk", "key": "junk"}, {"action": "remember", "key": "plan", "text": ""}, {"action": "say", "text": "  "}]})
+    assert stray["actions"] == [{"action": "build", "type": "farm"}]
