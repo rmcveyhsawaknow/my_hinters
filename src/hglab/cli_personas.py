@@ -1176,9 +1176,10 @@ def world_watch(
     snapshot_file: Path = typer.Option(Path("reports/world/features.json"), "--snapshot-file", help="Where the last look is kept"),  # noqa: B008
     write_kb: bool = typer.Option(False, "--write-kb", help="File one idea card per discovery for the archivist"),
     as_json: bool = typer.Option(False, "--json"),
+    catalogue: bool = typer.Option(False, "--catalogue", help="Also print the buildable-structure catalogue with costs"),
 ) -> None:
     """What changed in the game's public surface since the last look (API, guide, event and structure types, factions, residents)."""
-    from hglab.features import compact, compare, snapshot
+    from hglab.features import catalogue_line, compact, compare, snapshot
     from hglab.kb import make_id
 
     root = root_dir()
@@ -1195,6 +1196,10 @@ def world_watch(
             typer.echo(f"  [{d['kind']}] {d['text']}")
         if not discoveries:
             typer.echo("  nothing new since the last look")
+        if catalogue and current.get("blueprint_rows"):
+            typer.echo("  catalogue: " + catalogue_line(current["blueprint_rows"]))
+            for name, row in current["blueprint_rows"].items():
+                typer.echo(f"    {name:<11} {row['cost']:<22} hp {row['hp']:<4} {row['terrain']:<14} {row['function']}")
     if write_kb:
         today = datetime.now(UTC).date().isoformat()
         for d in discoveries:

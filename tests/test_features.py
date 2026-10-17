@@ -27,3 +27,20 @@ def test_compare_names_every_kind_of_change():
     texts = " ".join(d["text"] for d in compare(previous, current))
     assert "`trade`" in texts and "weather (not in the guide yet)" in texts and "Lanterns (invite)" in texts
     assert compare(compact(current), current) == []
+
+
+def test_blueprint_catalogue_is_parsed_from_the_guide_table():
+    from hglab.features import blueprint_catalogue, catalogue_line
+
+    guide = (
+        "| type | cost | hp | terrain | function |\n|---|---|---|---|---|\n"
+        "| `sign` | wood 1 | 10 | any walkable | holds `text` |\n"
+        "| `hut` | wood 10, fiber 4 | 40 | any walkable | home: 3 energy per tick |\n"
+        "| `cache` | system only | 10 | any | dropped items |\n"
+    )
+    rows = blueprint_catalogue(guide)
+    assert set(rows) == {"sign", "hut", "cache"} and rows["hut"]["cost"] == "wood 10, fiber 4"
+    line = catalogue_line(rows)
+    assert line.startswith("2 things can be built") and "cache" not in line
+    first = compare(None, {**_snap(), "blueprint_rows": rows})
+    assert any(d["kind"] == "blueprint_catalogue" for d in first)
