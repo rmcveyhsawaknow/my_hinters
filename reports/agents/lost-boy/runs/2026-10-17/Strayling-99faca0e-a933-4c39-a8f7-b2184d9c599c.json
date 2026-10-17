@@ -1,0 +1,123 @@
+{
+  "run_id": "99faca0e-a933-4c39-a8f7-b2184d9c599c",
+  "agent": "Strayling",
+  "role": "surveyor+experimenter+conjecturer+methodologist",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-17T23:35:32.459254+00:00",
+  "tick": 7087,
+  "summary": "Strayling (curious): work shift: looking for nodes",
+  "actions": [
+    {
+      "action": "move",
+      "x": 61,
+      "y": 62
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"curious\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":15,\"rests\":1,\"bursts\":0,\"distractions\":2,\"last_wake_tick\":7087,\"visited\":[\"67,71\",\"62,71\",\"67,75\",\"65,73\",\"63,71\",\"57,79\",\"52,83\",\"51,82\",\"53,74\",\"48,66\",\"54,61\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"ideas\":[\"t5682: a berries node near 62,71\",\"t6829: a berries node near 57,79\"],\"world\":{\"tick\":7084,\"pace\":\"quickening\",\"day\":{\"all\":716,\"building\":278,\"trade_goals\":35,\"talk\":40,\"factions\":1,\"movement\":362},\"hour\":{\"all\":46},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 7087,
+    "you": {
+      "id": 10,
+      "name": "Strayling",
+      "x": 54,
+      "y": 61,
+      "energy": 100,
+      "inventory": {
+        "wood": 15,
+        "fiber": 6,
+        "berries": 25
+      },
+      "home": {
+        "x": 57,
+        "y": 79
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "lost-boy",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "experimenter",
+    "conjecturer",
+    "methodologist"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 46,
+      "building": 3,
+      "trade_goals": 3,
+      "talk": 9,
+      "factions": 0,
+      "movement": 31
+    },
+    "day": {
+      "all": 716,
+      "building": 278,
+      "trade_goals": 35,
+      "talk": 40,
+      "factions": 1,
+      "movement": 362
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "curious",
+  "approach": "explore",
+  "reasons": [
+    "looking around for something I have not seen: move to (61, 62)"
+  ],
+  "energy_before": 100,
+  "berries_before": 25,
+  "energy_spent": 7,
+  "activity_energy": {
+    "explore": 7.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "curious",
+    "glow": 50,
+    "wakes": 15,
+    "rests": 1,
+    "bursts": 0,
+    "distractions": 2,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
