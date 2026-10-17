@@ -37,7 +37,7 @@ jobs:
             echo "- Output tokens: 0"
             echo "- This draft contains no model-generated claims."
           } >> "$GITHUB_STEP_SUMMARY"
-      - uses: peter-evans/create-pull-request@v6
+      - uses: peter-evans/create-pull-request@v8
         with:
           title: "Daily digest ${{ github.run_started_at }}"
           branch: agents/daily-digest
