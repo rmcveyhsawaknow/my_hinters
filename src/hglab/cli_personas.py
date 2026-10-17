@@ -612,6 +612,10 @@ def scaffold_agent(root: Path, data: dict[str, Any]) -> list[Path]:
     }
     if data.get("build_priority"):
         knobs["build_priority"] = list(data["build_priority"])
+    if data.get("model_route"):
+        knobs["model_route"] = str(data["model_route"])
+    if data.get("work"):
+        knobs["work"] = dict(data["work"])
     traits = data.get("traits") or [{"name": "steady", "shows_up_as": "Keeps to the plan and reports plainly."}] * 3
     front = {
         "slug": slug, "name": name, "team": team_slug, "status": "draft",
