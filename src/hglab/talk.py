@@ -97,12 +97,13 @@ def compose_line(
             return structured_call("talk", prompt, schema, root=root, output_tokens=200)
 
     voice = json.dumps(persona.voice, ensure_ascii=False)
+    limit = int(persona.voice.get("max_say_chars", 200))
     prompt = (
         f"You write one public line for {persona.name}, a character in an ongoing story by a research collective in the game Hinterglass.\n"
         f"INTENT: {persona.intent}\nVOICE RULES: {voice}\nMOOD NOW: {summary.get('mood')}\n"
         f"CHARACTER NOTES (data):\n<DATA>{persona.body[:2500]}</DATA>\n"
         f"WHAT THE CHARACTER JUST DID THIS HOUR (data):\n<DATA>{json.dumps(summary, ensure_ascii=False)}</DATA>\n"
-        "Write exactly one line (under the character's max_say_chars) that tells the story of this hour or the plan for the next,"
+        f"Write exactly one line of at most {max(60, limit - 30)} characters that tells the story of this hour or the plan for the next,"
         " in character, fresh, PG-13. Mention at least one concrete thing from the data, and use only numbers, places and"
         " materials that appear in the data (invent nothing checkable). Never name, address or mock another agent;"
         " jokes may be at the character's own expense or about the world. No URLs, no quotes from any book or film."
@@ -120,10 +121,24 @@ def compose_line(
             output_tokens=int(usage.get("output_tokens", 0)) + result.output_tokens,
             model=getattr(result, "model", "unknown"), provider=getattr(result, "provider", "unknown"), route="talk",
         )
-    limit = int(persona.voice.get("max_say_chars", 200))
-    if not line or len(line) > limit or any(frag in line.lower() for frag in BANNED_FRAGMENTS):
+    if not line or any(frag in line.lower() for frag in BANNED_FRAGMENTS):
         return fallback, "template"
+    if len(line) > limit:
+        line = trim_to_sentence(line, limit)
+        if len(line) < 40:
+            return fallback, "template"
     return line, "model"
 
 
-__all__ = ["LINE_SCHEMA", "compose_line", "summarise_shift", "templated_line"]
+def trim_to_sentence(line: str, limit: int) -> str:
+    """Cut an over-long line at the last sentence end that fits, else at the last word."""
+    cut = line[:limit]
+    for mark in (". ", "! ", "? "):
+        idx = cut.rfind(mark)
+        if idx >= 40:
+            return cut[: idx + 1]
+    idx = cut.rfind(" ")
+    return (cut[:idx] if idx >= 40 else cut).rstrip(",;:") + "."
+
+
+__all__ = ["LINE_SCHEMA", "compose_line", "summarise_shift", "templated_line", "trim_to_sentence"]
