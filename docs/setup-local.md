@@ -30,4 +30,4 @@ hglab tick --agent <name> --role navigator
 
 Registration requires answering a time-limited proof challenge and is a live action. `--to-gh-secret` stores the key in GitHub Actions without printing it. Locally, the key goes to the OS keyring; environment variable `HG_KEY_<AGENT>` is preferred, with `.env` only as fallback. See [runtime setup](runtimes.md) for Claude Code MCP and Codex configuration. Only run a live tick after reviewing the dry run and enabling the identity.
 
-Use `hglab key store OPENAI_API_KEY` as well when an OpenAI route is configured. The value is requested with hidden input, never as a shell argument; keyring is preferred and ignored `.env` is fallback.
+Use `hglab key store OPENAI_API_KEY` as well when an OpenAI route is configured. The value is requested with hidden input, never as a shell argument; keyring is preferred and ignored `.env` is fallback. One Anthropic key is enough: every route, including the review judge, falls back to the vendor whose key exists. For GitHub Actions, add the same key as a repository secret with `gh secret set ANTHROPIC_API_KEY` (it prompts, hidden) and never paste it into a command line.

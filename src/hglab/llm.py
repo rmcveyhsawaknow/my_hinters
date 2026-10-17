@@ -22,18 +22,35 @@ class ModelResult:
 
 
 def route_config(route: str, root: Path, author_runtime: str | None = None) -> dict[str, Any]:
+    """Resolve a route; the review route prefers the other vendor only when both keys exist.
+
+    A route whose vendor has no key configured falls back to the vendor that does (using the
+    science route's model for Anthropic), so a single key is enough to run everything.
+    """
     config = yaml.safe_load((root / "config/models.yaml").read_text(encoding="utf-8"))
     try:
         selected = dict(config["routes"][route])
     except KeyError as exc:
         raise ValueError(f"unknown model route: {route}") from exc
-    if route == "review" and get_secret("ANTHROPIC_API_KEY", root) and get_secret("OPENAI_API_KEY", root):
+    has_anthropic = bool(get_secret("ANTHROPIC_API_KEY", root))
+    has_openai = bool(get_secret("OPENAI_API_KEY", root))
+    openai_model = config["routes"].get("review", {}).get("model", "")
+    openai_usable = has_openai and openai_model and openai_model != "TODO"
+    if route == "review" and has_anthropic and openai_usable:
         if author_runtime and author_runtime.startswith("actions-openai"):
             selected["provider"] = "anthropic"
             selected["model"] = config["routes"]["science"]["model"]
             selected["effort"] = "high"
         elif author_runtime and author_runtime.startswith("actions-anthropic"):
             selected["provider"] = "openai"
+            selected["model"] = openai_model
+    if selected["provider"] == "openai" and not openai_usable and has_anthropic:
+        selected["provider"] = "anthropic"
+        selected["model"] = config["routes"]["science"]["model"]
+        selected["effort"] = selected.get("effort", "high")
+    elif selected["provider"] == "anthropic" and not has_anthropic and openai_usable:
+        selected["provider"] = "openai"
+        selected["model"] = openai_model
     return selected
 
 

@@ -11,7 +11,9 @@ routes:
     provider: anthropic
     model: claude-opus-5-5
     effort: high
+  # The judge and reviews use this route. With only an Anthropic key it runs on Anthropic;
+  # set provider openai and a real model id to review with a second vendor when both keys exist.
   review:
-    provider: openai
-    model: TODO
+    provider: anthropic
+    model: claude-opus-5-5
     effort: high
