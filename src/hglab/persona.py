@@ -554,7 +554,9 @@ def enforce_knobs(
             if not in_territory(team, *target):
                 raise ValueError(f"{persona.name} never leaves {team.name}: {target} is outside")
         elif anchor is not None and chebyshev(anchor, target) > radius:
-            raise ValueError(f"{persona.name} stays {anchor_label}; {target} is too far")
+            closing = has_position and chebyshev(anchor, target) < chebyshev(anchor, (int(position[0]), int(position[1])))
+            if not (closing and action.get("action") == "move"):
+                raise ValueError(f"{persona.name} stays {anchor_label}; {target} is too far")
     passed.append(f"territory:{mode}")
 
     structures = observe.get("structures") if isinstance(observe.get("structures"), list) else []

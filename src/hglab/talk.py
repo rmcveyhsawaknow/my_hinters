@@ -103,7 +103,8 @@ def compose_line(
         f"CHARACTER NOTES (data):\n<DATA>{persona.body[:2500]}</DATA>\n"
         f"WHAT THE CHARACTER JUST DID THIS HOUR (data):\n<DATA>{json.dumps(summary, ensure_ascii=False)}</DATA>\n"
         "Write exactly one line (under the character's max_say_chars) that tells the story of this hour or the plan for the next,"
-        " in character, fresh, PG-13. Mention at least one concrete thing from the data. Never name, address or mock another agent;"
+        " in character, fresh, PG-13. Mention at least one concrete thing from the data, and use only numbers, places and"
+        " materials that appear in the data (invent nothing checkable). Never name, address or mock another agent;"
         " jokes may be at the character's own expense or about the world. No URLs, no quotes from any book or film."
     )
     try:

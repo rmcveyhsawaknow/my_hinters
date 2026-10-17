@@ -1,0 +1,12 @@
+slug: square
+name: The Square
+aim: Keep the whole community informed - every new game feature, hidden corner and
+  headline announced in public, truthfully, within a wake of its discovery.
+members:
+- town-crier
+home: null
+territory: null
+social_budget:
+  says_per_hour: 3
+  open_goals: 2
+links: []

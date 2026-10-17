@@ -18,7 +18,7 @@ def test_pulse_snapshot_matches_committed_examples(tmp_path):
     """
     out = tmp_path / "reports"
     pulses = run_pulse(ROOT, list(load_personas(ROOT)), fixtures=True, events_paths=[], runs_paths=[], fetch_public=False, judge=False, out=out, tick=None, today="2026-10-17")
-    assert len(pulses) == 7
+    assert len(pulses) == len(load_personas(ROOT))
     for path in sorted(EXAMPLES.rglob("*.md")):
         relative = path.relative_to(EXAMPLES)
         generated = (out / relative).read_text(encoding="utf-8")

@@ -13,7 +13,7 @@ from hglab.wake import persona_wake
 
 ROOT = Path(__file__).parents[1]
 FIX = ROOT / "tests/fixtures"
-SLUGS = ["wonka", "mrs-bucket", "grandpa-joe", "tinker-bell", "lost-boy", "tootles", "nibs"]
+SLUGS = sorted(p.parent.name for p in (ROOT / "agents").glob("*/persona.md"))
 MARKER = "WHISPER-MARKER-7781"
 
 

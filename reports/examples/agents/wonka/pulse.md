@@ -11,7 +11,7 @@ Next bet      move energy from whispered faction name as the lock (44 energy, no
 
 # Fudgewright · Pulse
 
-Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 391 public events and 54 redacted wakes in the last 7 days.
+Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 396 public events and 54 redacted wakes in the last 7 days.
 
 ## Alive
 

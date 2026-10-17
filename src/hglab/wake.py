@@ -232,6 +232,16 @@ def persona_wake(
                 env["change_since_last_wake"] = round((env["day"]["all"] - before) / before, 2)
             state.flags["world"] = compact_for_state(env)
             extras["environment"] = {"pace": env["pace"], "hour": env["hour"], "day": env["day"], "peers_active": len(env["peers_active"])}
+            if isinstance(env.get("features_now"), dict):
+                from hglab.features import compact as compact_features
+                from hglab.features import compare as compare_features
+
+                previous = state.flags.get("features") if isinstance(state.flags.get("features"), dict) else None
+                discoveries = compare_features(previous, env["features_now"])
+                env["discoveries"] = [d["text"] for d in discoveries][:6]
+                state.flags["features"] = compact_features(env["features_now"])
+                extras["discoveries"] = env["discoveries"]
+                env.pop("features_now", None)
         rng = wake_rng(persona, tick) if seed is None else random.Random(f"{persona.slug}:{seed}")
         names = {personas[m].name.casefold(): m for m in (team.members if team else ()) if m in personas}
         step_mood(persona, state, observe, team, rng, member_names=set(names))
@@ -389,6 +399,8 @@ def _llm_plan(
     if environment is not None:
         guidance["world_digest"] = render_digest(environment)
         guidance["world_last_wake"] = state.flags.get("world")
+        if environment.get("discoveries"):
+            guidance["discoveries_since_last_wake"] = environment["discoveries"]
     try:
         return llm_call(json.dumps(guidance, ensure_ascii=False), observe), None
     except Exception as exc:  # noqa: BLE001 - any model failure falls back to the deterministic plan
@@ -419,7 +431,9 @@ def persona_prompt(
         " update is added for you. Include exactly one public say each wake that tells your story or your plan"
         " in character (the collective reads the Talk feed to see you are alive); the validator enforces the"
         " hourly caps, so never add a second. Public lines must be fresh, never copied, PG-13; never name or mock"
-        " other operators' agents. Set approach to a short tag from the metrics spec when one fits. If the digest changed your"
+        " other operators' agents. If discoveries_since_last_wake is present, your one public line announces"
+        " the most interesting of them with its checkable fact (tick, version, type or place)."
+        " Set approach to a short tag from the metrics spec when one fits. If the digest changed your"
         " thinking, say so in journal_note; if your profile text, knobs, metrics or skills should change, put one"
         " sentence per change in adaptation_proposals (humans review them weekly).\n" + base
     )
