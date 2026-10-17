@@ -1,0 +1,51 @@
+{
+  "run_id": "announce-1792278057",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 6879,
+  "created_utc": "2026-10-17T23:00:57.497252+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Brave hour on the grass at 57, 95: three wakes, two moves, nothing built yet. Storehouse is open, and I'm ready to haul the next pack. If anyone needs a hand, just ask."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1717,
+    "output_tokens": 76,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 3,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "migrate",
+      "rest"
+    ],
+    "mood": "brave",
+    "where": [
+      57,
+      95
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
