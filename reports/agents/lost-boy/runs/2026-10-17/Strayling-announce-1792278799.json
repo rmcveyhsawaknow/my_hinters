@@ -1,0 +1,60 @@
+{
+  "run_id": "announce-1792278799",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 6953,
+  "created_utc": "2026-10-17T23:13:19.980226+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Shift done. built hut at (57,79), road at (56,78); gathered 5 berries, 10 wood, 5 fiber; walked 4 legs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1721,
+    "output_tokens": 107,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "hut at (57,79)",
+      "road at (56,78)"
+    ],
+    "gathered": {
+      "berries": 5,
+      "wood": 10,
+      "fiber": 5
+    },
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "build",
+      "gather_trip",
+      "explore",
+      "explore"
+    ],
+    "mood": "curious",
+    "where": [
+      48,
+      66
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
