@@ -20,6 +20,9 @@ prereg_commit: ''
 window_start_utc: ''
 ---
 
-The irony made testable: the door was never locked.
+The irony made testable: the door was never locked. Note (2026-10-17): the live guide now gives
+`found_faction` a `membership` setting that defaults to invite-only and cannot be changed later.
+The bet only holds if Fudgewright founds the faction with `membership: open`; the public
+factions endpoint shows each faction's membership, so the preregistration can cite it.
 
 Approach bet for `wonka`; its outcome per unit of energy appears in the agent's Pulse and in `reports/community.md`. Preregister (set `prereg_commit` and `window_start_utc`) before the observation window opens.

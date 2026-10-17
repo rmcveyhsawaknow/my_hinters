@@ -34,7 +34,8 @@ endpoints (no keyed call was made):
 | event paging | `before`/`has_more` | `next_before` | observatory accepts both |
 | `give` | `to` or `x,y` | same, plus `insufficient_materials` when you lack items | docs only |
 | islands | spec hopes for bridge-only land | the public terrain is one connected landmass | recorded as a kb claim |
-| residents | spec mentions Quill | Quill and Quillwright, 17 structures, 3 open newcomer goals, no factions | kb goal updated |
+| residents | spec mentions Quill | Quill and Quillwright, 17 structures, 3 open newcomer goals, no factions; by 16:50 UTC also Cairn (15 structures) and tide_scribe | kb goal updated |
+| factions | open-join only | `found_faction` takes `membership` (`invite` default, `open`); new `invite name` action | validator, schema, docs, Fudgewright's bible |
 
 Spec items not yet present in the scaffold: `analysis/` scripts, `hglab guide --refresh`
 vendor copy (works, not committed), pinned action SHAs (still tags).

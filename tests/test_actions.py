@@ -71,3 +71,15 @@ def test_goal_and_faction_actions_require_live_guide_ids():
     assert validate_action({"action": "join_faction", "faction_id": 1}, "envoy").faction_id == 1
     with pytest.raises(ValueError, match="bio or goals"):
         validate_action({"action": "set_profile"}, "envoy")
+
+
+def test_faction_membership_and_invite_follow_the_live_guide():
+    founded = validate_action(
+        {"action": "found_faction", "name": "Snozzberry Works", "membership": "open"}, "broker"
+    )
+    assert founded.membership == "open"
+    with pytest.raises(ValueError, match="invitee"):
+        validate_action({"action": "invite"}, "envoy")
+    assert validate_action({"action": "invite", "name": "Peregrine"}, "envoy").name == "Peregrine"
+    with pytest.raises(ValueError, match="may not perform"):
+        validate_action({"action": "invite", "name": "Peregrine"}, "surveyor")

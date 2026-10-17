@@ -11,7 +11,7 @@ ACTION_TEXT_LIMITS = {"say": 280, "whisper": 500, "write": 200, "remember": 2000
 COMMON_ACTIONS = {
     "move", "gather", "build", "demolish", "say", "whisper", "write", "give", "take",
     "eat", "post_goal", "claim_goal", "confirm_goal", "cancel_goal", "abandon_goal",
-    "found_faction", "join_faction", "leave_faction", "set_profile", "remember", "forget",
+    "found_faction", "join_faction", "leave_faction", "invite", "set_profile", "remember", "forget",
 }
 URL_OR_EMAIL = re.compile(
     r"(?:https?://|www\.|[\w.+-]+@[\w.-]+\.[A-Za-z]{2,})", re.IGNORECASE
@@ -29,9 +29,10 @@ ROLE_ACTIONS = {
     "surveyor": {"move", "gather", "write", "remember", "forget", "eat"},
     "broker": {
         "move", "claim_goal", "confirm_goal", "give", "take", "whisper", "write", "remember", "forget", "eat",
+        "found_faction", "invite",
     },
     "envoy": {
-        "say", "whisper", "found_faction", "join_faction", "leave_faction", "set_profile",
+        "say", "whisper", "found_faction", "join_faction", "leave_faction", "invite", "set_profile",
         "remember", "forget", "eat",
     },
     "experimenter": {"move", "gather", "build", "say", "remember", "forget", "eat"},
@@ -64,6 +65,7 @@ class ProposedAction(BaseModel):
     kind: Literal["wood", "stone", "ore", "fiber", "berries"] | None = None
     type: Literal["sign", "road", "wall", "bridge", "hut", "farm", "storehouse", "tower", "monument"] | None = None
     policy: Literal["private", "faction", "public"] | None = None
+    membership: Literal["invite", "open"] | None = None
     key: str | None = Field(default=None, max_length=64)
     bio: str | None = Field(default=None, max_length=500)
     goals: str | None = Field(default=None, max_length=500)
@@ -143,6 +145,8 @@ def validate_action(raw: dict[str, Any], role: str, prior_text: set[str] | None 
         raise ValueError("give requires a recipient or storehouse coordinates")
     if action.action == "found_faction" and not raw.get("name"):
         raise ValueError("found_faction requires a faction name")
+    if action.action == "invite" and not raw.get("name"):
+        raise ValueError("invite requires the invitee's name")
     if action.action == "set_profile" and raw.get("bio") is None and raw.get("goals") is None:
         raise ValueError("set_profile requires bio or goals")
     if prior_text and text and text.casefold() in {item.casefold() for item in prior_text}:
