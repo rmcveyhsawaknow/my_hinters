@@ -1,0 +1,141 @@
+{
+  "run_id": "27451f1e-f5f3-4075-85f7-71df9029c133",
+  "agent": "MotherPail",
+  "role": "builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-17T21:39:24.694800+00:00",
+  "tick": 6390,
+  "summary": "MotherPail (warm): work shift: building",
+  "actions": [
+    {
+      "action": "build",
+      "x": 66,
+      "y": 52,
+      "type": "road"
+    },
+    {
+      "action": "move",
+      "x": 65,
+      "y": 55
+    },
+    {
+      "action": "gather",
+      "kind": "fiber"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"warm\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":7,\"rests\":0,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":6390,\"visited\":[\"62,56\",\"67,53\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":6388,\"pace\":\"steady\",\"day\":{\"all\":541,\"building\":217,\"trade_goals\":32,\"talk\":20,\"factions\":1,\"movement\":271},\"hour\":{\"all\":19},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 6390,
+    "you": {
+      "id": 4,
+      "name": "MotherPail",
+      "x": 67,
+      "y": 53,
+      "energy": 100,
+      "inventory": {
+        "wood": 15,
+        "fiber": 1,
+        "stone": 5,
+        "berries": 5
+      },
+      "home": {
+        "x": 62,
+        "y": 56
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "mrs-bucket",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 19,
+      "building": 3,
+      "trade_goals": 0,
+      "talk": 4,
+      "factions": 0,
+      "movement": 12
+    },
+    "day": {
+      "all": 541,
+      "building": 217,
+      "trade_goals": 32,
+      "talk": 20,
+      "factions": 1,
+      "movement": 271
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "warm",
+  "approach": "build",
+  "reasons": [
+    "materials in hand for a road at (66, 52)",
+    "walk to (65, 55) beside the fiber node at (66, 56), then gather"
+  ],
+  "energy_before": 100,
+  "berries_before": 5,
+  "energy_spent": 10,
+  "activity_energy": {
+    "build": 5.0,
+    "explore": 2.0,
+    "gather": 3.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "warm",
+    "glow": 50,
+    "wakes": 7,
+    "rests": 0,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}

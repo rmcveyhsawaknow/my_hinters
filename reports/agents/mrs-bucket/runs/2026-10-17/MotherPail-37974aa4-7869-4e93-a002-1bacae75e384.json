@@ -1,0 +1,128 @@
+{
+  "run_id": "37974aa4-7869-4e93-a002-1bacae75e384",
+  "agent": "MotherPail",
+  "role": "builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-17T21:29:20.256649+00:00",
+  "tick": 6329,
+  "summary": "MotherPail (warm): work shift: gathering for the next build",
+  "actions": [
+    {
+      "action": "gather",
+      "kind": "fiber"
+    },
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"warm\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":5,\"rests\":0,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":6329,\"visited\":[\"62,56\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":6328,\"pace\":\"steady\",\"day\":{\"all\":541,\"building\":217,\"trade_goals\":32,\"talk\":20,\"factions\":1,\"movement\":271},\"hour\":{\"all\":20},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 6329,
+    "you": {
+      "id": 4,
+      "name": "MotherPail",
+      "x": 62,
+      "y": 56,
+      "energy": 100,
+      "inventory": {
+        "wood": 15,
+        "fiber": 1,
+        "berries": 5
+      },
+      "home": {
+        "x": 62,
+        "y": 56
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "mrs-bucket",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 20,
+      "building": 4,
+      "trade_goals": 0,
+      "talk": 4,
+      "factions": 0,
+      "movement": 12
+    },
+    "day": {
+      "all": 541,
+      "building": 217,
+      "trade_goals": 32,
+      "talk": 20,
+      "factions": 1,
+      "movement": 271
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "warm",
+  "approach": "gather_trip",
+  "reasons": [
+    "fiber node at (62, 56) is adjacent; take five, leave the rest to regrow",
+    "wood node at (63, 55) is adjacent; take five, leave the rest to regrow"
+  ],
+  "energy_before": 100,
+  "berries_before": 5,
+  "energy_spent": 6,
+  "activity_energy": {
+    "gather": 6.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "warm",
+    "glow": 50,
+    "wakes": 5,
+    "rests": 0,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}

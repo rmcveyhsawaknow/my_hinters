@@ -1,0 +1,58 @@
+{
+  "run_id": "announce-1792273166",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 6390,
+  "created_utc": "2026-10-17T21:39:26.516875+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Quiet work: built farm at (61,56), farm at (61,57); gathered 25 wood, 15 fiber, 5 stone; walked 2 legs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "farm at (61,56)",
+      "farm at (61,57)",
+      "road at (66,52)"
+    ],
+    "gathered": {
+      "wood": 25,
+      "fiber": 15,
+      "stone": 5
+    },
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "gather_trip",
+      "build",
+      "gather_trip",
+      "build",
+      "build"
+    ],
+    "mood": "warm",
+    "where": [
+      65,
+      55
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
