@@ -54,3 +54,26 @@ def test_compose_prompt_treats_character_notes_and_summary_as_data():
 
     compose_line(joe, None, summarise_shift(_records()), ROOT, caller=caller)
     assert "<DATA>" in seen["prompt"] and "PG-13" in seen["prompt"] and "Never name" in seen["prompt"]
+
+
+def test_overlong_model_lines_are_trimmed_at_a_sentence_not_discarded():
+    from hglab.talk import trim_to_sentence
+
+    joe = load_persona(ROOT, "grandpa-joe")
+    long_line = "Five wakes, three of them spent resting by the hut, which the family calls strategy and I call the hard part. " * 4
+    good = SimpleNamespace(value={"line": long_line}, input_tokens=900, output_tokens=60, model="claude-haiku-5-5", provider="anthropic")
+    line, source = compose_line(joe, None, summarise_shift(_records()), ROOT, caller=lambda prompt, schema: good)
+    assert source == "model" and len(line) <= joe.voice["max_say_chars"] and line.endswith(".")
+    assert trim_to_sentence("a" * 300, 100).endswith(".")
+
+
+def test_compose_prompt_states_the_numeric_limit():
+    joe = load_persona(ROOT, "grandpa-joe")
+    seen = {}
+
+    def caller(prompt, schema):
+        seen["prompt"] = prompt
+        return SimpleNamespace(value={"line": "fine"})
+
+    compose_line(joe, None, summarise_shift(_records()), ROOT, caller=caller)
+    assert f"at most {joe.voice['max_say_chars'] - 30} characters" in seen["prompt"]
