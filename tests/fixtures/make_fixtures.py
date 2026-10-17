@@ -337,6 +337,14 @@ def script(world: World, names: dict[str, str]) -> dict[str, dict]:
     world.say(3200, boy, "Ore on the mountain's shoulder, eleven of it, and a shallow line that, hold on, that would bridge in two. Noting it. Chasing the other thing first.")
     world.say(4100, boy, "Unclaimed goal near the east hills. Nobody has taken it in a day. Why? Noting it.")
     world.move(SCRIPT_END - 100, boy, (60, 90))
+    # personas the script does not stage explicitly: spawn near the centre and look around
+    for name in names.values():
+        if name not in world.positions:
+            world.move(2530, name, (64, 64))
+            world.move(2700, name, world.walkable_near(70, 60))
+            world.say(2701, name, "Hear this! A new face at the crossroads, and it is me. Looking around; announcements to follow.")
+            world.move(3100, name, world.walkable_near(60, 70))
+            world.move(3600, name, world.walkable_near(64, 64))
     # Lagalong' escape makes Tinkerglow sulk a little; Stoutheart' courage balances
     world.say(4700, tink, "He left again. Building.")
     world.build(4710, tink, "sign", world.find(nx, ny + 3, "g", 4), text="Pixie trail. Neverland north two.")
@@ -367,7 +375,7 @@ def view(world: World, cx: int, cy: int) -> dict:
 def observe_for(world: World, slug: str, persona: dict, names: dict[str, str], anchors: dict, teams: dict[str, list[str]]) -> dict:
     name = persona["name"]
     x, y = world.positions[name]
-    energy = {"wonka": 74, "mrs-bucket": 61, "grandpa-joe": 96, "tinker-bell": 58, "lost-boy": 35, "tootles": 44, "nibs": 70}[slug]
+    energy = {"wonka": 74, "mrs-bucket": 61, "grandpa-joe": 96, "tinker-bell": 58, "lost-boy": 35, "tootles": 44, "nibs": 70}.get(slug, 80)
     inventory = {
         "wonka": {"wood": 6, "stone": 12, "ore": 4, "berries": 7},
         "mrs-bucket": {"wood": 9, "fiber": 6, "berries": 14},
@@ -376,7 +384,7 @@ def observe_for(world: World, slug: str, persona: dict, names: dict[str, str], a
         "lost-boy": {"wood": 4, "stone": 3, "fiber": 2, "berries": 2},
         "tootles": {"stone": 17, "ore": 8, "berries": 6},
         "nibs": {"wood": 12, "stone": 9, "fiber": 5, "berries": 8},
-    }[slug]
+    }.get(slug, {"wood": 5, "berries": 5})
     homes = {s["owner"]: (s["x"], s["y"]) for s in world.structures if s["type"] == "hut"}
     home = homes.get(name)
     faction = {"id": 1, "name": "Snozzberry Works"} if persona["team"] == "chocolate-factory" else None
@@ -428,8 +436,8 @@ def run_records(world: World, slug: str, persona: dict, names: dict[str, str]) -
         "lost-boy": ["explore", "distraction", "odd_builds", "bold_trips", "gather_trip"],
         "tootles": ["explore", "range_far", "save_outside", "gather_trip", "build_hut"],
         "nibs": ["build_storehouse", "gather_near", "greet", "self_sufficiency", "build_wall", "build_farm"],
-    }[slug]
-    wakes = {"wonka": 54, "mrs-bucket": 82, "grandpa-joe": 27, "tinker-bell": 53, "lost-boy": 80, "tootles": 40, "nibs": 55}[slug]
+    }.get(slug, ["explore", "feature_watch", "far_ranging", "explore"])
+    wakes = {"wonka": 54, "mrs-bucket": 82, "grandpa-joe": 27, "tinker-bell": 53, "lost-boy": 80, "tootles": 40, "nibs": 55}.get(slug, 60)
     records = []
     own_events = [e for e in world.events if e["actor"] == name]
     first_tick = scale(2520)
@@ -500,7 +508,7 @@ JUDGE = {
 
 def history_for(slug: str) -> list[dict]:
     rng = random.Random(f"history:{slug}")
-    base = {"wonka": (96, 55, 84), "mrs-bucket": (99, 70, 90), "grandpa-joe": (88, 62, 92), "tinker-bell": (95, 48, 80), "lost-boy": (93, 58, 86), "tootles": (97, 52, 83), "nibs": (98, 66, 88)}[slug]
+    base = {"wonka": (96, 55, 84), "mrs-bucket": (99, 70, 90), "grandpa-joe": (88, 62, 92), "tinker-bell": (95, 48, 80), "lost-boy": (93, 58, 86), "tootles": (97, 52, 83), "nibs": (98, 66, 88)}.get(slug, (94, 50, 85))
     rows = []
     for day in range(7):
         rows.append({
@@ -535,7 +543,8 @@ def main() -> None:
         with (FIX / f"runs/{slug}.jsonl").open("w", encoding="utf-8", newline="\n") as out:
             for record in run_records(world, slug, persona, names):
                 out.write(json.dumps(record, ensure_ascii=False, sort_keys=True) + "\n")
-        judge = {"agent": slug, "metric_version": 1, "model": "fixture", "provider": "fixture", "sampled_lines": 6, "sampled_actions": 8, "created_utc": "2026-10-17T00:00:00+00:00", "traits": [{"name": n, "score": s, "reason": r} for n, s, r in JUDGE[slug]]}
+        traits = JUDGE.get(slug) or [(t["name"], 4, "fixture score") for t in yaml.safe_load((ROOT / "agents" / slug / "metrics.yaml").read_text(encoding="utf-8"))["traits"]]
+        judge = {"agent": slug, "metric_version": 1, "model": "fixture", "provider": "fixture", "sampled_lines": 6, "sampled_actions": 8, "created_utc": "2026-10-17T00:00:00+00:00", "traits": [{"name": n, "score": sc, "reason": r} for n, sc, r in traits]}
         (FIX / f"judge/{slug}.json").write_text(json.dumps(judge, indent=1, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
         with (FIX / f"history/{slug}.jsonl").open("w", encoding="utf-8", newline="\n") as out:
             for row in history_for(slug):

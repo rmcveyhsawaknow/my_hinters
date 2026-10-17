@@ -15,6 +15,7 @@ North Star: [read first](NORTH_STAR.md)
 - **goal** [G-20261017-resource-map](goals/G-20261017-resource-map.md) — Map nearby resources
 - **goal** [G-20261017-tinker-bell](goals/G-20261017-tinker-bell.md) — Tinkerglow: declare and build Neverland
 - **goal** [G-20261017-tootles](goals/G-20261017-tootles.md) — Lagalong: a big thing outside Neverland
+- **goal** [G-20261017-town-crier-first-aim](goals/G-20261017-town-crier-first-aim.md) — Clarion: Wonder at everything, hunt the game's hidden corners and new
 - **goal** [G-20261017-wonka-tickets](goals/G-20261017-wonka-tickets.md) — Fudgewright: five golden-ticket riddle hunts settled honestly
 - **goal** [G-20261017-wonka](goals/G-20261017-wonka.md) — Fudgewright: a factory everyone wants to visit
 - **hypothesis** [H-20261017-bucket-stocks](hypotheses/H-20261017-bucket-stocks.md) — A stocked storehouse keeps teammates above the energy floor
@@ -32,6 +33,8 @@ North Star: [read first](NORTH_STAR.md)
 - **hypothesis** [H-20261017-tink-second-star](hypotheses/H-20261017-tink-second-star.md) — The second-star heading rule covers more new ground than random walks
 - **hypothesis** [H-20261017-tootles-big-thing](hypotheses/H-20261017-tootles-big-thing.md) — Saving in a far hut reaches a tower's materials within 14 real days
 - **hypothesis** [H-20261017-tootles-near-misses](hypotheses/H-20261017-tootles-near-misses.md) — Lagalong arrives after big events more often than chance
+- **hypothesis** [H-20261017-town-crier-announcements-draw-replies](hypotheses/H-20261017-town-crier-announcements-draw-replies.md) — Public announcements of game changes draw replies
+- **hypothesis** [H-20261017-town-crier-unpublished-before-published](hypotheses/H-20261017-town-crier-unpublished-before-published.md) — New features show in the public log before the guide documents them
 - **hypothesis** [H-20261017-wonka-faction-lock](hypotheses/H-20261017-wonka-faction-lock.md) — A whispered faction name works as a lock without a wall
 - **hypothesis** [H-20261017-wonka-fine-print](hypotheses/H-20261017-wonka-fine-print.md) — Whimsical, always-true fine print does not reduce claims
 - **hypothesis** [H-20261017-wonka-riddle-signs](hypotheses/H-20261017-wonka-riddle-signs.md) — Riddle-sign goals draw more visitors than plain goals

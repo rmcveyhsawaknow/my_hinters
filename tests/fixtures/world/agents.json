@@ -65,6 +65,16 @@
    "faction": null,
    "id": 16,
    "last_seen_tick": 65740,
+   "name": "Clarion",
+   "reputation": 0,
+   "x": 64,
+   "y": 64
+  },
+  {
+   "created_tick": 2500,
+   "faction": null,
+   "id": 17,
+   "last_seen_tick": 65740,
    "name": "Fudgewright",
    "reputation": 0,
    "x": 89,
@@ -73,7 +83,7 @@
   {
    "created_tick": 2500,
    "faction": null,
-   "id": 17,
+   "id": 18,
    "last_seen_tick": 65740,
    "name": "Peregrine",
    "reputation": 0,
@@ -83,7 +93,7 @@
   {
    "created_tick": 2500,
    "faction": null,
-   "id": 18,
+   "id": 19,
    "last_seen_tick": 65740,
    "name": "Marlow",
    "reputation": 0,

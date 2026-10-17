@@ -12,7 +12,7 @@ ROOT = Path(__file__).parents[1]
 def test_generated_callers_are_current_and_guarded():
     done, problems = generate_callers(ROOT, check=True)
     assert problems == []
-    assert len(done) == 7
+    assert len(done) == len(list((ROOT / 'agents').glob('*/persona.md')))
     for path in (ROOT / ".github/workflows").glob("agent-*.yml"):
         text = path.read_text(encoding="utf-8")
         data = yaml.safe_load(text)
@@ -44,7 +44,7 @@ def test_sync_check_fails_on_orphans_and_missing_callers(tmp_path):
     workflows.mkdir(parents=True)
     shutil.copy(ROOT / ".github/workflows/_agent.yml", workflows / "_agent.yml")
     _done, problems = generate_callers(tmp_path, check=True)
-    assert len(problems) == 7 and all("has no caller" in p for p in problems)
+    assert len(problems) == len(list((tmp_path / 'agents').glob('*/persona.md'))) and all("has no caller" in p for p in problems)
     generate_callers(tmp_path, check=False)
     assert generate_callers(tmp_path, check=True) == ([f".github/workflows/agent-{s}.yml" for s in sorted(p.name for p in (tmp_path / "agents").iterdir())], [])
     (workflows / "agent-ghost.yml").write_text("name: ghost\n", encoding="utf-8")

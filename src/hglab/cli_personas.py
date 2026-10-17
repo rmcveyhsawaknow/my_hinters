@@ -310,7 +310,25 @@ def build_environment(
         except (HinterglassError, OSError, ValueError):
             pass
     collective_names = {p.name for p in personas.values()}
-    return digest(inputs["events"], now_tick, self_name=persona.name, team_names=team_names, collective_names=collective_names, open_goals=goals, factions=factions)
+    result = digest(inputs["events"], now_tick, self_name=persona.name, team_names=team_names, collective_names=collective_names, open_goals=goals, factions=factions)
+    if persona.quirk.get("type") == "feature_watch":
+        from hglab.features import snapshot
+
+        try:
+            result["features_now"] = snapshot(HinterglassClient()) if live else _fixture_feature_snapshot(root, inputs)
+        except (HinterglassError, OSError, ValueError) as exc:
+            result["features_error"] = str(exc)[:120]
+    return result
+
+
+def _fixture_feature_snapshot(root: Path, inputs: dict[str, Any]) -> dict[str, Any]:
+    events = inputs["events"]
+    return {
+        "tick": inputs["tick"], "api_version": "fixture", "guide_sha256": "", "guide_actions": [], "guide_blueprints": [],
+        "event_types": sorted({str(e.get("type")) for e in events}),
+        "structure_types": sorted({str((e.get("data") or {}).get("type")) for e in events if e.get("type") == "build" and (e.get("data") or {}).get("type")}),
+        "factions": [], "agents": sorted({str(e.get("actor")) for e in events if e.get("actor")}), "agent_count": len({e.get("actor") for e in events}), "world_stats": {},
+    }
 
 
 def _force_mode(persona: Persona, mode: str) -> None:
@@ -425,8 +443,8 @@ def shift_command(
             wakes += 1
             energy = int(record.get("energy_before", 0) or 0) - int(record.get("energy_spent", 0) or 0)
             typer.echo(f"  wake {wakes}: {record.get('summary', '')} · {len(record['actions'])} action(s), energy about {energy}, approach {record.get('approach')}")
-        except (typer.BadParameter, typer.Exit) as exc:
-            typer.echo(f"  wake skipped: {getattr(exc, 'message', None) or 'lease held elsewhere'}")
+        except (typer.BadParameter, typer.Exit, ValueError, RuntimeError) as exc:
+            typer.echo(f"  wake skipped: {getattr(exc, 'message', None) or str(exc) or 'lease held elsewhere'}"[:200])
             energy = 100
         if max_wakes is not None and wakes >= max_wakes:
             break
@@ -1147,6 +1165,48 @@ def world_digest(
     if result is None:
         raise typer.BadParameter("no public events available; try --fetch-public or --fixtures")
     typer.echo(json.dumps(result, ensure_ascii=False, indent=1) if as_json else render(result))
+
+
+@world_app.command("watch")
+def world_watch(
+    snapshot_file: Path = typer.Option(Path("reports/world/features.json"), "--snapshot-file", help="Where the last look is kept"),  # noqa: B008
+    write_kb: bool = typer.Option(False, "--write-kb", help="File one idea card per discovery for the archivist"),
+    as_json: bool = typer.Option(False, "--json"),
+) -> None:
+    """What changed in the game's public surface since the last look (API, guide, event and structure types, factions, residents)."""
+    from hglab.features import compact, compare, snapshot
+    from hglab.kb import make_id
+
+    root = root_dir()
+    previous = json.loads(snapshot_file.read_text(encoding="utf-8")) if snapshot_file.is_file() else None
+    current = snapshot(HinterglassClient())
+    discoveries = compare(previous, current)
+    snapshot_file.parent.mkdir(parents=True, exist_ok=True)
+    snapshot_file.write_text(json.dumps(compact(current), ensure_ascii=False, indent=1) + "\n", encoding="utf-8", newline="\n")
+    if as_json:
+        typer.echo(json.dumps({"current": compact(current), "discoveries": discoveries}, ensure_ascii=False, indent=1))
+    else:
+        typer.echo(f"API {current['api_version']} · tick {current['tick']} · {current['agent_count']} agents · {len(current['event_types'])} event types · {len(current['structure_types'])} structure types · {len(current['factions'])} faction(s)")
+        for d in discoveries:
+            typer.echo(f"  [{d['kind']}] {d['text']}")
+        if not discoveries:
+            typer.echo("  nothing new since the last look")
+    if write_kb:
+        today = datetime.now(UTC).date().isoformat()
+        for d in discoveries:
+            if d["kind"] in {"first_look"}:
+                continue
+            item_id = make_id("idea", f"feature {d['kind']} {current['tick']}")
+            path = root / "kb/ideas" / f"{item_id}.md"
+            if path.exists():
+                continue
+            path.write_text(
+                "---\n" + yaml.safe_dump({"id": item_id, "type": "idea", "title": d["text"][:80], "status": "proposed", "created": today, "updated": today, "author_runtime": os.environ.get("HGLAB_RUNTIME", "human"), "roles": ["town-crier", "observer"], "links": ["src/hglab/features.py"]}, sort_keys=False)
+                + "---\n\n## Technique\nfeature watch: public surface compared with the last snapshot\n\n## Why it might work\n"
+                + d["text"] + "\n\n## Cheapest test\nRead the guide and the public log for the named type or version.\n\n## Kill criterion\nThe change is absent from both on a second look.\n",
+                encoding="utf-8", newline="\n",
+            )
+            typer.echo(f"  filed {path.relative_to(root).as_posix()}")
 
 
 # --- budget ------------------------------------------------------------------

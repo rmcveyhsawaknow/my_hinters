@@ -29,8 +29,8 @@ def test_every_persona_metrics_and_team_validate():
     assert validate_personas(ROOT) == []
     personas = load_personas(ROOT)
     teams = load_teams(ROOT)
-    assert set(personas) == {"wonka", "mrs-bucket", "grandpa-joe", "tinker-bell", "lost-boy", "tootles", "nibs"}
-    assert set(teams) == {"chocolate-factory", "neverland"}
+    assert set(personas) >= {"wonka", "mrs-bucket", "grandpa-joe", "tinker-bell", "lost-boy", "tootles", "nibs"}
+    assert set(teams) >= {"chocolate-factory", "neverland"}
     for team in teams.values():
         assert sum(personas[m].social_rate for m in team.members) <= team.social_budget["says_per_hour"]
 
@@ -81,6 +81,11 @@ def test_nibs_never_leaves_a_confirmed_neverland_and_stays_near_tinker_bell_befo
     enforce_knobs([{"action": "move", "x": 76, "y": 114}], nibs, team, observe, teammates={"tinker-bell": (74, 112)})
     with pytest.raises(ValueError, match="stays within 6 of tinker-bell"):
         enforce_knobs([{"action": "move", "x": 85, "y": 112}], nibs, team, observe, teammates={"tinker-bell": (74, 112)})
+    # far from the leader, a move that closes the distance is allowed (that is how he catches up)
+    far_leader = {"tinker-bell": (74, 90)}
+    enforce_knobs([{"action": "move", "x": 75, "y": 102}], nibs, team, observe, teammates=far_leader)
+    with pytest.raises(ValueError, match="too far"):
+        enforce_knobs([{"action": "move", "x": 75, "y": 120}], nibs, team, observe, teammates=far_leader)
     # once confirmed: the territory itself is the law
     confirmed = _confirmed(team)
     enforce_knobs([{"action": "move", "x": 78, "y": 110}], nibs, confirmed, observe, teammates={})

@@ -1,0 +1,36 @@
+{
+ "agent": "town-crier",
+ "metric_version": 1,
+ "model": "fixture",
+ "provider": "fixture",
+ "sampled_lines": 6,
+ "sampled_actions": 8,
+ "created_utc": "2026-10-17T00:00:00+00:00",
+ "traits": [
+  {
+   "name": "wondering",
+   "score": 4,
+   "reason": "fixture score"
+  },
+  {
+   "name": "theatrical",
+   "score": 4,
+   "reason": "fixture score"
+  },
+  {
+   "name": "fast",
+   "score": 4,
+   "reason": "fixture score"
+  },
+  {
+   "name": "truthful",
+   "score": 4,
+   "reason": "fixture score"
+  },
+  {
+   "name": "generous",
+   "score": 4,
+   "reason": "fixture score"
+  }
+ ]
+}
