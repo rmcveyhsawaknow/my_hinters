@@ -74,3 +74,23 @@ def test_callers_carry_the_work_cron_and_scheduled_wakes_count_shifts():
     text = caller_text(wonka)
     assert wonka.knobs["work"]["cron"] in text and "'shift'" in text and "shift]" in text
     assert scheduled_wakes(wonka, [{"tick": 99000, "work": True}], 100000, 7 * 8640) > scheduled_wakes(wonka, [{"tick": 99000}], 100000, 7 * 8640)
+
+
+def test_far_settlers_migrate_before_building(tmp_path):
+    observe = load_fixture(FIX / "observe/mrs-bucket.json")
+    observe["you"].update({"x": 62, "y": 56, "home": None})
+    observe["you"]["inventory"] = {"wood": 20, "fiber": 10, "berries": 5}
+    observe["structures"] = []
+    observe["view"]["x0"], observe["view"]["y0"] = 56, 50
+    record, _ = _wake("mrs-bucket", observe, tmp_path)
+    assert record["approach"] == "migrate"
+    assert record["actions"][0]["action"] == "move"
+    assert all(a["action"] != "build" for a in record["actions"])
+
+
+def test_roads_only_extend_existing_structures(tmp_path):
+    observe = load_fixture(FIX / "observe/nibs.json")
+    observe["you"]["inventory"] = {"stone": 6, "berries": 5}
+    observe["structures"] = []
+    record, _ = _wake("nibs", observe, tmp_path)
+    assert all(not (a["action"] == "build" and a.get("type") == "road") for a in record["actions"])

@@ -312,6 +312,15 @@ def _plan_work(
         return True
 
     approach = None
+    # 0. a settler far from the team site walks there first and builds only once inside
+    migrate = _plan_migrate(persona, team, position, view, teammates)
+    far_from_home = migrate is not None and persona.knobs["territory"]["mode"] in {"prefer_inside", "stay_inside", "near_teammate"}
+    if far_from_home and fits(migrate):
+        approach = "migrate"
+        if fits(_plan_gather_adjacent(persona, inventory, here, view)):
+            pass
+        summary = "walking to the team site"
+        return _result(persona, mood, f"work shift: {summary}", actions, reasons, approach, remember)
     # 1. the monument recipe when the storehouse beside us holds the materials
     monument = _plan_monument(persona, inventory, position, view)
     if here == position and fits(monument):
@@ -338,6 +347,17 @@ def _plan_work(
         "gather_trip": "gathering for the next build", "migrate": "walking to the team site", "explore": "looking for nodes",
     }.get(approach or "", "nothing worth the energy this shift wake")
     return _result(persona, mood, f"work shift: {summary}", actions, reasons, approach, remember)
+
+
+def _plan_gather_adjacent(persona: Persona, inventory: dict[str, int], position: tuple[int, int], view: WorldView) -> tuple[list[dict[str, Any]], str, str] | None:
+    """Gather from a node under or beside us without walking (used while travelling)."""
+    if sum(inventory.values()) >= 45:
+        return None
+    for node in view.resources:
+        node_pos = (int(node["x"]), int(node["y"]))
+        if chebyshev(position, node_pos) <= 1 and int(node.get("amount", 0)) > NODE_FLOOR:
+            return [{"action": "gather", "kind": node["kind"]}], f"{node['kind']} beside the road at {node_pos}: take five on the way", "gather_near"
+    return None
 
 
 def _plan_monument(persona: Persona, inventory: dict[str, int], position: tuple[int, int], view: WorldView) -> tuple[list[dict[str, Any]], str, str] | None:
@@ -550,8 +570,11 @@ def _build_tile(
             if view.free_tile(x, y) and in_territory(team, x, y) is True and (x, y) != position:
                 return x, y
             continue
-        if blueprint == "road" and (x, y) == position:
-            continue
+        if blueprint == "road":
+            if (x, y) == position:
+                continue
+            if not any(chebyshev((x, y), (int(s_.get("x", -9)), int(s_.get("y", -9)))) <= 1 for s_ in view.structures):
+                continue  # roads extend existing structures and roads, never scatter
         if view.free_tile(x, y) and ((x, y) != position or blueprint in {"hut", "storehouse", "tower"}):
             return x, y
     return None
