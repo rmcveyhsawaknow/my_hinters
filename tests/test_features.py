@@ -44,3 +44,20 @@ def test_blueprint_catalogue_is_parsed_from_the_guide_table():
     assert line.startswith("2 things can be built") and "cache" not in line
     first = compare(None, {**_snap(), "blueprint_rows": rows})
     assert any(d["kind"] == "blueprint_catalogue" for d in first)
+
+
+def test_changed_guide_rows_are_named():
+    import hashlib
+
+    from hglab.features import action_rows
+
+    old_guide = "| `build` | `type, x?, y?` | 5 | On your tile or an adjacent tile; consumes materials. |\n| `say` | `text` | 1 | Heard within 8 tiles. |\n"
+    new_guide = "| `build` | `type, x?, y?` | 5 | On your tile or an adjacent tile. Paid from your inventory first; the rest from storehouses within 1 tile. |\n| `say` | `text` | 1 | Heard within 8 tiles. |\n"
+    old_rows = action_rows(old_guide)
+    assert set(old_rows) == {"build", "say"}
+    previous = {**_snap(), "guide_sha256": hashlib.sha256(old_guide.encode()).hexdigest(), "action_row_hashes": {k: hashlib.sha256(v.encode()).hexdigest()[:16] for k, v in old_rows.items()}}
+    new_rows = action_rows(new_guide)
+    current = {**_snap(), "guide_sha256": hashlib.sha256(new_guide.encode()).hexdigest(), "action_row_hashes": {k: hashlib.sha256(v.encode()).hexdigest()[:16] for k, v in new_rows.items()}, "action_row_text": new_rows}
+    found = compare(previous, current)
+    changed = [d for d in found if d["kind"] == "rule_changed"]
+    assert len(changed) == 1 and "`build`" in changed[0]["text"] and "storehouses within 1 tile" in changed[0]["text"]

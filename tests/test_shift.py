@@ -37,10 +37,10 @@ def test_work_wake_deposits_surplus_and_can_raise_a_monument(tmp_path):
     observe = load_fixture(FIX / "observe/wonka.json")
     you = observe["you"]
     you["inventory"] = {"stone": 30, "ore": 10, "wood": 6}
-    observe["structures"] = [{"id": 1, "type": "storehouse", "x": you["x"] + 1, "y": you["y"], "owner": "Fudgewright", "faction": None, "hp": 80, "text": None, "policy": "faction", "storage": {"stone": 25}}]
+    observe["structures"] = [{"id": 1, "type": "storehouse", "x": you["x"] + 1, "y": you["y"], "owner": "Peregrine", "faction": None, "hp": 80, "text": None, "policy": "public", "storage": {"stone": 25}}]
     record, _ = _wake("wonka", observe, tmp_path)
     kinds = [a["action"] for a in record["actions"]]
-    assert record["approach"] == "build_monument"
+    assert record["approach"] == "build_monument"  # a public storehouse beside the builder pays the rest, per the guide
     assert record["actions"][0]["type"] == "monument"
     assert "remember" in kinds
 

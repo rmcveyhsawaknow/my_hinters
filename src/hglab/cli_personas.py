@@ -976,14 +976,15 @@ def keepalive_command(
         record = {
             "kind": "keepalive", "agent": name, "persona": persona.slug if persona else None,
             "tick": observe.get("tick"), "energy": you.get("energy"), "x": you.get("x"), "y": you.get("y"),
-            "verification": status, "created_utc": datetime.now(UTC).isoformat(),
+            "verification": status, "verified_until": you.get("verified_until"), "created_utc": datetime.now(UTC).isoformat(),
             "author_runtime": os.environ.get("HGLAB_RUNTIME", "human"), "usage": usage,
         }
         folder = root / "runs" / datetime.now(UTC).date().isoformat()
         folder.mkdir(parents=True, exist_ok=True)
         path = folder / f"{name}-keepalive-{int(time.time())}.json"
         path.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
-        typer.echo(f"{name}: tick {record['tick']}, energy {record['energy']}, verification {status}; recorded {path.relative_to(root).as_posix()}")
+        until = f", verified until {record['verified_until']}" if record.get("verified_until") else ""
+        typer.echo(f"{name}: tick {record['tick']}, energy {record['energy']}, verification {status}{until}; recorded {path.relative_to(root).as_posix()}")
     finally:
         release(client, lease)
 
