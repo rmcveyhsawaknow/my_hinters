@@ -1,0 +1,109 @@
+{
+  "run_id": "399c4b97-3648-4cff-b8c2-725dc247298e",
+  "agent": "Lagalong",
+  "role": "surveyor+builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-17T21:57:49.332566+00:00",
+  "tick": 6500,
+  "summary": "Lagalong (wistful): resting quietly and letting the farm do the work",
+  "actions": [
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"wistful\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":6,\"rests\":2,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":6500,\"visited\":[\"71,70\",\"61,60\",\"58,56\",\"60,58\",\"59,57\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":6498,\"pace\":\"quickening\",\"day\":{\"all\":581,\"building\":230,\"trade_goals\":32,\"talk\":21,\"factions\":1,\"movement\":297},\"hour\":{\"all\":43},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 6500,
+    "you": {
+      "id": 11,
+      "name": "Lagalong",
+      "x": 59,
+      "y": 57,
+      "energy": 100,
+      "inventory": {
+        "fiber": 1,
+        "berries": 10
+      },
+      "home": {
+        "x": 60,
+        "y": 58
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "tootles",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 43,
+      "building": 14,
+      "trade_goals": 0,
+      "talk": 1,
+      "factions": 0,
+      "movement": 28
+    },
+    "day": {
+      "all": 581,
+      "building": 230,
+      "trade_goals": 32,
+      "talk": 21,
+      "factions": 1,
+      "movement": 297
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "rest",
+  "mood": "wistful",
+  "approach": "rest",
+  "reasons": [],
+  "energy_before": 100,
+  "berries_before": 10,
+  "energy_spent": 0,
+  "activity_energy": {},
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "wistful",
+    "glow": 50,
+    "wakes": 6,
+    "rests": 2,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_outside",
+    "walls_inside_territory"
+  ]
+}

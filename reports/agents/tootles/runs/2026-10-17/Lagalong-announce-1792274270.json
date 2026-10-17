@@ -1,0 +1,56 @@
+{
+  "run_id": "announce-1792274270",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 6500,
+  "created_utc": "2026-10-17T21:57:50.684831+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Shift done. built hut at (60,58); gathered 5 wood, 5 fiber, 5 berries; walked 3 legs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [
+      "hut at (60,58)"
+    ],
+    "gathered": {
+      "wood": 5,
+      "fiber": 5,
+      "berries": 5
+    },
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "gather_trip",
+      "gather_trip",
+      "build",
+      "rest"
+    ],
+    "mood": "wistful",
+    "where": [
+      59,
+      57
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
