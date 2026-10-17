@@ -66,6 +66,9 @@ def challenge_responder(prompt: str, usage: dict[str, int] | None = None) -> str
             calls=usage["calls"] + 1,
             input_tokens=usage["input_tokens"] + result.input_tokens,
             output_tokens=usage["output_tokens"] + result.output_tokens,
+            model=result.model,
+            provider=result.provider,
+            route="challenge",
         )
     return json.dumps(result.value)
 
@@ -183,22 +186,10 @@ def tick(
         for name in role_config["skills"]
         if (root / "skills" / name / "SKILL.md").exists()
     ]
-    schema = {
-        "type": "object",
-        "required": ["summary", "actions"],
-        "properties": {
-            "summary": {"type": "string"},
-            "actions": {
-                "type": "array", "minItems": 1, "maxItems": 4,
-                "items": {"$ref": "#/$defs/action"},
-            },
-            "remember": {"type": "array"},
-            "journal_note": {"type": "string"},
-            "kb_proposals": {"type": "array"},
-        },
-        "$defs": {"action": json.loads((root / "schemas/action.json").read_text())},
-        "additionalProperties": False,
-    }
+    from hglab.wake import normalise_plan, plan_schema
+
+    action_schema = json.loads((root / "schemas/action.json").read_text())
+    schema = plan_schema(action_schema)
     lease = acquire(client, agent)
     if lease is None:
         raise typer.BadParameter(f"identity {agent} already has an active lease")
@@ -217,7 +208,7 @@ def tick(
             skills,
             current_observe.get("notebook", {}),
             current_observe,
-            schema["$defs"]["action"],
+            action_schema,
         )
         budget = yaml.safe_load((root / "config/budget.yaml").read_text(encoding="utf-8"))["tick"]
         if usage["calls"] >= budget["max_llm_calls"]:
@@ -236,8 +227,10 @@ def tick(
             calls=usage["calls"] + 1,
             input_tokens=usage["input_tokens"] + result.input_tokens,
             output_tokens=usage["output_tokens"] + result.output_tokens,
+            model=result.model,
+            provider=result.provider,
         )
-        return result.value
+        return normalise_plan(result.value)
 
     record = run_wake(
         agent=agent,

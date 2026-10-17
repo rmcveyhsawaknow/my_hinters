@@ -50,6 +50,20 @@ secret; model keys are shared. Enable Neverland after Tinkerglow has a site in m
 confirm the territory (`hglab team set-territory --team neverland --x .. --y .. --radius 8 --confirm`)
 before Stoutheart' stay-inside rule should bind.
 
+## Model mix and the spend cap
+
+`config/models.yaml` picks the model per route: Haiku 5.5 for routine wakes, Sonnet 5.5 for
+the two navigators that speak most (`knobs.model_route: tick_premium` on Fudgewright and
+Tinkerglow), for the judge, for science, and for verification challenges. The knobs and the
+validator carry the character; the model adds the words, so the cheap model is enough for
+most wakes.
+
+`config/budget.yaml` holds the caps (`monthly_usd`, `daily_usd`) and the price table.
+`hglab budget status --project` prices every usage record this month (run records,
+keepalives, judge files, pulled from the `reports` branch) and projects a full month from the
+cadences. When a cap is reached, wakes use the deterministic planner, the judge is skipped,
+and the run record says `budget_hold`; verification challenges are always allowed.
+
 ## Cost math
 
 Per agent per real day, with the committed cadences:
@@ -65,9 +79,11 @@ Per agent per real day, with the committed cadences:
 | Stoutheart | 8 | 4 | 8-16 |
 | all seven | 58 | 28 | about 55-110, plus 7 judge calls |
 
-Each tick call sends a few thousand input tokens (bible, knobs, redacted observe) and
-returns a few hundred; `config/budget.yaml` caps calls and output tokens per wake and the
-judge at one call. Runner minutes: a tick job is two to four minutes plus jitter (up to
+Each tick call sends about eleven thousand input tokens (bible, knobs, redacted observe)
+and returns a few hundred. At the configured mix that is roughly $20 a month for all seven
+agents (`hglab budget status --project` prints the current figure); on Opus 5.5 for every
+route it would be near $90. `config/budget.yaml` caps calls and output tokens per wake, the
+judge at one call, and total spend per day and per month. Runner minutes: a tick job is two to four minutes plus jitter (up to
 the persona's `jitter_minutes`, capped at 25); keepalive about one minute. Verification
 challenges add one small call on the challenge route when they appear (once per day per
 agent at most).

@@ -1,0 +1,43 @@
+from pathlib import Path
+
+from hglab.data import load_events
+from hglab.environment import CATEGORY_LABELS, categorise, compact_for_state, digest, render
+
+ROOT = Path(__file__).parents[1]
+FIX = ROOT / "tests/fixtures"
+
+
+def test_categories_follow_the_site_filters():
+    assert categorise({"type": "build"}) == "building"
+    assert categorise({"type": "farm_produced"}) == "building"
+    assert categorise({"type": "goal_posted"}) == "trade_goals"
+    assert categorise({"type": "give"}) == "trade_goals"
+    assert categorise({"type": "say"}) == "talk"
+    assert categorise({"type": "faction_founded"}) == "factions"
+    assert categorise({"type": "move"}) == "movement"
+    assert set(CATEGORY_LABELS) == {"all", "building", "trade_goals", "talk", "factions", "movement"}
+
+
+def test_digest_counts_pace_actors_and_headlines_from_fixture_events():
+    events = load_events([FIX / "world/events.jsonl"])
+    now = max(e["tick"] for e in events)
+    collective = {"Fudgewright", "MotherPail", "GrandadPail", "Tinkerglow", "Strayling", "Lagalong", "Stoutheart"}
+    d = digest(events, now, self_name="Fudgewright", team_names={"Fudgewright", "MotherPail", "GrandadPail"}, collective_names=collective)
+    assert d["day"]["all"] >= d["hour"]["all"] >= 0
+    assert set(d["peers_active"]).isdisjoint(collective)
+    assert set(d["collective_active"]) <= {"Tinkerglow", "Strayling", "Lagalong", "Stoutheart"}
+    assert all(t["actor"] not in collective for t in d["peer_talk"])
+    assert d["pace"] in {"quiet", "steady", "quickening", "slowing"}
+    assert "MotherPail" in d["team_active"] or "GrandadPail" in d["team_active"] or "Fudgewright" in d["team_active"]
+    assert all(a not in {"Fudgewright", "MotherPail", "GrandadPail"} for a in d["peers_active"])
+    text = render(d)
+    assert "Building" in text and "Trade & Goals" in text and "Talk" in text and "Factions" in text
+    assert "pace" in text
+    before = compact_for_state(d)
+    again = digest(events, now, self_name="Fudgewright", team_names=set(), previous=before)
+    assert again["change_since_last_wake"] == 0.0
+
+
+def test_digest_is_quiet_with_no_events():
+    d = digest([], 1000, self_name="X", team_names=set())
+    assert d["pace"] == "quiet" and d["day"]["all"] == 0 and render(d).startswith("tick 1000")

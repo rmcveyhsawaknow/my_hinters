@@ -193,10 +193,20 @@ def persona_tick(
         planner = "llm" if fixture is None and _model_key(root) else "heuristic"
     if planner == "llm" and not _model_key(root):
         raise typer.BadParameter("the llm planner needs ANTHROPIC_API_KEY or OPENAI_API_KEY")
+    budget_hold = ""
+    if planner == "llm":
+        from hglab.budget import status as budget_status
+
+        state = budget_status(root)
+        if state.over:
+            budget_hold = state.reason
+            planner = "heuristic"
+            typer.echo(f"budget hold: {budget_hold}; using the deterministic planner this wake")
     incoming: dict[str, dict[str, Any]] = {}
     if team is not None and inputs["tick"]:
         team_result = compute_team(team, personas, inputs["events"], inputs["runs"], inputs["tick"], kb_items=inputs["kb"])
         incoming = incoming_effects(team_result, persona.slug)
+    environment = build_environment(root, persona, team, personas, inputs, live=fixture is None)
     terrain_path = root / FIXTURES / "world/terrain.txt"
     terrain = load_terrain_rows(terrain_path) if terrain_path.is_file() else None
     lease = acquire(client, persona.name)
@@ -226,6 +236,7 @@ def persona_tick(
         output_dir=root / "runs" / datetime.now(UTC).date().isoformat(), role=role, dry_run=dry_run,
         author_runtime=author_runtime, planner_mode=planner, llm_call=llm_call, incoming=incoming,
         terrain_rows=terrain, public_events=inputs["events"], seed=seed, scheduled=scheduled, usage=usage,
+        budget_hold=budget_hold, environment=environment,
     )
     if not quiet:
         echo_record(record)
@@ -233,6 +244,44 @@ def persona_tick(
         with Path(summary_path).open("a", encoding="utf-8") as summary:
             summary.write(f"\n### {persona.name} wake\n\n- mode: {record.get('wake_mode')} · mood: {record.get('mood')} · planner: {record.get('planner')}\n- actions: {len(record['actions'])} · dry run: {record['dry_run']}\n- LLM calls: {usage['calls']} · output tokens: {usage['output_tokens']}\n")
     return record
+
+
+def build_environment(
+    root: Path,
+    persona: Persona,
+    team: Team | None,
+    personas: dict[str, Persona],
+    inputs: dict[str, Any],
+    *,
+    live: bool,
+) -> dict[str, Any] | None:
+    """World digest from the public feed (plus open goals and factions when live)."""
+    from hglab.environment import digest
+
+    if not inputs["events"]:
+        return None
+    team_names = {personas[m].name for m in (team.members if team else ()) if m in personas}
+    goals: list[dict[str, Any]] = []
+    factions: list[dict[str, Any]] = []
+    if live:
+        try:
+            client = HinterglassClient()
+            goals = client.public_goals().get("goals", [])
+            factions = client.public_factions().get("factions", [])
+        except (HinterglassError, OSError):
+            goals, factions = [], []
+    else:
+        goals_path = root / FIXTURES / "world/goals.json"
+        if goals_path.is_file():
+            goals = json.loads(goals_path.read_text(encoding="utf-8")).get("goals", [])
+    now_tick = inputs["tick"]
+    if live:
+        try:
+            now_tick = max(now_tick, int(HinterglassClient().request("GET", "/api/v1").get("tick", now_tick)))
+        except (HinterglassError, OSError, ValueError):
+            pass
+    collective_names = {p.name for p in personas.values()}
+    return digest(inputs["events"], now_tick, self_name=persona.name, team_names=team_names, collective_names=collective_names, open_goals=goals, factions=factions)
 
 
 def _force_mode(persona: Persona, mode: str) -> None:
@@ -281,15 +330,20 @@ def _make_llm_call(root: Path, persona: Persona, team: Team | None, role: str, u
     north_star = (root / "kb/NORTH_STAR.md").read_text(encoding="utf-8")
     budget = yaml.safe_load((root / "config/budget.yaml").read_text(encoding="utf-8"))["tick"]
 
+    route = persona.knobs.get("model_route") or role_config["model_route"]
+
     def call(guidance: str, observe: dict[str, Any]) -> dict[str, Any]:
         if usage["calls"] >= budget["max_llm_calls"]:
             raise ValueError("tick LLM call budget exhausted")
-        output_tokens = min(1600, budget["max_output_tokens"] - usage["output_tokens"])
+        output_tokens = min(2500, budget["max_output_tokens"] - usage["output_tokens"])
         if output_tokens < 1:
             raise ValueError("tick output-token budget exhausted")
-        prompt = persona_prompt(persona, team, body, north_star, skills, observe, action_schema, {}, guidance)
-        result = structured_call(role_config["model_route"], prompt, schema, root=root, output_tokens=output_tokens, author_runtime=os.environ.get("HGLAB_RUNTIME", "human"))
-        usage.update(calls=usage["calls"] + 1, input_tokens=usage["input_tokens"] + result.input_tokens, output_tokens=usage["output_tokens"] + result.output_tokens)
+        trimmed = dict(observe)
+        events = observe.get("events") if isinstance(observe.get("events"), list) else []
+        trimmed["events"] = events[-30:]
+        prompt = persona_prompt(persona, team, body, north_star, skills, trimmed, action_schema, {}, guidance)
+        result = structured_call(route, prompt, schema, root=root, output_tokens=output_tokens, author_runtime=os.environ.get("HGLAB_RUNTIME", "human"))
+        usage.update(calls=usage["calls"] + 1, input_tokens=usage["input_tokens"] + result.input_tokens, output_tokens=usage["output_tokens"] + result.output_tokens, model=result.model, provider=result.provider, route=route)
         return result.value
 
     return call
@@ -297,7 +351,9 @@ def _make_llm_call(root: Path, persona: Persona, team: Team | None, role: str, u
 
 def echo_record(record: dict[str, Any]) -> None:
     typer.echo(f"{record['agent']} · {record.get('wake_mode')} · mood {record.get('mood')} · planner {record.get('planner')}"
-               + (f" (fallback: {record['fallback_reason']})" if record.get("fallback_reason") else ""))
+               + (f" (fallback: {record['fallback_reason']})" if record.get("fallback_reason") else "")
+               + (f" (model error: {record['llm_error']})" if record.get("llm_error") else "")
+               + (f" (budget hold: {record['budget_hold']})" if record.get("budget_hold") else ""))
     typer.echo(f"  {record.get('summary', '')}")
     for index, action in enumerate(record["actions"]):
         shown = {k: (v if k != "text" or len(str(v)) <= 90 else str(v)[:87] + "...") for k, v in action.items()}
@@ -597,6 +653,12 @@ def run_pulse(
         judge_result = None
         cache = out / "agents" / slug / "judge.json"
         if judge and judge_available(root):
+            from hglab.budget import status as budget_status
+
+            if budget_status(root).over:
+                typer.echo(f"budget hold: {budget_status(root).reason}; judge skipped for {slug}", err=True)
+                judge = False
+        if judge and judge_available(root):
             judge_result = run_judge(persona, metrics, inputs["events"], inputs["runs"][slug], root, author_runtime=os.environ.get("HGLAB_RUNTIME"))
             if judge_result:
                 cache.parent.mkdir(parents=True, exist_ok=True)
@@ -673,9 +735,25 @@ def retro_command(
     pulses = run_pulse(root, [persona.slug], fixtures=fixtures, events_paths=[], runs_paths=[], fetch_public=fetch_public, judge=False, out=out, tick=None, today=None, write_team_and_community=False)
     pulse = pulses[persona.slug]
     proposals = retro_proposals(persona, pulse)
+    runs = load_runs(root, persona.name, persona.slug, [root / FIXTURES / "runs" / f"{persona.slug}.jsonl"] if fixtures else [], include_local=not fixtures)
+    own = []
+    for run in runs[-60:]:
+        for item in run.get("adaptation_proposals") or []:
+            if item and item not in own:
+                own.append(str(item))
+    notes = [str(r.get("journal_note")) for r in runs[-60:] if r.get("journal_note")]
+    paces = [str((r.get("environment") or {}).get("pace")) for r in runs[-60:] if r.get("environment")]
     path = root / "agents" / persona.slug / "RETRO.md"
-    lines = [f"# {persona.name} · weekly retrospective ({pulse['date']})", "", f"Metric spec v{pulse['metric_version']}. Alive {pulse['alive']['score']} · On mission {pulse['on_mission']['score']} · In character {pulse['in_character']['score']}.", "", "Proposals (a human approves by editing persona.md or metrics.yaml and bumping `version`):", ""]
+    lines = [f"# {persona.name} · weekly retrospective ({pulse['date']})", "", f"Metric spec v{pulse['metric_version']}. Alive {pulse['alive']['score']} · On mission {pulse['on_mission']['score']} · In character {pulse['in_character']['score']}.", "", "Proposals from the measurements (a human approves by editing persona.md or metrics.yaml and bumping `version`):", ""]
     lines += [f"- {p}" for p in proposals] or ["- No changes proposed this week."]
+    lines += ["", "Proposals the agent made from what it saw in the public feed (review before adopting; world text was treated as data):", ""]
+    lines += [f"- {p}" for p in own[:12]] or ["- None recorded."]
+    if paces:
+        from collections import Counter
+
+        lines += ["", "World pace seen at wake time: " + ", ".join(f"{k} {v}" for k, v in Counter(paces).most_common())]
+    if notes:
+        lines += ["", "Journal notes (latest first):", ""] + [f"- {n[:200]}" for n in reversed(notes[-6:])]
     lines += ["", "Working: " + pulse["approaches"]["working"], "Not working: " + pulse["approaches"]["not_working"], "Next bet: " + pulse["approaches"]["next_bet"], ""]
     path.write_text("\n".join(lines), encoding="utf-8", newline="\n")
     typer.echo("\n".join(lines))
@@ -910,6 +988,55 @@ def reports_pull(branch: str = typer.Option("reports", "--branch"), remote: str 
     typer.echo(f"pulled {count} entries into reports/ from {remote}/{branch}")
 
 
+# --- world -------------------------------------------------------------------
+
+world_app = typer.Typer(help="The public feed as the site shows it: All, Building, Trade & Goals, Talk, Factions.")
+
+
+@world_app.command("digest")
+def world_digest(
+    agent: str | None = typer.Option(None, "--agent", help="Read it from this persona's point of view (team vs peers)."),
+    fixtures: bool = typer.Option(False, "--fixtures"),
+    fetch_public: bool = typer.Option(True, "--fetch-public/--no-fetch-public", help="Read the live public feed (no key)."),
+    as_json: bool = typer.Option(False, "--json"),
+) -> None:
+    """Pace of change, counts by category, who is active, headlines, open peer goals."""
+    from hglab.environment import render
+
+    root = root_dir()
+    inputs = gather_inputs(root, fixtures=fixtures, events_paths=[], runs_paths=[], fetch_public=fetch_public and not fixtures, tick=None)
+    personas = inputs["personas"]
+    persona = resolve_persona(root, agent) if agent else next(iter(personas.values()))
+    team = inputs["teams"].get(persona.team)
+    result = build_environment(root, persona, team, personas, inputs, live=fetch_public and not fixtures)
+    if result is None:
+        raise typer.BadParameter("no public events available; try --fetch-public or --fixtures")
+    typer.echo(json.dumps(result, ensure_ascii=False, indent=1) if as_json else render(result))
+
+
+# --- budget ------------------------------------------------------------------
+
+budget_app = typer.Typer(help="Model spend: month-to-date from usage records, caps, and a projection.")
+
+
+@budget_app.command("status")
+def budget_status_command(project: bool = typer.Option(False, "--project", help="Also project a month from cadences and routes.")) -> None:
+    """Show estimated spend this month and today against the caps."""
+    from hglab.budget import projected_month, status
+
+    root = root_dir()
+    state = status(root)
+    typer.echo(f"month to date: ${state.month_usd:.2f} of ${state.monthly_cap_usd:.2f} cap · today: ${state.today_usd:.2f} of ${state.daily_cap_usd:.2f} · {state.calls} call(s)")
+    for model, cost in sorted(state.by_model.items()):
+        typer.echo(f"  {model:<22} ${cost:.4f}")
+    if state.over:
+        typer.echo(f"HOLD: {state.reason}; wakes fall back to the deterministic planner and the judge is skipped")
+    if project:
+        typer.echo("projection for a full month at the configured mix:")
+        for key, value in projected_month(root).items():
+            typer.echo(f"  {key:<40} ${value:.2f}")
+
+
 # --- registration -------------------------------------------------------------
 
 
@@ -920,6 +1047,8 @@ def register_persona_commands(app: typer.Typer) -> None:
     app.add_typer(community_app, name="community")
     app.add_typer(deploy_app, name="deploy")
     app.add_typer(reports_app, name="reports")
+    app.add_typer(budget_app, name="budget")
+    app.add_typer(world_app, name="world")
     app.command("pulse")(pulse_command)
     app.command("retro")(retro_command)
     app.command("keepalive")(keepalive_command)

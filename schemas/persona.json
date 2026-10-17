@@ -43,6 +43,7 @@
           "additionalProperties": false
         },
         "social_rate": {"type": "integer", "minimum": 0, "maximum": 3},
+        "model_route": {"type": "string", "pattern": "^[a-z_]+$"},
         "build_priority": {"type": "array", "items": {"enum": ["sign", "road", "wall", "bridge", "hut", "farm", "storehouse", "tower", "monument"]}, "uniqueItems": true},
         "intended_mix": {
           "type": "object",
