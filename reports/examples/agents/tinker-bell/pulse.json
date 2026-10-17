@@ -1,0 +1,401 @@
+{
+ "agent": "tinker-bell",
+ "name": "Tinkerglow",
+ "team": "neverland",
+ "headline": "a safe haven, and everyone in it",
+ "metric_version": 1,
+ "tick": 65760,
+ "day": 182,
+ "date": "2026-10-17",
+ "window_ticks": 60480,
+ "events_considered": 391,
+ "runs_considered": 53,
+ "alive": {
+  "score": 85,
+  "detail": "53/56 wakes, never lapsed, 2 failed, 2 rate-limited",
+  "parts": {
+   "completed": 53,
+   "scheduled": 56,
+   "lapsed": 0,
+   "banned": false,
+   "rate_limited": 2,
+   "failed_actions": 2,
+   "energy_zero": 0,
+   "spam_blocked": 0
+  }
+ },
+ "on_mission": {
+  "score": 61,
+  "detail": "1/3 inside · 2/6 built · 7 led · Glow 58 · 100% one-emotion wakes",
+  "rows": [
+   {
+    "id": "team_gathered",
+    "label": "teammates inside Neverland",
+    "value": 1.0,
+    "target": 3,
+    "weight": 0.3,
+    "progress": 0.3333333333333333,
+    "shown": "1/3 inside",
+    "measure": "events.teammates_inside_territory"
+   },
+   {
+    "id": "safety",
+    "label": "structures standing in Neverland",
+    "value": 2.0,
+    "target": 6,
+    "weight": 0.2,
+    "progress": 0.3333333333333333,
+    "shown": "2/6 built",
+    "measure": "events.structures_built"
+   },
+   {
+    "id": "adventures_led",
+    "label": "adventures led (trail signs and bridges)",
+    "value": 7.0,
+    "target": 8,
+    "weight": 0.2,
+    "progress": 0.875,
+    "shown": "7 led",
+    "measure": "events.structures_built"
+   },
+   {
+    "id": "glow",
+    "label": "Glow",
+    "value": 58.0,
+    "target": 70,
+    "weight": 0.2,
+    "progress": 0.8285714285714286,
+    "shown": "Glow 58",
+    "measure": "state.value"
+   },
+   {
+    "id": "one_emotion",
+    "label": "wakes with exactly one emotion",
+    "value": 1.0,
+    "target": 1.0,
+    "weight": 0.1,
+    "progress": 1.0,
+    "shown": "100% one-emotion wakes",
+    "measure": "runs.single_emotion_share"
+   }
+  ]
+ },
+ "in_character": {
+  "score": 92,
+  "detail": "fierce 4 · loyal 5 · jealous 4 · vain 3",
+  "signatures": [
+   {
+    "id": "explore_share",
+    "label": "share of energy exploring",
+    "value": 0.352,
+    "range": [
+     0.15,
+     0.45
+    ],
+    "inside": true,
+    "measure": "runs.action_energy_share"
+   },
+   {
+    "id": "say_length",
+    "label": "mean public line length",
+    "value": 25.25,
+    "range": [
+     10,
+     120
+    ],
+    "inside": true,
+    "measure": "events.mean_say_length"
+   },
+   {
+    "id": "mood_variety",
+    "label": "distinct emotions over 7 days",
+    "value": 6.0,
+    "range": [
+     2,
+     6
+    ],
+    "inside": true,
+    "measure": "runs.distinct_moods"
+   },
+   {
+    "id": "energy_mix",
+    "label": "intended vs actual energy mix",
+    "value": 0.713,
+    "range": [
+     0.6,
+     1.0
+    ],
+    "inside": true,
+    "measure": "runs.energy_mix_match"
+   }
+  ],
+  "judge": [
+   {
+    "name": "fierce",
+    "score": 4,
+    "reason": "Sharp four-word lines when crossed."
+   },
+   {
+    "name": "loyal",
+    "score": 5,
+    "reason": "Directions and bridges for the team."
+   },
+   {
+    "name": "jealous",
+    "score": 4,
+    "reason": "Clipped line about the one who left."
+   },
+   {
+    "name": "vain",
+    "score": 3,
+    "reason": "Pleased with her bridge, mildly."
+   },
+   {
+    "name": "chime like",
+    "score": 5,
+    "reason": "Two to eight words, headings and counts."
+   }
+  ],
+  "judge_meta": {
+   "agent": "tinker-bell",
+   "metric_version": 1,
+   "model": "fixture",
+   "provider": "fixture",
+   "sampled_lines": 6,
+   "sampled_actions": 8,
+   "created_utc": "2026-10-17T00:00:00+00:00"
+  }
+ },
+ "team_pull": {
+  "detail": "Courage 49 (Stoutheart) → Glow 62 · Escape 71 (Lagalong) → Glow 62 · Belief 42 (Stoutheart) → Glow 62 · Belief 23 (Strayling) → Glow 62 · Discoveries 73 (Strayling) → Adventure Options 73",
+  "sent": [],
+  "received": [
+   {
+    "from": "nibs",
+    "signal": "courage",
+    "to": "tinker-bell",
+    "effect": "glow",
+    "plain_english": "Hard jobs done inside Neverland and visitors greeted brighten Tinkerglow's Glow.",
+    "weight": 0.3,
+    "half_life_hours": 24.0,
+    "value": 49.3,
+    "decayed_value": 49.3,
+    "age_ticks": 0,
+    "explanation": "Courage 49: 2 hard job(s) inside, 4 greeting(s), structures standing 100%."
+   },
+   {
+    "from": "tootles",
+    "signal": "escape",
+    "to": "tinker-bell",
+    "effect": "glow",
+    "plain_english": "Time and distance Lagalong spends outside Neverland dim Tinkerglow's Glow; she feels abandoned.",
+    "weight": -0.4,
+    "half_life_hours": 24.0,
+    "value": 71.0,
+    "decayed_value": 71.0,
+    "age_ticks": 0,
+    "explanation": "Escape 71: 100% of moves outside, farthest 42 tiles from the centre."
+   },
+   {
+    "from": "nibs",
+    "signal": "belief",
+    "to": "tinker-bell",
+    "effect": "glow",
+    "plain_english": "Stoutheart arriving where she pointed, using her bridges and staying inside is Belief, and Belief sets her Glow.",
+    "weight": 0.4,
+    "half_life_hours": 24.0,
+    "value": 42.3,
+    "decayed_value": 42.3,
+    "age_ticks": 0,
+    "explanation": "Belief 42: 5 arrival(s) inside, 0 bridge crossing(s), staying inside."
+   },
+   {
+    "from": "tootles",
+    "signal": "belief",
+    "to": "tinker-bell",
+    "effect": "glow",
+    "plain_english": "Even Lagalong crossing her bridges or returning inside counts as Belief.",
+    "weight": 0.4,
+    "half_life_hours": 24.0,
+    "value": 0.0,
+    "decayed_value": 0.0,
+    "age_ticks": 0,
+    "explanation": "Belief 0: 0 arrival(s) inside, 0 bridge crossing(s), not currently inside."
+   },
+   {
+    "from": "lost-boy",
+    "signal": "belief",
+    "to": "tinker-bell",
+    "effect": "glow",
+    "plain_english": "Strayling wandering back inside or over a bridge counts as Belief.",
+    "weight": 0.4,
+    "half_life_hours": 24.0,
+    "value": 22.9,
+    "decayed_value": 22.9,
+    "age_ticks": 0,
+    "explanation": "Belief 23: 4 arrival(s) inside, 0 bridge crossing(s), not currently inside."
+   },
+   {
+    "from": "lost-boy",
+    "signal": "discoveries",
+    "to": "tinker-bell",
+    "effect": "adventure_options",
+    "plain_english": "Every discovery Strayling files becomes an adventure Tinkerglow can lead.",
+    "weight": 1.0,
+    "half_life_hours": 72.0,
+    "value": 72.7,
+    "decayed_value": 72.7,
+    "age_ticks": 0,
+    "explanation": "Discoveries 73: 14 tiles, 4 action types, 2 idea card(s), 0 adopted."
+   }
+  ],
+  "effects": {
+   "glow": {
+    "value": 62.5,
+    "tick": 65760,
+    "explanation": "courage from nibs 49; escape from tootles 71; belief from nibs 42; belief from tootles 0; belief from lost-boy 23"
+   },
+   "adventure_options": {
+    "value": 72.7,
+    "tick": 65760,
+    "explanation": "discoveries from lost-boy 73"
+   },
+   "courage": {
+    "value": 49.3,
+    "tick": 65760,
+    "explanation": "Courage 49: 2 hard job(s) inside, 4 greeting(s), structures standing 100%."
+   },
+   "escape": {
+    "value": 71.0,
+    "tick": 65760,
+    "explanation": "Escape 71: 100% of moves outside, farthest 42 tiles from the centre."
+   },
+   "belief": {
+    "value": 22.9,
+    "tick": 65760,
+    "explanation": "Belief 23: 4 arrival(s) inside, 0 bridge crossing(s), not currently inside."
+   },
+   "discoveries": {
+    "value": 72.7,
+    "tick": 65760,
+    "explanation": "Discoveries 73: 14 tiles, 4 action types, 2 idea card(s), 0 adopted."
+   }
+  }
+ },
+ "community": {
+  "goals_completed_for_peers": 0,
+  "public_goods_built": 7,
+  "norms_kept": true,
+  "norm_breaches": [],
+  "replies_received": 0
+ },
+ "approaches": {
+  "rows": [
+   {
+    "id": "pixie_trails",
+    "label": "pixie-trail signs",
+    "wakes": 5,
+    "energy": 16.0,
+    "outcome": 1.0,
+    "per_energy": 0.062,
+    "hypothesis": "H-20261017-tink-pixie-trails",
+    "bet_status": "proposed",
+    "bet_title": "Pixie-trail signs bring teammates in faster than whispers"
+   },
+   {
+    "id": "whispered_directions",
+    "label": "whispered directions",
+    "wakes": 12,
+    "energy": 49.0,
+    "outcome": 1.0,
+    "per_energy": 0.02,
+    "hypothesis": null,
+    "bet_status": null,
+    "bet_title": null
+   },
+   {
+    "id": "second_star",
+    "label": "second-star exploration rule",
+    "wakes": 4,
+    "energy": 31.0,
+    "outcome": 10.0,
+    "per_energy": 0.323,
+    "hypothesis": "H-20261017-tink-second-star",
+    "bet_status": "proposed",
+    "bet_title": "The second-star heading rule covers more new ground than random walks"
+   }
+  ],
+  "working": "second-star exploration rule: 10 outcome for 31 energy over 4 wake(s)",
+  "not_working": "whispered directions: 1 outcome for 49 energy over 12 wake(s)",
+  "next_bet": "keep testing second-star exploration rule; it has the best outcome per unit of energy"
+ },
+ "trend": {
+  "alive": "██████▇",
+  "on_mission": "▄▄▄▄▄▄▅",
+  "in_character": "▇▆▇▆▆▇▇"
+ },
+ "history": [
+  {
+   "alive": 97,
+   "date": "2026-10-11",
+   "in_character": 80,
+   "metric_version": 1,
+   "on_mission": 39
+  },
+  {
+   "alive": 97,
+   "date": "2026-10-12",
+   "in_character": 77,
+   "metric_version": 1,
+   "on_mission": 39
+  },
+  {
+   "alive": 95,
+   "date": "2026-10-13",
+   "in_character": 84,
+   "metric_version": 1,
+   "on_mission": 41
+  },
+  {
+   "alive": 93,
+   "date": "2026-10-14",
+   "in_character": 76,
+   "metric_version": 1,
+   "on_mission": 44
+  },
+  {
+   "alive": 95,
+   "date": "2026-10-15",
+   "in_character": 75,
+   "metric_version": 1,
+   "on_mission": 42
+  },
+  {
+   "alive": 95,
+   "date": "2026-10-16",
+   "in_character": 83,
+   "metric_version": 1,
+   "on_mission": 48
+  },
+  {
+   "date": "2026-10-17",
+   "metric_version": 1,
+   "alive": 85,
+   "on_mission": 61,
+   "in_character": 92,
+   "tick": 65760
+  }
+ ],
+ "signals": {
+  "belief": {
+   "value": 40.5,
+   "explanation": "Belief 40: 3 arrival(s) inside, 0 bridge crossing(s), staying inside.",
+   "parts": {
+    "arrivals": 0.4,
+    "bridge_crossings": 0,
+    "staying": 10.0
+   },
+   "tick": 65760
+  }
+ }
+}

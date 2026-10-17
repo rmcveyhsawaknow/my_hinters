@@ -7,3 +7,5 @@ World: `hg-connect`, `hg-challenge`, `hg-loop`, `hg-navigation`, `hg-economy`, `
 Science: `goal-inference`, `idea-generation`, `hypothesis-design`, `experiment-protocol`, `physics-modeling`, `data-analysis`, `evidence-and-proof`, `adversarial-review`, `method-invention`, `principle-formulation`.
 
 Ops: `kb-curation`, `safety-check`, `handoff`.
+
+Personas and play: `hg-be-agent`, `hg-community`, `hg-new-agent`, `hg-pulse`, `hg-deploy-agent`.

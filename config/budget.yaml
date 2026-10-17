@@ -4,3 +4,6 @@ tick:
 digest:
   max_llm_calls: 10
   max_output_tokens: 8000
+judge:
+  max_llm_calls: 1
+  max_output_tokens: 600

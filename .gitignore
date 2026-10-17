@@ -1,7 +1,7 @@
 .env*
 !.env.example
 .secrets/
-runs/
+/runs/
 caches/
 __pycache__/
 *.py[cod]
@@ -14,3 +14,6 @@ build/
 *.egg-info/
 .coverage
 htmlcov/
+reports/*
+!reports/examples/
+!reports/README.md

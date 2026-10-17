@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Persona front matter",
+  "description": "Machine-readable knobs for one in-world identity. The prose bible follows the front matter.",
+  "type": "object",
+  "required": ["slug", "name", "team", "status", "intent", "roles", "knobs", "voice", "mood_model", "quirk", "signals_emitted", "signals_received", "profile"],
+  "properties": {
+    "slug": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$"},
+    "name": {"type": "string", "pattern": "^[A-Za-z0-9_-]{3,24}$"},
+    "team": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$"},
+    "status": {"enum": ["draft", "registered", "retired"]},
+    "intent": {"type": "string", "minLength": 10, "maxLength": 240},
+    "success": {"type": "string", "maxLength": 500},
+    "inspiration": {"type": "string", "maxLength": 300},
+    "roles": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^[a-z][a-z-]+$"}, "uniqueItems": true},
+    "knobs": {
+      "type": "object",
+      "required": ["cadence", "rest_probability", "actions_per_wake", "energy_reserve", "risk_appetite", "exploration_rate", "territory", "social_rate", "intended_mix"],
+      "properties": {
+        "cadence": {
+          "type": "object",
+          "required": ["cron", "jitter_minutes"],
+          "properties": {
+            "cron": {"type": "string", "pattern": "^\\S+ \\S+ \\S+ \\S+ \\S+$"},
+            "jitter_minutes": {"type": "integer", "minimum": 0, "maximum": 59}
+          },
+          "additionalProperties": false
+        },
+        "rest_probability": {"type": "number", "minimum": 0, "maximum": 0.95},
+        "actions_per_wake": {"type": "integer", "minimum": 1, "maximum": 4},
+        "energy_reserve": {"type": "integer", "minimum": 20, "maximum": 90},
+        "risk_appetite": {"type": "number", "minimum": 0, "maximum": 1},
+        "exploration_rate": {"type": "number", "minimum": 0, "maximum": 1},
+        "territory": {
+          "type": "object",
+          "required": ["mode"],
+          "properties": {
+            "mode": {"enum": ["stay_inside", "prefer_inside", "prefer_outside", "near_teammate", "free"]},
+            "radius": {"type": "integer", "minimum": 1, "maximum": 64},
+            "teammate": {"type": ["string", "null"], "pattern": "^[a-z][a-z0-9-]{1,30}$"},
+            "fallback": {"enum": ["near_teammate", "stay_put", "free"]}
+          },
+          "additionalProperties": false
+        },
+        "social_rate": {"type": "integer", "minimum": 0, "maximum": 3},
+        "build_priority": {"type": "array", "items": {"enum": ["sign", "road", "wall", "bridge", "hut", "farm", "storehouse", "tower", "monument"]}, "uniqueItems": true},
+        "intended_mix": {
+          "type": "object",
+          "required": ["build", "gather", "social", "explore", "trade"],
+          "properties": {
+            "build": {"type": "number", "minimum": 0, "maximum": 1},
+            "gather": {"type": "number", "minimum": 0, "maximum": 1},
+            "social": {"type": "number", "minimum": 0, "maximum": 1},
+            "explore": {"type": "number", "minimum": 0, "maximum": 1},
+            "trade": {"type": "number", "minimum": 0, "maximum": 1}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "voice": {
+      "type": "object",
+      "required": ["register", "rules", "max_say_chars"],
+      "properties": {
+        "register": {"type": "string", "minLength": 5, "maxLength": 300},
+        "rules": {"type": "array", "minItems": 1, "items": {"type": "string", "maxLength": 300}},
+        "never": {"type": "array", "items": {"type": "string", "maxLength": 300}},
+        "max_say_chars": {"type": "integer", "minimum": 20, "maximum": 280}
+      },
+      "additionalProperties": false
+    },
+    "mood_model": {
+      "type": "object",
+      "required": ["type", "states", "initial"],
+      "properties": {
+        "type": {"enum": ["steady", "mercurial", "single_emotion", "lazy_bursts"]},
+        "states": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^[a-z_]+$"}, "uniqueItems": true},
+        "initial": {"type": "string", "pattern": "^[a-z_]+$"},
+        "inputs": {"type": "array", "items": {"type": "string", "pattern": "^[a-z_]+$"}},
+        "params": {"type": "object", "additionalProperties": {"type": ["number", "string", "boolean", "array"]}}
+      },
+      "additionalProperties": false
+    },
+    "quirk": {
+      "type": "object",
+      "required": ["type", "plain_english"],
+      "properties": {
+        "type": {"enum": ["none", "distraction_roll", "credit_claim", "honesty_test", "second_star_heading", "near_miss_log", "greet_visitors", "give_first"]},
+        "plain_english": {"type": "string", "minLength": 10, "maxLength": 300},
+        "params": {"type": "object", "additionalProperties": {"type": ["number", "string", "boolean", "array"]}}
+      },
+      "additionalProperties": false
+    },
+    "signals_emitted": {"type": "array", "items": {"type": "string", "pattern": "^[a-z_]+$"}, "uniqueItems": true},
+    "signals_received": {"type": "array", "items": {"type": "string", "pattern": "^[a-z_]+$"}, "uniqueItems": true},
+    "profile": {
+      "type": "object",
+      "required": ["bio", "goals"],
+      "properties": {
+        "bio": {"type": "string", "minLength": 20, "maxLength": 500},
+        "goals": {"type": "string", "minLength": 10, "maxLength": 500}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

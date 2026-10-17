@@ -10,6 +10,8 @@
         "required": ["name", "enabled", "roles", "runtime"],
         "properties": {
           "name": {"type": "string", "pattern": "^[A-Za-z0-9_-]{3,24}$"},
+          "persona": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$"},
+          "team": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$"},
           "enabled": {"type": "boolean"},
           "roles": {"type": "array", "items": {"type": "string"}},
           "runtime": {"enum": ["claude-code", "codex", "copilot", "actions-anthropic", "actions-openai", "human"]}

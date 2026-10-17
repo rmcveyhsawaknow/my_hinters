@@ -1,13 +1,45 @@
 agents:
-  - name: TODO_A
+  # Characters in an ongoing story by the collective. All disabled until the owner
+  # registers each identity and flips its repository variable (see docs/deploy-agent.md).
+  - name: Fudgewright
+    persona: wonka
+    team: chocolate-factory
     enabled: false
-    roles: [navigator, builder, envoy]
+    roles: [navigator, builder, broker]
     runtime: actions-anthropic
-  - name: TODO_B
+  - name: MotherPail
+    persona: mrs-bucket
+    team: chocolate-factory
     enabled: false
-    roles: [surveyor, broker]
-    runtime: actions-openai
-  - name: TODO_C
+    roles: [builder, envoy]
+    runtime: actions-anthropic
+  - name: GrandadPail
+    persona: grandpa-joe
+    team: chocolate-factory
     enabled: false
-    roles: [experimenter]
+    roles: [envoy, builder]
+    runtime: actions-anthropic
+  - name: Tinkerglow
+    persona: tinker-bell
+    team: neverland
+    enabled: false
+    roles: [navigator, surveyor, builder]
+    runtime: actions-anthropic
+  - name: Strayling
+    persona: lost-boy
+    team: neverland
+    enabled: false
+    roles: [surveyor, experimenter, conjecturer, methodologist]
+    runtime: actions-anthropic
+  - name: Lagalong
+    persona: tootles
+    team: neverland
+    enabled: false
+    roles: [surveyor, builder]
+    runtime: actions-anthropic
+  - name: Stoutheart
+    persona: nibs
+    team: neverland
+    enabled: false
+    roles: [builder, envoy]
     runtime: actions-anthropic

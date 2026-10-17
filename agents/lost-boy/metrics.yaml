@@ -1,0 +1,83 @@
+version: 1
+agent: lost-boy
+headline: finding what nobody was looking for
+key_results:
+  - id: novelty
+    label: new tiles, action types and unusual builds
+    measure: events.novelty_score
+    params: {}
+    target: 60
+    weight: 0.3
+    format: "novelty {value}"
+  - id: discoveries_filed
+    label: discoveries filed
+    measure: kb.count
+    params: {type: idea, roles_contains: lost-boy}
+    target: 6
+    weight: 0.25
+    format: "{value} filed"
+  - id: discoveries_adopted
+    label: discoveries others adopted
+    measure: kb.count
+    params: {adopted_from_ideas_by: lost-boy}
+    target: 2
+    weight: 0.2
+    format: "{value} adopted"
+  - id: risk_ledger
+    label: bold moves net (won minus lost)
+    measure: runs.risk_ledger_net
+    params: {}
+    target: 2
+    weight: 0.15
+    format: "ledger {value}"
+  - id: distraction_band
+    label: distraction rate inside its band
+    measure: runs.distraction_share
+    params: {}
+    target: 0.4
+    weight: 0.1
+    direction: near
+    format: "{value_pct} distracted"
+signatures:
+  - id: distraction_share
+    label: share of wakes distracted
+    measure: runs.distraction_share
+    range: [0.25, 0.55]
+  - id: explore_share
+    label: share of energy exploring
+    measure: runs.action_energy_share
+    params: {activity: explore}
+    range: [0.35, 0.7]
+  - id: novel_tiles
+    label: distinct tiles visited over 7 days
+    measure: events.distinct_tiles
+    range: [20, 200]
+  - id: energy_mix
+    label: intended vs actual energy mix
+    measure: runs.energy_mix_match
+    range: [0.5, 1.0]
+traits:
+  - name: curious
+    shows_up_as: Concrete observations of tiles, nodes and shapes in every line.
+  - name: distractible
+    shows_up_as: Swerves mid-line; plans abandoned for something shinier, with a card filed.
+  - name: bold
+    shows_up_as: Long trips and big builds, always above the energy floor.
+  - name: creative
+    shows_up_as: Unusual builds and combinations; ideas framed as testable cards.
+approaches:
+  - id: distraction_forty
+    label: forty percent distraction roll
+    hypothesis: H-20261017-lostboy-distraction
+    outcome_measure: kb.count
+    outcome_params: {type: idea, roles_contains: lost-boy}
+  - id: bold_trips
+    label: bold long trips
+    hypothesis: H-20261017-lostboy-risk-ledger
+    outcome_measure: runs.risk_ledger_net
+  - id: odd_builds
+    label: unusual builds
+    hypothesis: null
+    outcome_measure: events.novelty_score
+community:
+  notes: His idea cards are public knowledge once validated into the kb.

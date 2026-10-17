@@ -55,8 +55,15 @@ def run_wake(
     dry_run: bool = False,
     author_runtime: str = "human",
     usage: dict[str, int] | None = None,
+    validators: list[Callable[[list[dict[str, Any]], dict[str, Any]], Any]] | None = None,
+    record_extra: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Validate, sequentially execute, and persist only redacted wake records."""
+    """Validate, sequentially execute, and persist only redacted wake records.
+
+    ``validators`` run after the global checks with the raw action dicts and the observe
+    payload; a persona layer adds its stricter knobs there. ``record_extra`` is merged
+    into the record (callers must keep it free of private text).
+    """
     if not re.fullmatch(r"[A-Za-z0-9_-]{3,24}", agent):
         raise ValueError("invalid agent name")
     try:
@@ -71,8 +78,9 @@ def run_wake(
         private_text = private_strings(observe.get("notebook", {})) | private_strings(
             observe.get("inbox", [])
         )
+        raw_actions = plan.get("actions", [])
         actions = validate_actions(
-            plan.get("actions", []),
+            raw_actions,
             role,
             recent_say_count=recent_say_count,
             open_goal_count=open_goal_count,
@@ -80,6 +88,8 @@ def run_wake(
             private_text=private_text,
             observe=observe,
         )
+        for check in validators or []:
+            check([action.model_dump(exclude_none=True) for action in actions], observe)
         results = []
         if not dry_run:
             for action in actions:
@@ -93,13 +103,20 @@ def run_wake(
             "role": role,
             "author_runtime": author_runtime,
             "created_utc": datetime.now(UTC).isoformat(),
+            "tick": observe.get("tick"),
             "summary": redact_private_text(str(plan.get("summary", "")), private_text),
             "actions": [action.model_dump(exclude_none=True) for action in actions],
             "results": results,
+            "failed_actions": sum(1 for result in results if not result.get("ok", False)),
+            "rate_limited": any(result.get("error") == "rate_limited" for result in results),
+            "banned": any(result.get("error") == "banned" for result in results),
             "observe": redact_observe(observe),
             "dry_run": dry_run,
             "usage": usage or {"calls": 0, "input_tokens": 0, "output_tokens": 0},
         }
+        for key, value in (record_extra or {}).items():
+            if key not in record:
+                record[key] = json.loads(redact_private_text(json.dumps(value, ensure_ascii=False), private_text))
         output_dir.mkdir(parents=True, exist_ok=True)
         path = output_dir / f"{agent}-{record['run_id']}.json"
         path.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

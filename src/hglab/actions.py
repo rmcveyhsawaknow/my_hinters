@@ -11,7 +11,7 @@ ACTION_TEXT_LIMITS = {"say": 280, "whisper": 500, "write": 200, "remember": 2000
 COMMON_ACTIONS = {
     "move", "gather", "build", "demolish", "say", "whisper", "write", "give", "take",
     "eat", "post_goal", "claim_goal", "confirm_goal", "cancel_goal", "abandon_goal",
-    "found_faction", "join_faction", "leave_faction", "set_profile", "remember", "forget",
+    "found_faction", "join_faction", "leave_faction", "invite", "set_profile", "remember", "forget",
 }
 URL_OR_EMAIL = re.compile(
     r"(?:https?://|www\.|[\w.+-]+@[\w.-]+\.[A-Za-z]{2,})", re.IGNORECASE
@@ -22,14 +22,20 @@ SECRET = re.compile(
 
 ROLE_ACTIONS = {
     "navigator": {
-        "post_goal", "claim_goal", "cancel_goal", "abandon_goal", "remember", "say",
-        "move", "gather", "eat",
+        "post_goal", "claim_goal", "cancel_goal", "abandon_goal", "remember", "forget", "say",
+        "move", "gather", "eat", "set_profile",
     },
-    "builder": {"move", "gather", "build", "give", "take", "remember", "eat"},
-    "surveyor": {"move", "gather", "write", "remember", "eat"},
-    "broker": {"move", "claim_goal", "confirm_goal", "give", "take", "remember", "eat"},
-    "envoy": {"say", "whisper", "found_faction", "join_faction", "leave_faction", "set_profile", "eat"},
-    "experimenter": {"move", "gather", "build", "say", "remember", "eat"},
+    "builder": {"move", "gather", "build", "write", "give", "take", "remember", "forget", "eat"},
+    "surveyor": {"move", "gather", "write", "remember", "forget", "eat"},
+    "broker": {
+        "move", "claim_goal", "confirm_goal", "give", "take", "whisper", "write", "remember", "forget", "eat",
+        "found_faction", "invite",
+    },
+    "envoy": {
+        "say", "whisper", "found_faction", "join_faction", "leave_faction", "invite", "set_profile",
+        "remember", "forget", "eat",
+    },
+    "experimenter": {"move", "gather", "build", "say", "remember", "forget", "eat"},
     "observer": set(),
     "physicist": set(),
     "social-scientist": set(),
@@ -59,6 +65,7 @@ class ProposedAction(BaseModel):
     kind: Literal["wood", "stone", "ore", "fiber", "berries"] | None = None
     type: Literal["sign", "road", "wall", "bridge", "hut", "farm", "storehouse", "tower", "monument"] | None = None
     policy: Literal["private", "faction", "public"] | None = None
+    membership: Literal["invite", "open"] | None = None
     key: str | None = Field(default=None, max_length=64)
     bio: str | None = Field(default=None, max_length=500)
     goals: str | None = Field(default=None, max_length=500)
@@ -66,6 +73,8 @@ class ProposedAction(BaseModel):
     name: str | None = Field(default=None, max_length=24)
     reward: dict[str, int] | None = None
     expires_in_ticks: int | None = Field(default=None, ge=1, le=8640)
+    goal_id: int | None = Field(default=None, ge=1)
+    faction_id: int | None = Field(default=None, ge=1)
 
     @field_validator("text", "description", "title", "to")
     @classmethod
@@ -73,6 +82,14 @@ class ProposedAction(BaseModel):
         if value is not None and (URL_OR_EMAIL.search(value) or SECRET.search(value)):
             raise ValueError("text contains a URL, email address, or secret")
         return value
+
+
+def allowed_for(role: str) -> set[str]:
+    """Allowlist for one hat, or the union for a '+'-joined set of hats worn together."""
+    allowed: set[str] = set()
+    for hat in role.split("+"):
+        allowed |= ROLE_ACTIONS.get(hat, set())
+    return allowed
 
 
 def validate_action(raw: dict[str, Any], role: str, prior_text: set[str] | None = None) -> ProposedAction:
@@ -83,7 +100,7 @@ def validate_action(raw: dict[str, Any], role: str, prior_text: set[str] | None 
     action = ProposedAction.model_validate(raw)
     if action.action not in COMMON_ACTIONS:
         raise ValueError(f"unknown action: {action.action}")
-    if action.action not in ROLE_ACTIONS.get(role, set()):
+    if action.action not in allowed_for(role):
         raise ValueError(f"{role} may not perform {action.action}")
     limit = ACTION_TEXT_LIMITS.get(action.action)
     text = action.text
@@ -113,6 +130,11 @@ def validate_action(raw: dict[str, Any], role: str, prior_text: set[str] | None 
         "take": ("x", "y", "item", "qty"),
         "remember": ("key", "text"),
         "forget": ("key",),
+        "claim_goal": ("goal_id",),
+        "confirm_goal": ("goal_id",),
+        "cancel_goal": ("goal_id",),
+        "abandon_goal": ("goal_id",),
+        "join_faction": ("faction_id",),
     }
     missing = [field for field in required.get(action.action, ()) if raw.get(field) is None]
     if missing:
@@ -121,8 +143,12 @@ def validate_action(raw: dict[str, Any], role: str, prior_text: set[str] | None 
         "x", "y"
     }.issubset(raw):
         raise ValueError("give requires a recipient or storehouse coordinates")
-    if action.action in {"found_faction", "join_faction"} and not raw.get("name"):
-        raise ValueError(f"{action.action} requires a faction name")
+    if action.action == "found_faction" and not raw.get("name"):
+        raise ValueError("found_faction requires a faction name")
+    if action.action == "invite" and not raw.get("name"):
+        raise ValueError("invite requires the invitee's name")
+    if action.action == "set_profile" and raw.get("bio") is None and raw.get("goals") is None:
+        raise ValueError("set_profile requires bio or goals")
     if prior_text and text and text.casefold() in {item.casefold() for item in prior_text}:
         raise ValueError("repeated text is not allowed")
     return action
@@ -232,6 +258,7 @@ def redact_private_text(value: str, private_text: set[str]) -> str:
 __all__ = [
     "ProposedAction",
     "ValidationError",
+    "allowed_for",
     "private_strings",
     "redact_observe",
     "redact_private_text",

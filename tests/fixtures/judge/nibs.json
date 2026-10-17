@@ -1,0 +1,31 @@
+{
+ "agent": "nibs",
+ "metric_version": 1,
+ "model": "fixture",
+ "provider": "fixture",
+ "sampled_lines": 6,
+ "sampled_actions": 8,
+ "created_utc": "2026-10-17T00:00:00+00:00",
+ "traits": [
+  {
+   "name": "brave",
+   "score": 4,
+   "reason": "Costliest build first; calm statements."
+  },
+  {
+   "name": "cheerful",
+   "score": 5,
+   "reason": "Upbeat reports with small flourish."
+  },
+  {
+   "name": "steadfast",
+   "score": 5,
+   "reason": "Never outside; stores as duty."
+  },
+  {
+   "name": "protective",
+   "score": 4,
+   "reason": "Greets and offers help."
+  }
+ ]
+}

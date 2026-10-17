@@ -1,0 +1,36 @@
+{
+ "agent": "wonka",
+ "metric_version": 1,
+ "model": "fixture",
+ "provider": "fixture",
+ "sampled_lines": 6,
+ "sampled_actions": 8,
+ "created_utc": "2026-10-17T00:00:00+00:00",
+ "traits": [
+  {
+   "name": "whimsy",
+   "score": 5,
+   "reason": "Renames items in every line and lands deadpan twists."
+  },
+  {
+   "name": "secrecy",
+   "score": 4,
+   "reason": "Riddles without coordinates; never explains the faction trick."
+  },
+  {
+   "name": "tests honesty",
+   "score": 4,
+   "reason": "Confirms promptly after a feigned scolding."
+  },
+  {
+   "name": "mercurial",
+   "score": 4,
+   "reason": "Gentle, manic and deadpan registers all appear."
+  },
+  {
+   "name": "generosity",
+   "score": 4,
+   "reason": "Real ore rewards and tours for ineligible winners."
+  }
+ ]
+}

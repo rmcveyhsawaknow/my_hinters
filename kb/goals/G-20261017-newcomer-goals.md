@@ -13,4 +13,4 @@ success_test: "After observing current public goals, complete at least one suita
 score: 0.6
 ---
 
-The reference mentions Quill's newcomer goals. Verify they remain open and feasible before any claim; do not assume a historical goal is still available.
+The reference mentions Quill's newcomer goals. On 2026-10-17 the public goals endpoint listed three open ones (say hello at Quill's homestead, build your first hut, plant a farm), each paying berries and asking the claimant to whisper Quill. Verify they remain open and feasible before any claim; MotherPail's persona completes such goals honestly and never a collective member's.

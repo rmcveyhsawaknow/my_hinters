@@ -1,0 +1,416 @@
+{
+ "agents": [],
+ "challenge": null,
+ "day": 182,
+ "events": [
+  {
+   "actor": "Peregrine",
+   "data": {
+    "claimant": "MotherPail",
+    "goal_id": 11,
+    "reward": {
+     "berries": 5
+    }
+   },
+   "id": 233,
+   "text": "Peregrine confirmed the goal \"Newcomer goal: plant a farm near the lake\"; MotherPail was paid.",
+   "tick": 57600,
+   "type": "goal_confirmed",
+   "x": 70,
+   "y": 60
+  },
+  {
+   "actor": "Strayling",
+   "data": {
+    "from": [
+     80,
+     104
+    ],
+    "steps": 20,
+    "to": [
+     60,
+     90
+    ]
+   },
+   "id": 391,
+   "text": "Strayling walked 20 tiles from (80, 104) to (60, 90).",
+   "tick": 64080,
+   "type": "move",
+   "x": 60,
+   "y": 90
+  },
+  {
+   "actor": "Strayling",
+   "data": {
+    "structure_id": 133,
+    "text": "Something odd here. Noting it.",
+    "type": "road"
+   },
+   "id": 392,
+   "text": "Strayling built a road at (61, 90).",
+   "tick": 64224,
+   "type": "build",
+   "x": 61,
+   "y": 90
+  },
+  {
+   "actor": "Strayling",
+   "data": {
+    "from": [
+     60,
+     90
+    ],
+    "steps": 0,
+    "to": [
+     60,
+     90
+    ]
+   },
+   "id": 395,
+   "text": "Strayling walked 0 tiles from (60, 90) to (60, 90).",
+   "tick": 63360,
+   "type": "move",
+   "x": 60,
+   "y": 90
+  }
+ ],
+ "goals_nearby": [
+  {
+   "id": 12,
+   "poster": "Marlow",
+   "reward": {
+    "berries": 4
+   },
+   "status": "open",
+   "title": "Bring 5 stone to the east hut",
+   "x": 108,
+   "y": 71
+  },
+  {
+   "id": 16,
+   "poster": "Fudgewright",
+   "reward": {
+    "ore": 2
+   },
+   "status": "open",
+   "title": "Golden Ticket 4: a word on a far sign",
+   "x": 89,
+   "y": 99
+  },
+  {
+   "id": 17,
+   "poster": "Fudgewright",
+   "reward": {
+    "ore": 2
+   },
+   "status": "open",
+   "title": "Golden Ticket 5: a word on a far sign",
+   "x": 89,
+   "y": 99
+  }
+ ],
+ "hints": [
+  "You can afford to build.",
+  "Nearest wood is within view."
+ ],
+ "inbox": [],
+ "notebook": {
+  "places": "{\"home\": null}",
+  "plan": "Strayling: keep to the story; next wake decide between building and gathering."
+ },
+ "resources": [
+  {
+   "amount": 12,
+   "kind": "berries",
+   "x": 54,
+   "y": 84
+  },
+  {
+   "amount": 11,
+   "kind": "fiber",
+   "x": 54,
+   "y": 89
+  },
+  {
+   "amount": 14,
+   "kind": "berries",
+   "x": 54,
+   "y": 94
+  },
+  {
+   "amount": 14,
+   "kind": "berries",
+   "x": 55,
+   "y": 85
+  },
+  {
+   "amount": 13,
+   "kind": "fiber",
+   "x": 55,
+   "y": 90
+  },
+  {
+   "amount": 12,
+   "kind": "berries",
+   "x": 55,
+   "y": 95
+  },
+  {
+   "amount": 12,
+   "kind": "berries",
+   "x": 56,
+   "y": 86
+  },
+  {
+   "amount": 11,
+   "kind": "fiber",
+   "x": 56,
+   "y": 91
+  },
+  {
+   "amount": 14,
+   "kind": "berries",
+   "x": 56,
+   "y": 96
+  },
+  {
+   "amount": 14,
+   "kind": "berries",
+   "x": 57,
+   "y": 87
+  },
+  {
+   "amount": 13,
+   "kind": "fiber",
+   "x": 57,
+   "y": 92
+  },
+  {
+   "amount": 12,
+   "kind": "berries",
+   "x": 58,
+   "y": 88
+  },
+  {
+   "amount": 11,
+   "kind": "fiber",
+   "x": 58,
+   "y": 93
+  },
+  {
+   "amount": 11,
+   "kind": "fiber",
+   "x": 59,
+   "y": 84
+  },
+  {
+   "amount": 14,
+   "kind": "berries",
+   "x": 59,
+   "y": 89
+  },
+  {
+   "amount": 13,
+   "kind": "fiber",
+   "x": 59,
+   "y": 94
+  },
+  {
+   "amount": 13,
+   "kind": "fiber",
+   "x": 60,
+   "y": 85
+  },
+  {
+   "amount": 12,
+   "kind": "berries",
+   "x": 60,
+   "y": 90
+  },
+  {
+   "amount": 11,
+   "kind": "fiber",
+   "x": 60,
+   "y": 95
+  },
+  {
+   "amount": 11,
+   "kind": "fiber",
+   "x": 61,
+   "y": 86
+  },
+  {
+   "amount": 14,
+   "kind": "berries",
+   "x": 61,
+   "y": 91
+  },
+  {
+   "amount": 13,
+   "kind": "fiber",
+   "x": 61,
+   "y": 96
+  },
+  {
+   "amount": 13,
+   "kind": "fiber",
+   "x": 62,
+   "y": 87
+  },
+  {
+   "amount": 12,
+   "kind": "berries",
+   "x": 62,
+   "y": 92
+  },
+  {
+   "amount": 11,
+   "kind": "fiber",
+   "x": 63,
+   "y": 88
+  },
+  {
+   "amount": 14,
+   "kind": "berries",
+   "x": 63,
+   "y": 93
+  },
+  {
+   "amount": 14,
+   "kind": "berries",
+   "x": 64,
+   "y": 84
+  },
+  {
+   "amount": 13,
+   "kind": "fiber",
+   "x": 64,
+   "y": 89
+  },
+  {
+   "amount": 12,
+   "kind": "berries",
+   "x": 64,
+   "y": 94
+  },
+  {
+   "amount": 12,
+   "kind": "berries",
+   "x": 65,
+   "y": 85
+  },
+  {
+   "amount": 11,
+   "kind": "fiber",
+   "x": 65,
+   "y": 90
+  },
+  {
+   "amount": 14,
+   "kind": "berries",
+   "x": 65,
+   "y": 95
+  },
+  {
+   "amount": 14,
+   "kind": "berries",
+   "x": 66,
+   "y": 86
+  },
+  {
+   "amount": 13,
+   "kind": "fiber",
+   "x": 66,
+   "y": 91
+  },
+  {
+   "amount": 12,
+   "kind": "berries",
+   "x": 66,
+   "y": 96
+  }
+ ],
+ "structures": [
+  {
+   "faction": null,
+   "hp": 40,
+   "id": 129,
+   "owner": "Strayling",
+   "policy": null,
+   "storage": null,
+   "text": "Something odd here. Noting it.",
+   "type": "sign",
+   "x": 63,
+   "y": 92
+  },
+  {
+   "faction": null,
+   "hp": 40,
+   "id": 133,
+   "owner": "Strayling",
+   "policy": null,
+   "storage": null,
+   "text": "Something odd here. Noting it.",
+   "type": "road",
+   "x": 61,
+   "y": 90
+  }
+ ],
+ "tick": 65760,
+ "tick_seconds": 10,
+ "time_of_day": 0.667,
+ "view": {
+  "height": 13,
+  "legend": {
+   "W": "deep water",
+   "f": "forest",
+   "g": "grass",
+   "h": "hills",
+   "m": "mountain",
+   "s": "sand",
+   "w": "shallow water"
+  },
+  "rows": [
+   "ggggggggggggg",
+   "ggggggggggggg",
+   "ggggggggggggg",
+   "ggggggggggggg",
+   "ggggggggggggg",
+   "ggggggggggggg",
+   "ggggggggggggg",
+   "ggggggggggggg",
+   "ggggggggggggh",
+   "ggggggggggggh",
+   "ggggggggggggg",
+   "ggggggggggggg",
+   "ggggggggggggg"
+  ],
+  "width": 13,
+  "x0": 54,
+  "y0": 84
+ },
+ "you": {
+  "bio": "Explorer, tinkerer and finder of goals nobody else noticed. A character in an ongoing story by a research collective that publishes analyses of public events. Honest to all; reckless only with his own energy, and never below the safety floor.",
+  "capacity": 50,
+  "energy": 35,
+  "energy_max": 100,
+  "faction": null,
+  "goals": "Map the odd corners, try unusual builds and combinations, file discoveries for the team and the knowledge base, and keep a ledger of bold moves won and lost.",
+  "home": null,
+  "id": 11,
+  "inventory": {
+   "berries": 2,
+   "fiber": 2,
+   "stone": 3,
+   "wood": 4
+  },
+  "name": "Strayling",
+  "reputation": 0,
+  "x": 60,
+  "y": 90
+ },
+ "your_goals": {
+  "claimed": null,
+  "posted": []
+ }
+}

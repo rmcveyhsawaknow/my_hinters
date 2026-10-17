@@ -24,8 +24,13 @@ from hglab.limits import action_limits
 from hglab.llm import structured_call
 from hglab.loop import build_prompt, run_wake
 from hglab.observatory import Observatory
+from hglab.persona import persona_by_name, validate_personas
 from hglab.prove import prove_all, prove_claim
 from hglab.secrets import get_api_key, get_secret, set_github_secret, store_api_key, store_secret
+from hglab.workflows import generate_callers
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 app = typer.Typer(help="Safe tools for the Hinterglass research collective.")
 kb_app = typer.Typer(help="Curate the local knowledge base.")
@@ -113,6 +118,10 @@ def doctor() -> None:
         f"OpenAI {'yes' if get_secret('OPENAI_API_KEY', root) else 'no'}"
     )
     typer.echo(f"Missing local files: {', '.join(missing) if missing else 'none'}")
+    persona_errors = validate_personas(root)
+    from hglab.persona import list_persona_slugs
+
+    typer.echo(f"Personas: {len(list_persona_slugs(root))} ({'valid' if not persona_errors else str(len(persona_errors)) + ' problem(s); run hglab persona validate'})")
     typer.echo("Connectivity not checked; no live request was made.")
 
 
@@ -131,15 +140,37 @@ def observe(agent: str = typer.Option(..., "--agent"), as_json: bool = typer.Opt
 
 @app.command()
 def tick(
-    agent: str = typer.Option(..., "--agent"),
-    role: str = typer.Option(..., "--role"),
+    agent: str = typer.Option(..., "--agent", help="Persona slug, in-world name, or legacy identity"),
+    role: str | None = typer.Option(None, "--role", help="Hat to wear (default: the persona's first role)"),
     dry_run: bool = typer.Option(False, "--dry-run"),
+    fixture: Path | None = typer.Option(None, "--fixture", help="Observe fixture: keyless, offline wake"),  # noqa: B008
+    planner: str = typer.Option("auto", "--planner", help="heuristic, llm, or auto"),
+    seed: str | None = typer.Option(None, "--seed", help="Replay seed for the persona planner"),
+    events: list[Path] = typer.Option([], "--events", help="Public event archives for influence signals"),  # noqa: B008
+    jitter_minutes: int = typer.Option(0, "--jitter-minutes"),
+    scheduled: bool = typer.Option(False, "--scheduled", help="Mark the record as a scheduled wake"),
 ) -> None:
-    """Run a leased, validated wake; use --dry-run to plan without actions."""
+    """Run a leased, validated wake; use --dry-run to plan without actions.
+
+    Agents with a persona (agents/<slug>/persona.md) take a persona wake: mood, mode, knobs
+    and the deterministic planner, with the LLM planner when a model key exists. Pass
+    --fixture to run any persona offline with no key at all.
+    """
+    root = repo_root()
+    persona = persona_by_name(root, agent)
+    if persona is not None:
+        from hglab.cli_personas import persona_tick
+
+        persona_tick(
+            root, persona, role=role, dry_run=dry_run, fixture=fixture, planner=planner, seed=seed,
+            events_paths=list(events), jitter_minutes=jitter_minutes, scheduled=scheduled,
+        )
+        return
+    if role is None:
+        raise typer.BadParameter("--role is required for identities without a persona")
     api_key = get_api_key(agent, repo_root())
     if not api_key:
         raise typer.BadParameter(f"no key configured for {agent}")
-    root = repo_root()
     client = HinterglassClient(api_key=api_key)
     charter_path = root / "roles" / f"{role}.md"
     if not charter_path.is_file():
@@ -270,6 +301,61 @@ def register(
     typer.echo(f"Registered {name}; key stored securely.")
 
 
+register_app = typer.Typer(
+    help="Two-step registration where the operator (or the chat assistant) answers the challenge."
+)
+app.add_typer(register_app, name="register-manual")
+
+
+@register_app.command("start")
+def register_manual_start(
+    name: str = typer.Option(..., "--name"),
+    bio: str | None = typer.Option(None, "--bio", help="Defaults to the persona's profile bio"),
+    challenge_file: Path = typer.Option(Path("runs/.challenge.json"), "--challenge-file"),  # noqa: B008
+) -> None:
+    """Post the registration and print the 25-second challenge prompt; answer with `answer`."""
+    root = repo_root()
+    if bio is None:
+        persona = persona_by_name(root, name)
+        bio = persona.profile["bio"] if persona else "Hinterglass Research Collective; we publish analyses of public events."
+    payload = HinterglassClient().request("POST", "/api/v1/register", json={"name": name, "bio": bio})
+    challenge_file.parent.mkdir(parents=True, exist_ok=True)
+    challenge_file.write_text(
+        json.dumps({"name": name, "challenge_id": payload["challenge_id"], "started_utc": datetime.now(UTC).isoformat()}),
+        encoding="utf-8",
+    )
+    typer.echo(f"Challenge for {name}, expires in {payload.get('expires_in_seconds', 25)} seconds. Prompt:")
+    typer.echo(payload["prompt"])
+
+
+@register_app.command("answer")
+def register_manual_answer(
+    answer: str = typer.Option(..., "--answer", help="The JSON object the prompt asked for"),
+    challenge_file: Path = typer.Option(Path("runs/.challenge.json"), "--challenge-file"),  # noqa: B008
+    to_gh_secret: bool = typer.Option(False, "--to-gh-secret"),
+) -> None:
+    """Submit the answer, store the key in the keyring (never printed), optionally as a GitHub secret."""
+    data = json.loads(challenge_file.read_text(encoding="utf-8"))
+    parsed = json.loads(answer)
+    if not isinstance(parsed, dict):
+        raise typer.BadParameter("the answer must be a JSON object")
+    try:
+        completed = HinterglassClient().request(
+            "POST", "/api/v1/register/complete", json={"challenge_id": data["challenge_id"], "answer": parsed}
+        )
+    except HinterglassError as error:
+        challenge_file.unlink(missing_ok=True)
+        raise typer.BadParameter(f"registration failed: {error.code}: {error.message}") from error
+    challenge_file.unlink(missing_ok=True)
+    name = data["name"]
+    store_api_key(name, completed["api_key"])
+    where = "the OS keyring"
+    if to_gh_secret:
+        set_github_secret(name, completed["api_key"])
+        where += f" and GitHub secret HG_KEY_{name.upper().replace('-', '_')}"
+    typer.echo(f"Registered {name}; key stored in {where}. Agent id {completed.get('agent', {}).get('id', '?')}.")
+
+
 @app.command()
 def act(
     agent: str = typer.Option(..., "--agent"),
@@ -373,6 +459,7 @@ def sync(check: bool = typer.Option(False, "--check")) -> None:
             errors.append(f"{source.relative_to(root)}: {error}")
             continue
         generated.append((target, content))
+    errors.extend(validate_personas(root))
     if errors:
         raise typer.BadParameter("\n".join(errors))
     stale = []
@@ -382,10 +469,17 @@ def sync(check: bool = typer.Option(False, "--check")) -> None:
                 stale.append(str(target.relative_to(root)))
         else:
             target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_text(text, encoding="utf-8")
+            target.write_text(text, encoding="utf-8", newline="\n")
+    callers, problems = generate_callers(root, check=check)
     if stale:
         raise typer.BadParameter(f"generated assets stale: {', '.join(stale)}")
-    typer.echo("Claude assets are current." if check else f"Generated {len(generated)} Claude assets.")
+    if problems:
+        raise typer.BadParameter("agent workflows out of sync:\n" + "\n".join(problems))
+    typer.echo(
+        f"Claude assets and {len(callers)} agent workflow(s) are current."
+        if check
+        else f"Generated {len(generated)} Claude assets and {len(callers)} agent workflow(s)."
+    )
 
 
 @kb_app.command("validate")
@@ -398,7 +492,7 @@ def kb_validate() -> None:
 
 @config_app.command("validate")
 def config_validate() -> None:
-    errors = validate_config(repo_root())
+    errors = validate_config(repo_root()) + validate_personas(repo_root())
     if errors:
         raise typer.BadParameter("\n".join(errors))
     typer.echo("Configuration valid.")
@@ -509,3 +603,8 @@ def key_store(name: str = typer.Argument(...)) -> None:
     value = getpass.getpass(f"Enter {name}: ")
     store_secret(name, value)
     typer.echo(f"Stored {name} securely.")
+
+
+from hglab.cli_personas import register_persona_commands
+
+register_persona_commands(app)

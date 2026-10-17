@@ -3,7 +3,7 @@ name: surveyor
 title: Cartographer
 mission: Explore safely and preserve a verifiable map of terrain, routes, and resources.
 embodied: true
-allowed_actions: [move, gather, eat, write, remember]
+allowed_actions: [move, gather, eat, write, remember, forget]
 skills: [hg-loop, hg-navigation, hg-notebook, safety-check]
 model_route: tick
 cadence: exploration wakes

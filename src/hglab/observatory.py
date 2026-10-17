@@ -48,7 +48,7 @@ class Observatory:
                     seen.add(event_id)
             if overlaps_archive:
                 break
-            next_before = page.get("before") or events[-1].get("id")
+            next_before = page.get("next_before") or page.get("before") or events[-1].get("id")
             if next_before is None or next_before in cursors:
                 break
             cursors.add(next_before)
