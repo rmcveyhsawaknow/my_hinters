@@ -3,7 +3,7 @@
  "name": "GrandadPail",
  "team": "chocolate-factory",
  "headline": "resting up for the glory",
- "metric_version": 1,
+ "metric_version": 2,
  "tick": 65760,
  "day": 182,
  "date": "2026-10-17",
@@ -71,7 +71,7 @@
   ]
  },
  "in_character": {
-  "score": 82,
+  "score": 75,
   "detail": "boastful 5 · lazy 5 · fond 4 · opportunistic 4",
   "signatures": [
    {
@@ -101,11 +101,22 @@
     "label": "share of energy spent talking",
     "value": 0.667,
     "range": [
-     0.4,
+     0.3,
      0.9
     ],
     "inside": true,
     "measure": "runs.action_energy_share"
+   },
+   {
+    "id": "lines_per_day",
+    "label": "public lines per real day",
+    "value": 1.57,
+    "range": [
+     8,
+     60
+    ],
+    "inside": false,
+    "measure": "events.says_per_day"
    },
    {
     "id": "energy_mix",
@@ -223,7 +234,7 @@
  "trend": {
   "alive": "▇▇▇▇▇▇█",
   "on_mission": "▅▅▅▅▅▅▃",
-  "in_character": "█▇██▇▇▇"
+  "in_character": "█▇██▇▇▆"
  },
  "history": [
   {
@@ -270,10 +281,10 @@
   },
   {
    "date": "2026-10-17",
-   "metric_version": 1,
+   "metric_version": 2,
    "alive": 94,
    "on_mission": 26,
-   "in_character": 82,
+   "in_character": 75,
    "tick": 65760
   }
  ],

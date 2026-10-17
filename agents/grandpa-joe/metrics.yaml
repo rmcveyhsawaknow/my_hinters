@@ -1,4 +1,4 @@
-version: 1
+version: 2
 agent: grandpa-joe
 headline: resting up for the glory
 key_results:
@@ -44,7 +44,11 @@ signatures:
     label: share of energy spent talking
     measure: runs.action_energy_share
     params: {activity: social}
-    range: [0.4, 0.9]
+    range: [0.3, 0.9]
+  - id: lines_per_day
+    label: public lines per real day
+    measure: events.says_per_day
+    range: [8, 60]
   - id: energy_mix
     label: intended vs actual energy mix
     measure: runs.energy_mix_match

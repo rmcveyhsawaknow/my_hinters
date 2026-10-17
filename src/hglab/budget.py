@@ -139,6 +139,9 @@ def projected_month(root: Path) -> dict[str, float]:
     totals[f"judge:{judge_model}"] = round(7 * 30 * call_cost({"model": judge_model, "input_tokens": estimate["judge_input_tokens"], "output_tokens": estimate["judge_output_tokens"]}, pricing), 2)
     challenge_model = models["challenge"]["model"]
     totals[f"challenges:{challenge_model}"] = round(7 * 30 * call_cost({"model": challenge_model, "input_tokens": estimate["challenge_input_tokens"], "output_tokens": estimate["challenge_output_tokens"]}, pricing), 2)
+    talk_model = models.get("talk", models["tick"])["model"]
+    shifts_per_month = sum(cron_fires_per_day(p.knobs["work"]["cron"]) * 30 for p in load_personas(root).values() if p.knobs.get("work"))
+    totals[f"shift lines:{talk_model}"] = round(shifts_per_month * call_cost({"model": talk_model, "input_tokens": estimate.get("talk_input_tokens", 1800), "output_tokens": estimate.get("talk_output_tokens", 60)}, pricing), 2)
     totals["total"] = round(sum(totals.values()), 2)
     return totals
 

@@ -35,4 +35,4 @@ Tinkerglow chooses and builds Neverland, a safe haven recorded as team territory
 
 - tootles's escape (71) lowers tinker-bell's glow: Time and distance Lagalong spends outside Neverland dim Tinkerglow's Glow; she feels abandoned.
 
-Metric spec versions: v1. Tick 65760.
+Metric spec versions: v1, v2. Tick 65760.

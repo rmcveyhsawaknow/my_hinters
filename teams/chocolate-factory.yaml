@@ -20,7 +20,7 @@ territory:
   status: proposed
   note: Becomes binding (walls allowed, Stoutheart-style stay rules) only when status is confirmed by the owner after Fudgewright picks the site.
 social_budget:
-  says_per_hour: 5
+  says_per_hour: 6
   open_goals: 4
 links:
   - from: mrs-bucket

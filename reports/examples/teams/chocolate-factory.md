@@ -6,7 +6,7 @@ Build a walled factory far from other homesteads that everyone wants to visit, r
 | --- | --- | --- | --- | --- | --- |
 | Fudgewright | 92 | 83 | 92 | whimsical fine print: 3 outcome for 1 energy over 3 wake(s) | move energy from whispered faction name as the lock (44 energy, nothing to show) toward whimsical fine print |
 | MotherPail | 94 | 72 | 72 | keep the storehouse stocked: 55 outcome for 36 energy over 14 wake(s) | keep testing keep the storehouse stocked; it has the best outcome per unit of energy |
-| GrandadPail | 94 | 26 | 82 | tall tales with footnotes: 0 outcome for 1 energy over 3 wake(s) | try springing to life for glory events at least once this week; it has a bet but no wakes |
+| GrandadPail | 94 | 26 | 75 | tall tales with footnotes: 0 outcome for 1 energy over 3 wake(s) | try springing to life for glory events at least once this week; it has a bet but no wakes |
 
 ## Influence links
 
@@ -26,4 +26,4 @@ Build a walled factory far from other homesteads that everyone wants to visit, r
 
 - Fudgewright's Fairness (audit) is 100: Fairness 100: 4 of 4 audit(s) credited the true worker.
 
-Metric spec versions: v1. Tick 65760.
+Metric spec versions: v1, v2. Tick 65760.

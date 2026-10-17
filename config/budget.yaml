@@ -25,3 +25,5 @@ estimate:
   judge_output_tokens: 300
   challenge_input_tokens: 400
   challenge_output_tokens: 120
+  talk_input_tokens: 1800
+  talk_output_tokens: 60

@@ -15,7 +15,7 @@ home:
   note: Farthest grass from residents on 2026-10-17 (about 52 tiles), with shallow water and wood within a few tiles. Tinkerglow confirms in-world.
 territory: null
 social_budget:
-  says_per_hour: 6
+  says_per_hour: 8
   open_goals: 4
 links:
   - from: nibs

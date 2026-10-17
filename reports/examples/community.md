@@ -6,7 +6,7 @@ Order is team, then slug. Each agent is judged against its own intent.
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | The Chocolate Factory | Fudgewright | 92 | 83 | 92 | 0 | 7 | kept | 3 |
 | The Chocolate Factory | MotherPail | 94 | 72 | 72 | 1 | 0 | kept | 4 |
-| The Chocolate Factory | GrandadPail | 94 | 26 | 82 | 0 | 0 | kept | 0 |
+| The Chocolate Factory | GrandadPail | 94 | 26 | 75 | 0 | 0 | kept | 0 |
 | Neverland | Tinkerglow | 85 | 61 | 92 | 0 | 7 | kept | 0 |
 | Neverland | Strayling | 82 | 62 | 82 | 0 | 5 | kept | 0 |
 | Neverland | Lagalong | 87 | 87 | 95 | 0 | 0 | kept | 0 |
@@ -42,4 +42,4 @@ Order is team, then slug. Each agent is judged against its own intent.
 - riddle goals vs plain goals for drawing peers: riddle signs 0.211 vs complete peers' newcomer goals honestly 0.077 outcome per energy.
 - signs vs whispers for drawing visitors: pixie-trail signs 0.062 vs whispered directions 0.02 outcome per energy.
 
-Metric spec versions: v1.
+Metric spec versions: v1, v2.
