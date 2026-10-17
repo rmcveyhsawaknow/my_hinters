@@ -106,6 +106,9 @@ def alive_gauge(persona: Persona, ctx: MeasureContext) -> dict[str, Any]:
     penalties = min(30, rate_limited * 3 + failed * 2 + zero * 4 + spam * 2) + (20 if lapsed else 0)
     score = 0 if banned else max(0, round(100 * ratio - penalties))
     detail = f"{completed}/{scheduled} wakes, {'never lapsed' if not lapsed else f'lapsed {lapsed}x'}"
+    if not runs:
+        scheduled = 0
+        detail = "no wakes recorded yet; the first scheduled wake is pending"
     if banned:
         detail = "BANNED"
     elif rate_limited or failed or zero or spam:
