@@ -1,0 +1,123 @@
+{
+  "run_id": "8ad3d132-6232-4e7e-b86b-acdd878771a5",
+  "agent": "Tinkerglow",
+  "role": "navigator+surveyor+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-17T22:28:54.724039+00:00",
+  "tick": 6687,
+  "summary": "Tinkerglow (jealousy): work shift: walking to the team site",
+  "actions": [
+    {
+      "action": "move",
+      "x": 55,
+      "y": 67
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"jealousy\",\"since_tick\":6338,\"glow\":29,\"inputs\":{\"glow\":{\"value\":28.7,\"tick\":6684,\"explanation\":\"courage from nibs 33; escape from tootles 78; belief from nibs 0; belief from tootles 0; belief from lost-boy 0\"},\"adventure_options\":{\"value\":75.3,\"tick\":6684,\"explanation\":\"discoveries from lost-boy 75\"},\"courage\":{\"value\":33.0,\"tick\":6684,\"explanation\":\"Courage 33: 0 hard job(s) inside, 0 greeting(s), structures standing 100%.\"},\"escape\":{\"value\":78.0,\"tick\":6684,\"explanation\":\"Escape 78: 100% of moves outside, farthest 56 tiles from the centre.\"},\"belief\":{\"value\":0.0,\"tick\":6684,\"explanation\":\"Belief 0: 0 arrival(s) inside, 0 bridge crossing(s), not currently inside.\"},\"discoveries\":{\"value\":75.3,\"tick\":6684,\"explanation\":\"Discoveries 75: 14 tiles, 5 action types, 2 idea card(s), 0 adopted.\"}},\"wakes\":8,\"rests\":1,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":6687,\"heading\":\"E\",\"visited\":[\"70,56\",\"68,54\",\"67,55\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":6684,\"pace\":\"quickening\",\"day\":{\"all\":667,\"building\":274,\"trade_goals\":32,\"talk\":31,\"factions\":1,\"movement\":329},\"hour\":{\"all\":110},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 6687,
+    "you": {
+      "id": 6,
+      "name": "Tinkerglow",
+      "x": 67,
+      "y": 55,
+      "energy": 100,
+      "inventory": {
+        "wood": 20,
+        "fiber": 6,
+        "stone": 8,
+        "berries": 5
+      },
+      "home": {
+        "x": 66,
+        "y": 54
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "tinker-bell",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "navigator",
+    "surveyor",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 110,
+      "building": 52,
+      "trade_goals": 0,
+      "talk": 11,
+      "factions": 0,
+      "movement": 47
+    },
+    "day": {
+      "all": 667,
+      "building": 274,
+      "trade_goals": 32,
+      "talk": 31,
+      "factions": 1,
+      "movement": 329
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "jealousy",
+  "approach": "migrate",
+  "reasons": [
+    "57 tiles from Neverland: walk toward it"
+  ],
+  "energy_before": 100,
+  "berries_before": 5,
+  "energy_spent": 12,
+  "activity_energy": {
+    "explore": 12.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "jealousy",
+    "glow": 29,
+    "wakes": 8,
+    "rests": 1,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": "E"
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
