@@ -1,0 +1,132 @@
+{
+  "run_id": "7ef7afe4-a915-4241-9034-29ab6e280cb8",
+  "agent": "Stoutheart",
+  "role": "builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-17T20:43:42.670278+00:00",
+  "tick": 6056,
+  "summary": "Stoutheart (brave): work shift: gathering for the next build",
+  "actions": [
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "gather",
+      "kind": "fiber"
+    },
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brave\",\"since_tick\":0,\"glow\":50,\"inputs\":{\"resolve\":{\"value\":38.0,\"tick\":5986,\"explanation\":\"escape from tootles 76\"},\"escape\":{\"value\":76.0,\"tick\":5986,\"explanation\":\"Escape 76: 100% of moves outside, farthest 52 tiles from the centre.\"}},\"wakes\":2,\"rests\":1,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":6056,\"visited\":[\"65,71\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":6052,\"pace\":\"steady\",\"day\":{\"all\":522,\"building\":214,\"trade_goals\":32,\"talk\":16,\"factions\":1,\"movement\":259},\"hour\":{\"all\":18},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 6056,
+    "you": {
+      "id": 9,
+      "name": "Stoutheart",
+      "x": 65,
+      "y": 71,
+      "energy": 100,
+      "inventory": {
+        "wood": 5,
+        "berries": 5
+      },
+      "home": null
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "nibs",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 18,
+      "building": 11,
+      "trade_goals": 0,
+      "talk": 0,
+      "factions": 0,
+      "movement": 7
+    },
+    "day": {
+      "all": 522,
+      "building": 214,
+      "trade_goals": 32,
+      "talk": 16,
+      "factions": 1,
+      "movement": 259
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "brave",
+  "approach": "gather_trip",
+  "reasons": [
+    "wood node at (64, 72) is adjacent; take five, leave the rest to regrow",
+    "fiber node at (65, 71) is adjacent; take five, leave the rest to regrow",
+    "wood node at (64, 72) is adjacent; take five, leave the rest to regrow"
+  ],
+  "energy_before": 100,
+  "berries_before": 5,
+  "energy_spent": 9,
+  "activity_energy": {
+    "gather": 9.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brave",
+    "glow": 50,
+    "wakes": 2,
+    "rests": 1,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:stay_inside",
+    "walls_inside_territory"
+  ]
+}
