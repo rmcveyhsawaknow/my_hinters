@@ -34,8 +34,11 @@ def route_config(route: str, root: Path, author_runtime: str | None = None) -> d
         raise ValueError(f"unknown model route: {route}") from exc
     has_anthropic = bool(get_secret("ANTHROPIC_API_KEY", root))
     has_openai = bool(get_secret("OPENAI_API_KEY", root))
-    openai_model = config["routes"].get("review", {}).get("model", "")
-    openai_usable = has_openai and openai_model and openai_model != "TODO"
+    openai_model = next(
+        (r.get("model", "") for r in config["routes"].values() if r.get("provider") == "openai" and r.get("model") not in ("", "TODO")),
+        "",
+    )
+    openai_usable = bool(has_openai and openai_model)
     if route == "review" and has_anthropic and openai_usable:
         if author_runtime and author_runtime.startswith("actions-openai"):
             selected["provider"] = "anthropic"
