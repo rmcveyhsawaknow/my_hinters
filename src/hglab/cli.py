@@ -361,11 +361,12 @@ def act(
     if not api_key:
         raise typer.BadParameter(f"no key configured for {agent}")
     values = {}
+    text_fields = {"text", "title", "description", "bio", "goals", "motto", "to", "name", "key"}
     for pair in params or []:
         if "=" not in pair:
             raise typer.BadParameter(f"expected key=value, got {pair!r}")
         key, value = pair.split("=", 1)
-        values[key] = yaml.safe_load(value)
+        values[key] = value if key in text_fields else yaml.safe_load(value)
     client = HinterglassClient(api_key=api_key)
     lease = acquire(client, agent)
     if lease is None:
