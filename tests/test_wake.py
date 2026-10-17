@@ -109,3 +109,31 @@ def test_normalise_plan_expands_the_compact_model_shape():
     assert plan["whisper_tags"] == ["supportive"]
     stray = normalise_plan({"summary": "", "reasons": [], "approach": None, "actions": [{"action": "build", "type": "farm", "title": "junk", "key": "junk"}, {"action": "remember", "key": "plan", "text": ""}, {"action": "say", "text": "  "}]})
     assert stray["actions"] == [{"action": "build", "type": "farm"}]
+
+
+def test_coordinate_less_builds_land_on_a_free_tile_and_refusals_are_recorded(tmp_path, monkeypatch):
+    from hglab.client import HinterglassError
+
+    monkeypatch.setattr("hglab.wake.decide_wake_mode", lambda *a, **k: "act")
+    personas = load_personas(ROOT)
+    nibs = personas["nibs"]
+    observe = load_fixture(FIX / "observe/nibs.json")
+    observe["you"]["inventory"] = {"wood": 20, "fiber": 10, "berries": 6}
+    client = FixtureClient(observe)
+    original_act = client.act
+
+    def refusing_act(action):
+        if action.get("action") == "build":
+            raise HinterglassError(400, "tile_occupied", "already a hut here")
+        return original_act(action)
+
+    client.act = refusing_act
+    lease = acquire(client, nibs.name)
+    record = persona_wake(
+        persona=nibs, team=load_team(ROOT, "neverland"), personas=personas, client=client, lease=lease, root=ROOT,
+        output_dir=tmp_path, dry_run=False, planner_mode="llm", seed="x",
+        llm_call=lambda g, o: {"summary": "s", "actions": [{"action": "build", "type": "farm"}], "reasons": ["farm"], "approach": None},
+    )
+    build = next(a for a in record["actions"] if a["action"] == "build")
+    assert "x" in build and "y" in build
+    assert record["failed_actions"] == 1 and record["results"][0] == {"ok": False, "error": "tile_occupied"}

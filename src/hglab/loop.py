@@ -103,7 +103,11 @@ def run_wake(
         results = []
         if not dry_run:
             for action in actions:
-                result = client.act(action.model_dump(exclude_none=True))
+                try:
+                    result = client.act(action.model_dump(exclude_none=True))
+                except Exception as exc:  # noqa: BLE001 - a world refusal must not end the run
+                    code = getattr(exc, "code", None) or exc.__class__.__name__
+                    result = {"ok": False, "error": str(code)[:40]}
                 results.append(redact_result(result))
                 if not result.get("ok", False):
                     break

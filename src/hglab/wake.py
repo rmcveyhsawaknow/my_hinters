@@ -264,6 +264,7 @@ def persona_wake(
             elif candidate is not None:
                 candidate = normalise_plan(candidate)
                 candidate["actions"] = _rate_limit_profile(candidate.get("actions", []), state, tick, extras)
+                candidate["actions"] = _place_builds(candidate["actions"], observe, terrain_rows, extras)
                 try:
                     _check(candidate.get("actions", []), observe, mates)
                     plan = {**plan, **candidate, "reasons": candidate.get("reasons") or plan["reasons"]}
@@ -363,6 +364,45 @@ def persona_wake(
         compact=work,
     )
     return record
+
+
+def _place_builds(
+    actions: list[dict[str, Any]], observe: dict[str, Any], terrain_rows: list[str] | None, extras: dict[str, Any]
+) -> list[dict[str, Any]]:
+    """A build without coordinates goes on the agent's tile if free, else an adjacent free tile."""
+    from hglab.planner import WorldView, neighbours
+
+    you = observe.get("you") or {}
+    if not all(isinstance(you.get(k), int) for k in ("x", "y")):
+        return actions
+    view = WorldView.from_observe(observe, terrain_rows)
+    here = (int(you["x"]), int(you["y"]))
+    kept: list[dict[str, Any]] = []
+    for action in actions:
+        if action.get("action") != "build":
+            kept.append(action)
+            continue
+        kind = str(action.get("type", ""))
+        terrain_ok = {"g"} if kind == "farm" else ({"w"} if kind == "bridge" else None)
+        target = None
+        if action.get("x") is not None and action.get("y") is not None:
+            target = (int(action["x"]), int(action["y"]))
+            if view.structure_at(*target) is not None or (terrain_ok and view.terrain(*target) not in terrain_ok):
+                target = None
+        if target is None:
+            for tile in [here, *neighbours(*here)]:
+                if kind == "bridge":
+                    if view.terrain(*tile) == "w" and view.structure_at(*tile) is None:
+                        target = tile
+                        break
+                elif view.free_tile(*tile, terrain_ok):
+                    target = tile
+                    break
+        if target is None:
+            extras.setdefault("dropped", []).append(f"build {kind}: no free tile beside ({here[0]},{here[1]})")
+            continue
+        kept.append({**action, "x": target[0], "y": target[1]})
+    return kept
 
 
 def _rate_limit_profile(actions: list[dict[str, Any]], state: PersonaState, tick: int, extras: dict[str, Any]) -> list[dict[str, Any]]:
