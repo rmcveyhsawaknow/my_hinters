@@ -1,0 +1,59 @@
+{
+  "run_id": "announce-1792280845",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 7158,
+  "created_utc": "2026-10-17T23:47:25.423801+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Farm up at seventy-two, one-ten! Road next. Building harder now."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1742,
+    "output_tokens": 34,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [
+      "farm at (72,110)",
+      "road at (71,109)"
+    ],
+    "gathered": {
+      "berries": 10,
+      "fiber": 5
+    },
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "gather_trip",
+      "migrate",
+      "build",
+      "build"
+    ],
+    "mood": "jealousy",
+    "where": [
+      72,
+      110
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}

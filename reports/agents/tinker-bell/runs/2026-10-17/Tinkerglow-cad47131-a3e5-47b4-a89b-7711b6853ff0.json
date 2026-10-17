@@ -1,0 +1,133 @@
+{
+  "run_id": "cad47131-a3e5-47b4-a89b-7711b6853ff0",
+  "agent": "Tinkerglow",
+  "role": "navigator+surveyor+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-17T23:47:22.674752+00:00",
+  "tick": 7158,
+  "summary": "Tinkerglow (jealousy): work shift: building",
+  "actions": [
+    {
+      "action": "build",
+      "x": 71,
+      "y": 109,
+      "type": "road"
+    },
+    {
+      "action": "gather",
+      "kind": "fiber"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"jealousy\",\"since_tick\":6338,\"glow\":28,\"inputs\":{\"glow\":{\"value\":28.5,\"tick\":6994,\"explanation\":\"courage from nibs 33; escape from tootles 78; belief from nibs 0; belief from tootles 0; belief from lost-boy 0\"},\"adventure_options\":{\"value\":78.8,\"tick\":6994,\"explanation\":\"discoveries from lost-boy 79\"},\"courage\":{\"value\":33.0,\"tick\":6994,\"explanation\":\"Courage 33: 0 hard job(s) inside, 0 greeting(s), structures standing 100%.\"},\"escape\":{\"value\":78.5,\"tick\":6994,\"explanation\":\"Escape 78: 100% of moves outside, farthest 57 tiles from the centre.\"},\"belief\":{\"value\":0.0,\"tick\":6994,\"explanation\":\"Belief 0: 0 arrival(s) inside, 0 bridge crossing(s), not currently inside.\"},\"discoveries\":{\"value\":78.8,\"tick\":6994,\"explanation\":\"Discoveries 79: 23 tiles, 5 action types, 2 idea card(s), 0 adopted.\"}},\"wakes\":17,\"rests\":3,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":7158,\"heading\":\"E\",\"visited\":[\"70,56\",\"68,54\",\"67,55\",\"55,67\",\"43,79\",\"53,91\",\"65,103\",\"63,98\",\"72,110\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":7156,\"pace\":\"steady\",\"day\":{\"all\":716,\"building\":278,\"trade_goals\":35,\"talk\":40,\"factions\":1,\"movement\":362},\"hour\":{\"all\":31},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 7158,
+    "you": {
+      "id": 6,
+      "name": "Tinkerglow",
+      "x": 72,
+      "y": 110,
+      "energy": 100,
+      "inventory": {
+        "wood": 15,
+        "fiber": 1,
+        "stone": 8,
+        "berries": 14
+      },
+      "home": {
+        "x": 66,
+        "y": 54
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "tinker-bell",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "navigator",
+    "surveyor",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 31,
+      "building": 2,
+      "trade_goals": 3,
+      "talk": 5,
+      "factions": 0,
+      "movement": 21
+    },
+    "day": {
+      "all": 716,
+      "building": 278,
+      "trade_goals": 35,
+      "talk": 40,
+      "factions": 1,
+      "movement": 362
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "jealousy",
+  "approach": "build",
+  "reasons": [
+    "materials in hand for a road at (71, 109)",
+    "fiber node at (72, 110) is adjacent; take five, leave the rest to regrow"
+  ],
+  "energy_before": 100,
+  "berries_before": 14,
+  "energy_spent": 8,
+  "activity_energy": {
+    "build": 5.0,
+    "gather": 3.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "jealousy",
+    "glow": 28,
+    "wakes": 17,
+    "rests": 3,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": "E"
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
