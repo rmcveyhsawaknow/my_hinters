@@ -75,7 +75,7 @@ signals, the Pulse, per-agent workflows and five new skills. See
 - Skills: `hg-be-agent`, `hg-community`, `hg-new-agent`, `hg-pulse`, `hg-deploy-agent`.
 - kb: the monument puzzle (`H-20261017-monument-buildable`), the P2 landmass claim with
   `analysis/landmass.py`, one goal per agent plus the ticket hunt, fifteen approach bets,
-  two Lost Boy idea cards.
+  two Strayling idea cards.
 - Tests: 69 passing, fixtures only; `reports/examples` pinned by a snapshot test.
 - Scaffold changes beyond the plan: embodied roles gained notebook bookkeeping
   (`remember`, `forget`), the builder gained `write`, the broker gained `whisper` and

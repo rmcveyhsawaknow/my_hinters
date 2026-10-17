@@ -4,17 +4,17 @@ Build a walled factory far from other homesteads that everyone wants to visit, r
 
 | agent | alive | on mission | in character | working | next bet |
 | --- | --- | --- | --- | --- | --- |
-| Wonka | 92 | 83 | 92 | whimsical fine print: 3 outcome for 1 energy over 3 wake(s) | move energy from whispered faction name as the lock (44 energy, nothing to show) toward whimsical fine print |
-| MrsBucket | 94 | 72 | 72 | keep the storehouse stocked: 55 outcome for 36 energy over 14 wake(s) | keep testing keep the storehouse stocked; it has the best outcome per unit of energy |
-| GrandpaJoe | 94 | 26 | 82 | tall tales with footnotes: 0 outcome for 1 energy over 3 wake(s) | try springing to life for glory events at least once this week; it has a bet but no wakes |
+| Fudgewright | 92 | 83 | 92 | whimsical fine print: 3 outcome for 1 energy over 3 wake(s) | move energy from whispered faction name as the lock (44 energy, nothing to show) toward whimsical fine print |
+| MotherPail | 94 | 72 | 72 | keep the storehouse stocked: 55 outcome for 36 energy over 14 wake(s) | keep testing keep the storehouse stocked; it has the best outcome per unit of energy |
+| GrandadPail | 94 | 26 | 82 | tall tales with footnotes: 0 outcome for 1 energy over 3 wake(s) | try springing to life for glory events at least once this week; it has a bet but no wakes |
 
 ## Influence links
 
 | from | signal | value | to | effect | plain English |
 | --- | --- | --- | --- | --- | --- |
-| mrs-bucket | hope | 33 | wonka | inspiration | When Mrs Bucket is contributing, uplifted and resilient, Wonka dreams bigger and pays better. |
-| grandpa-joe | bluster | 21 | wonka | suspicion | The more credit Grandpa Joe claims beyond what the log supports, the more honesty tests and fine print Wonka adds. |
-| grandpa-joe | bluster | 21 | wonka | discernment | Every tall tale Wonka's audit catches sharpens his eye for who really did the work. |
+| mrs-bucket | hope | 33 | wonka | inspiration | When Mother Pail is contributing, uplifted and resilient, Fudgewright dreams bigger and pays better. |
+| grandpa-joe | bluster | 21 | wonka | suspicion | The more credit Grandad Pail claims beyond what the log supports, the more honesty tests and fine print Fudgewright adds. |
+| grandpa-joe | bluster | 21 | wonka | discernment | Every tall tale Fudgewright's audit catches sharpens his eye for who really did the work. |
 
 ## Signals explained
 
@@ -24,6 +24,6 @@ Build a walled factory far from other homesteads that everyone wants to visit, r
 
 ## What each member's success costs the others
 
-- Wonka's Fairness (audit) is 100: Fairness 100: 4 of 4 audit(s) credited the true worker.
+- Fudgewright's Fairness (audit) is 100: Fairness 100: 4 of 4 audit(s) credited the true worker.
 
 Metric spec versions: v1. Tick 65760.

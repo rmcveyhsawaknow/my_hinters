@@ -1,6 +1,6 @@
 {
  "agent": "lost-boy",
- "name": "LostBoy",
+ "name": "Strayling",
  "team": "neverland",
  "headline": "finding what nobody was looking for",
  "metric_version": 1,
@@ -162,14 +162,14 @@
   }
  },
  "team_pull": {
-  "detail": "Belief 23 → TinkerBell · Discoveries 73 → TinkerBell",
+  "detail": "Belief 23 → Tinkerglow · Discoveries 73 → Tinkerglow",
   "sent": [
    {
     "from": "lost-boy",
     "signal": "belief",
     "to": "tinker-bell",
     "effect": "glow",
-    "plain_english": "The Lost Boy wandering back inside or over a bridge counts as Belief.",
+    "plain_english": "Strayling wandering back inside or over a bridge counts as Belief.",
     "weight": 0.4,
     "half_life_hours": 24.0,
     "value": 22.9,
@@ -182,7 +182,7 @@
     "signal": "discoveries",
     "to": "tinker-bell",
     "effect": "adventure_options",
-    "plain_english": "Every discovery the Lost Boy files becomes an adventure Tinker Bell can lead.",
+    "plain_english": "Every discovery Strayling files becomes an adventure Tinkerglow can lead.",
     "weight": 1.0,
     "half_life_hours": 72.0,
     "value": 72.7,

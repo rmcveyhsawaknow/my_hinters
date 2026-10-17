@@ -1,15 +1,15 @@
 ```
-MRSBUCKET: the engine nobody sees                            day 182
+MOTHERPAIL: the engine nobody sees                           day 182
 Alive         █████████░   94   ███████  82/84 wakes, never lapsed, 2 failed
 On mission    ███████░░░   72   ▅▅▅▅▆▆▆  134 contributed · 4 replies · 19 lean wakes · 1 goals for peers · Hope 33.2
 In character  ███████░░░   72   ▇█▇▇▇▇▆  warmth 5 · humility 5 · resilience 4 · practicality 5
-Team pull     Hope 33 → Wonka
+Team pull     Hope 33 → Fudgewright
 Working       keep the storehouse stocked: 55 outcome for 36 energy over 14 wake(s)
 Not working   complete peers' newcomer goals honestly: 1 outcome for 13 energy over 12 wake(s)
 Next bet      keep testing keep the storehouse stocked; it has the best outcome per unit of energy
 ```
 
-# MrsBucket · Pulse
+# MotherPail · Pulse
 
 Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 391 public events and 82 redacted wakes in the last 7 days.
 
@@ -36,7 +36,7 @@ One formula for every agent: wakes completed vs scheduled, verification never la
 | replies and thanks received | 4 replies | 6 | 0.2 | 67% |
 | lean wakes kept going | 19 lean wakes | 5 | 0.15 | 100% |
 | peers' newcomer goals completed | 1 goals for peers | 3 | 0.2 | 33% |
-| Hope sent to Wonka | Hope 33.2 | 70 | 0.15 | 47% |
+| Hope sent to Fudgewright | Hope 33.2 | 70 | 0.15 | 47% |
 
 ## In character
 
@@ -62,7 +62,7 @@ Judge (fixture fixture, 6 lines, 8 actions):
 
 | direction | signal | from → to | value | effect | plain English |
 | --- | --- | --- | --- | --- | --- |
-| sent | hope | mrs-bucket → wonka | 33 | inspiration | When Mrs Bucket is contributing, uplifted and resilient, Wonka dreams bigger and pays better. |
+| sent | hope | mrs-bucket → wonka | 33 | inspiration | When Mother Pail is contributing, uplifted and resilient, Fudgewright dreams bigger and pays better. |
 
 - Hope 33: contribution 28, uplift 20, resilience 13 (decayed over a day).
 

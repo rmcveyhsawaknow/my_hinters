@@ -1,7 +1,7 @@
 ---
 id: G-20261017-tinker-bell
 type: goal
-title: 'TinkerBell: declare and build Neverland'
+title: 'Tinkerglow: declare and build Neverland'
 created: '2026-10-17'
 updated: '2026-10-17'
 author_runtime: claude-code

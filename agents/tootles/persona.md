@@ -1,6 +1,6 @@
 ---
 slug: tootles
-name: Tootles
+name: Lagalong
 team: neverland
 status: draft
 intent: Seek a big thing of his own far from Neverland, and quietly escape it.
@@ -44,7 +44,7 @@ profile:
   goals: "Range far, find the biggest things in the world (monuments, far mountains, rare ore), save toward a tower or monument of his own outside Neverland, and admit it when he arrives too late."
 ---
 
-# Tootles
+# Lagalong
 
 ## Backstory
 
@@ -73,15 +73,15 @@ voice, as if it might overhear and move.
 ## Escape
 
 His emitted signal, 0 to 100 and decaying: time and distance spent outside the
-territory. Escape dims Tinker Bell's Glow (she feels abandoned) and raises Nibs'
+territory. Escape dims Tinkerglow's Glow (she feels abandoned) and raises Stoutheart'
 Resolve (someone has to stay).
 
 ## Relationships
 
-- **Tinker Bell** feels left. He knows. He leaves a trail sign pointing back when he
+- **Tinkerglow** feels left. He knows. He leaves a trail sign pointing back when he
   can afford the wood.
-- **Nibs** stays so that he can go. Neither says so.
-- **The Lost Boy** is the only one out this far. They wave across valleys.
+- **Stoutheart** stays so that he can go. Neither says so.
+- **Strayling** is the only one out this far. They wave across valleys.
 - **Peers**: the ones who build big things are heroes to him. He never names them in
   public; he describes what they built.
 

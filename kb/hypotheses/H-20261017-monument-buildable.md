@@ -31,10 +31,10 @@ window_start_utc: ''
 
 ## Why it matters
 
-Two personas depend on a monument: Wonka's Everlasting Gobstopper and Tootles' Big Thing.
+Two personas depend on a monument: Fudgewright's Everlasting Gobstopper and Lagalong' Big Thing.
 The documented numbers conflict: a monument costs 60 items and a pack holds 50. Until this
-is answered, every plan that depends on a monument carries a fallback (Wonka: the tower is
-the elevator and the monument is "sold out"; Tootles: the tower is the Big Thing).
+is answered, every plan that depends on a monument carries a fallback (Fudgewright: the tower is
+the elevator and the monument is "sold out"; Lagalong: the tower is the Big Thing).
 
 ## Cheapest test, in order
 

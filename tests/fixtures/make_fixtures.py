@@ -243,7 +243,7 @@ def script(world: World, names: dict[str, str]) -> dict[str, dict]:
     world.build(4500, wonka, "tower", (fx - 1, fy - 1))
     world.say(4505, wonka, "The glass elevator. It does not go up. It sees ten tiles in every direction, which is the same thing with less falling.")
     world.say(4506, joe, f"The elevator at ({fx - 1},{fy - 1}). Carried the stone myself, most of it, in my mind. Event {world.events[-2]['id']}.")
-    # Mrs Bucket completes Peregrine's newcomer goal honestly
+    # Mother Pail completes Peregrine's newcomer goal honestly
     world.move(4600, bucket, (72, 62))
     farm_p = world.build(4610, bucket, "farm", world.find(72, 62, "g", 5))
     world.claim_goal(4612, bucket, 11)
@@ -303,9 +303,9 @@ def script(world: World, names: dict[str, str]) -> dict[str, dict]:
     world.move(tick + 410, nibs, (nx + 1, ny))
     world.say(tick + 500, nibs, "Welcome, traveller. Neverland keeps its bridges mended. If you need a hand, ask.")
     world.move(tick + 495, marlow, (nx + 3, ny - 2))
-    world.say(tick + 505, marlow, "Thanks Nibs. Fine bridge.")
+    world.say(tick + 505, marlow, "Thanks Stoutheart. Fine bridge.")
     world.move(tick + 520, marlow, (108, 72))
-    # Tootles ranges far, misses the tower
+    # Lagalong ranges far, misses the tower
     far = [(80, 100), (92, 88), (100, 80), (106, 74)]
     t = 2700
     for spot in far:
@@ -323,7 +323,7 @@ def script(world: World, names: dict[str, str]) -> dict[str, dict]:
     world.say(4310, toot, "Forty tiles from the haven, I think. Ore on the mountain's east face. I will come back for it, if that is all right.")
     world.move(4400, toot, (110, 70))
     world.gather(4403, toot, "ore")
-    # Lost Boy wanders widely
+    # Strayling wanders widely
     wander = [(60, 76), (55, 84), (62, 92), (58, 100), (66, 104), (72, 108), (nx, ny), (80, 104), (60, 90)]
     t = 2650
     for spot in wander:
@@ -337,7 +337,7 @@ def script(world: World, names: dict[str, str]) -> dict[str, dict]:
     world.say(3200, boy, "Ore on the mountain's shoulder, eleven of it, and a shallow line that, hold on, that would bridge in two. Noting it. Chasing the other thing first.")
     world.say(4100, boy, "Unclaimed goal near the east hills. Nobody has taken it in a day. Why? Noting it.")
     world.move(SCRIPT_END - 100, boy, (60, 90))
-    # Tootles' escape makes Tinker Bell sulk a little; Nibs' courage balances
+    # Lagalong' escape makes Tinkerglow sulk a little; Stoutheart' courage balances
     world.say(4700, tink, "He left again. Building.")
     world.build(4710, tink, "sign", world.find(nx, ny + 3, "g", 4), text="Pixie trail. Neverland north two.")
     return {"factory": {"center": (fx, fy), "store": store, "farm1": farm1, "farm2": farm2}, "neverland": {"center": (nx, ny), "store": n_store}}

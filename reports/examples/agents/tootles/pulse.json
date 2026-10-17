@@ -1,6 +1,6 @@
 {
  "agent": "tootles",
- "name": "Tootles",
+ "name": "Lagalong",
  "team": "neverland",
  "headline": "always just behind the adventure",
  "metric_version": 1,
@@ -162,14 +162,14 @@
   }
  },
  "team_pull": {
-  "detail": "Escape 71 → TinkerBell, Nibs · Belief 0 → TinkerBell",
+  "detail": "Escape 71 → Tinkerglow, Stoutheart · Belief 0 → Tinkerglow",
   "sent": [
    {
     "from": "tootles",
     "signal": "escape",
     "to": "tinker-bell",
     "effect": "glow",
-    "plain_english": "Time and distance Tootles spends outside Neverland dim Tinker Bell's Glow; she feels abandoned.",
+    "plain_english": "Time and distance Lagalong spends outside Neverland dim Tinkerglow's Glow; she feels abandoned.",
     "weight": -0.4,
     "half_life_hours": 24.0,
     "value": 71.0,
@@ -182,7 +182,7 @@
     "signal": "escape",
     "to": "nibs",
     "effect": "resolve",
-    "plain_english": "The more Tootles leaves, the more firmly Nibs stays and stocks the stores.",
+    "plain_english": "The more Lagalong leaves, the more firmly Stoutheart stays and stocks the stores.",
     "weight": 0.5,
     "half_life_hours": 48.0,
     "value": 71.0,
@@ -195,7 +195,7 @@
     "signal": "belief",
     "to": "tinker-bell",
     "effect": "glow",
-    "plain_english": "Even Tootles crossing her bridges or returning inside counts as Belief.",
+    "plain_english": "Even Lagalong crossing her bridges or returning inside counts as Belief.",
     "weight": 0.4,
     "half_life_hours": 24.0,
     "value": 0.0,
@@ -225,7 +225,7 @@
     "per_energy": 0.143,
     "hypothesis": "H-20261017-tootles-near-misses",
     "bet_status": "proposed",
-    "bet_title": "Tootles arrives after big events more often than chance"
+    "bet_title": "Lagalong arrives after big events more often than chance"
    },
    {
     "id": "save_outside",

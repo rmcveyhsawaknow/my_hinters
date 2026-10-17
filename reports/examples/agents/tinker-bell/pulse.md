@@ -1,15 +1,15 @@
 ```
-TINKERBELL: a safe haven, and everyone in it                 day 182
+TINKERGLOW: a safe haven, and everyone in it                 day 182
 Alive         ████████░░   85   ██████▇  53/56 wakes, never lapsed, 2 failed, 2 rate-limited
 On mission    ██████░░░░   61   ▄▄▄▄▄▄▅  1/3 inside · 2/6 built · 7 led · Glow 58 · 100% one-emotion wakes
 In character  █████████░   92   ▇▆▇▆▆▇▇  fierce 4 · loyal 5 · jealous 4 · vain 3
-Team pull     Courage 49 (Nibs) → Glow 62 · Escape 71 (Tootles) → Glow 62 · Belief 42 (Nibs) → Glow 62 · Belief 23 (LostBoy) → Glow 62 · Discoveries 73 (LostBoy) → Adventure Options 73
+Team pull     Courage 49 (Stoutheart) → Glow 62 · Escape 71 (Lagalong) → Glow 62 · Belief 42 (Stoutheart) → Glow 62 · Belief 23 (Strayling) → Glow 62 · Discoveries 73 (Strayling) → Adventure Options 73
 Working       second-star exploration rule: 10 outcome for 31 energy over 4 wake(s)
 Not working   whispered directions: 1 outcome for 49 energy over 12 wake(s)
 Next bet      keep testing second-star exploration rule; it has the best outcome per unit of energy
 ```
 
-# TinkerBell · Pulse
+# Tinkerglow · Pulse
 
 Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 391 public events and 53 redacted wakes in the last 7 days.
 
@@ -63,12 +63,12 @@ Judge (fixture fixture, 6 lines, 8 actions):
 
 | direction | signal | from → to | value | effect | plain English |
 | --- | --- | --- | --- | --- | --- |
-| received | courage | nibs → tinker-bell | 49 | glow | Hard jobs done inside Neverland and visitors greeted brighten Tinker Bell's Glow. |
-| received | escape | tootles → tinker-bell | 71 | glow | Time and distance Tootles spends outside Neverland dim Tinker Bell's Glow; she feels abandoned. |
-| received | belief | nibs → tinker-bell | 42 | glow | Nibs arriving where she pointed, using her bridges and staying inside is Belief, and Belief sets her Glow. |
-| received | belief | tootles → tinker-bell | 0 | glow | Even Tootles crossing her bridges or returning inside counts as Belief. |
-| received | belief | lost-boy → tinker-bell | 23 | glow | The Lost Boy wandering back inside or over a bridge counts as Belief. |
-| received | discoveries | lost-boy → tinker-bell | 73 | adventure_options | Every discovery the Lost Boy files becomes an adventure Tinker Bell can lead. |
+| received | courage | nibs → tinker-bell | 49 | glow | Hard jobs done inside Neverland and visitors greeted brighten Tinkerglow's Glow. |
+| received | escape | tootles → tinker-bell | 71 | glow | Time and distance Lagalong spends outside Neverland dim Tinkerglow's Glow; she feels abandoned. |
+| received | belief | nibs → tinker-bell | 42 | glow | Stoutheart arriving where she pointed, using her bridges and staying inside is Belief, and Belief sets her Glow. |
+| received | belief | tootles → tinker-bell | 0 | glow | Even Lagalong crossing her bridges or returning inside counts as Belief. |
+| received | belief | lost-boy → tinker-bell | 23 | glow | Strayling wandering back inside or over a bridge counts as Belief. |
+| received | discoveries | lost-boy → tinker-bell | 73 | adventure_options | Every discovery Strayling files becomes an adventure Tinkerglow can lead. |
 
 - Courage 49: 2 hard job(s) inside, 4 greeting(s), structures standing 100%.
 - Escape 71: 100% of moves outside, farthest 42 tiles from the centre.

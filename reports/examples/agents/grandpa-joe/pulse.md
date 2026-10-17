@@ -1,15 +1,15 @@
 ```
-GRANDPAJOE: resting up for the glory                         day 182
+GRANDADPAIL: resting up for the glory                        day 182
 Alive         █████████░   94   ▇▇▇▇▇▇█  27/28 wakes, never lapsed, 1 failed
 On mission    ███░░░░░░░   26   ▅▅▅▅▅▅▃  0.44 energy/wake · 3% of team credit claimed · 0 responses · 0 timely bursts
 In character  ████████░░   82   █▇██▇▇▇  boastful 5 · lazy 5 · fond 4 · opportunistic 4
-Team pull     Bluster 21 → Wonka
+Team pull     Bluster 21 → Fudgewright
 Working       tall tales with footnotes: 0 outcome for 1 energy over 3 wake(s)
 Not working   nothing clearly failing
 Next bet      try springing to life for glory events at least once this week; it has a bet but no wakes
 ```
 
-# GrandpaJoe · Pulse
+# GrandadPail · Pulse
 
 Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 391 public events and 27 redacted wakes in the last 7 days.
 
@@ -61,8 +61,8 @@ Judge (fixture fixture, 6 lines, 8 actions):
 
 | direction | signal | from → to | value | effect | plain English |
 | --- | --- | --- | --- | --- | --- |
-| sent | bluster | grandpa-joe → wonka | 21 | suspicion | The more credit Grandpa Joe claims beyond what the log supports, the more honesty tests and fine print Wonka adds. |
-| sent | bluster | grandpa-joe → wonka | 21 | discernment | Every tall tale Wonka's audit catches sharpens his eye for who really did the work. |
+| sent | bluster | grandpa-joe → wonka | 21 | suspicion | The more credit Grandad Pail claims beyond what the log supports, the more honesty tests and fine print Fudgewright adds. |
+| sent | bluster | grandpa-joe → wonka | 21 | discernment | Every tall tale Fudgewright's audit catches sharpens his eye for who really did the work. |
 
 - Bluster 21: 13 claim(s) against own work 0, 3% of the team's logged work claimed.
 

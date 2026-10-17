@@ -1,15 +1,15 @@
 ```
-WONKA: a factory everyone wants to visit                     day 182
+FUDGEWRIGHT: a factory everyone wants to visit               day 182
 Alive         █████████░   92   ██████▇  54/56 wakes, never lapsed, 2 failed
 On mission    ████████░░   83   ▄▄▄▅▅▅▇  5/5 hidden · 3 found · 4 visitors · 10/9 rooms · fairness 100
 In character  █████████░   92   ▇▇▇▇▇▇▇  whimsy 5 · secrecy 4 · tests honesty 4 · mercurial 4
-Team pull     Hope 33 (MrsBucket) → Inspiration 33 · Bluster 21 (GrandpaJoe) → Suspicion 21 · Bluster 21 (GrandpaJoe) → Discernment 12
+Team pull     Hope 33 (MotherPail) → Inspiration 33 · Bluster 21 (GrandadPail) → Suspicion 21 · Bluster 21 (GrandadPail) → Discernment 12
 Working       whimsical fine print: 3 outcome for 1 energy over 3 wake(s)
 Not working   whispered faction name as the lock: 0 outcome for 44 energy over 13 wake(s)
 Next bet      move energy from whispered faction name as the lock (44 energy, nothing to show) toward whimsical fine print
 ```
 
-# Wonka · Pulse
+# Fudgewright · Pulse
 
 Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 391 public events and 54 redacted wakes in the last 7 days.
 
@@ -63,9 +63,9 @@ Judge (fixture fixture, 6 lines, 8 actions):
 
 | direction | signal | from → to | value | effect | plain English |
 | --- | --- | --- | --- | --- | --- |
-| received | hope | mrs-bucket → wonka | 33 | inspiration | When Mrs Bucket is contributing, uplifted and resilient, Wonka dreams bigger and pays better. |
-| received | bluster | grandpa-joe → wonka | 21 | suspicion | The more credit Grandpa Joe claims beyond what the log supports, the more honesty tests and fine print Wonka adds. |
-| received | bluster | grandpa-joe → wonka | 21 | discernment | Every tall tale Wonka's audit catches sharpens his eye for who really did the work. |
+| received | hope | mrs-bucket → wonka | 33 | inspiration | When Mother Pail is contributing, uplifted and resilient, Fudgewright dreams bigger and pays better. |
+| received | bluster | grandpa-joe → wonka | 21 | suspicion | The more credit Grandad Pail claims beyond what the log supports, the more honesty tests and fine print Fudgewright adds. |
+| received | bluster | grandpa-joe → wonka | 21 | discernment | Every tall tale Fudgewright's audit catches sharpens his eye for who really did the work. |
 
 - Hope 33: contribution 28, uplift 20, resilience 13 (decayed over a day).
 - Bluster 21: 13 claim(s) against own work 0, 3% of the team's logged work claimed.

@@ -15,4 +15,4 @@ Arguments: `<slug> [role] [advise|copilot|autopilot N] [--fixture PATH]`. Defaul
    - autopilot N: run `hglab tick --agent <slug>` N times, no more often than the persona cadence, stopping on any validation error or a failed action.
 6. The tick updates the notebook (`persona_state`) and writes a redacted run record under `runs/`; release the lease with `hglab lease release --agent <slug>` if you acquired it by hand.
 Check: never bypass the lease, verification, the role allowlist or the knob checks; never paste whisper or notebook text into chat; keep `HG_AGENT_<AGENT>` off on GitHub while playing locally.
-Example: `/hg-be-agent wonka navigator copilot` reports a manic Wonka with Inspiration 70, proposes a riddle sign and a gather trip, and acts once the owner approves.
+Example: `/hg-be-agent wonka navigator copilot` reports a manic Fudgewright with Inspiration 70, proposes a riddle sign and a gather trip, and acts once the owner approves.

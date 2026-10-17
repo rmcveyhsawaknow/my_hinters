@@ -29,24 +29,24 @@ brings them into your local `reports/`. The old matrix heartbeat is retired: one
 
 1. Play the agent locally until you trust it (`docs/local-play.md`).
 2. `hglab deploy check --agent wonka`, or `/hg-deploy-agent wonka` in chat. It tells you
-   whether `HG_KEY_WONKA` exists (by name only), regenerates the caller, and prints the
+   whether `HG_KEY_FUDGEWRIGHT` exists (by name only), regenerates the caller, and prints the
    exact variable to flip.
-3. If the secret is missing: `hglab register --name Wonka --to-gh-secret` at registration
-   time, or later `gh secret set HG_KEY_WONKA` reading the value from the keyring. Never
+3. If the secret is missing: `hglab register --name Fudgewright --to-gh-secret` at registration
+   time, or later `gh secret set HG_KEY_FUDGEWRIGHT` reading the value from the keyring. Never
    put a key on a command line or in chat.
-4. Set the per-agent variable: `gh variable set HG_AGENT_WONKA --body on`.
+4. Set the per-agent variable: `gh variable set HG_AGENT_FUDGEWRIGHT --body on`.
 5. Set the kill switch last: `gh variable set HG_ENABLED --body true`.
 6. Dry run on Actions: `gh workflow run agent-wonka.yml -f job=tick -f dry_run=true`, then
    `gh run watch`. Read the step summary: mode, mood, planner, actions, token usage.
-7. Leave the schedule to it. Flip `HG_AGENT_WONKA` to `off` whenever you want to play
-   Wonka locally; flip it back afterwards.
+7. Leave the schedule to it. Flip `HG_AGENT_FUDGEWRIGHT` to `off` whenever you want to play
+   Fudgewright locally; flip it back afterwards.
 
 ## From one agent to all
 
 Repeat steps 2 to 6 per agent. Each identity needs its own registration and its own
-secret; model keys are shared. Enable Neverland after Tinker Bell has a site in mind, and
+secret; model keys are shared. Enable Neverland after Tinkerglow has a site in mind, and
 confirm the territory (`hglab team set-territory --team neverland --x .. --y .. --radius 8 --confirm`)
-before Nibs' stay-inside rule should bind.
+before Stoutheart' stay-inside rule should bind.
 
 ## Cost math
 
@@ -54,13 +54,13 @@ Per agent per real day, with the committed cadences:
 
 | agent | ticks/day | keepalives/day | LLM calls/day (approx.) |
 | --- | ---: | ---: | ---: |
-| Wonka | 8 | 4 | 8-16 |
-| MrsBucket | 12 | 4 | 12-24 |
-| GrandpaJoe | 4 | 4 | 2-4 (60% of wakes rest without a call) |
-| TinkerBell | 8 | 4 | 8-16 |
-| LostBoy | 12 | 4 | 12-24 |
-| Tootles | 6 | 4 | 5-10 |
-| Nibs | 8 | 4 | 8-16 |
+| Fudgewright | 8 | 4 | 8-16 |
+| MotherPail | 12 | 4 | 12-24 |
+| GrandadPail | 4 | 4 | 2-4 (60% of wakes rest without a call) |
+| Tinkerglow | 8 | 4 | 8-16 |
+| Strayling | 12 | 4 | 12-24 |
+| Lagalong | 6 | 4 | 5-10 |
+| Stoutheart | 8 | 4 | 8-16 |
 | all seven | 58 | 28 | about 55-110, plus 7 judge calls |
 
 Each tick call sends a few thousand input tokens (bible, knobs, redacted observe) and

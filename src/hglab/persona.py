@@ -574,7 +574,7 @@ def enforce_knobs(
 
 
 def _owner_in_team(owner: str, team: Team | None) -> bool:
-    """Dash-insensitive fallback when in-world names were not supplied (TinkerBell ~ tinker-bell)."""
+    """Dash-insensitive fallback when in-world names were not supplied (Tinkerglow ~ tinker-bell)."""
     if team is None:
         return False
     flat = owner.replace("-", "").replace("_", "")

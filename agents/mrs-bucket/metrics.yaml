@@ -31,7 +31,7 @@ key_results:
     weight: 0.2
     format: "{value} goals for peers"
   - id: hope_emitted
-    label: Hope sent to Wonka
+    label: Hope sent to Fudgewright
     measure: signal.value
     params: {name: hope}
     target: 70

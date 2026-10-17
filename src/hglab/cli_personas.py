@@ -825,7 +825,7 @@ def community_scene(
     dry_run: bool = typer.Option(True, "--dry-run/--live"),
     seed: str | None = typer.Option("scene", "--seed"),
 ) -> None:
-    """Stage a team scene from fixtures, for example Grandpa Joe boasts and Wonka audits."""
+    """Stage a team scene from fixtures, for example Grandad Pail boasts and Fudgewright audits."""
     root = root_dir()
     if name not in SCENES:
         raise typer.BadParameter(f"unknown scene; choose from {', '.join(SCENES)}")

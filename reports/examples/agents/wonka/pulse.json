@@ -1,6 +1,6 @@
 {
  "agent": "wonka",
- "name": "Wonka",
+ "name": "Fudgewright",
  "team": "chocolate-factory",
  "headline": "a factory everyone wants to visit",
  "metric_version": 1,
@@ -167,7 +167,7 @@
   }
  },
  "team_pull": {
-  "detail": "Hope 33 (MrsBucket) → Inspiration 33 · Bluster 21 (GrandpaJoe) → Suspicion 21 · Bluster 21 (GrandpaJoe) → Discernment 12",
+  "detail": "Hope 33 (MotherPail) → Inspiration 33 · Bluster 21 (GrandadPail) → Suspicion 21 · Bluster 21 (GrandadPail) → Discernment 12",
   "sent": [],
   "received": [
    {
@@ -175,7 +175,7 @@
     "signal": "hope",
     "to": "wonka",
     "effect": "inspiration",
-    "plain_english": "When Mrs Bucket is contributing, uplifted and resilient, Wonka dreams bigger and pays better.",
+    "plain_english": "When Mother Pail is contributing, uplifted and resilient, Fudgewright dreams bigger and pays better.",
     "weight": 1.0,
     "half_life_hours": 24.0,
     "value": 33.2,
@@ -188,7 +188,7 @@
     "signal": "bluster",
     "to": "wonka",
     "effect": "suspicion",
-    "plain_english": "The more credit Grandpa Joe claims beyond what the log supports, the more honesty tests and fine print Wonka adds.",
+    "plain_english": "The more credit Grandad Pail claims beyond what the log supports, the more honesty tests and fine print Fudgewright adds.",
     "weight": 1.0,
     "half_life_hours": 24.0,
     "value": 20.8,
@@ -201,7 +201,7 @@
     "signal": "bluster",
     "to": "wonka",
     "effect": "discernment",
-    "plain_english": "Every tall tale Wonka's audit catches sharpens his eye for who really did the work.",
+    "plain_english": "Every tall tale Fudgewright's audit catches sharpens his eye for who really did the work.",
     "weight": 0.6,
     "half_life_hours": 48.0,
     "value": 20.8,

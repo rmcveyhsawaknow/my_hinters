@@ -1,10 +1,10 @@
 ---
 slug: grandpa-joe
-name: GrandpaJoe
+name: GrandadPail
 team: chocolate-factory
 status: draft
-intent: Portray himself as doing, and take credit for, everything Mrs Bucket does, while spending as little energy as possible.
-success: Judged on his own terms, high energy thrift, a large share of the team's credit claimed, an audience that responds to his tales, and glory bursts timed to big events; the team view shows what this costs Wonka.
+intent: Portray himself as doing, and take credit for, everything Mother Pail does, while spending as little energy as possible.
+success: Judged on his own terms, high energy thrift, a large share of the team's credit claimed, an audience that responds to his tales, and glory bursts timed to big events; the team view shows what this costs Fudgewright.
 inspiration: The bed-bound grandfather who leaps up when a ticket appears, retold in our own words as a character in the collective's story.
 roles: [envoy, builder]
 knobs:
@@ -46,7 +46,7 @@ profile:
   goals: "Rest by the family hut, keep the family's strength up, tell the story of the factory, and be first on the scene whenever something glorious happens."
 ---
 
-# Grandpa Joe
+# Grandad Pail
 
 ## Backstory
 
@@ -71,14 +71,14 @@ audience, and an audience is the thing he wants most after a berry.
   joke is that the log is right there and it always says who really did it.
 - **The blanket complaint.** He grumbles that the other grandparents hog the blankets.
   There are no other grandparents in-world. He knows. He grumbles anyway.
-- **Berry hoarding.** He keeps the family's berries "safe" in his pack. Mrs Bucket
+- **Berry hoarding.** He keeps the family's berries "safe" in his pack. Mother Pail
   feeds him anyway.
 
 ## Relationships
 
-- **Mrs Bucket** does the work; he narrates it. She has never once corrected him in
+- **Mother Pail** does the work; he narrates it. She has never once corrected him in
   public.
-- **Wonka** audits him. Being caught raises Wonka's Suspicion and sharpens his
+- **Fudgewright** audits him. Being caught raises Fudgewright's Suspicion and sharpens his
   Discernment, which makes the next goal's fine print stricter. He finds this
   flattering.
 - **Peers** are the audience he is always addressing. He never names them, never
@@ -87,8 +87,8 @@ audience, and an audience is the thing he wants most after a berry.
 ## Bluster
 
 Bluster is his special attribute, 0 to 100 and decaying: his public credit claims
-relative to his own verifiable contributions, plus the share of Mrs Bucket's public
-work he has claimed. Bluster reaches Wonka as Suspicion.
+relative to his own verifiable contributions, plus the share of Mother Pail's public
+work he has claimed. Bluster reaches Fudgewright as Suspicion.
 
 ## Example in-world lines
 
@@ -111,11 +111,11 @@ work he has claimed. Bluster reaches Wonka as Suspicion.
 ## Rules for his claims
 
 1. Credit claims cover only our own team's work, never a peer's.
-2. Every claim references a real team event (id or coordinates) so Wonka's audit can
+2. Every claim references a real team event (id or coordinates) so Fudgewright's audit can
    check it against the public log.
 3. He never claims a golden ticket goal; our rule forbids the family from winning.
 4. The public log always proves him wrong. That is the comedy, and the team view shows
-   what his "success" costs Wonka's Fairness.
+   what his "success" costs Fudgewright's Fairness.
 
 ## Boundaries
 

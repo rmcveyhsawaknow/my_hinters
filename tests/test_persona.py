@@ -77,7 +77,7 @@ def test_nibs_never_leaves_a_confirmed_neverland_and_stays_near_tinker_bell_befo
     nibs = load_persona(ROOT, "nibs")
     observe = load_fixture(FIX / "observe/nibs.json")
     team = load_team(ROOT, "neverland")
-    # before Neverland exists: within radius of Tinker Bell
+    # before Neverland exists: within radius of Tinkerglow
     enforce_knobs([{"action": "move", "x": 76, "y": 114}], nibs, team, observe, teammates={"tinker-bell": (74, 112)})
     with pytest.raises(ValueError, match="stays within 6 of tinker-bell"):
         enforce_knobs([{"action": "move", "x": 85, "y": 112}], nibs, team, observe, teammates={"tinker-bell": (74, 112)})
@@ -120,8 +120,8 @@ def test_social_rate_and_team_budget_cap_public_speech():
         enforce_knobs([say], joe, team, observe, recent_say_count=0, team_recent_says=5)
     with pytest.raises(ValueError, match="under 240 characters"):
         enforce_knobs([{"action": "say", "text": "x" * 250}], joe, team, observe)
-    events = [{"type": "say", "actor": "Wonka", "tick": 100}, {"type": "say", "actor": "MrsBucket", "tick": 300}, {"type": "say", "actor": "Peregrine", "tick": 300}, {"type": "say", "actor": "Wonka", "tick": 1}]
-    assert team_say_count(events, {"Wonka", "MrsBucket"}, 400) == 2
+    events = [{"type": "say", "actor": "Fudgewright", "tick": 100}, {"type": "say", "actor": "MotherPail", "tick": 300}, {"type": "say", "actor": "Peregrine", "tick": 300}, {"type": "say", "actor": "Fudgewright", "tick": 1}]
+    assert team_say_count(events, {"Fudgewright", "MotherPail"}, 400) == 2
 
 
 def test_actions_per_wake_excludes_the_state_bookkeeping():
@@ -139,10 +139,11 @@ def test_walls_only_inside_own_confirmed_territory_and_never_beside_others():
     team = load_team(ROOT, "neverland")
     observe = load_fixture(FIX / "observe/nibs.json")
     wall = {"action": "build", "type": "wall", "x": 76, "y": 112}
+    members = {load_persona(ROOT, m).name for m in team.members}
     with pytest.raises(ValueError, match="only built inside"):
-        enforce_knobs([wall], nibs, team, observe, teammates={"tinker-bell": (74, 112)})
+        enforce_knobs([wall], nibs, team, observe, teammates={"tinker-bell": (74, 112)}, member_names=members)
     confirmed = _confirmed(team)
-    enforce_knobs([wall], nibs, confirmed, observe, teammates={"tinker-bell": (74, 112)})
+    enforce_knobs([wall], nibs, confirmed, observe, teammates={"tinker-bell": (74, 112)}, member_names=members)
     observe["structures"].append({"id": 999, "type": "hut", "x": 77, "y": 112, "owner": "Peregrine"})
     with pytest.raises(ValueError, match="beside another agent"):
-        enforce_knobs([wall], nibs, confirmed, observe, teammates={"tinker-bell": (74, 112)})
+        enforce_knobs([wall], nibs, confirmed, observe, teammates={"tinker-bell": (74, 112)}, member_names=members)

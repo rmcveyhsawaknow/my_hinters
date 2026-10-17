@@ -1,15 +1,15 @@
 ```
-LOSTBOY: finding what nobody was looking for                 day 182
+STRAYLING: finding what nobody was looking for               day 182
 Alive         ████████░░   82   ▇▇█▇▇█▇  80/84 wakes, never lapsed, 5 failed, 1 rate-limited
 On mission    ██████░░░░   62   ▄▄▄▅▅▅▅  novelty 71 · 2 filed · 0 adopted · ledger 8 · 36% distracted
 In character  ████████░░   82   ▇▇▇▇▇▇▇  curious 5 · distractible 5 · bold 4 · creative 4
-Team pull     Belief 23 → TinkerBell · Discoveries 73 → TinkerBell
+Team pull     Belief 23 → Tinkerglow · Discoveries 73 → Tinkerglow
 Working       unusual builds: 71 outcome for 24 energy over 9 wake(s)
 Not working   bold long trips: 8 outcome for 72 energy over 14 wake(s)
 Next bet      try forty percent distraction roll at least once this week; it has a bet but no wakes
 ```
 
-# LostBoy · Pulse
+# Strayling · Pulse
 
 Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 391 public events and 80 redacted wakes in the last 7 days.
 
@@ -62,8 +62,8 @@ Judge (fixture fixture, 6 lines, 8 actions):
 
 | direction | signal | from → to | value | effect | plain English |
 | --- | --- | --- | --- | --- | --- |
-| sent | belief | lost-boy → tinker-bell | 23 | glow | The Lost Boy wandering back inside or over a bridge counts as Belief. |
-| sent | discoveries | lost-boy → tinker-bell | 73 | adventure_options | Every discovery the Lost Boy files becomes an adventure Tinker Bell can lead. |
+| sent | belief | lost-boy → tinker-bell | 23 | glow | Strayling wandering back inside or over a bridge counts as Belief. |
+| sent | discoveries | lost-boy → tinker-bell | 73 | adventure_options | Every discovery Strayling files becomes an adventure Tinkerglow can lead. |
 
 - Belief 23: 4 arrival(s) inside, 0 bridge crossing(s), not currently inside.
 - Discoveries 73: 14 tiles, 4 action types, 2 idea card(s), 0 adopted.

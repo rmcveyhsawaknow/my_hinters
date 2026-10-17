@@ -59,7 +59,7 @@ def test_tinker_bell_holds_exactly_one_emotion_by_precedence():
     assert step_mood(tink, state, observe, team, rng).mood == "devotion"
     apply_inputs(state, {"escape": {"value": 70, "tick": observe["tick"]}}, observe["tick"])
     assert step_mood(tink, state, observe, team, rng).mood == "jealousy"
-    observe["events"].append({"id": 1, "tick": observe["tick"], "type": "demolish", "actor": "Marlow", "x": 72, "y": 114, "text": "Marlow damaged TinkerBell's bridge at (72, 114).", "data": {}})
+    observe["events"].append({"id": 1, "tick": observe["tick"], "type": "demolish", "actor": "Marlow", "x": 72, "y": 114, "text": "Marlow damaged Tinkerglow's bridge at (72, 114).", "data": {}})
     assert step_mood(tink, state, observe, team, rng).mood == "fury"  # fury outranks jealousy
     observe["events"].pop()
     state.inputs.clear()
@@ -82,8 +82,10 @@ def test_grandpa_joe_bursts_only_when_glory_is_near():
     assert step_mood(joe, state, observe, team, random.Random(1)).mood == "in_bed"
     rests = sum(decide_wake_mode(joe, state, observe, random.Random(seed)) == "rest" for seed in range(400))
     assert 0.5 < rests / 400 < 0.7
-    observe["events"].append({"id": 2, "tick": observe["tick"], "type": "goal_confirmed", "actor": "Wonka", "x": 89, "y": 99, "text": "Wonka confirmed a goal.", "data": {"goal_id": 1, "claimant": "Peregrine"}})
-    assert step_mood(joe, state, observe, team, random.Random(1)).mood == "glory"
+    observe["events"].append({"id": 2, "tick": observe["tick"], "type": "goal_confirmed", "actor": "Fudgewright", "x": 89, "y": 99, "text": "Fudgewright confirmed a goal.", "data": {"goal_id": 1, "claimant": "Peregrine"}})
+    # a peer's glory does not rouse him; the team's does (actors are in-world names, not slugs)
+    assert step_mood(joe, state, observe, team, random.Random(1), member_names={"Peregrine"}).mood == "in_bed"
+    assert step_mood(joe, state, observe, team, random.Random(1), member_names={"Fudgewright", "MotherPail"}).mood == "glory"
     assert decide_wake_mode(joe, state, observe, random.Random(1)) == "burst"
 
 

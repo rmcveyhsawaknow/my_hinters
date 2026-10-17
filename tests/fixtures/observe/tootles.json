@@ -14,14 +14,14 @@
   {
    "actor": "Peregrine",
    "data": {
-    "claimant": "MrsBucket",
+    "claimant": "MotherPail",
     "goal_id": 11,
     "reward": {
      "berries": 5
     }
    },
    "id": 233,
-   "text": "Peregrine confirmed the goal \"Newcomer goal: plant a farm near the lake\"; MrsBucket was paid.",
+   "text": "Peregrine confirmed the goal \"Newcomer goal: plant a farm near the lake\"; MotherPail was paid.",
    "tick": 57600,
    "type": "goal_confirmed",
    "x": 70,
@@ -42,7 +42,7 @@
   },
   {
    "id": 16,
-   "poster": "Wonka",
+   "poster": "Fudgewright",
    "reward": {
     "ore": 2
    },
@@ -53,7 +53,7 @@
   },
   {
    "id": 17,
-   "poster": "Wonka",
+   "poster": "Fudgewright",
    "reward": {
     "ore": 2
    },
@@ -70,7 +70,7 @@
  "inbox": [],
  "notebook": {
   "places": "{\"home\": [106, 75]}",
-  "plan": "Tootles: keep to the story; next wake decide between building and gathering."
+  "plan": "Lagalong: keep to the story; next wake decide between building and gathering."
  },
  "resources": [
   {
@@ -307,7 +307,7 @@
    "faction": null,
    "hp": 40,
    "id": 128,
-   "owner": "Tootles",
+   "owner": "Lagalong",
    "policy": null,
    "storage": null,
    "text": null,
@@ -366,7 +366,7 @@
    "ore": 8,
    "stone": 17
   },
-  "name": "Tootles",
+  "name": "Lagalong",
   "reputation": 0,
   "x": 110,
   "y": 70

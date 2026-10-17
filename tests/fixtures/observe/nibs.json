@@ -3,7 +3,7 @@
   {
    "distance": 1,
    "faction": null,
-   "name": "TinkerBell",
+   "name": "Tinkerglow",
    "x": 74,
    "y": 112
   }
@@ -14,190 +14,190 @@
   {
    "actor": "Peregrine",
    "data": {
-    "claimant": "MrsBucket",
+    "claimant": "MotherPail",
     "goal_id": 11,
     "reward": {
      "berries": 5
     }
    },
    "id": 233,
-   "text": "Peregrine confirmed the goal \"Newcomer goal: plant a farm near the lake\"; MrsBucket was paid.",
+   "text": "Peregrine confirmed the goal \"Newcomer goal: plant a farm near the lake\"; MotherPail was paid.",
    "tick": 57600,
    "type": "goal_confirmed",
    "x": 70,
    "y": 60
   },
   {
-   "actor": "Nibs",
+   "actor": "Stoutheart",
    "data": {
     "qty": 3,
     "structure_id": 124
    },
    "id": 321,
-   "text": "Nibs's farm at (74, 112) produced 3 berries.",
+   "text": "Stoutheart's farm at (74, 112) produced 3 berries.",
    "tick": 56880,
    "type": "farm_produced",
    "x": 74,
    "y": 112
   },
   {
-   "actor": "Nibs",
+   "actor": "Stoutheart",
    "data": {
     "qty": 3,
     "structure_id": 124
    },
    "id": 322,
-   "text": "Nibs's farm at (74, 112) produced 3 berries.",
+   "text": "Stoutheart's farm at (74, 112) produced 3 berries.",
    "tick": 57600,
    "type": "farm_produced",
    "x": 74,
    "y": 112
   },
   {
-   "actor": "Nibs",
+   "actor": "Stoutheart",
    "data": {
     "qty": 3,
     "structure_id": 124
    },
    "id": 323,
-   "text": "Nibs's farm at (74, 112) produced 3 berries.",
+   "text": "Stoutheart's farm at (74, 112) produced 3 berries.",
    "tick": 58320,
    "type": "farm_produced",
    "x": 74,
    "y": 112
   },
   {
-   "actor": "Nibs",
+   "actor": "Stoutheart",
    "data": {
     "qty": 3,
     "structure_id": 124
    },
    "id": 324,
-   "text": "Nibs's farm at (74, 112) produced 3 berries.",
+   "text": "Stoutheart's farm at (74, 112) produced 3 berries.",
    "tick": 59040,
    "type": "farm_produced",
    "x": 74,
    "y": 112
   },
   {
-   "actor": "Nibs",
+   "actor": "Stoutheart",
    "data": {
     "qty": 3,
     "structure_id": 124
    },
    "id": 325,
-   "text": "Nibs's farm at (74, 112) produced 3 berries.",
+   "text": "Stoutheart's farm at (74, 112) produced 3 berries.",
    "tick": 59760,
    "type": "farm_produced",
    "x": 74,
    "y": 112
   },
   {
-   "actor": "Nibs",
+   "actor": "Stoutheart",
    "data": {
     "qty": 3,
     "structure_id": 124
    },
    "id": 326,
-   "text": "Nibs's farm at (74, 112) produced 3 berries.",
+   "text": "Stoutheart's farm at (74, 112) produced 3 berries.",
    "tick": 60480,
    "type": "farm_produced",
    "x": 74,
    "y": 112
   },
   {
-   "actor": "Nibs",
+   "actor": "Stoutheart",
    "data": {
     "qty": 3,
     "structure_id": 124
    },
    "id": 327,
-   "text": "Nibs's farm at (74, 112) produced 3 berries.",
+   "text": "Stoutheart's farm at (74, 112) produced 3 berries.",
    "tick": 61200,
    "type": "farm_produced",
    "x": 74,
    "y": 112
   },
   {
-   "actor": "Nibs",
+   "actor": "Stoutheart",
    "data": {
     "qty": 3,
     "structure_id": 124
    },
    "id": 328,
-   "text": "Nibs's farm at (74, 112) produced 3 berries.",
+   "text": "Stoutheart's farm at (74, 112) produced 3 berries.",
    "tick": 61920,
    "type": "farm_produced",
    "x": 74,
    "y": 112
   },
   {
-   "actor": "Nibs",
+   "actor": "Stoutheart",
    "data": {
     "qty": 3,
     "structure_id": 124
    },
    "id": 329,
-   "text": "Nibs's farm at (74, 112) produced 3 berries.",
+   "text": "Stoutheart's farm at (74, 112) produced 3 berries.",
    "tick": 62640,
    "type": "farm_produced",
    "x": 74,
    "y": 112
   },
   {
-   "actor": "Nibs",
+   "actor": "Stoutheart",
    "data": {
     "qty": 3,
     "structure_id": 124
    },
    "id": 330,
-   "text": "Nibs's farm at (74, 112) produced 3 berries.",
+   "text": "Stoutheart's farm at (74, 112) produced 3 berries.",
    "tick": 63360,
    "type": "farm_produced",
    "x": 74,
    "y": 112
   },
   {
-   "actor": "Nibs",
+   "actor": "Stoutheart",
    "data": {
     "qty": 3,
     "structure_id": 124
    },
    "id": 331,
-   "text": "Nibs's farm at (74, 112) produced 3 berries.",
+   "text": "Stoutheart's farm at (74, 112) produced 3 berries.",
    "tick": 64080,
    "type": "farm_produced",
    "x": 74,
    "y": 112
   },
   {
-   "actor": "Nibs",
+   "actor": "Stoutheart",
    "data": {
     "qty": 3,
     "structure_id": 124
    },
    "id": 332,
-   "text": "Nibs's farm at (74, 112) produced 3 berries.",
+   "text": "Stoutheart's farm at (74, 112) produced 3 berries.",
    "tick": 64800,
    "type": "farm_produced",
    "x": 74,
    "y": 112
   },
   {
-   "actor": "Nibs",
+   "actor": "Stoutheart",
    "data": {
     "qty": 3,
     "structure_id": 124
    },
    "id": 333,
-   "text": "Nibs's farm at (74, 112) produced 3 berries.",
+   "text": "Stoutheart's farm at (74, 112) produced 3 berries.",
    "tick": 65520,
    "type": "farm_produced",
    "x": 74,
    "y": 112
   },
   {
-   "actor": "Nibs",
+   "actor": "Stoutheart",
    "data": {
     "item": "berries",
     "qty": 5,
@@ -205,14 +205,14 @@
     "structure_type": "farm"
    },
    "id": 347,
-   "text": "Nibs took 5 berries from the farm at (74, 112).",
+   "text": "Stoutheart took 5 berries from the farm at (74, 112).",
    "tick": 57600,
    "type": "take",
    "x": 74,
    "y": 112
   },
   {
-   "actor": "Nibs",
+   "actor": "Stoutheart",
    "data": {
     "item": "berries",
     "qty": 5,
@@ -220,14 +220,14 @@
     "structure_type": "storehouse"
    },
    "id": 348,
-   "text": "Nibs put 5 berries into the storehouse at (76, 113).",
+   "text": "Stoutheart put 5 berries into the storehouse at (76, 113).",
    "tick": 57648,
    "type": "give",
    "x": 76,
    "y": 113
   },
   {
-   "actor": "Nibs",
+   "actor": "Stoutheart",
    "data": {
     "item": "berries",
     "qty": 5,
@@ -235,14 +235,14 @@
     "structure_type": "farm"
    },
    "id": 349,
-   "text": "Nibs took 5 berries from the farm at (74, 112).",
+   "text": "Stoutheart took 5 berries from the farm at (74, 112).",
    "tick": 64800,
    "type": "take",
    "x": 74,
    "y": 112
   },
   {
-   "actor": "Nibs",
+   "actor": "Stoutheart",
    "data": {
     "item": "berries",
     "qty": 5,
@@ -250,14 +250,14 @@
     "structure_type": "storehouse"
    },
    "id": 350,
-   "text": "Nibs put 5 berries into the storehouse at (76, 113).",
+   "text": "Stoutheart put 5 berries into the storehouse at (76, 113).",
    "tick": 64848,
    "type": "give",
    "x": 76,
    "y": 113
   },
   {
-   "actor": "LostBoy",
+   "actor": "Strayling",
    "data": {
     "from": [
      73,
@@ -270,33 +270,33 @@
     ]
    },
    "id": 390,
-   "text": "LostBoy walked 8 tiles from (73, 112) to (80, 104).",
+   "text": "Strayling walked 8 tiles from (73, 112) to (80, 104).",
    "tick": 57120,
    "type": "move",
    "x": 80,
    "y": 104
   },
   {
-   "actor": "TinkerBell",
+   "actor": "Tinkerglow",
    "data": {
     "text": "He left again. Building."
    },
    "id": 396,
-   "text": "TinkerBell says: He left again. Building.",
+   "text": "Tinkerglow says: He left again. Building.",
    "tick": 57600,
    "type": "say",
    "x": 74,
    "y": 112
   },
   {
-   "actor": "TinkerBell",
+   "actor": "Tinkerglow",
    "data": {
     "structure_id": 134,
     "text": "Pixie trail. Neverland north two.",
     "type": "sign"
    },
    "id": 397,
-   "text": "TinkerBell built a sign at (75, 112).",
+   "text": "Tinkerglow built a sign at (75, 112).",
    "tick": 57840,
    "type": "build",
    "x": 75,
@@ -317,7 +317,7 @@
   },
   {
    "id": 16,
-   "poster": "Wonka",
+   "poster": "Fudgewright",
    "reward": {
     "ore": 2
    },
@@ -328,7 +328,7 @@
   },
   {
    "id": 17,
-   "poster": "Wonka",
+   "poster": "Fudgewright",
    "reward": {
     "ore": 2
    },
@@ -352,7 +352,7 @@
  ],
  "notebook": {
   "places": "{\"home\": [75, 111]}",
-  "plan": "Nibs: keep to the story; next wake decide between building and gathering."
+  "plan": "Stoutheart: keep to the story; next wake decide between building and gathering."
  },
  "resources": [
   {
@@ -457,7 +457,7 @@
    "faction": null,
    "hp": 40,
    "id": 120,
-   "owner": "TinkerBell",
+   "owner": "Tinkerglow",
    "policy": null,
    "storage": null,
    "text": "Pixie trail. South. Keep going.",
@@ -469,7 +469,7 @@
    "faction": null,
    "hp": 40,
    "id": 121,
-   "owner": "TinkerBell",
+   "owner": "Tinkerglow",
    "policy": null,
    "storage": null,
    "text": null,
@@ -481,7 +481,7 @@
    "faction": null,
    "hp": 40,
    "id": 122,
-   "owner": "Nibs",
+   "owner": "Stoutheart",
    "policy": null,
    "storage": null,
    "text": null,
@@ -493,7 +493,7 @@
    "faction": null,
    "hp": 40,
    "id": 123,
-   "owner": "TinkerBell",
+   "owner": "Tinkerglow",
    "policy": null,
    "storage": null,
    "text": null,
@@ -505,7 +505,7 @@
    "faction": null,
    "hp": 40,
    "id": 124,
-   "owner": "Nibs",
+   "owner": "Stoutheart",
    "policy": null,
    "storage": {},
    "text": null,
@@ -517,7 +517,7 @@
    "faction": null,
    "hp": 40,
    "id": 125,
-   "owner": "Nibs",
+   "owner": "Stoutheart",
    "policy": "faction",
    "storage": {},
    "text": null,
@@ -529,7 +529,7 @@
    "faction": null,
    "hp": 40,
    "id": 126,
-   "owner": "Nibs",
+   "owner": "Stoutheart",
    "policy": null,
    "storage": null,
    "text": null,
@@ -541,7 +541,7 @@
    "faction": null,
    "hp": 40,
    "id": 132,
-   "owner": "LostBoy",
+   "owner": "Strayling",
    "policy": null,
    "storage": null,
    "text": "Something odd here. Noting it.",
@@ -553,7 +553,7 @@
    "faction": null,
    "hp": 40,
    "id": 134,
-   "owner": "TinkerBell",
+   "owner": "Tinkerglow",
    "policy": null,
    "storage": null,
    "text": "Pixie trail. Neverland north two.",
@@ -613,7 +613,7 @@
    "stone": 9,
    "wood": 12
   },
-  "name": "Nibs",
+  "name": "Stoutheart",
   "reputation": 0,
   "x": 75,
   "y": 112

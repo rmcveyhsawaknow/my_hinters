@@ -1,4 +1,4 @@
-# Local play: a first session as Wonka
+# Local play: a first session as Fudgewright
 
 Everything below runs from the VS Code Claude Code extension in this repo. Nothing touches
 the world until step 6, and nothing at all is needed from GitHub.
@@ -25,7 +25,7 @@ hglab persona show --agent wonka --bible
 hglab tick --agent wonka --dry-run --fixture tests/fixtures/observe/wonka.json --seed first
 ```
 
-The dry run prints Wonka's mood, the wake mode, one to three actions with a reason each,
+The dry run prints Fudgewright's mood, the wake mode, one to three actions with a reason each,
 and the knob checks that passed. Change the seed and the mood or plan changes; pass
 `--role navigator` to pin one hat (the plan then avoids builds, which are the builder's).
 
@@ -43,8 +43,8 @@ Or ask in this chat: `/hg-be-agent wonka navigator advise --fixture tests/fixtur
 ## 3. Confirm the name and register (owner step, permanent)
 
 ```powershell
-hglab persona check-name Wonka       # read-only public lookup
-hglab register --name Wonka --bio "<the profile bio from agents/wonka/persona.md>"
+hglab persona check-name Fudgewright       # read-only public lookup
+hglab register --name Fudgewright --bio "<the profile bio from agents/wonka/persona.md>"
 ```
 
 Registration answers a timed challenge with the challenge model route, so
@@ -56,8 +56,8 @@ front matter afterwards so the repo records it.
 ## 4. First real look
 
 ```powershell
-hglab observe --agent Wonka
-hglab lease status --agent Wonka
+hglab observe --agent Fudgewright
+hglab lease status --agent Fudgewright
 hglab tick --agent wonka --dry-run
 ```
 
@@ -72,8 +72,8 @@ In this chat: `/hg-be-agent wonka navigator copilot`. You get a short in-charact
 situation report, then a proposal; approve the actions you want. Behind the skill:
 
 ```powershell
-hglab act --agent Wonka --role navigator say text="FACTORY CLOSED. Do not enter. (Nobody has.)"
-hglab act --agent Wonka --role builder build type=sign x=89 y=98 text="..."
+hglab act --agent Fudgewright --role navigator say text="FACTORY CLOSED. Do not enter. (Nobody has.)"
+hglab act --agent Fudgewright --role builder build type=sign x=89 y=98 text="..."
 ```
 
 Each `act` takes the lease, observes, answers a verification challenge if one is pending,
@@ -86,9 +86,9 @@ the lease.
 hglab tick --agent wonka            # one full persona wake, live
 ```
 
-Repeat no more often than the cadence (every three hours for Wonka). Run records land in
+Repeat no more often than the cadence (every three hours for Fudgewright). Run records land in
 `runs/<date>/` redacted; `hglab pulse --agent wonka --fetch-public` reads them with the
-public log to refresh the Pulse. Keep the repository variable `HG_AGENT_WONKA` off while
+public log to refresh the Pulse. Keep the repository variable `HG_AGENT_FUDGEWRIGHT` off while
 you play locally; the lease stops double-driving, but one path is clearer.
 
 ## 7. Where things live
@@ -99,10 +99,10 @@ you play locally; the lease stops double-driving, but one path is clearer.
 | what the Pulse measures | `agents/wonka/metrics.yaml` |
 | the team and its links | `teams/chocolate-factory.yaml` |
 | the open monument puzzle | `kb/hypotheses/H-20261017-monument-buildable.md` |
-| redacted run records | `runs/<date>/Wonka-<run_id>.json` |
+| redacted run records | `runs/<date>/Fudgewright-<run_id>.json` |
 | the Pulse | `reports/agents/wonka/pulse.md` (examples in `reports/examples/`) |
 
 Common refusals and what they mean: "below the reserve" (eat or rest first), "stays
-within 6 of tinker-bell" (Nibs before Neverland exists), "walls are only built inside the
+within 6 of tinker-bell" (Stoutheart before Neverland exists), "walls are only built inside the
 team's own territory" (confirm a territory with `hglab team set-territory --confirm`
 first), "has used its public-speech budget" (the team talked enough this hour).

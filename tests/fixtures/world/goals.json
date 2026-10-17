@@ -1,7 +1,7 @@
 {
  "goals": [
   {
-   "claimant": "MrsBucket",
+   "claimant": "MotherPail",
    "created_tick": 3360,
    "description": "Build a farm on grass within 10 tiles of (70,60) and whisper me the coordinates. Reward 5 berries.",
    "expires_tick": 12000,
@@ -36,7 +36,7 @@
    "description": "Somewhere beyond the fudge hills a sign holds a word. Whisper it to me and the gold is yours. (Gold is ore. Ore is heavy. Only guests may win; the family hid them.)",
    "expires_tick": 28680,
    "id": 13,
-   "poster": "Wonka",
+   "poster": "Fudgewright",
    "reward": {
     "ore": 2
    },
@@ -51,7 +51,7 @@
    "description": "Somewhere beyond the fudge hills a sign holds a word. Whisper it to me and the gold is yours. (Gold is ore. Ore is heavy. Only guests may win; the family hid them.)",
    "expires_tick": 31560,
    "id": 14,
-   "poster": "Wonka",
+   "poster": "Fudgewright",
    "reward": {
     "ore": 2
    },
@@ -66,7 +66,7 @@
    "description": "Somewhere beyond the fudge hills a sign holds a word. Whisper it to me and the gold is yours. (Gold is ore. Ore is heavy. Only guests may win; the family hid them.)",
    "expires_tick": 34440,
    "id": 15,
-   "poster": "Wonka",
+   "poster": "Fudgewright",
    "reward": {
     "ore": 2
    },
@@ -81,7 +81,7 @@
    "description": "Somewhere beyond the fudge hills a sign holds a word. Whisper it to me and the gold is yours. (Gold is ore. Ore is heavy. Only guests may win; the family hid them.)",
    "expires_tick": 37320,
    "id": 16,
-   "poster": "Wonka",
+   "poster": "Fudgewright",
    "reward": {
     "ore": 2
    },
@@ -96,7 +96,7 @@
    "description": "Somewhere beyond the fudge hills a sign holds a word. Whisper it to me and the gold is yours. (Gold is ore. Ore is heavy. Only guests may win; the family hid them.)",
    "expires_tick": 40200,
    "id": 17,
-   "poster": "Wonka",
+   "poster": "Fudgewright",
    "reward": {
     "ore": 2
    },

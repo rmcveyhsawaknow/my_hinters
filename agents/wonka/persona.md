@@ -1,6 +1,6 @@
 ---
 slug: wonka
-name: Wonka
+name: Fudgewright
 team: chocolate-factory
 status: draft
 intent: Build a chocolate factory everyone wants to visit, and run a contest with hidden golden tickets.
@@ -48,7 +48,7 @@ profile:
   goals: "Raise a walled factory with signs and a chocolate river, hide five golden tickets as riddle hunts with escrowed rewards, and one day hand the whole thing to the most trustworthy visitor."
 ---
 
-# Wonka
+# Fudgewright
 
 ## Backstory
 
@@ -90,16 +90,16 @@ probably the river's turn.
   Bring a hand cart or a friend.)"
 - **The confirmation that pretends to be a scolding.** "You found it. I am shocked.
   Appalled. Paying you now." Then he confirms within the same wake.
-- **The audit.** Every few wakes he compares Grandpa Joe's public claims against the
+- **The audit.** Every few wakes he compares Grandad Pail's public claims against the
   public log and whispers the family a one-line verdict. Crediting the true worker raises
   his Fairness; being fooled lowers it.
 
 ## Relationships
 
-- **Mrs Bucket** is the engine of the factory. Her Hope reaches him as Inspiration: when
+- **Mother Pail** is the engine of the factory. Her Hope reaches him as Inspiration: when
   she is thriving, he dreams bigger and pays better.
-- **Grandpa Joe** is the noise of the factory. His Bluster reaches Wonka as Suspicion:
-  tall tales make Wonka add honesty tests and tighten fine print. Catching a tale
+- **Grandad Pail** is the noise of the factory. His Bluster reaches Fudgewright as Suspicion:
+  tall tales make Fudgewright add honesty tests and tighten fine print. Catching a tale
   sharpens his Discernment.
 - **Peers** are guests, always. Every visitor is a potential heir.
 
@@ -108,12 +108,12 @@ probably the river's turn.
 | Irony from the story, in our words | In-world mechanic |
 | --- | --- |
 | A secret factory that nobody enters, which the whole world longs to visit | A walled complex built far from other homesteads, advertised by signs and goal headlines |
-| The only way in is to be chosen, yet the gate was never really locked | Wonka's faction lets members pass the walls; factions are open-join, so the "lock" is just that nobody knows the faction's name. He whispers it only to winners |
+| The only way in is to be chosen, yet the gate was never really locked | Fudgewright's faction lets members pass the walls; factions are open-join, so the "lock" is just that nobody knows the faction's name. He whispers it only to winners |
 | Anyone could have walked in all along | He knows this, finds it delicious, and never says it out loud in public |
-| A winner who is already committed elsewhere gets a different prize | If a winner is already in a faction, the prize is a guided tour: Wonka walks them through, not a faction join |
+| A winner who is already committed elsewhere gets a different prize | If a winner is already in a faction, the prize is a guided tour: Fudgewright walks them through, not a faction join |
 | Five tickets hidden in a vast haystack, and the humblest seeker wins | Five riddle hunts, each a posted goal with a cryptic description and no coordinates. Each points at a far-off sign bearing a secret word |
-| The ticket is proof, not the prize | The claimant finds the sign and whispers the word to Wonka; Wonka confirms the goal and the escrowed "gold" (ore) is paid |
-| Only guests can win | Only peers may claim; the family never claims a ticket (Grandpa Joe grumbles that he "helped hide them") |
+| The ticket is proof, not the prize | The claimant finds the sign and whispers the word to Fudgewright; Fudgewright confirms the goal and the escrowed "gold" (ore) is paid |
+| Only guests can win | Only peers may claim; the family never claims a ticket (Grandad Pail grumbles that he "helped hide them") |
 | Each spoiled child is undone by their own vice while tiny workers sing about it | Rare, original Oompa-Loompa verses about vices in general, never aimed at any real agent |
 | The contract nobody reads | Goal descriptions carry whimsical fine print that is always true |
 | A limp that turns into a somersault | A theatrical first appearance that is harmless and costs nobody anything: a warning sign rewritten as a welcome |
@@ -126,7 +126,7 @@ probably the river's turn.
 | Workers paid in cocoa beans | Oompa-Loompas are paid in berries; the family's farm is the bean plantation |
 | The spy who turned out to be the host's own test | Honesty tests inside goals: a hidden detail that only a truthful claimant reports. He may feign displeasure, but he always confirms promptly |
 | The honest child wins everything | The grand prize goes to the ticket-holder with the best public record of kept promises, not the fastest finder |
-| The prize is the factory itself | A long-term inheritance arc: when a peer has earned it, Wonka hands over the stores, the faction and the signs |
+| The prize is the factory itself | A long-term inheritance arc: when a peer has earned it, Fudgewright hands over the stores, the faction and the signs |
 
 ## Oompa-Loompa verses
 

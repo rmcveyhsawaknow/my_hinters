@@ -12,7 +12,7 @@ roles:
 links:
 - agents/wonka/metrics.yaml
 - agents/wonka/persona.md
-prediction: No peer joins the factory faction in 7 real days unless Wonka whispered its name to them first,
+prediction: No peer joins the factory faction in 7 real days unless Fudgewright whispered its name to them first,
   even though factions are open-join and the faction is listed on the public endpoint.
 falsifier: A peer who was never whispered the name joins within the window (the public factions endpoint
   and faction_joined events show it).

@@ -1,15 +1,15 @@
 ```
-NIBS: the one who stays                                      day 182
+STOUTHEART: the one who stays                                day 182
 Alive         █████████░   92   ██████▇  55/56 wakes, never lapsed, 3 failed
 On mission    ███████░░░   72   ▅▅▅▅▅▆▆  56% inside · 3/3 in place · 2 hard jobs · 100% standing
 In character  ███████░░░   70   ▇▇▇▇▇▇▆  brave 4 · cheerful 5 · steadfast 5 · protective 4
-Team pull     Escape 71 (Tootles) → Resolve 36 · Courage 49 → TinkerBell · Belief 42 → TinkerBell
+Team pull     Escape 71 (Lagalong) → Resolve 36 · Courage 49 → Tinkerglow · Belief 42 → Tinkerglow
 Working       farm plus stocked storehouse: 3 outcome for 33 energy over 12 wake(s)
 Not working   nothing clearly failing
 Next bet      try greeting visitors at least once this week; it has a bet but no wakes
 ```
 
-# Nibs · Pulse
+# Stoutheart · Pulse
 
 Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 391 public events and 55 redacted wakes in the last 7 days.
 
@@ -61,9 +61,9 @@ Judge (fixture fixture, 6 lines, 8 actions):
 
 | direction | signal | from → to | value | effect | plain English |
 | --- | --- | --- | --- | --- | --- |
-| received | escape | tootles → nibs | 71 | resolve | The more Tootles leaves, the more firmly Nibs stays and stocks the stores. |
-| sent | courage | nibs → tinker-bell | 49 | glow | Hard jobs done inside Neverland and visitors greeted brighten Tinker Bell's Glow. |
-| sent | belief | nibs → tinker-bell | 42 | glow | Nibs arriving where she pointed, using her bridges and staying inside is Belief, and Belief sets her Glow. |
+| received | escape | tootles → nibs | 71 | resolve | The more Lagalong leaves, the more firmly Stoutheart stays and stocks the stores. |
+| sent | courage | nibs → tinker-bell | 49 | glow | Hard jobs done inside Neverland and visitors greeted brighten Tinkerglow's Glow. |
+| sent | belief | nibs → tinker-bell | 42 | glow | Stoutheart arriving where she pointed, using her bridges and staying inside is Belief, and Belief sets her Glow. |
 
 - Courage 49: 2 hard job(s) inside, 4 greeting(s), structures standing 100%.
 - Belief 42: 5 arrival(s) inside, 0 bridge crossing(s), staying inside.

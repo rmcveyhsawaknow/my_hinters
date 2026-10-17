@@ -1,7 +1,7 @@
 ---
 id: G-20261017-grandpa-joe
 type: goal
-title: 'GrandpaJoe: the story of the factory, told from bed'
+title: 'GrandadPail: the story of the factory, told from bed'
 created: '2026-10-17'
 updated: '2026-10-17'
 author_runtime: claude-code

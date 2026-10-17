@@ -1,15 +1,15 @@
 ```
-TOOTLES: always just behind the adventure                    day 182
+LAGALONG: always just behind the adventure                   day 182
 Alive         █████████░   87   ██████▇  40/42 wakes, never lapsed, 4 failed
 On mission    █████████░   87   ▄▄▄▄▄▅▇  100% outside · 35/40 saved · 2 landmarks · 3 near misses · humility 5/5
 In character  ██████████   95   ▇▇▇▇▇▇█  humble 5 · persistent 4 · gentle 5 · wistful 4
-Team pull     Escape 71 → TinkerBell, Nibs · Belief 0 → TinkerBell
+Team pull     Escape 71 → Tinkerglow, Stoutheart · Belief 0 → Tinkerglow
 Working       saving materials in a far hut: 35 outcome for 24 energy over 7 wake(s)
 Not working   ranging ever farther: 2 outcome for 14 energy over 6 wake(s)
 Next bet      keep testing saving materials in a far hut; it has the best outcome per unit of energy
 ```
 
-# Tootles · Pulse
+# Lagalong · Pulse
 
 Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 391 public events and 40 redacted wakes in the last 7 days.
 
@@ -62,9 +62,9 @@ Judge (fixture fixture, 6 lines, 8 actions):
 
 | direction | signal | from → to | value | effect | plain English |
 | --- | --- | --- | --- | --- | --- |
-| sent | escape | tootles → tinker-bell | 71 | glow | Time and distance Tootles spends outside Neverland dim Tinker Bell's Glow; she feels abandoned. |
-| sent | escape | tootles → nibs | 71 | resolve | The more Tootles leaves, the more firmly Nibs stays and stocks the stores. |
-| sent | belief | tootles → tinker-bell | 0 | glow | Even Tootles crossing her bridges or returning inside counts as Belief. |
+| sent | escape | tootles → tinker-bell | 71 | glow | Time and distance Lagalong spends outside Neverland dim Tinkerglow's Glow; she feels abandoned. |
+| sent | escape | tootles → nibs | 71 | resolve | The more Lagalong leaves, the more firmly Stoutheart stays and stocks the stores. |
+| sent | belief | tootles → tinker-bell | 0 | glow | Even Lagalong crossing her bridges or returning inside counts as Belief. |
 
 - Escape 71: 100% of moves outside, farthest 42 tiles from the centre.
 - Belief 0: 0 arrival(s) inside, 0 bridge crossing(s), not currently inside.

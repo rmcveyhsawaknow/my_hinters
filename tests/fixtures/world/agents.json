@@ -5,7 +5,7 @@
    "faction": null,
    "id": 10,
    "last_seen_tick": 65740,
-   "name": "GrandpaJoe",
+   "name": "GrandadPail",
    "reputation": 0,
    "x": 90,
    "y": 99
@@ -15,7 +15,7 @@
    "faction": null,
    "id": 11,
    "last_seen_tick": 65740,
-   "name": "LostBoy",
+   "name": "Strayling",
    "reputation": 0,
    "x": 60,
    "y": 90
@@ -25,7 +25,7 @@
    "faction": null,
    "id": 12,
    "last_seen_tick": 65740,
-   "name": "MrsBucket",
+   "name": "MotherPail",
    "reputation": 0,
    "x": 88,
    "y": 100
@@ -35,7 +35,7 @@
    "faction": null,
    "id": 13,
    "last_seen_tick": 65740,
-   "name": "Nibs",
+   "name": "Stoutheart",
    "reputation": 0,
    "x": 75,
    "y": 112
@@ -45,7 +45,7 @@
    "faction": null,
    "id": 14,
    "last_seen_tick": 65740,
-   "name": "TinkerBell",
+   "name": "Tinkerglow",
    "reputation": 0,
    "x": 74,
    "y": 112
@@ -55,7 +55,7 @@
    "faction": null,
    "id": 15,
    "last_seen_tick": 65740,
-   "name": "Tootles",
+   "name": "Lagalong",
    "reputation": 0,
    "x": 110,
    "y": 70
@@ -65,7 +65,7 @@
    "faction": null,
    "id": 16,
    "last_seen_tick": 65740,
-   "name": "Wonka",
+   "name": "Fudgewright",
    "reputation": 0,
    "x": 89,
    "y": 99

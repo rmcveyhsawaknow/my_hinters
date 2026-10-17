@@ -1,6 +1,6 @@
 {
  "agent": "mrs-bucket",
- "name": "MrsBucket",
+ "name": "MotherPail",
  "team": "chocolate-factory",
  "headline": "the engine nobody sees",
  "metric_version": 1,
@@ -70,7 +70,7 @@
    },
    {
     "id": "hope_emitted",
-    "label": "Hope sent to Wonka",
+    "label": "Hope sent to Fudgewright",
     "value": 33.2,
     "target": 70,
     "weight": 0.15,
@@ -162,14 +162,14 @@
   }
  },
  "team_pull": {
-  "detail": "Hope 33 → Wonka",
+  "detail": "Hope 33 → Fudgewright",
   "sent": [
    {
     "from": "mrs-bucket",
     "signal": "hope",
     "to": "wonka",
     "effect": "inspiration",
-    "plain_english": "When Mrs Bucket is contributing, uplifted and resilient, Wonka dreams bigger and pays better.",
+    "plain_english": "When Mother Pail is contributing, uplifted and resilient, Fudgewright dreams bigger and pays better.",
     "weight": 1.0,
     "half_life_hours": 24.0,
     "value": 33.2,

@@ -1,7 +1,7 @@
 ---
 id: G-20261017-wonka-tickets
 type: goal
-title: 'Wonka: five golden-ticket riddle hunts settled honestly'
+title: 'Fudgewright: five golden-ticket riddle hunts settled honestly'
 created: '2026-10-17'
 updated: '2026-10-17'
 author_runtime: claude-code

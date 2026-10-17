@@ -105,12 +105,28 @@ def wake_rng(persona: Persona, tick: int) -> random.Random:
     return random.Random(f"{persona.slug}:{tick}")
 
 
+def team_actor_names(persona: Persona, team: Team | None, member_names: set[str] | None) -> set[str]:
+    """Casefolded in-world names that count as 'us' when reading public events.
+
+    Callers that know the personas pass ``member_names``; without them the slugs are used
+    with dashes removed, which only matches names that happen to equal their slug.
+    """
+    names = {persona.name.casefold()}
+    if member_names:
+        names |= {n.casefold() for n in member_names}
+    elif team is not None:
+        names |= {m.replace("-", "").casefold() for m in team.members}
+    return names
+
+
 def step_mood(
     persona: Persona,
     state: PersonaState,
     observe: dict[str, Any],
     team: Team | None,
     rng: random.Random,
+    *,
+    member_names: set[str] | None = None,
 ) -> PersonaState:
     """Advance the mood for this wake. Exactly one state is active afterwards."""
     model = persona.mood_model
@@ -118,14 +134,15 @@ def step_mood(
     states = list(model["states"])
     tick = int(observe.get("tick", 0))
     previous = state.mood
+    ours = team_actor_names(persona, team, member_names)
     if kind == "steady":
         state.mood = model["initial"]
     elif kind == "mercurial":
         state.mood = _mercurial(model, state, tick, rng)
     elif kind == "single_emotion":
-        state.mood = _single_emotion(persona, model, state, observe, team, tick)
+        state.mood = _single_emotion(persona, model, state, observe, team, tick, ours)
     elif kind == "lazy_bursts":
-        state.mood = _lazy_bursts(persona, model, state, observe, team)
+        state.mood = _lazy_bursts(persona, model, state, observe, team, ours)
     else:
         raise ValueError(f"unknown mood model {kind!r}")
     if state.mood not in states:
@@ -158,6 +175,7 @@ def _single_emotion(
     observe: dict[str, Any],
     team: Team | None,
     tick: int,
+    team_names: set[str],
 ) -> str:
     """One feeling at a time, by precedence: fury, jealousy, joy, mischief, sulk, devotion."""
     states = set(model["states"])
@@ -171,7 +189,6 @@ def _single_emotion(
         state.glow = int(max(0, min(100, round(state.input_value("glow", tick)))))
     else:
         state.glow = int(max(0, min(100, round(50 + 0.4 * belief + 0.3 * courage - 0.4 * escape))))
-    team_names = {m.casefold() for m in (team.members if team else ())} | {persona.slug}
     damaged = any(
         e.get("type") == "demolish"
         and str(e.get("actor", "")).casefold() not in team_names
@@ -209,10 +226,10 @@ def _lazy_bursts(
     state: PersonaState,
     observe: dict[str, Any],
     team: Team | None,
+    team_names: set[str],
 ) -> str:
     states = list(model["states"])
     burst_state = next((s for s in states if s != model["initial"]), model["initial"])
-    team_names = {m.casefold() for m in (team.members if team else ())}
     for event in observe.get("events", []):
         if not isinstance(event, dict):
             continue
@@ -222,16 +239,14 @@ def _lazy_bursts(
             and isinstance(event.get("data"), dict)
             and event["data"].get("type") == "monument"
         )
-        if glory and (not team_names or actor in team_names or _mentions_team(event, team)):
+        if glory and (actor in team_names or _mentions_team(event, team_names)):
             return burst_state
     return str(model["initial"])
 
 
-def _mentions_team(event: dict[str, Any], team: Team | None) -> bool:
-    if team is None:
-        return False
+def _mentions_team(event: dict[str, Any], team_names: set[str]) -> bool:
     text = str(event.get("text", "")).casefold()
-    return any(member.replace("-", "").casefold() in text.replace("-", "") for member in team.members)
+    return any(name in text for name in team_names)
 
 
 def decide_wake_mode(
@@ -252,7 +267,7 @@ def decide_wake_mode(
 
 
 def next_heading(current: str | None, rng: random.Random, rule: str = "second_star") -> str:
-    """Tinker Bell's rule: from the last heading, take the second turn to the right."""
+    """Tinkerglow's rule: from the last heading, take the second turn to the right."""
     if current not in HEADINGS:
         return rng.choice(HEADINGS)
     index = HEADINGS.index(current)
@@ -279,7 +294,7 @@ def record_wake(state: PersonaState, mode: str, tick: int, position: tuple[int, 
 
 
 def note_near_miss(state: PersonaState, observe: dict[str, Any], window_ticks: int = 60) -> bool:
-    """Tootles arrives just after something big happened within view."""
+    """Lagalong arrives just after something big happened within view."""
     tick = int(observe.get("tick", 0))
     you = observe.get("you") or {}
     position = (you.get("x"), you.get("y"))
@@ -316,5 +331,6 @@ __all__ = [
     "note_near_miss",
     "record_wake",
     "step_mood",
+    "team_actor_names",
     "wake_rng",
 ]

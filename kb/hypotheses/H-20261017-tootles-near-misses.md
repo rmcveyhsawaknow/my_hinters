@@ -1,7 +1,7 @@
 ---
 id: H-20261017-tootles-near-misses
 type: hypothesis
-title: Tootles arrives after big events more often than chance
+title: Lagalong arrives after big events more often than chance
 created: '2026-10-17'
 updated: '2026-10-17'
 author_runtime: claude-code

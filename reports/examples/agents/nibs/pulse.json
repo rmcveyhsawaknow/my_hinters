@@ -1,6 +1,6 @@
 {
  "agent": "nibs",
- "name": "Nibs",
+ "name": "Stoutheart",
  "team": "neverland",
  "headline": "the one who stays",
  "metric_version": 1,
@@ -152,14 +152,14 @@
   }
  },
  "team_pull": {
-  "detail": "Escape 71 (Tootles) → Resolve 36 · Courage 49 → TinkerBell · Belief 42 → TinkerBell",
+  "detail": "Escape 71 (Lagalong) → Resolve 36 · Courage 49 → Tinkerglow · Belief 42 → Tinkerglow",
   "sent": [
    {
     "from": "nibs",
     "signal": "courage",
     "to": "tinker-bell",
     "effect": "glow",
-    "plain_english": "Hard jobs done inside Neverland and visitors greeted brighten Tinker Bell's Glow.",
+    "plain_english": "Hard jobs done inside Neverland and visitors greeted brighten Tinkerglow's Glow.",
     "weight": 0.3,
     "half_life_hours": 24.0,
     "value": 49.3,
@@ -172,7 +172,7 @@
     "signal": "belief",
     "to": "tinker-bell",
     "effect": "glow",
-    "plain_english": "Nibs arriving where she pointed, using her bridges and staying inside is Belief, and Belief sets her Glow.",
+    "plain_english": "Stoutheart arriving where she pointed, using her bridges and staying inside is Belief, and Belief sets her Glow.",
     "weight": 0.4,
     "half_life_hours": 24.0,
     "value": 42.3,
@@ -187,7 +187,7 @@
     "signal": "escape",
     "to": "nibs",
     "effect": "resolve",
-    "plain_english": "The more Tootles leaves, the more firmly Nibs stays and stocks the stores.",
+    "plain_english": "The more Lagalong leaves, the more firmly Stoutheart stays and stocks the stores.",
     "weight": 0.5,
     "half_life_hours": 48.0,
     "value": 71.0,

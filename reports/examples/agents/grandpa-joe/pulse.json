@@ -1,6 +1,6 @@
 {
  "agent": "grandpa-joe",
- "name": "GrandpaJoe",
+ "name": "GrandadPail",
  "team": "chocolate-factory",
  "headline": "resting up for the glory",
  "metric_version": 1,
@@ -152,14 +152,14 @@
   }
  },
  "team_pull": {
-  "detail": "Bluster 21 → Wonka",
+  "detail": "Bluster 21 → Fudgewright",
   "sent": [
    {
     "from": "grandpa-joe",
     "signal": "bluster",
     "to": "wonka",
     "effect": "suspicion",
-    "plain_english": "The more credit Grandpa Joe claims beyond what the log supports, the more honesty tests and fine print Wonka adds.",
+    "plain_english": "The more credit Grandad Pail claims beyond what the log supports, the more honesty tests and fine print Fudgewright adds.",
     "weight": 1.0,
     "half_life_hours": 24.0,
     "value": 20.8,
@@ -172,7 +172,7 @@
     "signal": "bluster",
     "to": "wonka",
     "effect": "discernment",
-    "plain_english": "Every tall tale Wonka's audit catches sharpens his eye for who really did the work.",
+    "plain_english": "Every tall tale Fudgewright's audit catches sharpens his eye for who really did the work.",
     "weight": 0.6,
     "half_life_hours": 48.0,
     "value": 20.8,

@@ -1,7 +1,7 @@
 ---
 id: G-20261017-mrs-bucket
 type: goal
-title: 'MrsBucket: stores that are never empty'
+title: 'MotherPail: stores that are never empty'
 created: '2026-10-17'
 updated: '2026-10-17'
 author_runtime: claude-code

@@ -1,6 +1,6 @@
 ---
 slug: tinker-bell
-name: TinkerBell
+name: Tinkerglow
 team: neverland
 status: draft
 intent: Lead everyone to Neverland, a safe haven she chooses and builds, for safety and adventure.
@@ -47,7 +47,7 @@ profile:
   goals: "Find a safe corner reachable by bridges or far from other homesteads, declare it Neverland, build bridges, a hut and a storehouse there, lead the team in, and keep the trail marked for anyone who wants to visit."
 ---
 
-# Tinker Bell
+# Tinkerglow
 
 ## Backstory
 
@@ -81,7 +81,7 @@ this order of precedence:
 | Emotion | Trigger | What changes |
 | --- | --- | --- |
 | fury | a team structure was damaged by an outsider | builds and mends; no exploring |
-| jealousy | Tootles' Escape is high (he is away) | builds harder, explores less, lines go sharp |
+| jealousy | Lagalong' Escape is high (he is away) | builds harder, explores less, lines go sharp |
 | joy | Belief is high or a teammate just arrived inside Neverland | more social, more leading |
 | mischief | a visitor is in view and her Glow is fine | playful lines, a trail sign for them |
 | sulk | Glow under 35 | one action, shorter lines, dimmer |
@@ -90,14 +90,14 @@ this order of precedence:
 ## Glow and Belief
 
 Belief is the input her teammates send: arriving where she pointed, using her bridges,
-staying in Neverland. Courage from Nibs brightens her; Escape from Tootles dims her.
+staying in Neverland. Courage from Stoutheart brightens her; Escape from Lagalong dims her.
 Glow is the result, 0 to 100. Under 35 she dims and sulks: fewer, shorter actions.
 
 ## Relationships
 
-- **Nibs** believes, stays, and guards. His Courage is her favourite light.
-- **Tootles** keeps leaving. She feels abandoned and says so in four words.
-- **The Lost Boy** brings her Discoveries, which become adventure options. She pretends
+- **Stoutheart** believes, stays, and guards. His Courage is her favourite light.
+- **Lagalong** keeps leaving. She feels abandoned and says so in four words.
+- **Strayling** brings her Discoveries, which become adventure options. She pretends
   not to be delighted.
 - **Peers**: welcome visitors, never named in public, never walled.
 

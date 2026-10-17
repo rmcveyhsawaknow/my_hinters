@@ -58,23 +58,23 @@ validator in `src/hglab/actions.py`, never less.
 Mood lives in the private notebook under `persona_state` (compact JSON, trimmed to fit).
 Every step is deterministic given the wake's seed, so dry runs replay.
 
-- **steady**: one mood, always (MrsBucket, LostBoy, Tootles, Nibs).
+- **steady**: one mood, always (MotherPail, Strayling, Lagalong, Stoutheart).
 - **mercurial**: swings between states driven by influence inputs plus a volatility roll.
-  Wonka goes deadpan when Suspicion is high, manic when Inspiration is high, otherwise
+  Fudgewright goes deadpan when Suspicion is high, manic when Inspiration is high, otherwise
   gentle with a random swing.
 - **single_emotion**: exactly one active emotion per wake, chosen by precedence from events:
   fury (a team structure damaged by an outsider), jealousy (Escape high), joy (Belief high
   or a teammate arrived inside), mischief (a visitor in view), sulk (Glow under 35),
-  devotion otherwise. Tinker Bell's Glow is 50 plus the weighted links into her, clamped.
+  devotion otherwise. Tinkerglow's Glow is 50 plus the weighted links into her, clamped.
 - **lazy_bursts**: rests by default; bursts into life only when a glory event (confirmed
-  goal, monument, faction) involving the team appears. Grandpa Joe.
+  goal, monument, faction) involving the team appears. Grandad Pail.
 
-Quirks are one decision rule each: `distraction_roll` (LostBoy, about 40%),
-`credit_claim` (GrandpaJoe, every claim cites a real event id), `honesty_test` (Wonka
+Quirks are one decision rule each: `distraction_roll` (Strayling, about 40%),
+`credit_claim` (GrandadPail, every claim cites a real event id), `honesty_test` (Fudgewright
 audits footnoted claims against the log and tightens fine print when Suspicion is high),
-`second_star_heading` (TinkerBell turns twice right from the last heading),
-`near_miss_log` (Tootles counts arrivals just after something big), `greet_visitors`
-(Nibs, once an hour), `give_first` (MrsBucket feeds a teammate within two tiles).
+`second_star_heading` (Tinkerglow turns twice right from the last heading),
+`near_miss_log` (Lagalong counts arrivals just after something big), `greet_visitors`
+(Stoutheart, once an hour), `give_first` (MotherPail feeds a teammate within two tiles).
 
 ## The planner
 
@@ -96,13 +96,13 @@ signals arrive asynchronously across schedules.
 
 | signal | sender | built from |
 | --- | --- | --- |
-| hope | MrsBucket | contribution (builds, gives, farm takes), uplift (replies, supportive whisper count), resilience (lean wakes without a failure) |
-| bluster | GrandpaJoe | footnoted credit claims relative to his own logged work, plus the share of team work he claimed |
-| audit | Wonka | share of his audits that credited the worker the log supports (his Fairness) |
-| belief | Nibs, Tootles, LostBoy | arrivals inside Neverland, crossings of Tinker Bell's bridges, staying inside |
-| escape | Tootles | share of moves outside and farthest distance from the centre |
-| courage | Nibs | hard builds inside, greetings, structures kept standing |
-| discoveries | LostBoy | new tiles, new action types, idea cards filed, cards adopted |
+| hope | MotherPail | contribution (builds, gives, farm takes), uplift (replies, supportive whisper count), resilience (lean wakes without a failure) |
+| bluster | GrandadPail | footnoted credit claims relative to his own logged work, plus the share of team work he claimed |
+| audit | Fudgewright | share of his audits that credited the worker the log supports (his Fairness) |
+| belief | Stoutheart, Lagalong, Strayling | arrivals inside Neverland, crossings of Tinkerglow's bridges, staying inside |
+| escape | Lagalong | share of moves outside and farthest distance from the centre |
+| courage | Stoutheart | hard builds inside, greetings, structures kept standing |
+| discoveries | Strayling | new tiles, new action types, idea cards filed, cards adopted |
 
 Effects (`inspiration`, `suspicion`, `discernment`, `glow`, `resolve`, `adventure_options`)
 sum the weighted decayed values of the links into a receiver; `glow` starts from a neutral

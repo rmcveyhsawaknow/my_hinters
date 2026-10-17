@@ -246,7 +246,7 @@ def discoveries(ctx: MeasureContext) -> SignalResult:
 
 @signal("audit")
 def audit(ctx: MeasureContext) -> SignalResult:
-    """Fairness of Wonka's credit audits: share that credited the worker the log supports."""
+    """Fairness of Fudgewright's credit audits: share that credited the worker the log supports."""
     audits = [r for r in ctx.runs if isinstance(r.get("audit"), dict)]
     if not audits:
         return SignalResult("audit", 50.0, "Fairness 50: no audits recorded yet.", {"audits": 0.0, "correct": 0.0})

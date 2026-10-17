@@ -6,17 +6,17 @@ North Star: [read first](NORTH_STAR.md)
 - **experiment** [E-20261017-clock-calibration](experiments/E-20261017-clock-calibration.md) — Calibrate world tick to UTC
 - **experiment** [E-20261017-energy-regeneration](experiments/E-20261017-energy-regeneration.md) — Measure energy regeneration with and without a hut
 - **experiment** [E-20261017-road-savings](experiments/E-20261017-road-savings.md) — Verify road movement savings
-- **goal** [G-20261017-grandpa-joe](goals/G-20261017-grandpa-joe.md) — GrandpaJoe: the story of the factory, told from bed
+- **goal** [G-20261017-grandpa-joe](goals/G-20261017-grandpa-joe.md) — GrandadPail: the story of the factory, told from bed
 - **goal** [G-20261017-homestead](goals/G-20261017-homestead.md) — Establish a sustainable homestead
-- **goal** [G-20261017-lost-boy](goals/G-20261017-lost-boy.md) — LostBoy: file discoveries nobody else saw
-- **goal** [G-20261017-mrs-bucket](goals/G-20261017-mrs-bucket.md) — MrsBucket: stores that are never empty
+- **goal** [G-20261017-lost-boy](goals/G-20261017-lost-boy.md) — Strayling: file discoveries nobody else saw
+- **goal** [G-20261017-mrs-bucket](goals/G-20261017-mrs-bucket.md) — MotherPail: stores that are never empty
 - **goal** [G-20261017-newcomer-goals](goals/G-20261017-newcomer-goals.md) — Verify and honestly complete residents' newcomer goals
-- **goal** [G-20261017-nibs](goals/G-20261017-nibs.md) — Nibs: a self-sufficient Neverland he never leaves
+- **goal** [G-20261017-nibs](goals/G-20261017-nibs.md) — Stoutheart: a self-sufficient Neverland he never leaves
 - **goal** [G-20261017-resource-map](goals/G-20261017-resource-map.md) — Map nearby resources
-- **goal** [G-20261017-tinker-bell](goals/G-20261017-tinker-bell.md) — TinkerBell: declare and build Neverland
-- **goal** [G-20261017-tootles](goals/G-20261017-tootles.md) — Tootles: a big thing outside Neverland
-- **goal** [G-20261017-wonka-tickets](goals/G-20261017-wonka-tickets.md) — Wonka: five golden-ticket riddle hunts settled honestly
-- **goal** [G-20261017-wonka](goals/G-20261017-wonka.md) — Wonka: a factory everyone wants to visit
+- **goal** [G-20261017-tinker-bell](goals/G-20261017-tinker-bell.md) — Tinkerglow: declare and build Neverland
+- **goal** [G-20261017-tootles](goals/G-20261017-tootles.md) — Lagalong: a big thing outside Neverland
+- **goal** [G-20261017-wonka-tickets](goals/G-20261017-wonka-tickets.md) — Fudgewright: five golden-ticket riddle hunts settled honestly
+- **goal** [G-20261017-wonka](goals/G-20261017-wonka.md) — Fudgewright: a factory everyone wants to visit
 - **hypothesis** [H-20261017-bucket-stocks](hypotheses/H-20261017-bucket-stocks.md) — A stocked storehouse keeps teammates above the energy floor
 - **hypothesis** [H-20261017-bucket-thanks](hypotheses/H-20261017-bucket-thanks.md) — Specific thank-you lines earn replies
 - **hypothesis** [H-20261017-item-conservation](hypotheses/H-20261017-item-conservation.md) — Item conservation holds in the public event log
@@ -31,7 +31,7 @@ North Star: [read first](NORTH_STAR.md)
 - **hypothesis** [H-20261017-tink-pixie-trails](hypotheses/H-20261017-tink-pixie-trails.md) — Pixie-trail signs bring teammates in faster than whispers
 - **hypothesis** [H-20261017-tink-second-star](hypotheses/H-20261017-tink-second-star.md) — The second-star heading rule covers more new ground than random walks
 - **hypothesis** [H-20261017-tootles-big-thing](hypotheses/H-20261017-tootles-big-thing.md) — Saving in a far hut reaches a tower's materials within 14 real days
-- **hypothesis** [H-20261017-tootles-near-misses](hypotheses/H-20261017-tootles-near-misses.md) — Tootles arrives after big events more often than chance
+- **hypothesis** [H-20261017-tootles-near-misses](hypotheses/H-20261017-tootles-near-misses.md) — Lagalong arrives after big events more often than chance
 - **hypothesis** [H-20261017-wonka-faction-lock](hypotheses/H-20261017-wonka-faction-lock.md) — A whispered faction name works as a lock without a wall
 - **hypothesis** [H-20261017-wonka-fine-print](hypotheses/H-20261017-wonka-fine-print.md) — Whimsical, always-true fine print does not reduce claims
 - **hypothesis** [H-20261017-wonka-riddle-signs](hypotheses/H-20261017-wonka-riddle-signs.md) — Riddle-sign goals draw more visitors than plain goals

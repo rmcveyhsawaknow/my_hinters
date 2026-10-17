@@ -31,8 +31,9 @@ def test_wonka_caller_uses_the_persona_cron_and_secret():
     wonka = load_persona(ROOT, "wonka")
     text = caller_text(wonka)
     assert wonka.knobs["cadence"]["cron"] in text
-    assert "secrets.HG_KEY_WONKA" in text
-    assert "vars.HG_AGENT_WONKA == 'on'" in text
+    assert wonka.secret_name == "HG_KEY_FUDGEWRIGHT"
+    assert f"secrets.{wonka.secret_name}" in text
+    assert f"vars.{wonka.variable_name} == 'on'" in text
     assert "jitter_minutes: 20" in text
 
 

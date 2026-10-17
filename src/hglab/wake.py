@@ -125,10 +125,10 @@ def persona_wake(
         state = load_state(persona, notebook)
         apply_inputs(state, incoming or {}, tick)
         rng = wake_rng(persona, tick) if seed is None else random.Random(f"{persona.slug}:{seed}")
-        step_mood(persona, state, observe, team, rng)
+        names = {personas[m].name.casefold(): m for m in (team.members if team else ()) if m in personas}
+        step_mood(persona, state, observe, team, rng, member_names=set(names))
         mode = decide_wake_mode(persona, state, observe, rng)
         mates = teammates if teammates is not None else teammate_positions(observe, team, personas)
-        names = {personas[m].name.casefold(): m for m in (team.members if team else ()) if m in personas}
         plan = plan_wake(
             persona, team, state, observe, mode, rng,
             teammates=mates, terrain_rows=terrain_rows, allowed=allowed, team_names=names,

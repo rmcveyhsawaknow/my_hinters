@@ -12,4 +12,4 @@ Arguments: `<slug>`.
 5. When the dry run looks right, the owner removes nothing and simply stops passing `dry_run`; the schedule takes over: keepalive every 6 hours, persona ticks on the persona cron, the daily pulse and the weekly retro PR.
 6. Local play and Actions share the lease, but keep `HG_AGENT_<AGENT>` off while playing that agent locally; flip it back on afterwards.
 Check: never create or change a secret or variable yourself, never enable a workflow, never push; report the exact commands and let the owner run them. Cost per agent per day is in `docs/deploy-agent.md`.
-Example: `/hg-deploy-agent wonka` reports the caller current, `HG_KEY_WONKA` missing, and the two variables to set, in order.
+Example: `/hg-deploy-agent wonka` reports the caller current, `HG_KEY_FUDGEWRIGHT` missing, and the two variables to set, in order.
