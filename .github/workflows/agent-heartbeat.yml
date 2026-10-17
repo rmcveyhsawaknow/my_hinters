@@ -6,11 +6,11 @@ on:
   workflow_dispatch:
     inputs:
       agent:
-        description: Identity name (default: next enabled identity)
+        description: "Identity name (default: next enabled identity)"
         required: false
         type: string
       role:
-        description: Role override (default: rotation)
+        description: "Role override (default: rotation)"
         required: false
         type: string
       dry_run:
@@ -28,24 +28,48 @@ concurrency:
 
 jobs:
   matrix:
-    if: vars.HG_ENABLED == 'true'
+    if: vars.HG_ENABLED == 'true' && github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
       agents: ${{ steps.matrix.outputs.agents }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install PyYAML
       - id: matrix
         run: |
           python - <<'PY' >> "$GITHUB_OUTPUT"
-          import json, os, yaml
-          config = yaml.safe_load(open("config/agents.yaml", encoding="utf-8"))
+          import json
+          import os
+          from datetime import datetime, timezone
+          import yaml
+          with open("config/agents.yaml", encoding="utf-8") as stream:
+              config = yaml.safe_load(stream)
+          with open("config/models.yaml", encoding="utf-8") as stream:
+              model_routes = yaml.safe_load(stream)["routes"]
           selected = os.environ.get("INPUT_AGENT", "")
           agents = []
           for item in config["agents"]:
               if item.get("enabled") and (not selected or item["name"] == selected):
                   name = item["name"].upper().replace("-", "_")
-                  agents.append({"agent": item["name"], "role": os.environ.get("INPUT_ROLE") or item["roles"][0], "secret_name": "HG_KEY_" + name})
+                  roles = item["roles"]
+                  slot = datetime.now(timezone.utc).minute // 15 % len(roles)
+                  role = os.environ.get("INPUT_ROLE") or roles[slot]
+                  with open("roles/" + role + ".md", encoding="utf-8") as stream:
+                      charter = yaml.safe_load(stream.read().split("---", 2)[1])
+                  provider = model_routes[charter["model_route"]]["provider"]
+                  agents.append({
+                      "agent": item["name"],
+                      "role": role,
+                      "runtime": item["runtime"],
+                      "secret_name": "HG_KEY_" + name,
+                      "model_secret_name": provider.upper() + "_API_KEY",
+                      "model_provider": provider.upper(),
+                  })
           print("agents=" + json.dumps(agents))
           PY
         env:
@@ -54,7 +78,7 @@ jobs:
 
   tick:
     needs: matrix
-    if: vars.HG_ENABLED == 'true' && needs.matrix.outputs.agents != '[]'
+    if: vars.HG_ENABLED == 'true' && github.ref_name == github.event.repository.default_branch && needs.matrix.outputs.agents != '[]'
     strategy:
       fail-fast: false
       matrix:
@@ -64,8 +88,6 @@ jobs:
     concurrency:
       group: hg-agent-${{ matrix.agent }}
       cancel-in-progress: false
-    env:
-      HG_KEY: ${{ secrets[matrix.secret_name] }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -75,10 +97,31 @@ jobs:
       - name: Mask credential
         env:
           HINTERGLASS_KEY: ${{ secrets[matrix.secret_name] }}
+          HINTERGLASS_AGENT: ${{ matrix.agent }}
+          HGLAB_RUNTIME: ${{ matrix.runtime }}
+          MODEL_API_KEY: ${{ secrets[matrix.model_secret_name] }}
+          MODEL_PROVIDER: ${{ matrix.model_provider }}
         run: |
           if [ -n "$HINTERGLASS_KEY" ]; then printf '::add-mask::%s\n' "$HINTERGLASS_KEY"; fi
+          if [ -n "$MODEL_API_KEY" ]; then printf '::add-mask::%s\n' "$MODEL_API_KEY"; fi
+          case "$HINTERGLASS_AGENT" in *[!A-Za-z0-9_-]*|'') exit 1;; esac
+          suffix="${HINTERGLASS_AGENT^^}"
+          suffix="${suffix//-/_}"
+          printf 'HG_KEY_%s=%s\n' "$suffix" "$HINTERGLASS_KEY" >> "$GITHUB_ENV"
+          printf 'HGLAB_RUNTIME=%s\n' "$HGLAB_RUNTIME" >> "$GITHUB_ENV"
+          printf '%s_API_KEY=%s\n' "$MODEL_PROVIDER" "$MODEL_API_KEY" >> "$GITHUB_ENV"
       - run: python -m pip install .
-      - run: hglab tick --agent "${{ matrix.agent }}" --role "${{ matrix.role }}" ${{ inputs.dry_run && '--dry-run' || '' }}
+      - name: Run leased role
+        env:
+          HINTERGLASS_AGENT: ${{ matrix.agent }}
+          HINTERGLASS_ROLE: ${{ matrix.role }}
+          HINTERGLASS_DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          if [ "$HINTERGLASS_DRY_RUN" = "true" ]; then
+            hglab tick --agent "$HINTERGLASS_AGENT" --role "$HINTERGLASS_ROLE" --dry-run
+          else
+            hglab tick --agent "$HINTERGLASS_AGENT" --role "$HINTERGLASS_ROLE"
+          fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:

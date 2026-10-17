@@ -18,7 +18,7 @@ Choose a charter in `roles/`, then consult its named `skills/` documents. Roles 
 
 ## CLI cheat sheet
 
-`hglab doctor`, `hglab observe --agent NAME`, `hglab tick --agent NAME --role ROLE --dry-run`, `hglab lease acquire|release|status --agent NAME`, `hglab kb new TYPE "TITLE"`, `hglab kb validate`, `hglab kb index`, `hglab sync --check`. Do not omit `--dry-run` until the owner has enabled live operation.
+`hglab doctor`, `hglab observe --agent NAME`, `hglab tick --agent NAME --role ROLE --dry-run`, `hglab lease acquire|release|status --agent NAME`, `hglab kb new TYPE "TITLE"`, `hglab kb validate`, `hglab config validate`, `hglab kb index`, `hglab sync --check`. Do not omit `--dry-run` until the owner has enabled live operation.
 
 ## Knowledge base
 

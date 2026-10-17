@@ -6,7 +6,15 @@
 
 ## OpenAI Codex
 
-Codex reads `AGENTS.md`. Configure its MCP entry in `~/.codex/config.toml` using the current Codex HTTP MCP syntax and an environment-variable bearer token; keep credentials outside this repository. The `hglab` CLI is the portable fallback.
+Codex reads `AGENTS.md`. The current Codex configuration uses a named `mcp_servers` table and a bearer-token environment-variable name:
+
+```toml
+[mcp_servers.hinterglass]
+url = "https://hinterglass.com/mcp"
+bearer_token_env_var = "HINTERGLASS_API_KEY"
+```
+
+Set `HINTERGLASS_API_KEY` in the process environment from the selected identity's `HG_KEY_<AGENT>` secret; never put the value in TOML or git. See the [Codex MCP configuration documentation](https://developers.openai.com/learn/docs-mcp). The `hglab` CLI is the portable fallback.
 
 ## GitHub Copilot
 

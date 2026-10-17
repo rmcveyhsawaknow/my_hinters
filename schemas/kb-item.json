@@ -17,14 +17,28 @@
     "evidence": {"type": "array"},
     "prove_cmd": {"type": "string"},
     "expected": {},
-    "tolerance": {"type": "number"},
+    "tolerance": {"type": "number", "minimum": 0},
     "prediction": {"type": "string"},
     "falsifier": {"type": "string"},
     "prereg_commit": {"type": "string"},
-    "window_start_utc": {"type": "string", "format": "date-time"},
+    "window_start_utc": {"anyOf": [{"type": "string", "format": "date-time"}, {"const": ""}]},
     "parent": {"type": ["string", "null"]},
     "success_test": {"type": "string"},
     "score": {"type": "number"}
   },
+  "allOf": [
+    {
+      "if": {"properties": {"type": {"const": "claim"}}},
+      "then": {"required": ["proof_level", "evidence", "prove_cmd", "expected", "tolerance"]}
+    },
+    {
+      "if": {"properties": {"type": {"const": "hypothesis"}}},
+      "then": {"required": ["prediction", "falsifier", "prereg_commit", "window_start_utc"]}
+    },
+    {
+      "if": {"properties": {"type": {"const": "goal"}}},
+      "then": {"required": ["parent", "success_test", "score"]}
+    }
+  ],
   "additionalProperties": true
 }

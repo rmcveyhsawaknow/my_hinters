@@ -2,7 +2,7 @@ import httpx
 import pytest
 import respx
 
-from hglab.client import HinterglassClient, HinterglassError
+from hglab.client import HinterglassClient, HinterglassError, TokenBucket
 
 
 @respx.mock
@@ -36,3 +36,19 @@ def test_private_observe_uses_bearer_header():
     authorization = route.calls.last.request.headers["Authorization"]
     assert authorization.startswith("Bearer ")
     assert authorization.endswith("fake-test-key")
+
+
+def test_token_bucket_waits_after_capacity_is_consumed(monkeypatch):
+    now = [100.0]
+    slept = []
+    monkeypatch.setattr("hglab.client.time.monotonic", lambda: now[0])
+
+    def sleep(delay):
+        slept.append(delay)
+        now[0] += delay
+
+    monkeypatch.setattr("hglab.client.time.sleep", sleep)
+    bucket = TokenBucket(rate_per_minute=1)
+    bucket.wait()
+    bucket.wait()
+    assert slept == [60.0]

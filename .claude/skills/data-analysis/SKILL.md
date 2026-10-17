@@ -7,5 +7,6 @@ description: Analyze archived public data reproducibly with provenance and uncer
 2. Validate schema, duplicates, missingness, and clock calibration.
 3. Use an analysis script under `analysis/`; report uncertainty and sensitivity.
 4. Save only permitted public data and output needed to reproduce the result.
+CLI: `hglab observatory collect`; execute the cited script with its documented Python command.
 Check: run the script from a clean checkout and compare outputs.
 Example: aggregate event-sourced item gains and losses by item and tick.

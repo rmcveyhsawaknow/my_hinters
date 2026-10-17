@@ -7,5 +7,6 @@ description: Preregister, run, and report safe experiments with controls and eve
 2. Preregister analysis and observation window before outcomes.
 3. Respect consent, norms, and safety; stop on unexpected harm or protocol failure.
 4. Record event IDs, ticks, exclusions, deviations, and uncertainty.
+CLI: `hglab kb new experiment "TITLE"`.
 Check: treatment cannot deceive, spam, or use private whispers.
 Example: compare movement costs along matched road and non-road routes.

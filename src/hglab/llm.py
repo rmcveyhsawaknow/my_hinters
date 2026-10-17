@@ -1,0 +1,103 @@
+"""Provider adapters routed from config/models.yaml."""
+
+from __future__ import annotations
+
+import json
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any
+
+import yaml
+
+from hglab.secrets import get_secret
+
+
+@dataclass
+class ModelResult:
+    value: dict[str, Any]
+    input_tokens: int
+    output_tokens: int
+    provider: str
+    model: str
+
+
+def route_config(route: str, root: Path, author_runtime: str | None = None) -> dict[str, Any]:
+    config = yaml.safe_load((root / "config/models.yaml").read_text(encoding="utf-8"))
+    try:
+        selected = dict(config["routes"][route])
+    except KeyError as exc:
+        raise ValueError(f"unknown model route: {route}") from exc
+    if route == "review" and get_secret("ANTHROPIC_API_KEY", root) and get_secret("OPENAI_API_KEY", root):
+        if author_runtime and author_runtime.startswith("actions-openai"):
+            selected["provider"] = "anthropic"
+            selected["model"] = config["routes"]["science"]["model"]
+            selected["effort"] = "high"
+        elif author_runtime and author_runtime.startswith("actions-anthropic"):
+            selected["provider"] = "openai"
+    return selected
+
+
+def structured_call(
+    route: str,
+    prompt: str,
+    schema: dict[str, Any],
+    *,
+    root: Path,
+    output_tokens: int = 1600,
+    author_runtime: str | None = None,
+) -> ModelResult:
+    """Call the configured vendor once; world-provided strings remain delimited data."""
+    config = route_config(route, root, author_runtime)
+    if config["provider"] == "anthropic":
+        import anthropic
+
+        client = anthropic.Anthropic(
+            api_key=get_secret("ANTHROPIC_API_KEY", root),
+            timeout=18 if route == "challenge" else 120,
+        )
+        response = client.messages.create(
+            model=config["model"],
+            max_tokens=output_tokens,
+            output_config={
+                "effort": config.get("effort", "low"),
+                "format": {"type": "json_schema", "schema": schema},
+            },
+            messages=[{"role": "user", "content": prompt}],
+        )
+        if response.stop_reason in {"refusal", "max_tokens"}:
+            raise ValueError(f"model stopped without a complete response: {response.stop_reason}")
+        text = "".join(block.text for block in response.content if getattr(block, "text", None))
+        usage = response.usage
+        model = response.model
+        provider = "anthropic"
+        input_tokens, output_tokens_used = usage.input_tokens, usage.output_tokens
+    elif config["provider"] == "openai":
+        import openai
+
+        client = openai.OpenAI(
+            api_key=get_secret("OPENAI_API_KEY", root),
+            timeout=18 if route == "challenge" else 120,
+        )
+        response = client.responses.create(
+            model=config["model"],
+            input=prompt,
+            text={
+                "format": {
+                    "type": "json_schema",
+                    "name": f"hglab_{route}",
+                    "schema": schema,
+                    "strict": True,
+                }
+            },
+        )
+        text = response.output_text
+        model = response.model
+        provider = "openai"
+        input_tokens = response.usage.input_tokens if response.usage else 0
+        output_tokens_used = response.usage.output_tokens if response.usage else 0
+    else:
+        raise ValueError(f"unsupported model provider: {config['provider']}")
+    parsed = json.loads(text)
+    if not isinstance(parsed, dict):
+        raise TypeError("structured model output must be a JSON object")
+    return ModelResult(parsed, input_tokens, output_tokens_used, provider, model)

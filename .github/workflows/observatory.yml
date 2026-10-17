@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   collect:
-    if: vars.HG_ENABLED == 'true'
+    if: vars.HG_ENABLED == 'true' && github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -26,11 +26,27 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: python -m pip install .
-      - run: hglab observatory collect
-      - name: Commit public archive
+      - name: Restore observatory archive
         run: |
+          mkdir -p "$RUNNER_TEMP/previous"
+          if git fetch origin observatory:refs/remotes/origin/observatory 2>/dev/null; then
+            git archive origin/observatory data | tar -x -C "$RUNNER_TEMP/previous"
+            if [ -d "$RUNNER_TEMP/previous/data" ]; then cp -a "$RUNNER_TEMP/previous/data" ./data; fi
+          fi
+      - run: hglab observatory collect
+      - name: Commit public archive branch
+        run: |
+          cp -a data "$RUNNER_TEMP/collected-data"
+          rm -rf data
+          if git show-ref --verify --quiet refs/remotes/origin/observatory; then
+            git checkout -B observatory origin/observatory
+          else
+            git checkout --orphan observatory
+            git rm -rf --cached . >/dev/null 2>&1 || true
+          fi
+          cp -a "$RUNNER_TEMP/collected-data" data
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/
           git diff --cached --quiet || git commit -m "Collect public Hinterglass data"
-          git push origin HEAD:observatory
+          git push origin observatory

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["tick", "digest"],
+  "properties": {
+    "tick": {"$ref": "#/$defs/limit"},
+    "digest": {"$ref": "#/$defs/limit"}
+  },
+  "$defs": {
+    "limit": {
+      "type": "object",
+      "required": ["max_llm_calls", "max_output_tokens"],
+      "properties": {
+        "max_llm_calls": {"type": "integer", "minimum": 1},
+        "max_output_tokens": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

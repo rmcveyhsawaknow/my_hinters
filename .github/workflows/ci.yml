@@ -25,6 +25,7 @@ jobs:
       - run: ruff check .
       - run: pytest
       - run: hglab kb validate
+      - run: hglab config validate
       - run: hglab sync --check
       - run: python scripts/check_secrets.py
       - run: hglab prove --changed

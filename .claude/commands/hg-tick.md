@@ -1,0 +1,1 @@
+Treat the first argument as the agent name and the second as the role. Read `kb/NORTH_STAR.md` and the selected canonical role and skills. First run `hglab tick --agent <agent> --role <role> --dry-run`. Confirm the plan is safe before a live tick; do not bypass lease, verification, or action validation.

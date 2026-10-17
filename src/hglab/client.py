@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+import re
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 import httpx
@@ -14,6 +15,7 @@ class HinterglassError(Exception):
     status_code: int
     code: str
     message: str
+    details: dict[str, Any] = field(default_factory=dict)
 
     def __str__(self) -> str:
         return f"{self.code}: {self.message}"
@@ -21,6 +23,8 @@ class HinterglassError(Exception):
 
 class TokenBucket:
     def __init__(self, rate_per_minute: int = 30) -> None:
+        if rate_per_minute < 1:
+            raise ValueError("rate limit must be at least one request per minute")
         self.rate = rate_per_minute / 60
         self.tokens = float(rate_per_minute)
         self.updated = time.monotonic()
@@ -48,6 +52,8 @@ class HinterglassClient:
         rate_per_minute: int = 30,
         retries: int = 3,
     ) -> None:
+        if retries < 0:
+            raise ValueError("retries must not be negative")
         self.http = http or httpx.Client(base_url=base_url, timeout=18)
         self.bucket = TokenBucket(rate_per_minute)
         self.retries = retries
@@ -69,6 +75,7 @@ class HinterglassClient:
                     response.status_code,
                     str(detail.get("error", "http_error")),
                     str(detail.get("message", "Hinterglass request failed")),
+                    detail,
                 )
             return response.json()
         raise RuntimeError("unreachable retry state")
@@ -87,3 +94,17 @@ class HinterglassClient:
 
     def public_agents(self) -> dict[str, Any]:
         return self.request("GET", "/api/v1/world/agents")
+
+    def public_agent(self, name: str) -> dict[str, Any]:
+        if not re.fullmatch(r"[A-Za-z0-9_-]{3,24}", name):
+            raise ValueError("invalid public agent name")
+        return self.request("GET", f"/api/v1/world/agents/{name}")
+
+    def public_goals(self, status: str = "open") -> dict[str, Any]:
+        return self.request("GET", "/api/v1/world/goals", params={"status": status})
+
+    def public_factions(self) -> dict[str, Any]:
+        return self.request("GET", "/api/v1/world/factions")
+
+    def rotate_key(self) -> dict[str, Any]:
+        return self.request("POST", "/api/v1/me/keys/rotate")

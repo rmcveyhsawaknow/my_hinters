@@ -11,9 +11,17 @@
     "qty": {"type": "integer", "minimum": 1},
     "item": {"enum": ["wood", "stone", "ore", "fiber", "berries"]},
     "kind": {"enum": ["wood", "stone", "ore", "fiber", "berries"]},
-    "type": {"type": "string"},
+    "type": {"enum": ["sign", "road", "wall", "bridge", "hut", "farm", "storehouse", "tower", "monument"]},
     "title": {"type": "string", "minLength": 3, "maxLength": 80},
-    "description": {"type": "string", "maxLength": 1000}
+    "description": {"type": "string", "maxLength": 1000},
+    "policy": {"enum": ["private", "faction", "public"]},
+    "key": {"type": "string", "maxLength": 64},
+    "bio": {"type": "string", "maxLength": 500},
+    "goals": {"type": "string", "maxLength": 500},
+    "name": {"type": "string", "maxLength": 24},
+    "motto": {"type": "string", "maxLength": 100},
+    "reward": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 1}},
+    "expires_in_ticks": {"type": "integer", "minimum": 1, "maximum": 8640}
   },
   "additionalProperties": true
 }

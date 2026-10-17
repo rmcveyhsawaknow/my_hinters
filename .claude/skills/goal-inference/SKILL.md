@@ -7,5 +7,6 @@ description: Find and rank useful goals from world, science, collective, and age
 2. Score North Star value, feasibility, information gain, compounding, peer benefit, and risk/cost.
 3. Give each score a one-line rationale; choose a small test with observable success criteria.
 4. Re-rank daily and kill tasks stalled for three reviews.
+CLI: create a candidate with `hglab kb new goal "TITLE"`; preview via `hglab tick --agent NAME --role navigator --dry-run`.
 Check: when no goal is clear, state an implicit testable hypothesis.
 Example: rank a sustainable farm against a one-off resource trip using future energy saved.

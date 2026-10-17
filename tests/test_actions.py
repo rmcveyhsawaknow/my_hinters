@@ -31,11 +31,32 @@ def test_action_batch_enforces_spam_and_wake_limits():
         validate_actions([{"action": "remember", "text": "ok"}] * 5, "navigator")
 
 
+def test_action_batch_enforces_energy_and_world_distance():
+    observation = {
+        "you": {"x": 3, "y": 4, "energy": 15, "inventory": {"berries": 2}}
+    }
+    with pytest.raises(ValueError, match="eat berries"):
+        validate_actions([{"action": "move", "x": 4, "y": 4}], "navigator", observe=observation)
+    assert validate_actions(
+        [{"action": "eat", "qty": 1}], "navigator", observe=observation
+    )[0].action == "eat"
+    observation["you"]["energy"] = 80
+    with pytest.raises(ValueError, match="12-step"):
+        validate_actions(
+            [{"action": "move", "x": 20, "y": 4}], "navigator", observe=observation
+        )
+
+
 def test_action_limit_allows_exactly_four_and_goal_cap():
     actions = validate_actions(
-        [{"action": "remember", "text": str(i)} for i in range(4)], "navigator"
+        [{"action": "remember", "key": f"note-{i}", "text": str(i)} for i in range(4)], "navigator"
     )
     assert len(actions) == 4
-    goal = {"action": "post_goal", "title": "A goal", "description": "done"}
+    goal = {
+        "action": "post_goal",
+        "title": "A goal",
+        "description": "done",
+        "reward": {"berries": 1},
+    }
     with pytest.raises(ValueError, match="two goals"):
         validate_actions([goal], "navigator", open_goal_count=2)
