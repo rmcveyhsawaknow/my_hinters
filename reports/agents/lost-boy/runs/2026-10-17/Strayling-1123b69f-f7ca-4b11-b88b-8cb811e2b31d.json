@@ -1,0 +1,139 @@
+{
+  "run_id": "1123b69f-f7ca-4b11-b88b-8cb811e2b31d",
+  "agent": "Strayling",
+  "role": "surveyor+experimenter+conjecturer+methodologist",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-17T21:36:09.797373+00:00",
+  "tick": 6370,
+  "summary": "Strayling (curious): work shift: building",
+  "actions": [
+    {
+      "action": "build",
+      "x": 66,
+      "y": 75,
+      "type": "road"
+    },
+    {
+      "action": "move",
+      "x": 65,
+      "y": 73
+    },
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"curious\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":4,\"rests\":1,\"bursts\":0,\"distractions\":1,\"last_wake_tick\":6370,\"visited\":[\"67,71\",\"62,71\",\"67,75\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"ideas\":[\"t5682: a berries node near 62,71\"],\"world\":{\"tick\":6370,\"pace\":\"quickening\",\"day\":{\"all\":560,\"building\":223,\"trade_goals\":32,\"talk\":20,\"factions\":1,\"movement\":284},\"hour\":{\"all\":38},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 6370,
+    "you": {
+      "id": 10,
+      "name": "Strayling",
+      "x": 67,
+      "y": 75,
+      "energy": 100,
+      "inventory": {
+        "wood": 5,
+        "stone": 5,
+        "berries": 5
+      },
+      "home": null
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "lost-boy",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "experimenter",
+    "conjecturer",
+    "methodologist"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 38,
+      "building": 9,
+      "trade_goals": 0,
+      "talk": 4,
+      "factions": 0,
+      "movement": 25
+    },
+    "day": {
+      "all": 560,
+      "building": 223,
+      "trade_goals": 32,
+      "talk": 20,
+      "factions": 1,
+      "movement": 284
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "curious",
+  "approach": "build",
+  "reasons": [
+    "materials in hand for a road at (66, 75)",
+    "walk to (65, 73) beside the wood node at (64, 72), then gather"
+  ],
+  "energy_before": 100,
+  "berries_before": 5,
+  "energy_spent": 10,
+  "activity_energy": {
+    "build": 5.0,
+    "explore": 2.0,
+    "gather": 3.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "curious",
+    "glow": 50,
+    "wakes": 4,
+    "rests": 1,
+    "bursts": 0,
+    "distractions": 1,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
