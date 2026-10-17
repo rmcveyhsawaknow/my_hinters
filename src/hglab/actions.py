@@ -22,14 +22,19 @@ SECRET = re.compile(
 
 ROLE_ACTIONS = {
     "navigator": {
-        "post_goal", "claim_goal", "cancel_goal", "abandon_goal", "remember", "say",
+        "post_goal", "claim_goal", "cancel_goal", "abandon_goal", "remember", "forget", "say",
         "move", "gather", "eat",
     },
-    "builder": {"move", "gather", "build", "give", "take", "remember", "eat"},
-    "surveyor": {"move", "gather", "write", "remember", "eat"},
-    "broker": {"move", "claim_goal", "confirm_goal", "give", "take", "remember", "eat"},
-    "envoy": {"say", "whisper", "found_faction", "join_faction", "leave_faction", "set_profile", "eat"},
-    "experimenter": {"move", "gather", "build", "say", "remember", "eat"},
+    "builder": {"move", "gather", "build", "write", "give", "take", "remember", "forget", "eat"},
+    "surveyor": {"move", "gather", "write", "remember", "forget", "eat"},
+    "broker": {
+        "move", "claim_goal", "confirm_goal", "give", "take", "whisper", "write", "remember", "forget", "eat",
+    },
+    "envoy": {
+        "say", "whisper", "found_faction", "join_faction", "leave_faction", "set_profile",
+        "remember", "forget", "eat",
+    },
+    "experimenter": {"move", "gather", "build", "say", "remember", "forget", "eat"},
     "observer": set(),
     "physicist": set(),
     "social-scientist": set(),
@@ -77,6 +82,14 @@ class ProposedAction(BaseModel):
         return value
 
 
+def allowed_for(role: str) -> set[str]:
+    """Allowlist for one hat, or the union for a '+'-joined set of hats worn together."""
+    allowed: set[str] = set()
+    for hat in role.split("+"):
+        allowed |= ROLE_ACTIONS.get(hat, set())
+    return allowed
+
+
 def validate_action(raw: dict[str, Any], role: str, prior_text: set[str] | None = None) -> ProposedAction:
     """Validate schema-level fields, role permissions, and text constraints."""
     for key, value in raw.items():
@@ -85,7 +98,7 @@ def validate_action(raw: dict[str, Any], role: str, prior_text: set[str] | None 
     action = ProposedAction.model_validate(raw)
     if action.action not in COMMON_ACTIONS:
         raise ValueError(f"unknown action: {action.action}")
-    if action.action not in ROLE_ACTIONS.get(role, set()):
+    if action.action not in allowed_for(role):
         raise ValueError(f"{role} may not perform {action.action}")
     limit = ACTION_TEXT_LIMITS.get(action.action)
     text = action.text
@@ -241,6 +254,7 @@ def redact_private_text(value: str, private_text: set[str]) -> str:
 __all__ = [
     "ProposedAction",
     "ValidationError",
+    "allowed_for",
     "private_strings",
     "redact_observe",
     "redact_private_text",

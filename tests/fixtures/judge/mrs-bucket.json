@@ -1,0 +1,31 @@
+{
+ "agent": "mrs-bucket",
+ "metric_version": 1,
+ "model": "fixture",
+ "provider": "fixture",
+ "sampled_lines": 6,
+ "sampled_actions": 8,
+ "created_utc": "2026-10-17T00:00:00+00:00",
+ "traits": [
+  {
+   "name": "warmth",
+   "score": 5,
+   "reason": "Thanks by deed, offers berries."
+  },
+  {
+   "name": "humility",
+   "score": 5,
+   "reason": "Never mentions her own output."
+  },
+  {
+   "name": "resilience",
+   "score": 4,
+   "reason": "Lean-week lines stay hopeful."
+  },
+  {
+   "name": "practicality",
+   "score": 5,
+   "reason": "Coordinates and quantities, no flourish."
+  }
+ ]
+}

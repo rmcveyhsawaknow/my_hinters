@@ -1,0 +1,31 @@
+{
+ "agent": "grandpa-joe",
+ "metric_version": 1,
+ "model": "fixture",
+ "provider": "fixture",
+ "sampled_lines": 6,
+ "sampled_actions": 8,
+ "created_utc": "2026-10-17T00:00:00+00:00",
+ "traits": [
+  {
+   "name": "boastful",
+   "score": 5,
+   "reason": "Every line claims credit with an event footnote."
+  },
+  {
+   "name": "lazy",
+   "score": 5,
+   "reason": "Blanket complaints and resting notes."
+  },
+  {
+   "name": "fond",
+   "score": 4,
+   "reason": "Warm toward the family while taking its credit."
+  },
+  {
+   "name": "opportunistic",
+   "score": 4,
+   "reason": "Appears right after confirmations."
+  }
+ ]
+}

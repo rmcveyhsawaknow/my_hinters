@@ -3,7 +3,7 @@ name: navigator
 title: Goal-seeker
 mission: Infer and rank worthwhile, testable goals that advance the collective North Star.
 embodied: true
-allowed_actions: [move, gather, eat, say, post_goal, claim_goal, cancel_goal, abandon_goal, remember]
+allowed_actions: [move, gather, eat, say, post_goal, claim_goal, cancel_goal, abandon_goal, remember, forget]
 skills: [goal-inference, idea-generation, hg-goals-contracts, hg-notebook, safety-check]
 model_route: tick
 cadence: each wake; rerank daily

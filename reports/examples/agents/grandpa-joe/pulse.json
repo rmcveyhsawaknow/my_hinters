@@ -1,0 +1,292 @@
+{
+ "agent": "grandpa-joe",
+ "name": "GrandpaJoe",
+ "team": "chocolate-factory",
+ "headline": "resting up for the glory",
+ "metric_version": 1,
+ "tick": 65760,
+ "day": 182,
+ "date": "2026-10-17",
+ "window_ticks": 60480,
+ "events_considered": 391,
+ "runs_considered": 32,
+ "alive": {
+  "score": 98,
+  "detail": "32/28 wakes, never lapsed, 1 failed",
+  "parts": {
+   "completed": 32,
+   "scheduled": 28,
+   "lapsed": 0,
+   "banned": false,
+   "rate_limited": 0,
+   "failed_actions": 1,
+   "energy_zero": 0,
+   "spam_blocked": 0
+  }
+ },
+ "on_mission": {
+  "score": 26,
+  "detail": "0.47 energy/wake · 3% of team credit claimed · 0 responses · 0 timely bursts",
+  "rows": [
+   {
+    "id": "energy_thrift",
+    "label": "energy spent per wake",
+    "value": 0.469,
+    "target": 4,
+    "weight": 0.25,
+    "progress": 1.0,
+    "shown": "0.47 energy/wake",
+    "measure": "runs.energy_per_wake"
+   },
+   {
+    "id": "credit_claimed",
+    "label": "share of team credit claimed",
+    "value": 0.033,
+    "target": 0.6,
+    "weight": 0.25,
+    "progress": 0.05500000000000001,
+    "shown": "3% of team credit claimed",
+    "measure": "events.credit_share_claimed"
+   },
+   {
+    "id": "audience",
+    "label": "peers who responded to a tale",
+    "value": 0.0,
+    "target": 3,
+    "weight": 0.25,
+    "progress": 0.0,
+    "shown": "0 responses",
+    "measure": "events.replies_received"
+   },
+   {
+    "id": "glory_bursts",
+    "label": "bursts within 60 ticks of a big event",
+    "value": 0.0,
+    "target": 3,
+    "weight": 0.25,
+    "progress": 0.0,
+    "shown": "0 timely bursts",
+    "measure": "runs.timely_bursts"
+   }
+  ]
+ },
+ "in_character": {
+  "score": 82,
+  "detail": "boastful 5 · lazy 5 · fond 4 · opportunistic 4",
+  "signatures": [
+   {
+    "id": "rest_share",
+    "label": "share of wakes in bed",
+    "value": 0.375,
+    "range": [
+     0.45,
+     0.8
+    ],
+    "inside": false,
+    "measure": "runs.rest_share"
+   },
+   {
+    "id": "home_distance",
+    "label": "mean distance from the hut",
+    "value": 1.0,
+    "range": [
+     0,
+     3
+    ],
+    "inside": true,
+    "measure": "events.mean_distance_from_home"
+   },
+   {
+    "id": "social_share",
+    "label": "share of energy spent talking",
+    "value": 0.733,
+    "range": [
+     0.4,
+     0.9
+    ],
+    "inside": true,
+    "measure": "runs.action_energy_share"
+   },
+   {
+    "id": "energy_mix",
+    "label": "intended vs actual energy mix",
+    "value": 0.7,
+    "range": [
+     0.5,
+     1.0
+    ],
+    "inside": true,
+    "measure": "runs.energy_mix_match"
+   }
+  ],
+  "judge": [
+   {
+    "name": "boastful",
+    "score": 5,
+    "reason": "Every line claims credit with an event footnote."
+   },
+   {
+    "name": "lazy",
+    "score": 5,
+    "reason": "Blanket complaints and resting notes."
+   },
+   {
+    "name": "fond",
+    "score": 4,
+    "reason": "Warm toward the family while taking its credit."
+   },
+   {
+    "name": "opportunistic",
+    "score": 4,
+    "reason": "Appears right after confirmations."
+   }
+  ],
+  "judge_meta": {
+   "agent": "grandpa-joe",
+   "metric_version": 1,
+   "model": "fixture",
+   "provider": "fixture",
+   "sampled_lines": 6,
+   "sampled_actions": 8,
+   "created_utc": "2026-10-17T00:00:00+00:00"
+  }
+ },
+ "team_pull": {
+  "detail": "Bluster 30 → Wonka",
+  "sent": [
+   {
+    "from": "grandpa-joe",
+    "signal": "bluster",
+    "to": "wonka",
+    "effect": "suspicion",
+    "plain_english": "The more credit Grandpa Joe claims beyond what the log supports, the more honesty tests and fine print Wonka adds.",
+    "weight": 1.0,
+    "half_life_hours": 24.0,
+    "value": 30.1,
+    "decayed_value": 30.1,
+    "age_ticks": 0,
+    "explanation": "Bluster 30: 15 claim(s) against own work 0, 3% of the team's logged work claimed."
+   },
+   {
+    "from": "grandpa-joe",
+    "signal": "bluster",
+    "to": "wonka",
+    "effect": "discernment",
+    "plain_english": "Every tall tale Wonka's audit catches sharpens his eye for who really did the work.",
+    "weight": 0.6,
+    "half_life_hours": 48.0,
+    "value": 30.1,
+    "decayed_value": 30.1,
+    "age_ticks": 0,
+    "explanation": "Bluster 30: 15 claim(s) against own work 0, 3% of the team's logged work claimed."
+   }
+  ],
+  "received": [],
+  "effects": {}
+ },
+ "community": {
+  "goals_completed_for_peers": 0,
+  "public_goods_built": 0,
+  "norms_kept": true,
+  "norm_breaches": [],
+  "replies_received": 0
+ },
+ "approaches": {
+  "rows": [
+   {
+    "id": "tall_tales",
+    "label": "tall tales with footnotes",
+    "wakes": 3,
+    "energy": 1.0,
+    "outcome": 0.0,
+    "per_energy": 0.0,
+    "hypothesis": "H-20261017-joe-audience",
+    "bet_status": "missing",
+    "bet_title": null
+   },
+   {
+    "id": "glory_timing",
+    "label": "springing to life for glory events",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 0.0,
+    "per_energy": null,
+    "hypothesis": "H-20261017-joe-glory-timing",
+    "bet_status": "missing",
+    "bet_title": null
+   }
+  ],
+  "working": "tall tales with footnotes: 0 outcome for 1 energy over 3 wake(s)",
+  "not_working": "nothing clearly failing",
+  "next_bet": "try springing to life for glory events at least once this week; it has a bet but no wakes"
+ },
+ "trend": {
+  "alive": "▇▇▇▇▇▇█",
+  "on_mission": "▅▅▅▅▅▅▃",
+  "in_character": "█▇██▇▇▇"
+ },
+ "history": [
+  {
+   "alive": 88,
+   "date": "2026-10-11",
+   "in_character": 95,
+   "metric_version": 1,
+   "on_mission": 53
+  },
+  {
+   "alive": 86,
+   "date": "2026-10-12",
+   "in_character": 90,
+   "metric_version": 1,
+   "on_mission": 50
+  },
+  {
+   "alive": 86,
+   "date": "2026-10-13",
+   "in_character": 96,
+   "metric_version": 1,
+   "on_mission": 56
+  },
+  {
+   "alive": 86,
+   "date": "2026-10-14",
+   "in_character": 93,
+   "metric_version": 1,
+   "on_mission": 59
+  },
+  {
+   "alive": 88,
+   "date": "2026-10-15",
+   "in_character": 87,
+   "metric_version": 1,
+   "on_mission": 56
+  },
+  {
+   "alive": 90,
+   "date": "2026-10-16",
+   "in_character": 89,
+   "metric_version": 1,
+   "on_mission": 63
+  },
+  {
+   "date": "2026-10-17",
+   "metric_version": 1,
+   "alive": 98,
+   "on_mission": 26,
+   "in_character": 82,
+   "tick": 65760
+  }
+ ],
+ "signals": {
+  "bluster": {
+   "value": 30.1,
+   "explanation": "Bluster 30: 15 claim(s) against own work 0, 3% of the team's logged work claimed.",
+   "parts": {
+    "claims": 25.3,
+    "own_work": 0,
+    "share_of_team_work_claimed": 0.03
+   },
+   "tick": 65760
+  }
+ }
+}

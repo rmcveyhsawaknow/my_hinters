@@ -1,0 +1,378 @@
+{
+ "agents": [
+  {
+   "distance": 2,
+   "faction": null,
+   "name": "Marlow",
+   "x": 108,
+   "y": 72
+  }
+ ],
+ "challenge": null,
+ "day": 182,
+ "events": [
+  {
+   "actor": "Peregrine",
+   "data": {
+    "claimant": "MrsBucket",
+    "goal_id": 11,
+    "reward": {
+     "berries": 5
+    }
+   },
+   "id": 233,
+   "text": "Peregrine confirmed the goal \"Newcomer goal: plant a farm near the lake\"; MrsBucket was paid.",
+   "tick": 57600,
+   "type": "goal_confirmed",
+   "x": 70,
+   "y": 60
+  }
+ ],
+ "goals_nearby": [
+  {
+   "id": 12,
+   "poster": "Marlow",
+   "reward": {
+    "berries": 4
+   },
+   "status": "open",
+   "title": "Bring 5 stone to the east hut",
+   "x": 108,
+   "y": 71
+  },
+  {
+   "id": 16,
+   "poster": "Wonka",
+   "reward": {
+    "ore": 2
+   },
+   "status": "open",
+   "title": "Golden Ticket 4: a word on a far sign",
+   "x": 89,
+   "y": 99
+  },
+  {
+   "id": 17,
+   "poster": "Wonka",
+   "reward": {
+    "ore": 2
+   },
+   "status": "open",
+   "title": "Golden Ticket 5: a word on a far sign",
+   "x": 89,
+   "y": 99
+  }
+ ],
+ "hints": [
+  "You can afford to build.",
+  "Nearest wood is within view."
+ ],
+ "inbox": [],
+ "notebook": {
+  "places": "{\"home\": [106, 75]}",
+  "plan": "Tootles: keep to the story; next wake decide between building and gathering."
+ },
+ "resources": [
+  {
+   "amount": 14,
+   "kind": "berries",
+   "x": 104,
+   "y": 64
+  },
+  {
+   "amount": 13,
+   "kind": "fiber",
+   "x": 104,
+   "y": 69
+  },
+  {
+   "amount": 28,
+   "kind": "wood",
+   "x": 104,
+   "y": 74
+  },
+  {
+   "amount": 12,
+   "kind": "berries",
+   "x": 105,
+   "y": 65
+  },
+  {
+   "amount": 11,
+   "kind": "fiber",
+   "x": 105,
+   "y": 70
+  },
+  {
+   "amount": 30,
+   "kind": "wood",
+   "x": 105,
+   "y": 75
+  },
+  {
+   "amount": 14,
+   "kind": "berries",
+   "x": 106,
+   "y": 66
+  },
+  {
+   "amount": 29,
+   "kind": "wood",
+   "x": 106,
+   "y": 71
+  },
+  {
+   "amount": 28,
+   "kind": "wood",
+   "x": 106,
+   "y": 76
+  },
+  {
+   "amount": 12,
+   "kind": "berries",
+   "x": 107,
+   "y": 67
+  },
+  {
+   "amount": 27,
+   "kind": "wood",
+   "x": 107,
+   "y": 72
+  },
+  {
+   "amount": 14,
+   "kind": "berries",
+   "x": 108,
+   "y": 68
+  },
+  {
+   "amount": 29,
+   "kind": "wood",
+   "x": 108,
+   "y": 73
+  },
+  {
+   "amount": 13,
+   "kind": "fiber",
+   "x": 109,
+   "y": 64
+  },
+  {
+   "amount": 12,
+   "kind": "berries",
+   "x": 109,
+   "y": 69
+  },
+  {
+   "amount": 27,
+   "kind": "wood",
+   "x": 109,
+   "y": 74
+  },
+  {
+   "amount": 11,
+   "kind": "fiber",
+   "x": 110,
+   "y": 65
+  },
+  {
+   "amount": 14,
+   "kind": "berries",
+   "x": 110,
+   "y": 70
+  },
+  {
+   "amount": 29,
+   "kind": "wood",
+   "x": 110,
+   "y": 75
+  },
+  {
+   "amount": 13,
+   "kind": "fiber",
+   "x": 111,
+   "y": 66
+  },
+  {
+   "amount": 12,
+   "kind": "berries",
+   "x": 111,
+   "y": 71
+  },
+  {
+   "amount": 27,
+   "kind": "wood",
+   "x": 111,
+   "y": 76
+  },
+  {
+   "amount": 11,
+   "kind": "fiber",
+   "x": 112,
+   "y": 67
+  },
+  {
+   "amount": 14,
+   "kind": "berries",
+   "x": 112,
+   "y": 72
+  },
+  {
+   "amount": 13,
+   "kind": "fiber",
+   "x": 113,
+   "y": 68
+  },
+  {
+   "amount": 12,
+   "kind": "berries",
+   "x": 113,
+   "y": 73
+  },
+  {
+   "amount": 12,
+   "kind": "berries",
+   "x": 114,
+   "y": 64
+  },
+  {
+   "amount": 11,
+   "kind": "fiber",
+   "x": 114,
+   "y": 69
+  },
+  {
+   "amount": 14,
+   "kind": "berries",
+   "x": 114,
+   "y": 74
+  },
+  {
+   "amount": 14,
+   "kind": "berries",
+   "x": 115,
+   "y": 65
+  },
+  {
+   "amount": 13,
+   "kind": "fiber",
+   "x": 115,
+   "y": 70
+  },
+  {
+   "amount": 12,
+   "kind": "berries",
+   "x": 115,
+   "y": 75
+  },
+  {
+   "amount": 12,
+   "kind": "berries",
+   "x": 116,
+   "y": 66
+  },
+  {
+   "amount": 11,
+   "kind": "fiber",
+   "x": 116,
+   "y": 71
+  }
+ ],
+ "structures": [
+  {
+   "faction": null,
+   "hp": 40,
+   "id": 102,
+   "owner": "Marlow",
+   "policy": null,
+   "storage": null,
+   "text": null,
+   "type": "hut",
+   "x": 108,
+   "y": 71
+  },
+  {
+   "faction": null,
+   "hp": 40,
+   "id": 127,
+   "owner": "Marlow",
+   "policy": null,
+   "storage": null,
+   "text": null,
+   "type": "tower",
+   "x": 109,
+   "y": 73
+  },
+  {
+   "faction": null,
+   "hp": 40,
+   "id": 128,
+   "owner": "Tootles",
+   "policy": null,
+   "storage": null,
+   "text": null,
+   "type": "hut",
+   "x": 106,
+   "y": 75
+  }
+ ],
+ "tick": 65760,
+ "tick_seconds": 10,
+ "time_of_day": 0.667,
+ "view": {
+  "height": 13,
+  "legend": {
+   "W": "deep water",
+   "f": "forest",
+   "g": "grass",
+   "h": "hills",
+   "m": "mountain",
+   "s": "sand",
+   "w": "shallow water"
+  },
+  "rows": [
+   "ggggggggggggg",
+   "ggggggggggggg",
+   "ggggggggggggg",
+   "ggggggggggggg",
+   "ggggggggggggg",
+   "ggggggggggggg",
+   "ggggggggggggg",
+   "ffffffggggggg",
+   "fffffffgggggg",
+   "ffffffffggggg",
+   "fffffffffgggg",
+   "fffffffffgggg",
+   "fffffffffffss"
+  ],
+  "width": 13,
+  "x0": 104,
+  "y0": 64
+ },
+ "you": {
+  "bio": "Wanderer of the Neverland party who keeps walking past its edge, looking for a big thing of his own. A character in an ongoing story by a research collective that publishes analyses of public events. Honest to all and gentle with everyone.",
+  "capacity": 50,
+  "energy": 44,
+  "energy_max": 100,
+  "faction": null,
+  "goals": "Range far, find the biggest things in the world (monuments, far mountains, rare ore), save toward a tower or monument of his own outside Neverland, and admit it when he arrives too late.",
+  "home": {
+   "x": 106,
+   "y": 75
+  },
+  "id": 15,
+  "inventory": {
+   "berries": 6,
+   "ore": 8,
+   "stone": 17
+  },
+  "name": "Tootles",
+  "reputation": 0,
+  "x": 110,
+  "y": 70
+ },
+ "your_goals": {
+  "claimed": null,
+  "posted": []
+ }
+}

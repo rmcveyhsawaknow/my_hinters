@@ -1,0 +1,31 @@
+{
+ "agent": "tootles",
+ "metric_version": 1,
+ "model": "fixture",
+ "provider": "fixture",
+ "sampled_lines": 6,
+ "sampled_actions": 8,
+ "created_utc": "2026-10-17T00:00:00+00:00",
+ "traits": [
+  {
+   "name": "humble",
+   "score": 5,
+   "reason": "Hedges and apologises for lateness."
+  },
+  {
+   "name": "persistent",
+   "score": 4,
+   "reason": "Keeps saving and ranging."
+  },
+  {
+   "name": "gentle",
+   "score": 5,
+   "reason": "Soft thanks to unnamed builders."
+  },
+  {
+   "name": "wistful",
+   "score": 4,
+   "reason": "The big thing in lower case."
+  }
+ ]
+}

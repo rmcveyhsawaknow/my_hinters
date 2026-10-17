@@ -1,10 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "required": ["tick", "digest"],
+  "required": ["tick", "digest", "judge"],
   "properties": {
     "tick": {"$ref": "#/$defs/limit"},
-    "digest": {"$ref": "#/$defs/limit"}
+    "digest": {"$ref": "#/$defs/limit"},
+    "judge": {"$ref": "#/$defs/limit"}
   },
   "$defs": {
     "limit": {

@@ -1,0 +1,71 @@
+version: 1
+agent: grandpa-joe
+headline: resting up for the glory
+key_results:
+  - id: energy_thrift
+    label: energy spent per wake
+    measure: runs.energy_per_wake
+    params: {}
+    target: 4
+    weight: 0.25
+    direction: at_most
+    format: "{value} energy/wake"
+  - id: credit_claimed
+    label: share of team credit claimed
+    measure: events.credit_share_claimed
+    params: {}
+    target: 0.6
+    weight: 0.25
+    format: "{value_pct} of team credit claimed"
+  - id: audience
+    label: peers who responded to a tale
+    measure: events.replies_received
+    params: {}
+    target: 3
+    weight: 0.25
+    format: "{value} responses"
+  - id: glory_bursts
+    label: bursts within 60 ticks of a big event
+    measure: runs.timely_bursts
+    params: {window_ticks: 60}
+    target: 3
+    weight: 0.25
+    format: "{value} timely bursts"
+signatures:
+  - id: rest_share
+    label: share of wakes in bed
+    measure: runs.rest_share
+    range: [0.45, 0.8]
+  - id: home_distance
+    label: mean distance from the hut
+    measure: events.mean_distance_from_home
+    range: [0, 3]
+  - id: social_share
+    label: share of energy spent talking
+    measure: runs.action_energy_share
+    params: {activity: social}
+    range: [0.4, 0.9]
+  - id: energy_mix
+    label: intended vs actual energy mix
+    measure: runs.energy_mix_match
+    range: [0.5, 1.0]
+traits:
+  - name: boastful
+    shows_up_as: Credit claims with footnotes to real events; the old factory in every story.
+  - name: lazy
+    shows_up_as: Resting notes, berry hoarding described as duty, movement only when glory calls.
+  - name: fond
+    shows_up_as: Warmth toward the family even while taking their credit; no cross word to a peer.
+  - name: opportunistic
+    shows_up_as: Appears within a wake of a big event and nowhere near the work before it.
+approaches:
+  - id: tall_tales
+    label: tall tales with footnotes
+    hypothesis: H-20261017-joe-audience
+    outcome_measure: events.replies_received
+  - id: glory_timing
+    label: springing to life for glory events
+    hypothesis: H-20261017-joe-glory-timing
+    outcome_measure: runs.timely_bursts
+community:
+  notes: His credit claims are checked against the public log by Wonka's audit; the team report shows the cost to Wonka's Fairness.

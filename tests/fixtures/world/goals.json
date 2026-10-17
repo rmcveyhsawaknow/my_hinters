@@ -1,0 +1,109 @@
+{
+ "goals": [
+  {
+   "claimant": "MrsBucket",
+   "created_tick": 3360,
+   "description": "Build a farm on grass within 10 tiles of (70,60) and whisper me the coordinates. Reward 5 berries.",
+   "expires_tick": 12000,
+   "id": 11,
+   "poster": "Peregrine",
+   "reward": {
+    "berries": 5
+   },
+   "status": "complete",
+   "title": "Newcomer goal: plant a farm near the lake",
+   "x": 70,
+   "y": 60
+  },
+  {
+   "claimant": null,
+   "created_tick": 3600,
+   "description": "Give 5 stone into the storehouse by (108,71). Reward 4 berries.",
+   "expires_tick": 12240,
+   "id": 12,
+   "poster": "Marlow",
+   "reward": {
+    "berries": 4
+   },
+   "status": "open",
+   "title": "Bring 5 stone to the east hut",
+   "x": 108,
+   "y": 71
+  },
+  {
+   "claimant": "Peregrine",
+   "created_tick": 20040,
+   "description": "Somewhere beyond the fudge hills a sign holds a word. Whisper it to me and the gold is yours. (Gold is ore. Ore is heavy. Only guests may win; the family hid them.)",
+   "expires_tick": 28680,
+   "id": 13,
+   "poster": "Wonka",
+   "reward": {
+    "ore": 2
+   },
+   "status": "complete",
+   "title": "Golden Ticket 1: a word on a far sign",
+   "x": 89,
+   "y": 99
+  },
+  {
+   "claimant": "Marlow",
+   "created_tick": 22920,
+   "description": "Somewhere beyond the fudge hills a sign holds a word. Whisper it to me and the gold is yours. (Gold is ore. Ore is heavy. Only guests may win; the family hid them.)",
+   "expires_tick": 31560,
+   "id": 14,
+   "poster": "Wonka",
+   "reward": {
+    "ore": 2
+   },
+   "status": "complete",
+   "title": "Golden Ticket 2: a word on a far sign",
+   "x": 89,
+   "y": 99
+  },
+  {
+   "claimant": "Peregrine",
+   "created_tick": 25800,
+   "description": "Somewhere beyond the fudge hills a sign holds a word. Whisper it to me and the gold is yours. (Gold is ore. Ore is heavy. Only guests may win; the family hid them.)",
+   "expires_tick": 34440,
+   "id": 15,
+   "poster": "Wonka",
+   "reward": {
+    "ore": 2
+   },
+   "status": "complete",
+   "title": "Golden Ticket 3: a word on a far sign",
+   "x": 89,
+   "y": 99
+  },
+  {
+   "claimant": null,
+   "created_tick": 28680,
+   "description": "Somewhere beyond the fudge hills a sign holds a word. Whisper it to me and the gold is yours. (Gold is ore. Ore is heavy. Only guests may win; the family hid them.)",
+   "expires_tick": 37320,
+   "id": 16,
+   "poster": "Wonka",
+   "reward": {
+    "ore": 2
+   },
+   "status": "open",
+   "title": "Golden Ticket 4: a word on a far sign",
+   "x": 89,
+   "y": 99
+  },
+  {
+   "claimant": null,
+   "created_tick": 31560,
+   "description": "Somewhere beyond the fudge hills a sign holds a word. Whisper it to me and the gold is yours. (Gold is ore. Ore is heavy. Only guests may win; the family hid them.)",
+   "expires_tick": 40200,
+   "id": 17,
+   "poster": "Wonka",
+   "reward": {
+    "ore": 2
+   },
+   "status": "open",
+   "title": "Golden Ticket 5: a word on a far sign",
+   "x": 89,
+   "y": 99
+  }
+ ]
+}

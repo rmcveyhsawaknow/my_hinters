@@ -1,0 +1,83 @@
+version: 1
+agent: tinker-bell
+headline: a safe haven, and everyone in it
+key_results:
+  - id: team_gathered
+    label: teammates inside Neverland
+    measure: events.teammates_inside_territory
+    params: {}
+    target: 3
+    weight: 0.3
+    format: "{value}/{target} inside"
+  - id: safety
+    label: structures standing in Neverland
+    measure: events.structures_built
+    params: {types: [bridge, hut, storehouse, farm, wall], inside_territory: true}
+    target: 6
+    weight: 0.2
+    format: "{value}/{target} built"
+  - id: adventures_led
+    label: adventures led (trail signs and bridges)
+    measure: events.structures_built
+    params: {types: [sign, bridge], inside_territory: null}
+    target: 8
+    weight: 0.2
+    format: "{value} led"
+  - id: glow
+    label: Glow
+    measure: state.value
+    params: {key: glow}
+    target: 70
+    weight: 0.2
+    format: "Glow {value}"
+  - id: one_emotion
+    label: wakes with exactly one emotion
+    measure: runs.single_emotion_share
+    params: {}
+    target: 1.0
+    weight: 0.1
+    format: "{value_pct} one-emotion wakes"
+signatures:
+  - id: explore_share
+    label: share of energy exploring
+    measure: runs.action_energy_share
+    params: {activity: explore}
+    range: [0.15, 0.45]
+  - id: say_length
+    label: mean public line length
+    measure: events.mean_say_length
+    range: [10, 120]
+  - id: mood_variety
+    label: distinct emotions over 7 days
+    measure: runs.distinct_moods
+    range: [2, 6]
+  - id: energy_mix
+    label: intended vs actual energy mix
+    measure: runs.energy_mix_match
+    range: [0.6, 1.0]
+traits:
+  - name: fierce
+    shows_up_as: Sharp short lines when crossed; mending before building after damage.
+  - name: loyal
+    shows_up_as: Directions to teammates, bridges for them, joy when they arrive.
+  - name: jealous
+    shows_up_as: Clipped lines about the one who left; building harder when Escape is high.
+  - name: vain
+    shows_up_as: Pleased mentions of her own bridges and trail; pretending not to be delighted by discoveries.
+  - name: chime like
+    shows_up_as: Two to eight words a line, headings and counts, exclamation when bright.
+approaches:
+  - id: pixie_trails
+    label: pixie-trail signs
+    hypothesis: H-20261017-tink-pixie-trails
+    outcome_measure: events.teammates_inside_territory
+  - id: whispered_directions
+    label: whispered directions
+    hypothesis: null
+    outcome_measure: events.teammates_inside_territory
+  - id: second_star
+    label: second-star exploration rule
+    hypothesis: H-20261017-tink-second-star
+    outcome_measure: events.distinct_tiles
+community:
+  notes: Her bridges are public goods; anyone may cross them.

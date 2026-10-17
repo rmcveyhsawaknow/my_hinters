@@ -1,0 +1,95 @@
+{
+ "agents": [
+  {
+   "created_tick": 2500,
+   "faction": null,
+   "id": 10,
+   "last_seen_tick": 65740,
+   "name": "GrandpaJoe",
+   "reputation": 0,
+   "x": 90,
+   "y": 99
+  },
+  {
+   "created_tick": 2500,
+   "faction": null,
+   "id": 11,
+   "last_seen_tick": 65740,
+   "name": "LostBoy",
+   "reputation": 0,
+   "x": 60,
+   "y": 90
+  },
+  {
+   "created_tick": 2500,
+   "faction": null,
+   "id": 12,
+   "last_seen_tick": 65740,
+   "name": "MrsBucket",
+   "reputation": 0,
+   "x": 88,
+   "y": 100
+  },
+  {
+   "created_tick": 2500,
+   "faction": null,
+   "id": 13,
+   "last_seen_tick": 65740,
+   "name": "Nibs",
+   "reputation": 0,
+   "x": 75,
+   "y": 112
+  },
+  {
+   "created_tick": 2500,
+   "faction": null,
+   "id": 14,
+   "last_seen_tick": 65740,
+   "name": "TinkerBell",
+   "reputation": 0,
+   "x": 74,
+   "y": 112
+  },
+  {
+   "created_tick": 2500,
+   "faction": null,
+   "id": 15,
+   "last_seen_tick": 65740,
+   "name": "Tootles",
+   "reputation": 0,
+   "x": 110,
+   "y": 70
+  },
+  {
+   "created_tick": 2500,
+   "faction": null,
+   "id": 16,
+   "last_seen_tick": 65740,
+   "name": "Wonka",
+   "reputation": 0,
+   "x": 89,
+   "y": 99
+  },
+  {
+   "created_tick": 2500,
+   "faction": null,
+   "id": 17,
+   "last_seen_tick": 65740,
+   "name": "Peregrine",
+   "reputation": 0,
+   "x": 70,
+   "y": 60
+  },
+  {
+   "created_tick": 2500,
+   "faction": null,
+   "id": 18,
+   "last_seen_tick": 65740,
+   "name": "Marlow",
+   "reputation": 0,
+   "x": 108,
+   "y": 72
+  }
+ ],
+ "tick": 65760
+}

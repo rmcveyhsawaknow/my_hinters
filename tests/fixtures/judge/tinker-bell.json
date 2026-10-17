@@ -1,0 +1,36 @@
+{
+ "agent": "tinker-bell",
+ "metric_version": 1,
+ "model": "fixture",
+ "provider": "fixture",
+ "sampled_lines": 6,
+ "sampled_actions": 8,
+ "created_utc": "2026-10-17T00:00:00+00:00",
+ "traits": [
+  {
+   "name": "fierce",
+   "score": 4,
+   "reason": "Sharp four-word lines when crossed."
+  },
+  {
+   "name": "loyal",
+   "score": 5,
+   "reason": "Directions and bridges for the team."
+  },
+  {
+   "name": "jealous",
+   "score": 4,
+   "reason": "Clipped line about the one who left."
+  },
+  {
+   "name": "vain",
+   "score": 3,
+   "reason": "Pleased with her bridge, mildly."
+  },
+  {
+   "name": "chime like",
+   "score": 5,
+   "reason": "Two to eight words, headings and counts."
+  }
+ ]
+}

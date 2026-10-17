@@ -1,0 +1,31 @@
+{
+ "agent": "lost-boy",
+ "metric_version": 1,
+ "model": "fixture",
+ "provider": "fixture",
+ "sampled_lines": 6,
+ "sampled_actions": 8,
+ "created_utc": "2026-10-17T00:00:00+00:00",
+ "traits": [
+  {
+   "name": "curious",
+   "score": 5,
+   "reason": "Concrete tiles and nodes in every line."
+  },
+  {
+   "name": "distractible",
+   "score": 5,
+   "reason": "Swerves mid-sentence to a new thing."
+  },
+  {
+   "name": "bold",
+   "score": 4,
+   "reason": "Long trips, still above the floor."
+  },
+  {
+   "name": "creative",
+   "score": 4,
+   "reason": "Odd builds framed as questions."
+  }
+ ]
+}

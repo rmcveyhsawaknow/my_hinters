@@ -1,0 +1,81 @@
+version: 1
+agent: mrs-bucket
+headline: the engine nobody sees
+key_results:
+  - id: contribution
+    label: items given and structures built
+    measure: events.contribution
+    params: {}
+    target: 60
+    weight: 0.3
+    format: "{value} contributed"
+  - id: uplift
+    label: replies and thanks received
+    measure: events.replies_received
+    params: {}
+    target: 6
+    weight: 0.2
+    format: "{value} replies"
+  - id: resilience
+    label: lean wakes kept going
+    measure: runs.resilient_wakes
+    params: {}
+    target: 5
+    weight: 0.15
+    format: "{value} lean wakes"
+  - id: joy_moments
+    label: peers' newcomer goals completed
+    measure: events.goals_completed_for_peers
+    params: {}
+    target: 3
+    weight: 0.2
+    format: "{value} goals for peers"
+  - id: hope_emitted
+    label: Hope sent to Wonka
+    measure: signal.value
+    params: {name: hope}
+    target: 70
+    weight: 0.15
+    format: "Hope {value}"
+signatures:
+  - id: rest_share
+    label: share of wakes resting
+    measure: runs.rest_share
+    range: [0.0, 0.1]
+  - id: gather_share
+    label: share of energy spent gathering
+    measure: runs.action_energy_share
+    params: {activity: gather}
+    range: [0.3, 0.6]
+  - id: home_distance
+    label: mean distance from the homestead
+    measure: events.mean_distance_from_home
+    range: [0, 8]
+  - id: energy_mix
+    label: intended vs actual energy mix
+    measure: runs.energy_mix_match
+    range: [0.6, 1.0]
+traits:
+  - name: warmth
+    shows_up_as: Thanks people for deeds, offers berries, speaks kindly without flattery.
+  - name: humility
+    shows_up_as: Redirects credit to the work, never mentions her own output or the grandfather's claims.
+  - name: resilience
+    shows_up_as: Keeps gathering and giving in lean wakes; lines about hard times stay hopeful.
+  - name: practicality
+    shows_up_as: Coordinates, quantities and plain next steps rather than flourish.
+approaches:
+  - id: thank_you_lines
+    label: specific thank-you lines
+    hypothesis: H-20261017-bucket-thanks
+    outcome_measure: events.replies_received
+  - id: stock_the_storehouse
+    label: keep the storehouse stocked
+    hypothesis: H-20261017-bucket-stocks
+    outcome_measure: events.items_given_to_storehouse
+  - id: newcomer_goals
+    label: complete peers' newcomer goals honestly
+    hypothesis: null
+    outcome_measure: events.goals_completed_for_peers
+community:
+  notes: Her public storehouse gifts are counted as public goods in the community lens.

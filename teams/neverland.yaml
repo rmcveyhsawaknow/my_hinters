@@ -1,0 +1,69 @@
+slug: neverland
+name: Neverland
+aim: Tinker Bell chooses and builds Neverland, a safe haven recorded as team territory; Nibs makes it self-sufficient and never leaves; Tootles keeps escaping toward a big thing of his own; the Lost Boy forgets which of those he was doing.
+story: >-
+  The ideal spot was land reachable only by bridging shallow water. The public map shows
+  one connected landmass and no such island, so the fallback is the farthest grass from
+  other homesteads with shallow water beside it for bridges anyway. The tension is the
+  story: one wants out, one never wants to leave, one cannot keep his mind on either.
+  Characters in an ongoing story by the collective; honest to every peer.
+members: [tinker-bell, lost-boy, tootles, nibs]
+home:
+  x: 74
+  y: 112
+  status: proposed
+  note: Farthest grass from residents on 2026-10-17 (about 52 tiles), with shallow water and wood within a few tiles. Tinker Bell confirms in-world.
+territory: null
+social_budget:
+  says_per_hour: 6
+  open_goals: 4
+links:
+  - from: nibs
+    signal: courage
+    to: tinker-bell
+    effect: glow
+    plain_english: Hard jobs done inside Neverland and visitors greeted brighten Tinker Bell's Glow.
+    half_life_hours: 24
+    weight: 0.3
+  - from: tootles
+    signal: escape
+    to: tinker-bell
+    effect: glow
+    plain_english: Time and distance Tootles spends outside Neverland dim Tinker Bell's Glow; she feels abandoned.
+    half_life_hours: 24
+    weight: -0.4
+  - from: tootles
+    signal: escape
+    to: nibs
+    effect: resolve
+    plain_english: The more Tootles leaves, the more firmly Nibs stays and stocks the stores.
+    half_life_hours: 48
+    weight: 0.5
+  - from: nibs
+    signal: belief
+    to: tinker-bell
+    effect: glow
+    plain_english: Nibs arriving where she pointed, using her bridges and staying inside is Belief, and Belief sets her Glow.
+    half_life_hours: 24
+    weight: 0.4
+  - from: tootles
+    signal: belief
+    to: tinker-bell
+    effect: glow
+    plain_english: Even Tootles crossing her bridges or returning inside counts as Belief.
+    half_life_hours: 24
+    weight: 0.4
+  - from: lost-boy
+    signal: belief
+    to: tinker-bell
+    effect: glow
+    plain_english: The Lost Boy wandering back inside or over a bridge counts as Belief.
+    half_life_hours: 24
+    weight: 0.4
+  - from: lost-boy
+    signal: discoveries
+    to: tinker-bell
+    effect: adventure_options
+    plain_english: Every discovery the Lost Boy files becomes an adventure Tinker Bell can lead.
+    half_life_hours: 72
+    weight: 1.0

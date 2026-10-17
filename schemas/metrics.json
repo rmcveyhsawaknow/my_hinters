@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Pulse metric spec for one agent",
+  "type": "object",
+  "required": ["version", "agent", "headline", "key_results", "signatures", "traits", "approaches"],
+  "properties": {
+    "version": {"type": "integer", "minimum": 1},
+    "agent": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$"},
+    "headline": {"type": "string", "minLength": 5, "maxLength": 80},
+    "key_results": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "measure", "target", "weight"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z][a-z0-9_]+$"},
+          "label": {"type": "string", "minLength": 3, "maxLength": 60},
+          "measure": {"type": "string", "pattern": "^[a-z]+\\.[a-z_]+$"},
+          "params": {"type": "object"},
+          "target": {"type": "number"},
+          "weight": {"type": "number", "minimum": 0, "maximum": 1},
+          "direction": {"enum": ["at_least", "at_most", "near"]},
+          "format": {"type": "string", "maxLength": 80}
+        },
+        "additionalProperties": false
+      }
+    },
+    "signatures": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "measure", "range"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z][a-z0-9_]+$"},
+          "label": {"type": "string", "minLength": 3, "maxLength": 60},
+          "measure": {"type": "string", "pattern": "^[a-z]+\\.[a-z_]+$"},
+          "params": {"type": "object"},
+          "range": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "number"}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "traits": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "required": ["name", "shows_up_as"],
+        "properties": {
+          "name": {"type": "string", "pattern": "^[a-z][a-z_ ]+$"},
+          "shows_up_as": {"type": "string", "minLength": 10, "maxLength": 300}
+        },
+        "additionalProperties": false
+      }
+    },
+    "approaches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "label"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z][a-z0-9_]+$"},
+          "label": {"type": "string", "minLength": 3, "maxLength": 60},
+          "hypothesis": {"type": ["string", "null"], "pattern": "^H-[0-9]{8}-[a-z0-9-]+$"},
+          "outcome_measure": {"type": "string", "pattern": "^[a-z]+\\.[a-z_]+$"},
+          "outcome_params": {"type": "object"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "community": {
+      "type": "object",
+      "properties": {"notes": {"type": "string", "maxLength": 300}},
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
