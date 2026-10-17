@@ -113,7 +113,7 @@ jobs:
         env:
           AGENT: ${{ inputs.agent }}
           DRY_RUN: ${{ inputs.dry_run }}
-          JITTER: ${{ inputs.jitter_minutes }}
+          JITTER: ${{ github.event_name == 'workflow_dispatch' && '0' || inputs.jitter_minutes }}
         run: |
           if [ "$DRY_RUN" = "true" ]; then
             hglab tick --agent "$AGENT" --dry-run --jitter-minutes "$JITTER" --scheduled
