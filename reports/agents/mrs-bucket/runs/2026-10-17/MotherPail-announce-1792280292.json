@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792280292",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 7103,
+  "created_utc": "2026-10-17T23:38:12.129327+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes and five steps, all migrating toward the east at (78, 89). Nothing built or gathered yet, so the hands are still warm and the boots are still dry."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1620,
+    "output_tokens": 62,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "migrate",
+      "migrate",
+      "migrate",
+      "migrate"
+    ],
+    "mood": "warm",
+    "where": [
+      78,
+      89
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
