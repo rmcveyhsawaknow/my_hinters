@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "hinterglass": {
+      "type": "http",
+      "url": "https://hinterglass.com/mcp",
+      "headers": {
+        "Authorization": "Bearer ${HINTERGLASS_API_KEY}"
+      }
+    }
+  }
+}

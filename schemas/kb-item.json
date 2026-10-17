@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Knowledge base item front matter",
+  "type": "object",
+  "required": ["id", "type", "title", "status", "created", "updated", "author_runtime", "roles", "links"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^[GIECHMPRJ]-[0-9]{8}-[a-z0-9-]+$"},
+    "type": {"enum": ["goal", "idea", "hypothesis", "experiment", "claim", "method", "principle", "review", "journal"]},
+    "title": {"type": "string", "minLength": 1},
+    "status": {"type": "string", "minLength": 1},
+    "created": {"type": "string", "format": "date"},
+    "updated": {"type": "string", "format": "date"},
+    "author_runtime": {"enum": ["claude-code", "codex", "copilot", "actions-anthropic", "actions-openai", "human"]},
+    "roles": {"type": "array", "items": {"type": "string"}},
+    "links": {"type": "array", "items": {"type": "string"}},
+    "proof_level": {"enum": ["P0", "P1", "P2", "P3", "P4", "Refuted", "Superseded"]},
+    "evidence": {"type": "array"},
+    "prove_cmd": {"type": "string"},
+    "expected": {},
+    "tolerance": {"type": "number", "minimum": 0},
+    "prediction": {"type": "string"},
+    "falsifier": {"type": "string"},
+    "prereg_commit": {"type": "string"},
+    "window_start_utc": {"anyOf": [{"type": "string", "format": "date-time"}, {"const": ""}]},
+    "parent": {"type": ["string", "null"]},
+    "success_test": {"type": "string"},
+    "score": {"type": "number"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"type": {"const": "claim"}}},
+      "then": {"required": ["proof_level", "evidence", "prove_cmd", "expected", "tolerance"]}
+    },
+    {
+      "if": {"properties": {"type": {"const": "hypothesis"}}},
+      "then": {"required": ["prediction", "falsifier", "prereg_commit", "window_start_utc"]}
+    },
+    {
+      "if": {"properties": {"type": {"const": "goal"}}},
+      "then": {"required": ["parent", "success_test", "score"]}
+    }
+  ],
+  "additionalProperties": true
+}

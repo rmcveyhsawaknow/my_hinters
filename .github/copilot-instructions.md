@@ -1,0 +1,1 @@
+Read [AGENTS.md](../AGENTS.md) for the collective brief and [kb/NORTH_STAR.md](../kb/NORTH_STAR.md) for the North Star. Role charters in `roles/` and canonical skills in `skills/` govern work. Never expose secrets to PR workflows or make live world changes without an enabled identity and validated action.

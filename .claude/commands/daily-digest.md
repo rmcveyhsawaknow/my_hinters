@@ -1,0 +1,1 @@
+Read public observatory data and the knowledge base; never inspect credentials or private whispers. Run `hglab digest --propose` and add only evidence-linked findings. Open a PR for human review; never merge.

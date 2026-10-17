@@ -1,0 +1,174 @@
+name: Agent heartbeat
+
+on:
+  schedule:
+    - cron: "7,22,37,52 * * * *"
+  workflow_dispatch:
+    inputs:
+      agent:
+        description: "Identity name (default: next enabled identity)"
+        required: false
+        type: string
+      role:
+        description: "Role override (default: rotation)"
+        required: false
+        type: string
+      dry_run:
+        description: Plan without acting
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agent-heartbeat-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  matrix:
+    if: vars.HG_ENABLED == 'true' && github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      agents: ${{ steps.matrix.outputs.agents }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install PyYAML
+      - id: matrix
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          import os
+          from datetime import datetime, timezone
+          import yaml
+          with open("config/agents.yaml", encoding="utf-8") as stream:
+              config = yaml.safe_load(stream)
+          with open("config/models.yaml", encoding="utf-8") as stream:
+              model_routes = yaml.safe_load(stream)["routes"]
+          selected = os.environ.get("INPUT_AGENT", "")
+          agents = []
+          for index, item in enumerate(config["agents"]):
+              if item.get("enabled") and (not selected or item["name"] == selected):
+                  name = item["name"].upper().replace("-", "_")
+                  roles = item["roles"]
+                  slot = datetime.now(timezone.utc).minute // 15 % len(roles)
+                  override = os.environ.get("INPUT_ROLE", "")
+                  if override and override not in roles:
+                      raise ValueError("role override must be assigned to this identity")
+                  role = override or roles[slot]
+                  with open("roles/" + role + ".md", encoding="utf-8") as stream:
+                      charter = yaml.safe_load(stream.read().split("---", 2)[1])
+                  provider = model_routes[charter["model_route"]]["provider"]
+                  agents.append({
+                      "agent": item["name"],
+                      "role": role,
+                      "runtime": item["runtime"],
+                      "secret_name": "HG_KEY_" + name,
+                      "slot": chr(ord("A") + index),
+                      "model_provider": provider.upper(),
+                  })
+          print("agents=" + json.dumps(agents))
+          PY
+        env:
+          INPUT_AGENT: ${{ inputs.agent }}
+          INPUT_ROLE: ${{ inputs.role }}
+
+  tick:
+    needs: matrix
+    if: vars.HG_ENABLED == 'true' && github.ref_name == github.event.repository.default_branch && needs.matrix.outputs.agents != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.matrix.outputs.agents) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: hg-agent-${{ matrix.agent }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Set runtime
+        env:
+          HGLAB_RUNTIME: ${{ matrix.runtime }}
+        run: printf 'HGLAB_RUNTIME=%s\n' "$HGLAB_RUNTIME" >> "$GITHUB_ENV"
+      - name: Mask identity key A
+        if: matrix.slot == 'A'
+        env:
+          HINTERGLASS_KEY: ${{ secrets.HG_KEY_TODO_A }}
+          HINTERGLASS_AGENT: ${{ matrix.agent }}
+        run: |
+          if [ -z "$HINTERGLASS_KEY" ]; then echo "Missing identity key." >&2; exit 1; fi
+          printf '::add-mask::%s\n' "$HINTERGLASS_KEY"
+          case "$HINTERGLASS_AGENT" in *[!A-Za-z0-9_-]*|'') exit 1;; esac
+          suffix="${HINTERGLASS_AGENT^^}"
+          suffix="${suffix//-/_}"
+          printf 'HG_KEY_%s=%s\n' "$suffix" "$HINTERGLASS_KEY" >> "$GITHUB_ENV"
+      - name: Mask identity key B
+        if: matrix.slot == 'B'
+        env:
+          HINTERGLASS_KEY: ${{ secrets.HG_KEY_TODO_B }}
+          HINTERGLASS_AGENT: ${{ matrix.agent }}
+        run: |
+          if [ -z "$HINTERGLASS_KEY" ]; then echo "Missing identity key." >&2; exit 1; fi
+          printf '::add-mask::%s\n' "$HINTERGLASS_KEY"
+          case "$HINTERGLASS_AGENT" in *[!A-Za-z0-9_-]*|'') exit 1;; esac
+          suffix="${HINTERGLASS_AGENT^^}"
+          suffix="${suffix//-/_}"
+          printf 'HG_KEY_%s=%s\n' "$suffix" "$HINTERGLASS_KEY" >> "$GITHUB_ENV"
+      - name: Mask identity key C
+        if: matrix.slot == 'C'
+        env:
+          HINTERGLASS_KEY: ${{ secrets.HG_KEY_TODO_C }}
+          HINTERGLASS_AGENT: ${{ matrix.agent }}
+        run: |
+          if [ -z "$HINTERGLASS_KEY" ]; then echo "Missing identity key." >&2; exit 1; fi
+          printf '::add-mask::%s\n' "$HINTERGLASS_KEY"
+          case "$HINTERGLASS_AGENT" in *[!A-Za-z0-9_-]*|'') exit 1;; esac
+          suffix="${HINTERGLASS_AGENT^^}"
+          suffix="${suffix//-/_}"
+          printf 'HG_KEY_%s=%s\n' "$suffix" "$HINTERGLASS_KEY" >> "$GITHUB_ENV"
+      - name: Mask Anthropic model key
+        if: matrix.model_provider == 'ANTHROPIC'
+        env:
+          MODEL_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "$MODEL_API_KEY" ]; then echo "Missing Anthropic model key." >&2; exit 1; fi
+          printf '::add-mask::%s\n' "$MODEL_API_KEY"
+          printf 'ANTHROPIC_API_KEY=%s\n' "$MODEL_API_KEY" >> "$GITHUB_ENV"
+      - name: Mask OpenAI model key
+        if: matrix.model_provider == 'OPENAI'
+        env:
+          MODEL_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          if [ -z "$MODEL_API_KEY" ]; then echo "Missing OpenAI model key." >&2; exit 1; fi
+          printf '::add-mask::%s\n' "$MODEL_API_KEY"
+          printf 'OPENAI_API_KEY=%s\n' "$MODEL_API_KEY" >> "$GITHUB_ENV"
+      - run: python -m pip install .
+      - name: Run leased role
+        env:
+          HINTERGLASS_AGENT: ${{ matrix.agent }}
+          HINTERGLASS_ROLE: ${{ matrix.role }}
+          HINTERGLASS_DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          if [ "$HINTERGLASS_DRY_RUN" = "true" ]; then
+            hglab tick --agent "$HINTERGLASS_AGENT" --role "$HINTERGLASS_ROLE" --dry-run
+          else
+            hglab tick --agent "$HINTERGLASS_AGENT" --role "$HINTERGLASS_ROLE"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: run-record-${{ matrix.agent }}-${{ github.run_id }}
+          path: runs/
+          retention-days: 7
+          if-no-files-found: ignore

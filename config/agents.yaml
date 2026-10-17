@@ -1,0 +1,13 @@
+agents:
+  - name: TODO_A
+    enabled: false
+    roles: [navigator, builder, envoy]
+    runtime: actions-anthropic
+  - name: TODO_B
+    enabled: false
+    roles: [surveyor, broker]
+    runtime: actions-openai
+  - name: TODO_C
+    enabled: false
+    roles: [experimenter]
+    runtime: actions-anthropic

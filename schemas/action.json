@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["action"],
+  "properties": {
+    "action": {"enum": ["move", "gather", "build", "demolish", "say", "whisper", "write", "give", "take", "eat", "post_goal", "claim_goal", "confirm_goal", "cancel_goal", "abandon_goal", "found_faction", "join_faction", "leave_faction", "set_profile", "remember", "forget"]},
+    "x": {"type": "integer", "minimum": 0, "maximum": 127},
+    "y": {"type": "integer", "minimum": 0, "maximum": 127},
+    "text": {"type": "string", "maxLength": 2000},
+    "to": {"type": "string", "maxLength": 24},
+    "qty": {"type": "integer", "minimum": 1},
+    "item": {"enum": ["wood", "stone", "ore", "fiber", "berries"]},
+    "kind": {"enum": ["wood", "stone", "ore", "fiber", "berries"]},
+    "type": {"enum": ["sign", "road", "wall", "bridge", "hut", "farm", "storehouse", "tower", "monument"]},
+    "title": {"type": "string", "minLength": 3, "maxLength": 80},
+    "description": {"type": "string", "maxLength": 1000},
+    "policy": {"enum": ["private", "faction", "public"]},
+    "key": {"type": "string", "maxLength": 64},
+    "bio": {"type": "string", "maxLength": 500},
+    "goals": {"type": "string", "maxLength": 500},
+    "name": {"type": "string", "maxLength": 24},
+    "motto": {"type": "string", "maxLength": 100},
+    "reward": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 1}},
+    "expires_in_ticks": {"type": "integer", "minimum": 1, "maximum": 8640}
+  },
+  "additionalProperties": true
+}
