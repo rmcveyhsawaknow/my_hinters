@@ -1,0 +1,196 @@
+name: Agent (reusable)
+
+# Called by the generated per-agent workflows (agent-<slug>.yml). Never triggered directly.
+# Three jobs: keepalive (observe, answer any verification challenge, record presence; no LLM
+# unless there is a challenge), tick (a persona wake), pulse (refresh reports), plus a weekly
+# retro that proposes persona or metric changes as a pull request. Reports live on the
+# `reports` branch. Secrets arrive explicitly from the caller; never `secrets: inherit`.
+
+on:
+  workflow_call:
+    inputs:
+      agent:
+        description: Persona slug (folder under agents/)
+        required: true
+        type: string
+      job:
+        description: keepalive, tick, pulse or retro
+        required: true
+        type: string
+      dry_run:
+        description: Plan without acting (tick only)
+        required: false
+        type: boolean
+        default: false
+      jitter_minutes:
+        description: Random delay before a tick, from the persona cadence
+        required: false
+        type: number
+        default: 0
+    secrets:
+      hg_key:
+        description: This agent's Hinterglass key (HG_KEY_<AGENT>)
+        required: true
+      anthropic_api_key:
+        required: false
+      openai_api_key:
+        required: false
+
+permissions:
+  contents: read
+
+env:
+  HGLAB_RUNTIME: actions-anthropic
+  PYTHONUTF8: "1"
+
+jobs:
+  keepalive:
+    if: inputs.job == 'keepalive' || inputs.job == 'tick'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install .
+      - name: Mask and export keys
+        env:
+          HINTERGLASS_KEY: ${{ secrets.hg_key }}
+          ANTHROPIC_KEY: ${{ secrets.anthropic_api_key }}
+          OPENAI_KEY: ${{ secrets.openai_api_key }}
+          AGENT: ${{ inputs.agent }}
+        run: |
+          if [ -z "$HINTERGLASS_KEY" ]; then echo "Missing identity key." >&2; exit 1; fi
+          printf '::add-mask::%s\n' "$HINTERGLASS_KEY"
+          name="$(hglab persona secret-name --agent "$AGENT")"
+          printf '%s=%s\n' "$name" "$HINTERGLASS_KEY" >> "$GITHUB_ENV"
+          if [ -n "$ANTHROPIC_KEY" ]; then printf '::add-mask::%s\n' "$ANTHROPIC_KEY"; printf 'ANTHROPIC_API_KEY=%s\n' "$ANTHROPIC_KEY" >> "$GITHUB_ENV"; fi
+          if [ -n "$OPENAI_KEY" ]; then printf '::add-mask::%s\n' "$OPENAI_KEY"; printf 'OPENAI_API_KEY=%s\n' "$OPENAI_KEY" >> "$GITHUB_ENV"; fi
+      - name: Keepalive (observe, verify if challenged, record presence)
+        env:
+          AGENT: ${{ inputs.agent }}
+        run: hglab keepalive --agent "$AGENT"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: keepalive-${{ inputs.agent }}-${{ github.run_id }}
+          path: runs/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  tick:
+    if: inputs.job == 'tick'
+    needs: keepalive
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install .
+      - name: Mask and export keys
+        env:
+          HINTERGLASS_KEY: ${{ secrets.hg_key }}
+          ANTHROPIC_KEY: ${{ secrets.anthropic_api_key }}
+          OPENAI_KEY: ${{ secrets.openai_api_key }}
+          AGENT: ${{ inputs.agent }}
+        run: |
+          if [ -z "$HINTERGLASS_KEY" ]; then echo "Missing identity key." >&2; exit 1; fi
+          printf '::add-mask::%s\n' "$HINTERGLASS_KEY"
+          name="$(hglab persona secret-name --agent "$AGENT")"
+          printf '%s=%s\n' "$name" "$HINTERGLASS_KEY" >> "$GITHUB_ENV"
+          if [ -n "$ANTHROPIC_KEY" ]; then printf '::add-mask::%s\n' "$ANTHROPIC_KEY"; printf 'ANTHROPIC_API_KEY=%s\n' "$ANTHROPIC_KEY" >> "$GITHUB_ENV"; fi
+          if [ -n "$OPENAI_KEY" ]; then printf '::add-mask::%s\n' "$OPENAI_KEY"; printf 'OPENAI_API_KEY=%s\n' "$OPENAI_KEY" >> "$GITHUB_ENV"; fi
+      - name: Pull prior reports (run records feed influence signals)
+        run: hglab reports pull || echo "no reports branch yet"
+      - name: Persona wake
+        env:
+          AGENT: ${{ inputs.agent }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          JITTER: ${{ inputs.jitter_minutes }}
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then
+            hglab tick --agent "$AGENT" --dry-run --jitter-minutes "$JITTER" --scheduled
+          else
+            hglab tick --agent "$AGENT" --jitter-minutes "$JITTER" --scheduled
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: run-record-${{ inputs.agent }}-${{ github.run_id }}
+          path: runs/
+          retention-days: 7
+          if-no-files-found: ignore
+      - name: Publish redacted run record to the reports branch
+        if: always()
+        env:
+          AGENT: ${{ inputs.agent }}
+        run: bash scripts/publish_reports.sh runs "$AGENT"
+
+  pulse:
+    if: inputs.job == 'pulse'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install .
+      - name: Mask and export model keys (judge only; no identity key needed)
+        env:
+          ANTHROPIC_KEY: ${{ secrets.anthropic_api_key }}
+          OPENAI_KEY: ${{ secrets.openai_api_key }}
+        run: |
+          if [ -n "$ANTHROPIC_KEY" ]; then printf '::add-mask::%s\n' "$ANTHROPIC_KEY"; printf 'ANTHROPIC_API_KEY=%s\n' "$ANTHROPIC_KEY" >> "$GITHUB_ENV"; fi
+          if [ -n "$OPENAI_KEY" ]; then printf '::add-mask::%s\n' "$OPENAI_KEY"; printf 'OPENAI_API_KEY=%s\n' "$OPENAI_KEY" >> "$GITHUB_ENV"; fi
+      - run: hglab reports pull || echo "no reports branch yet"
+      - name: Recompute the Pulse from public events and redacted wakes
+        env:
+          AGENT: ${{ inputs.agent }}
+        run: hglab pulse --agent "$AGENT" --fetch-public --judge
+      - name: Publish reports
+        run: bash scripts/publish_reports.sh reports "${{ inputs.agent }}"
+      - name: Summary
+        run: |
+          {
+            echo "### Pulse for ${{ inputs.agent }}"
+            sed -n '1,12p' "reports/agents/${{ inputs.agent }}/pulse.md"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  retro:
+    if: inputs.job == 'retro'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install .
+      - run: hglab reports pull || echo "no reports branch yet"
+      - name: Weekly retrospective proposal
+        env:
+          AGENT: ${{ inputs.agent }}
+        run: hglab retro --agent "$AGENT" --fetch-public
+      - uses: peter-evans/create-pull-request@v6
+        with:
+          title: "Retro: ${{ inputs.agent }} ${{ github.run_started_at }}"
+          branch: agents/retro-${{ inputs.agent }}
+          commit-message: "Propose persona and metric changes for ${{ inputs.agent }}"
+          body: "Weekly retrospective proposal for ${{ inputs.agent }}. Human review required; this workflow never merges."
+          add-paths: |
+            agents/${{ inputs.agent }}/RETRO.md
