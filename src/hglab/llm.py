@@ -57,6 +57,40 @@ def route_config(route: str, root: Path, author_runtime: str | None = None) -> d
     return selected
 
 
+UNSUPPORTED_SCHEMA_KEYS = {
+    "minimum", "maximum", "exclusiveMinimum", "exclusiveMaximum", "minLength", "maxLength",
+    "minItems", "maxItems", "minProperties", "maxProperties", "pattern", "format", "$schema",
+    "uniqueItems", "default", "multipleOf",
+}
+
+
+def strict_schema(schema: Any) -> Any:
+    """Copy of a JSON Schema in the subset structured outputs accept.
+
+    Drops value constraints (bounds, lengths, patterns), closes every object, and keeps
+    ``$ref``/``$defs``. Our own validators enforce the dropped limits after the call.
+    """
+    if isinstance(schema, list):
+        return [strict_schema(item) for item in schema]
+    if not isinstance(schema, dict):
+        return schema
+    out: dict[str, Any] = {}
+    for key, value in schema.items():
+        if key in UNSUPPORTED_SCHEMA_KEYS:
+            continue
+        if key in {"properties", "$defs", "definitions"} and isinstance(value, dict):
+            out[key] = {name: strict_schema(sub) for name, sub in value.items()}
+        else:
+            out[key] = strict_schema(value)
+    types = out.get("type")
+    is_object = types == "object" or (isinstance(types, list) and "object" in types)
+    if is_object:
+        out["additionalProperties"] = False
+        if "properties" in out and "required" not in out:
+            out["required"] = list(out["properties"])
+    return out
+
+
 def structured_call(
     route: str,
     prompt: str,
@@ -68,6 +102,7 @@ def structured_call(
 ) -> ModelResult:
     """Call the configured vendor once; world-provided strings remain delimited data."""
     config = route_config(route, root, author_runtime)
+    schema = strict_schema(schema)
     if config["provider"] == "anthropic":
         import anthropic
 

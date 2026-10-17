@@ -305,6 +305,12 @@ def validate_personas(root: Path) -> list[str]:
         for effect in persona.signals_received:
             if effect not in KNOWN_EFFECTS:
                 errors.append(f"{prefix}: unknown received effect {effect!r}")
+        route = persona.knobs.get("model_route")
+        if route:
+            models_path = root / "config/models.yaml"
+            routes = yaml.safe_load(models_path.read_text(encoding="utf-8")).get("routes", {}) if models_path.is_file() else {}
+            if route not in routes:
+                errors.append(f"{prefix}: model_route {route!r} is not in config/models.yaml")
         territory = persona.knobs["territory"]
         if territory["mode"] == "near_teammate" and not territory.get("teammate"):
             errors.append(f"{prefix}: near_teammate territory needs a teammate")

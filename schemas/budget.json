@@ -1,11 +1,35 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "required": ["tick", "digest", "judge"],
+  "required": ["tick", "digest", "judge", "caps", "pricing_usd_per_mtok"],
   "properties": {
     "tick": {"$ref": "#/$defs/limit"},
     "digest": {"$ref": "#/$defs/limit"},
-    "judge": {"$ref": "#/$defs/limit"}
+    "judge": {"$ref": "#/$defs/limit"},
+    "caps": {
+      "type": "object",
+      "required": ["monthly_usd", "daily_usd"],
+      "properties": {
+        "monthly_usd": {"type": "number", "exclusiveMinimum": 0},
+        "daily_usd": {"type": "number", "exclusiveMinimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "pricing_usd_per_mtok": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["input", "output"],
+        "properties": {
+          "input": {"type": "number", "minimum": 0},
+          "output": {"type": "number", "minimum": 0},
+          "cache_read": {"type": "number", "minimum": 0}
+        },
+        "additionalProperties": false
+      }
+    },
+    "estimate": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}}
   },
   "$defs": {
     "limit": {

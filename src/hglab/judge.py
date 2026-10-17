@@ -126,7 +126,7 @@ def run_judge(
         "sampled_lines": len(lines),
         "sampled_actions": len(actions),
         "created_utc": datetime.now(UTC).isoformat(),
-        "usage": {"input_tokens": getattr(result, "input_tokens", 0), "output_tokens": getattr(result, "output_tokens", 0)},
+        "usage": {"calls": 1, "input_tokens": getattr(result, "input_tokens", 0), "output_tokens": getattr(result, "output_tokens", 0), "model": getattr(result, "model", "unknown"), "provider": getattr(result, "provider", "unknown"), "route": "review"},
         "traits": traits,
     }
 

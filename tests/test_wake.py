@@ -80,3 +80,32 @@ def test_pinned_role_restricts_the_hat_and_union_allows_the_persona():
     lease = acquire(client, wonka.name)
     with pytest.raises(ValueError, match="does not wear"):
         persona_wake(persona=wonka, team=load_team(ROOT, "chocolate-factory"), personas=personas, client=client, lease=lease, root=ROOT, output_dir=Path(os.devnull).parent, role="envoy", dry_run=True)
+
+
+def test_normalise_plan_expands_the_compact_model_shape():
+    from hglab.wake import normalise_plan
+
+    plan = normalise_plan({
+        "summary": "s", "reasons": [], "approach": None,
+        "actions": [
+            {"action": "post_goal", "title": "Golden Ticket 1", "text": "find the sign", "item": "ore", "qty": 2, "x": 1, "y": 2},
+            {"action": "confirm_goal", "id": 7},
+            {"action": "join_faction", "id": 3},
+            {"action": "build", "type": "storehouse", "kind": "faction", "x": 5, "y": 5},
+            {"action": "found_faction", "name": "Snozzberry Works", "kind": "open", "text": "Nobody has."},
+            {"action": "set_profile", "text": "bio here", "title": "goals here"},
+            {"action": "gather", "kind": "wood", "to": None},
+        ],
+        "whisper_tags": ["supportive", "bogus"],
+    })
+    a = plan["actions"]
+    assert a[0]["description"] == "find the sign" and a[0]["reward"] == {"ore": 2} and "item" not in a[0]
+    assert a[1] == {"action": "confirm_goal", "goal_id": 7}
+    assert a[2] == {"action": "join_faction", "faction_id": 3}
+    assert a[3]["policy"] == "faction" and "kind" not in a[3]
+    assert a[4]["membership"] == "open" and a[4]["motto"] == "Nobody has."
+    assert a[5] == {"action": "set_profile", "bio": "bio here", "goals": "goals here"}
+    assert a[6] == {"action": "gather", "kind": "wood"}
+    assert plan["whisper_tags"] == ["supportive"]
+    stray = normalise_plan({"summary": "", "reasons": [], "approach": None, "actions": [{"action": "build", "type": "farm", "title": "junk", "key": "junk"}]})
+    assert stray["actions"][0] == {"action": "build", "type": "farm"}

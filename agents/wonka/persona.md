@@ -16,6 +16,7 @@ knobs:
   exploration_rate: 0.25
   territory: {mode: prefer_inside, radius: 10}
   social_rate: 2
+  model_route: tick_premium
   build_priority: [hut, storehouse, sign, bridge, road, tower, farm, monument]
   intended_mix: {build: 0.30, gather: 0.20, social: 0.20, explore: 0.15, trade: 0.15}
 voice:

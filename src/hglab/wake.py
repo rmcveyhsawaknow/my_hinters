@@ -40,38 +40,124 @@ from hglab.persona import (
 )
 from hglab.planner import plan_wake
 
-PLAN_SCHEMA_EXTRA = {
-    "approach": {"type": ["string", "null"], "maxLength": 40},
-    "reasons": {"type": "array", "items": {"type": "string", "maxLength": 200}},
-    "whisper_tags": {"type": "array", "items": {"enum": ["supportive", "directions", "trade", "audit", "other"]}},
-    "audit": {
-        "type": ["object", "null"],
-        "properties": {
-            "claimed_by": {"type": "string"},
-            "credited": {"type": "string"},
-            "event_id": {"type": "integer"},
-            "correct": {"type": "boolean"},
-        },
-        "additionalProperties": False,
+LEAN_ACTION_SCHEMA: dict[str, Any] = {
+    "type": "object",
+    "description": (
+        "One Hinterglass action with a compact field set. action: move|gather|build|demolish|say|whisper|write|give|take|eat|"
+        "post_goal|claim_goal|confirm_goal|cancel_goal|abandon_goal|found_faction|invite|join_faction|leave_faction|set_profile|remember|forget. "
+        "x,y: tile. text: the words (say/whisper/write/sign text, goal description, remember text, profile bio, faction motto). "
+        "to: recipient name. qty: quantity (give/take/eat, or the reward quantity for post_goal). item: wood|stone|ore|fiber|berries "
+        "(give/take, or the reward item for post_goal). kind: gather kind, or storehouse policy private|faction|public, or faction membership open|invite. "
+        "type: blueprint for build. key: notebook key. name: faction or invitee name. id: goal_id or faction_id. title: goal title, or profile goals text."
+    ),
+    "required": ["action"],
+    "properties": {
+        "action": {"type": "string"},
+        "x": {"type": "integer"},
+        "y": {"type": "integer"},
+        "text": {"type": "string"},
+        "to": {"type": "string"},
+        "qty": {"type": "integer"},
+        "item": {"type": "string"},
+        "kind": {"type": "string"},
+        "type": {"type": "string"},
+        "key": {"type": "string"},
+        "name": {"type": "string"},
+        "id": {"type": "integer"},
+        "title": {"type": "string"},
     },
+    "additionalProperties": False,
 }
 
 
-def plan_schema(action_schema: dict[str, Any]) -> dict[str, Any]:
+def plan_schema(action_schema: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Lean schema for the model's plan (structured outputs reject open or complex schemas).
+
+    Enums and bounds live in ``schemas/action.json`` and the validator, which run on every
+    proposed action afterwards; here the model only needs the shape.
+    """
     return {
         "type": "object",
-        "required": ["summary", "actions"],
+        "required": ["summary", "actions", "reasons", "approach"],
         "properties": {
-            "summary": {"type": "string", "maxLength": 400},
-            "actions": {"type": "array", "minItems": 0, "maxItems": 4, "items": {"$ref": "#/$defs/action"}},
-            "remember": {"type": "array", "items": {"type": "object"}},
-            "journal_note": {"type": "string"},
-            "kb_proposals": {"type": "array"},
-            **PLAN_SCHEMA_EXTRA,
+            "summary": {"type": "string", "description": "One in-character line about this wake"},
+            "actions": {"type": "array", "items": LEAN_ACTION_SCHEMA},
+            "reasons": {"type": "array", "items": {"type": "string"}},
+            "approach": {"type": ["string", "null"], "description": "An approach id from the metrics spec, or null"},
+            "remember": {"type": "array", "items": {"type": "object", "required": ["key", "text"], "properties": {"key": {"type": "string"}, "text": {"type": "string"}}, "additionalProperties": False}},
+            "whisper_tags": {"type": "array", "items": {"type": "string"}},
         },
-        "$defs": {"action": action_schema},
         "additionalProperties": False,
     }
+
+
+FIELDS_BY_ACTION: dict[str, set[str]] = {
+    "move": {"x", "y"},
+    "gather": {"kind"},
+    "build": {"type", "x", "y", "text", "policy"},
+    "demolish": {"x", "y"},
+    "say": {"text"},
+    "whisper": {"to", "text"},
+    "write": {"x", "y", "text"},
+    "give": {"to", "x", "y", "item", "qty"},
+    "take": {"x", "y", "item", "qty"},
+    "eat": {"qty"},
+    "post_goal": {"title", "description", "reward", "x", "y", "expires_in_ticks"},
+    "claim_goal": {"goal_id"},
+    "confirm_goal": {"goal_id"},
+    "cancel_goal": {"goal_id"},
+    "abandon_goal": {"goal_id"},
+    "found_faction": {"name", "motto", "membership"},
+    "invite": {"name"},
+    "join_faction": {"faction_id"},
+    "leave_faction": set(),
+    "set_profile": {"bio", "goals"},
+    "remember": {"key", "text"},
+    "forget": {"key"},
+}
+
+
+def normalise_plan(plan: dict[str, Any]) -> dict[str, Any]:
+    """Expand the compact model shape into the validator's fields."""
+    actions = []
+    for action in plan.get("actions", []) or []:
+        if not isinstance(action, dict):
+            continue
+        a = {k: v for k, v in action.items() if v is not None and v != "" and v != []}
+        kind = str(a.get("action", ""))
+        if "id" in a:
+            ident = a.pop("id")
+            if kind in {"claim_goal", "confirm_goal", "cancel_goal", "abandon_goal"}:
+                a["goal_id"] = ident
+            elif kind == "join_faction":
+                a["faction_id"] = ident
+        if kind == "build" and a.get("type") == "storehouse" and a.get("kind") in {"private", "faction", "public"}:
+            a["policy"] = a.pop("kind")
+        elif kind == "found_faction":
+            if a.get("kind") in {"open", "invite"}:
+                a["membership"] = a.pop("kind")
+            if "text" in a:
+                a["motto"] = a.pop("text")
+        elif kind == "post_goal":
+            if "text" in a:
+                a["description"] = a.pop("text")
+            if a.get("item") and a.get("qty"):
+                a["reward"] = {str(a.pop("item")): int(a.pop("qty"))}
+        elif kind == "set_profile":
+            if "text" in a:
+                a["bio"] = a.pop("text")
+            if "title" in a:
+                a["goals"] = a.pop("title")
+        elif kind in {"gather"} and "kind" not in a and a.get("item"):
+            a["kind"] = a.pop("item")
+        keep = FIELDS_BY_ACTION.get(kind)
+        if keep is not None:
+            a = {k: v for k, v in a.items() if k == "action" or k in keep}
+        actions.append(a)
+    plan = dict(plan)
+    plan["actions"] = actions
+    plan["whisper_tags"] = [t for t in plan.get("whisper_tags", []) or [] if t in {"supportive", "directions", "trade", "audit", "other"}]
+    return plan
 
 
 def teammate_positions(observe: dict[str, Any], team: Team | None, personas: dict[str, Persona]) -> dict[str, tuple[int, int]]:
@@ -109,13 +195,16 @@ def persona_wake(
     teammates: dict[str, tuple[int, int]] | None = None,
     seed: str | None = None,
     scheduled: bool = False,
-    usage: dict[str, int] | None = None,
+    usage: dict[str, Any] | None = None,
+    budget_hold: str = "",
 ) -> dict[str, Any]:
     if role is not None and role not in persona.roles:
         raise ValueError(f"{persona.slug} does not wear the {role} hat")
     worn = role or "+".join(persona.roles)
     allowed = allowed_for(worn)
     extras: dict[str, Any] = {"persona": persona.slug, "team": persona.team, "planner": planner_mode, "scheduled": scheduled, "hats": list(persona.roles) if role is None else [role]}
+    if budget_hold:
+        extras["budget_hold"] = budget_hold
     context: dict[str, Any] = {}
 
     def planner(observe: dict[str, Any]) -> dict[str, Any]:
@@ -135,8 +224,12 @@ def persona_wake(
         )
         used = "heuristic"
         if planner_mode == "llm" and llm_call is not None and mode != "rest":
-            candidate = _llm_plan(observe, state, mode, plan, llm_call)
-            if candidate is not None:
+            candidate, error = _llm_plan(observe, state, mode, plan, llm_call)
+            if error is not None:
+                extras["llm_error"] = error[:300]
+                used = "llm_error"
+            elif candidate is not None:
+                candidate = normalise_plan(candidate)
                 try:
                     _check(candidate.get("actions", []), observe, mates)
                     plan = {**plan, **candidate, "reasons": candidate.get("reasons") or plan["reasons"]}
@@ -248,11 +341,12 @@ def _llm_plan(
     mode: str,
     heuristic: dict[str, Any],
     llm_call: Callable[[str, dict[str, Any]], dict[str, Any]],
-) -> dict[str, Any] | None:
+) -> tuple[dict[str, Any] | None, str | None]:
+    """Ask the model for a plan; any failure is returned as text so the record can show it."""
     try:
-        return llm_call(json.dumps({"mode": mode, "mood": state.mood, "suggested": heuristic}, ensure_ascii=False), observe)
-    except Exception:  # noqa: BLE001 - any model failure falls back to the deterministic plan
-        return None
+        return llm_call(json.dumps({"mode": mode, "mood": state.mood, "suggested": heuristic}, ensure_ascii=False), observe), None
+    except Exception as exc:  # noqa: BLE001 - any model failure falls back to the deterministic plan
+        return None, f"{type(exc).__name__}: {exc}"
 
 
 def persona_prompt(
@@ -277,4 +371,4 @@ def persona_prompt(
     )
 
 
-__all__ = ["persona_prompt", "persona_wake", "plan_schema", "teammate_positions"]
+__all__ = ["LEAN_ACTION_SCHEMA", "normalise_plan", "persona_prompt", "persona_wake", "plan_schema", "teammate_positions"]

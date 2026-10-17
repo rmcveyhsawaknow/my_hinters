@@ -193,6 +193,15 @@ def persona_tick(
         planner = "llm" if fixture is None and _model_key(root) else "heuristic"
     if planner == "llm" and not _model_key(root):
         raise typer.BadParameter("the llm planner needs ANTHROPIC_API_KEY or OPENAI_API_KEY")
+    budget_hold = ""
+    if planner == "llm":
+        from hglab.budget import status as budget_status
+
+        state = budget_status(root)
+        if state.over:
+            budget_hold = state.reason
+            planner = "heuristic"
+            typer.echo(f"budget hold: {budget_hold}; using the deterministic planner this wake")
     incoming: dict[str, dict[str, Any]] = {}
     if team is not None and inputs["tick"]:
         team_result = compute_team(team, personas, inputs["events"], inputs["runs"], inputs["tick"], kb_items=inputs["kb"])
@@ -226,6 +235,7 @@ def persona_tick(
         output_dir=root / "runs" / datetime.now(UTC).date().isoformat(), role=role, dry_run=dry_run,
         author_runtime=author_runtime, planner_mode=planner, llm_call=llm_call, incoming=incoming,
         terrain_rows=terrain, public_events=inputs["events"], seed=seed, scheduled=scheduled, usage=usage,
+        budget_hold=budget_hold,
     )
     if not quiet:
         echo_record(record)
@@ -281,15 +291,20 @@ def _make_llm_call(root: Path, persona: Persona, team: Team | None, role: str, u
     north_star = (root / "kb/NORTH_STAR.md").read_text(encoding="utf-8")
     budget = yaml.safe_load((root / "config/budget.yaml").read_text(encoding="utf-8"))["tick"]
 
+    route = persona.knobs.get("model_route") or role_config["model_route"]
+
     def call(guidance: str, observe: dict[str, Any]) -> dict[str, Any]:
         if usage["calls"] >= budget["max_llm_calls"]:
             raise ValueError("tick LLM call budget exhausted")
-        output_tokens = min(1600, budget["max_output_tokens"] - usage["output_tokens"])
+        output_tokens = min(2500, budget["max_output_tokens"] - usage["output_tokens"])
         if output_tokens < 1:
             raise ValueError("tick output-token budget exhausted")
-        prompt = persona_prompt(persona, team, body, north_star, skills, observe, action_schema, {}, guidance)
-        result = structured_call(role_config["model_route"], prompt, schema, root=root, output_tokens=output_tokens, author_runtime=os.environ.get("HGLAB_RUNTIME", "human"))
-        usage.update(calls=usage["calls"] + 1, input_tokens=usage["input_tokens"] + result.input_tokens, output_tokens=usage["output_tokens"] + result.output_tokens)
+        trimmed = dict(observe)
+        events = observe.get("events") if isinstance(observe.get("events"), list) else []
+        trimmed["events"] = events[-30:]
+        prompt = persona_prompt(persona, team, body, north_star, skills, trimmed, action_schema, {}, guidance)
+        result = structured_call(route, prompt, schema, root=root, output_tokens=output_tokens, author_runtime=os.environ.get("HGLAB_RUNTIME", "human"))
+        usage.update(calls=usage["calls"] + 1, input_tokens=usage["input_tokens"] + result.input_tokens, output_tokens=usage["output_tokens"] + result.output_tokens, model=result.model, provider=result.provider, route=route)
         return result.value
 
     return call
@@ -297,7 +312,9 @@ def _make_llm_call(root: Path, persona: Persona, team: Team | None, role: str, u
 
 def echo_record(record: dict[str, Any]) -> None:
     typer.echo(f"{record['agent']} · {record.get('wake_mode')} · mood {record.get('mood')} · planner {record.get('planner')}"
-               + (f" (fallback: {record['fallback_reason']})" if record.get("fallback_reason") else ""))
+               + (f" (fallback: {record['fallback_reason']})" if record.get("fallback_reason") else "")
+               + (f" (model error: {record['llm_error']})" if record.get("llm_error") else "")
+               + (f" (budget hold: {record['budget_hold']})" if record.get("budget_hold") else ""))
     typer.echo(f"  {record.get('summary', '')}")
     for index, action in enumerate(record["actions"]):
         shown = {k: (v if k != "text" or len(str(v)) <= 90 else str(v)[:87] + "...") for k, v in action.items()}
@@ -596,6 +613,12 @@ def run_pulse(
         metrics = load_metrics(root, slug)
         judge_result = None
         cache = out / "agents" / slug / "judge.json"
+        if judge and judge_available(root):
+            from hglab.budget import status as budget_status
+
+            if budget_status(root).over:
+                typer.echo(f"budget hold: {budget_status(root).reason}; judge skipped for {slug}", err=True)
+                judge = False
         if judge and judge_available(root):
             judge_result = run_judge(persona, metrics, inputs["events"], inputs["runs"][slug], root, author_runtime=os.environ.get("HGLAB_RUNTIME"))
             if judge_result:
@@ -910,6 +933,29 @@ def reports_pull(branch: str = typer.Option("reports", "--branch"), remote: str 
     typer.echo(f"pulled {count} entries into reports/ from {remote}/{branch}")
 
 
+# --- budget ------------------------------------------------------------------
+
+budget_app = typer.Typer(help="Model spend: month-to-date from usage records, caps, and a projection.")
+
+
+@budget_app.command("status")
+def budget_status_command(project: bool = typer.Option(False, "--project", help="Also project a month from cadences and routes.")) -> None:
+    """Show estimated spend this month and today against the caps."""
+    from hglab.budget import projected_month, status
+
+    root = root_dir()
+    state = status(root)
+    typer.echo(f"month to date: ${state.month_usd:.2f} of ${state.monthly_cap_usd:.2f} cap · today: ${state.today_usd:.2f} of ${state.daily_cap_usd:.2f} · {state.calls} call(s)")
+    for model, cost in sorted(state.by_model.items()):
+        typer.echo(f"  {model:<22} ${cost:.4f}")
+    if state.over:
+        typer.echo(f"HOLD: {state.reason}; wakes fall back to the deterministic planner and the judge is skipped")
+    if project:
+        typer.echo("projection for a full month at the configured mix:")
+        for key, value in projected_month(root).items():
+            typer.echo(f"  {key:<40} ${value:.2f}")
+
+
 # --- registration -------------------------------------------------------------
 
 
@@ -920,6 +966,7 @@ def register_persona_commands(app: typer.Typer) -> None:
     app.add_typer(community_app, name="community")
     app.add_typer(deploy_app, name="deploy")
     app.add_typer(reports_app, name="reports")
+    app.add_typer(budget_app, name="budget")
     app.command("pulse")(pulse_command)
     app.command("retro")(retro_command)
     app.command("keepalive")(keepalive_command)

@@ -7,3 +7,21 @@ digest:
 judge:
   max_llm_calls: 1
   max_output_tokens: 600
+# Hard caps: when reached, wakes use the deterministic planner and the judge is skipped.
+# Verification challenges are always allowed (one small call; lapsing costs more).
+caps:
+  monthly_usd: 100
+  daily_usd: 6
+# Prices per million tokens, used to turn usage records into spend (`hglab budget status`).
+pricing_usd_per_mtok:
+  claude-haiku-5-5: {input: 0.10, output: 0.50, cache_read: 0.01}
+  claude-sonnet-5-5: {input: 2.00, output: 10.00, cache_read: 0.20}
+  claude-opus-5-5: {input: 4.00, output: 20.00, cache_read: 0.20}
+# Token assumptions for the monthly projection (`hglab budget status --project`).
+estimate:
+  tick_input_tokens: 14000
+  tick_output_tokens: 600
+  judge_input_tokens: 3000
+  judge_output_tokens: 300
+  challenge_input_tokens: 400
+  challenge_output_tokens: 120
