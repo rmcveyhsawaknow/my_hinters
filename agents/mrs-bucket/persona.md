@@ -17,6 +17,7 @@ knobs:
   territory: {mode: prefer_inside, radius: 8}
   social_rate: 1
   build_priority: [hut, farm, storehouse, road, sign]
+  work: {cron: "9 * * * *", minutes: 25, interval_seconds: 300}
   intended_mix: {build: 0.30, gather: 0.40, social: 0.15, explore: 0.05, trade: 0.10}
 voice:
   register: Plain, warm, practical; short sentences; thanks people by what they did, not by name; finds the bright side without denying the cold.

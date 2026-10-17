@@ -17,6 +17,7 @@ knobs:
   territory: {mode: free}
   social_rate: 1
   build_priority: [sign, road, bridge, hut]
+  work: {cron: "27 * * * *", minutes: 25, interval_seconds: 300}
   intended_mix: {build: 0.20, gather: 0.15, social: 0.10, explore: 0.50, trade: 0.05}
 voice:
   register: Breathless, mid-thought, questions that answer themselves halfway; notices textures and oddities; forgets to finish.

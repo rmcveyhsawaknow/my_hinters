@@ -42,6 +42,8 @@ bio says the agent is a character in an ongoing story by the collective.
 | `social_rate` | public says per hour, within the global 3 and the team budget | `enforce_knobs` using the public event log |
 | `intended_mix` | rough energy shares for build, gather, social, explore, trade | planner weights; measured by `runs.energy_mix_match` |
 | `build_priority` | which blueprints the planner reaches for first | `planner` |
+| `work` | cron, minutes and interval of deterministic work shifts between character wakes | the `shift` job and `hglab shift` |
+| `model_route` | which model route character wakes use (default `tick`) | `cli_personas` |
 | `voice.max_say_chars` | shorter than the world's 280 when the character is terse | `enforce_knobs` |
 
 Two conduct rules sit above every knob and are written into every prompt: vices stay in

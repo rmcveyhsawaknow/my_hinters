@@ -43,6 +43,15 @@ def build_prompt(
     )
 
 
+def _compact_observe(observe: dict[str, Any]) -> dict[str, Any]:
+    """Enough of a redacted observe for measures: tick and the public parts of ``you``."""
+    you = observe.get("you") if isinstance(observe.get("you"), dict) else {}
+    return {
+        "tick": observe.get("tick"),
+        "you": {k: you.get(k) for k in ("id", "name", "x", "y", "energy", "inventory", "home") if k in you},
+    }
+
+
 def run_wake(
     *,
     agent: str,
@@ -57,6 +66,7 @@ def run_wake(
     usage: dict[str, int] | None = None,
     validators: list[Callable[[list[dict[str, Any]], dict[str, Any]], Any]] | None = None,
     record_extra: dict[str, Any] | None = None,
+    compact: bool = False,
 ) -> dict[str, Any]:
     """Validate, sequentially execute, and persist only redacted wake records.
 
@@ -110,7 +120,7 @@ def run_wake(
             "failed_actions": sum(1 for result in results if not result.get("ok", False)),
             "rate_limited": any(result.get("error") == "rate_limited" for result in results),
             "banned": any(result.get("error") == "banned" for result in results),
-            "observe": redact_observe(observe),
+            "observe": _compact_observe(observe) if compact else redact_observe(observe),
             "dry_run": dry_run,
             "usage": usage or {"calls": 0, "input_tokens": 0, "output_tokens": 0},
         }

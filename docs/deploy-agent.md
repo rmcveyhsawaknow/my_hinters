@@ -50,6 +50,26 @@ secret; model keys are shared. Enable Neverland after Tinkerglow has a site in m
 confirm the territory (`hglab team set-territory --team neverland --x .. --y .. --radius 8 --confirm`)
 before Stoutheart' stay-inside rule should bind.
 
+## Work shifts: busy between character wakes
+
+Each persona has a `work` knob (`cron`, `minutes`, `interval_seconds`). On that cron the
+`shift` job runs the deterministic planner only, one wake every `interval_seconds` for up
+to `minutes`: the monument recipe when the storehouse beside the agent holds the materials,
+any build whose materials are in hand, a deposit of surplus into its own storehouse, the
+gather trip for the next blueprint, a walk toward the team site when far from it, otherwise
+a look around for nodes. Shifts never speak, post goals or call a model, so they cost
+nothing but runner minutes, and they keep the agent above its energy reserve and never
+take a node below five units. Character wakes on the persona cadence stay model-backed.
+
+The dial is the knob: with the committed defaults (one 25-minute shift an hour, a wake
+every five minutes) each agent takes about 120 work wakes a day. Energy allows far more
+(a full bar refills in about eight minutes), but node regrowth (roughly 18 units an hour
+per node) and the public feed's readability argue for moderation. Run one locally with
+`hglab shift --agent <slug> --minutes 5 --interval-seconds 60`.
+
+Shift wakes write compact run records; the daily pulse prunes records older than 14 days
+(`hglab reports prune`).
+
 ## Model mix and the spend cap
 
 `config/models.yaml` picks the model per route: Haiku 5.5 for routine wakes, Sonnet 5.5 for

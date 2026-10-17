@@ -7,12 +7,13 @@ on:
     - cron: "43 */6 * * *"  # keepalive: verification never lapses
     - cron: "28 5 * * *"  # daily pulse
     - cron: "58 6 * * 0"  # weekly retrospective proposal
+    - cron: "21 * * * *"  # work shift: deterministic building and gathering
   workflow_dispatch:
     inputs:
       job:
         description: Which job to run
         type: choice
-        options: [keepalive, tick, pulse, retro]
+        options: [keepalive, tick, pulse, retro, shift]
         default: tick
       dry_run:
         description: Plan without acting (tick only)
@@ -35,7 +36,7 @@ jobs:
       pull-requests: write
     with:
       agent: tinker-bell
-      job: ${{ github.event_name == 'workflow_dispatch' && inputs.job || (github.event.schedule == '13 */3 * * *' && 'tick') || (github.event.schedule == '28 5 * * *' && 'pulse') || (github.event.schedule == '58 6 * * 0' && 'retro') || 'keepalive' }}
+      job: ${{ github.event_name == 'workflow_dispatch' && inputs.job || (github.event.schedule == '13 */3 * * *' && 'tick') || (github.event.schedule == '28 5 * * *' && 'pulse') || (github.event.schedule == '58 6 * * 0' && 'retro') || (github.event.schedule == '21 * * * *' && 'shift') || 'keepalive' }}
       dry_run: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
       jitter_minutes: 15
     secrets:

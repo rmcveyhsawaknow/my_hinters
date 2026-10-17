@@ -24,7 +24,7 @@ def test_generated_callers_are_current_and_guarded():
         assert set(job["secrets"]) == {"hg_key", "anthropic_api_key", "openai_api_key"}
         assert job["secrets"]["hg_key"].startswith("${{ secrets.HG_KEY_")
         assert data[True]["workflow_dispatch"]["inputs"]["dry_run"]["default"] is True  # YAML parses `on` as True
-        assert len(data[True]["schedule"]) == 4
+        assert len(data[True]["schedule"]) == 5
 
 
 def test_wonka_caller_uses_the_persona_cron_and_secret():

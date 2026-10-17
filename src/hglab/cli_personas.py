@@ -168,17 +168,20 @@ def persona_tick(
     force_mode: str | None = None,
     quiet: bool = False,
     extra_events: list[dict[str, Any]] | None = None,
+    work: bool = False,
+    inputs: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     personas = load_personas(root)
     team = team_of(root, persona)
     author_runtime = os.environ.get("HGLAB_RUNTIME", "human")
     usage = {"calls": 0, "input_tokens": 0, "output_tokens": 0}
+    roster: dict[str, tuple[int, int]] = {}
     if fixture is not None:
         payload = load_fixture(fixture)
         if extra_events:
             payload["events"] = list(payload.get("events", [])) + list(extra_events)
         client: Any = FixtureClient(payload)
-        inputs = gather_inputs(root, fixtures=True, events_paths=events_paths, runs_paths=[], fetch_public=False, tick=None)
+        inputs = inputs or gather_inputs(root, fixtures=True, events_paths=events_paths, runs_paths=[], fetch_public=False, tick=None)
     else:
         api_key = get_api_key(persona.name, root)
         if not api_key:
@@ -188,7 +191,10 @@ def persona_tick(
             delay = random.Random().uniform(0, min(jitter_minutes, 25) * 60)
             typer.echo(f"jitter: sleeping {delay / 60:.1f} minutes")
             time.sleep(delay)
-        inputs = gather_inputs(root, fixtures=False, events_paths=events_paths, runs_paths=[], fetch_public=True, tick=None)
+        inputs = inputs or gather_inputs(root, fixtures=False, events_paths=events_paths, runs_paths=[], fetch_public=not work, tick=None)
+        roster = public_teammate_positions(personas, team)
+    if work:
+        planner = "heuristic"
     if planner == "auto":
         planner = "llm" if fixture is None and _model_key(root) else "heuristic"
     if planner == "llm" and not _model_key(root):
@@ -236,7 +242,7 @@ def persona_tick(
         output_dir=root / "runs" / datetime.now(UTC).date().isoformat(), role=role, dry_run=dry_run,
         author_runtime=author_runtime, planner_mode=planner, llm_call=llm_call, incoming=incoming,
         terrain_rows=terrain, public_events=inputs["events"], seed=seed, scheduled=scheduled, usage=usage,
-        budget_hold=budget_hold, environment=environment,
+        budget_hold=budget_hold, environment=environment, work=work, teammates=roster or None,
     )
     if not quiet:
         echo_record(record)
@@ -244,6 +250,23 @@ def persona_tick(
         with Path(summary_path).open("a", encoding="utf-8") as summary:
             summary.write(f"\n### {persona.name} wake\n\n- mode: {record.get('wake_mode')} · mood: {record.get('mood')} · planner: {record.get('planner')}\n- actions: {len(record['actions'])} · dry run: {record['dry_run']}\n- LLM calls: {usage['calls']} · output tokens: {usage['output_tokens']}\n")
     return record
+
+
+def public_teammate_positions(personas: dict[str, Persona], team: Team | None) -> dict[str, tuple[int, int]]:
+    """Teammate positions from the public roster (no key), so a follower can find a leader out of view."""
+    if team is None:
+        return {}
+    try:
+        agents = HinterglassClient().public_agents().get("agents", [])
+    except (HinterglassError, OSError):
+        return {}
+    by_name = {personas[m].name.casefold(): m for m in team.members if m in personas}
+    out: dict[str, tuple[int, int]] = {}
+    for agent in agents:
+        slug = by_name.get(str(agent.get("name", "")).casefold())
+        if slug and isinstance(agent.get("x"), int) and isinstance(agent.get("y"), int):
+            out[slug] = (int(agent["x"]), int(agent["y"]))
+    return out
 
 
 def build_environment(
@@ -363,6 +386,49 @@ def echo_record(record: dict[str, Any]) -> None:
     if record.get("knob_checks"):
         typer.echo(f"  knobs passed: {', '.join(record['knob_checks'])}")
     typer.echo(f"  {'dry run, nothing sent' if record['dry_run'] else 'executed: ' + str(len(record['results'])) + ' result(s)'}; record {record['run_id']}")
+
+
+# --- shift: deterministic work between character wakes -----------------------
+
+
+def shift_command(
+    agent: str = typer.Option(..., "--agent"),
+    minutes: int | None = typer.Option(None, "--minutes", help="Shift length (default: the persona's work knob)"),
+    interval_seconds: int | None = typer.Option(None, "--interval-seconds", help="Pause between wakes (default: the knob)"),
+    dry_run: bool = typer.Option(False, "--dry-run"),
+    fixture: Path | None = typer.Option(None, "--fixture"),  # noqa: B008
+    max_wakes: int | None = typer.Option(None, "--max-wakes"),
+    scheduled: bool = typer.Option(False, "--scheduled"),
+) -> None:
+    """Work shift: deterministic wakes (build, gather, deposit, migrate) every few minutes. No model calls."""
+    root = root_dir()
+    persona = resolve_persona(root, agent)
+    knob = persona.knobs.get("work") or {"minutes": 25, "interval_seconds": 300}
+    length = minutes if minutes is not None else int(knob["minutes"])
+    pause = interval_seconds if interval_seconds is not None else int(knob["interval_seconds"])
+    deadline = time.monotonic() + length * 60
+    wakes = 0
+    inputs = gather_inputs(root, fixtures=fixture is not None, events_paths=[], runs_paths=[], fetch_public=fixture is None, tick=None)
+    typer.echo(f"{persona.name} work shift: up to {length} min, a wake every {pause} s")
+    while True:
+        try:
+            record = persona_tick(root, persona, role=None, dry_run=dry_run, fixture=fixture, planner="heuristic", seed=None, events_paths=[], jitter_minutes=0, scheduled=scheduled, work=True, inputs=inputs, quiet=True)
+            wakes += 1
+            energy = int(record.get("energy_before", 0) or 0) - int(record.get("energy_spent", 0) or 0)
+            typer.echo(f"  wake {wakes}: {record.get('summary', '')} · {len(record['actions'])} action(s), energy about {energy}, approach {record.get('approach')}")
+        except typer.BadParameter as exc:
+            typer.echo(f"  wake skipped: {exc}")
+            energy = 100
+        if max_wakes is not None and wakes >= max_wakes:
+            break
+        wait = pause
+        if energy < persona.energy_reserve + 10:
+            wait = max(wait, int((persona.energy_reserve + 15 - energy) / 2 * 10))  # +2 energy per 10-second tick
+        if time.monotonic() + wait > deadline:
+            break
+        if fixture is None:
+            time.sleep(wait)
+    typer.echo(f"shift over: {wakes} wake(s)")
 
 
 # --- persona commands --------------------------------------------------------
@@ -1037,6 +1103,26 @@ def budget_status_command(project: bool = typer.Option(False, "--project", help=
             typer.echo(f"  {key:<40} ${value:.2f}")
 
 
+@reports_app.command("prune")
+def reports_prune(days: int = typer.Option(14, "--days"), folder: Path = typer.Option(Path("reports"), "--folder")) -> None:  # noqa: B008
+    """Delete run records older than N days under reports/agents/*/runs (pulses and history stay)."""
+    cutoff = datetime.now(UTC).timestamp() - days * 86400
+    removed = 0
+    for path in folder.glob("agents/*/runs/*/*.json"):
+        try:
+            created = json.loads(path.read_text(encoding="utf-8")).get("created_utc")
+            when = datetime.fromisoformat(created).timestamp() if created else path.stat().st_mtime
+        except (json.JSONDecodeError, ValueError, OSError):
+            when = path.stat().st_mtime
+        if when < cutoff:
+            path.unlink()
+            removed += 1
+    for day_dir in folder.glob("agents/*/runs/*"):
+        if day_dir.is_dir() and not any(day_dir.iterdir()):
+            day_dir.rmdir()
+    typer.echo(f"pruned {removed} record(s) older than {days} days")
+
+
 # --- registration -------------------------------------------------------------
 
 
@@ -1050,6 +1136,7 @@ def register_persona_commands(app: typer.Typer) -> None:
     app.add_typer(budget_app, name="budget")
     app.add_typer(world_app, name="world")
     app.command("pulse")(pulse_command)
+    app.command("shift")(shift_command)
     app.command("retro")(retro_command)
     app.command("keepalive")(keepalive_command)
 
