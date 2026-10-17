@@ -119,7 +119,7 @@ def gather_inputs(
     paths = list(events_paths)
     if fixtures:
         paths.append(root / FIXTURES / "world/events.jsonl")
-    if (root / "data/events").is_dir():
+    elif (root / "data/events").is_dir():
         paths.append(root / "data/events")
     events = load_events(paths)
     if fetch_public:
@@ -132,9 +132,15 @@ def gather_inputs(
         extra = list(runs_paths)
         if fixtures:
             extra.append(root / FIXTURES / "runs" / f"{slug}.jsonl")
-        runs_by_slug[slug] = load_runs(root, persona.name, slug, extra)
+        runs_by_slug[slug] = load_runs(root, persona.name, slug, extra, include_local=not fixtures)
     all_runs = [r for rows in runs_by_slug.values() for r in rows]
     now_tick = tick or latest_tick(events, all_runs, fallback=0)
+    if fixtures and not tick:
+        for observe_path in (root / FIXTURES / "observe").glob("*.json"):
+            try:
+                now_tick = max(now_tick, int(json.loads(observe_path.read_text(encoding="utf-8")).get("tick", 0)))
+            except (json.JSONDecodeError, ValueError):
+                continue
     return {"personas": personas, "teams": teams, "events": events, "runs": runs_by_slug, "kb": load_kb_items(root), "tick": now_tick}
 
 

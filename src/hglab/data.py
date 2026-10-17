@@ -49,10 +49,16 @@ def load_events(paths: list[Path]) -> list[dict[str, Any]]:
     return sorted(seen.values(), key=lambda e: (int(e.get("tick", 0)), int(e.get("id", 0))))
 
 
-def load_runs(root: Path, agent_name: str, slug: str, extra: list[Path] | None = None) -> list[dict[str, Any]]:
-    """Redacted run records for one identity from runs/, pulled reports, and fixtures."""
+def load_runs(
+    root: Path, agent_name: str, slug: str, extra: list[Path] | None = None, *, include_local: bool = True
+) -> list[dict[str, Any]]:
+    """Redacted run records for one identity from runs/, pulled reports, and fixtures.
+
+    ``include_local=False`` reads only ``extra`` (fixture mode stays independent of what
+    happens to be in runs/ or reports/ on this machine).
+    """
     records: dict[str, dict[str, Any]] = {}
-    folders = [root / "runs", root / "reports/agents" / slug / "runs"]
+    folders = [root / "runs", root / "reports/agents" / slug / "runs"] if include_local else []
     for folder in folders:
         if not folder.is_dir():
             continue

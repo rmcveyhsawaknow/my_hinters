@@ -4,10 +4,10 @@ Tinker Bell chooses and builds Neverland, a safe haven recorded as team territor
 
 | agent | alive | on mission | in character | working | next bet |
 | --- | --- | --- | --- | --- | --- |
-| TinkerBell | 90 | 62 | 92 | second-star exploration rule: 10 outcome for 31 energy over 4 wake(s) | keep testing second-star exploration rule; it has the best outcome per unit of energy |
-| LostBoy | 85 | 54 | 82 | unusual builds: 71 outcome for 24 energy over 9 wake(s) | try forty percent distraction roll at least once this week; it has a bet but no wakes |
-| Tootles | 92 | 72 | 95 | saving materials in a far hut: 35 outcome for 24 energy over 7 wake(s) | keep testing saving materials in a far hut; it has the best outcome per unit of energy |
-| Nibs | 94 | 72 | 70 | farm plus stocked storehouse: 3 outcome for 33 energy over 12 wake(s) | try greeting visitors at least once this week; it has a bet but no wakes |
+| TinkerBell | 85 | 61 | 92 | second-star exploration rule: 10 outcome for 31 energy over 4 wake(s) | keep testing second-star exploration rule; it has the best outcome per unit of energy |
+| LostBoy | 82 | 54 | 82 | unusual builds: 71 outcome for 24 energy over 9 wake(s) | try forty percent distraction roll at least once this week; it has a bet but no wakes |
+| Tootles | 87 | 87 | 95 | saving materials in a far hut: 35 outcome for 24 energy over 7 wake(s) | keep testing saving materials in a far hut; it has the best outcome per unit of energy |
+| Nibs | 92 | 72 | 70 | farm plus stocked storehouse: 3 outcome for 33 energy over 12 wake(s) | try greeting visitors at least once this week; it has a bet but no wakes |
 
 ## Influence links
 

@@ -9,12 +9,12 @@
  "date": "2026-10-17",
  "window_ticks": 60480,
  "events_considered": 391,
- "runs_considered": 59,
+ "runs_considered": 54,
  "alive": {
-  "score": 96,
-  "detail": "59/56 wakes, never lapsed, 2 failed",
+  "score": 92,
+  "detail": "54/56 wakes, never lapsed, 2 failed",
   "parts": {
-   "completed": 59,
+   "completed": 54,
    "scheduled": 56,
    "lapsed": 0,
    "banned": false,
@@ -87,7 +87,7 @@
    {
     "id": "rest_share",
     "label": "share of wakes resting",
-    "value": 0.119,
+    "value": 0.13,
     "range": [
      0.0,
      0.25
@@ -109,7 +109,7 @@
    {
     "id": "energy_mix",
     "label": "intended vs actual energy mix",
-    "value": 0.643,
+    "value": 0.645,
     "range": [
      0.6,
      1.0
@@ -120,7 +120,7 @@
    {
     "id": "mood_swings",
     "label": "share of wakes in a non-gentle mood",
-    "value": 0.424,
+    "value": 0.407,
     "range": [
      0.2,
      0.7
@@ -167,7 +167,7 @@
   }
  },
  "team_pull": {
-  "detail": "Hope 33 (MrsBucket) → Inspiration 33 · Bluster 30 (GrandpaJoe) → Suspicion 30 · Bluster 30 (GrandpaJoe) → Discernment 18",
+  "detail": "Hope 33 (MrsBucket) → Inspiration 33 · Bluster 21 (GrandpaJoe) → Suspicion 21 · Bluster 21 (GrandpaJoe) → Discernment 12",
   "sent": [],
   "received": [
    {
@@ -191,10 +191,10 @@
     "plain_english": "The more credit Grandpa Joe claims beyond what the log supports, the more honesty tests and fine print Wonka adds.",
     "weight": 1.0,
     "half_life_hours": 24.0,
-    "value": 30.1,
-    "decayed_value": 30.1,
+    "value": 20.8,
+    "decayed_value": 20.8,
     "age_ticks": 0,
-    "explanation": "Bluster 30: 15 claim(s) against own work 0, 3% of the team's logged work claimed."
+    "explanation": "Bluster 21: 13 claim(s) against own work 0, 3% of the team's logged work claimed."
    },
    {
     "from": "grandpa-joe",
@@ -204,10 +204,10 @@
     "plain_english": "Every tall tale Wonka's audit catches sharpens his eye for who really did the work.",
     "weight": 0.6,
     "half_life_hours": 48.0,
-    "value": 30.1,
-    "decayed_value": 30.1,
+    "value": 20.8,
+    "decayed_value": 20.8,
     "age_ticks": 0,
-    "explanation": "Bluster 30: 15 claim(s) against own work 0, 3% of the team's logged work claimed."
+    "explanation": "Bluster 21: 13 claim(s) against own work 0, 3% of the team's logged work claimed."
    }
   ],
   "effects": {
@@ -217,14 +217,14 @@
     "explanation": "hope from mrs-bucket 33"
    },
    "suspicion": {
-    "value": 30.1,
+    "value": 20.8,
     "tick": 65760,
-    "explanation": "bluster from grandpa-joe 30"
+    "explanation": "bluster from grandpa-joe 21"
    },
    "discernment": {
-    "value": 18.1,
+    "value": 12.5,
     "tick": 65760,
-    "explanation": "bluster from grandpa-joe 30"
+    "explanation": "bluster from grandpa-joe 21"
    },
    "hope": {
     "value": 33.2,
@@ -232,9 +232,9 @@
     "explanation": "Hope 33: contribution 28, uplift 20, resilience 13 (decayed over a day)."
    },
    "bluster": {
-    "value": 30.1,
+    "value": 20.8,
     "tick": 65760,
-    "explanation": "Bluster 30: 15 claim(s) against own work 0, 3% of the team's logged work claimed."
+    "explanation": "Bluster 21: 13 claim(s) against own work 0, 3% of the team's logged work claimed."
    }
   }
  },
@@ -297,7 +297,7 @@
   "next_bet": "move energy from whispered faction name as the lock (44 energy, nothing to show) toward whimsical fine print"
  },
  "trend": {
-  "alive": "███████",
+  "alive": "██████▇",
   "on_mission": "▄▄▄▅▅▅▇",
   "in_character": "▇▇▇▇▇▇▇"
  },
@@ -347,7 +347,7 @@
   {
    "date": "2026-10-17",
    "metric_version": 1,
-   "alive": 96,
+   "alive": 92,
    "on_mission": 83,
    "in_character": 92,
    "tick": 65760
@@ -356,10 +356,10 @@
  "signals": {
   "audit": {
    "value": 100.0,
-   "explanation": "Fairness 100: 5 of 5 audit(s) credited the true worker.",
+   "explanation": "Fairness 100: 4 of 4 audit(s) credited the true worker.",
    "parts": {
-    "audits": 5.0,
-    "correct": 5.0
+    "audits": 4.0,
+    "correct": 4.0
    },
    "tick": 65760
   }

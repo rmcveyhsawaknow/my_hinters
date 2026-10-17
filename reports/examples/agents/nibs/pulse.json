@@ -9,12 +9,12 @@
  "date": "2026-10-17",
  "window_ticks": 60480,
  "events_considered": 391,
- "runs_considered": 58,
+ "runs_considered": 55,
  "alive": {
-  "score": 94,
-  "detail": "58/56 wakes, never lapsed, 3 failed",
+  "score": 92,
+  "detail": "55/56 wakes, never lapsed, 3 failed",
   "parts": {
-   "completed": 58,
+   "completed": 55,
    "scheduled": 56,
    "lapsed": 0,
    "banned": false,
@@ -88,7 +88,7 @@
    {
     "id": "build_share",
     "label": "share of energy building",
-    "value": 0.226,
+    "value": 0.15,
     "range": [
      0.3,
      0.6
@@ -110,7 +110,7 @@
    {
     "id": "energy_mix",
     "label": "intended vs actual energy mix",
-    "value": 0.501,
+    "value": 0.41,
     "range": [
      0.6,
      1.0
@@ -257,7 +257,7 @@
   "next_bet": "try greeting visitors at least once this week; it has a bet but no wakes"
  },
  "trend": {
-  "alive": "███████",
+  "alive": "██████▇",
   "on_mission": "▅▅▅▅▅▆▆",
   "in_character": "▇▇▇▇▇▇▆"
  },
@@ -307,7 +307,7 @@
   {
    "date": "2026-10-17",
    "metric_version": 1,
-   "alive": 94,
+   "alive": 92,
    "on_mission": 72,
    "in_character": 70,
    "tick": 65760

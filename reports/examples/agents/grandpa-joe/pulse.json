@@ -9,12 +9,12 @@
  "date": "2026-10-17",
  "window_ticks": 60480,
  "events_considered": 391,
- "runs_considered": 32,
+ "runs_considered": 27,
  "alive": {
-  "score": 98,
-  "detail": "32/28 wakes, never lapsed, 1 failed",
+  "score": 94,
+  "detail": "27/28 wakes, never lapsed, 1 failed",
   "parts": {
-   "completed": 32,
+   "completed": 27,
    "scheduled": 28,
    "lapsed": 0,
    "banned": false,
@@ -26,16 +26,16 @@
  },
  "on_mission": {
   "score": 26,
-  "detail": "0.47 energy/wake · 3% of team credit claimed · 0 responses · 0 timely bursts",
+  "detail": "0.44 energy/wake · 3% of team credit claimed · 0 responses · 0 timely bursts",
   "rows": [
    {
     "id": "energy_thrift",
     "label": "energy spent per wake",
-    "value": 0.469,
+    "value": 0.444,
     "target": 4,
     "weight": 0.25,
     "progress": 1.0,
-    "shown": "0.47 energy/wake",
+    "shown": "0.44 energy/wake",
     "measure": "runs.energy_per_wake"
    },
    {
@@ -77,7 +77,7 @@
    {
     "id": "rest_share",
     "label": "share of wakes in bed",
-    "value": 0.375,
+    "value": 0.444,
     "range": [
      0.45,
      0.8
@@ -99,7 +99,7 @@
    {
     "id": "social_share",
     "label": "share of energy spent talking",
-    "value": 0.733,
+    "value": 0.667,
     "range": [
      0.4,
      0.9
@@ -152,7 +152,7 @@
   }
  },
  "team_pull": {
-  "detail": "Bluster 30 → Wonka",
+  "detail": "Bluster 21 → Wonka",
   "sent": [
    {
     "from": "grandpa-joe",
@@ -162,10 +162,10 @@
     "plain_english": "The more credit Grandpa Joe claims beyond what the log supports, the more honesty tests and fine print Wonka adds.",
     "weight": 1.0,
     "half_life_hours": 24.0,
-    "value": 30.1,
-    "decayed_value": 30.1,
+    "value": 20.8,
+    "decayed_value": 20.8,
     "age_ticks": 0,
-    "explanation": "Bluster 30: 15 claim(s) against own work 0, 3% of the team's logged work claimed."
+    "explanation": "Bluster 21: 13 claim(s) against own work 0, 3% of the team's logged work claimed."
    },
    {
     "from": "grandpa-joe",
@@ -175,10 +175,10 @@
     "plain_english": "Every tall tale Wonka's audit catches sharpens his eye for who really did the work.",
     "weight": 0.6,
     "half_life_hours": 48.0,
-    "value": 30.1,
-    "decayed_value": 30.1,
+    "value": 20.8,
+    "decayed_value": 20.8,
     "age_ticks": 0,
-    "explanation": "Bluster 30: 15 claim(s) against own work 0, 3% of the team's logged work claimed."
+    "explanation": "Bluster 21: 13 claim(s) against own work 0, 3% of the team's logged work claimed."
    }
   ],
   "received": [],
@@ -271,7 +271,7 @@
   {
    "date": "2026-10-17",
    "metric_version": 1,
-   "alive": 98,
+   "alive": 94,
    "on_mission": 26,
    "in_character": 82,
    "tick": 65760
@@ -279,10 +279,10 @@
  ],
  "signals": {
   "bluster": {
-   "value": 30.1,
-   "explanation": "Bluster 30: 15 claim(s) against own work 0, 3% of the team's logged work claimed.",
+   "value": 20.8,
+   "explanation": "Bluster 21: 13 claim(s) against own work 0, 3% of the team's logged work claimed.",
    "parts": {
-    "claims": 25.3,
+    "claims": 15.3,
     "own_work": 0,
     "share_of_team_work_claimed": 0.03
    },

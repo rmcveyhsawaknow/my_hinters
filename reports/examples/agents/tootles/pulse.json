@@ -9,12 +9,12 @@
  "date": "2026-10-17",
  "window_ticks": 60480,
  "events_considered": 391,
- "runs_considered": 43,
+ "runs_considered": 40,
  "alive": {
-  "score": 92,
-  "detail": "43/42 wakes, never lapsed, 4 failed",
+  "score": 87,
+  "detail": "40/42 wakes, never lapsed, 4 failed",
   "parts": {
-   "completed": 43,
+   "completed": 40,
    "scheduled": 42,
    "lapsed": 0,
    "banned": false,
@@ -25,8 +25,8 @@
   }
  },
  "on_mission": {
-  "score": 72,
-  "detail": "100% outside · 35/40 saved · 2 landmarks · 0 near misses · humility 5/5",
+  "score": 87,
+  "detail": "100% outside · 35/40 saved · 2 landmarks · 3 near misses · humility 5/5",
   "rows": [
    {
     "id": "escape_progress",
@@ -61,11 +61,11 @@
    {
     "id": "near_misses",
     "label": "near misses",
-    "value": 0.0,
+    "value": 3.0,
     "target": 3,
     "weight": 0.15,
-    "progress": 0.0,
-    "shown": "0 near misses",
+    "progress": 1.0,
+    "shown": "3 near misses",
     "measure": "state.value"
    },
    {
@@ -98,7 +98,7 @@
    {
     "id": "explore_share",
     "label": "share of energy exploring",
-    "value": 0.609,
+    "value": 0.506,
     "range": [
      0.35,
      0.7
@@ -109,7 +109,7 @@
    {
     "id": "rest_share",
     "label": "share of wakes resting",
-    "value": 0.07,
+    "value": 0.075,
     "range": [
      0.05,
      0.3
@@ -120,7 +120,7 @@
    {
     "id": "energy_mix",
     "label": "intended vs actual energy mix",
-    "value": 0.848,
+    "value": 0.899,
     "range": [
      0.5,
      1.0
@@ -245,7 +245,7 @@
  },
  "trend": {
   "alive": "██████▇",
-  "on_mission": "▄▄▄▄▄▅▆",
+  "on_mission": "▄▄▄▄▄▅▇",
   "in_character": "▇▇▇▇▇▇█"
  },
  "history": [
@@ -294,8 +294,8 @@
   {
    "date": "2026-10-17",
    "metric_version": 1,
-   "alive": 92,
-   "on_mission": 72,
+   "alive": 87,
+   "on_mission": 87,
    "in_character": 95,
    "tick": 65760
   }

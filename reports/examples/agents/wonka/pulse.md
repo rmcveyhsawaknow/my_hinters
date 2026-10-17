@@ -1,9 +1,9 @@
 ```
 WONKA: a factory everyone wants to visit                     day 182
-Alive         ██████████   96   ███████  59/56 wakes, never lapsed, 2 failed
+Alive         █████████░   92   ██████▇  54/56 wakes, never lapsed, 2 failed
 On mission    ████████░░   83   ▄▄▄▅▅▅▇  5/5 hidden · 3 found · 4 visitors · 10/9 rooms · fairness 100
 In character  █████████░   92   ▇▇▇▇▇▇▇  whimsy 5 · secrecy 4 · tests honesty 4 · mercurial 4
-Team pull     Hope 33 (MrsBucket) → Inspiration 33 · Bluster 30 (GrandpaJoe) → Suspicion 30 · Bluster 30 (GrandpaJoe) → Discernment 18
+Team pull     Hope 33 (MrsBucket) → Inspiration 33 · Bluster 21 (GrandpaJoe) → Suspicion 21 · Bluster 21 (GrandpaJoe) → Discernment 12
 Working       whimsical fine print: 3 outcome for 1 energy over 3 wake(s)
 Not working   whispered faction name as the lock: 0 outcome for 44 energy over 13 wake(s)
 Next bet      move energy from whispered faction name as the lock (44 energy, nothing to show) toward whimsical fine print
@@ -11,7 +11,7 @@ Next bet      move energy from whispered faction name as the lock (44 energy, no
 
 # Wonka · Pulse
 
-Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 391 public events and 59 redacted wakes in the last 7 days.
+Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 391 public events and 54 redacted wakes in the last 7 days.
 
 ## Alive
 
@@ -19,7 +19,7 @@ One formula for every agent: wakes completed vs scheduled, verification never la
 
 | part | value |
 | --- | --- |
-| completed | 59 |
+| completed | 54 |
 | scheduled | 56 |
 | lapsed | 0 |
 | banned | False |
@@ -44,10 +44,10 @@ Behaviour signatures (numeric ranges the persona expects):
 
 | signature | value | expected | in range |
 | --- | --- | --- | --- |
-| share of wakes resting | 0.119 | 0.0–0.25 | yes |
+| share of wakes resting | 0.13 | 0.0–0.25 | yes |
 | mean distance from the factory | 2.07 | 0–10 | yes |
-| intended vs actual energy mix | 0.643 | 0.6–1.0 | yes |
-| share of wakes in a non-gentle mood | 0.424 | 0.2–0.7 | yes |
+| intended vs actual energy mix | 0.645 | 0.6–1.0 | yes |
+| share of wakes in a non-gentle mood | 0.407 | 0.2–0.7 | yes |
 
 Judge (fixture fixture, 6 lines, 8 actions):
 
@@ -64,11 +64,11 @@ Judge (fixture fixture, 6 lines, 8 actions):
 | direction | signal | from → to | value | effect | plain English |
 | --- | --- | --- | --- | --- | --- |
 | received | hope | mrs-bucket → wonka | 33 | inspiration | When Mrs Bucket is contributing, uplifted and resilient, Wonka dreams bigger and pays better. |
-| received | bluster | grandpa-joe → wonka | 30 | suspicion | The more credit Grandpa Joe claims beyond what the log supports, the more honesty tests and fine print Wonka adds. |
-| received | bluster | grandpa-joe → wonka | 30 | discernment | Every tall tale Wonka's audit catches sharpens his eye for who really did the work. |
+| received | bluster | grandpa-joe → wonka | 21 | suspicion | The more credit Grandpa Joe claims beyond what the log supports, the more honesty tests and fine print Wonka adds. |
+| received | bluster | grandpa-joe → wonka | 21 | discernment | Every tall tale Wonka's audit catches sharpens his eye for who really did the work. |
 
 - Hope 33: contribution 28, uplift 20, resilience 13 (decayed over a day).
-- Bluster 30: 15 claim(s) against own work 0, 3% of the team's logged work claimed.
+- Bluster 21: 13 claim(s) against own work 0, 3% of the team's logged work claimed.
 
 ## Community lens (informational, never ranked)
 
@@ -100,6 +100,6 @@ Judge (fixture fixture, 6 lines, 8 actions):
 | 2026-10-14 | 94 | 51 | 83 |
 | 2026-10-15 | 95 | 50 | 83 |
 | 2026-10-16 | 93 | 50 | 88 |
-| 2026-10-17 | 96 | 83 | 92 |
+| 2026-10-17 | 92 | 83 | 92 |
 
 Sources: public event log, redacted run records, kb. Metric spec v1.

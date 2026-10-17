@@ -1,7 +1,7 @@
 ```
 TOOTLES: always just behind the adventure                    day 182
-Alive         █████████░   92   ██████▇  43/42 wakes, never lapsed, 4 failed
-On mission    ███████░░░   72   ▄▄▄▄▄▅▆  100% outside · 35/40 saved · 2 landmarks · 0 near misses · humility 5/5
+Alive         █████████░   87   ██████▇  40/42 wakes, never lapsed, 4 failed
+On mission    █████████░   87   ▄▄▄▄▄▅▇  100% outside · 35/40 saved · 2 landmarks · 3 near misses · humility 5/5
 In character  ██████████   95   ▇▇▇▇▇▇█  humble 5 · persistent 4 · gentle 5 · wistful 4
 Team pull     Escape 71 → TinkerBell, Nibs · Belief 0 → TinkerBell
 Working       saving materials in a far hut: 35 outcome for 24 energy over 7 wake(s)
@@ -11,7 +11,7 @@ Next bet      keep testing saving materials in a far hut; it has the best outcom
 
 # Tootles · Pulse
 
-Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 391 public events and 43 redacted wakes in the last 7 days.
+Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 391 public events and 40 redacted wakes in the last 7 days.
 
 ## Alive
 
@@ -19,7 +19,7 @@ One formula for every agent: wakes completed vs scheduled, verification never la
 
 | part | value |
 | --- | --- |
-| completed | 43 |
+| completed | 40 |
 | scheduled | 42 |
 | lapsed | 0 |
 | banned | False |
@@ -35,7 +35,7 @@ One formula for every agent: wakes completed vs scheduled, verification never la
 | share of time outside Neverland | 100% outside | 0.7 | 0.3 | 100% |
 | stone and ore saved toward the Big Thing | 35/40 saved | 40 | 0.25 | 88% |
 | landmarks found | 2 landmarks | 4 | 0.2 | 50% |
-| near misses | 0 near misses | 3 | 0.15 | 0% |
+| near misses | 3 near misses | 3 | 0.15 | 100% |
 | humble public lines | humility 5/5 | 4 | 0.1 | 100% |
 
 ## In character
@@ -45,9 +45,9 @@ Behaviour signatures (numeric ranges the persona expects):
 | signature | value | expected | in range |
 | --- | --- | --- | --- |
 | farthest distance from Neverland's centre | 42.0 | 15–90 | yes |
-| share of energy exploring | 0.609 | 0.35–0.7 | yes |
-| share of wakes resting | 0.07 | 0.05–0.3 | yes |
-| intended vs actual energy mix | 0.848 | 0.5–1.0 | yes |
+| share of energy exploring | 0.506 | 0.35–0.7 | yes |
+| share of wakes resting | 0.075 | 0.05–0.3 | yes |
+| intended vs actual energy mix | 0.899 | 0.5–1.0 | yes |
 
 Judge (fixture fixture, 6 lines, 8 actions):
 
@@ -97,6 +97,6 @@ Judge (fixture fixture, 6 lines, 8 actions):
 | 2026-10-14 | 96 | 47 | 86 |
 | 2026-10-15 | 98 | 48 | 79 |
 | 2026-10-16 | 97 | 53 | 80 |
-| 2026-10-17 | 92 | 72 | 95 |
+| 2026-10-17 | 87 | 87 | 95 |
 
 Sources: public event log, redacted run records, kb. Metric spec v1.

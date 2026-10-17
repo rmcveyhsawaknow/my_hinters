@@ -4,7 +4,7 @@ name: Agent (reusable)
 # Three jobs: keepalive (observe, answer any verification challenge, record presence; no LLM
 # unless there is a challenge), tick (a persona wake), pulse (refresh reports), plus a weekly
 # retro that proposes persona or metric changes as a pull request. Reports live on the
-# `reports` branch. Secrets arrive explicitly from the caller; never `secrets: inherit`.
+# `reports` branch. Secrets arrive explicitly from the caller, one by one, never wholesale.
 
 on:
   workflow_call:

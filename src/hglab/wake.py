@@ -212,6 +212,7 @@ def persona_wake(
         return enforce_knobs(
             raw_actions, persona, team, observe,
             teammates=mates, recent_say_count=recent_say_count, team_recent_says=team_says,
+            member_names=member_names,
         )
 
     def knob_validator(raw_actions: list[dict[str, Any]], observe: dict[str, Any]) -> None:

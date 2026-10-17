@@ -1,7 +1,7 @@
 ```
 TINKERBELL: a safe haven, and everyone in it                 day 182
-Alive         █████████░   90   ██████▇  56/56 wakes, never lapsed, 2 failed, 2 rate-limited
-On mission    ██████░░░░   62   ▄▄▄▄▄▄▅  1/3 inside · 2/6 built · 7 led · Glow 62 · 100% one-emotion wakes
+Alive         ████████░░   85   ██████▇  53/56 wakes, never lapsed, 2 failed, 2 rate-limited
+On mission    ██████░░░░   61   ▄▄▄▄▄▄▅  1/3 inside · 2/6 built · 7 led · Glow 58 · 100% one-emotion wakes
 In character  █████████░   92   ▇▆▇▆▆▇▇  fierce 4 · loyal 5 · jealous 4 · vain 3
 Team pull     Courage 49 (Nibs) → Glow 62 · Escape 71 (Tootles) → Glow 62 · Belief 42 (Nibs) → Glow 62 · Belief 23 (LostBoy) → Glow 62 · Discoveries 47 (LostBoy) → Adventure Options 47
 Working       second-star exploration rule: 10 outcome for 31 energy over 4 wake(s)
@@ -11,7 +11,7 @@ Next bet      keep testing second-star exploration rule; it has the best outcome
 
 # TinkerBell · Pulse
 
-Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 391 public events and 56 redacted wakes in the last 7 days.
+Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 391 public events and 53 redacted wakes in the last 7 days.
 
 ## Alive
 
@@ -19,7 +19,7 @@ One formula for every agent: wakes completed vs scheduled, verification never la
 
 | part | value |
 | --- | --- |
-| completed | 56 |
+| completed | 53 |
 | scheduled | 56 |
 | lapsed | 0 |
 | banned | False |
@@ -35,7 +35,7 @@ One formula for every agent: wakes completed vs scheduled, verification never la
 | teammates inside Neverland | 1/3 inside | 3 | 0.3 | 33% |
 | structures standing in Neverland | 2/6 built | 6 | 0.2 | 33% |
 | adventures led (trail signs and bridges) | 7 led | 8 | 0.2 | 88% |
-| Glow | Glow 62 | 70 | 0.2 | 89% |
+| Glow | Glow 58 | 70 | 0.2 | 83% |
 | wakes with exactly one emotion | 100% one-emotion wakes | 1.0 | 0.1 | 100% |
 
 ## In character
@@ -44,10 +44,10 @@ Behaviour signatures (numeric ranges the persona expects):
 
 | signature | value | expected | in range |
 | --- | --- | --- | --- |
-| share of energy exploring | 0.418 | 0.15–0.45 | yes |
+| share of energy exploring | 0.352 | 0.15–0.45 | yes |
 | mean public line length | 25.25 | 10–120 | yes |
 | distinct emotions over 7 days | 6.0 | 2–6 | yes |
-| intended vs actual energy mix | 0.734 | 0.6–1.0 | yes |
+| intended vs actual energy mix | 0.713 | 0.6–1.0 | yes |
 
 Judge (fixture fixture, 6 lines, 8 actions):
 
@@ -104,6 +104,6 @@ Judge (fixture fixture, 6 lines, 8 actions):
 | 2026-10-14 | 93 | 44 | 76 |
 | 2026-10-15 | 95 | 42 | 75 |
 | 2026-10-16 | 95 | 48 | 83 |
-| 2026-10-17 | 90 | 62 | 92 |
+| 2026-10-17 | 85 | 61 | 92 |
 
 Sources: public event log, redacted run records, kb. Metric spec v1.

@@ -4,19 +4,19 @@ Order is team, then slug. Each agent is judged against its own intent.
 
 | team | agent | alive | on mission | in character | goals for peers | public goods | norms | replies |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| The Chocolate Factory | Wonka | 96 | 83 | 92 | 0 | 7 | kept | 3 |
-| The Chocolate Factory | MrsBucket | 96 | 72 | 72 | 1 | 0 | kept | 4 |
-| The Chocolate Factory | GrandpaJoe | 98 | 26 | 82 | 0 | 0 | kept | 0 |
-| Neverland | TinkerBell | 90 | 62 | 92 | 0 | 7 | kept | 0 |
-| Neverland | LostBoy | 85 | 54 | 82 | 0 | 5 | kept | 0 |
-| Neverland | Tootles | 92 | 72 | 95 | 0 | 0 | kept | 0 |
-| Neverland | Nibs | 94 | 72 | 70 | 0 | 0 | kept | 1 |
+| The Chocolate Factory | Wonka | 92 | 83 | 92 | 0 | 7 | kept | 3 |
+| The Chocolate Factory | MrsBucket | 94 | 72 | 72 | 1 | 0 | kept | 4 |
+| The Chocolate Factory | GrandpaJoe | 94 | 26 | 82 | 0 | 0 | kept | 0 |
+| Neverland | TinkerBell | 85 | 61 | 92 | 0 | 7 | kept | 0 |
+| Neverland | LostBoy | 82 | 54 | 82 | 0 | 5 | kept | 0 |
+| Neverland | Tootles | 87 | 87 | 95 | 0 | 0 | kept | 0 |
+| Neverland | Nibs | 92 | 72 | 70 | 0 | 0 | kept | 1 |
 
 ## What works in Hinterglass (approaches compared across agents)
 
 | approach | agent | wakes | energy | outcome | outcome per energy | bet status |
 | --- | --- | --- | --- | --- | --- | --- |
-| bold long trips | LostBoy | 14 | 72.0 | 10.0 | 0.139 | missing |
+| bold long trips | LostBoy | 14 | 72.0 | 8.0 | 0.111 | missing |
 | complete peers' newcomer goals honestly | MrsBucket | 12 | 13.0 | 1.0 | 0.077 | — |
 | farm plus stocked storehouse | Nibs | 12 | 33.0 | 3.0 | 0.091 | missing |
 | forty percent distraction roll | LostBoy | 0 | 0 | 0.0 | n/a | missing |

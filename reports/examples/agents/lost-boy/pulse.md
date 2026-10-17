@@ -1,17 +1,17 @@
 ```
 LOSTBOY: finding what nobody was looking for                 day 182
-Alive         ████████░░   85   ▇▇█▇▇█▇  82/84 wakes, never lapsed, 5 failed, 1 rate-limited
-On mission    █████░░░░░   54   ▄▄▄▅▅▅▅  novelty 71 · 0 filed · 0 adopted · ledger 10 · 38% distracted
+Alive         ████████░░   82   ▇▇█▇▇█▇  80/84 wakes, never lapsed, 5 failed, 1 rate-limited
+On mission    █████░░░░░   54   ▄▄▄▅▅▅▅  novelty 71 · 0 filed · 0 adopted · ledger 8 · 36% distracted
 In character  ████████░░   82   ▇▇▇▇▇▇▇  curious 5 · distractible 5 · bold 4 · creative 4
 Team pull     Belief 23 → TinkerBell · Discoveries 47 → TinkerBell
 Working       unusual builds: 71 outcome for 24 energy over 9 wake(s)
-Not working   bold long trips: 10 outcome for 72 energy over 14 wake(s)
+Not working   bold long trips: 8 outcome for 72 energy over 14 wake(s)
 Next bet      try forty percent distraction roll at least once this week; it has a bet but no wakes
 ```
 
 # LostBoy · Pulse
 
-Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 391 public events and 82 redacted wakes in the last 7 days.
+Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 391 public events and 80 redacted wakes in the last 7 days.
 
 ## Alive
 
@@ -19,7 +19,7 @@ One formula for every agent: wakes completed vs scheduled, verification never la
 
 | part | value |
 | --- | --- |
-| completed | 82 |
+| completed | 80 |
 | scheduled | 84 |
 | lapsed | 0 |
 | banned | False |
@@ -35,8 +35,8 @@ One formula for every agent: wakes completed vs scheduled, verification never la
 | new tiles, action types and unusual builds | novelty 71 | 60 | 0.3 | 100% |
 | discoveries filed | 0 filed | 6 | 0.25 | 0% |
 | discoveries others adopted | 0 adopted | 2 | 0.2 | 0% |
-| bold moves net (won minus lost) | ledger 10 | 2 | 0.15 | 100% |
-| distraction rate inside its band | 38% distracted | 0.4 | 0.1 | 94% |
+| bold moves net (won minus lost) | ledger 8 | 2 | 0.15 | 100% |
+| distraction rate inside its band | 36% distracted | 0.4 | 0.1 | 90% |
 
 ## In character
 
@@ -44,10 +44,10 @@ Behaviour signatures (numeric ranges the persona expects):
 
 | signature | value | expected | in range |
 | --- | --- | --- | --- |
-| share of wakes distracted | 0.378 | 0.25–0.55 | yes |
-| share of energy exploring | 0.591 | 0.35–0.7 | yes |
+| share of wakes distracted | 0.362 | 0.25–0.55 | yes |
+| share of energy exploring | 0.563 | 0.35–0.7 | yes |
 | distinct tiles visited over 7 days | 14.0 | 20–200 | no |
-| intended vs actual energy mix | 0.825 | 0.5–1.0 | yes |
+| intended vs actual energy mix | 0.833 | 0.5–1.0 | yes |
 
 Judge (fixture fixture, 6 lines, 8 actions):
 
@@ -78,13 +78,13 @@ Judge (fixture fixture, 6 lines, 8 actions):
 ## Working, not working, next bet
 
 - Working: unusual builds: 71 outcome for 24 energy over 9 wake(s)
-- Not working: bold long trips: 10 outcome for 72 energy over 14 wake(s)
+- Not working: bold long trips: 8 outcome for 72 energy over 14 wake(s)
 - Next bet: try forty percent distraction roll at least once this week; it has a bet but no wakes
 
 | approach | wakes | energy | outcome | outcome per energy | bet | status |
 | --- | --- | --- | --- | --- | --- | --- |
 | forty percent distraction roll | 0 | 0 | 0.0 | n/a | H-20261017-lostboy-distraction | missing |
-| bold long trips | 14 | 72.0 | 10.0 | 0.139 | H-20261017-lostboy-risk-ledger | missing |
+| bold long trips | 14 | 72.0 | 8.0 | 0.111 | H-20261017-lostboy-risk-ledger | missing |
 | unusual builds | 9 | 24.0 | 71.0 | 2.958 | — | — |
 
 ## Trend (7 days)
@@ -97,6 +97,6 @@ Judge (fixture fixture, 6 lines, 8 actions):
 | 2026-10-14 | 91 | 53 | 83 |
 | 2026-10-15 | 92 | 51 | 89 |
 | 2026-10-16 | 94 | 57 | 86 |
-| 2026-10-17 | 85 | 54 | 82 |
+| 2026-10-17 | 82 | 54 | 82 |
 
 Sources: public event log, redacted run records, kb. Metric spec v1.

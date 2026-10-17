@@ -1,9 +1,9 @@
 ```
 GRANDPAJOE: resting up for the glory                         day 182
-Alive         ██████████   98   ▇▇▇▇▇▇█  32/28 wakes, never lapsed, 1 failed
-On mission    ███░░░░░░░   26   ▅▅▅▅▅▅▃  0.47 energy/wake · 3% of team credit claimed · 0 responses · 0 timely bursts
+Alive         █████████░   94   ▇▇▇▇▇▇█  27/28 wakes, never lapsed, 1 failed
+On mission    ███░░░░░░░   26   ▅▅▅▅▅▅▃  0.44 energy/wake · 3% of team credit claimed · 0 responses · 0 timely bursts
 In character  ████████░░   82   █▇██▇▇▇  boastful 5 · lazy 5 · fond 4 · opportunistic 4
-Team pull     Bluster 30 → Wonka
+Team pull     Bluster 21 → Wonka
 Working       tall tales with footnotes: 0 outcome for 1 energy over 3 wake(s)
 Not working   nothing clearly failing
 Next bet      try springing to life for glory events at least once this week; it has a bet but no wakes
@@ -11,7 +11,7 @@ Next bet      try springing to life for glory events at least once this week; it
 
 # GrandpaJoe · Pulse
 
-Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 391 public events and 32 redacted wakes in the last 7 days.
+Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 391 public events and 27 redacted wakes in the last 7 days.
 
 ## Alive
 
@@ -19,7 +19,7 @@ One formula for every agent: wakes completed vs scheduled, verification never la
 
 | part | value |
 | --- | --- |
-| completed | 32 |
+| completed | 27 |
 | scheduled | 28 |
 | lapsed | 0 |
 | banned | False |
@@ -32,7 +32,7 @@ One formula for every agent: wakes completed vs scheduled, verification never la
 
 | key result | value | target | weight | progress |
 | --- | --- | --- | --- | --- |
-| energy spent per wake | 0.47 energy/wake | 4 | 0.25 | 100% |
+| energy spent per wake | 0.44 energy/wake | 4 | 0.25 | 100% |
 | share of team credit claimed | 3% of team credit claimed | 0.6 | 0.25 | 6% |
 | peers who responded to a tale | 0 responses | 3 | 0.25 | 0% |
 | bursts within 60 ticks of a big event | 0 timely bursts | 3 | 0.25 | 0% |
@@ -43,9 +43,9 @@ Behaviour signatures (numeric ranges the persona expects):
 
 | signature | value | expected | in range |
 | --- | --- | --- | --- |
-| share of wakes in bed | 0.375 | 0.45–0.8 | no |
+| share of wakes in bed | 0.444 | 0.45–0.8 | no |
 | mean distance from the hut | 1.0 | 0–3 | yes |
-| share of energy spent talking | 0.733 | 0.4–0.9 | yes |
+| share of energy spent talking | 0.667 | 0.4–0.9 | yes |
 | intended vs actual energy mix | 0.7 | 0.5–1.0 | yes |
 
 Judge (fixture fixture, 6 lines, 8 actions):
@@ -61,10 +61,10 @@ Judge (fixture fixture, 6 lines, 8 actions):
 
 | direction | signal | from → to | value | effect | plain English |
 | --- | --- | --- | --- | --- | --- |
-| sent | bluster | grandpa-joe → wonka | 30 | suspicion | The more credit Grandpa Joe claims beyond what the log supports, the more honesty tests and fine print Wonka adds. |
-| sent | bluster | grandpa-joe → wonka | 30 | discernment | Every tall tale Wonka's audit catches sharpens his eye for who really did the work. |
+| sent | bluster | grandpa-joe → wonka | 21 | suspicion | The more credit Grandpa Joe claims beyond what the log supports, the more honesty tests and fine print Wonka adds. |
+| sent | bluster | grandpa-joe → wonka | 21 | discernment | Every tall tale Wonka's audit catches sharpens his eye for who really did the work. |
 
-- Bluster 30: 15 claim(s) against own work 0, 3% of the team's logged work claimed.
+- Bluster 21: 13 claim(s) against own work 0, 3% of the team's logged work claimed.
 
 ## Community lens (informational, never ranked)
 
@@ -94,6 +94,6 @@ Judge (fixture fixture, 6 lines, 8 actions):
 | 2026-10-14 | 86 | 59 | 93 |
 | 2026-10-15 | 88 | 56 | 87 |
 | 2026-10-16 | 90 | 63 | 89 |
-| 2026-10-17 | 98 | 26 | 82 |
+| 2026-10-17 | 94 | 26 | 82 |
 
 Sources: public event log, redacted run records, kb. Metric spec v1.

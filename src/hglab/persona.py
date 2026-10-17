@@ -445,6 +445,7 @@ def enforce_knobs(
     teammates: dict[str, tuple[int, int]] | None = None,
     recent_say_count: int = 0,
     team_recent_says: int = 0,
+    member_names: set[str] | None = None,
 ) -> list[str]:
     """Raise ValueError when a batch breaks the persona's knobs; return the checks passed.
 
@@ -551,9 +552,7 @@ def enforce_knobs(
     passed.append(f"territory:{mode}")
 
     structures = observe.get("structures") if isinstance(observe.get("structures"), list) else []
-    team_names = {persona.name.casefold()}
-    if team is not None and teammates is not None:
-        team_names |= {slug.casefold() for slug in team.members}
+    team_names = {persona.name.casefold()} | {n.casefold() for n in (member_names or set())}
     for action in actions:
         if action.get("action") == "build" and action.get("type") == "wall":
             if action.get("x") is None or action.get("y") is None:
@@ -566,9 +565,7 @@ def enforce_knobs(
                 raise ValueError("walls are only built inside the team's own territory")
             for structure in structures:
                 owner = str(structure.get("owner", "")).casefold()
-                if not owner or owner in team_names:
-                    continue
-                if _owner_in_team(owner, team, teammates):
+                if not owner or owner in team_names or _owner_in_team(owner, team):
                     continue
                 if chebyshev(target, (int(structure["x"]), int(structure["y"]))) <= 1:
                     raise ValueError("never wall beside another agent's structure or path")
@@ -576,12 +573,12 @@ def enforce_knobs(
     return passed
 
 
-def _owner_in_team(owner: str, team: Team | None, teammates: dict[str, Any] | None) -> bool:
+def _owner_in_team(owner: str, team: Team | None) -> bool:
+    """Dash-insensitive fallback when in-world names were not supplied (TinkerBell ~ tinker-bell)."""
     if team is None:
         return False
-    return owner in {m.casefold() for m in team.members} or (
-        teammates is not None and owner in {k.casefold() for k in teammates}
-    )
+    flat = owner.replace("-", "").replace("_", "")
+    return any(flat == m.replace("-", "") for m in team.members)
 
 
 def persona_prompt_text(persona: Persona, team: Team | None, state: dict[str, Any] | None) -> str:
