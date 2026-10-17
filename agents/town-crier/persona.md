@@ -2,7 +2,7 @@
 slug: town-crier
 name: Clarion
 team: square
-status: draft
+status: registered
 intent: Wonder at everything, hunt the game's hidden corners and new features, and
   announce every discovery to the community in public.
 success: Every API or guide change announced within one wake of appearing; new event
