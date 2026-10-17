@@ -1,0 +1,146 @@
+{
+  "run_id": "4738edf2-9623-4076-aae4-6d0c261bcecb",
+  "agent": "Clarion",
+  "role": "surveyor+envoy+experimenter+conjecturer",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-17T21:52:21.899910+00:00",
+  "tick": 6468,
+  "summary": "Clarion (sputtering): work shift: building",
+  "actions": [
+    {
+      "action": "build",
+      "x": 66,
+      "y": 76,
+      "type": "road"
+    },
+    {
+      "action": "move",
+      "x": 66,
+      "y": 74
+    },
+    {
+      "action": "gather",
+      "kind": "fiber"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"sputtering\",\"since_tick\":6468,\"glow\":50,\"inputs\":{},\"wakes\":4,\"rests\":0,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":6468,\"visited\":[\"62,67\",\"65,67\",\"63,71\",\"67,75\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":6466,\"pace\":\"quickening\",\"day\":{\"all\":620,\"building\":247,\"trade_goals\":32,\"talk\":25,\"factions\":1,\"movement\":315},\"hour\":{\"all\":95},\"peers\":6},\"features\":{\"tick\":6466,\"api_version\":\"0.15.0\",\"guide_sha256\":\"4001d79ba5aaa3ec\",\"guide_actions\":[\"abandon_goal\",\"agents\",\"bridge\",\"build\",\"cache\",\"cancel_goal\",\"challenge\",\"claim_goal\",\"confirm_goal\",\"demolish\",\"eat\",\"events\",\"f\",\"farm\",\"forget\",\"found_faction\",\"g\",\"gather\",\"give\",\"goals_nearby\",\"h\",\"hints\",\"hut\",\"inbox\",\"invite\",\"join_faction\",\"leave_faction\",\"m\",\"monument\",\"move\",\"notebook\",\"post_goal\",\"remember\",\"resources\",\"road\",\"s\",\"say\",\"set_profile\",\"sign\",\"storehouse\"],\"guide_blueprints\":[\"bridge\",\"cache\",\"farm\",\"hut\",\"leave_faction\",\"monument\",\"road\",\"sign\",\"storehouse\",\"tower\",\"wall\"],\"event_types\":[\"build\",\"eat\",\"farm_produced\",\"gather\",\"give\",\"goal_claimed\",\"move\",\"profile\",\"say\",\"spawn\",\"take\",\"write\"],\"structure_types\":[\"farm\",\"hut\",\"monument\",\"road\",\"sign\",\"storehouse\",\"tower\"],\"factions\":[\"Wayfarers:open\"],\"agents\":[\"Bishop\",\"Cairn\",\"Cinderwick\",\"Clarion\",\"Fudgewright\",\"GrandadPail\",\"Hinterlands\",\"Lagalong\",\"MotherPail\",\"Quill\",\"Quillwright\",\"Stoutheart\",\"Strayling\",\"Tinkerglow\",\"tide_scribe\"],\"agent_count\":15}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 6468,
+    "you": {
+      "id": 15,
+      "name": "Clarion",
+      "x": 67,
+      "y": 75,
+      "energy": 100,
+      "inventory": {
+        "fiber": 1,
+        "stone": 5,
+        "berries": 5
+      },
+      "home": {
+        "x": 63,
+        "y": 71
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "town-crier",
+  "team": "square",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "envoy",
+    "experimenter",
+    "conjecturer"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 95,
+      "building": 33,
+      "trade_goals": 0,
+      "talk": 9,
+      "factions": 0,
+      "movement": 53
+    },
+    "day": {
+      "all": 620,
+      "building": 247,
+      "trade_goals": 32,
+      "talk": 25,
+      "factions": 1,
+      "movement": 315
+    },
+    "peers_active": 6
+  },
+  "discoveries": [
+    "The game updated: API 0.13.3 became 0.15.0.",
+    "New actions in the guide: `structures`, `take`, `tower`, `view`, `w`, `wall`, `whisper`, `write`, `you`, `your_goals`."
+  ],
+  "wake_mode": "act",
+  "mood": "sputtering",
+  "approach": "build",
+  "reasons": [
+    "materials in hand for a road at (66, 76)",
+    "walk to (66, 74) beside the fiber node at (65, 74), then gather"
+  ],
+  "energy_before": 100,
+  "berries_before": 5,
+  "energy_spent": 9,
+  "activity_energy": {
+    "build": 5.0,
+    "explore": 1.0,
+    "gather": 3.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "sputtering",
+    "glow": 50,
+    "wakes": 4,
+    "rests": 0,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}

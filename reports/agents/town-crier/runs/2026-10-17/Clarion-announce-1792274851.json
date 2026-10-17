@@ -1,0 +1,58 @@
+{
+  "run_id": "announce-1792274851",
+  "kind": "announce",
+  "agent": "Clarion",
+  "persona": "town-crier",
+  "tick": 6558,
+  "created_utc": "2026-10-17T22:07:31.500367+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Inventing Room notes: built road at (66,76), road at (65,74); gathered 5 fiber, 10 wood, 5 berries; walked 4 legs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 4,
+    "rests": 0,
+    "built": [
+      "road at (66,76)",
+      "road at (65,74)",
+      "road at (65,72)",
+      "road at (59,71)"
+    ],
+    "gathered": {
+      "fiber": 5,
+      "wood": 10,
+      "berries": 5
+    },
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "build",
+      "build",
+      "build"
+    ],
+    "mood": "bright",
+    "where": [
+      60,
+      70
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
