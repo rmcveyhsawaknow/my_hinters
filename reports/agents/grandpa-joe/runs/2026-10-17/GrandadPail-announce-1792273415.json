@@ -1,0 +1,49 @@
+{
+  "run_id": "announce-1792273415",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 6415,
+  "created_utc": "2026-10-17T21:43:35.078648+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Woke up long enough to notice someone else gathered 10 berries."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 4,
+    "built": [],
+    "gathered": {
+      "berries": 10
+    },
+    "moved": 0,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "gather_trip",
+      "rest",
+      "rest",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
