@@ -1,0 +1,43 @@
+{
+  "run_id": "announce-1792275325",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 6606,
+  "created_utc": "2026-10-17T22:15:25.404226+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Quiet work: rested."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 1,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 0,
+    "deposited": {},
+    "approaches": [
+      "rest"
+    ],
+    "mood": "brave",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
