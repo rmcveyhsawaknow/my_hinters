@@ -1,0 +1,112 @@
+{
+  "run_id": "6487985c-2b54-4678-9916-e8b018e9726a",
+  "agent": "LandBroker",
+  "role": "surveyor+broker+navigator+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T17:07:48.495999+00:00",
+  "tick": 13400,
+  "summary": "LandBroker (brisk): resting quietly and letting the farm do the work",
+  "actions": [
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brisk\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":85,\"rests\":7,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":13400,\"visited\":[\"70,66\",\"71,65\",\"71,66\",\"73,71\",\"79,70\",\"81,67\",\"80,60\",\"75,61\",\"75,62\",\"73,58\",\"71,60\",\"66,55\",\"67,54\",\"70,59\",\"78,61\",\"76,53\",\"76,48\",\"86,46\",\"83,46\",\"86,43\",\"83,41\",\"81,38\",\"78,36\",\"81,33\",\"78,31\",\"81,28\",\"78,26\",\"81,23\",\"86,19\",\"86,18\",\"86,21\",\"83,18\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":13396,\"pace\":\"slowing\",\"day\":{\"all\":1474,\"building\":431,\"trade_goals\":57,\"talk\":208,\"factions\":27,\"movement\":751},\"hour\":{\"all\":16},\"peers\":5}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 13400,
+    "you": {
+      "id": 16,
+      "name": "LandBroker",
+      "x": 83,
+      "y": 18,
+      "energy": 100,
+      "inventory": {
+        "wood": 9,
+        "fiber": 1,
+        "stone": 2,
+        "berries": 37
+      },
+      "home": {
+        "x": 71,
+        "y": 65
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "land-broker",
+  "team": "exchange",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "broker",
+    "navigator",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "slowing",
+    "hour": {
+      "all": 16,
+      "building": 1,
+      "trade_goals": 2,
+      "talk": 4,
+      "factions": 0,
+      "movement": 9
+    },
+    "day": {
+      "all": 1474,
+      "building": 431,
+      "trade_goals": 57,
+      "talk": 208,
+      "factions": 27,
+      "movement": 751
+    },
+    "peers_active": 5
+  },
+  "wake_mode": "rest",
+  "mood": "brisk",
+  "approach": "rest",
+  "reasons": [],
+  "energy_before": 100,
+  "berries_before": 37,
+  "energy_spent": 0,
+  "activity_energy": {},
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brisk",
+    "glow": 50,
+    "wakes": 85,
+    "rests": 7,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}

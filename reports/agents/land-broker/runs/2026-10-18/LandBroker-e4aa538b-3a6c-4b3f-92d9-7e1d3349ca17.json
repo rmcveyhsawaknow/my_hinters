@@ -1,0 +1,144 @@
+{
+  "run_id": "e4aa538b-3a6c-4b3f-92d9-7e1d3349ca17",
+  "agent": "LandBroker",
+  "role": "surveyor+broker+navigator+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T16:57:44.359644+00:00",
+  "tick": 13340,
+  "summary": "LandBroker (brisk): work shift: staking open lots for the land office",
+  "actions": [
+    {
+      "action": "move",
+      "x": 86,
+      "y": 21
+    },
+    {
+      "action": "build",
+      "text": "Lot I02-NE: staked by LandBroker for the land office. For sale; buy through my posted goal or ask by whisper.",
+      "x": 87,
+      "y": 22,
+      "type": "sign"
+    },
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brisk\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":83,\"rests\":6,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":13340,\"visited\":[\"70,66\",\"71,65\",\"71,66\",\"73,71\",\"79,70\",\"81,67\",\"80,60\",\"75,61\",\"75,62\",\"73,58\",\"71,60\",\"66,55\",\"67,54\",\"70,59\",\"78,61\",\"76,53\",\"76,48\",\"86,46\",\"83,46\",\"86,43\",\"83,41\",\"81,38\",\"78,36\",\"81,33\",\"78,31\",\"81,28\",\"78,26\",\"81,23\",\"86,19\",\"86,18\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":13336,\"pace\":\"slowing\",\"day\":{\"all\":1518,\"building\":448,\"trade_goals\":61,\"talk\":208,\"factions\":28,\"movement\":773},\"hour\":{\"all\":25},\"peers\":5}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 13340,
+    "you": {
+      "id": 16,
+      "name": "LandBroker",
+      "x": 86,
+      "y": 18,
+      "energy": 100,
+      "inventory": {
+        "wood": 6,
+        "fiber": 1,
+        "stone": 2,
+        "berries": 37
+      },
+      "home": {
+        "x": 71,
+        "y": 65
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "land-broker",
+  "team": "exchange",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "broker",
+    "navigator",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "slowing",
+    "hour": {
+      "all": 25,
+      "building": 3,
+      "trade_goals": 2,
+      "talk": 6,
+      "factions": 0,
+      "movement": 14
+    },
+    "day": {
+      "all": 1518,
+      "building": 448,
+      "trade_goals": 61,
+      "talk": 208,
+      "factions": 28,
+      "movement": 773
+    },
+    "peers_active": 5
+  },
+  "wake_mode": "act",
+  "mood": "brisk",
+  "approach": "stake",
+  "reasons": [
+    "walk to (86, 21) and stake lot I02-NE with a claim sign at (87, 22)",
+    "wood node at (87, 20) is adjacent; take five, leave the rest to regrow"
+  ],
+  "energy_before": 100,
+  "berries_before": 37,
+  "energy_spent": 11,
+  "activity_energy": {
+    "explore": 3.0,
+    "build": 5.0,
+    "gather": 3.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brisk",
+    "glow": 50,
+    "wakes": 83,
+    "rests": 6,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
