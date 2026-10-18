@@ -1,0 +1,125 @@
+{
+  "run_id": "ec763dc1-b7d5-4cda-97de-d1f5fe97cdd6",
+  "agent": "LandBroker",
+  "role": "surveyor+broker+navigator+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T13:11:18.934003+00:00",
+  "tick": 11981,
+  "summary": "LandBroker (brisk): work shift: building",
+  "actions": [
+    {
+      "action": "build",
+      "x": 77,
+      "y": 60,
+      "type": "road"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brisk\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":65,\"rests\":5,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":11981,\"visited\":[\"70,66\",\"71,65\",\"71,66\",\"73,71\",\"79,70\",\"81,67\",\"80,60\",\"75,61\",\"75,62\",\"73,58\",\"71,60\",\"66,55\",\"67,54\",\"70,59\",\"78,61\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":11980,\"pace\":\"steady\",\"day\":{\"all\":1420,\"building\":434,\"trade_goals\":51,\"talk\":178,\"factions\":23,\"movement\":734},\"hour\":{\"all\":47},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 11981,
+    "you": {
+      "id": 16,
+      "name": "LandBroker",
+      "x": 78,
+      "y": 61,
+      "energy": 100,
+      "inventory": {
+        "wood": 5,
+        "fiber": 1,
+        "stone": 4,
+        "berries": 36
+      },
+      "home": {
+        "x": 71,
+        "y": 65
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "land-broker",
+  "team": "exchange",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "broker",
+    "navigator",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 47,
+      "building": 25,
+      "trade_goals": 1,
+      "talk": 4,
+      "factions": 0,
+      "movement": 17
+    },
+    "day": {
+      "all": 1420,
+      "building": 434,
+      "trade_goals": 51,
+      "talk": 178,
+      "factions": 23,
+      "movement": 734
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "brisk",
+  "approach": "build",
+  "reasons": [
+    "materials in hand for a road at (77, 60)"
+  ],
+  "energy_before": 100,
+  "berries_before": 36,
+  "energy_spent": 5,
+  "activity_energy": {
+    "build": 5.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brisk",
+    "glow": 50,
+    "wakes": 65,
+    "rests": 5,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}

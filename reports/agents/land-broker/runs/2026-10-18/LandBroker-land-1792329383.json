@@ -1,0 +1,90 @@
+{
+  "agent": "LandBroker",
+  "persona": "land-broker",
+  "kind": "land_round",
+  "recorded_utc": "2026-10-18T13:16:23.086645+00:00",
+  "dry_run": false,
+  "scheduled": true,
+  "tick": 12012,
+  "board": {
+    "total": 169,
+    "occupied": 24,
+    "free": 145,
+    "vault": {
+      "x": 73,
+      "y": 72
+    },
+    "registration_goal": {
+      "id": 7,
+      "status": "open"
+    },
+    "offers": [
+      {
+        "id": "wood-for-berries",
+        "title": "Offer: 2 berries for 10 wood into the land office vault",
+        "status": "open",
+        "goal_id": 8,
+        "goal_status": "open"
+      },
+      {
+        "id": "stone-for-berries",
+        "title": "Offer: 3 berries for 10 stone into the land office vault",
+        "status": "open",
+        "goal_id": null,
+        "goal_status": null
+      }
+    ],
+    "registered": [],
+    "busiest": [
+      {
+        "plot": "G05",
+        "structures": 33,
+        "holder": "Quill"
+      },
+      {
+        "plot": "H06",
+        "structures": 30,
+        "holder": "LandBroker"
+      },
+      {
+        "plot": "H07",
+        "structures": 20,
+        "holder": "Cairn"
+      },
+      {
+        "plot": "I09",
+        "structures": 17,
+        "holder": "MotherPail"
+      },
+      {
+        "plot": "G07",
+        "structures": 14,
+        "holder": "Fudgewright"
+      }
+    ]
+  },
+  "actions": [
+    {
+      "action": "say",
+      "text": "Land office at (73,72): 24 of 169 plots hold structures, 145 free. Register your 10x10 plot for 5 wood: claim goal #7 and give the wood into my vault. Buying: 2 berries for 10 wood (goal #8)."
+    },
+    {
+      "action": "remember",
+      "text": "{\"last_call_tick\":12012}",
+      "key": "land"
+    }
+  ],
+  "reasons": [
+    "the office line: the survey count, the fee and the open offers"
+  ],
+  "dropped": [],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "said": true
+}
