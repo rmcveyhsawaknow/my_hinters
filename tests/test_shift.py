@@ -142,3 +142,43 @@ def test_upkeep_mends_damaged_structures_collects_full_farms_and_takes_salvage()
     observe["weather"], observe["season"] = "storm", "winter"
     stormy = WorldView.from_observe(observe, None)
     assert stormy.weather == "storm" and stormy.season == "winter"
+
+
+def test_move_targets_are_reachable_along_walkable_tiles_not_as_the_crow_flies():
+    from hglab.planner import (
+        WorldView,
+        _adjacent_stand,
+        _walkable_ring,
+        reachable_tiles,
+    )
+
+    # a river of deep water splits the map: the far bank is 4 tiles away in a straight line but unreachable
+    rows = ["gggWWggg"] * 8
+    view = WorldView(x0=0, y0=0, rows=rows)
+    reach = reachable_tiles(view, (1, 1))
+    assert (2, 1) in reach and (5, 1) not in reach and all(x < 3 for x, _ in reach)
+    assert all(x < 3 for x, _ in _walkable_ring((1, 1), view, 1, 12))
+    nibs = load_personas(ROOT)["nibs"]
+    assert _adjacent_stand((6, 1), (1, 1), view, nibs, None, None) is None
+    assert _adjacent_stand((2, 3), (1, 1), view, nibs, None, None) is not None
+
+
+
+def test_upkeep_in_reach_comes_before_the_walk_to_the_team_site(tmp_path):
+    observe = load_fixture(FIX / "observe/mrs-bucket.json")
+    observe["you"].update({"x": 62, "y": 56, "home": None})
+    observe["you"]["inventory"] = {"wood": 20, "fiber": 10, "berries": 5}
+    observe["structures"] = [{"id": 5, "type": "farm", "x": 63, "y": 56, "owner": observe["you"]["name"], "hp": 30, "hp_max": 30, "storage": {"berries": 27}}]
+    observe["view"]["x0"], observe["view"]["y0"] = 56, 50
+    record, _ = _wake("mrs-bucket", observe, tmp_path)
+    assert record["approach"] == "harvest"
+    assert record["actions"][0] == {"action": "take", "x": 63, "y": 56, "item": "berries", "qty": 15}
+
+
+def test_the_public_map_becomes_terrain_rows():
+    from hglab.cli_personas import terrain_rows_from_world
+
+    rows = terrain_rows_from_world({"width": 128, "terrain": "g" * (128 * 128)})
+    assert rows is not None and len(rows) == 128 and len(rows[0]) == 128
+    assert terrain_rows_from_world({"width": 128, "terrain": ["ggg", "ggg"]}) == ["ggg", "ggg"]
+    assert terrain_rows_from_world({"terrain": "short"}) is None and terrain_rows_from_world({}) is None

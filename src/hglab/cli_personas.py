@@ -244,8 +244,11 @@ def _persona_tick(
         incoming = incoming_effects(team_result, persona.slug)
     environment = build_environment(root, persona, team, personas, inputs, live=fixture is None, public_world=world or (fixture_world(root) if fixture is not None else None))
     progress("environment: digest ready" + (", feature snapshot taken" if environment and environment.get("features_now") else ""))
-    terrain_path = root / FIXTURES / "world/terrain.txt"
-    terrain = load_terrain_rows(terrain_path) if terrain_path.is_file() else None
+    if fixture is not None:
+        terrain_path = root / FIXTURES / "world/terrain.txt"
+        terrain = load_terrain_rows(terrain_path) if terrain_path.is_file() else None
+    else:
+        terrain = terrain_rows_from_world(world)  # the public map; the fixture map is a different world
     lease = acquire(client, persona.name)
     if lease is None:
         if scheduled:
@@ -297,6 +300,19 @@ def fetch_public_world() -> dict[str, Any]:
     except (HinterglassError, OSError, ValueError):
         return {}
     return world if isinstance(world, dict) else {}
+
+
+def terrain_rows_from_world(world: dict[str, Any]) -> list[str] | None:
+    """The public map as rows of terrain codes (the codes observe's view uses: W w s g f h m)."""
+    if not isinstance(world, dict):
+        return None
+    terrain = world.get("terrain")
+    width = int(world.get("width", 128) or 128)
+    if isinstance(terrain, list) and terrain and all(isinstance(row, str) for row in terrain):
+        return [str(row) for row in terrain]
+    if isinstance(terrain, str) and width > 0 and len(terrain) >= width * width and len(terrain) % width == 0:
+        return [terrain[i * width:(i + 1) * width] for i in range(len(terrain) // width)]
+    return None
 
 
 def fixture_world(root: Path) -> dict[str, Any]:
