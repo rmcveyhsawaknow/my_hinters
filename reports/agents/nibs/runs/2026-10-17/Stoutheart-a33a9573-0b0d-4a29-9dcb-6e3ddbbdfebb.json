@@ -1,0 +1,118 @@
+{
+  "run_id": "a33a9573-0b0d-4a29-9dcb-6e3ddbbdfebb",
+  "agent": "Stoutheart",
+  "role": "builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-17T23:45:26.493045+00:00",
+  "tick": 7146,
+  "summary": "Stoutheart (brave): work shift: walking to the team site",
+  "actions": [
+    {
+      "action": "move",
+      "x": 69,
+      "y": 107
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brave\",\"since_tick\":0,\"glow\":50,\"inputs\":{\"resolve\":{\"value\":41.8,\"tick\":7103,\"explanation\":\"escape from tootles 84\"},\"escape\":{\"value\":83.5,\"tick\":7103,\"explanation\":\"Escape 84: 100% of moves outside, farthest 67 tiles from the centre.\"}},\"wakes\":8,\"rests\":4,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":7146,\"visited\":[\"65,71\",\"53,83\",\"57,95\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":7144,\"pace\":\"steady\",\"day\":{\"all\":725,\"building\":278,\"trade_goals\":35,\"talk\":42,\"factions\":1,\"movement\":369},\"hour\":{\"all\":43},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 7146,
+    "you": {
+      "id": 9,
+      "name": "Stoutheart",
+      "x": 57,
+      "y": 95,
+      "energy": 100,
+      "inventory": {
+        "wood": 15,
+        "fiber": 5,
+        "berries": 5
+      },
+      "home": null
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "nibs",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 43,
+      "building": 2,
+      "trade_goals": 3,
+      "talk": 8,
+      "factions": 0,
+      "movement": 30
+    },
+    "day": {
+      "all": 725,
+      "building": 278,
+      "trade_goals": 35,
+      "talk": 42,
+      "factions": 1,
+      "movement": 369
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "brave",
+  "approach": "migrate",
+  "reasons": [
+    "15 tiles from tinker-bell: walk toward it"
+  ],
+  "energy_before": 100,
+  "berries_before": 5,
+  "energy_spent": 12,
+  "activity_energy": {
+    "explore": 12.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brave",
+    "glow": 50,
+    "wakes": 8,
+    "rests": 4,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:stay_inside",
+    "walls_inside_territory"
+  ]
+}

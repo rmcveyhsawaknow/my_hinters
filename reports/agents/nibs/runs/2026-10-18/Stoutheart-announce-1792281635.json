@@ -1,0 +1,59 @@
+{
+  "run_id": "announce-1792281635",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 7237,
+  "created_utc": "2026-10-18T00:00:35.603587+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Hut and farm are up at (69,107) and (70,109), with 10 wood and 5 fiber gathered. Nobody here goes hungry. Worth it."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1755,
+    "output_tokens": 61,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [
+      "hut at (69,107)",
+      "farm at (70,109)"
+    ],
+    "gathered": {
+      "wood": 10,
+      "fiber": 5
+    },
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "migrate",
+      "build",
+      "gather_trip",
+      "build"
+    ],
+    "mood": "brave",
+    "where": [
+      69,
+      107
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
