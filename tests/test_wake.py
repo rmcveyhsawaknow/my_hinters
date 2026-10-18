@@ -137,3 +137,20 @@ def test_coordinate_less_builds_land_on_a_free_tile_and_refusals_are_recorded(tm
     build = next(a for a in record["actions"] if a["action"] == "build")
     assert "x" in build and "y" in build
     assert record["failed_actions"] == 1 and record["results"][0] == {"ok": False, "error": "tile_occupied"}
+
+
+def test_a_model_plan_that_would_disclose_a_whisper_falls_back_instead_of_crashing(tmp_path, monkeypatch):
+    monkeypatch.setattr("hglab.wake.decide_wake_mode", lambda *a, **k: "act")
+    personas = load_personas(ROOT)
+    bucket = personas["mrs-bucket"]
+    observe = load_fixture(FIX / "observe/mrs-bucket.json")
+    whisper = next(w["text"] for w in observe["inbox"])
+    client = FixtureClient(observe)
+    lease = acquire(client, bucket.name)
+    record = persona_wake(
+        persona=bucket, team=load_team(ROOT, "chocolate-factory"), personas=personas, client=client, lease=lease, root=ROOT,
+        output_dir=tmp_path, dry_run=True, planner_mode="llm", seed="x",
+        llm_call=lambda g, o: {"summary": "s", "actions": [{"action": "say", "text": "Hear this: " + whisper}], "reasons": ["echo"], "approach": None},
+    )
+    assert record["planner"] == "llm_fallback" and "disclose" in record["fallback_reason"]
+    assert all(whisper not in str(a.get("text", "")) for a in record["actions"])

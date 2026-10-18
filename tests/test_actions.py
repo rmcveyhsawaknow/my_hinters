@@ -154,3 +154,14 @@ def test_a_build_after_a_move_is_checked_from_where_the_move_ends():
         validate_actions([{"action": "build", "type": "sign", "x": 21, "y": 10, "text": "far"}], "builder", observe=observe)
     with pytest.raises(ValueError):
         validate_actions([{"action": "move", "x": 20, "y": 10}, {"action": "move", "x": 33, "y": 10}], "builder", observe=observe)
+
+
+def test_a_private_note_may_be_restated_in_the_notebook_but_not_said():
+    import pytest
+
+    from hglab.actions import validate_actions
+
+    secret = "Peregrine thanks you for the farm, privately"
+    validate_actions([{"action": "remember", "key": "notes", "text": secret + " and more"}], "builder", private_text={secret})
+    with pytest.raises(ValueError):
+        validate_actions([{"action": "say", "text": "Hear this: " + secret}], "envoy", private_text={secret})
