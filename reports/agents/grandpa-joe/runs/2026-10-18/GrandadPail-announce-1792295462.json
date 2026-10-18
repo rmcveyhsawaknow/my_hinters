@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792295462",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 8619,
+  "created_utc": "2026-10-18T03:51:02.212967+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, two of them spent resting by the hut at [83, 93], which is a full day's work for a man my age. I moved three times, mostly to find a more comfortable blanket. Nobody hogged it, but I'm watching."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1848,
+    "output_tokens": 82,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [],
+    "gathered": {},
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "migrate",
+      "rest",
+      "rest",
+      "migrate"
+    ],
+    "mood": "in_bed",
+    "where": [
+      83,
+      93
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
