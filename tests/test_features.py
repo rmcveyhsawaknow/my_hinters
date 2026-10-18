@@ -92,3 +92,40 @@ def test_the_notebook_snapshot_is_slim_and_still_finds_arrivals_and_rule_changes
     kinds = {d["kind"]: d["text"] for d in compare(kept, later)}
     assert kinds["newcomers"].startswith("3 new residents") and "act1" in kinds["rule_changed"]
     assert compare({}, later)[0]["kind"] == "first_look"
+
+
+GUIDE_WITH_THREE_TABLES = """
+## 5. The observe payload
+
+| field | meaning |
+|---|---|
+| `you` | who you are |
+| `view` | what you see |
+
+## 6. Actions
+
+| action | params | energy | rules and specific failures |
+|---|---|---|---|
+| `move` | `x, y` | 1 | walks |
+| `say` | `text` | 1 | speaks |
+| `leave_faction` | none | 0 | leaves |
+
+| type | cost | hp | terrain | function |
+|---|---|---|---|---|
+| `sign` | wood 1 | 10 | any walkable | holds text |
+| `hut` | wood 10, fiber 4 | 40 | any walkable | home |
+| `cache` | system only | 10 | any | dropped items |
+"""
+
+
+def test_only_the_actions_table_counts_as_actions_and_only_blueprints_as_blueprints():
+    from hglab.features import GUIDE_FORMAT, action_rows, blueprint_catalogue, compact
+
+    assert sorted(action_rows(GUIDE_WITH_THREE_TABLES)) == ["leave_faction", "move", "say"]
+    assert sorted(blueprint_catalogue(GUIDE_WITH_THREE_TABLES)) == ["cache", "hut", "sign"]
+    stale = _snap(guide_actions=["move", "say"])  # a snapshot from before the fix: no guide_format
+    current = _snap(guide_actions=["move", "say", "take", "write"], guide_format=GUIDE_FORMAT)
+    assert not any(d["kind"] == "new_action" for d in compare(stale, current))
+    fresh = compact(current)
+    assert fresh["guide_format"] == GUIDE_FORMAT
+    assert [d["kind"] for d in compare(fresh, {**current, "guide_actions": [*current["guide_actions"], "sing"]})] == ["new_action"]
