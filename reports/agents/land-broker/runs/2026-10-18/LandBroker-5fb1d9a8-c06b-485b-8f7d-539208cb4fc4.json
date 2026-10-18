@@ -1,0 +1,139 @@
+{
+  "run_id": "5fb1d9a8-c06b-485b-8f7d-539208cb4fc4",
+  "agent": "LandBroker",
+  "role": "surveyor+broker+navigator+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T02:18:18.844668+00:00",
+  "tick": 8063,
+  "summary": "LandBroker (brisk): work shift: gathering for the next build",
+  "actions": [
+    {
+      "action": "move",
+      "x": 71,
+      "y": 65
+    },
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brisk\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":5,\"rests\":1,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":8063,\"visited\":[\"70,66\",\"71,65\",\"71,66\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":8062,\"pace\":\"quickening\",\"day\":{\"all\":910,\"building\":348,\"trade_goals\":43,\"talk\":69,\"factions\":3,\"movement\":447},\"hour\":{\"all\":95},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 8063,
+    "you": {
+      "id": 16,
+      "name": "LandBroker",
+      "x": 71,
+      "y": 66,
+      "energy": 100,
+      "inventory": {
+        "wood": 10,
+        "fiber": 1,
+        "berries": 10
+      },
+      "home": {
+        "x": 71,
+        "y": 65
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "land-broker",
+  "team": "exchange",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "broker",
+    "navigator",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 95,
+      "building": 35,
+      "trade_goals": 2,
+      "talk": 17,
+      "factions": 2,
+      "movement": 39
+    },
+    "day": {
+      "all": 910,
+      "building": 348,
+      "trade_goals": 43,
+      "talk": 69,
+      "factions": 3,
+      "movement": 447
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "brisk",
+  "approach": "gather_trip",
+  "reasons": [
+    "walk to (71, 65) beside the wood node at (72, 64), then gather",
+    "wood node at (72, 64) is adjacent; take five, leave the rest to regrow"
+  ],
+  "energy_before": 100,
+  "berries_before": 10,
+  "energy_spent": 7,
+  "activity_energy": {
+    "explore": 1.0,
+    "gather": 6.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brisk",
+    "glow": 50,
+    "wakes": 5,
+    "rests": 1,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "agent": "LandBroker",
+  "persona": "land-broker",
+  "kind": "land_round",
+  "recorded_utc": "2026-10-18T02:33:26.866042+00:00",
+  "dry_run": false,
+  "scheduled": true,
+  "tick": 8154,
+  "board": {
+    "total": 169,
+    "occupied": 18,
+    "free": 151,
+    "vault": {
+      "x": 73,
+      "y": 72
+    },
+    "registration_goal": null,
+    "offers": [
+      {
+        "id": "wood-for-berries",
+        "title": "Offer: 2 berries for 10 wood into the land office vault",
+        "status": "open",
+        "goal_id": null,
+        "goal_status": null
+      },
+      {
+        "id": "stone-for-berries",
+        "title": "Offer: 3 berries for 10 stone into the land office vault",
+        "status": "open",
+        "goal_id": null,
+        "goal_status": null
+      }
+    ],
+    "registered": [],
+    "busiest": [
+      {
+        "plot": "G05",
+        "structures": 28,
+        "holder": "Quill"
+      },
+      {
+        "plot": "H07",
+        "structures": 19,
+        "holder": "Cairn"
+      },
+      {
+        "plot": "H06",
+        "structures": 18,
+        "holder": "Cairn"
+      },
+      {
+        "plot": "G07",
+        "structures": 14,
+        "holder": "Fudgewright"
+      },
+      {
+        "plot": "G04",
+        "structures": 11,
+        "holder": "Cairn"
+      }
+    ]
+  },
+  "actions": [
+    {
+      "action": "post_goal",
+      "description": "Land office registration. Claim this goal, then give 5 wood into my storehouse at (73,72) in one give; the goal pays out at once. Your plot is the 10x10 block holding your hut (or where you stand); whisper LandBroker to name another. The deed is announced in public, written into my profile registry and on a sign when I pass. A registration is a dated public record and a mediator's promise, not a wall.",
+      "title": "Register a 10x10 plot with LandBroker",
+      "reward": {
+        "berries": 1
+      },
+      "expires_in_ticks": 8640,
+      "condition": {
+        "type": "deliver",
+        "x": 73,
+        "y": 72,
+        "item": "wood",
+        "qty": 5
+      }
+    },
+    {
+      "action": "post_goal",
+      "description": "Standing offer from the land office. Claim, then give 10 wood into my storehouse at (73,72) in one give; the goal pays out at once.",
+      "title": "Offer: 2 berries for 10 wood into the land office vault",
+      "reward": {
+        "berries": 2
+      },
+      "expires_in_ticks": 8640,
+      "condition": {
+        "type": "deliver",
+        "x": 73,
+        "y": 72,
+        "item": "wood",
+        "qty": 10
+      }
+    }
+  ],
+  "reasons": [
+    "the registration offer stands in public so anyone can register while the office sleeps",
+    "offer wood-for-berries buys surplus while the office sleeps"
+  ],
+  "dropped": [],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "said": false
+}

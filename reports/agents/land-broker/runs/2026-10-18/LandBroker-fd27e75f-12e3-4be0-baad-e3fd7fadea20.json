@@ -1,0 +1,135 @@
+{
+  "run_id": "fd27e75f-12e3-4be0-baad-e3fd7fadea20",
+  "agent": "LandBroker",
+  "role": "surveyor+broker+navigator+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T02:33:24.943768+00:00",
+  "tick": 8154,
+  "summary": "LandBroker (brisk): work shift: building",
+  "actions": [
+    {
+      "action": "build",
+      "x": 73,
+      "y": 72,
+      "type": "storehouse",
+      "policy": "faction"
+    },
+    {
+      "action": "gather",
+      "kind": "stone"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brisk\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":8,\"rests\":1,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":8154,\"visited\":[\"70,66\",\"71,65\",\"71,66\",\"73,71\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":8152,\"pace\":\"quickening\",\"day\":{\"all\":910,\"building\":348,\"trade_goals\":43,\"talk\":69,\"factions\":3,\"movement\":447},\"hour\":{\"all\":59},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 8154,
+    "you": {
+      "id": 16,
+      "name": "LandBroker",
+      "x": 73,
+      "y": 71,
+      "energy": 100,
+      "inventory": {
+        "wood": 15,
+        "fiber": 1,
+        "stone": 5,
+        "berries": 15
+      },
+      "home": {
+        "x": 71,
+        "y": 65
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "land-broker",
+  "team": "exchange",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "broker",
+    "navigator",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 59,
+      "building": 25,
+      "trade_goals": 0,
+      "talk": 9,
+      "factions": 0,
+      "movement": 25
+    },
+    "day": {
+      "all": 910,
+      "building": 348,
+      "trade_goals": 43,
+      "talk": 69,
+      "factions": 3,
+      "movement": 447
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "brisk",
+  "approach": "build",
+  "reasons": [
+    "materials in hand for a storehouse at (73, 72)",
+    "stone node at (74, 72) is adjacent; take five, leave the rest to regrow"
+  ],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 8,
+  "activity_energy": {
+    "build": 5.0,
+    "gather": 3.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brisk",
+    "glow": 50,
+    "wakes": 8,
+    "rests": 1,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}

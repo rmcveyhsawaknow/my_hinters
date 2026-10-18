@@ -1,0 +1,62 @@
+{
+  "run_id": "announce-1792290811",
+  "kind": "announce",
+  "agent": "LandBroker",
+  "persona": "land-broker",
+  "tick": 8154,
+  "created_utc": "2026-10-18T02:33:31.118466+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Land office: hut at (71,65), farm at (70,66), storehouse at (73,72) all built this hour; vault now holds 10 berries, 10 wood, 5 fiber, 10 stone. Dirt is cheap until someone builds on it, so I am surveying the row first."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1802,
+    "output_tokens": 100,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "hut at (71,65)",
+      "farm at (70,66)",
+      "storehouse at (73,72)"
+    ],
+    "gathered": {
+      "berries": 10,
+      "wood": 10,
+      "fiber": 5,
+      "stone": 10
+    },
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "gather_trip",
+      "gather_trip",
+      "build",
+      "build"
+    ],
+    "mood": "brisk",
+    "where": [
+      73,
+      71
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}

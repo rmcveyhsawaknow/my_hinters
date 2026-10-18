@@ -1,0 +1,139 @@
+{
+  "run_id": "71cc2b5f-9067-4c7d-8019-8f157e6a1d4f",
+  "agent": "LandBroker",
+  "role": "surveyor+broker+navigator+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T02:13:17.211501+00:00",
+  "tick": 8033,
+  "summary": "LandBroker (brisk): work shift: building",
+  "actions": [
+    {
+      "action": "build",
+      "x": 71,
+      "y": 65,
+      "type": "hut"
+    },
+    {
+      "action": "move",
+      "x": 71,
+      "y": 66
+    },
+    {
+      "action": "gather",
+      "kind": "berries"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brisk\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":4,\"rests\":1,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":8033,\"visited\":[\"70,66\",\"71,65\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":8032,\"pace\":\"quickening\",\"day\":{\"all\":910,\"building\":348,\"trade_goals\":43,\"talk\":69,\"factions\":3,\"movement\":447},\"hour\":{\"all\":112},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 8033,
+    "you": {
+      "id": 16,
+      "name": "LandBroker",
+      "x": 71,
+      "y": 65,
+      "energy": 100,
+      "inventory": {
+        "wood": 20,
+        "fiber": 5,
+        "berries": 5
+      },
+      "home": null
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "land-broker",
+  "team": "exchange",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "broker",
+    "navigator",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 112,
+      "building": 39,
+      "trade_goals": 2,
+      "talk": 19,
+      "factions": 2,
+      "movement": 50
+    },
+    "day": {
+      "all": 910,
+      "building": 348,
+      "trade_goals": 43,
+      "talk": 69,
+      "factions": 3,
+      "movement": 447
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "brisk",
+  "approach": "build",
+  "reasons": [
+    "materials in hand for a hut at (71, 65)",
+    "walk to (71, 66) beside the berries node at (72, 67), then gather"
+  ],
+  "energy_before": 100,
+  "berries_before": 5,
+  "energy_spent": 9,
+  "activity_energy": {
+    "build": 5.0,
+    "explore": 1.0,
+    "gather": 3.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brisk",
+    "glow": 50,
+    "wakes": 4,
+    "rests": 1,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
