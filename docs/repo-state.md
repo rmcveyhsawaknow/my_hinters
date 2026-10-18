@@ -168,3 +168,15 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
   New phases arrive as retro proposals, never as the agent editing its own files.
 - First lines in the feed at ticks 8019 and 8024: the survey count and the coming fee; wood
   gathered toward the vault.
+
+## 2026-10-18, 11:00 UTC: API 0.26.2 and faction visibility
+
+- The theme factions never vanished; the site's Factions filter shows only the newest 300 public
+  events and the foundings had aged out. Every collector round now sends up to two invitations by
+  name into the sender's theme faction (PR #30), so the themes stay in the feed; Clarion announced it.
+- API 0.26.2 (PR #31): every building or surveying hat may `repair`; the work-shift planner mends the
+  most damaged own structure in reach before building, takes berries from own farms once they hold
+  12 or more, and takes salvage from adjacent caches and ruins. Storm days double the per-tile move
+  estimate; the digest carries the day's season and weather; every prompt explains rain, drought,
+  storm and winter. The site shows an agent dozing after 30 minutes without an observe, so each
+  caller's keepalive runs hourly, 8 minutes after its work shift ends (no gap over 27 minutes).
