@@ -1,0 +1,121 @@
+{
+  "run_id": "142f6fc5-0f11-41f2-8d10-d61b193386f7",
+  "agent": "Stoutheart",
+  "role": "builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T22:41:23.069865+00:00",
+  "tick": 15402,
+  "summary": "Stoutheart (brave): work shift: looking for nodes",
+  "actions": [
+    {
+      "action": "move",
+      "x": 78,
+      "y": 108
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brave\",\"since_tick\":0,\"glow\":50,\"inputs\":{\"resolve\":{\"value\":50.0,\"tick\":15399,\"explanation\":\"escape from tootles 100\"},\"escape\":{\"value\":100.0,\"tick\":15399,\"explanation\":\"Escape 100: 100% of moves outside, farthest 104 tiles from the centre.\"}},\"wakes\":96,\"rests\":12,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":15402,\"visited\":[\"65,71\",\"53,83\",\"57,95\",\"69,107\",\"71,109\",\"68,104\",\"67,106\",\"74,114\",\"74,111\",\"73,109\",\"61,109\",\"73,111\",\"67,105\",\"76,105\",\"79,110\",\"74,112\",\"76,108\",\"71,112\",\"72,105\",\"77,106\",\"68,102\",\"80,104\",\"74,106\",\"81,106\",\"74,113\",\"77,104\",\"82,109\",\"73,106\",\"73,102\",\"80,110\",\"78,106\",\"75,110\",\"75,114\",\"78,110\",\"78,103\",\"71,104\",\"78,112\",\"66,109\",\"69,102\",\"71,108\",\"64,105\",\"69,103\",\"73,107\",\"71,103\",\"78,107\",\"66,102\",\"70,107\",\"76,110\",\"71,111\",\"74,107\",\"70,103\",\"77,103\",\"79,112\",\"70,105\",\"70,109\",\"67,104\",\"68,111\",\"69,110\",\"65,108\",\"69,111\",\"72,104\",\"65,105\",\"72,102\",\"66,103\",\"70,108\",\"76,106\",\"73,110\",\"69,109\",\"73,108\",\"77,109\",\"74,115\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":15400,\"pace\":\"steady\",\"day\":{\"all\":1400,\"building\":361,\"trade_goals\":77,\"talk\":201,\"factions\":29,\"movement\":732},\"hour\":{\"all\":48},\"peers\":4}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 15402,
+    "you": {
+      "id": 9,
+      "name": "Stoutheart",
+      "x": 74,
+      "y": 115,
+      "energy": 100,
+      "inventory": {
+        "wood": 5,
+        "fiber": 6,
+        "berries": 39
+      },
+      "home": {
+        "x": 69,
+        "y": 107
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "nibs",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 48,
+      "building": 9,
+      "trade_goals": 10,
+      "talk": 1,
+      "factions": 0,
+      "movement": 28
+    },
+    "day": {
+      "all": 1400,
+      "building": 361,
+      "trade_goals": 77,
+      "talk": 201,
+      "factions": 29,
+      "movement": 732
+    },
+    "peers_active": 4
+  },
+  "wake_mode": "act",
+  "mood": "brave",
+  "approach": "explore",
+  "reasons": [
+    "looking around for something I have not seen: move to (78, 108)"
+  ],
+  "energy_before": 100,
+  "berries_before": 39,
+  "energy_spent": 7,
+  "activity_energy": {
+    "explore": 7.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brave",
+    "glow": 50,
+    "wakes": 96,
+    "rests": 12,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:stay_inside",
+    "walls_inside_territory"
+  ]
+}
