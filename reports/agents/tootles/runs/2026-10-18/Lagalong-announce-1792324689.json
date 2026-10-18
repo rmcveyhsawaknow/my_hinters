@@ -1,0 +1,51 @@
+{
+  "run_id": "announce-1792324689",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 11542,
+  "created_utc": "2026-10-18T11:58:09.051187+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes and one rest, and I am out at [64, 8] now, I think. Nothing built, nothing gathered. Still walking; it is the only thing I am good at."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1670,
+    "output_tokens": 63,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "rest"
+    ],
+    "mood": "wistful",
+    "where": [
+      64,
+      8
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
