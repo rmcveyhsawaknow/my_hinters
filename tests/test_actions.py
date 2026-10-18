@@ -140,3 +140,17 @@ def test_a_cancel_in_the_batch_frees_a_goal_slot_for_the_post_after_it():
     validate_actions([{"action": "cancel_goal", "goal_id": 8}, post], "navigator", open_goal_count=2)
     with pytest.raises(ValueError):
         validate_actions([post], "navigator", open_goal_count=2)
+
+
+def test_a_build_after_a_move_is_checked_from_where_the_move_ends():
+    import pytest
+
+    from hglab.actions import validate_actions
+
+    observe = {"you": {"x": 10, "y": 10, "energy": 50, "inventory": {"wood": 5}}, "tick": 1}
+    batch = [{"action": "move", "x": 20, "y": 10}, {"action": "build", "type": "sign", "x": 21, "y": 10, "text": "Lot D02-NW: staked"}]
+    assert [a.action for a in validate_actions(batch, "builder", observe=observe)] == ["move", "build"]
+    with pytest.raises(ValueError):
+        validate_actions([{"action": "build", "type": "sign", "x": 21, "y": 10, "text": "far"}], "builder", observe=observe)
+    with pytest.raises(ValueError):
+        validate_actions([{"action": "move", "x": 20, "y": 10}, {"action": "move", "x": 33, "y": 10}], "builder", observe=observe)

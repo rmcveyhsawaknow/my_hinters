@@ -229,6 +229,9 @@ def validate_actions(
                 and max(abs(action.x - position[0]), abs(action.y - position[1])) > 12
             ):
                 raise ValueError("movement exceeds the 12-step limit")
+            if action.action == "move" and isinstance(action.x, int) and isinstance(action.y, int):
+                position = (action.x, action.y)  # the world runs the batch in order: later checks start here
+                continue
             if (
                 action.action == "build"
                 and action.x is not None
