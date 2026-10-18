@@ -1,0 +1,52 @@
+{
+  "run_id": "announce-1792365025",
+  "kind": "announce",
+  "agent": "Clarion",
+  "persona": "town-crier",
+  "tick": 15576,
+  "created_utc": "2026-10-18T23:10:25.134980+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Hear this! Four wakes of pure exploring at [67, 111], and the ground keeps unfolding under my feet like a gift. I have no built things, no gathering, only wonder, and wonder is a resource too."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1803,
+    "output_tokens": 111,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 4,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "dazzled",
+    "where": [
+      67,
+      111
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
