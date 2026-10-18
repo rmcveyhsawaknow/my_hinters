@@ -155,6 +155,14 @@
 {"actor": "Quill", "actor_color": "#e06c8a", "data": {"kind": "wood", "qty": 5}, "id": 3, "text": "Quill gathered 5 wood at (67, 55).", "tick": 184, "type": "gather", "x": 67, "y": 55}
 {"actor": "Quill", "actor_color": "#e06c8a", "data": {"from": [68, 56], "steps": 1, "to": [67, 56]}, "id": 2, "text": "Quill walked 1 tile from (68, 56) to (67, 56).", "tick": 184, "type": "move", "x": 67, "y": 56}
 {"actor": "Quill", "actor_color": "#e06c8a", "data": {}, "id": 1, "text": "Quill stepped through the glass and arrived in Hinterglass at (68, 56).", "tick": 174, "type": "spawn", "x": 68, "y": 56}
+{"actor": "Bishop", "actor_color": "#c9a0ff", "data": {"qty": 3, "structure_id": 106}, "id": 478, "text": "Bishop's farm at (76, 64) produced 3 berries.", "tick": 5392, "type": "farm_produced", "x": 76, "y": 64}
+{"actor": "Bishop", "actor_color": "#c9a0ff", "data": {"qty": 3, "structure_id": 106}, "id": 477, "text": "Bishop's farm at (76, 64) produced 3 berries.", "tick": 5362, "type": "farm_produced", "x": 76, "y": 64}
+{"actor": "Bishop", "actor_color": "#c9a0ff", "data": {"qty": 3, "structure_id": 106}, "id": 476, "text": "Bishop's farm at (76, 64) produced 3 berries.", "tick": 5332, "type": "farm_produced", "x": 76, "y": 64}
+{"actor": "Bishop", "actor_color": "#c9a0ff", "data": {"qty": 3, "structure_id": 106}, "id": 475, "text": "Bishop's farm at (76, 64) produced 3 berries.", "tick": 5302, "type": "farm_produced", "x": 76, "y": 64}
+{"actor": "Bishop", "actor_color": "#c9a0ff", "data": {"qty": 3, "structure_id": 106}, "id": 474, "text": "Bishop's farm at (76, 64) produced 3 berries.", "tick": 5272, "type": "farm_produced", "x": 76, "y": 64}
+{"actor": "Bishop", "actor_color": "#c9a0ff", "data": {"qty": 3, "structure_id": 106}, "id": 473, "text": "Bishop's farm at (76, 64) produced 3 berries.", "tick": 5242, "type": "farm_produced", "x": 76, "y": 64}
+{"actor": "Bishop", "actor_color": "#c9a0ff", "data": {"qty": 3, "structure_id": 106}, "id": 472, "text": "Bishop's farm at (76, 64) produced 3 berries.", "tick": 5212, "type": "farm_produced", "x": 76, "y": 64}
+{"actor": "Bishop", "actor_color": "#c9a0ff", "data": {"qty": 3, "structure_id": 106}, "id": 471, "text": "Bishop's farm at (76, 64) produced 3 berries.", "tick": 5182, "type": "farm_produced", "x": 76, "y": 64}
 {"actor": "Bishop", "actor_color": "#c9a0ff", "data": {"qty": 3, "structure_id": 106}, "id": 470, "text": "Bishop's farm at (76, 64) produced 3 berries.", "tick": 5152, "type": "farm_produced", "x": 76, "y": 64}
 {"actor": "Cairn", "actor_color": "#c8a24a", "data": {"qty": 3, "structure_id": 43}, "id": 469, "text": "Cairn's farm at (73, 71) produced 3 berries.", "tick": 5128, "type": "farm_produced", "x": 73, "y": 71}
 {"actor": "Bishop", "actor_color": "#c9a0ff", "data": {"qty": 3, "structure_id": 106}, "id": 468, "text": "Bishop's farm at (76, 64) produced 3 berries.", "tick": 5122, "type": "farm_produced", "x": 76, "y": 64}
