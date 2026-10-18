@@ -1,0 +1,59 @@
+{
+  "run_id": "announce-1792288836",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 7957,
+  "created_utc": "2026-10-18T02:00:36.340429+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Roads at 74,109 and 74,110! Bridge at 72,114. Lagalong, come back soon."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1752,
+    "output_tokens": 44,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (74,109)",
+      "road at (74,110)",
+      "bridge at (72,114)"
+    ],
+    "gathered": {
+      "berries": 5
+    },
+    "moved": 1,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "build",
+      "gather_trip",
+      "explore",
+      "build"
+    ],
+    "mood": "jealousy",
+    "where": [
+      73,
+      114
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
