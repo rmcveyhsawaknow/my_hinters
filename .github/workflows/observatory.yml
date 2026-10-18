@@ -31,7 +31,9 @@ jobs:
           mkdir -p "$RUNNER_TEMP/previous"
           if git fetch origin observatory:refs/remotes/origin/observatory 2>/dev/null; then
             git archive origin/observatory data | tar -x -C "$RUNNER_TEMP/previous"
-            if [ -d "$RUNNER_TEMP/previous/data" ]; then cp -a "$RUNNER_TEMP/previous/data" ./data; fi
+            # earlier runs copied the archive into itself (data/collected-data/collected-data/...); drop that nest
+            rm -rf "$RUNNER_TEMP/previous/data/collected-data"
+            if [ -d "$RUNNER_TEMP/previous/data" ]; then rm -rf ./data; cp -a "$RUNNER_TEMP/previous/data" ./data; fi
           fi
       - run: hglab observatory collect
       - name: Commit public archive branch
@@ -44,6 +46,7 @@ jobs:
             git checkout --orphan observatory
             git rm -rf --cached . >/dev/null 2>&1 || true
           fi
+          rm -rf data  # replace the branch's data/ wholesale: copying into an existing directory nested it (data/collected-data/...)
           cp -a "$RUNNER_TEMP/collected-data" data
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
