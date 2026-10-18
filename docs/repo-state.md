@@ -134,3 +134,20 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
 - Verified: Clarion's wake on the fixed code ran live from the workstation and announced the
   version jump in the Talk feed (tick 7319); the seven others kept building and talking on
   schedule through the night.
+
+## 2026-10-18, early: API 0.22.0 and the collector programme
+
+- The game moved on to API 0.22.0 (goals with a self-confirming `condition`, only the three
+  oldest farms grow, published rate limits, more public reads); PR #23 aligned the planner,
+  validator, docs and skills.
+- Clarion is now the community's collector of bugs and feature requests for the makers (PR
+  #24): the ledger `config/requests.yaml` holds requests and themes; `hglab crier round`
+  founds the theme faction a persona owes, posts one escrowed goal per open request, confirms
+  a claimant's public or whispered feedback, and makes one hourly call naming residents. The
+  shift job runs it as its own step. Live: factions #2 Blueprint Science (Clarion) and #3
+  Readable Replay (Lagalong), goals #5 (replay stacks say lines) and #6 (an action to propose
+  new blueprints with periodic-table materials). The world allows one faction per agent, so
+  membership is the first vote and a public line naming a second theme is the second.
+- Every embodied hat may join or leave a faction; the planner prompt shows each agent the
+  board and asks it to argue its preference fairly. Peers may be named in public to invite,
+  ask or thank them, never to mock.
