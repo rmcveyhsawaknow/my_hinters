@@ -5,7 +5,7 @@ def _snap(**overrides):
     base = {
         "tick": 100, "api_version": "0.13.3", "guide_sha256": "a" * 64, "guide_actions": ["move", "say", "build"],
         "guide_blueprints": ["hut", "farm"], "event_types": ["move", "say", "build"], "structure_types": ["hut"],
-        "factions": ["Wayfarers:open"], "agents": ["Quill", "Cairn"], "agent_count": 2, "world_stats": {},
+        "factions": ["Wayfarers:open"], "agents": ["Quill", "Cairn"], "agent_count": 2, "world_stats": {}, "guide_format": 2,
     }
     base.update(overrides)
     return base
@@ -51,8 +51,8 @@ def test_changed_guide_rows_are_named():
 
     from hglab.features import action_rows
 
-    old_guide = "| `build` | `type, x?, y?` | 5 | On your tile or an adjacent tile; consumes materials. |\n| `say` | `text` | 1 | Heard within 8 tiles. |\n"
-    new_guide = "| `build` | `type, x?, y?` | 5 | On your tile or an adjacent tile. Paid from your inventory first; the rest from storehouses within 1 tile. |\n| `say` | `text` | 1 | Heard within 8 tiles. |\n"
+    old_guide = "| action | params | energy | rules |\n|---|---|---|---|\n| `build` | `type, x?, y?` | 5 | On your tile or an adjacent tile; consumes materials. |\n| `say` | `text` | 1 | Heard within 8 tiles. |\n"
+    new_guide = "| action | params | energy | rules |\n|---|---|---|---|\n| `build` | `type, x?, y?` | 5 | On your tile or an adjacent tile. Paid from your inventory first; the rest from storehouses within 1 tile. |\n| `say` | `text` | 1 | Heard within 8 tiles. |\n"
     old_rows = action_rows(old_guide)
     assert set(old_rows) == {"build", "say"}
     previous = {**_snap(), "guide_sha256": hashlib.sha256(old_guide.encode()).hexdigest(), "action_row_hashes": {k: hashlib.sha256(v.encode()).hexdigest()[:16] for k, v in old_rows.items()}}
@@ -123,7 +123,7 @@ def test_only_the_actions_table_counts_as_actions_and_only_blueprints_as_bluepri
 
     assert sorted(action_rows(GUIDE_WITH_THREE_TABLES)) == ["leave_faction", "move", "say"]
     assert sorted(blueprint_catalogue(GUIDE_WITH_THREE_TABLES)) == ["cache", "hut", "sign"]
-    stale = _snap(guide_actions=["move", "say"])  # a snapshot from before the fix: no guide_format
+    stale = _snap(guide_actions=["move", "say"], guide_format=1)  # a snapshot made the old way
     current = _snap(guide_actions=["move", "say", "take", "write"], guide_format=GUIDE_FORMAT)
     assert not any(d["kind"] == "new_action" for d in compare(stale, current))
     fresh = compact(current)
