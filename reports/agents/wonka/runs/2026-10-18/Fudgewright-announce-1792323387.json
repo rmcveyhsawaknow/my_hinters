@@ -1,0 +1,58 @@
+{
+  "run_id": "announce-1792323387",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 11412,
+  "created_utc": "2026-10-18T11:36:27.947342+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Welcome, dear visitors, to the road at (79,92) and (78,93), which are paved with wafer I gathered, five pieces of it, gently, one at a time. The factory is near. Probably. Bring a friend."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1833,
+    "output_tokens": 79,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [
+      "road at (79,92)",
+      "road at (78,93)"
+    ],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "rest",
+      "build",
+      "build",
+      "migrate"
+    ],
+    "mood": "gentle",
+    "where": [
+      89,
+      99
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
