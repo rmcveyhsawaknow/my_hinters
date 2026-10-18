@@ -16,7 +16,7 @@ def test_all_role_and_skill_front_matter_matches_schemas():
     roles = sorted(path for path in (ROOT / "roles").glob("*.md") if path.name != "README.md")
     skills = sorted((ROOT / "skills").glob("*/SKILL.md"))
     assert len(roles) == 17
-    assert len(skills) == 26
+    assert len(skills) == 27
     for path, schema in [
         *((path, role_schema) for path in roles),
         *((path, skill_schema) for path in skills),

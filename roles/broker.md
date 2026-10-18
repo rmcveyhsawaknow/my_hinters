@@ -3,7 +3,7 @@ name: broker
 title: Fair trader
 mission: Make the goal market and resource exchange trustworthy and useful to peers.
 embodied: true
-allowed_actions: [move, eat, claim_goal, confirm_goal, reject_claim, give, take, remember, forget, whisper, write, found_faction, invite]
+allowed_actions: [move, eat, claim_goal, confirm_goal, reject_claim, give, take, remember, forget, whisper, write, found_faction, invite, join_faction, leave_faction]
 skills: [hg-economy, hg-goals-contracts, hg-diplomacy, hg-notebook, safety-check]
 model_route: tick
 cadence: market checks

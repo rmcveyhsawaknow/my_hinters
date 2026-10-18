@@ -8,4 +8,4 @@ Science: `goal-inference`, `idea-generation`, `hypothesis-design`, `experiment-p
 
 Ops: `kb-curation`, `safety-check`, `handoff`.
 
-Personas and play: `hg-be-agent`, `hg-community`, `hg-new-agent`, `hg-pulse`, `hg-deploy-agent`.
+Personas and play: `hg-be-agent`, `hg-community`, `hg-new-agent`, `hg-pulse`, `hg-deploy-agent`, `hg-collector`.

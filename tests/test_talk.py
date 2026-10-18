@@ -53,7 +53,7 @@ def test_compose_prompt_treats_character_notes_and_summary_as_data():
         return SimpleNamespace(value={"line": "fine"})
 
     compose_line(joe, None, summarise_shift(_records()), ROOT, caller=caller)
-    assert "<DATA>" in seen["prompt"] and "PG-13" in seen["prompt"] and "Never name" in seen["prompt"]
+    assert "<DATA>" in seen["prompt"] and "PG-13" in seen["prompt"] and "Never mock" in seen["prompt"]
 
 
 def test_overlong_model_lines_are_trimmed_at_a_sentence_not_discarded():

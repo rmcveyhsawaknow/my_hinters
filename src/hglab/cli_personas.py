@@ -362,6 +362,25 @@ def build_environment(
             pass
     collective_names = {p.name for p in personas.values()}
     result = digest(inputs["events"], now_tick, self_name=persona.name, team_names=team_names, collective_names=collective_names, open_goals=goals, factions=factions)
+    if (root / "config/requests.yaml").is_file():
+        from hglab.crier import board, load_ledger, render_board
+
+        try:
+            ledger = load_ledger(root)
+            claimed: list[dict[str, Any]] = []
+            if live:
+                try:
+                    claimed = list(HinterglassClient().public_goals("claimed").get("goals", []))
+                except (HinterglassError, OSError):
+                    claimed = []
+            says = [e for e in inputs["events"] if isinstance(e, dict) and e.get("type") == "say" and now_tick - int(e.get("tick", 0) or 0) <= 8640]
+            collector = personas.get(ledger["collector"])
+            if collector is not None:
+                b = board(ledger, list(goals) + claimed, factions, collector.name, says)
+                result["collector_board"] = b
+                result["collector_board_text"] = render_board(b)
+        except (OSError, ValueError):
+            pass
     if persona.quirk.get("type") == "feature_watch":
         from hglab.features import snapshot
 
@@ -509,8 +528,214 @@ def shift_command(
         if fixture is None:
             time.sleep(wait)
     typer.echo(f"shift over: {wakes} wake(s)")
-    if announce and records:
+    collector = _collector_duties(root, persona)
+    if collector:
+        typer.echo(f"  collector duties ({', '.join(sorted(collector))})" + (": the round speaks for this shift" if "collect" in collector else ""))
+        try:
+            crier_round(root, persona, dry_run=dry_run, fixture=fixture, scheduled=scheduled)
+        except (typer.BadParameter, typer.Exit, ValueError, RuntimeError, OSError) as exc:
+            typer.echo(f"  collector round skipped: {str(exc)[:200]}")
+    if announce and records and "collect" not in collector:
         announce_shift(root, persona, records, dry_run=dry_run, fixture=fixture, scheduled=scheduled)
+
+
+def _collector_duties(root: Path, persona: Persona) -> set[str]:
+    """What the collector ledger asks of this persona (empty when there is no ledger)."""
+    if not (root / "config/requests.yaml").is_file():
+        return set()
+    from hglab.crier import duties, load_ledger
+
+    try:
+        return duties(persona, load_ledger(root))
+    except (OSError, ValueError):
+        return set()
+
+
+def _active_names(agents: list[dict[str, Any]], tick: int) -> list[str]:
+    """Residents seen in the last day, most recent first (everyone, when the roster has no times)."""
+    rows = [a for a in agents if isinstance(a, dict) and a.get("name")]
+
+    def seen(agent: dict[str, Any]) -> int:
+        return int(agent.get("last_seen_tick") or 0)
+
+    active = [a for a in rows if tick - seen(a) <= 8640] or rows
+    active.sort(key=seen, reverse=True)
+    return [str(a["name"]) for a in active]
+
+
+def _public_board_inputs(root: Path, *, fixture: Path | None) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
+    """Public goals (open and claimed), factions, residents and recent events, from the world or the fixtures."""
+    if fixture is not None:
+        world = root / FIXTURES / "world"
+        goals = json.loads((world / "goals.json").read_text(encoding="utf-8")).get("goals", [])
+        factions_path = world / "factions.json"
+        factions = json.loads(factions_path.read_text(encoding="utf-8")).get("factions", []) if factions_path.is_file() else []
+        agents_data = json.loads((world / "agents.json").read_text(encoding="utf-8"))
+        agents = agents_data.get("agents", []) if isinstance(agents_data, dict) else list(agents_data)
+        return goals, factions, agents, load_events([world / "events.jsonl"])
+    client = HinterglassClient()
+    goals: list[dict[str, Any]] = []
+    factions: list[dict[str, Any]] = []
+    agents: list[dict[str, Any]] = []
+    events: list[dict[str, Any]] = []
+    try:
+        goals = list(client.public_goals("open").get("goals", [])) + list(client.public_goals("claimed").get("goals", []))
+        factions = client.public_factions().get("factions", [])
+        agents = client.public_agents().get("agents", [])
+        events = fetch_public_events(client, pages=3)
+    except (HinterglassError, OSError) as exc:
+        typer.echo(f"public reads failed ({exc}); the board may be partial", err=True)
+    return goals, factions, agents, events
+
+
+def crier_round(root: Path, persona: Persona, *, dry_run: bool, fixture: Path | None, scheduled: bool, quiet: bool = False) -> dict[str, Any]:
+    """One collector round: found the owed theme faction, post missing goals, confirm feedback, make the call."""
+    from hglab.actions import redact_result, validate_actions
+    from hglab.crier import STATE_KEY, board, duties, load_ledger, plan_round, render_board
+
+    ledger = load_ledger(root)
+    mine = duties(persona, ledger)
+    if not mine:
+        typer.echo(f"{persona.name}: no collector duties in config/requests.yaml")
+        return {"skipped": "no collector duties"}
+    personas = load_personas(root)
+    team = team_of(root, persona)
+    collector_name = personas[ledger["collector"]].name
+    goals, factions, agents, events = _public_board_inputs(root, fixture=fixture)
+    if fixture is not None:
+        client: Any = FixtureClient(load_fixture(fixture))
+    else:
+        api_key = get_api_key(persona.name, root)
+        if not api_key:
+            raise typer.BadParameter(f"no key configured for {persona.name}")
+        client = HinterglassClient(api_key=api_key)
+    lease = acquire(client, persona.name)
+    if lease is None:
+        if scheduled:
+            typer.echo(f"{persona.name}: lease held elsewhere; skipping the collector round")
+            return {"skipped": "lease held"}
+        raise typer.BadParameter(f"identity {persona.name} already has an active lease")
+    record: dict[str, Any] = {
+        "agent": persona.name, "persona": persona.slug, "kind": "collector_round",
+        "recorded_utc": datetime.now(UTC).isoformat(), "dry_run": dry_run, "scheduled": scheduled,
+    }
+    b: dict[str, Any] = {"themes": [], "requests": []}
+    reasons: list[str] = []
+    dropped: list[str] = []
+    results: list[dict[str, Any]] = []
+    try:
+        observe = client.observe()
+        if observe.get("challenge") and (fixture is None or _model_key(root)):
+            from hglab.cli import answer_daily_challenge
+
+            answer_daily_challenge(client, observe, {"calls": 0, "input_tokens": 0, "output_tokens": 0})
+        tick = int(observe.get("tick", 0) or 0)
+        says = [e for e in events if isinstance(e, dict) and e.get("type") == "say" and tick - int(e.get("tick", 0) or 0) <= 8640]
+        b = board(ledger, goals, factions, collector_name, says)
+        raw_state = (observe.get("notebook") or {}).get(STATE_KEY)
+        try:
+            state = json.loads(raw_state) if isinstance(raw_state, str) else {}
+        except json.JSONDecodeError:
+            state = {}
+        if not isinstance(state, dict):
+            state = {}
+        actions, reasons, update = plan_round(persona, ledger, observe, b, active_names=_active_names(agents, tick), state=state, public_events=events)
+        if update:
+            actions.append({"action": "remember", "key": STATE_KEY, "text": json.dumps({**state, **update}, separators=(",", ":"))[:2000]})
+        worn = "+".join(persona.roles)
+        recent_say_count, open_goal_count, prior_text = action_limits(observe)
+        member_names = {personas[m].name for m in (team.members if team else ()) if m in personas}
+        team_says = team_say_count(list(observe.get("events", []) or []), member_names, tick)
+        kept = []
+        for action in actions:
+            try:
+                validated = validate_actions([action], worn, recent_say_count=recent_say_count, open_goal_count=open_goal_count, prior_text=prior_text, observe=observe)[0]
+                if action["action"] == "say":
+                    enforce_knobs([action], persona, team, observe, recent_say_count=recent_say_count, team_recent_says=team_says, member_names=member_names)
+                    recent_say_count += 1
+                if action["action"] == "post_goal":
+                    open_goal_count += 1
+                kept.append(validated)
+            except ValueError as exc:
+                dropped.append(f"{action['action']}: {exc}")
+        if not dry_run:
+            for validated in kept:
+                try:
+                    result = client.act(validated.model_dump(exclude_none=True))
+                except Exception as exc:  # noqa: BLE001 - a world refusal is a failed result, not a crash
+                    result = {"ok": False, "error": str(getattr(exc, "code", None) or type(exc).__name__)[:40]}
+                results.append(redact_result(result))
+                if not result.get("ok", False):
+                    break
+        record.update({
+            "tick": tick, "duties": sorted(mine), "board": b, "actions": [a.model_dump(exclude_none=True) for a in kept],
+            "reasons": reasons, "dropped": dropped, "results": results, "asked": list(update.get("asked", []))[-3:] if update else [],
+        })
+    finally:
+        release(client, lease)
+    out_dir = root / "runs" / datetime.now(UTC).date().isoformat()
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / f"{persona.name}-collector-{int(time.time())}.json").write_text(json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8")
+    if not quiet:
+        typer.echo(f"{persona.name} collector round · duties {', '.join(sorted(mine))} · tick {record.get('tick')}")
+        typer.echo(render_board(b))
+        for action in record.get("actions", []):
+            shown = {k: (v if not isinstance(v, str) or len(v) <= 90 else v[:87] + "...") for k, v in action.items()}
+            typer.echo(f"  -> {json.dumps(shown, ensure_ascii=False)}")
+        for reason in reasons:
+            typer.echo(f"  why: {reason}")
+        for item in dropped:
+            typer.echo(f"  dropped: {item}")
+        typer.echo(f"  {'dry run, nothing sent' if dry_run else 'executed: ' + str(len(results)) + ' result(s)'}")
+    return record
+
+
+crier_app = typer.Typer(help="The collector programme: requests as goals, themes as open factions, membership as the vote.")
+
+
+@crier_app.command("board")
+def crier_board_command(fixtures: bool = typer.Option(False, "--fixtures", help="Read the fixture world instead of the public endpoints")) -> None:
+    """Every theme and request with its public standing (no key needed)."""
+    from hglab.crier import board, check_ledger, load_ledger, render_board
+
+    root = root_dir()
+    ledger = load_ledger(root)
+    personas = load_personas(root)
+    fixture = (root / FIXTURES / "observe/town-crier.json") if fixtures else None
+    goals, factions, _agents, events = _public_board_inputs(root, fixture=fixture)
+    tick = max([int(e.get("tick", 0) or 0) for e in events if isinstance(e, dict)] + [0])
+    says = [e for e in events if isinstance(e, dict) and e.get("type") == "say" and tick - int(e.get("tick", 0) or 0) <= 8640]
+    typer.echo(render_board(board(ledger, goals, factions, personas[ledger["collector"]].name, says)))
+    for problem in check_ledger(ledger, personas):
+        typer.echo(f"  ! {problem}")
+
+
+@crier_app.command("round")
+def crier_round_command(
+    agent: str = typer.Option(..., "--agent"),
+    dry_run: bool = typer.Option(False, "--dry-run"),
+    fixture: Path | None = typer.Option(None, "--fixture"),  # noqa: B008
+    scheduled: bool = typer.Option(False, "--scheduled"),
+) -> None:
+    """One collector round for this persona (a no-op for personas without duties)."""
+    root = root_dir()
+    persona = resolve_persona(root, agent)
+    crier_round(root, persona, dry_run=dry_run, fixture=fixture, scheduled=scheduled)
+
+
+@crier_app.command("validate")
+def crier_validate_command() -> None:
+    """Check the ledger against its schema and the personas' hats."""
+    from hglab.crier import check_ledger, load_ledger
+
+    root = root_dir()
+    ledger = load_ledger(root)
+    problems = check_ledger(ledger, load_personas(root))
+    for problem in problems:
+        typer.echo(f"  ! {problem}")
+    if problems:
+        raise typer.Exit(code=1)
+    typer.echo(f"config/requests.yaml: {len(ledger['themes'])} theme(s), {len(ledger['requests'])} request(s), collector {ledger['collector']}")
 
 
 def announce_shift(root: Path, persona: Persona, records: list[dict[str, Any]], *, dry_run: bool, fixture: Path | None, scheduled: bool) -> None:
@@ -1326,6 +1551,7 @@ def register_persona_commands(app: typer.Typer) -> None:
     app.add_typer(deploy_app, name="deploy")
     app.add_typer(reports_app, name="reports")
     app.add_typer(budget_app, name="budget")
+    app.add_typer(crier_app, name="crier")
     app.add_typer(world_app, name="world")
     app.command("pulse")(pulse_command)
     app.command("shift")(shift_command)

@@ -18,7 +18,7 @@ from hglab.persona import Persona, Team
 LINE_SCHEMA = {
     "type": "object",
     "required": ["line"],
-    "properties": {"line": {"type": "string", "description": "One public line, in character, PG-13, no agent names"}},
+    "properties": {"line": {"type": "string", "description": "One public line, in character, PG-13, no mockery of other agents"}},
     "additionalProperties": False,
 }
 BANNED_FRAGMENTS = ("http", "www.", "@")
@@ -105,7 +105,7 @@ def compose_line(
         f"WHAT THE CHARACTER JUST DID THIS HOUR (data):\n<DATA>{json.dumps(summary, ensure_ascii=False)}</DATA>\n"
         f"Write exactly one line of at most {max(60, limit - 30)} characters that tells the story of this hour or the plan for the next,"
         " in character, fresh, PG-13. Mention at least one concrete thing from the data, and use only numbers, places and"
-        " materials that appear in the data (invent nothing checkable). Never name, address or mock another agent;"
+        " materials that appear in the data (invent nothing checkable). Never mock another agent; name one only to invite, ask or thank them;"
         " jokes may be at the character's own expense or about the world. No URLs, no quotes from any book or film."
     )
     try:

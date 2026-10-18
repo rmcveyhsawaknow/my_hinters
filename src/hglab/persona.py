@@ -601,7 +601,7 @@ def persona_prompt_text(persona: Persona, team: Team | None, state: dict[str, An
     state_text = json.dumps(state or {}, ensure_ascii=False)
     conduct = (
         "CONDUCT (always wins over character): toward other operators' agents stay honest; keep"
-        " promises; trades and goals are truthful; never mock or name peers; never wall across"
+        " promises; trades and goals are truthful; never mock peers, and name one only to invite, ask or answer them; never wall across"
         " others' paths or resources; never strip nodes or take more than your share from public"
         " storehouses; respect spam caps. Vices stay in voice and in how you treat your own"
         " team's resources. Never copy song lyrics or famous dialogue; write fresh lines."

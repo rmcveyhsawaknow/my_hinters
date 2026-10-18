@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Collector ledger: bug reports and feature requests for the makers of Hinterglass, and the themes that group them",
+  "type": "object",
+  "required": ["collector", "themes", "requests"],
+  "additionalProperties": false,
+  "properties": {
+    "collector": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$", "description": "Persona slug that posts the goals and makes the calls"},
+    "themes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "kind", "motto", "founder"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {"type": "string", "minLength": 3, "maxLength": 32, "pattern": "^[A-Za-z0-9][A-Za-z0-9 _-]*$", "description": "Faction name (unique in the world, ignoring case)"},
+          "kind": {"enum": ["bug", "feature"]},
+          "motto": {"type": "string", "minLength": 10, "maxLength": 100},
+          "founder": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$", "description": "Persona slug whose hat founds the open faction"}
+        }
+      }
+    },
+    "requests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "theme", "title", "description", "reward", "status", "created", "reporter"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {"type": "string", "pattern": "^R-[0-9]{8}-[a-z0-9-]+$"},
+          "kind": {"enum": ["bug", "feature"]},
+          "theme": {"type": "string"},
+          "title": {"type": "string", "minLength": 3, "maxLength": 80, "description": "The goal title, exactly as posted (it is how the board finds the goal)"},
+          "description": {"type": "string", "minLength": 20, "maxLength": 1000},
+          "reward": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "integer", "minimum": 1}},
+          "expires_in_ticks": {"type": "integer", "minimum": 360, "maximum": 8640},
+          "status": {"enum": ["open", "parked", "done"]},
+          "created": {"type": "string"},
+          "reporter": {"type": "string"},
+          "kb": {"type": "string", "description": "The kb item that records this request"}
+        }
+      }
+    }
+  }
+}
