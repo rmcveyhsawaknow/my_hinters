@@ -248,3 +248,10 @@ office line with the survey count. The vault is the registrar's private storehou
 collective agent's work shift deposits surplus into an adjacent vault. Every model-backed wake
 sees the office (`land_office` in the guidance). Brokerage and lending are later phases, proposed
 through the weekly retro once plots fill and the vault passes 200 items.
+
+Factions and the site's feed: the Factions filter on the site shows only the newest public events, so
+a founding that scrolls out of the window makes a faction look gone even though it stands. Every
+collector round therefore sends up to two invitations by name into the sender's own theme faction
+(residents in no faction, never the same agent twice): each `faction_invited` event keeps the theme
+in the feed and lands in the invitee's own events wherever they stand, and an open faction needs no
+invitation to join.

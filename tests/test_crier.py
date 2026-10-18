@@ -91,18 +91,24 @@ def test_a_settled_round_makes_one_call_naming_fresh_residents():
     observe["your_goals"] = {"claimed": None, "posted": posted}
     factions = [{"id": 9, "name": "Blueprint Science", "members": 1, "membership": "open"}, {"id": 8, "name": "Readable Replay", "members": 2, "membership": "open"}]
     b = _board(ledger, posted, factions)
-    actions, _, update = plan_round(clarion, ledger, observe, b, active_names=NAMES, state={})
-    assert [a["action"] for a in actions] == ["say"]
-    line = actions[0]["text"]
+    actions, _, update = plan_round(clarion, ledger, observe, b, active_names=NAMES, state={}, factions_of={"Quill": "Wayfarers"})
+    assert [a["action"] for a in actions] == ["invite", "invite", "say"]
+    assert [a["name"] for a in actions[:2]] == ["Cairn", "Mara"]  # Quill already belongs to a faction
+    assert update["invited"] == ["Cairn", "Mara"]
+    line = actions[2]["text"]
     assert len(line) <= clarion.voice["max_say_chars"] and all(n in line for n in NAMES[:3]) and "goal #10" in line
     assert update["asked"] == NAMES[:3] and update["last_call_tick"] == observe["tick"]
-    again, _, update2 = plan_round(clarion, ledger, observe, b, active_names=NAMES, state={**update, "last_call_tick": observe["tick"] - 1000})
-    assert "Bishop" in again[0]["text"] and update2["asked"] == NAMES  # everyone asked once
-    third, _, update3 = plan_round(clarion, ledger, observe, b, active_names=NAMES, state={**update2, "last_call_tick": observe["tick"] - 1000})
-    assert "Quill" in third[0]["text"] and update3["asked"] == NAMES[:3]  # the rotation starts over
-    quiet, _, none = plan_round(clarion, ledger, observe, b, active_names=NAMES, state=update)
-    assert quiet == [] and none == {}
     validate_actions(actions, "+".join(clarion.roles), observe=observe)
+    later, _, update_later = plan_round(clarion, ledger, observe, b, active_names=NAMES, state={**update, "last_call_tick": observe["tick"] - 1000}, factions_of={"Quill": "Wayfarers"})
+    assert [a["action"] for a in later] == ["invite", "say"] and later[0]["name"] == "Bishop"  # Cairn and Mara were invited already
+    assert update_later["invited"] == ["Cairn", "Mara", "Bishop"]
+    everyone = {**update_later, "invited": NAMES, "last_call_tick": observe["tick"] - 1000}
+    again, _, update2 = plan_round(clarion, ledger, observe, b, active_names=NAMES, state=everyone)
+    assert [a["action"] for a in again] == ["say"] and "Quill" in again[0]["text"] and update2["asked"] == NAMES[:3]  # everyone was asked once: the rotation starts over
+    third, _, update3 = plan_round(clarion, ledger, observe, b, active_names=NAMES, state={**update2, "invited": NAMES, "last_call_tick": observe["tick"] - 1000})
+    assert "Bishop" in third[0]["text"] and update3["asked"] == NAMES
+    quiet, _, none = plan_round(clarion, ledger, observe, b, active_names=NAMES, state={**update, "invited": NAMES})
+    assert quiet == [] and none == {}
 
 
 def test_feedback_from_a_claimant_is_confirmed():
@@ -115,7 +121,7 @@ def test_feedback_from_a_claimant_is_confirmed():
     observe["inbox"] = [{"id": 1, "from": "Quill", "text": "private report", "tick": observe["tick"]}]
     b = _board(ledger, posted, [{"id": 9, "name": "Blueprint Science", "members": 1}])
     actions, reasons, _ = plan_round(clarion, ledger, observe, b, active_names=[], state={"last_call_tick": observe["tick"]})
-    assert actions == [{"action": "confirm_goal", "goal_id": 10}]
+    assert actions == [{"action": "confirm_goal", "goal_id": 10}]  # nobody to invite, no call due
     assert not any("private report" in r for r in reasons)
 
 
@@ -127,6 +133,11 @@ def test_a_theme_founder_founds_once_and_nothing_else():
     assert [a["action"] for a in actions] == ["found_faction"] and actions[0]["name"] == "Readable Replay" and update == {}
     founded = _board(ledger, factions=[{"id": 8, "name": "Readable Replay", "members": 1}])
     assert plan_round(lagalong, ledger, observe, founded, active_names=NAMES, state={})[0] == []
+    observe["you"]["faction"] = {"id": 8, "name": "Readable Replay"}
+    invites, reasons, update = plan_round(lagalong, ledger, observe, founded, active_names=NAMES, state={}, factions_of={"Quill": "Wayfarers"})
+    assert [a["action"] for a in invites] == ["invite", "invite"] and [a["name"] for a in invites] == ["Cairn", "Mara"]
+    assert update == {"invited": ["Cairn", "Mara"]} and all("Factions feed" in r for r in reasons)
+    validate_actions(invites, "+".join(lagalong.roles), observe=observe)
 
 
 def test_the_call_line_fits_any_limit():

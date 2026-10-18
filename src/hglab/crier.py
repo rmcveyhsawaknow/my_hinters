@@ -24,6 +24,7 @@ from hglab.persona import Persona
 
 STATE_KEY = "collector"
 ASK_LIMIT = 3
+INVITE_LIMIT = 2  # invitations per round: a faction_invited event each, never twice to one agent
 CALL_SPACING_TICKS = 300  # one call per shift hour; the character wake may add its own line
 OPEN_GOALS_CAP = 2
 ENDORSEMENT_WINDOW_TICKS = 8640
@@ -153,6 +154,35 @@ def call_line(persona: Persona, b: dict[str, Any], names: list[str], tick: int) 
     return candidates[-1][: limit - 1].rsplit(" ", 1)[0] + "."
 
 
+def faction_name(value: Any) -> str | None:
+    """A faction as the public roster or an observe gives it: a name, a {id, name} object, or nothing."""
+    if isinstance(value, dict):
+        return str(value.get("name")) if value.get("name") else None
+    return str(value) if value else None
+
+
+def plan_invites(
+    persona: Persona,
+    b: dict[str, Any],
+    theme: dict[str, Any] | None,
+    active_names: list[str],
+    factions_of: dict[str, str | None],
+    state: dict[str, Any],
+) -> tuple[list[dict[str, Any]], list[str], list[str]]:
+    """Invitations into the theme faction this persona belongs to, for residents in no faction, never twice.
+
+    An invitation is 1 energy, reaches any distance, never expires, shows in the site's Factions feed and
+    in the invitee's own events; an open faction needs none to join, so it is the visible nudge.
+    """
+    if theme is None or not theme["founded"]:
+        return [], [], []
+    invited = {n for n in state.get("invited", []) if isinstance(n, str)}
+    names = [n for n in active_names if n != persona.name and n not in invited and not factions_of.get(n)][:INVITE_LIMIT]
+    actions = [{"action": "invite", "name": n} for n in names]
+    reasons = [f"invitation to {n}: {theme['name']} shows in the Factions feed and in their events" for n in names]
+    return actions, reasons, names
+
+
 def plan_round(
     persona: Persona,
     ledger: dict[str, Any],
@@ -162,12 +192,14 @@ def plan_round(
     active_names: list[str],
     state: dict[str, Any],
     public_events: list[dict[str, Any]] | tuple[dict[str, Any], ...] = (),
+    factions_of: dict[str, str | None] | None = None,
 ) -> tuple[list[dict[str, Any]], list[str], dict[str, Any]]:
     """Deterministic collector actions for one round; the caller validates and may add the state note.
 
     Order: found the theme faction this hat owes, post missing goals (two open at a time, rewards
-    from the pack), confirm feedback on claimed goals, then the call naming agents who have not
-    been asked lately. At most three actions when a call is made, so the notebook note fits.
+    from the pack), confirm feedback on claimed goals, invitations into one's theme faction, then
+    the call naming agents who have not been asked lately. At most three actions, so the notebook
+    note fits the four-action cap; a due call always keeps its slot.
     """
     you = observe.get("you") or {}
     tick = int(observe.get("tick", 0) or 0)
@@ -176,6 +208,9 @@ def plan_round(
     mine = duties(persona, ledger)
     actions: list[dict[str, Any]] = []
     reasons: list[str] = []
+    my_faction = faction_name(you.get("faction"))
+    my_theme = next((t for t in b["themes"] if my_faction and t["name"].casefold() == my_faction.casefold()), None)
+    invites, invite_reasons, invited_now = plan_invites(persona, b, my_theme, active_names, factions_of or {}, state)
     if "found" in mine and not you.get("faction"):
         for theme, entry in zip(ledger["themes"], b["themes"], strict=True):
             if theme["founder"] != persona.slug or entry["founded"]:
@@ -188,7 +223,10 @@ def plan_round(
                 energy -= 10
             break
     if "collect" not in mine:
-        return actions, reasons, {}
+        actions.extend(invites)
+        reasons.extend(invite_reasons)
+        update = {"invited": (list(state.get("invited", [])) + invited_now)[-80:]} if invited_now else {}
+        return actions[:3], reasons, update
     posted = [g for g in ((observe.get("your_goals") or {}).get("posted") or []) if isinstance(g, dict)]
     live = [g for g in posted if g.get("status") in {"open", "claimed"}]
     inventory = {k: int(v) for k, v in (you.get("inventory") or {}).items()}
@@ -227,7 +265,13 @@ def plan_round(
     update: dict[str, Any] = {}
     last_call = int(state.get("last_call_tick", -10**9) or -10**9)
     pool = [n for n in active_names if n != persona.name]
-    if pool and b["themes"] and tick - last_call >= CALL_SPACING_TICKS and len(actions) < 3:
+    call_due = bool(pool and b["themes"] and tick - last_call >= CALL_SPACING_TICKS)
+    room = 3 - len(actions) - (1 if call_due else 0)
+    if room > 0 and invites:
+        actions.extend(invites[:room])
+        reasons.extend(invite_reasons[:room])
+        update["invited"] = (list(state.get("invited", [])) + invited_now[:room])[-80:]
+    if call_due and len(actions) < 3:
         asked = [n for n in state.get("asked", []) if isinstance(n, str)]
         remaining = [n for n in pool if n not in asked]
         if not remaining:
@@ -235,11 +279,11 @@ def plan_round(
         names = remaining[:ASK_LIMIT]
         actions.append({"action": "say", "text": call_line(persona, b, names, tick)})
         reasons.append("the collector's call names agents and tells them how to vote")
-        update = {"asked": (asked + names)[-60:], "last_call_tick": tick}
-    return actions[:4], reasons, update
+        update.update({"asked": (asked + names)[-60:], "last_call_tick": tick})
+    return actions[:3], reasons, update
 
 
 __all__ = [
-    "ASK_LIMIT", "CALL_SPACING_TICKS", "STATE_KEY", "board", "call_line", "check_ledger", "duties", "load_ledger",
-    "plan_round", "render_board",
+    "ASK_LIMIT", "CALL_SPACING_TICKS", "INVITE_LIMIT", "STATE_KEY", "board", "call_line", "check_ledger", "duties",
+    "faction_name", "load_ledger", "plan_invites", "plan_round", "render_board",
 ]
