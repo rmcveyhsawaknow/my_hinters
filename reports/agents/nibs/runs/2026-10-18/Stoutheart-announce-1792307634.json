@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792307634",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 9837,
+  "created_utc": "2026-10-18T07:13:54.980674+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, five hauls of wood and not a single bridge yet. Ground's steady, the pack's still full, and I'm walking the edge again. Worth it."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1742,
+    "output_tokens": 61,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "gather_trip",
+      "explore",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "brave",
+    "where": [
+      78,
+      106
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
