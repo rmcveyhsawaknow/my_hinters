@@ -1,0 +1,123 @@
+{
+  "run_id": "8af2d61c-aefc-4ec7-ad16-99765451567c",
+  "agent": "Strayling",
+  "role": "surveyor+experimenter+conjecturer+methodologist",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T11:41:04.111104+00:00",
+  "tick": 11440,
+  "summary": "Strayling (curious): work shift: looking for nodes",
+  "actions": [
+    {
+      "action": "move",
+      "x": 67,
+      "y": 80
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"curious\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":79,\"rests\":3,\"bursts\":0,\"distractions\":4,\"last_wake_tick\":11440,\"visited\":[\"67,71\",\"62,71\",\"67,75\",\"65,73\",\"63,71\",\"57,79\",\"52,83\",\"51,82\",\"53,74\",\"48,66\",\"54,61\",\"61,62\",\"65,67\",\"66,76\",\"73,74\",\"67,69\",\"71,74\",\"70,66\",\"67,57\",\"69,48\",\"75,41\",\"75,46\",\"80,55\",\"77,62\",\"76,67\",\"84,64\",\"76,68\",\"71,77\",\"67,73\",\"71,72\",\"78,74\",\"73,76\",\"69,77\",\"62,75\",\"54,82\",\"54,78\",\"46,74\",\"50,73\",\"45,66\",\"45,61\",\"36,64\",\"31,65\",\"25,63\",\"16,68\",\"22,59\",\"20,52\",\"19,56\",\"19,61\",\"18,53\",\"18,61\",\"15,68\",\"21,68\",\"16,64\",\"25,71\",\"30,72\",\"38,73\",\"45,76\",\"49,68\",\"49,76\",\"43,72\",\"51,78\",\"45,74\",\"52,65\",\"58,60\",\"54,65\",\"63,65\",\"72,69\",\"80,70\",\"76,75\",\"72,71\",\"64,73\",\"60,76\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"ideas\":[\"t5682: a berries node near 62,71\",\"t6829: a berries node near 57,79\",\"t7653: a fiber node near 67,69\",\"t8317: a wood node near 84,64\"],\"world\":{\"tick\":11440,\"pace\":\"steady\",\"day\":{\"all\":1351,\"building\":412,\"trade_goals\":58,\"talk\":166,\"factions\":15,\"movement\":700},\"hour\":{\"all\":63},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 11440,
+    "you": {
+      "id": 10,
+      "name": "Strayling",
+      "x": 60,
+      "y": 76,
+      "energy": 100,
+      "inventory": {
+        "wood": 15,
+        "fiber": 6,
+        "berries": 29
+      },
+      "home": {
+        "x": 57,
+        "y": 79
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "lost-boy",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "experimenter",
+    "conjecturer",
+    "methodologist"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 63,
+      "building": 4,
+      "trade_goals": 5,
+      "talk": 11,
+      "factions": 8,
+      "movement": 35
+    },
+    "day": {
+      "all": 1351,
+      "building": 412,
+      "trade_goals": 58,
+      "talk": 166,
+      "factions": 15,
+      "movement": 700
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "curious",
+  "approach": "explore",
+  "reasons": [
+    "looking around for something I have not seen: move to (67, 80)"
+  ],
+  "energy_before": 100,
+  "berries_before": 29,
+  "energy_spent": 7,
+  "activity_energy": {
+    "explore": 7.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "curious",
+    "glow": 50,
+    "wakes": 79,
+    "rests": 3,
+    "bursts": 0,
+    "distractions": 4,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
