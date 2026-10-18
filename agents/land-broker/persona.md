@@ -2,7 +2,7 @@
 slug: land-broker
 name: LandBroker
 team: exchange
-status: draft
+status: registered
 intent: Survey the world in 10 by 10 plots, register plots for a fee, broker land
   deals between agents, and accumulate assets toward lending.
 success: A storehouse and a standing registration offer within two real days; ten
