@@ -1,0 +1,110 @@
+{
+  "run_id": "bca35cfd-4175-4b0b-872b-5a06fbb621ca",
+  "agent": "Tinkerglow",
+  "role": "navigator+surveyor+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T04:39:26.038275+00:00",
+  "tick": 8910,
+  "summary": "Tinkerglow (jealousy): resting between flights",
+  "actions": [
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"jealousy\",\"since_tick\":6338,\"glow\":67,\"inputs\":{\"glow\":{\"value\":68.3,\"tick\":8745,\"explanation\":\"courage from nibs 54; escape from tootles 94; belief from nibs 99; belief from tootles 0; belief from lost-boy 0\"},\"adventure_options\":{\"value\":86.0,\"tick\":8745,\"explanation\":\"discoveries from lost-boy 86\"},\"courage\":{\"value\":53.8,\"tick\":8745,\"explanation\":\"Courage 54: 1 hard job(s) inside, 0 greeting(s), structures standing 100%.\"},\"escape\":{\"value\":93.5,\"tick\":8745,\"explanation\":\"Escape 94: 100% of moves outside, farthest 87 tiles from the centre.\"},\"belief\":{\"value\":0.0,\"tick\":8745,\"explanation\":\"Belief 0: 0 arrival(s) inside, 0 bridge crossing(s), not currently inside.\"},\"discoveries\":{\"value\":86.0,\"tick\":8745,\"explanation\":\"Discoveries 86: 48 tiles, 5 action types, 2 idea card(s), 0 adopted.\"}},\"wakes\":40,\"rests\":7,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":8910,\"heading\":\"W\",\"visited\":[\"70,56\",\"68,54\",\"67,55\",\"55,67\",\"43,79\",\"53,91\",\"65,103\",\"63,98\",\"72,110\",\"73,109\",\"73,114\",\"68,109\",\"61,109\",\"73,111\",\"73,104\",\"80,104\",\"80,111\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":8909,\"pace\":\"steady\",\"day\":{\"all\":969,\"building\":369,\"trade_goals\":39,\"talk\":92,\"factions\":3,\"movement\":466},\"hour\":{\"all\":35},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 8910,
+    "you": {
+      "id": 6,
+      "name": "Tinkerglow",
+      "x": 73,
+      "y": 111,
+      "energy": 100,
+      "inventory": {
+        "wood": 20,
+        "fiber": 6,
+        "berries": 24
+      },
+      "home": {
+        "x": 66,
+        "y": 54
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "tinker-bell",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "navigator",
+    "surveyor",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 35,
+      "building": 4,
+      "trade_goals": 1,
+      "talk": 9,
+      "factions": 0,
+      "movement": 21
+    },
+    "day": {
+      "all": 969,
+      "building": 369,
+      "trade_goals": 39,
+      "talk": 92,
+      "factions": 3,
+      "movement": 466
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "rest",
+  "mood": "jealousy",
+  "approach": "rest",
+  "reasons": [],
+  "energy_before": 100,
+  "berries_before": 24,
+  "energy_spent": 0,
+  "activity_energy": {},
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "jealousy",
+    "glow": 67,
+    "wakes": 40,
+    "rests": 7,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": "W"
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
