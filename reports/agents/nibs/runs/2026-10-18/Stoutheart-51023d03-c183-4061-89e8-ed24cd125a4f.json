@@ -1,0 +1,139 @@
+{
+  "run_id": "51023d03-c183-4061-89e8-ed24cd125a4f",
+  "agent": "Stoutheart",
+  "role": "builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T01:58:39.146352+00:00",
+  "tick": 7945,
+  "summary": "Stoutheart (brave): work shift: building",
+  "actions": [
+    {
+      "action": "build",
+      "x": 73,
+      "y": 109,
+      "type": "farm"
+    },
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "gather",
+      "kind": "berries"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brave\",\"since_tick\":0,\"glow\":50,\"inputs\":{\"resolve\":{\"value\":46.8,\"tick\":7911,\"explanation\":\"escape from tootles 94\"},\"escape\":{\"value\":93.5,\"tick\":7911,\"explanation\":\"Escape 94: 100% of moves outside, farthest 87 tiles from the centre.\"}},\"wakes\":19,\"rests\":5,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":7945,\"visited\":[\"65,71\",\"53,83\",\"57,95\",\"69,107\",\"71,109\",\"68,104\",\"67,106\",\"74,114\",\"74,111\",\"73,109\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":7942,\"pace\":\"quickening\",\"day\":{\"all\":874,\"building\":336,\"trade_goals\":43,\"talk\":63,\"factions\":3,\"movement\":429},\"hour\":{\"all\":104},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 7945,
+    "you": {
+      "id": 9,
+      "name": "Stoutheart",
+      "x": 73,
+      "y": 109,
+      "energy": 100,
+      "inventory": {
+        "wood": 15,
+        "fiber": 6,
+        "berries": 10
+      },
+      "home": {
+        "x": 69,
+        "y": 107
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "nibs",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 104,
+      "building": 34,
+      "trade_goals": 8,
+      "talk": 14,
+      "factions": 2,
+      "movement": 46
+    },
+    "day": {
+      "all": 874,
+      "building": 336,
+      "trade_goals": 43,
+      "talk": 63,
+      "factions": 3,
+      "movement": 429
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "brave",
+  "approach": "build",
+  "reasons": [
+    "materials in hand for a farm at (73, 109)",
+    "wood node at (74, 108) is adjacent; take five, leave the rest to regrow",
+    "berries node at (74, 109) is adjacent; take five, leave the rest to regrow"
+  ],
+  "energy_before": 100,
+  "berries_before": 10,
+  "energy_spent": 11,
+  "activity_energy": {
+    "build": 5.0,
+    "gather": 6.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brave",
+    "glow": 50,
+    "wakes": 19,
+    "rests": 5,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:stay_inside",
+    "walls_inside_territory"
+  ]
+}

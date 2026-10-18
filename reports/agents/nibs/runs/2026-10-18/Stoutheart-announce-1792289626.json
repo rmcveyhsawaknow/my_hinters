@@ -1,0 +1,56 @@
+{
+  "run_id": "announce-1792289626",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 8036,
+  "created_utc": "2026-10-18T02:13:46.610539+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Farm's up at (73,109) and the store holds 20 wood, 10 fiber, 10 berries. Nobody here goes hungry. Bring a hand if you've got one."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1767,
+    "output_tokens": 66,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [
+      "farm at (73,109)"
+    ],
+    "gathered": {
+      "wood": 20,
+      "fiber": 10,
+      "berries": 10
+    },
+    "moved": 0,
+    "deposited": {},
+    "approaches": [
+      "gather_trip",
+      "build",
+      "gather_trip",
+      "rest",
+      "gather_trip"
+    ],
+    "mood": "brave",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
