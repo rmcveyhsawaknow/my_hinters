@@ -1,0 +1,121 @@
+{
+  "run_id": "211b0cbb-0dec-4735-b0fa-b80433b2b3af",
+  "agent": "Stoutheart",
+  "role": "builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T03:52:25.647968+00:00",
+  "tick": 8628,
+  "summary": "Stoutheart (brave): work shift: looking for nodes",
+  "actions": [
+    {
+      "action": "move",
+      "x": 74,
+      "y": 112
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brave\",\"since_tick\":0,\"glow\":50,\"inputs\":{\"resolve\":{\"value\":46.8,\"tick\":8596,\"explanation\":\"escape from tootles 94\"},\"escape\":{\"value\":93.5,\"tick\":8596,\"explanation\":\"Escape 94: 100% of moves outside, farthest 87 tiles from the centre.\"}},\"wakes\":29,\"rests\":7,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":8628,\"visited\":[\"65,71\",\"53,83\",\"57,95\",\"69,107\",\"71,109\",\"68,104\",\"67,106\",\"74,114\",\"74,111\",\"73,109\",\"61,109\",\"73,111\",\"67,105\",\"76,105\",\"79,110\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":8626,\"pace\":\"steady\",\"day\":{\"all\":1009,\"building\":377,\"trade_goals\":46,\"talk\":86,\"factions\":3,\"movement\":497},\"hour\":{\"all\":54},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 8628,
+    "you": {
+      "id": 9,
+      "name": "Stoutheart",
+      "x": 79,
+      "y": 110,
+      "energy": 100,
+      "inventory": {
+        "wood": 20,
+        "fiber": 6,
+        "berries": 20
+      },
+      "home": {
+        "x": 69,
+        "y": 107
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "nibs",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 54,
+      "building": 11,
+      "trade_goals": 1,
+      "talk": 11,
+      "factions": 0,
+      "movement": 31
+    },
+    "day": {
+      "all": 1009,
+      "building": 377,
+      "trade_goals": 46,
+      "talk": 86,
+      "factions": 3,
+      "movement": 497
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "brave",
+  "approach": "explore",
+  "reasons": [
+    "looking around for something I have not seen: move to (74, 112)"
+  ],
+  "energy_before": 100,
+  "berries_before": 20,
+  "energy_spent": 5,
+  "activity_energy": {
+    "explore": 5.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brave",
+    "glow": 50,
+    "wakes": 29,
+    "rests": 7,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:stay_inside",
+    "walls_inside_territory"
+  ]
+}

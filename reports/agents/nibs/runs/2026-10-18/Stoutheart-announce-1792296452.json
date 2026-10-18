@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792296452",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 8719,
+  "created_utc": "2026-10-18T04:07:32.267354+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, four moves, no builds this hour; I'm off to the south water to size up the next bridge. Neverland keeps its bridges mended, and I'll keep my boots dry."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1733,
+    "output_tokens": 68,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "rest",
+      "explore"
+    ],
+    "mood": "brave",
+    "where": [
+      71,
+      112
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
