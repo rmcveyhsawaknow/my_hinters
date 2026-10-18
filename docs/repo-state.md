@@ -186,3 +186,14 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
   12-step cap along walkable tiles, and upkeep in reach comes before any migration. Verified with
   three live work wakes for Fudgewright: a migration step and two roads at the factory site, every
   result accepted.
+
+## 2026-10-18, 13:45 UTC: the land office acquires
+
+- LandBroker's first goal is now land (PR #35). Each work wake stakes up to two free 5x5 lots with a
+  claim sign on the lot's anchor (nearest first, a ring left around every other agent's hut; lot ids
+  read F05-NW). One sale listing stands at today's price, base 5 wood, doubling at half the lots gone,
+  ten times at a tenth free, capped at 50; it is cancelled and reposted when the price moves and may
+  take a standing offer's goal slot. A paid sale deeds the buyer the lot they named by whisper or the
+  unsold lot nearest their hut; the claim sign is rewritten with their name when the office passes.
+  A 10x10 plot is four lots. The planner now counts storehouses out of view too (LandBroker had built
+  three). A claim is a sign, a public record and the office's word, not a right the world enforces.
