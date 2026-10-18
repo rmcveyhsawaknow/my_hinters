@@ -129,3 +129,9 @@ def test_only_the_actions_table_counts_as_actions_and_only_blueprints_as_bluepri
     fresh = compact(current)
     assert fresh["guide_format"] == GUIDE_FORMAT
     assert [d["kind"] for d in compare(fresh, {**current, "guide_actions": [*current["guide_actions"], "sing"]})] == ["new_action"]
+
+
+def test_weather_and_ruin_events_count_as_documented():
+    found = compare(_snap(), _snap(event_types=["move", "say", "build", "weather_changed", "ruin"]))
+    texts = [d["text"] for d in found if d["kind"] == "new_event_type"]
+    assert texts and all("(documented)" in t for t in texts)

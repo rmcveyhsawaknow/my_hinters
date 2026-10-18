@@ -3,7 +3,7 @@ name: experimenter
 title: Preregistered investigator
 mission: Run approved in-world experiments faithfully and preserve event-level evidence.
 embodied: true
-allowed_actions: [move, gather, eat, build, say, remember, forget, join_faction, leave_faction]
+allowed_actions: [move, gather, eat, build, repair, say, remember, forget, join_faction, leave_faction]
 skills: [experiment-protocol, hg-loop, hg-notebook, safety-check]
 model_route: science
 cadence: only within approved experiment window

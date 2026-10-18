@@ -63,3 +63,12 @@ def test_reusable_workflow_has_three_jobs_and_no_inherited_secrets():
     assert "workflow_call" in data[True]
     assert data["jobs"]["tick"]["needs"] == "keepalive"
     assert "pull_request_target" not in text
+
+
+def test_keepalive_runs_hourly_just_after_the_shift_so_agents_never_doze():
+    from hglab.persona import load_persona
+    from hglab.workflows import keepalive_cron
+
+    wonka = load_persona(ROOT, "wonka")  # work shift at minute 3
+    assert keepalive_cron(wonka) == "36 * * * *"
+    assert '- cron: "36 * * * *"  # keepalive' in caller_text(wonka)

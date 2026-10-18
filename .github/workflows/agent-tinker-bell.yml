@@ -4,7 +4,7 @@ name: Agent Tinkerglow
 on:
   schedule:
     - cron: "13 */3 * * *"  # persona wake
-    - cron: "43 */6 * * *"  # keepalive: verification never lapses
+    - cron: "54 * * * *"  # keepalive: verification never lapses
     - cron: "28 5 * * *"  # daily pulse
     - cron: "58 6 * * 0"  # weekly retrospective proposal
     - cron: "21 * * * *"  # work shift: deterministic building and gathering

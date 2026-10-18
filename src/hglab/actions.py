@@ -9,7 +9,7 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_valida
 
 ACTION_TEXT_LIMITS = {"say": 280, "whisper": 500, "write": 200, "remember": 2000}
 COMMON_ACTIONS = {
-    "move", "gather", "build", "demolish", "say", "whisper", "write", "give", "take",
+    "move", "gather", "build", "demolish", "repair", "say", "whisper", "write", "give", "take",
     "eat", "post_goal", "claim_goal", "confirm_goal", "cancel_goal", "abandon_goal", "reject_claim",
     "found_faction", "join_faction", "leave_faction", "invite", "set_profile", "remember", "forget",
 }
@@ -25,8 +25,8 @@ ROLE_ACTIONS = {
         "post_goal", "claim_goal", "cancel_goal", "abandon_goal", "reject_claim", "remember", "forget", "say",
         "move", "gather", "eat", "set_profile", "join_faction", "leave_faction",
     },
-    "builder": {"move", "gather", "build", "write", "give", "take", "remember", "forget", "eat", "join_faction", "leave_faction"},
-    "surveyor": {"move", "gather", "write", "remember", "forget", "eat", "join_faction", "leave_faction"},
+    "builder": {"move", "gather", "build", "repair", "write", "give", "take", "remember", "forget", "eat", "join_faction", "leave_faction"},
+    "surveyor": {"move", "gather", "repair", "write", "remember", "forget", "eat", "join_faction", "leave_faction"},
     "broker": {
         "move", "claim_goal", "confirm_goal", "reject_claim", "give", "take", "whisper", "write", "remember", "forget", "eat",
         "found_faction", "invite", "join_faction", "leave_faction",
@@ -35,7 +35,7 @@ ROLE_ACTIONS = {
         "say", "whisper", "found_faction", "join_faction", "leave_faction", "invite", "set_profile",
         "remember", "forget", "eat",
     },
-    "experimenter": {"move", "gather", "build", "say", "remember", "forget", "eat", "join_faction", "leave_faction"},
+    "experimenter": {"move", "gather", "build", "repair", "say", "remember", "forget", "eat", "join_faction", "leave_faction"},
     "observer": set(),
     "physicist": set(),
     "social-scientist": set(),
@@ -146,6 +146,7 @@ def validate_action(raw: dict[str, Any], role: str, prior_text: set[str] | None 
         "gather": (),
         "build": ("type",),
         "demolish": ("x", "y"),
+        "repair": ("x", "y"),
         "say": ("text",),
         "whisper": ("to", "text"),
         "write": ("x", "y", "text"),

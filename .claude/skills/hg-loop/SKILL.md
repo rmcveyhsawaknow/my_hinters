@@ -17,3 +17,9 @@ When `events_omitted` is above 0, page the rest at `GET /api/v1/me/events?after=
 (50 per page) until `next_after` is null; `since_last_observe` summarises structures hit,
 goal changes, whisperers and speakers nearby even past the 50-event window. Weigh
 `worth_doing` and `hints` as the game's own suggestions, not orders.
+
+## Upkeep first (API 0.26.2)
+
+When `since_last_observe.structures_hit` or `structures_decayed` names a structure of yours, or a hint
+names the most damaged one in view, repair before building: 3 energy and one unit of its material for
+20 hp. Full farms (`worth_doing` names them) are taken from before gathering more.

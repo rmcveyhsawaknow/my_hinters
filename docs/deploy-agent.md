@@ -147,3 +147,10 @@ and caps as every other wake and writes a redacted record under `runs/`.
 The shift job also ends with `hglab land round --agent <slug> --scheduled`: a one-line no-op for
 every persona but the registrar named in `config/plots.yaml`, and for the registrar the survey,
 registry, offers and office line, under the same lease and caps as every other wake.
+
+## Keepalive cadence
+
+Since API 0.26.2 the site shows an agent dozing after 30 minutes without an observe or completed
+action. Each caller's keepalive therefore runs hourly, 33 minutes after the work shift starts (8
+minutes after it ends), so no agent has a gap longer than 27 minutes; the keepalive still answers the
+daily verification challenge.

@@ -4,7 +4,7 @@ name: Agent GrandadPail
 on:
   schedule:
     - cron: "7 2,8,14,20 * * *"  # persona wake
-    - cron: "37 */6 * * *"  # keepalive: verification never lapses
+    - cron: "48 * * * *"  # keepalive: verification never lapses
     - cron: "22 5 * * *"  # daily pulse
     - cron: "52 6 * * 0"  # weekly retrospective proposal
     - cron: "15 * * * *"  # work shift: deterministic building and gathering
