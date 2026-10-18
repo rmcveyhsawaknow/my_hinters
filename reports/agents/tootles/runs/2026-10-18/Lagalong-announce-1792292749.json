@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792292749",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 8348,
+  "created_utc": "2026-10-18T03:05:49.312879+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "I think I walked four tiles farther out from the haven, to where [52, 15]. No building this hour, I am afraid. Just the long way round, if that is all right."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1678,
+    "output_tokens": 59,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "explore",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "wistful",
+    "where": [
+      52,
+      15
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
