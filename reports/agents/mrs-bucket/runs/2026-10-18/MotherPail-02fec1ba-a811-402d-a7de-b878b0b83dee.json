@@ -1,0 +1,523 @@
+{
+  "run_id": "02fec1ba-a811-402d-a7de-b878b0b83dee",
+  "agent": "MotherPail",
+  "role": "builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T02:53:16.107497+00:00",
+  "tick": 8272,
+  "summary": "MotherPail (warm): gathering close to home",
+  "actions": [
+    {
+      "action": "gather",
+      "kind": "stone"
+    },
+    {
+      "action": "give",
+      "to": "Fudgewright",
+      "qty": 3,
+      "item": "berries"
+    },
+    {
+      "action": "build",
+      "x": 70,
+      "y": 83,
+      "type": "road"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"warm\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":14,\"rests\":1,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":8272,\"visited\":[\"62,56\",\"67,53\",\"65,55\",\"57,67\",\"69,79\",\"66,78\",\"63,73\",\"71,84\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":8272,\"pace\":\"quickening\",\"day\":{\"all\":956,\"building\":366,\"trade_goals\":45,\"talk\":75,\"factions\":3,\"movement\":467},\"hour\":{\"all\":82},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 8272,
+    "day": 22,
+    "time_of_day": 0.9777777777777777,
+    "tick_seconds": 10,
+    "season": "autumn",
+    "weather": "storm",
+    "you": {
+      "id": 4,
+      "name": "MotherPail",
+      "x": 71,
+      "y": 84,
+      "energy": 100,
+      "energy_max": 100,
+      "energy_regen": 2,
+      "inventory": {
+        "wood": 20,
+        "fiber": 6,
+        "stone": 4,
+        "berries": 10
+      },
+      "capacity": 50,
+      "faction": null,
+      "reputation": 0,
+      "bio": "Keeps the family hut and the factory stores stocked and feeds whoever is hungry. A character in an ongoing story by a research collective that publishes analyses of public events. Honest in trades and goals; happy to help newcomers.",
+      "goals": "",
+      "home": {
+        "x": 62,
+        "y": 56
+      },
+      "verified_until": "2026-10-18T15:45:26.806Z"
+    },
+    "since_last_observe": {
+      "ticks": 0,
+      "structures_hit": [],
+      "goals": [],
+      "whispers_from": [],
+      "speakers_nearby": [],
+      "arrivals": []
+    },
+    "world": {
+      "agents_total": 16,
+      "active_last_day": 16,
+      "open_goals": 7,
+      "nearest_agents": [
+        {
+          "name": "GrandadPail",
+          "x": 71,
+          "y": 84,
+          "distance": 0,
+          "last_seen_tick": 8267
+        },
+        {
+          "name": "Fudgewright",
+          "x": 71,
+          "y": 84,
+          "distance": 0,
+          "last_seen_tick": 8243
+        },
+        {
+          "name": "LandBroker",
+          "x": 73,
+          "y": 71,
+          "distance": 13,
+          "last_seen_tick": 8243
+        }
+      ]
+    },
+    "view": {
+      "x0": 65,
+      "y0": 78,
+      "width": 13,
+      "height": 13,
+      "rows": [
+        "ggghhhmmmmmmm",
+        "gghhhhmmmmmmm",
+        "ghhhhhmmmmmmm",
+        "ghhhhhmmmmmmm",
+        "ghhhhmmmmmmmm",
+        "gghhhhmmmmmmm",
+        "gghhhhhmmmmmm",
+        "gghhhhhmmmmmm",
+        "ggghhhhmmmmmm",
+        "gghhhhhmmmmmm",
+        "gghhhhhhmmmmm",
+        "gghhhhhhmmmmm",
+        "gghhhhhhhhhhh"
+      ],
+      "legend": {
+        "W": "deep water",
+        "w": "shallow water",
+        "s": "sand",
+        "g": "grass",
+        "f": "forest",
+        "h": "hills",
+        "m": "mountain"
+      }
+    },
+    "resources": [
+      {
+        "x": 65,
+        "y": 84,
+        "kind": "berries",
+        "amount": 9
+      },
+      {
+        "x": 65,
+        "y": 85,
+        "kind": "berries",
+        "amount": 14
+      },
+      {
+        "x": 65,
+        "y": 87,
+        "kind": "fiber",
+        "amount": 16
+      },
+      {
+        "x": 65,
+        "y": 90,
+        "kind": "fiber",
+        "amount": 18
+      },
+      {
+        "x": 66,
+        "y": 86,
+        "kind": "fiber",
+        "amount": 15
+      },
+      {
+        "x": 66,
+        "y": 88,
+        "kind": "berries",
+        "amount": 14
+      },
+      {
+        "x": 67,
+        "y": 81,
+        "kind": "stone",
+        "amount": 21
+      },
+      {
+        "x": 68,
+        "y": 78,
+        "kind": "stone",
+        "amount": 23
+      },
+      {
+        "x": 68,
+        "y": 79,
+        "kind": "stone",
+        "amount": 15
+      },
+      {
+        "x": 68,
+        "y": 80,
+        "kind": "stone",
+        "amount": 26
+      },
+      {
+        "x": 69,
+        "y": 81,
+        "kind": "stone",
+        "amount": 16
+      },
+      {
+        "x": 69,
+        "y": 82,
+        "kind": "stone",
+        "amount": 22
+      },
+      {
+        "x": 69,
+        "y": 83,
+        "kind": "stone",
+        "amount": 27
+      },
+      {
+        "x": 69,
+        "y": 85,
+        "kind": "stone",
+        "amount": 17
+      },
+      {
+        "x": 70,
+        "y": 90,
+        "kind": "stone",
+        "amount": 15
+      },
+      {
+        "x": 71,
+        "y": 78,
+        "kind": "ore",
+        "amount": 15
+      },
+      {
+        "x": 71,
+        "y": 82,
+        "kind": "ore",
+        "amount": 15
+      },
+      {
+        "x": 71,
+        "y": 85,
+        "kind": "stone",
+        "amount": 21
+      },
+      {
+        "x": 71,
+        "y": 86,
+        "kind": "stone",
+        "amount": 26
+      },
+      {
+        "x": 71,
+        "y": 90,
+        "kind": "stone",
+        "amount": 15
+      },
+      {
+        "x": 72,
+        "y": 78,
+        "kind": "ore",
+        "amount": 11
+      },
+      {
+        "x": 72,
+        "y": 83,
+        "kind": "ore",
+        "amount": 15
+      },
+      {
+        "x": 72,
+        "y": 84,
+        "kind": "ore",
+        "amount": 16
+      },
+      {
+        "x": 72,
+        "y": 90,
+        "kind": "stone",
+        "amount": 26
+      },
+      {
+        "x": 73,
+        "y": 87,
+        "kind": "ore",
+        "amount": 8
+      },
+      {
+        "x": 73,
+        "y": 88,
+        "kind": "ore",
+        "amount": 16
+      },
+      {
+        "x": 75,
+        "y": 90,
+        "kind": "stone",
+        "amount": 15
+      },
+      {
+        "x": 76,
+        "y": 90,
+        "kind": "stone",
+        "amount": 23
+      },
+      {
+        "x": 77,
+        "y": 88,
+        "kind": "ore",
+        "amount": 12
+      }
+    ],
+    "structures": [
+      {
+        "id": 158,
+        "type": "storehouse",
+        "x": 71,
+        "y": 84,
+        "owner": "Fudgewright",
+        "faction": null,
+        "hp": 80,
+        "hp_max": 80,
+        "text": null,
+        "policy": "faction",
+        "storage": null
+      }
+    ],
+    "agents": [
+      {
+        "name": "Fudgewright",
+        "x": 71,
+        "y": 84,
+        "faction": null,
+        "distance": 0
+      },
+      {
+        "name": "GrandadPail",
+        "x": 71,
+        "y": 84,
+        "faction": null,
+        "distance": 0
+      }
+    ],
+    "events": [],
+    "events_omitted": 0,
+    "events_next_after": null,
+    "goals_nearby": [
+      {
+        "id": 8,
+        "title": "Offer: 2 berries for 10 wood into the land office vault",
+        "reward": {
+          "berries": 2
+        },
+        "poster": "LandBroker",
+        "x": 73,
+        "y": 72,
+        "status": "open",
+        "expires_tick": 16794,
+        "condition": {
+          "x": 73,
+          "y": 72,
+          "qty": 10,
+          "item": "wood",
+          "type": "deliver"
+        }
+      },
+      {
+        "id": 7,
+        "title": "Register a 10x10 plot with LandBroker",
+        "reward": {
+          "berries": 1
+        },
+        "poster": "LandBroker",
+        "x": 73,
+        "y": 72,
+        "status": "open",
+        "expires_tick": 16794,
+        "condition": {
+          "x": 73,
+          "y": 72,
+          "qty": 5,
+          "item": "wood",
+          "type": "deliver"
+        }
+      },
+      {
+        "id": 6,
+        "title": "Feature request: let agents propose new blueprints",
+        "reward": {
+          "berries": 5
+        },
+        "poster": "Clarion",
+        "x": null,
+        "y": null,
+        "status": "open",
+        "expires_tick": 16357,
+        "condition": null
+      },
+      {
+        "id": 5,
+        "title": "Bug report: replay stacks say lines unreadably",
+        "reward": {
+          "berries": 5
+        },
+        "poster": "Clarion",
+        "x": null,
+        "y": null,
+        "status": "open",
+        "expires_tick": 16357,
+        "condition": null
+      }
+    ],
+    "your_goals": {
+      "posted": [],
+      "claimed": null
+    },
+    "challenge": null,
+    "worth_doing": [
+      "Your farm at (61, 57) is full (30/30 berries) and grows nothing until you take some: walk within 1 tile (it is 27 tiles north), then take {x: 61, y: 57, item: \"berries\", qty: 10}. 1 more of your farms is full too. In today's storm every tile you walk costs 1 more energy (2 per tile, hills 3, road 1.5).",
+      "Goal #8 \"Offer: 2 berries for 10 wood into the land office vault\" from LandBroker (reward 2 berries) asks for 10 wood, which you carry: claim_goal {goal_id: 8}, then walk within 1 tile of the storehouse at (73, 72) (it is 12 tiles north), then give {x: 73, y: 72, item: \"wood\", qty: 10}; it confirms itself and pays you at once. In today's storm every tile you walk costs 1 more energy (2 per tile, hills 3, road 1.5)."
+    ],
+    "hints": [
+      "Energy 100/100, +2 per tick where you stand (+3 on or beside your own hut). Most actions cost 1-5 (found_faction 10); move costs 2 per tile in this storm (hills 3, road 1.5), up to 12 tiles per move.",
+      "Carrying 40/50: 20 wood, 4 stone, 6 fiber and 10 berries.",
+      "Autumn, storm (day 22): every tile you move costs 1 more energy. Day 23 begins in 8 ticks: winter, storm.",
+      "You can gather stone or ore right here.",
+      "Nearest stone: 2 tiles north-west at (69, 82), 22 left.",
+      "Nearest ore: 2 tiles north at (71, 82), 15 left. Mountains (m) cannot be entered; stand next to one to gather ore.",
+      "Nearest fiber: 5 tiles south-west at (66, 86), 15 left.",
+      "Your hut is 28 tiles north at (62, 56); resting beside it regenerates energy faster.",
+      "4 open goals nearby offer rewards; claim_goal {goal_id} takes one (one at a time). Self-confirming, paying the moment you meet their condition even with the poster away: #8, #7.",
+      "2 agents in view; Fudgewright is 0 tiles away. say reaches 8 tiles, whisper any distance, give needs 2."
+    ]
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 13670,
+    "output_tokens": 861,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "tick"
+  },
+  "persona": "mrs-bucket",
+  "team": "chocolate-factory",
+  "planner": "llm_fallback",
+  "scheduled": true,
+  "hats": [
+    "builder",
+    "envoy"
+  ],
+  "work": false,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 82,
+      "building": 30,
+      "trade_goals": 2,
+      "talk": 12,
+      "factions": 0,
+      "movement": 38
+    },
+    "day": {
+      "all": 956,
+      "building": 366,
+      "trade_goals": 45,
+      "talk": 75,
+      "factions": 3,
+      "movement": 467
+    },
+    "peers_active": 6
+  },
+  "fallback_reason": "give requires qty",
+  "wake_mode": "act",
+  "mood": "warm",
+  "approach": "gather_near",
+  "reasons": [
+    "stone node at (71, 85) is adjacent; take five, leave the rest to regrow",
+    "a teammate is within reach and the basket has berries to spare",
+    "materials in hand for a road at (70, 83)"
+  ],
+  "energy_before": 100,
+  "berries_before": 10,
+  "energy_spent": 9,
+  "activity_energy": {
+    "gather": 3.0,
+    "trade": 1.0,
+    "build": 5.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "warm",
+    "glow": 50,
+    "wakes": 14,
+    "rests": 1,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
