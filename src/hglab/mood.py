@@ -78,16 +78,38 @@ def load_state(persona: Persona, notebook: dict[str, Any] | None) -> PersonaStat
 
 
 def dump_state(state: PersonaState) -> str:
-    """Serialize within the notebook value limit, trimming history first."""
+    """Serialize within the notebook value limit, trimming the least needed parts first.
+
+    Order: halve the visited history until it is gone, then the influence inputs, then the
+    bulkier parts of the feature snapshot, then the world digest, then the snapshot itself
+    (the next wake takes a fresh first look), then every flag. Each step removes something,
+    so this always ends: a one-entry history used to be halved to itself forever once a
+    grown feature snapshot pushed the state past the limit, and the wake hung in silence.
+    """
     payload = state.model_dump(exclude_none=True)
-    text = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
-    while len(text) > STATE_TEXT_LIMIT and payload["visited"]:
-        payload["visited"] = payload["visited"][len(payload["visited"]) // 2 :]
-        text = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
-    if len(text) > STATE_TEXT_LIMIT:
-        payload["inputs"] = {}
-        text = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
-    return text
+
+    def text() -> str:
+        return json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
+
+    while len(text()) > STATE_TEXT_LIMIT and payload["visited"]:
+        half = len(payload["visited"]) // 2
+        payload["visited"] = payload["visited"][half:] if half else []
+    flags = payload.setdefault("flags", {})
+    features = flags.get("features") if isinstance(flags.get("features"), dict) else {}
+    trims = (
+        lambda: payload.__setitem__("inputs", {}),
+        lambda: features.pop("agents", None),
+        lambda: features.pop("action_row_hashes", None),
+        lambda: features.pop("event_types", None),
+        lambda: flags.pop("world", None),
+        lambda: flags.pop("features", None),
+        lambda: payload.__setitem__("flags", {}),
+    )
+    for trim in trims:
+        if len(text()) <= STATE_TEXT_LIMIT:
+            break
+        trim()
+    return text()
 
 
 def apply_inputs(state: PersonaState, incoming: dict[str, dict[str, Any]], now_tick: int) -> PersonaState:
