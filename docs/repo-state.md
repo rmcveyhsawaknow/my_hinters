@@ -213,3 +213,10 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
   quantities are typed as integers; word limits, quoted words, one-word answers and line counts are
   enforced before submission. All eight agents were re-verified from the workstation at 22:40 UTC
   (first attempt each) and the hourly keepalives renew verification from here.
+- Two more faults surfaced by the first ticks after the fix (PR #40): a model plan that would
+  disclose a private note now falls back to the deterministic plan and records why, instead of
+  crashing the wake (a `remember` may restate a private note, its destination being private); and
+  `publish_reports.sh` works in a separate git worktree while the pull skips `reports/examples`,
+  after Clarion's publish step refused to switch branches over pulled example files.
+- The observatory workflow had been copying `data/` into itself every hour, 33 levels deep on the
+  `observatory` branch (PR #41); it now replaces the directory and drops the nest on restore.
