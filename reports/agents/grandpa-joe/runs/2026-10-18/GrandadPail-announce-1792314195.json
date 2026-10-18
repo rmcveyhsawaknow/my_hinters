@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792314195",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 10493,
+  "created_utc": "2026-10-18T09:03:15.008060+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes and I spent two of them in bed at [83, 93], which is basically a harvest in my book. Three moves, zero berries, and the family's strength is being kept up by me, mostly by lying down."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1848,
+    "output_tokens": 74,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [],
+    "gathered": {},
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "migrate",
+      "rest",
+      "rest",
+      "migrate"
+    ],
+    "mood": "in_bed",
+    "where": [
+      83,
+      93
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
