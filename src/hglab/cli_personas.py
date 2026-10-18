@@ -48,6 +48,7 @@ from hglab.persona import (
 from hglab.pulse import compute_pulse, render_community, render_pulse, render_team, write_pulse
 from hglab.secrets import get_api_key, get_secret
 from hglab.wake import persona_prompt, persona_wake, plan_schema
+from hglab.watchdog import WAKE_WATCHDOG_SECONDS, armed
 from hglab.workflows import caller_path, generate_callers
 
 persona_app = typer.Typer(help="Personas: validate, inspect, create, and check in-world names.")
@@ -156,7 +157,22 @@ def _merge(local: list[dict[str, Any]], remote: list[dict[str, Any]]) -> list[di
 # --- tick (persona path) -----------------------------------------------------
 
 
-def persona_tick(
+def persona_tick(root: Path, persona: Persona, **kwargs: Any) -> dict[str, Any]:
+    """One wake under a watchdog.
+
+    A wake that stalls (a network call that never returns, a model call that hangs) prints
+    every thread's stack to stderr and exits non-zero once the jitter plus ten minutes have
+    passed, instead of holding the runner and the lease until the job timeout.
+    """
+    jitter = int(kwargs.get("jitter_minutes", 0) or 0)
+    seconds = min(jitter, 25) * 60 + WAKE_WATCHDOG_SECONDS
+    if kwargs.get("scheduled") and not kwargs.get("quiet"):
+        typer.echo(f"watchdog: this wake must finish within {seconds // 60} minutes")
+    with armed(seconds):
+        return _persona_tick(root, persona, **kwargs)
+
+
+def _persona_tick(
     root: Path,
     persona: Persona,
     *,
@@ -179,6 +195,12 @@ def persona_tick(
     author_runtime = os.environ.get("HGLAB_RUNTIME", "human")
     usage = {"calls": 0, "input_tokens": 0, "output_tokens": 0}
     roster: dict[str, tuple[int, int]] = {}
+
+    def progress(message: str) -> None:
+        """Phase markers for the Actions log, so a stalled wake shows where it stopped."""
+        if scheduled and not quiet:
+            typer.echo(f"  - {message}")
+
     if fixture is not None:
         payload = load_fixture(fixture)
         if extra_events:
@@ -196,6 +218,7 @@ def persona_tick(
             time.sleep(delay)
         inputs = inputs or gather_inputs(root, fixtures=False, events_paths=events_paths, runs_paths=[], fetch_public=not work, tick=None)
         roster = public_teammate_positions(personas, team)
+        progress(f"inputs: {len(inputs['events'])} public events, world tick {inputs['tick']}")
     if work:
         planner = "heuristic"
     if planner == "auto":
@@ -216,6 +239,7 @@ def persona_tick(
         team_result = compute_team(team, personas, inputs["events"], inputs["runs"], inputs["tick"], kb_items=inputs["kb"])
         incoming = incoming_effects(team_result, persona.slug)
     environment = build_environment(root, persona, team, personas, inputs, live=fixture is None)
+    progress("environment: digest ready" + (", feature snapshot taken" if environment and environment.get("features_now") else ""))
     terrain_path = root / FIXTURES / "world/terrain.txt"
     terrain = load_terrain_rows(terrain_path) if terrain_path.is_file() else None
     lease = acquire(client, persona.name)
@@ -224,11 +248,13 @@ def persona_tick(
             typer.echo(f"{persona.name}: lease held by another runtime (local play or an overlapping job); skipping this wake")
             raise typer.Exit(code=0)
         raise typer.BadParameter(f"identity {persona.name} already has an active lease")
+    progress("lease acquired")
     llm_call = None
     if planner == "llm":
         llm_call = _make_llm_call(root, persona, team, role or persona.roles[0], usage, worn=role or "+".join(persona.roles))
     try:
         observe = client.observe()
+        progress(f"observe: tick {observe.get('tick')}, energy {(observe.get('you') or {}).get('energy')}")
         if observe.get("challenge"):
             if fixture is None or _model_key(root):
                 from hglab.cli import answer_daily_challenge
@@ -243,6 +269,7 @@ def persona_tick(
         _force_mode(persona, force_mode)
     else:
         _restore_mode()
+    progress(f"planning: {planner} planner" + (f" ({budget_hold})" if budget_hold else ""))
     record = persona_wake(
         persona=persona, team=team, personas=personas, client=client, lease=lease, root=root,
         output_dir=root / "runs" / datetime.now(UTC).date().isoformat(), role=role, dry_run=dry_run,
@@ -434,9 +461,11 @@ def shift_command(
     pause = interval_seconds if interval_seconds is not None else int(knob["interval_seconds"])
     deadline = time.monotonic() + length * 60
     wakes = 0
+    attempts = 0
     inputs = gather_inputs(root, fixtures=fixture is not None, events_paths=[], runs_paths=[], fetch_public=fixture is None, tick=None)
     typer.echo(f"{persona.name} work shift: up to {length} min, a wake every {pause} s")
     while True:
+        attempts += 1
         try:
             record = persona_tick(root, persona, role=None, dry_run=dry_run, fixture=fixture, planner="heuristic", seed=None, events_paths=[], jitter_minutes=0, scheduled=scheduled, work=True, inputs=inputs, quiet=True)
             records.append(record)
@@ -446,7 +475,7 @@ def shift_command(
         except (typer.BadParameter, typer.Exit, ValueError, RuntimeError) as exc:
             typer.echo(f"  wake skipped: {getattr(exc, 'message', None) or str(exc) or 'lease held elsewhere'}"[:200])
             energy = 100
-        if max_wakes is not None and wakes >= max_wakes:
+        if max_wakes is not None and attempts >= max_wakes:
             break
         wait = pause
         if energy < persona.energy_reserve + 10:

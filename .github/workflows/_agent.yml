@@ -84,7 +84,7 @@ jobs:
     if: inputs.job == 'tick'
     needs: keepalive
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 30
     permissions:
       contents: write
     steps:
@@ -113,6 +113,7 @@ jobs:
         env:
           AGENT: ${{ inputs.agent }}
           DRY_RUN: ${{ inputs.dry_run }}
+          PYTHONUNBUFFERED: "1"
           JITTER: ${{ github.event_name == 'workflow_dispatch' && '0' || inputs.jitter_minutes }}
         run: |
           if [ "$DRY_RUN" = "true" ]; then
@@ -162,6 +163,7 @@ jobs:
       - name: Work shift (build, gather, deposit, migrate)
         env:
           AGENT: ${{ inputs.agent }}
+          PYTHONUNBUFFERED: "1"
         run: hglab shift --agent "$AGENT" --scheduled
       - name: Publish compact run records
         if: always()

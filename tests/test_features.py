@@ -73,3 +73,22 @@ def test_an_api_bump_with_a_new_action_and_its_event_type_is_announced():
     assert "0.19.0" in kinds["api_version"]
     assert "reject_claim" in kinds["new_action"]
     assert "goal_rejected (documented)" in kinds["new_event_type"]
+
+
+def test_the_notebook_snapshot_is_slim_and_still_finds_arrivals_and_rule_changes():
+    import json
+
+    from hglab.features import compact
+
+    full = _snap(agents=[f"a{i}" for i in range(80)], agent_count=80, action_row_hashes={f"act{i}": "f" * 16 for i in range(30)})
+    kept = compact(full)
+    assert "agents" not in kept and all(len(v) == 8 for v in kept["action_row_hashes"].values())
+    assert len(json.dumps(kept, separators=(",", ":"))) < 1500
+    later = {
+        **full, "agent_count": 83, "guide_sha256": "b" * 64,
+        "action_row_hashes": {**full["action_row_hashes"], "act1": "0" * 16},
+        "action_row_text": {"act1": "| `act1` | x | 1 | the new rule |"},
+    }
+    kinds = {d["kind"]: d["text"] for d in compare(kept, later)}
+    assert kinds["newcomers"].startswith("3 new residents") and "act1" in kinds["rule_changed"]
+    assert compare({}, later)[0]["kind"] == "first_look"
