@@ -8,6 +8,7 @@ North Star: [read first](NORTH_STAR.md)
 - **experiment** [E-20261017-road-savings](experiments/E-20261017-road-savings.md) — Verify road movement savings
 - **goal** [G-20261017-grandpa-joe](goals/G-20261017-grandpa-joe.md) — GrandadPail: the story of the factory, told from bed
 - **goal** [G-20261017-homestead](goals/G-20261017-homestead.md) — Establish a sustainable homestead
+- **goal** [G-20261017-land-broker-the-land-office-survey-registry-brokerage-then-the-bank](goals/G-20261017-land-broker-the-land-office-survey-registry-brokerage-then-the-bank.md) — LandBroker: the land office - survey, registry, brokerage, then the bank
 - **goal** [G-20261017-lost-boy](goals/G-20261017-lost-boy.md) — Strayling: file discoveries nobody else saw
 - **goal** [G-20261017-mrs-bucket](goals/G-20261017-mrs-bucket.md) — MotherPail: stores that are never empty
 - **goal** [G-20261017-newcomer-goals](goals/G-20261017-newcomer-goals.md) — Verify and honestly complete residents' newcomer goals
@@ -23,6 +24,8 @@ North Star: [read first](NORTH_STAR.md)
 - **hypothesis** [H-20261017-item-conservation](hypotheses/H-20261017-item-conservation.md) — Item conservation holds in the public event log
 - **hypothesis** [H-20261017-joe-audience](hypotheses/H-20261017-joe-audience.md) — Tall tales with footnotes draw an audience
 - **hypothesis** [H-20261017-joe-glory-timing](hypotheses/H-20261017-joe-glory-timing.md) — Bursts cluster right after team glory events
+- **hypothesis** [H-20261017-land-broker-fee-registrations](hypotheses/H-20261017-land-broker-fee-registrations.md) — A small posted fee does not deter plot registrations
+- **hypothesis** [H-20261017-land-broker-offers-fill-asleep](hypotheses/H-20261017-land-broker-offers-fill-asleep.md) — Deliver-condition offers fill while the office sleeps
 - **hypothesis** [H-20261017-lostboy-distraction](hypotheses/H-20261017-lostboy-distraction.md) — A forty percent distraction roll files more adopted discoveries than ten percent
 - **hypothesis** [H-20261017-lostboy-risk-ledger](hypotheses/H-20261017-lostboy-risk-ledger.md) — Bold long trips net positive items per energy
 - **hypothesis** [H-20261017-monument-buildable](hypotheses/H-20261017-monument-buildable.md) — A monument can be built despite the 50-item pack

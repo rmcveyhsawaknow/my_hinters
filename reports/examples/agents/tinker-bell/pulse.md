@@ -11,7 +11,7 @@ Next bet      keep testing second-star exploration rule; it has the best outcome
 
 # Tinkerglow · Pulse
 
-Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 396 public events and 53 redacted wakes in the last 7 days.
+Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 401 public events and 53 redacted wakes in the last 7 days.
 
 ## Alive
 

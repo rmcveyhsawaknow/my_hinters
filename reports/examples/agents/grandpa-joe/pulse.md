@@ -11,7 +11,7 @@ Next bet      try springing to life for glory events at least once this week; it
 
 # GrandadPail · Pulse
 
-Metric spec v2 · tick 65760 (day 182) · 2026-10-17 · 396 public events and 27 redacted wakes in the last 7 days.
+Metric spec v2 · tick 65760 (day 182) · 2026-10-17 · 401 public events and 27 redacted wakes in the last 7 days.
 
 ## Alive
 

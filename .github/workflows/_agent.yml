@@ -171,6 +171,12 @@ jobs:
           AGENT: ${{ inputs.agent }}
           PYTHONUNBUFFERED: "1"
         run: hglab crier round --agent "$AGENT" --scheduled
+      - name: Land office round (survey, registry, offers; a no-op without duties)
+        if: always()
+        env:
+          AGENT: ${{ inputs.agent }}
+          PYTHONUNBUFFERED: "1"
+        run: hglab land round --agent "$AGENT" --scheduled
       - name: Publish compact run records
         if: always()
         env:

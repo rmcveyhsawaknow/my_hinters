@@ -1,0 +1,15 @@
+# The land office ledger. LandBroker (the registrar) surveys the world in 10 by 10 plots
+# (columns A-M by x, rows 00-12 by y), registers a plot for the posted fee, keeps the
+# registry in its public profile and on deed signs, and buys surplus through standing
+# offers. A registration is a dated public record and a mediator's promise; the world
+# enforces no land rights, and the office says so when asked. Humans edit this file by
+# PR; registrations made in the world live in the registrar's notebook and profile.
+registrar: land-broker
+grid: 10
+fee: {wood: 5}
+fee_reward: {berries: 1}
+registration_title: "Register a 10x10 plot with LandBroker"
+offers:
+  - {id: wood-for-berries, want: {wood: 10}, reward: {berries: 2}, status: open}
+  - {id: stone-for-berries, want: {stone: 10}, reward: {berries: 3}, status: open}
+plots: []

@@ -11,7 +11,7 @@ Next bet      keep testing keep the storehouse stocked; it has the best outcome 
 
 # MotherPail · Pulse
 
-Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 396 public events and 82 redacted wakes in the last 7 days.
+Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 401 public events and 82 redacted wakes in the last 7 days.
 
 ## Alive
 

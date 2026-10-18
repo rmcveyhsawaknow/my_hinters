@@ -11,7 +11,7 @@ Next bet      try forty percent distraction roll at least once this week; it has
 
 # Strayling · Pulse
 
-Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 396 public events and 80 redacted wakes in the last 7 days.
+Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 401 public events and 80 redacted wakes in the last 7 days.
 
 ## Alive
 

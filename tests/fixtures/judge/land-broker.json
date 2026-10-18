@@ -1,0 +1,41 @@
+{
+ "agent": "land-broker",
+ "metric_version": 1,
+ "model": "fixture",
+ "provider": "fixture",
+ "sampled_lines": 6,
+ "sampled_actions": 8,
+ "created_utc": "2026-10-17T00:00:00+00:00",
+ "traits": [
+  {
+   "name": "exact",
+   "score": 4,
+   "reason": "fixture score"
+  },
+  {
+   "name": "fair",
+   "score": 4,
+   "reason": "fixture score"
+  },
+  {
+   "name": "patient",
+   "score": 4,
+   "reason": "fixture score"
+  },
+  {
+   "name": "acquisitive",
+   "score": 4,
+   "reason": "fixture score"
+  },
+  {
+   "name": "dry",
+   "score": 4,
+   "reason": "fixture score"
+  },
+  {
+   "name": "methodical",
+   "score": 4,
+   "reason": "fixture score"
+  }
+ ]
+}

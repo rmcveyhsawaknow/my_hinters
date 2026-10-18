@@ -209,6 +209,7 @@ def persona_wake(
     environment: dict[str, Any] | None = None,
     work: bool = False,
     owned_counts: dict[str, int] | None = None,
+    registrar_name: str | None = None,
 ) -> dict[str, Any]:
     if role is not None and role not in persona.roles:
         raise ValueError(f"{persona.slug} does not wear the {role} hat")
@@ -256,7 +257,7 @@ def persona_wake(
         plan = plan_wake(
             persona, team, state, observe, mode, rng,
             teammates=mates, terrain_rows=terrain_rows, allowed=allowed, team_names=names, work=work,
-            owned_counts=owned_counts,
+            owned_counts=owned_counts, registrar_name=registrar_name,
         )
         used = "heuristic"
         if planner_mode == "llm" and llm_call is not None and mode != "rest" and not work:
@@ -445,6 +446,8 @@ def _llm_plan(
         if environment.get("collector_board_text"):
             guidance["community_board"] = environment["collector_board_text"]
             guidance["your_faction"] = (observe.get("you") or {}).get("faction")
+        if environment.get("land_office_text"):
+            guidance["land_office"] = environment["land_office_text"]
         if environment.get("discoveries"):
             guidance["discoveries_since_last_wake"] = environment["discoveries"]
     try:
@@ -482,6 +485,10 @@ def persona_prompt(
         " too (your second), and argue your preference to peers in your one public line when it fits your"
         " character; persuasion is fair, pressure and deceit are not. Never claim a goal posted by a collective"
         " member; feedback for the makers goes in public lines near the collector or in a whisper to them."
+        " If land_office is present, the collective's land office registers 10x10 plots for a posted fee and buys"
+        " surplus through posted offers: when you stand within a tile of its vault, give the surplus you do not"
+        " need (collective members pay the registration fee by giving it into the vault, never by claiming the"
+        " office's goals); negotiate land, boundaries and deals with it by whisper, and honour what you agree."
         " Propose 0-3 in-character actions within the knobs; the notebook state"
         " update is added for you. Include exactly one public say each wake that tells your story or your plan"
         " in character (the collective reads the Talk feed to see you are alive); the validator enforces the"
