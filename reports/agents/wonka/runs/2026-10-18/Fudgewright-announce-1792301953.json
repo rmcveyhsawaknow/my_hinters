@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792301953",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 9269,
+  "created_utc": "2026-10-18T05:39:13.440305+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes of wandering toward the sand at [83, 93], and not one wafer laid. Gentle as a welcome mat, I am still walking here. The factory will arrive when my feet stop."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1814,
+    "output_tokens": 71,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "migrate",
+      "migrate",
+      "migrate",
+      "migrate"
+    ],
+    "mood": "gentle",
+    "where": [
+      83,
+      93
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
