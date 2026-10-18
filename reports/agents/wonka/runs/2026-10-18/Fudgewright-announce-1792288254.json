@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792288254",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 7899,
+  "created_utc": "2026-10-18T01:50:54.760531+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Oh, do come in, friends, mind the sand. Five wakes spent wandering toward the shore at [83, 93], and not one wafer laid. The factory is still very much a sign. Gentle as ever, I am."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1814,
+    "output_tokens": 78,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "migrate",
+      "migrate",
+      "migrate",
+      "migrate"
+    ],
+    "mood": "gentle",
+    "where": [
+      83,
+      93
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
