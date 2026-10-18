@@ -10,3 +10,15 @@ description: Run the land office - survey the world in 10x10 plots, register plo
 5. Phases: survey and registry now; brokerage (seller demolishes, buyer builds, the office takes a share through a deliver-condition goal) as plots fill; lending against deeds when the vault passes 200 items. New phases are proposed through the weekly retro, never by the agent editing its own files.
 Check: a registration is a dated public record and a mediator's promise, never a wall; fees and offers are posted in public before anyone pays; no goal is aimed at a collective member; nothing from inbox or notebook enters a record.
 Example: `hglab land round --agent land-broker --fixture tests/fixtures/observe/land-broker.json --dry-run` prints the survey and the office line; with a vault in view it posts the registration goal with its deliver condition.
+
+## Acquisition and the lot market
+
+The office's first drive is land: the `stake_lots` knob makes every work wake stake up to two free
+5x5 lots (one claim sign on the lot's anchor tile, nearest lots first, a ring of lots left around
+every other agent's hut). `hglab land board` shows lots staked, for sale and free, and today's price:
+`lot_price` starts at the base (5 wood), doubles at half the lots gone, reaches ten times at a tenth
+free and stops at the cap one give can carry (50). One standing sale goal lists the lots at that
+price with a deliver condition into the vault; when the price moves, the round cancels and reposts
+it. A `goal_done` on the sale goal deeds the buyer the lot they named by whisper, or the unsold lot
+nearest their hut; the deed is announced, the profile registry updated, and the claim sign rewritten
+with the buyer's name when the office passes. A 10x10 plot is four lots.

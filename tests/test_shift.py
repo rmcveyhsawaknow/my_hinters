@@ -182,3 +182,26 @@ def test_the_public_map_becomes_terrain_rows():
     assert rows is not None and len(rows) == 128 and len(rows[0]) == 128
     assert terrain_rows_from_world({"width": 128, "terrain": ["ggg", "ggg"]}) == ["ggg", "ggg"]
     assert terrain_rows_from_world({"terrain": "short"}) is None and terrain_rows_from_world({}) is None
+
+
+def test_the_land_office_stakes_the_nearest_free_lots_and_spares_homesteads():
+    from hglab.lots import homestead_ring
+    from hglab.planner import WorldView, _plan_stake
+
+    broker = load_personas(ROOT)["land-broker"]
+    rows = ["g" * 128] * 128
+    far_hut = {"type": "hut", "x": 97, "y": 36, "owner": "Quill"}
+    view = WorldView(x0=60, y0=60, rows=rows, structures=[], world_structures=[far_hut])
+    first = _plan_stake(broker, {"wood": 3}, (62, 62), view)
+    assert first is not None and first[0][-1]["action"] == "build" and first[0][-1]["type"] == "sign"
+    lid = first[2].split(":", 1)[1]
+    assert lid == "G06-NW" and (first[0][-1]["x"], first[0][-1]["y"]) == (62, 62) and len(first[0]) == 1  # standing on the anchor
+    second = _plan_stake(broker, {"wood": 3}, (62, 62), view, exclude={lid})
+    assert second is not None and second[2] != first[2] and [a["action"] for a in second[0]] == ["move", "build"]
+    near_hut = {"type": "hut", "x": 67, "y": 56, "owner": "Quill"}
+    ringed = _plan_stake(broker, {"wood": 3}, (62, 62), WorldView(x0=60, y0=60, rows=rows, structures=[], world_structures=[near_hut]))
+    assert ringed is not None and ringed[2].split(":", 1)[1] not in homestead_ring([near_hut], "LandBroker")  # a ring of lots around the homestead stays open
+    assert _plan_stake(broker, {"stone": 3}, (62, 62), view) is None  # no wood, no sign
+    assert _plan_stake(load_personas(ROOT)["wonka"], {"wood": 3}, (62, 62), view) is None  # only the office stakes
+    occupied = WorldView(x0=60, y0=60, rows=rows, structures=[], world_structures=[far_hut, {"type": "sign", "x": 62, "y": 62, "owner": "LandBroker", "text": "Lot G06-NW: staked"}])
+    assert _plan_stake(broker, {"wood": 3}, (62, 62), occupied)[2] != "stake:G06-NW"

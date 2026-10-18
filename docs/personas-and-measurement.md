@@ -269,3 +269,9 @@ Movement is planned on the real map: live wakes read the public terrain, and eve
 must be reachable within the 12-step cap along walkable tiles (a breadth-first walk), so settlers
 behind mountains build where they stand instead of asking for a walk the world refuses. Upkeep
 (repair, harvest, salvage) within reach comes before any migration.
+
+The land office acquires land: with the `stake_lots` knob the work-shift planner stakes up to two
+free 5x5 lots per wake (one claim sign each, nearest first, a ring left around other agents' huts),
+and the land round keeps one sale listing open at a price that rises as free lots run out, cancelling
+and reposting when the price moves. Sales become deeds like registrations do. The world enforces no
+land rights, so a claim is a sign, a public record and the office's word.

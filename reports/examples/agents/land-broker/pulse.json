@@ -3,7 +3,7 @@
  "name": "LandBroker",
  "team": "exchange",
  "headline": "the land office is open",
- "metric_version": 1,
+ "metric_version": 2,
  "tick": 65760,
  "day": 182,
  "date": "2026-10-17",
@@ -26,24 +26,44 @@
  },
  "on_mission": {
   "score": 0,
-  "detail": "0 deeds · 0 posted · 0 banked · 0 built · 3 tiles",
+  "detail": "0 staked · 0 sold · 0 deeds · 0 posted · 0 banked",
   "rows": [
+   {
+    "id": "lots_staked",
+    "label": "lots staked (claim signs built)",
+    "value": 0.0,
+    "target": 60,
+    "weight": 0.3,
+    "progress": 0.0,
+    "shown": "0 staked",
+    "measure": "events.structures_built"
+   },
+   {
+    "id": "lots_sold",
+    "label": "lots sold (sale deeds announced)",
+    "value": 0.0,
+    "target": 10,
+    "weight": 0.2,
+    "progress": 0.0,
+    "shown": "0 sold",
+    "measure": "events.count"
+   },
    {
     "id": "deeds",
     "label": "deeds announced",
     "value": 0.0,
     "target": 10,
-    "weight": 0.3,
+    "weight": 0.15,
     "progress": 0.0,
     "shown": "0 deeds",
     "measure": "events.count"
    },
    {
     "id": "offers",
-    "label": "offers and registration slots posted",
+    "label": "listings, offers and registration slots posted",
     "value": 0.0,
     "target": 12,
-    "weight": 0.2,
+    "weight": 0.1,
     "progress": 0.0,
     "shown": "0 posted",
     "measure": "events.goals_posted"
@@ -57,26 +77,6 @@
     "progress": 0.0,
     "shown": "0 banked",
     "measure": "events.items_given_to_storehouse"
-   },
-   {
-    "id": "office",
-    "label": "storehouse and deed signs built",
-    "value": 0.0,
-    "target": 8,
-    "weight": 0.15,
-    "progress": 0.0,
-    "shown": "0 built",
-    "measure": "events.structures_built"
-   },
-   {
-    "id": "survey",
-    "label": "distinct tiles surveyed",
-    "value": 3.0,
-    "target": 120,
-    "weight": 0.1,
-    "progress": 0.025,
-    "shown": "3 tiles",
-    "measure": "events.distinct_tiles"
    }
   ]
  },
@@ -187,6 +187,17 @@
  "approaches": {
   "rows": [
    {
+    "id": "stake_and_sell",
+    "label": "stake every free lot, sell at a rising price",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 0.0,
+    "per_energy": null,
+    "hypothesis": null,
+    "bet_status": null,
+    "bet_title": null
+   },
+   {
     "id": "fee_registration",
     "label": "registrations for a posted fee",
     "wakes": 0,
@@ -222,7 +233,7 @@
   ],
   "working": "nothing measurable yet",
   "not_working": "nothing clearly failing",
-  "next_bet": "try registrations for a posted fee at least once this week; it has a bet but no wakes"
+  "next_bet": "try stake every free lot, sell at a rising price at least once this week; it has a bet but no wakes"
  },
  "trend": {
   "alive": "█▇███▇▆",
@@ -274,7 +285,7 @@
   },
   {
    "date": "2026-10-17",
-   "metric_version": 1,
+   "metric_version": 2,
    "alive": 67,
    "on_mission": 0,
    "in_character": 52,

@@ -9,6 +9,18 @@ grid: 10
 fee: {wood: 5}
 fee_reward: {berries: 1}
 registration_title: "Register a 10x10 plot with LandBroker"
+# Lots for sale: the office stakes every free 5x5 lot with one claim sign (its anchor tile) and sells
+# lots through one standing goal whose price in wood rises as free lots run out (base while land is
+# plentiful, double at half full, ten times at a tenth free, never above the cap one give can carry).
+# A 10x10 plot is four lots: buy four. Buying a lot earns its deed; the office keeps the sign as the
+# marker and rewrites it with the buyer's name when it passes.
+lots:
+  size: 5
+  currency: wood
+  base_price: 5
+  price_cap: 50
+  sale_title: "Buy a 5x5 lot from the land office"
+  sale_reward: {berries: 1}
 offers:
   - {id: wood-for-berries, want: {wood: 10}, reward: {berries: 2}, status: open}
   - {id: stone-for-berries, want: {stone: 10}, reward: {berries: 3}, status: open}

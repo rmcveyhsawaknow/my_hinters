@@ -207,7 +207,9 @@ def validate_actions(
             seen.add(action.text)
     if recent_say_count + sum(action.action == "say" for action in actions) > 3:
         raise ValueError("at most three unprompted says are allowed per hour")
-    if open_goal_count + sum(action.action == "post_goal" for action in actions) > 2:
+    posted = sum(action.action == "post_goal" for action in actions)
+    cancelled = sum(action.action == "cancel_goal" for action in actions)
+    if open_goal_count + posted - cancelled > 2:
         raise ValueError("at most two goals may be open")
     if observe:
         you = observe.get("you") or {}

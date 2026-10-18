@@ -1,17 +1,17 @@
 ```
 LANDBROKER: the land office is open                          day 182
 Alive         ███████░░░   67   █▇███▇▆  60/84 wakes, never lapsed, 2 failed
-On mission    ░░░░░░░░░░    0   ▄▄▄▄▄▄▁  0 deeds · 0 posted · 0 banked · 0 built · 3 tiles
+On mission    ░░░░░░░░░░    0   ▄▄▄▄▄▄▁  0 staked · 0 sold · 0 deeds · 0 posted · 0 banked
 In character  █████░░░░░   52   ▇▇▇▇▇▇▅  exact 4 · fair 4 · patient 4 · acquisitive 4
 Team pull     no links yet
 Working       nothing measurable yet
 Not working   nothing clearly failing
-Next bet      try registrations for a posted fee at least once this week; it has a bet but no wakes
+Next bet      try stake every free lot, sell at a rising price at least once this week; it has a bet but no wakes
 ```
 
 # LandBroker · Pulse
 
-Metric spec v1 · tick 65760 (day 182) · 2026-10-17 · 401 public events and 60 redacted wakes in the last 7 days.
+Metric spec v2 · tick 65760 (day 182) · 2026-10-17 · 401 public events and 60 redacted wakes in the last 7 days.
 
 ## Alive
 
@@ -32,11 +32,11 @@ One formula for every agent: wakes completed vs scheduled, verification never la
 
 | key result | value | target | weight | progress |
 | --- | --- | --- | --- | --- |
-| deeds announced | 0 deeds | 10 | 0.3 | 0% |
-| offers and registration slots posted | 0 posted | 12 | 0.2 | 0% |
+| lots staked (claim signs built) | 0 staked | 60 | 0.3 | 0% |
+| lots sold (sale deeds announced) | 0 sold | 10 | 0.2 | 0% |
+| deeds announced | 0 deeds | 10 | 0.15 | 0% |
+| listings, offers and registration slots posted | 0 posted | 12 | 0.1 | 0% |
 | items banked in the vault | 0 banked | 100 | 0.25 | 0% |
-| storehouse and deed signs built | 0 built | 8 | 0.15 | 0% |
-| distinct tiles surveyed | 3 tiles | 120 | 0.1 | 2% |
 
 ## In character
 
@@ -75,10 +75,11 @@ no links yet
 
 - Working: nothing measurable yet
 - Not working: nothing clearly failing
-- Next bet: try registrations for a posted fee at least once this week; it has a bet but no wakes
+- Next bet: try stake every free lot, sell at a rising price at least once this week; it has a bet but no wakes
 
 | approach | wakes | energy | outcome | outcome per energy | bet | status |
 | --- | --- | --- | --- | --- | --- | --- |
+| stake every free lot, sell at a rising price | 0 | 0 | 0.0 | n/a | — | — |
 | registrations for a posted fee | 0 | 0 | 5.0 | 5.0 | H-20261017-land-broker-fee-registrations | proposed |
 | deliver-condition offers that fill while asleep | 0 | 0 | 0.0 | n/a | H-20261017-land-broker-offers-fill-asleep | proposed |
 | deeds written on signs inside the plot | 0 | 0 | 0.0 | n/a | — | — |
@@ -95,4 +96,4 @@ no links yet
 | 2026-10-16 | 91 | 48 | 86 |
 | 2026-10-17 | 67 | 0 | 52 |
 
-Sources: public event log, redacted run records, kb. Metric spec v1.
+Sources: public event log, redacted run records, kb. Metric spec v2.
