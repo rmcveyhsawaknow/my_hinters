@@ -1,0 +1,149 @@
+{
+  "run_id": "e65b9262-ae16-41da-86f9-cdeb2df855b5",
+  "agent": "Clarion",
+  "role": "surveyor+envoy+experimenter+conjecturer",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T01:16:13.876788+00:00",
+  "tick": 7691,
+  "summary": "Clarion (bright): work shift: building",
+  "actions": [
+    {
+      "action": "build",
+      "x": 68,
+      "y": 54,
+      "type": "road"
+    },
+    {
+      "action": "move",
+      "x": 68,
+      "y": 55
+    },
+    {
+      "action": "gather",
+      "kind": "berries"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"bright\",\"since_tick\":6498,\"glow\":50,\"inputs\":{},\"wakes\":9,\"rests\":0,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":7691,\"visited\":[],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":7690,\"pace\":\"steady\",\"day\":{\"all\":803,\"building\":310,\"trade_goals\":41,\"talk\":52,\"factions\":1,\"movement\":399},\"hour\":{\"all\":45},\"peers\":6},\"features\":{\"tick\":7690,\"api_version\":\"0.23.0\",\"guide_sha256\":\"d8b19947b04aa5e2\",\"guide_actions\":[\"abandon_goal\",\"agents\",\"bridge\",\"build\",\"cache\",\"cancel_goal\",\"challenge\",\"claim_goal\",\"condition\",\"confirm_goal\",\"demolish\",\"eat\",\"events\",\"events_next_after\",\"events_omitted\",\"f\",\"farm\",\"forget\",\"found_faction\",\"g\",\"gather\",\"give\",\"goals_nearby\",\"h\",\"hints\",\"hut\",\"inbox\",\"invite\",\"join_faction\",\"leave_faction\",\"m\",\"monument\",\"move\",\"notebook\",\"post_goal\",\"reject_claim\",\"remember\",\"resources\",\"road\",\"s\"],\"guide_blueprints\":[\"bridge\",\"cache\",\"farm\",\"hut\",\"leave_faction\",\"monument\",\"road\",\"sign\",\"storehouse\",\"tower\",\"wall\"],\"blueprint_rows\":{\"sign\":{\"cost\":\"wood 1\"},\"road\":{\"cost\":\"stone 1\"},\"wall\":{\"cost\":\"stone 2\"},\"bridge\":{\"cost\":\"wood 15\"},\"hut\":{\"cost\":\"wood 10, fiber 4\"},\"farm\":{\"cost\":\"fiber 5, wood 5\"},\"storehouse\":{\"cost\":\"wood 20, stone 10\"},\"tower\":{\"cost\":\"stone 30, wood 10\"},\"monument\":{\"cost\":\"stone 50, ore 10\"},\"cache\":{\"cost\":\"system only\"}},\"event_types\":[\"build\",\"farm_produced\",\"gather\",\"give\",\"goal_abandoned\",\"goal_expired\",\"move\",\"profile\",\"say\",\"spawn\",\"take\"],\"structure_types\":[\"farm\",\"hut\",\"monument\",\"road\",\"sign\",\"storehouse\",\"tower\"],\"factions\":[\"Wayfarers:open\"],\"agent_count\":15}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 7691,
+    "you": {
+      "id": 15,
+      "name": "Clarion",
+      "x": 69,
+      "y": 55,
+      "energy": 98,
+      "inventory": {
+        "wood": 10,
+        "fiber": 6,
+        "stone": 1,
+        "berries": 15
+      },
+      "home": {
+        "x": 63,
+        "y": 71
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "town-crier",
+  "team": "square",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "envoy",
+    "experimenter",
+    "conjecturer"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 45,
+      "building": 19,
+      "trade_goals": 6,
+      "talk": 4,
+      "factions": 0,
+      "movement": 16
+    },
+    "day": {
+      "all": 803,
+      "building": 310,
+      "trade_goals": 41,
+      "talk": 52,
+      "factions": 1,
+      "movement": 399
+    },
+    "peers_active": 6
+  },
+  "discoveries": [
+    "The game updated: API 0.19.0 became 0.23.0.",
+    "The agent guide changed since last look; new rules may be in it.",
+    "New actions in the guide: `condition`, `set_profile`, `sign` (wood 1), `since_last_observe`, `storehouse` (wood 20, stone 10), `structures`, `take`, `tower` (stone 30, wood 10), `view`, `w`, `wall` (stone 2), `whisper`, `world`, `worth_doing`, `write`, `you`, `your_goals`.",
+    "A new kind of event appeared in the public log: give (documented)."
+  ],
+  "wake_mode": "act",
+  "mood": "bright",
+  "approach": "build",
+  "reasons": [
+    "materials in hand for a road at (68, 54)",
+    "walk to (68, 55) beside the berries node at (67, 56), then gather"
+  ],
+  "energy_before": 98,
+  "berries_before": 15,
+  "energy_spent": 9,
+  "activity_energy": {
+    "build": 5.0,
+    "explore": 1.0,
+    "gather": 3.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "bright",
+    "glow": 50,
+    "wakes": 9,
+    "rests": 0,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}

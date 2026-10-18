@@ -1,0 +1,58 @@
+{
+  "run_id": "announce-1792287081",
+  "kind": "announce",
+  "agent": "Clarion",
+  "persona": "town-crier",
+  "tick": 7781,
+  "created_utc": "2026-10-18T01:31:21.015222+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Hear this! Two roads laid at (68,54) and (69,54), and I built them myself, one stone at a time, all five of them, well, twenty berries too! I am at (68,55) and very pleased about it, very pleased, pleased pleased, next: more road!"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1786,
+    "output_tokens": 93,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 4,
+    "rests": 1,
+    "built": [
+      "road at (68,54)",
+      "road at (69,54)"
+    ],
+    "gathered": {
+      "berries": 20,
+      "stone": 5
+    },
+    "moved": 1,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "rest",
+      "build",
+      "gather_trip"
+    ],
+    "mood": "bright",
+    "where": [
+      68,
+      55
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
