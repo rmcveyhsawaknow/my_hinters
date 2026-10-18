@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792302831",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 9356,
+  "created_utc": "2026-10-18T05:53:51.183988+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes of pure exploring at 22, 59 and not a single thing built. Was there a shadow on that ridge or a node, anyway it moved. Filing a card on the moving shadow before I chase it."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1690,
+    "output_tokens": 75,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "curious",
+    "where": [
+      22,
+      59
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
