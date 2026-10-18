@@ -529,13 +529,14 @@ def shift_command(
             time.sleep(wait)
     typer.echo(f"shift over: {wakes} wake(s)")
     collector = _collector_duties(root, persona)
+    spoke = False
     if collector:
-        typer.echo(f"  collector duties ({', '.join(sorted(collector))})" + (": the round speaks for this shift" if "collect" in collector else ""))
+        typer.echo(f"  collector duties ({', '.join(sorted(collector))})" + (": the round may speak for this shift" if "collect" in collector else ""))
         try:
-            crier_round(root, persona, dry_run=dry_run, fixture=fixture, scheduled=scheduled)
+            spoke = bool(crier_round(root, persona, dry_run=dry_run, fixture=fixture, scheduled=scheduled).get("said"))
         except (typer.BadParameter, typer.Exit, ValueError, RuntimeError, OSError) as exc:
             typer.echo(f"  collector round skipped: {str(exc)[:200]}")
-    if announce and records and "collect" not in collector:
+    if announce and records and not spoke:
         announce_shift(root, persona, records, dry_run=dry_run, fixture=fixture, scheduled=scheduled)
 
 
@@ -670,6 +671,7 @@ def crier_round(root: Path, persona: Persona, *, dry_run: bool, fixture: Path | 
         record.update({
             "tick": tick, "duties": sorted(mine), "board": b, "actions": [a.model_dump(exclude_none=True) for a in kept],
             "reasons": reasons, "dropped": dropped, "results": results, "asked": list(update.get("asked", []))[-3:] if update else [],
+            "said": any(a.action == "say" for a in kept),
         })
     finally:
         release(client, lease)
