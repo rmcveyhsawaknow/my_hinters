@@ -1,0 +1,105 @@
+{
+  "run_id": "a3a4559c-e583-4655-86a5-f96b22a675c8",
+  "agent": "GrandadPail",
+  "role": "envoy+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T23:33:10.861946+00:00",
+  "tick": 15712,
+  "summary": "GrandadPail (in_bed): in bed, saving strength for the moment glory needs me",
+  "actions": [
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"in_bed\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":78,\"rests\":65,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":15712,\"visited\":[\"65,61\",\"63,73\",\"71,84\",\"79,93\",\"78,94\",\"89,99\",\"89,97\",\"91,95\",\"96,95\",\"96,89\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":15712,\"pace\":\"quickening\",\"day\":{\"all\":1441,\"building\":394,\"trade_goals\":80,\"talk\":200,\"factions\":29,\"movement\":738},\"hour\":{\"all\":119},\"peers\":3}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 15712,
+    "you": {
+      "id": 5,
+      "name": "GrandadPail",
+      "x": 96,
+      "y": 89,
+      "energy": 100,
+      "inventory": {
+        "wood": 10,
+        "berries": 37
+      },
+      "home": null
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "grandpa-joe",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "envoy",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 119,
+      "building": 40,
+      "trade_goals": 16,
+      "talk": 6,
+      "factions": 0,
+      "movement": 57
+    },
+    "day": {
+      "all": 1441,
+      "building": 394,
+      "trade_goals": 80,
+      "talk": 200,
+      "factions": 29,
+      "movement": 738
+    },
+    "peers_active": 3
+  },
+  "wake_mode": "rest",
+  "mood": "in_bed",
+  "approach": "rest",
+  "reasons": [],
+  "energy_before": 100,
+  "berries_before": 37,
+  "energy_spent": 0,
+  "activity_energy": {},
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "in_bed",
+    "glow": 50,
+    "wakes": 78,
+    "rests": 65,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
