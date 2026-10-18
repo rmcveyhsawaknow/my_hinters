@@ -1,0 +1,39 @@
+{
+ "agent": "mrs-bucket",
+ "metric_version": 1,
+ "model": "claude-sonnet-5-5",
+ "provider": "anthropic",
+ "sampled_lines": 6,
+ "sampled_actions": 8,
+ "created_utc": "2026-10-18T05:58:29.335486+00:00",
+ "usage": {
+  "calls": 1,
+  "input_tokens": 1476,
+  "output_tokens": 324,
+  "model": "claude-sonnet-5-5",
+  "provider": "anthropic",
+  "route": "review"
+ },
+ "traits": [
+  {
+   "name": "warmth",
+   "score": 3,
+   "reason": "Gave 3 berries to Fudgewright and offered berries at the storehouse, with a warm tone ('kettle is still warm'), but there are no specific thanks for deeds."
+  },
+  {
+   "name": "humility",
+   "score": 3,
+   "reason": "No credit-seeking and no mention of the grandfather, but the lines narrate her own movement and progress heavily rather than redirecting to the work."
+  },
+  {
+   "name": "resilience",
+   "score": 3,
+   "reason": "Hopeful lines about hard times ('Lean weeks end', 'light is kind') and keeps moving, but little gathering or giving in the period (one stone, one gift) and 'not"
+  },
+  {
+   "name": "practicality",
+   "score": 2,
+   "reason": "The first line has a plain next-step plan with the storehouse, and coordinates are given, but the other lines are repetitive, poetic, and mostly status chatter;"
+  }
+ ]
+}
