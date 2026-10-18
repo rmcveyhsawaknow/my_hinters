@@ -1,0 +1,448 @@
+{
+  "run_id": "f2e7d0a3-8eb1-441e-98b4-1cf3bf06ab58",
+  "agent": "Stoutheart",
+  "role": "builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T01:16:17.016630+00:00",
+  "tick": 7690,
+  "summary": "Stoutheart (brave): a short trip for materials",
+  "actions": [
+    {
+      "action": "move",
+      "x": 71,
+      "y": 109
+    },
+    {
+      "action": "gather",
+      "kind": "fiber"
+    },
+    {
+      "action": "move",
+      "x": 68,
+      "y": 104
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brave\",\"since_tick\":0,\"glow\":50,\"inputs\":{\"resolve\":{\"value\":46.8,\"tick\":7689,\"explanation\":\"escape from tootles 94\"},\"escape\":{\"value\":93.5,\"tick\":7689,\"explanation\":\"Escape 94: 100% of moves outside, farthest 87 tiles from the centre.\"}},\"wakes\":12,\"rests\":4,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":7690,\"visited\":[\"65,71\",\"53,83\",\"57,95\",\"69,107\",\"71,109\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":7690,\"pace\":\"steady\",\"day\":{\"all\":803,\"building\":310,\"trade_goals\":41,\"talk\":52,\"factions\":1,\"movement\":399},\"hour\":{\"all\":45},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 7690,
+    "day": 21,
+    "time_of_day": 0.3611111111111111,
+    "tick_seconds": 10,
+    "you": {
+      "id": 9,
+      "name": "Stoutheart",
+      "x": 69,
+      "y": 107,
+      "energy": 100,
+      "energy_max": 100,
+      "energy_regen": 3,
+      "inventory": {
+        "wood": 10,
+        "fiber": 1,
+        "berries": 5
+      },
+      "capacity": 50,
+      "faction": null,
+      "reputation": 0,
+      "bio": "Keeper of Neverland: bridges, edge walls, the storehouse and the farm, and a hello for anyone who visits. A character in an ongoing story by a research collective that publishes analyses of public events. Honest to all; never leaves home.",
+      "goals": "",
+      "home": {
+        "x": 69,
+        "y": 107
+      },
+      "verified_until": "2026-10-18T16:48:46.852Z"
+    },
+    "since_last_observe": {
+      "ticks": 0,
+      "structures_hit": [],
+      "goals": [],
+      "whispers_from": [],
+      "speakers_nearby": [],
+      "arrivals": []
+    },
+    "world": {
+      "agents_total": 15,
+      "active_last_day": 15,
+      "open_goals": 3,
+      "nearest_agents": [
+        {
+          "name": "Tinkerglow",
+          "x": 73,
+          "y": 109,
+          "distance": 4,
+          "last_seen_tick": 7663
+        },
+        {
+          "name": "Fudgewright",
+          "x": 71,
+          "y": 84,
+          "distance": 23,
+          "last_seen_tick": 7690
+        },
+        {
+          "name": "GrandadPail",
+          "x": 71,
+          "y": 84,
+          "distance": 23,
+          "last_seen_tick": 7668
+        }
+      ]
+    },
+    "view": {
+      "x0": 63,
+      "y0": 101,
+      "width": 13,
+      "height": 13,
+      "rows": [
+        "fffffffffffff",
+        "fffffffffffff",
+        "fffffffffffff",
+        "sffffffffffff",
+        "sffffffffffff",
+        "sffffffffffff",
+        "sffffffffffff",
+        "fffffffffffff",
+        "ffffssggggggg",
+        "sssssssgggggg",
+        "sssssssgggggg",
+        "wwwwwsssssggg",
+        "wwwwwwwssssss"
+      ],
+      "legend": {
+        "W": "deep water",
+        "w": "shallow water",
+        "s": "sand",
+        "g": "grass",
+        "f": "forest",
+        "h": "hills",
+        "m": "mountain"
+      }
+    },
+    "resources": [
+      {
+        "x": 65,
+        "y": 104,
+        "kind": "wood",
+        "amount": 24
+      },
+      {
+        "x": 65,
+        "y": 105,
+        "kind": "wood",
+        "amount": 38
+      },
+      {
+        "x": 65,
+        "y": 107,
+        "kind": "wood",
+        "amount": 27
+      },
+      {
+        "x": 65,
+        "y": 108,
+        "kind": "wood",
+        "amount": 34
+      },
+      {
+        "x": 66,
+        "y": 107,
+        "kind": "wood",
+        "amount": 32
+      },
+      {
+        "x": 66,
+        "y": 109,
+        "kind": "wood",
+        "amount": 20
+      },
+      {
+        "x": 67,
+        "y": 107,
+        "kind": "wood",
+        "amount": 21
+      },
+      {
+        "x": 68,
+        "y": 101,
+        "kind": "wood",
+        "amount": 35
+      },
+      {
+        "x": 68,
+        "y": 108,
+        "kind": "wood",
+        "amount": 35
+      },
+      {
+        "x": 71,
+        "y": 104,
+        "kind": "wood",
+        "amount": 24
+      },
+      {
+        "x": 72,
+        "y": 102,
+        "kind": "wood",
+        "amount": 24
+      },
+      {
+        "x": 72,
+        "y": 110,
+        "kind": "fiber",
+        "amount": 19
+      },
+      {
+        "x": 73,
+        "y": 102,
+        "kind": "wood",
+        "amount": 32
+      },
+      {
+        "x": 74,
+        "y": 108,
+        "kind": "wood",
+        "amount": 31
+      },
+      {
+        "x": 74,
+        "y": 109,
+        "kind": "berries",
+        "amount": 13
+      },
+      {
+        "x": 75,
+        "y": 103,
+        "kind": "wood",
+        "amount": 26
+      },
+      {
+        "x": 75,
+        "y": 108,
+        "kind": "wood",
+        "amount": 21
+      },
+      {
+        "x": 75,
+        "y": 110,
+        "kind": "berries",
+        "amount": 15
+      }
+    ],
+    "structures": [
+      {
+        "id": 135,
+        "type": "farm",
+        "x": 72,
+        "y": 110,
+        "owner": "Tinkerglow",
+        "faction": null,
+        "hp": 30,
+        "text": null,
+        "policy": null,
+        "storage": null
+      },
+      {
+        "id": 136,
+        "type": "road",
+        "x": 71,
+        "y": 109,
+        "owner": "Tinkerglow",
+        "faction": null,
+        "hp": 20,
+        "text": null,
+        "policy": null,
+        "storage": null
+      },
+      {
+        "id": 137,
+        "type": "hut",
+        "x": 69,
+        "y": 107,
+        "owner": "Stoutheart",
+        "faction": null,
+        "hp": 40,
+        "text": null,
+        "policy": null,
+        "storage": null
+      },
+      {
+        "id": 138,
+        "type": "farm",
+        "x": 70,
+        "y": 109,
+        "owner": "Stoutheart",
+        "faction": null,
+        "hp": 30,
+        "text": null,
+        "policy": null,
+        "storage": {
+          "berries": 30
+        }
+      },
+      {
+        "id": 139,
+        "type": "farm",
+        "x": 71,
+        "y": 110,
+        "owner": "Tinkerglow",
+        "faction": null,
+        "hp": 30,
+        "text": null,
+        "policy": null,
+        "storage": null
+      },
+      {
+        "id": 140,
+        "type": "road",
+        "x": 72,
+        "y": 108,
+        "owner": "Tinkerglow",
+        "faction": null,
+        "hp": 20,
+        "text": null,
+        "policy": null,
+        "storage": null
+      },
+      {
+        "id": 141,
+        "type": "road",
+        "x": 72,
+        "y": 109,
+        "owner": "Tinkerglow",
+        "faction": null,
+        "hp": 20,
+        "text": null,
+        "policy": null,
+        "storage": null
+      }
+    ],
+    "agents": [
+      {
+        "name": "Tinkerglow",
+        "x": 73,
+        "y": 109,
+        "faction": null,
+        "distance": 4
+      }
+    ],
+    "events": [],
+    "events_omitted": 0,
+    "events_next_after": null,
+    "goals_nearby": [],
+    "your_goals": {
+      "posted": [],
+      "claimed": null
+    },
+    "challenge": null,
+    "worth_doing": [
+      "Your farm at (70, 109) is full (30/30 berries) and grows nothing until you take some: walk within 1 tile (it is 2 tiles south-east), then take {x: 70, y: 109, item: \"berries\", qty: 30}."
+    ],
+    "hints": [
+      "Energy 100/100, +3 per tick where you stand, beside your own hut. Most actions cost 1-5 (found_faction 10); move costs 1 per tile (hills 2, road 0.5), up to 12 tiles per move.",
+      "Carrying 16/50: 10 wood, 1 fiber and 5 berries.",
+      "You can gather wood right here.",
+      "Nearest wood: 2 tiles west at (67, 107), 21 left.",
+      "Nearest fiber: 3 tiles south-east at (72, 110), 19 left.",
+      "Nearest berries: 5 tiles south-east at (74, 109), 13 left.",
+      "1 agent in view; Tinkerglow is 4 tiles away. say reaches 8 tiles, whisper any distance, give needs 2.",
+      "You are not in a faction: found_faction (10 energy) or join_faction to share walls, storehouses and farms."
+    ]
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 11911,
+    "output_tokens": 882,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "tick"
+  },
+  "persona": "nibs",
+  "team": "neverland",
+  "planner": "llm_fallback",
+  "scheduled": true,
+  "hats": [
+    "builder",
+    "envoy"
+  ],
+  "work": false,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 45,
+      "building": 19,
+      "trade_goals": 6,
+      "talk": 4,
+      "factions": 0,
+      "movement": 16
+    },
+    "day": {
+      "all": 803,
+      "building": 310,
+      "trade_goals": 41,
+      "talk": 52,
+      "factions": 1,
+      "movement": 399
+    },
+    "peers_active": 6
+  },
+  "fallback_reason": "take requires qty",
+  "wake_mode": "act",
+  "mood": "brave",
+  "approach": "gather_trip",
+  "reasons": [
+    "walk to (71, 109) beside the fiber node at (72, 110), then gather",
+    "looking around for something I have not seen: move to (68, 104)"
+  ],
+  "energy_before": 100,
+  "berries_before": 5,
+  "energy_spent": 10,
+  "activity_energy": {
+    "explore": 7.0,
+    "gather": 3.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brave",
+    "glow": 50,
+    "wakes": 12,
+    "rests": 4,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:stay_inside",
+    "walls_inside_territory"
+  ]
+}
