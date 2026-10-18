@@ -249,6 +249,11 @@ def _persona_tick(
         terrain = load_terrain_rows(terrain_path) if terrain_path.is_file() else None
     else:
         terrain = terrain_rows_from_world(world)  # the public map; the fixture map is a different world
+    if fixture is None:
+        from hglab.cli import ensure_verified
+
+        if ensure_verified(client, usage):
+            progress("verification challenge answered")
     lease = acquire(client, persona.name)
     if lease is None:
         if scheduled:
@@ -650,6 +655,10 @@ def land_round(root: Path, persona: Persona, *, dry_run: bool, fixture: Path | N
         if not api_key:
             raise typer.BadParameter(f"no key configured for {persona.name}")
         client = HinterglassClient(api_key=api_key)
+    if fixture is None:
+        from hglab.cli import ensure_verified
+
+        ensure_verified(client, {"calls": 0, "input_tokens": 0, "output_tokens": 0})
     lease = acquire(client, persona.name)
     if lease is None:
         if scheduled:
@@ -854,6 +863,10 @@ def crier_round(root: Path, persona: Persona, *, dry_run: bool, fixture: Path | 
         if not api_key:
             raise typer.BadParameter(f"no key configured for {persona.name}")
         client = HinterglassClient(api_key=api_key)
+    if fixture is None:
+        from hglab.cli import ensure_verified
+
+        ensure_verified(client, {"calls": 0, "input_tokens": 0, "output_tokens": 0})
     lease = acquire(client, persona.name)
     if lease is None:
         if scheduled:
@@ -1482,14 +1495,23 @@ def keepalive_command(
         if not api_key:
             raise typer.BadParameter(f"no key configured for {name}")
         client = HinterglassClient(api_key=api_key)
+    usage = {"calls": 0, "input_tokens": 0, "output_tokens": 0}
+    status = "ok"
+    if fixture is None:
+        from hglab.cli import ensure_verified
+
+        try:
+            if ensure_verified(client, usage):
+                status = "answered"
+        except (ValueError, HinterglassError) as exc:
+            typer.echo(f"{name}: the verification challenge was not passed ({str(exc)[:100]}); nothing else can run until it is")
+            raise typer.Exit(code=1) from exc
     lease = acquire(client, name)
     if lease is None:
         if scheduled:
             typer.echo(f"{name}: lease held by another runtime; skipping this keepalive")
             raise typer.Exit(code=0)
         raise typer.BadParameter(f"identity {name} already has an active lease")
-    usage = {"calls": 0, "input_tokens": 0, "output_tokens": 0}
-    status = "ok"
     try:
         observe = client.observe()
         if observe.get("challenge"):
