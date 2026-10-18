@@ -1,0 +1,123 @@
+{
+  "run_id": "8a89500a-9e08-42c4-ac6a-4cab80ced39c",
+  "agent": "Strayling",
+  "role": "surveyor+experimenter+conjecturer+methodologist",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T01:56:28.368369+00:00",
+  "tick": 7932,
+  "summary": "Strayling (curious): work shift: looking for nodes",
+  "actions": [
+    {
+      "action": "move",
+      "x": 77,
+      "y": 62
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"curious\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":28,\"rests\":2,\"bursts\":0,\"distractions\":3,\"last_wake_tick\":7932,\"visited\":[\"67,71\",\"62,71\",\"67,75\",\"65,73\",\"63,71\",\"57,79\",\"52,83\",\"51,82\",\"53,74\",\"48,66\",\"54,61\",\"61,62\",\"65,67\",\"66,76\",\"73,74\",\"67,69\",\"71,74\",\"70,66\",\"67,57\",\"69,48\",\"75,41\",\"75,46\",\"80,55\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"ideas\":[\"t5682: a berries node near 62,71\",\"t6829: a berries node near 57,79\",\"t7653: a fiber node near 67,69\"],\"world\":{\"tick\":7930,\"pace\":\"quickening\",\"day\":{\"all\":859,\"building\":328,\"trade_goals\":43,\"talk\":61,\"factions\":3,\"movement\":424},\"hour\":{\"all\":90},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 7932,
+    "you": {
+      "id": 10,
+      "name": "Strayling",
+      "x": 80,
+      "y": 55,
+      "energy": 100,
+      "inventory": {
+        "wood": 15,
+        "fiber": 6,
+        "berries": 25
+      },
+      "home": {
+        "x": 57,
+        "y": 79
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "lost-boy",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "experimenter",
+    "conjecturer",
+    "methodologist"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 90,
+      "building": 26,
+      "trade_goals": 8,
+      "talk": 13,
+      "factions": 2,
+      "movement": 41
+    },
+    "day": {
+      "all": 859,
+      "building": 328,
+      "trade_goals": 43,
+      "talk": 61,
+      "factions": 3,
+      "movement": 424
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "curious",
+  "approach": "explore",
+  "reasons": [
+    "looking around for something I have not seen: move to (77, 62)"
+  ],
+  "energy_before": 100,
+  "berries_before": 25,
+  "energy_spent": 7,
+  "activity_energy": {
+    "explore": 7.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "curious",
+    "glow": 50,
+    "wakes": 28,
+    "rests": 2,
+    "bursts": 0,
+    "distractions": 3,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}

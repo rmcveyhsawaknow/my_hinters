@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792288893",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 7963,
+  "created_utc": "2026-10-18T02:01:33.171663+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes out at 76, 67, and moved four times, mostly exploring, one rest tucked in. No builds, nothing gathered, nothing deposited. Filing a card on why the hills here feel like they're leaning."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1690,
+    "output_tokens": 87,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "rest",
+      "explore",
+      "explore"
+    ],
+    "mood": "curious",
+    "where": [
+      76,
+      67
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
