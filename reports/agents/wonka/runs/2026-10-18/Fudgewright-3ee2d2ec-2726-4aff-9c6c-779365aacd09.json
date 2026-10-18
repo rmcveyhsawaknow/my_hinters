@@ -1,0 +1,135 @@
+{
+  "run_id": "3ee2d2ec-2726-4aff-9c6c-779365aacd09",
+  "agent": "Fudgewright",
+  "role": "navigator+builder+broker",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T23:26:33.670642+00:00",
+  "tick": 15673,
+  "summary": "Fudgewright (manic): work shift: collecting the farm",
+  "actions": [
+    {
+      "action": "move",
+      "x": 83,
+      "y": 93
+    },
+    {
+      "action": "take",
+      "x": 82,
+      "y": 94,
+      "qty": 5,
+      "item": "berries"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"manic\",\"since_tick\":15673,\"glow\":50,\"inputs\":{\"inspiration\":{\"value\":55.3,\"tick\":15610,\"explanation\":\"hope from mrs-bucket 55\"},\"suspicion\":{\"value\":0.0,\"tick\":15610,\"explanation\":\"bluster from grandpa-joe 0\"},\"discernment\":{\"value\":0.0,\"tick\":15610,\"explanation\":\"bluster from grandpa-joe 0\"},\"hope\":{\"value\":55.3,\"tick\":15610,\"explanation\":\"Hope 55: contribution 109, uplift 12, resilience 0 (decayed over a day).\"},\"bluster\":{\"value\":0.0,\"tick\":15610,\"explanation\":\"Bluster 0: 0 claim(s) against own work 0, 0% of the team's logged work claimed.\"}},\"wakes\":54,\"rests\":10,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":15673,\"visited\":[\"62,64\",\"66,72\",\"65,71\",\"67,75\",\"66,74\",\"65,73\",\"71,84\",\"66,73\",\"79,93\",\"78,94\",\"89,99\",\"82,94\",\"83,95\",\"79,99\",\"85,90\",\"79,97\",\"81,95\",\"88,97\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":15670,\"pace\":\"quickening\",\"day\":{\"all\":1439,\"building\":389,\"trade_goals\":80,\"talk\":200,\"factions\":29,\"movement\":741},\"hour\":{\"all\":113},\"peers\":3}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 15673,
+    "you": {
+      "id": 3,
+      "name": "Fudgewright",
+      "x": 88,
+      "y": 97,
+      "energy": 100,
+      "inventory": {
+        "ore": 10,
+        "wood": 10,
+        "fiber": 2,
+        "stone": 2,
+        "berries": 21
+      },
+      "home": {
+        "x": 65,
+        "y": 71
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "wonka",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "navigator",
+    "builder",
+    "broker"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 113,
+      "building": 35,
+      "trade_goals": 16,
+      "talk": 6,
+      "factions": 0,
+      "movement": 56
+    },
+    "day": {
+      "all": 1439,
+      "building": 389,
+      "trade_goals": 80,
+      "talk": 200,
+      "factions": 29,
+      "movement": 741
+    },
+    "peers_active": 3
+  },
+  "wake_mode": "act",
+  "mood": "manic",
+  "approach": "harvest",
+  "reasons": [
+    "walk to (83, 93): my farm at (82, 94) holds 30 berries, take 5"
+  ],
+  "energy_before": 100,
+  "berries_before": 21,
+  "energy_spent": 6,
+  "activity_energy": {
+    "explore": 5.0,
+    "gather": 1.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "manic",
+    "glow": 50,
+    "wakes": 54,
+    "rests": 10,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
