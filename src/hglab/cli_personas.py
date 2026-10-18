@@ -865,7 +865,12 @@ def crier_round(root: Path, persona: Persona, *, dry_run: bool, fixture: Path | 
             state = {}
         if not isinstance(state, dict):
             state = {}
-        actions, reasons, update = plan_round(persona, ledger, observe, b, active_names=_active_names(agents, tick), state=state, public_events=events)
+        from hglab.crier import faction_name
+
+        factions_of = {str(a.get("name")): faction_name(a.get("faction")) for a in agents if isinstance(a, dict) and a.get("name")}
+        actions, reasons, update = plan_round(
+            persona, ledger, observe, b, active_names=_active_names(agents, tick), state=state, public_events=events, factions_of=factions_of,
+        )
         if update:
             actions.append({"action": "remember", "key": STATE_KEY, "text": json.dumps({**state, **update}, separators=(",", ":"))[:2000]})
         worn = "+".join(persona.roles)
