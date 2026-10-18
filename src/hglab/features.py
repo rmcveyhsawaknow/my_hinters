@@ -18,7 +18,9 @@ ACTION_ROW = re.compile(r"^\|\s*`([a-z_]+)`\s*\|", re.MULTILINE)
 BLUEPRINT_TABLE_ROW = re.compile(
     r"^\|\s*`([a-z_]+)`\s*\|\s*([^|]*?)\s*\|\s*(\d+)\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|$", re.MULTILINE
 )
-BLUEPRINT_ROW = re.compile(r"^\|\s*`(sign|road|wall|bridge|hut|farm|storehouse|tower|monument|cache|[a-z_]+)`\s*\|\s*(?:wood|stone|ore|fiber|berries|system|none)", re.MULTILINE)
+ACTION_TABLE_HEADER = ("action", "params")  # | action | params | energy | rules ... |
+BLUEPRINT_TABLE_HEADER = ("type", "cost", "hp")  # | type | cost | hp | terrain | function |
+GUIDE_FORMAT = 2  # snapshots made before this parsed every backticked table row as an "action"
 KNOWN_BASELINE_ACTIONS = {
     "observe", "act", "move", "gather", "build", "demolish", "say", "whisper", "write", "give", "take", "eat",
     "post_goal", "claim_goal", "confirm_goal", "cancel_goal", "abandon_goal", "reject_claim", "found_faction", "invite",
@@ -26,12 +28,42 @@ KNOWN_BASELINE_ACTIONS = {
 }
 
 
+def _tables(text: str) -> list[list[str]]:
+    """Every markdown table in the text as its list of lines (header first)."""
+    tables: list[list[str]] = []
+    current: list[str] = []
+    for line in text.splitlines():
+        if line.startswith("|"):
+            current.append(line)
+        elif current:
+            tables.append(current)
+            current = []
+    if current:
+        tables.append(current)
+    return tables
+
+
+def table_rows(guide_text: str, header_words: tuple[str, ...]) -> list[str]:
+    """Body rows of every table whose header mentions all of ``header_words``."""
+    rows: list[str] = []
+    for table in _tables(guide_text):
+        header = table[0].casefold()
+        if all(word in header for word in header_words):
+            rows.extend(table[2:])  # skip the header and the separator
+    return rows
+
+
 def action_rows(guide_text: str) -> dict[str, str]:
-    """Action name -> the guide's full table row for it (rules text), for change detection."""
+    """Action name -> the guide's full table row for it (rules text), for change detection.
+
+    Only the actions table counts: the observe-field, terrain and blueprint tables also start
+    their rows with a backticked word, and once counted as actions they overflowed the notebook
+    snapshot and came back as false "new action" announcements.
+    """
     rows: dict[str, str] = {}
-    for line in guide_text.splitlines():
+    for line in table_rows(guide_text, ACTION_TABLE_HEADER):
         match = ACTION_ROW.match(line)
-        if match and line.count("|") >= 4:
+        if match:
             rows[match.group(1)] = line.strip()
     return rows
 
@@ -48,10 +80,10 @@ def snapshot(client: Any, *, pages: int = 3) -> dict[str, Any]:
             guide_text = response.text
     except Exception:  # noqa: BLE001 - the guide is optional for the watch
         guide_text = ""
-    actions = sorted(set(ACTION_ROW.findall(guide_text)))
-    blueprints = sorted({m for m in BLUEPRINT_ROW.findall(guide_text)})
-    blueprint_rows = blueprint_catalogue(guide_text)
     rows_text = action_rows(guide_text)
+    actions = sorted(rows_text)
+    blueprint_rows = blueprint_catalogue(guide_text)
+    blueprints = sorted(blueprint_rows)
     row_hashes = {name: hashlib.sha256(text.encode("utf-8")).hexdigest()[:16] for name, text in rows_text.items()}
     events: list[dict[str, Any]] = []
     before = None
@@ -86,6 +118,7 @@ def snapshot(client: Any, *, pages: int = 3) -> dict[str, Any]:
         "guide_actions": actions,
         "guide_blueprints": blueprints,
         "blueprint_rows": blueprint_rows,
+        "guide_format": GUIDE_FORMAT,
         "action_row_hashes": row_hashes,
         "action_row_text": {name: text[:400] for name, text in rows_text.items()},
         "event_types": event_types,
@@ -100,8 +133,9 @@ def snapshot(client: Any, *, pages: int = 3) -> dict[str, Any]:
 def blueprint_catalogue(guide_text: str) -> dict[str, dict[str, str]]:
     """Blueprint name -> cost, hp, terrain, function, from the guide's build table."""
     rows: dict[str, dict[str, str]] = {}
-    for name, cost, hp, terrain, function in BLUEPRINT_TABLE_ROW.findall(guide_text):
-        if name in {"type", "action"} or not any(word in cost for word in ("wood", "stone", "ore", "fiber", "berries", "system")):
+    body = "\n".join(table_rows(guide_text, BLUEPRINT_TABLE_HEADER))
+    for name, cost, hp, terrain, function in BLUEPRINT_TABLE_ROW.findall(body):
+        if not any(word in cost for word in ("wood", "stone", "ore", "fiber", "berries", "system")):
             continue
         rows[name] = {"cost": cost.strip(), "hp": hp, "terrain": terrain.strip(), "function": function.strip()[:80]}
     return rows
@@ -142,8 +176,9 @@ def compare(previous: dict[str, Any] | None, current: dict[str, Any]) -> list[di
                 out.append({"kind": "rule_changed", "text": f"The rule for `{name}` changed in the guide: {rule[:220]}"})
         else:
             out.append({"kind": "guide_changed", "text": "The agent guide changed since last look; new rules may be in it."})
+    comparable = int(previous.get("guide_format", 1) or 1) >= GUIDE_FORMAT
     for key, label in (("guide_actions", "action"), ("guide_blueprints", "blueprint")):
-        new = sorted(set(current.get(key, [])) - set(previous.get(key, [])))
+        new = sorted(set(current.get(key, [])) - set(previous.get(key, []))) if comparable else []
         if new:
             detail = ", ".join(f"`{n}`" + (f" ({rows[n]['cost']})" if n in rows else "") for n in new)
             out.append({"kind": f"new_{label}", "text": f"New {label}{'s' if len(new) > 1 else ''} in the guide: {detail}."})
@@ -182,7 +217,8 @@ def compact(current: dict[str, Any]) -> dict[str, Any]:
     """What a persona keeps in its notebook (bounded)."""
     return {
         "tick": current["tick"], "api_version": current["api_version"], "guide_sha256": current["guide_sha256"][:16],
-        "guide_actions": current["guide_actions"][:40], "guide_blueprints": current["guide_blueprints"][:20],
+        "guide_actions": current["guide_actions"][:80], "guide_blueprints": current["guide_blueprints"][:20],
+        "guide_format": int(current.get("guide_format", 1) or 1),
         "blueprint_rows": {k: {"cost": v.get("cost", "")} for k, v in (current.get("blueprint_rows") or {}).items()},
         "action_row_hashes": {k: str(v)[:8] for k, v in (current.get("action_row_hashes") or {}).items()},
         "event_types": current["event_types"][:40], "structure_types": current["structure_types"][:20],
@@ -195,4 +231,4 @@ def restore(compacted: dict[str, Any]) -> dict[str, Any]:
     return dict(compacted)
 
 
-__all__ = ["action_rows", "blueprint_catalogue", "catalogue_line", "compact", "compare", "restore", "snapshot"]
+__all__ = ["action_rows", "blueprint_catalogue", "catalogue_line", "compact", "compare", "restore", "snapshot", "table_rows"]

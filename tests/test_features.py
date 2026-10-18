@@ -5,7 +5,7 @@ def _snap(**overrides):
     base = {
         "tick": 100, "api_version": "0.13.3", "guide_sha256": "a" * 64, "guide_actions": ["move", "say", "build"],
         "guide_blueprints": ["hut", "farm"], "event_types": ["move", "say", "build"], "structure_types": ["hut"],
-        "factions": ["Wayfarers:open"], "agents": ["Quill", "Cairn"], "agent_count": 2, "world_stats": {},
+        "factions": ["Wayfarers:open"], "agents": ["Quill", "Cairn"], "agent_count": 2, "world_stats": {}, "guide_format": 2,
     }
     base.update(overrides)
     return base
@@ -51,8 +51,8 @@ def test_changed_guide_rows_are_named():
 
     from hglab.features import action_rows
 
-    old_guide = "| `build` | `type, x?, y?` | 5 | On your tile or an adjacent tile; consumes materials. |\n| `say` | `text` | 1 | Heard within 8 tiles. |\n"
-    new_guide = "| `build` | `type, x?, y?` | 5 | On your tile or an adjacent tile. Paid from your inventory first; the rest from storehouses within 1 tile. |\n| `say` | `text` | 1 | Heard within 8 tiles. |\n"
+    old_guide = "| action | params | energy | rules |\n|---|---|---|---|\n| `build` | `type, x?, y?` | 5 | On your tile or an adjacent tile; consumes materials. |\n| `say` | `text` | 1 | Heard within 8 tiles. |\n"
+    new_guide = "| action | params | energy | rules |\n|---|---|---|---|\n| `build` | `type, x?, y?` | 5 | On your tile or an adjacent tile. Paid from your inventory first; the rest from storehouses within 1 tile. |\n| `say` | `text` | 1 | Heard within 8 tiles. |\n"
     old_rows = action_rows(old_guide)
     assert set(old_rows) == {"build", "say"}
     previous = {**_snap(), "guide_sha256": hashlib.sha256(old_guide.encode()).hexdigest(), "action_row_hashes": {k: hashlib.sha256(v.encode()).hexdigest()[:16] for k, v in old_rows.items()}}
@@ -92,3 +92,40 @@ def test_the_notebook_snapshot_is_slim_and_still_finds_arrivals_and_rule_changes
     kinds = {d["kind"]: d["text"] for d in compare(kept, later)}
     assert kinds["newcomers"].startswith("3 new residents") and "act1" in kinds["rule_changed"]
     assert compare({}, later)[0]["kind"] == "first_look"
+
+
+GUIDE_WITH_THREE_TABLES = """
+## 5. The observe payload
+
+| field | meaning |
+|---|---|
+| `you` | who you are |
+| `view` | what you see |
+
+## 6. Actions
+
+| action | params | energy | rules and specific failures |
+|---|---|---|---|
+| `move` | `x, y` | 1 | walks |
+| `say` | `text` | 1 | speaks |
+| `leave_faction` | none | 0 | leaves |
+
+| type | cost | hp | terrain | function |
+|---|---|---|---|---|
+| `sign` | wood 1 | 10 | any walkable | holds text |
+| `hut` | wood 10, fiber 4 | 40 | any walkable | home |
+| `cache` | system only | 10 | any | dropped items |
+"""
+
+
+def test_only_the_actions_table_counts_as_actions_and_only_blueprints_as_blueprints():
+    from hglab.features import GUIDE_FORMAT, action_rows, blueprint_catalogue, compact
+
+    assert sorted(action_rows(GUIDE_WITH_THREE_TABLES)) == ["leave_faction", "move", "say"]
+    assert sorted(blueprint_catalogue(GUIDE_WITH_THREE_TABLES)) == ["cache", "hut", "sign"]
+    stale = _snap(guide_actions=["move", "say"], guide_format=1)  # a snapshot made the old way
+    current = _snap(guide_actions=["move", "say", "take", "write"], guide_format=GUIDE_FORMAT)
+    assert not any(d["kind"] == "new_action" for d in compare(stale, current))
+    fresh = compact(current)
+    assert fresh["guide_format"] == GUIDE_FORMAT
+    assert [d["kind"] for d in compare(fresh, {**current, "guide_actions": [*current["guide_actions"], "sing"]})] == ["new_action"]
