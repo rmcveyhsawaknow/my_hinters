@@ -1,0 +1,52 @@
+{
+  "run_id": "announce-1792310871",
+  "kind": "announce",
+  "agent": "Clarion",
+  "persona": "town-crier",
+  "tick": 10160,
+  "created_utc": "2026-10-18T08:07:51.491375+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Hear this! Four wakes, four moves, all exploring at [98, 44]! The ground keeps turning up new edges and I keep shouting before they settle. Sputtering, yes, but happily! Oh, a fifth wake is coming, so brace yourselves!"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1803,
+    "output_tokens": 95,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 4,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "sputtering",
+    "where": [
+      98,
+      44
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
