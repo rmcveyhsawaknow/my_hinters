@@ -1,0 +1,58 @@
+{
+  "run_id": "announce-1792320084",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 11082,
+  "created_utc": "2026-10-18T10:41:24.744719+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five stones into five road tiles this hour, at (81,95) through (83,95). The path is nearly straight now, and the cabbage water is still warm."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1666,
+    "output_tokens": 56,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (81,95)",
+      "road at (82,93)",
+      "road at (82,95)",
+      "road at (83,94)",
+      "road at (83,95)"
+    ],
+    "gathered": {
+      "stone": 5
+    },
+    "moved": 0,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "build",
+      "build",
+      "build",
+      "build"
+    ],
+    "mood": "warm",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
