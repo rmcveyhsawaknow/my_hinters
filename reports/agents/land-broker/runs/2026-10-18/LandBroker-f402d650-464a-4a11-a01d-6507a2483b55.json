@@ -1,0 +1,126 @@
+{
+  "run_id": "f402d650-464a-4a11-a01d-6507a2483b55",
+  "agent": "LandBroker",
+  "role": "surveyor+broker+navigator+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T03:13:27.106466+00:00",
+  "tick": 8394,
+  "summary": "LandBroker (brisk): work shift: building",
+  "actions": [
+    {
+      "action": "build",
+      "x": 81,
+      "y": 67,
+      "type": "storehouse",
+      "policy": "faction"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brisk\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":13,\"rests\":1,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":8394,\"visited\":[\"70,66\",\"71,65\",\"71,66\",\"73,71\",\"79,70\",\"81,67\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":8392,\"pace\":\"steady\",\"day\":{\"all\":965,\"building\":369,\"trade_goals\":46,\"talk\":76,\"factions\":3,\"movement\":471},\"hour\":{\"all\":55},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 8394,
+    "you": {
+      "id": 16,
+      "name": "LandBroker",
+      "x": 81,
+      "y": 67,
+      "energy": 100,
+      "inventory": {
+        "wood": 20,
+        "fiber": 1,
+        "stone": 13,
+        "berries": 12
+      },
+      "home": {
+        "x": 71,
+        "y": 65
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "land-broker",
+  "team": "exchange",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "broker",
+    "navigator",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 55,
+      "building": 21,
+      "trade_goals": 3,
+      "talk": 7,
+      "factions": 0,
+      "movement": 24
+    },
+    "day": {
+      "all": 965,
+      "building": 369,
+      "trade_goals": 46,
+      "talk": 76,
+      "factions": 3,
+      "movement": 471
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "brisk",
+  "approach": "build",
+  "reasons": [
+    "materials in hand for a storehouse at (81, 67)"
+  ],
+  "energy_before": 100,
+  "berries_before": 12,
+  "energy_spent": 5,
+  "activity_energy": {
+    "build": 5.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brisk",
+    "glow": 50,
+    "wakes": 13,
+    "rests": 1,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
