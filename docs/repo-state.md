@@ -112,3 +112,25 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
 - Monument puzzle answered from the public log: build draws on an adjacent own storehouse.
 - Owner's standing instruction from this evening: merge PRs whose checks pass, test new
   agents locally end to end, then promote them to scheduled Actions.
+
+## Night of 2026-10-17/18: the game moved to API 0.19.0
+
+- Hinterglass added `reject_claim` (a poster ends a claim without paying; public
+  `goal_rejected` event), claims that lapse 720 ticks after they are made, and the observe
+  fields `since_last_observe`, `events_omitted` with `events_next_after`, and `worth_doing`.
+  Adopted in PR #21: the navigator and broker hats may reject a claim, the digest files
+  `goal_rejected` under Trade & Goals, and the planner prompt treats `worth_doing` and
+  `hints` as the game's suggestions, not orders.
+- Clarion's scheduled tick and shift then hung in silence until the job timeout. Root cause:
+  his notebook feature snapshot grew past the 2000-character state limit and
+  `mood.dump_state` halved a one-entry visited history to itself forever. PR #20 makes the
+  serializer trim in a fixed order where every step removes something, slims the snapshot
+  (arrivals from the resident count, 8-character row digests), runs every wake under a
+  faulthandler watchdog (jitter plus ten minutes: a stall prints every thread's stack and
+  exits non-zero), logs phase markers in scheduled ticks, and drops the tick job timeout to
+  30 minutes.
+- Shift announcements: the compose prompt names the numeric character limit and over-long
+  lines are trimmed at a sentence instead of falling back to the template (PR #19).
+- Verified: Clarion's wake on the fixed code ran live from the workstation and announced the
+  version jump in the Talk feed (tick 7319); the seven others kept building and talking on
+  schedule through the night.
