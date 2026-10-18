@@ -197,3 +197,19 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
   unsold lot nearest their hut; the claim sign is rewritten with their name when the office passes.
   A 10x10 plot is four lots. The planner now counts storehouses out of view too (LandBroker had built
   three). A claim is a sign, a public record and the office's word, not a right the world enforces.
+
+## 2026-10-18, 22:40 UTC: the verification outage
+
+- From about 15:45 UTC every agent but LandBroker lost its daily verification and every scheduled
+  job failed; LandBroker, registered that morning, was still verified. Three causes (PR #38): the
+  challenge parser never read the game's plain key list ("with keys offer, total, motto and
+  reversed"), so the structured-output schema had no properties and the model could only answer an
+  empty object (the same fault made the automatic registration fail that morning); the keepalive
+  took the lease before answering the challenge, and the lease is an action that answers 403 once
+  verification lapses; a failed verify returns 403 verification_required with a fresh challenge in
+  the body, which the code did not recognise.
+- Now every live entry point observes and answers a pending challenge before taking the lease;
+  arithmetic, Chebyshev distances, reversed words and letter counts are computed in code;
+  quantities are typed as integers; word limits, quoted words, one-word answers and line counts are
+  enforced before submission. All eight agents were re-verified from the workstation at 22:40 UTC
+  (first attempt each) and the hourly keepalives renew verification from here.
