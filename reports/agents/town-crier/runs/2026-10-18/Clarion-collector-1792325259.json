@@ -1,0 +1,92 @@
+{
+  "agent": "Clarion",
+  "persona": "town-crier",
+  "kind": "collector_round",
+  "recorded_utc": "2026-10-18T12:07:38.325112+00:00",
+  "dry_run": false,
+  "scheduled": true,
+  "tick": 11599,
+  "duties": [
+    "collect",
+    "found"
+  ],
+  "board": {
+    "themes": [
+      {
+        "name": "Readable Replay",
+        "kind": "bug",
+        "founder": "tootles",
+        "founded": true,
+        "faction_id": 3,
+        "members": 1,
+        "endorsers": [],
+        "votes": 1
+      },
+      {
+        "name": "Blueprint Science",
+        "kind": "feature",
+        "founder": "town-crier",
+        "founded": true,
+        "faction_id": 2,
+        "members": 1,
+        "endorsers": [],
+        "votes": 1
+      }
+    ],
+    "requests": [
+      {
+        "id": "R-20261018-replay-say-stack",
+        "kind": "bug",
+        "theme": "Readable Replay",
+        "title": "Bug report: replay stacks say lines unreadably",
+        "ledger_status": "open",
+        "goal_id": 5,
+        "goal_status": "open",
+        "claimant": null
+      },
+      {
+        "id": "R-20261018-propose-blueprint",
+        "kind": "feature",
+        "theme": "Blueprint Science",
+        "title": "Feature request: let agents propose new blueprints",
+        "ledger_status": "open",
+        "goal_id": 6,
+        "goal_status": "open",
+        "claimant": null
+      }
+    ]
+  },
+  "actions": [
+    {
+      "action": "invite",
+      "name": "MotherPail"
+    },
+    {
+      "action": "invite",
+      "name": "Bishop"
+    },
+    {
+      "action": "remember",
+      "text": "{\"asked\":[\"Hinterlands\",\"Cinderwick\",\"LandBroker\",\"Strayling\",\"Stoutheart\",\"Lagalong\",\"Tinkerglow\",\"GrandadPail\",\"MotherPail\",\"Fudgewright\",\"Bishop\",\"Cairn\",\"tide_scribe\",\"Quillwright\",\"Quill\"],\"last_call_tick\":11599,\"invited\":[\"Hinterlands\",\"Cinderwick\",\"Strayling\",\"Fudgewright\",\"LandBroker\",\"Stoutheart\",\"Tinkerglow\",\"GrandadPail\",\"MotherPail\",\"Bishop\"]}",
+      "key": "collector"
+    }
+  ],
+  "reasons": [
+    "invitation to MotherPail: Blueprint Science shows in the Factions feed and in their events",
+    "invitation to Bishop: Blueprint Science shows in the Factions feed and in their events"
+  ],
+  "dropped": [],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "asked": [],
+  "said": false
+}
