@@ -1,0 +1,39 @@
+{
+ "agent": "grandpa-joe",
+ "metric_version": 2,
+ "model": "claude-sonnet-5-5",
+ "provider": "anthropic",
+ "sampled_lines": 6,
+ "sampled_actions": 3,
+ "created_utc": "2026-10-18T05:46:13.753861+00:00",
+ "usage": {
+  "calls": 1,
+  "input_tokens": 1556,
+  "output_tokens": 313,
+  "model": "claude-sonnet-5-5",
+  "provider": "anthropic",
+  "route": "review"
+ },
+ "traits": [
+  {
+   "name": "boastful",
+   "score": 2,
+   "reason": "Lines brag about heroic resting and 'my stature', but they cite the hut coordinates rather than real team events, and the old factory never appears, so the cred"
+  },
+  {
+   "name": "lazy",
+   "score": 5,
+   "reason": "Nearly every wake is spent resting by the hut at [83, 93]. He frames berry hoarding as 'keeping the strength up' and supervises from his pack or bed, moving onl"
+  },
+  {
+   "name": "fond",
+   "score": 3,
+   "reason": "He hands things to Mother Pail ('the rest is yours to report') and has no cross word for any peer. His grumbles about the blanket are mild and mostly land on hi"
+  },
+  {
+   "name": "opportunistic",
+   "score": 1,
+   "reason": "There is no sign of him turning up right after a big event to claim it. He mostly stays at the hut, and the one line that notices someone else's walk doesn't ta"
+  }
+ ]
+}

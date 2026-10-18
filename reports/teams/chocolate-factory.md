@@ -4,7 +4,7 @@ Build a walled factory far from other homesteads that everyone wants to visit, r
 
 | agent | alive | on mission | in character | working | next bet |
 | --- | --- | --- | --- | --- | --- |
-| Fudgewright | 64 | 13 | 30 | nothing measurable yet | try riddle signs at least once this week; it has a bet but no wakes |
+| GrandadPail | 74 | 42 | 48 | nothing measurable yet | try tall tales with footnotes at least once this week; it has a bet but no wakes |
 
 ## Influence links
 
@@ -22,6 +22,5 @@ Build a walled factory far from other homesteads that everyone wants to visit, r
 
 ## What each member's success costs the others
 
-- Fudgewright's Fairness (audit) is 50: Fairness 50: no audits recorded yet.
 
-Metric spec versions: v1. Tick 9283.
+Metric spec versions: v2. Tick 9309.
