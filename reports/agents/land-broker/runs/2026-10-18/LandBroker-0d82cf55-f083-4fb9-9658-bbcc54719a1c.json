@@ -1,0 +1,135 @@
+{
+  "run_id": "0d82cf55-f083-4fb9-9658-bbcc54719a1c",
+  "agent": "LandBroker",
+  "role": "surveyor+broker+navigator+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T04:01:56.028387+00:00",
+  "tick": 8685,
+  "summary": "LandBroker (brisk): work shift: building",
+  "actions": [
+    {
+      "action": "build",
+      "x": 81,
+      "y": 66,
+      "type": "road"
+    },
+    {
+      "action": "give",
+      "x": 81,
+      "y": 67,
+      "qty": 10,
+      "item": "stone"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brisk\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":17,\"rests\":1,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":8685,\"visited\":[\"70,66\",\"71,65\",\"71,66\",\"73,71\",\"79,70\",\"81,67\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":8680,\"pace\":\"steady\",\"day\":{\"all\":1013,\"building\":377,\"trade_goals\":46,\"talk\":87,\"factions\":3,\"movement\":500},\"hour\":{\"all\":38},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": false,
+      "error": "insufficient_materials"
+    }
+  ],
+  "failed_actions": 1,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 8685,
+    "you": {
+      "id": 16,
+      "name": "LandBroker",
+      "x": 81,
+      "y": 67,
+      "energy": 100,
+      "inventory": {
+        "wood": 20,
+        "fiber": 1,
+        "stone": 10,
+        "berries": 12
+      },
+      "home": {
+        "x": 71,
+        "y": 65
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "land-broker",
+  "team": "exchange",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "broker",
+    "navigator",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 38,
+      "building": 6,
+      "trade_goals": 0,
+      "talk": 10,
+      "factions": 0,
+      "movement": 22
+    },
+    "day": {
+      "all": 1013,
+      "building": 377,
+      "trade_goals": 46,
+      "talk": 87,
+      "factions": 3,
+      "movement": 500
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "brisk",
+  "approach": "build",
+  "reasons": [
+    "materials in hand for a road at (81, 66)",
+    "pack is 43/50: put 10 stone into the storehouse at (81, 67)"
+  ],
+  "energy_before": 100,
+  "berries_before": 12,
+  "energy_spent": 6,
+  "activity_energy": {
+    "build": 5.0,
+    "trade": 1.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brisk",
+    "glow": 50,
+    "wakes": 17,
+    "rests": 1,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}

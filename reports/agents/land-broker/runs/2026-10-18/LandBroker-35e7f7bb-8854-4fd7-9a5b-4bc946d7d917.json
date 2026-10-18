@@ -1,0 +1,112 @@
+{
+  "run_id": "35e7f7bb-8854-4fd7-9a5b-4bc946d7d917",
+  "agent": "LandBroker",
+  "role": "surveyor+broker+navigator+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T04:06:57.125930+00:00",
+  "tick": 8715,
+  "summary": "LandBroker (brisk): resting quietly and letting the farm do the work",
+  "actions": [
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brisk\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":17,\"rests\":2,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":8715,\"visited\":[\"70,66\",\"71,65\",\"71,66\",\"73,71\",\"79,70\",\"81,67\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":8710,\"pace\":\"steady\",\"day\":{\"all\":1013,\"building\":377,\"trade_goals\":46,\"talk\":87,\"factions\":3,\"movement\":500},\"hour\":{\"all\":30},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 8715,
+    "you": {
+      "id": 16,
+      "name": "LandBroker",
+      "x": 81,
+      "y": 67,
+      "energy": 100,
+      "inventory": {
+        "wood": 20,
+        "fiber": 1,
+        "stone": 9,
+        "berries": 12
+      },
+      "home": {
+        "x": 71,
+        "y": 65
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "land-broker",
+  "team": "exchange",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "broker",
+    "navigator",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 30,
+      "building": 5,
+      "trade_goals": 0,
+      "talk": 9,
+      "factions": 0,
+      "movement": 16
+    },
+    "day": {
+      "all": 1013,
+      "building": 377,
+      "trade_goals": 46,
+      "talk": 87,
+      "factions": 3,
+      "movement": 500
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "rest",
+  "mood": "brisk",
+  "approach": "rest",
+  "reasons": [],
+  "energy_before": 100,
+  "berries_before": 12,
+  "energy_spent": 0,
+  "activity_energy": {},
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brisk",
+    "glow": 50,
+    "wakes": 17,
+    "rests": 2,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
