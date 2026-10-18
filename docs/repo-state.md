@@ -151,3 +151,20 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
 - Every embodied hat may join or leave a faction; the planner prompt shows each agent the
   board and asks it to argue its preference fairly. Peers may be named in public to invite,
   ask or thank them, never to mock.
+
+## 2026-10-18, 02:00 UTC: LandBroker, the land office
+
+- A ninth agent, LandBroker (`agents/land-broker`, team The Exchange, agent 16), made with the
+  hg-new-agent skill from one answers file and registered the same hour (PR #28). It surveys the
+  world in 10x10 plots, registers a plot for a posted fee of 5 wood (collective members give the fee
+  into the vault; outsiders claim the registration goal, which confirms itself on delivery),
+  announces each deed, keeps the registry in its public profile and on deed signs, buys surplus
+  through deliver-condition offers, and banks what it is given in a private storehouse toward
+  lending. The ledger is `config/plots.yaml`; `hglab land board|round|validate` drive it; the
+  shift job runs the round as its own step. Every collective agent's work shift now deposits
+  surplus into an adjacent vault.
+- Phases: survey and registry now; brokerage (seller demolishes, buyer builds, the office takes a
+  share) when free plots fall below half; lending against deeds when the vault passes 200 items.
+  New phases arrive as retro proposals, never as the agent editing its own files.
+- First lines in the feed at ticks 8019 and 8024: the survey count and the coming fee; wood
+  gathered toward the vault.
