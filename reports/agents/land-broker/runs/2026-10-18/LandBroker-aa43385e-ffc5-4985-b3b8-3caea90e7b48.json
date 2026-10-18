@@ -1,0 +1,143 @@
+{
+  "run_id": "aa43385e-ffc5-4985-b3b8-3caea90e7b48",
+  "agent": "LandBroker",
+  "role": "surveyor+broker+navigator+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T07:23:09.295649+00:00",
+  "tick": 9892,
+  "summary": "LandBroker (brisk): work shift: building",
+  "actions": [
+    {
+      "action": "build",
+      "x": 66,
+      "y": 53,
+      "type": "road"
+    },
+    {
+      "action": "move",
+      "x": 66,
+      "y": 55
+    },
+    {
+      "action": "gather",
+      "kind": "fiber"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brisk\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":35,\"rests\":2,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":9892,\"visited\":[\"70,66\",\"71,65\",\"71,66\",\"73,71\",\"79,70\",\"81,67\",\"80,60\",\"75,61\",\"75,62\",\"73,58\",\"71,60\",\"66,55\",\"67,54\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":9892,\"pace\":\"slowing\",\"day\":{\"all\":1070,\"building\":381,\"trade_goals\":40,\"talk\":116,\"factions\":3,\"movement\":530},\"hour\":{\"all\":21},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 9892,
+    "you": {
+      "id": 16,
+      "name": "LandBroker",
+      "x": 67,
+      "y": 54,
+      "energy": 100,
+      "inventory": {
+        "wood": 20,
+        "fiber": 1,
+        "stone": 10,
+        "berries": 12
+      },
+      "home": {
+        "x": 71,
+        "y": 65
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "land-broker",
+  "team": "exchange",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "broker",
+    "navigator",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "slowing",
+    "hour": {
+      "all": 21,
+      "building": 7,
+      "trade_goals": 0,
+      "talk": 4,
+      "factions": 0,
+      "movement": 10
+    },
+    "day": {
+      "all": 1070,
+      "building": 381,
+      "trade_goals": 40,
+      "talk": 116,
+      "factions": 3,
+      "movement": 530
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "brisk",
+  "approach": "build",
+  "reasons": [
+    "materials in hand for a road at (66, 53)",
+    "walk to (66, 55) beside the fiber node at (66, 56), then gather"
+  ],
+  "energy_before": 100,
+  "berries_before": 12,
+  "energy_spent": 9,
+  "activity_energy": {
+    "build": 5.0,
+    "explore": 1.0,
+    "gather": 3.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brisk",
+    "glow": 50,
+    "wakes": 35,
+    "rests": 2,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
