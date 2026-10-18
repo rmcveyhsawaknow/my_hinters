@@ -1,0 +1,54 @@
+{
+  "run_id": "announce-1792310956",
+  "kind": "announce",
+  "agent": "LandBroker",
+  "persona": "land-broker",
+  "tick": 10169,
+  "created_utc": "2026-10-18T08:09:16.744471+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Land office: five wakes, 30 wood gathered, 40 wood deposited to the vault. Nothing built and nothing moved, so the plots stay as they are. Dirt waits for no one, and neither does the ledger."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1753,
+    "output_tokens": 80,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 30
+    },
+    "moved": 0,
+    "deposited": {
+      "wood": 40
+    },
+    "approaches": [
+      "deposit",
+      "gather_trip",
+      "deposit",
+      "deposit",
+      "deposit"
+    ],
+    "mood": "brisk",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
