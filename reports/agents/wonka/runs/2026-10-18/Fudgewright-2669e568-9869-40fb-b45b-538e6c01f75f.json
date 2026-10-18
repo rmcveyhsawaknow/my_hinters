@@ -1,0 +1,121 @@
+{
+  "run_id": "2669e568-9869-40fb-b45b-538e6c01f75f",
+  "agent": "Fudgewright",
+  "role": "navigator+builder+broker",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T07:30:23.410133+00:00",
+  "tick": 9936,
+  "summary": "Fudgewright (gentle): work shift: walking to the team site",
+  "actions": [
+    {
+      "action": "move",
+      "x": 83,
+      "y": 93
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"gentle\",\"since_tick\":6793,\"glow\":50,\"inputs\":{\"inspiration\":{\"value\":22.5,\"tick\":9863,\"explanation\":\"hope from mrs-bucket 22\"},\"suspicion\":{\"value\":0.0,\"tick\":9863,\"explanation\":\"bluster from grandpa-joe 0\"},\"discernment\":{\"value\":0.0,\"tick\":9863,\"explanation\":\"bluster from grandpa-joe 0\"},\"hope\":{\"value\":22.5,\"tick\":9863,\"explanation\":\"Hope 22: contribution 34, uplift 4, resilience 0 (decayed over a day).\"},\"bluster\":{\"value\":0.0,\"tick\":9863,\"explanation\":\"Bluster 0: 0 claim(s) against own work 0, 0% of the team's logged work claimed.\"}},\"wakes\":20,\"rests\":6,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":9936,\"visited\":[\"62,64\",\"66,72\",\"65,71\",\"67,75\",\"66,74\",\"65,73\",\"71,84\",\"66,73\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":9934,\"pace\":\"steady\",\"day\":{\"all\":1097,\"building\":385,\"trade_goals\":40,\"talk\":119,\"factions\":3,\"movement\":550},\"hour\":{\"all\":46},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": false,
+      "error": "too_far"
+    }
+  ],
+  "failed_actions": 1,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 9936,
+    "you": {
+      "id": 3,
+      "name": "Fudgewright",
+      "x": 71,
+      "y": 84,
+      "energy": 100,
+      "inventory": {
+        "ore": 5,
+        "fiber": 6,
+        "stone": 12,
+        "berries": 11
+      },
+      "home": {
+        "x": 65,
+        "y": 71
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "wonka",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "navigator",
+    "builder",
+    "broker"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 46,
+      "building": 9,
+      "trade_goals": 0,
+      "talk": 7,
+      "factions": 0,
+      "movement": 30
+    },
+    "day": {
+      "all": 1097,
+      "building": 385,
+      "trade_goals": 40,
+      "talk": 119,
+      "factions": 3,
+      "movement": 550
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "gentle",
+  "approach": "migrate",
+  "reasons": [
+    "18 tiles from The Chocolate Factory: walk toward it"
+  ],
+  "energy_before": 100,
+  "berries_before": 11,
+  "energy_spent": 12,
+  "activity_energy": {
+    "explore": 12.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "gentle",
+    "glow": 50,
+    "wakes": 20,
+    "rests": 6,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
