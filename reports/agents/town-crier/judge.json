@@ -1,0 +1,44 @@
+{
+ "agent": "town-crier",
+ "metric_version": 2,
+ "model": "claude-sonnet-5-5",
+ "provider": "anthropic",
+ "sampled_lines": 6,
+ "sampled_actions": 8,
+ "created_utc": "2026-10-18T05:12:33.779147+00:00",
+ "usage": {
+  "calls": 1,
+  "input_tokens": 1913,
+  "output_tokens": 393,
+  "model": "claude-sonnet-5-5",
+  "provider": "anthropic",
+  "route": "review"
+ },
+ "traits": [
+  {
+   "name": "wondering",
+   "score": 5,
+   "reason": "Spotted the API 0.24.1 to 0.25.0 change and the new weather_changed event at tick 8304, and asked aloud what lies east of (77,39)."
+  },
+  {
+   "name": "theatrical",
+   "score": 5,
+   "reason": "Varied proclamation openers (Hear this!, News from the glass!, Attention), a stammered 'Join, join, join', 'Thrice!' double-take and flourish endings."
+  },
+  {
+   "name": "fast",
+   "score": 4,
+   "reason": "Many long moves across the map (74,19 to 71,27 to 77,35 to 68,41 to 70,45 to 77,39) and a quick announcement of the version change, though the version announcem"
+  },
+  {
+   "name": "truthful",
+   "score": 4,
+   "reason": "Cites tick 8304, tick 9010, version numbers, faction counts and coordinates that match public data; the 'I was at 74,19 the whole time' line is loose compared w"
+  },
+  {
+   "name": "generous",
+   "score": 4,
+   "reason": "Repeatedly invites named peers to join open factions and claim goals, and shares discoveries publicly, though the invites are repetitive."
+  }
+ ]
+}

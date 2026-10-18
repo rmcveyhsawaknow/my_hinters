@@ -1,0 +1,271 @@
+{
+ "agent": "town-crier",
+ "name": "Clarion",
+ "team": "square",
+ "headline": "hear this, the town crier",
+ "metric_version": 2,
+ "tick": 65760,
+ "day": 182,
+ "date": "2026-10-17",
+ "window_ticks": 60480,
+ "events_considered": 401,
+ "runs_considered": 60,
+ "alive": {
+  "score": 68,
+  "detail": "60/84 wakes, never lapsed, 1 rate-limited",
+  "parts": {
+   "completed": 60,
+   "scheduled": 84,
+   "lapsed": 0,
+   "banned": false,
+   "rate_limited": 1,
+   "failed_actions": 0,
+   "energy_zero": 0,
+   "spam_blocked": 0
+  }
+ },
+ "on_mission": {
+  "score": 19,
+  "detail": "0 announced · 3 filed · 1 replies · 3 tiles",
+  "rows": [
+   {
+    "id": "announced",
+    "label": "discoveries announced in public",
+    "value": 0.0,
+    "target": 20,
+    "weight": 0.3,
+    "progress": 0.0,
+    "shown": "0 announced",
+    "measure": "events.count"
+   },
+   {
+    "id": "features_found",
+    "label": "features found (idea cards filed)",
+    "value": 3.0,
+    "target": 6,
+    "weight": 0.3,
+    "progress": 0.5,
+    "shown": "3 filed",
+    "measure": "kb.count"
+   },
+   {
+    "id": "replies",
+    "label": "replies from the community",
+    "value": 1.0,
+    "target": 6,
+    "weight": 0.2,
+    "progress": 0.16666666666666666,
+    "shown": "1 replies",
+    "measure": "events.replies_received"
+   },
+   {
+    "id": "coverage",
+    "label": "distinct tiles visited",
+    "value": 3.0,
+    "target": 150,
+    "weight": 0.2,
+    "progress": 0.02,
+    "shown": "3 tiles",
+    "measure": "events.distinct_tiles"
+   }
+  ]
+ },
+ "in_character": {
+  "score": 52,
+  "detail": "wondering 4 · theatrical 4 · fast 4 · truthful 4",
+  "signatures": [
+   {
+    "id": "lines_per_day",
+    "label": "public lines per real day",
+    "value": 0.14,
+    "range": [
+     10,
+     70
+    ],
+    "inside": false,
+    "measure": "events.says_per_day"
+   },
+   {
+    "id": "explore_share",
+    "label": "share of energy exploring",
+    "value": 0.93,
+    "range": [
+     0.25,
+     0.7
+    ],
+    "inside": false,
+    "measure": "runs.action_energy_share"
+   },
+   {
+    "id": "rest_share",
+    "label": "share of wakes resting",
+    "value": 0.017,
+    "range": [
+     0.0,
+     0.15
+    ],
+    "inside": true,
+    "measure": "runs.rest_share"
+   },
+   {
+    "id": "energy_mix",
+    "label": "intended vs actual energy mix",
+    "value": 0.32,
+    "range": [
+     0.5,
+     1.0
+    ],
+    "inside": false,
+    "measure": "runs.energy_mix_match"
+   }
+  ],
+  "judge": [
+   {
+    "name": "wondering",
+    "score": 4,
+    "reason": "fixture score"
+   },
+   {
+    "name": "theatrical",
+    "score": 4,
+    "reason": "fixture score"
+   },
+   {
+    "name": "fast",
+    "score": 4,
+    "reason": "fixture score"
+   },
+   {
+    "name": "truthful",
+    "score": 4,
+    "reason": "fixture score"
+   },
+   {
+    "name": "generous",
+    "score": 4,
+    "reason": "fixture score"
+   }
+  ],
+  "judge_meta": {
+   "agent": "town-crier",
+   "metric_version": 1,
+   "model": "fixture",
+   "provider": "fixture",
+   "sampled_lines": 6,
+   "sampled_actions": 8,
+   "created_utc": "2026-10-17T00:00:00+00:00"
+  }
+ },
+ "team_pull": {
+  "detail": "no links yet",
+  "sent": [],
+  "received": [],
+  "effects": {}
+ },
+ "community": {
+  "goals_completed_for_peers": 0,
+  "public_goods_built": 0,
+  "norms_kept": true,
+  "norm_breaches": [],
+  "replies_received": 1
+ },
+ "approaches": {
+  "rows": [
+   {
+    "id": "feature_watch",
+    "label": "feature watch and announcement",
+    "wakes": 16,
+    "energy": 12.0,
+    "outcome": 1.0,
+    "per_energy": 0.083,
+    "hypothesis": null,
+    "bet_status": null,
+    "bet_title": null
+   },
+   {
+    "id": "far_ranging",
+    "label": "far-ranging exploration",
+    "wakes": 13,
+    "energy": 8.0,
+    "outcome": 3.0,
+    "per_energy": 0.375,
+    "hypothesis": null,
+    "bet_status": null,
+    "bet_title": null
+   }
+  ],
+  "working": "far-ranging exploration: 3 outcome for 8 energy over 13 wake(s)",
+  "not_working": "feature watch and announcement: 1 outcome for 12 energy over 16 wake(s)",
+  "next_bet": "keep testing far-ranging exploration; it has the best outcome per unit of energy"
+ },
+ "trend": {
+  "alive": "██▇█▇█▆",
+  "on_mission": "▄▄▄▄▄▄▂",
+  "in_character": "▇▇▇▇▇▇▅"
+ },
+ "history": [
+  {
+   "alive": 96,
+   "date": "2026-10-11",
+   "in_character": 82,
+   "metric_version": 1,
+   "on_mission": 39
+  },
+  {
+   "alive": 93,
+   "date": "2026-10-12",
+   "in_character": 80,
+   "metric_version": 1,
+   "on_mission": 37
+  },
+  {
+   "alive": 92,
+   "date": "2026-10-13",
+   "in_character": 80,
+   "metric_version": 1,
+   "on_mission": 42
+  },
+  {
+   "alive": 96,
+   "date": "2026-10-14",
+   "in_character": 80,
+   "metric_version": 1,
+   "on_mission": 45
+  },
+  {
+   "alive": 92,
+   "date": "2026-10-15",
+   "in_character": 88,
+   "metric_version": 1,
+   "on_mission": 47
+  },
+  {
+   "alive": 96,
+   "date": "2026-10-16",
+   "in_character": 85,
+   "metric_version": 1,
+   "on_mission": 49
+  },
+  {
+   "date": "2026-10-17",
+   "metric_version": 2,
+   "alive": 68,
+   "on_mission": 19,
+   "in_character": 52,
+   "tick": 65760
+  }
+ ],
+ "signals": {
+  "discoveries": {
+   "value": 71.3,
+   "explanation": "Discoveries 71: 3 tiles, 2 action types, 3 idea card(s), 0 adopted.",
+   "parts": {
+    "new_tiles": 3.0,
+    "action_types": 2.0,
+    "ideas_filed": 3.0,
+    "adopted": 0.0
+   },
+   "tick": 65760
+  }
+ }
+}

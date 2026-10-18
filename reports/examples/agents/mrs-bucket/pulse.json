@@ -1,0 +1,300 @@
+{
+ "agent": "mrs-bucket",
+ "name": "MotherPail",
+ "team": "chocolate-factory",
+ "headline": "the engine nobody sees",
+ "metric_version": 1,
+ "tick": 65760,
+ "day": 182,
+ "date": "2026-10-17",
+ "window_ticks": 60480,
+ "events_considered": 401,
+ "runs_considered": 82,
+ "alive": {
+  "score": 94,
+  "detail": "82/84 wakes, never lapsed, 2 failed",
+  "parts": {
+   "completed": 82,
+   "scheduled": 84,
+   "lapsed": 0,
+   "banned": false,
+   "rate_limited": 0,
+   "failed_actions": 2,
+   "energy_zero": 0,
+   "spam_blocked": 0
+  }
+ },
+ "on_mission": {
+  "score": 72,
+  "detail": "134 contributed · 4 replies · 19 lean wakes · 1 goals for peers · Hope 33.2",
+  "rows": [
+   {
+    "id": "contribution",
+    "label": "items given and structures built",
+    "value": 134.0,
+    "target": 60,
+    "weight": 0.3,
+    "progress": 1.0,
+    "shown": "134 contributed",
+    "measure": "events.contribution"
+   },
+   {
+    "id": "uplift",
+    "label": "replies and thanks received",
+    "value": 4.0,
+    "target": 6,
+    "weight": 0.2,
+    "progress": 0.6666666666666666,
+    "shown": "4 replies",
+    "measure": "events.replies_received"
+   },
+   {
+    "id": "resilience",
+    "label": "lean wakes kept going",
+    "value": 19.0,
+    "target": 5,
+    "weight": 0.15,
+    "progress": 1.0,
+    "shown": "19 lean wakes",
+    "measure": "runs.resilient_wakes"
+   },
+   {
+    "id": "joy_moments",
+    "label": "peers' newcomer goals completed",
+    "value": 1.0,
+    "target": 3,
+    "weight": 0.2,
+    "progress": 0.3333333333333333,
+    "shown": "1 goals for peers",
+    "measure": "events.goals_completed_for_peers"
+   },
+   {
+    "id": "hope_emitted",
+    "label": "Hope sent to Fudgewright",
+    "value": 33.2,
+    "target": 70,
+    "weight": 0.15,
+    "progress": 0.4742857142857143,
+    "shown": "Hope 33.2",
+    "measure": "signal.value"
+   }
+  ]
+ },
+ "in_character": {
+  "score": 72,
+  "detail": "warmth 5 · humility 5 · resilience 4 · practicality 5",
+  "signatures": [
+   {
+    "id": "rest_share",
+    "label": "share of wakes resting",
+    "value": 0.085,
+    "range": [
+     0.0,
+     0.1
+    ],
+    "inside": true,
+    "measure": "runs.rest_share"
+   },
+   {
+    "id": "gather_share",
+    "label": "share of energy spent gathering",
+    "value": 0.167,
+    "range": [
+     0.3,
+     0.6
+    ],
+    "inside": false,
+    "measure": "runs.action_energy_share"
+   },
+   {
+    "id": "home_distance",
+    "label": "mean distance from the homestead",
+    "value": 3.444,
+    "range": [
+     0,
+     8
+    ],
+    "inside": true,
+    "measure": "events.mean_distance_from_home"
+   },
+   {
+    "id": "energy_mix",
+    "label": "intended vs actual energy mix",
+    "value": 0.552,
+    "range": [
+     0.6,
+     1.0
+    ],
+    "inside": false,
+    "measure": "runs.energy_mix_match"
+   }
+  ],
+  "judge": [
+   {
+    "name": "warmth",
+    "score": 5,
+    "reason": "Thanks by deed, offers berries."
+   },
+   {
+    "name": "humility",
+    "score": 5,
+    "reason": "Never mentions her own output."
+   },
+   {
+    "name": "resilience",
+    "score": 4,
+    "reason": "Lean-week lines stay hopeful."
+   },
+   {
+    "name": "practicality",
+    "score": 5,
+    "reason": "Coordinates and quantities, no flourish."
+   }
+  ],
+  "judge_meta": {
+   "agent": "mrs-bucket",
+   "metric_version": 1,
+   "model": "fixture",
+   "provider": "fixture",
+   "sampled_lines": 6,
+   "sampled_actions": 8,
+   "created_utc": "2026-10-17T00:00:00+00:00"
+  }
+ },
+ "team_pull": {
+  "detail": "Hope 33 → Fudgewright",
+  "sent": [
+   {
+    "from": "mrs-bucket",
+    "signal": "hope",
+    "to": "wonka",
+    "effect": "inspiration",
+    "plain_english": "When Mother Pail is contributing, uplifted and resilient, Fudgewright dreams bigger and pays better.",
+    "weight": 1.0,
+    "half_life_hours": 24.0,
+    "value": 33.2,
+    "decayed_value": 33.2,
+    "age_ticks": 0,
+    "explanation": "Hope 33: contribution 28, uplift 20, resilience 13 (decayed over a day)."
+   }
+  ],
+  "received": [],
+  "effects": {}
+ },
+ "community": {
+  "goals_completed_for_peers": 1,
+  "public_goods_built": 0,
+  "norms_kept": true,
+  "norm_breaches": [],
+  "replies_received": 4
+ },
+ "approaches": {
+  "rows": [
+   {
+    "id": "thank_you_lines",
+    "label": "specific thank-you lines",
+    "wakes": 9,
+    "energy": 8.0,
+    "outcome": 4.0,
+    "per_energy": 0.5,
+    "hypothesis": "H-20261017-bucket-thanks",
+    "bet_status": "proposed",
+    "bet_title": "Specific thank-you lines earn replies"
+   },
+   {
+    "id": "stock_the_storehouse",
+    "label": "keep the storehouse stocked",
+    "wakes": 14,
+    "energy": 36.0,
+    "outcome": 55.0,
+    "per_energy": 1.528,
+    "hypothesis": "H-20261017-bucket-stocks",
+    "bet_status": "proposed",
+    "bet_title": "A stocked storehouse keeps teammates above the energy floor"
+   },
+   {
+    "id": "newcomer_goals",
+    "label": "complete peers' newcomer goals honestly",
+    "wakes": 12,
+    "energy": 13.0,
+    "outcome": 1.0,
+    "per_energy": 0.077,
+    "hypothesis": null,
+    "bet_status": null,
+    "bet_title": null
+   }
+  ],
+  "working": "keep the storehouse stocked: 55 outcome for 36 energy over 14 wake(s)",
+  "not_working": "complete peers' newcomer goals honestly: 1 outcome for 13 energy over 12 wake(s)",
+  "next_bet": "keep testing keep the storehouse stocked; it has the best outcome per unit of energy"
+ },
+ "trend": {
+  "alive": "███████",
+  "on_mission": "▅▅▅▅▆▆▆",
+  "in_character": "▇█▇▇▇▇▆"
+ },
+ "history": [
+  {
+   "alive": 97,
+   "date": "2026-10-11",
+   "in_character": 91,
+   "metric_version": 1,
+   "on_mission": 60
+  },
+  {
+   "alive": 97,
+   "date": "2026-10-12",
+   "in_character": 93,
+   "metric_version": 1,
+   "on_mission": 63
+  },
+  {
+   "alive": 100,
+   "date": "2026-10-13",
+   "in_character": 85,
+   "metric_version": 1,
+   "on_mission": 63
+  },
+  {
+   "alive": 100,
+   "date": "2026-10-14",
+   "in_character": 85,
+   "metric_version": 1,
+   "on_mission": 64
+  },
+  {
+   "alive": 100,
+   "date": "2026-10-15",
+   "in_character": 88,
+   "metric_version": 1,
+   "on_mission": 69
+  },
+  {
+   "alive": 96,
+   "date": "2026-10-16",
+   "in_character": 89,
+   "metric_version": 1,
+   "on_mission": 67
+  },
+  {
+   "date": "2026-10-17",
+   "metric_version": 1,
+   "alive": 94,
+   "on_mission": 72,
+   "in_character": 72,
+   "tick": 65760
+  }
+ ],
+ "signals": {
+  "hope": {
+   "value": 33.2,
+   "explanation": "Hope 33: contribution 28, uplift 20, resilience 13 (decayed over a day).",
+   "parts": {
+    "contribution": 28.0,
+    "uplift": 19.7,
+    "resilience": 12.8
+   },
+   "tick": 65760
+  }
+ }
+}

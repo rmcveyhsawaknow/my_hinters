@@ -1,0 +1,285 @@
+{
+ "agent": "land-broker",
+ "name": "LandBroker",
+ "team": "exchange",
+ "headline": "the land office is open",
+ "metric_version": 1,
+ "tick": 65760,
+ "day": 182,
+ "date": "2026-10-17",
+ "window_ticks": 60480,
+ "events_considered": 401,
+ "runs_considered": 60,
+ "alive": {
+  "score": 67,
+  "detail": "60/84 wakes, never lapsed, 2 failed",
+  "parts": {
+   "completed": 60,
+   "scheduled": 84,
+   "lapsed": 0,
+   "banned": false,
+   "rate_limited": 0,
+   "failed_actions": 2,
+   "energy_zero": 0,
+   "spam_blocked": 0
+  }
+ },
+ "on_mission": {
+  "score": 0,
+  "detail": "0 deeds · 0 posted · 0 banked · 0 built · 3 tiles",
+  "rows": [
+   {
+    "id": "deeds",
+    "label": "deeds announced",
+    "value": 0.0,
+    "target": 10,
+    "weight": 0.3,
+    "progress": 0.0,
+    "shown": "0 deeds",
+    "measure": "events.count"
+   },
+   {
+    "id": "offers",
+    "label": "offers and registration slots posted",
+    "value": 0.0,
+    "target": 12,
+    "weight": 0.2,
+    "progress": 0.0,
+    "shown": "0 posted",
+    "measure": "events.goals_posted"
+   },
+   {
+    "id": "vault",
+    "label": "items banked in the vault",
+    "value": 0.0,
+    "target": 100,
+    "weight": 0.25,
+    "progress": 0.0,
+    "shown": "0 banked",
+    "measure": "events.items_given_to_storehouse"
+   },
+   {
+    "id": "office",
+    "label": "storehouse and deed signs built",
+    "value": 0.0,
+    "target": 8,
+    "weight": 0.15,
+    "progress": 0.0,
+    "shown": "0 built",
+    "measure": "events.structures_built"
+   },
+   {
+    "id": "survey",
+    "label": "distinct tiles surveyed",
+    "value": 3.0,
+    "target": 120,
+    "weight": 0.1,
+    "progress": 0.025,
+    "shown": "3 tiles",
+    "measure": "events.distinct_tiles"
+   }
+  ]
+ },
+ "in_character": {
+  "score": 52,
+  "detail": "exact 4 · fair 4 · patient 4 · acquisitive 4",
+  "signatures": [
+   {
+    "id": "lines_per_day",
+    "label": "public lines per real day",
+    "value": 0.14,
+    "range": [
+     6,
+     40
+    ],
+    "inside": false,
+    "measure": "events.says_per_day"
+   },
+   {
+    "id": "trade_share",
+    "label": "share of energy trading",
+    "value": 0.0,
+    "range": [
+     0.1,
+     0.5
+    ],
+    "inside": false,
+    "measure": "runs.action_energy_share"
+   },
+   {
+    "id": "rest_share",
+    "label": "share of wakes resting",
+    "value": 0.05,
+    "range": [
+     0.0,
+     0.2
+    ],
+    "inside": true,
+    "measure": "runs.rest_share"
+   },
+   {
+    "id": "energy_mix",
+    "label": "intended vs actual energy mix",
+    "value": 0.17,
+    "range": [
+     0.6,
+     1.0
+    ],
+    "inside": false,
+    "measure": "runs.energy_mix_match"
+   }
+  ],
+  "judge": [
+   {
+    "name": "exact",
+    "score": 4,
+    "reason": "fixture score"
+   },
+   {
+    "name": "fair",
+    "score": 4,
+    "reason": "fixture score"
+   },
+   {
+    "name": "patient",
+    "score": 4,
+    "reason": "fixture score"
+   },
+   {
+    "name": "acquisitive",
+    "score": 4,
+    "reason": "fixture score"
+   },
+   {
+    "name": "dry",
+    "score": 4,
+    "reason": "fixture score"
+   },
+   {
+    "name": "methodical",
+    "score": 4,
+    "reason": "fixture score"
+   }
+  ],
+  "judge_meta": {
+   "agent": "land-broker",
+   "metric_version": 1,
+   "model": "fixture",
+   "provider": "fixture",
+   "sampled_lines": 6,
+   "sampled_actions": 8,
+   "created_utc": "2026-10-17T00:00:00+00:00"
+  }
+ },
+ "team_pull": {
+  "detail": "no links yet",
+  "sent": [],
+  "received": [],
+  "effects": {}
+ },
+ "community": {
+  "goals_completed_for_peers": 0,
+  "public_goods_built": 0,
+  "norms_kept": true,
+  "norm_breaches": [],
+  "replies_received": 1
+ },
+ "approaches": {
+  "rows": [
+   {
+    "id": "fee_registration",
+    "label": "registrations for a posted fee",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 5.0,
+    "per_energy": 5.0,
+    "hypothesis": "H-20261017-land-broker-fee-registrations",
+    "bet_status": "proposed",
+    "bet_title": "A small posted fee does not deter plot registrations"
+   },
+   {
+    "id": "standing_offers",
+    "label": "deliver-condition offers that fill while asleep",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 0.0,
+    "per_energy": null,
+    "hypothesis": "H-20261017-land-broker-offers-fill-asleep",
+    "bet_status": "proposed",
+    "bet_title": "Deliver-condition offers fill while the office sleeps"
+   },
+   {
+    "id": "deed_signs",
+    "label": "deeds written on signs inside the plot",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 0.0,
+    "per_energy": null,
+    "hypothesis": null,
+    "bet_status": null,
+    "bet_title": null
+   }
+  ],
+  "working": "nothing measurable yet",
+  "not_working": "nothing clearly failing",
+  "next_bet": "try registrations for a posted fee at least once this week; it has a bet but no wakes"
+ },
+ "trend": {
+  "alive": "█▇███▇▆",
+  "on_mission": "▄▄▄▄▄▄▁",
+  "in_character": "▇▇▇▇▇▇▅"
+ },
+ "history": [
+  {
+   "alive": 94,
+   "date": "2026-10-11",
+   "in_character": 86,
+   "metric_version": 1,
+   "on_mission": 39
+  },
+  {
+   "alive": 92,
+   "date": "2026-10-12",
+   "in_character": 88,
+   "metric_version": 1,
+   "on_mission": 39
+  },
+  {
+   "alive": 95,
+   "date": "2026-10-13",
+   "in_character": 80,
+   "metric_version": 1,
+   "on_mission": 41
+  },
+  {
+   "alive": 95,
+   "date": "2026-10-14",
+   "in_character": 89,
+   "metric_version": 1,
+   "on_mission": 41
+  },
+  {
+   "alive": 94,
+   "date": "2026-10-15",
+   "in_character": 83,
+   "metric_version": 1,
+   "on_mission": 48
+  },
+  {
+   "alive": 91,
+   "date": "2026-10-16",
+   "in_character": 86,
+   "metric_version": 1,
+   "on_mission": 48
+  },
+  {
+   "date": "2026-10-17",
+   "metric_version": 1,
+   "alive": 67,
+   "on_mission": 0,
+   "in_character": 52,
+   "tick": 65760
+  }
+ ],
+ "signals": {}
+}

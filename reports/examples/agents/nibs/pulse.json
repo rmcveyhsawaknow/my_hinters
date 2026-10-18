@@ -1,0 +1,338 @@
+{
+ "agent": "nibs",
+ "name": "Stoutheart",
+ "team": "neverland",
+ "headline": "the one who stays",
+ "metric_version": 1,
+ "tick": 65760,
+ "day": 182,
+ "date": "2026-10-17",
+ "window_ticks": 60480,
+ "events_considered": 401,
+ "runs_considered": 55,
+ "alive": {
+  "score": 92,
+  "detail": "55/56 wakes, never lapsed, 3 failed",
+  "parts": {
+   "completed": 55,
+   "scheduled": 56,
+   "lapsed": 0,
+   "banned": false,
+   "rate_limited": 0,
+   "failed_actions": 3,
+   "energy_zero": 0,
+   "spam_blocked": 0
+  }
+ },
+ "on_mission": {
+  "score": 72,
+  "detail": "56% inside · 3/3 in place · 2 hard jobs · 100% standing",
+  "rows": [
+   {
+    "id": "steadfastness",
+    "label": "share of time inside Neverland",
+    "value": 0.556,
+    "target": 1.0,
+    "weight": 0.3,
+    "progress": 0.556,
+    "shown": "56% inside",
+    "measure": "events.share_moves_inside_territory"
+   },
+   {
+    "id": "self_sufficiency",
+    "label": "farm, storehouse and stocked stores",
+    "value": 3.0,
+    "target": 3,
+    "weight": 0.3,
+    "progress": 1.0,
+    "shown": "3/3 in place",
+    "measure": "events.self_sufficiency"
+   },
+   {
+    "id": "courage_acts",
+    "label": "hard jobs done inside",
+    "value": 2.0,
+    "target": 5,
+    "weight": 0.25,
+    "progress": 0.4,
+    "shown": "2 hard jobs",
+    "measure": "events.structures_built"
+   },
+   {
+    "id": "standing",
+    "label": "team structures kept standing",
+    "value": 1.0,
+    "target": 0.9,
+    "weight": 0.15,
+    "progress": 1.0,
+    "shown": "100% standing",
+    "measure": "events.structures_standing_share"
+   }
+  ]
+ },
+ "in_character": {
+  "score": 70,
+  "detail": "brave 4 · cheerful 5 · steadfast 5 · protective 4",
+  "signatures": [
+   {
+    "id": "home_distance",
+    "label": "mean distance from Neverland's centre",
+    "value": 1.868,
+    "range": [
+     0,
+     6
+    ],
+    "inside": true,
+    "measure": "events.mean_distance_from_home"
+   },
+   {
+    "id": "build_share",
+    "label": "share of energy building",
+    "value": 0.15,
+    "range": [
+     0.3,
+     0.6
+    ],
+    "inside": false,
+    "measure": "runs.action_energy_share"
+   },
+   {
+    "id": "greetings",
+    "label": "visitors greeted over 7 days",
+    "value": 4.0,
+    "range": [
+     0,
+     10
+    ],
+    "inside": true,
+    "measure": "runs.approach_count"
+   },
+   {
+    "id": "energy_mix",
+    "label": "intended vs actual energy mix",
+    "value": 0.41,
+    "range": [
+     0.6,
+     1.0
+    ],
+    "inside": false,
+    "measure": "runs.energy_mix_match"
+   }
+  ],
+  "judge": [
+   {
+    "name": "brave",
+    "score": 4,
+    "reason": "Costliest build first; calm statements."
+   },
+   {
+    "name": "cheerful",
+    "score": 5,
+    "reason": "Upbeat reports with small flourish."
+   },
+   {
+    "name": "steadfast",
+    "score": 5,
+    "reason": "Never outside; stores as duty."
+   },
+   {
+    "name": "protective",
+    "score": 4,
+    "reason": "Greets and offers help."
+   }
+  ],
+  "judge_meta": {
+   "agent": "nibs",
+   "metric_version": 1,
+   "model": "fixture",
+   "provider": "fixture",
+   "sampled_lines": 6,
+   "sampled_actions": 8,
+   "created_utc": "2026-10-17T00:00:00+00:00"
+  }
+ },
+ "team_pull": {
+  "detail": "Escape 71 (Lagalong) → Resolve 36 · Courage 49 → Tinkerglow · Belief 42 → Tinkerglow",
+  "sent": [
+   {
+    "from": "nibs",
+    "signal": "courage",
+    "to": "tinker-bell",
+    "effect": "glow",
+    "plain_english": "Hard jobs done inside Neverland and visitors greeted brighten Tinkerglow's Glow.",
+    "weight": 0.3,
+    "half_life_hours": 24.0,
+    "value": 49.3,
+    "decayed_value": 49.3,
+    "age_ticks": 0,
+    "explanation": "Courage 49: 2 hard job(s) inside, 4 greeting(s), structures standing 100%."
+   },
+   {
+    "from": "nibs",
+    "signal": "belief",
+    "to": "tinker-bell",
+    "effect": "glow",
+    "plain_english": "Stoutheart arriving where she pointed, using her bridges and staying inside is Belief, and Belief sets her Glow.",
+    "weight": 0.4,
+    "half_life_hours": 24.0,
+    "value": 42.3,
+    "decayed_value": 42.3,
+    "age_ticks": 0,
+    "explanation": "Belief 42: 5 arrival(s) inside, 0 bridge crossing(s), staying inside."
+   }
+  ],
+  "received": [
+   {
+    "from": "tootles",
+    "signal": "escape",
+    "to": "nibs",
+    "effect": "resolve",
+    "plain_english": "The more Lagalong leaves, the more firmly Stoutheart stays and stocks the stores.",
+    "weight": 0.5,
+    "half_life_hours": 48.0,
+    "value": 71.0,
+    "decayed_value": 71.0,
+    "age_ticks": 0,
+    "explanation": "Escape 71: 100% of moves outside, farthest 42 tiles from the centre."
+   }
+  ],
+  "effects": {
+   "resolve": {
+    "value": 35.5,
+    "tick": 65760,
+    "explanation": "escape from tootles 71"
+   },
+   "escape": {
+    "value": 71.0,
+    "tick": 65760,
+    "explanation": "Escape 71: 100% of moves outside, farthest 42 tiles from the centre."
+   }
+  }
+ },
+ "community": {
+  "goals_completed_for_peers": 0,
+  "public_goods_built": 0,
+  "norms_kept": true,
+  "norm_breaches": [],
+  "replies_received": 1
+ },
+ "approaches": {
+  "rows": [
+   {
+    "id": "self_sufficiency",
+    "label": "farm plus stocked storehouse",
+    "wakes": 12,
+    "energy": 33.0,
+    "outcome": 3.0,
+    "per_energy": 0.091,
+    "hypothesis": "H-20261017-nibs-self-sufficiency",
+    "bet_status": "proposed",
+    "bet_title": "A farm plus a stocked storehouse keeps Neverland above the floor"
+   },
+   {
+    "id": "greetings",
+    "label": "greeting visitors",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 1.0,
+    "per_energy": 1.0,
+    "hypothesis": "H-20261017-nibs-greetings",
+    "bet_status": "proposed",
+    "bet_title": "Greeting visitors earns replies and return visits"
+   },
+   {
+    "id": "edge_walls",
+    "label": "walls on Neverland's edges",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 1.0,
+    "per_energy": 1.0,
+    "hypothesis": null,
+    "bet_status": null,
+    "bet_title": null
+   }
+  ],
+  "working": "farm plus stocked storehouse: 3 outcome for 33 energy over 12 wake(s)",
+  "not_working": "nothing clearly failing",
+  "next_bet": "try greeting visitors at least once this week; it has a bet but no wakes"
+ },
+ "trend": {
+  "alive": "██████▇",
+  "on_mission": "▅▅▅▅▅▆▆",
+  "in_character": "▇▇▇▇▇▇▆"
+ },
+ "history": [
+  {
+   "alive": 100,
+   "date": "2026-10-11",
+   "in_character": 86,
+   "metric_version": 1,
+   "on_mission": 56
+  },
+  {
+   "alive": 95,
+   "date": "2026-10-12",
+   "in_character": 85,
+   "metric_version": 1,
+   "on_mission": 53
+  },
+  {
+   "alive": 99,
+   "date": "2026-10-13",
+   "in_character": 92,
+   "metric_version": 1,
+   "on_mission": 59
+  },
+  {
+   "alive": 98,
+   "date": "2026-10-14",
+   "in_character": 88,
+   "metric_version": 1,
+   "on_mission": 59
+  },
+  {
+   "alive": 98,
+   "date": "2026-10-15",
+   "in_character": 91,
+   "metric_version": 1,
+   "on_mission": 60
+  },
+  {
+   "alive": 99,
+   "date": "2026-10-16",
+   "in_character": 83,
+   "metric_version": 1,
+   "on_mission": 67
+  },
+  {
+   "date": "2026-10-17",
+   "metric_version": 1,
+   "alive": 92,
+   "on_mission": 72,
+   "in_character": 70,
+   "tick": 65760
+  }
+ ],
+ "signals": {
+  "courage": {
+   "value": 49.3,
+   "explanation": "Courage 49: 2 hard job(s) inside, 4 greeting(s), structures standing 100%.",
+   "parts": {
+    "hard_jobs": 1.1,
+    "greetings": 5.9,
+    "standing": 10.0
+   },
+   "tick": 65760
+  },
+  "belief": {
+   "value": 42.3,
+   "explanation": "Belief 42: 5 arrival(s) inside, 0 bridge crossing(s), staying inside.",
+   "parts": {
+    "arrivals": 1.0,
+    "bridge_crossings": 0,
+    "staying": 10.0
+   },
+   "tick": 65760
+  }
+ }
+}
