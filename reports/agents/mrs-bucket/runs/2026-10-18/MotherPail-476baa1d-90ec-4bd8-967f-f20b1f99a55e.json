@@ -1,0 +1,124 @@
+{
+  "run_id": "476baa1d-90ec-4bd8-967f-f20b1f99a55e",
+  "agent": "MotherPail",
+  "role": "builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T09:22:22.582145+00:00",
+  "tick": 10608,
+  "summary": "MotherPail (warm): work shift: building",
+  "actions": [
+    {
+      "action": "build",
+      "x": 85,
+      "y": 92,
+      "type": "storehouse",
+      "policy": "public"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"warm\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":29,\"rests\":4,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":10608,\"visited\":[\"62,56\",\"67,53\",\"65,55\",\"57,67\",\"69,79\",\"66,78\",\"63,73\",\"71,84\",\"67,87\",\"79,89\",\"78,94\",\"89,99\",\"88,98\",\"83,93\",\"82,94\",\"83,95\",\"85,92\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":10606,\"pace\":\"steady\",\"day\":{\"all\":1225,\"building\":402,\"trade_goals\":49,\"talk\":143,\"factions\":3,\"movement\":628},\"hour\":{\"all\":69},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 10608,
+    "you": {
+      "id": 4,
+      "name": "MotherPail",
+      "x": 85,
+      "y": 92,
+      "energy": 100,
+      "inventory": {
+        "wood": 20,
+        "fiber": 6,
+        "stone": 10,
+        "berries": 14
+      },
+      "home": {
+        "x": 62,
+        "y": 56
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "mrs-bucket",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 69,
+      "building": 13,
+      "trade_goals": 5,
+      "talk": 11,
+      "factions": 0,
+      "movement": 40
+    },
+    "day": {
+      "all": 1225,
+      "building": 402,
+      "trade_goals": 49,
+      "talk": 143,
+      "factions": 3,
+      "movement": 628
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "warm",
+  "approach": "build",
+  "reasons": [
+    "materials in hand for a storehouse at (85, 92)"
+  ],
+  "energy_before": 100,
+  "berries_before": 14,
+  "energy_spent": 5,
+  "activity_energy": {
+    "build": 5.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "warm",
+    "glow": 50,
+    "wakes": 29,
+    "rests": 4,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}

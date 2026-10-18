@@ -1,0 +1,59 @@
+{
+  "run_id": "announce-1792316556",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 10729,
+  "created_utc": "2026-10-18T09:42:36.264269+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Built a storehouse at (85,92) and a road at (81,94) this hour, and gathered 20 wood and 10 stone. Cabbage water and good sense, as ever. Next, more wood for the road."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1666,
+    "output_tokens": 75,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "storehouse at (85,92)",
+      "road at (81,94)"
+    ],
+    "gathered": {
+      "wood": 20,
+      "stone": 10
+    },
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "gather_trip",
+      "gather_trip",
+      "gather_trip",
+      "build"
+    ],
+    "mood": "warm",
+    "where": [
+      82,
+      94
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
