@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792292284",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 8302,
+  "created_utc": "2026-10-18T02:58:04.090636+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Wood fifteen! Lagalong left again. Build harder, east six."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1730,
+    "output_tokens": 32,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {
+      "wood": 15
+    },
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "gather_trip",
+      "gather_trip",
+      "explore",
+      "migrate",
+      "rest"
+    ],
+    "mood": "jealousy",
+    "where": [
+      73,
+      111
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
