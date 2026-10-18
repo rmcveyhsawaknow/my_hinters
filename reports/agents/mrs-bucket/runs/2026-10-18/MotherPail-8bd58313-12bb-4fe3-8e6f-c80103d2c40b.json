@@ -1,0 +1,122 @@
+{
+  "run_id": "8bd58313-12bb-4fe3-8e6f-c80103d2c40b",
+  "agent": "MotherPail",
+  "role": "builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T01:32:41.451537+00:00",
+  "tick": 7789,
+  "summary": "MotherPail (warm): work shift: walking to the team site",
+  "actions": [
+    {
+      "action": "move",
+      "x": 71,
+      "y": 84
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"warm\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":12,\"rests\":0,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":7789,\"visited\":[\"62,56\",\"67,53\",\"65,55\",\"57,67\",\"69,79\",\"66,78\",\"63,73\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":7786,\"pace\":\"quickening\",\"day\":{\"all\":849,\"building\":322,\"trade_goals\":43,\"talk\":60,\"factions\":3,\"movement\":421},\"hour\":{\"all\":85},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 7789,
+    "you": {
+      "id": 4,
+      "name": "MotherPail",
+      "x": 63,
+      "y": 73,
+      "energy": 100,
+      "inventory": {
+        "wood": 20,
+        "fiber": 6,
+        "stone": 4,
+        "berries": 10
+      },
+      "home": {
+        "x": 62,
+        "y": 56
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "mrs-bucket",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 85,
+      "building": 25,
+      "trade_goals": 8,
+      "talk": 12,
+      "factions": 2,
+      "movement": 38
+    },
+    "day": {
+      "all": 849,
+      "building": 322,
+      "trade_goals": 43,
+      "talk": 60,
+      "factions": 3,
+      "movement": 421
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "warm",
+  "approach": "migrate",
+  "reasons": [
+    "26 tiles from The Chocolate Factory: walk toward it"
+  ],
+  "energy_before": 100,
+  "berries_before": 10,
+  "energy_spent": 11,
+  "activity_energy": {
+    "explore": 11.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "warm",
+    "glow": 50,
+    "wakes": 12,
+    "rests": 0,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}

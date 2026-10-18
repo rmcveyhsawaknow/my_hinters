@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792288371",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 7911,
+  "created_utc": "2026-10-18T01:52:51.727193+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes and I only stopped once, so I'm sitting by the road at 83, 93 with my boots dry and a plan to keep moving. Four moves done, nothing to deposit yet."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1629,
+    "output_tokens": 70,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "migrate",
+      "migrate",
+      "migrate",
+      "rest"
+    ],
+    "mood": "warm",
+    "where": [
+      83,
+      93
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
