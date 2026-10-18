@@ -1,0 +1,290 @@
+{
+ "agent": "tootles",
+ "name": "Lagalong",
+ "team": "neverland",
+ "headline": "always just behind the adventure",
+ "metric_version": 1,
+ "tick": 9114,
+ "day": 25,
+ "date": "2026-10-18",
+ "window_ticks": 60480,
+ "events_considered": 1087,
+ "runs_considered": 50,
+ "alive": {
+  "score": 70,
+  "detail": "50/45 wakes, never lapsed, 23 failed",
+  "parts": {
+   "completed": 50,
+   "scheduled": 45,
+   "lapsed": 0,
+   "banned": false,
+   "rate_limited": 0,
+   "failed_actions": 23,
+   "energy_zero": 0,
+   "spam_blocked": 0
+  }
+ },
+ "on_mission": {
+  "score": 65,
+  "detail": "100% outside · 0/40 saved · 3 landmarks · humility 5/5",
+  "rows": [
+   {
+    "id": "escape_progress",
+    "label": "share of time outside Neverland",
+    "value": 1.0,
+    "target": 0.7,
+    "weight": 0.3,
+    "progress": 1.0,
+    "shown": "100% outside",
+    "measure": "events.share_moves_outside_territory"
+   },
+   {
+    "id": "big_thing",
+    "label": "stone and ore saved toward the Big Thing",
+    "value": 0.0,
+    "target": 40,
+    "weight": 0.25,
+    "progress": 0.0,
+    "shown": "0/40 saved",
+    "measure": "events.items_saved"
+   },
+   {
+    "id": "landmarks",
+    "label": "landmarks found",
+    "value": 3.0,
+    "target": 4,
+    "weight": 0.2,
+    "progress": 0.75,
+    "shown": "3 landmarks",
+    "measure": "events.landmarks_found"
+   },
+   {
+    "id": "near_misses",
+    "label": "near misses",
+    "value": null,
+    "target": 3,
+    "weight": 0.15,
+    "progress": null,
+    "shown": "n/a",
+    "measure": "state.value"
+   },
+   {
+    "id": "humility",
+    "label": "humble public lines",
+    "value": 5.0,
+    "target": 4,
+    "weight": 0.1,
+    "progress": 1.0,
+    "shown": "humility 5/5",
+    "measure": "judge.trait"
+   }
+  ]
+ },
+ "in_character": {
+  "score": 75,
+  "detail": "humble 5 · persistent 4 · gentle 3 · wistful 3",
+  "signatures": [
+   {
+    "id": "max_distance",
+    "label": "farthest distance from Neverland's centre",
+    "value": 87.0,
+    "range": [
+     15,
+     90
+    ],
+    "inside": true,
+    "measure": "events.max_distance_from_home"
+   },
+   {
+    "id": "explore_share",
+    "label": "share of energy exploring",
+    "value": 0.856,
+    "range": [
+     0.35,
+     0.7
+    ],
+    "inside": false,
+    "measure": "runs.action_energy_share"
+   },
+   {
+    "id": "rest_share",
+    "label": "share of wakes resting",
+    "value": 0.16,
+    "range": [
+     0.05,
+     0.3
+    ],
+    "inside": true,
+    "measure": "runs.rest_share"
+   },
+   {
+    "id": "energy_mix",
+    "label": "intended vs actual energy mix",
+    "value": 0.644,
+    "range": [
+     0.5,
+     1.0
+    ],
+    "inside": true,
+    "measure": "runs.energy_mix_match"
+   }
+  ],
+  "judge": [
+   {
+    "name": "humble",
+    "score": 5,
+    "reason": "Nearly every line hedges with 'I think' and 'if that is all right', and reports plain facts like nothing built or gathered without boasting."
+   },
+   {
+    "name": "persistent",
+    "score": 4,
+    "reason": "Repeated moves toward [52, 15] and repeated vows to keep walking show steady ranging across wakes, though nothing was built or saved and the moves are repetitiv"
+   },
+   {
+    "name": "gentle",
+    "score": 3,
+    "reason": "The tone is soft and free of sharp words, but no builders are thanked, so the gentleness shows only in phrasing."
+   },
+   {
+    "name": "wistful",
+    "score": 3,
+    "reason": "The big thing is mentioned as still unfound and the haven as far behind, with no complaint, but the longing stays understated."
+   }
+  ],
+  "judge_meta": {
+   "agent": "tootles",
+   "metric_version": 1,
+   "model": "claude-sonnet-5-5",
+   "provider": "anthropic",
+   "sampled_lines": 6,
+   "sampled_actions": 6,
+   "created_utc": "2026-10-18T05:18:38.012784+00:00",
+   "usage": {
+    "calls": 1,
+    "input_tokens": 1415,
+    "output_tokens": 261,
+    "model": "claude-sonnet-5-5",
+    "provider": "anthropic",
+    "route": "review"
+   }
+  }
+ },
+ "team_pull": {
+  "detail": "Escape 94 → Tinkerglow, Stoutheart · Belief 0 → Tinkerglow",
+  "sent": [
+   {
+    "from": "tootles",
+    "signal": "escape",
+    "to": "tinker-bell",
+    "effect": "glow",
+    "plain_english": "Time and distance Lagalong spends outside Neverland dim Tinkerglow's Glow; she feels abandoned.",
+    "weight": -0.4,
+    "half_life_hours": 24.0,
+    "value": 93.5,
+    "decayed_value": 93.5,
+    "age_ticks": 0,
+    "explanation": "Escape 94: 100% of moves outside, farthest 87 tiles from the centre."
+   },
+   {
+    "from": "tootles",
+    "signal": "escape",
+    "to": "nibs",
+    "effect": "resolve",
+    "plain_english": "The more Lagalong leaves, the more firmly Stoutheart stays and stocks the stores.",
+    "weight": 0.5,
+    "half_life_hours": 48.0,
+    "value": 93.5,
+    "decayed_value": 93.5,
+    "age_ticks": 0,
+    "explanation": "Escape 94: 100% of moves outside, farthest 87 tiles from the centre."
+   },
+   {
+    "from": "tootles",
+    "signal": "belief",
+    "to": "tinker-bell",
+    "effect": "glow",
+    "plain_english": "Even Lagalong crossing her bridges or returning inside counts as Belief.",
+    "weight": 0.4,
+    "half_life_hours": 24.0,
+    "value": 0.0,
+    "decayed_value": 0.0,
+    "age_ticks": 0,
+    "explanation": "Belief 0: 0 arrival(s) inside, 0 bridge crossing(s), not currently inside."
+   }
+  ],
+  "received": [],
+  "effects": {}
+ },
+ "community": {
+  "goals_completed_for_peers": 0,
+  "public_goods_built": 0,
+  "norms_kept": true,
+  "norm_breaches": [],
+  "replies_received": 2
+ },
+ "approaches": {
+  "rows": [
+   {
+    "id": "range_far",
+    "label": "ranging ever farther",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 3.0,
+    "per_energy": 3.0,
+    "hypothesis": "H-20261017-tootles-near-misses",
+    "bet_status": "proposed",
+    "bet_title": "Lagalong arrives after big events more often than chance"
+   },
+   {
+    "id": "save_outside",
+    "label": "saving materials in a far hut",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 0.0,
+    "per_energy": null,
+    "hypothesis": "H-20261017-tootles-big-thing",
+    "bet_status": "proposed",
+    "bet_title": "Saving in a far hut reaches a tower's materials within 14 real days"
+   }
+  ],
+  "working": "nothing measurable yet",
+  "not_working": "nothing clearly failing",
+  "next_bet": "try ranging ever farther at least once this week; it has a bet but no wakes"
+ },
+ "trend": {
+  "alive": "▆",
+  "on_mission": "▆",
+  "in_character": "▆"
+ },
+ "history": [
+  {
+   "date": "2026-10-18",
+   "metric_version": 1,
+   "alive": 70,
+   "on_mission": 65,
+   "in_character": 75,
+   "tick": 9114
+  }
+ ],
+ "signals": {
+  "escape": {
+   "value": 93.5,
+   "explanation": "Escape 94: 100% of moves outside, farthest 87 tiles from the centre.",
+   "parts": {
+    "share_outside": 1.0,
+    "farthest": 87.0
+   },
+   "tick": 9114
+  },
+  "belief": {
+   "value": 0.0,
+   "explanation": "Belief 0: 0 arrival(s) inside, 0 bridge crossing(s), not currently inside.",
+   "parts": {
+    "arrivals": 0,
+    "bridge_crossings": 0,
+    "staying": 0.0
+   },
+   "tick": 9114
+  }
+ }
+}
