@@ -1,0 +1,120 @@
+{
+  "run_id": "4d4e3a3a-3016-4b2a-b9f2-124c0163239b",
+  "agent": "Lagalong",
+  "role": "surveyor+builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T07:10:56.567186+00:00",
+  "tick": 9819,
+  "summary": "Lagalong (wistful): work shift: looking for nodes",
+  "actions": [
+    {
+      "action": "move",
+      "x": 52,
+      "y": 15
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"wistful\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":21,\"rests\":8,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":9819,\"visited\":[\"71,70\",\"61,60\",\"58,56\",\"60,58\",\"59,57\",\"57,55\",\"47,45\",\"37,35\",\"44,25\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":9814,\"pace\":\"slowing\",\"day\":{\"all\":1061,\"building\":381,\"trade_goals\":40,\"talk\":113,\"factions\":3,\"movement\":524},\"hour\":{\"all\":14},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": false,
+      "error": "too_far"
+    }
+  ],
+  "failed_actions": 1,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 9819,
+    "you": {
+      "id": 11,
+      "name": "Lagalong",
+      "x": 44,
+      "y": 25,
+      "energy": 100,
+      "inventory": {
+        "wood": 10,
+        "fiber": 6,
+        "berries": 34
+      },
+      "home": {
+        "x": 60,
+        "y": 58
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "tootles",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "slowing",
+    "hour": {
+      "all": 14,
+      "building": 9,
+      "trade_goals": 0,
+      "talk": 1,
+      "factions": 0,
+      "movement": 4
+    },
+    "day": {
+      "all": 1061,
+      "building": 381,
+      "trade_goals": 40,
+      "talk": 113,
+      "factions": 3,
+      "movement": 524
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "wistful",
+  "approach": "explore",
+  "reasons": [
+    "ranging farther from the territory, toward bigger things: move to (52, 15)"
+  ],
+  "energy_before": 100,
+  "berries_before": 34,
+  "energy_spent": 10,
+  "activity_energy": {
+    "explore": 10.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "wistful",
+    "glow": 50,
+    "wakes": 21,
+    "rests": 8,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_outside",
+    "walls_inside_territory"
+  ]
+}
