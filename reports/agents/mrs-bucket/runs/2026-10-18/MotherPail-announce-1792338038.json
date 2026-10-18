@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792338038",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 12877,
+  "created_utc": "2026-10-18T15:40:38.411910+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes and five steps out exploring from [84, 103]. Nothing built yet, but the ground is good and I want to see what's past the grass before I plant anything."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1625,
+    "output_tokens": 61,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "warm",
+    "where": [
+      84,
+      103
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
