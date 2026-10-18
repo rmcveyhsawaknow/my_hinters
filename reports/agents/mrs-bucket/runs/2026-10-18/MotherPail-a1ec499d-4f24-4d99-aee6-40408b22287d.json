@@ -1,0 +1,138 @@
+{
+  "run_id": "a1ec499d-4f24-4d99-aee6-40408b22287d",
+  "agent": "MotherPail",
+  "role": "builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T08:27:10.610543+00:00",
+  "tick": 10276,
+  "summary": "MotherPail (warm): work shift: gathering for the next build",
+  "actions": [
+    {
+      "action": "move",
+      "x": 83,
+      "y": 93
+    },
+    {
+      "action": "gather",
+      "kind": "stone"
+    },
+    {
+      "action": "gather",
+      "kind": "stone"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"warm\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":23,\"rests\":3,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":10276,\"visited\":[\"62,56\",\"67,53\",\"65,55\",\"57,67\",\"69,79\",\"66,78\",\"63,73\",\"71,84\",\"67,87\",\"79,89\",\"78,94\",\"89,99\",\"88,98\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":10276,\"pace\":\"steady\",\"day\":{\"all\":1156,\"building\":389,\"trade_goals\":44,\"talk\":132,\"factions\":3,\"movement\":588},\"hour\":{\"all\":49},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 10276,
+    "you": {
+      "id": 4,
+      "name": "MotherPail",
+      "x": 88,
+      "y": 98,
+      "energy": 100,
+      "inventory": {
+        "wood": 20,
+        "fiber": 6,
+        "stone": 2,
+        "berries": 9
+      },
+      "home": {
+        "x": 62,
+        "y": 56
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "mrs-bucket",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 49,
+      "building": 3,
+      "trade_goals": 4,
+      "talk": 10,
+      "factions": 0,
+      "movement": 32
+    },
+    "day": {
+      "all": 1156,
+      "building": 389,
+      "trade_goals": 44,
+      "talk": 132,
+      "factions": 3,
+      "movement": 588
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "warm",
+  "approach": "gather_trip",
+  "reasons": [
+    "walk to (83, 93) beside the stone node at (82, 93), then gather",
+    "stone node at (82, 93) is adjacent; take five, leave the rest to regrow"
+  ],
+  "energy_before": 100,
+  "berries_before": 9,
+  "energy_spent": 11,
+  "activity_energy": {
+    "explore": 5.0,
+    "gather": 6.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "warm",
+    "glow": 50,
+    "wakes": 23,
+    "rests": 3,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}

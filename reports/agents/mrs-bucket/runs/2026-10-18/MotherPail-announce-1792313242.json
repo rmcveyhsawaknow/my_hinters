@@ -1,0 +1,61 @@
+{
+  "run_id": "announce-1792313242",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 10398,
+  "created_utc": "2026-10-18T08:47:22.950259+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Built a farm at (83,93) and laid two road tiles beside it, so the walk to the storehouse is shorter now. Ten stone, five fiber, five wood in hand. Good hour."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1674,
+    "output_tokens": 70,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [
+      "farm at (83,93)",
+      "road at (82,92)",
+      "road at (81,93)"
+    ],
+    "gathered": {
+      "stone": 10,
+      "fiber": 5,
+      "wood": 5
+    },
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "gather_trip",
+      "build",
+      "build",
+      "build",
+      "rest"
+    ],
+    "mood": "warm",
+    "where": [
+      83,
+      95
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
