@@ -1,0 +1,138 @@
+{
+  "run_id": "9655545b-33b5-4e47-8be3-5ecc6c5a8bc3",
+  "agent": "Tinkerglow",
+  "role": "navigator+surveyor+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T08:50:18.961532+00:00",
+  "tick": 10415,
+  "summary": "Tinkerglow (jealousy): work shift: gathering for the next build",
+  "actions": [
+    {
+      "action": "move",
+      "x": 78,
+      "y": 110
+    },
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"jealousy\",\"since_tick\":6338,\"glow\":75,\"inputs\":{\"glow\":{\"value\":75.8,\"tick\":10307,\"explanation\":\"courage from nibs 78; escape from tootles 94; belief from nibs 100; belief from tootles 0; belief from lost-boy 0\"},\"adventure_options\":{\"value\":90.0,\"tick\":10307,\"explanation\":\"discoveries from lost-boy 90\"},\"courage\":{\"value\":77.5,\"tick\":10307,\"explanation\":\"Courage 78: 3 hard job(s) inside, 0 greeting(s), structures standing 100%.\"},\"escape\":{\"value\":93.5,\"tick\":10307,\"explanation\":\"Escape 94: 100% of moves outside, farthest 87 tiles from the centre.\"},\"belief\":{\"value\":0.0,\"tick\":10307,\"explanation\":\"Belief 0: 0 arrival(s) inside, 0 bridge crossing(s), not currently inside.\"},\"discoveries\":{\"value\":90.0,\"tick\":10307,\"explanation\":\"Discoveries 90: 68 tiles, 5 action types, 2 idea card(s), 0 adopted.\"}},\"wakes\":63,\"rests\":12,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":10415,\"heading\":\"S\",\"visited\":[\"70,56\",\"68,54\",\"67,55\",\"55,67\",\"43,79\",\"53,91\",\"65,103\",\"63,98\",\"72,110\",\"73,109\",\"73,114\",\"68,109\",\"61,109\",\"73,111\",\"73,104\",\"80,104\",\"80,111\",\"80,107\",\"73,107\",\"73,100\",\"74,112\",\"81,112\",\"79,110\",\"79,113\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":10414,\"pace\":\"steady\",\"day\":{\"all\":1160,\"building\":390,\"trade_goals\":44,\"talk\":132,\"factions\":3,\"movement\":591},\"hour\":{\"all\":28},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 10415,
+    "you": {
+      "id": 6,
+      "name": "Tinkerglow",
+      "x": 79,
+      "y": 113,
+      "energy": 100,
+      "inventory": {
+        "wood": 5,
+        "fiber": 2,
+        "berries": 24
+      },
+      "home": {
+        "x": 80,
+        "y": 104
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "tinker-bell",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "navigator",
+    "surveyor",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 28,
+      "building": 2,
+      "trade_goals": 3,
+      "talk": 6,
+      "factions": 0,
+      "movement": 17
+    },
+    "day": {
+      "all": 1160,
+      "building": 390,
+      "trade_goals": 44,
+      "talk": 132,
+      "factions": 3,
+      "movement": 591
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "jealousy",
+  "approach": "gather_trip",
+  "reasons": [
+    "walk to (78, 110) beside the wood node at (79, 109), then gather",
+    "wood node at (79, 109) is adjacent; take five, leave the rest to regrow"
+  ],
+  "energy_before": 100,
+  "berries_before": 24,
+  "energy_spent": 9,
+  "activity_energy": {
+    "explore": 3.0,
+    "gather": 6.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "jealousy",
+    "glow": 75,
+    "wakes": 63,
+    "rests": 12,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": "S"
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}

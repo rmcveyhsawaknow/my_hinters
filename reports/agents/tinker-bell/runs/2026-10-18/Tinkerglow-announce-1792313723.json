@@ -1,0 +1,58 @@
+{
+  "run_id": "announce-1792313723",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 10446,
+  "created_utc": "2026-10-18T08:55:23.951835+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Bridge at 78,114 is up! Lagalong's gone again. Fine. East six, past the water."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1747,
+    "output_tokens": 42,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [
+      "bridge at (78,114)"
+    ],
+    "gathered": {
+      "wood": 10,
+      "fiber": 5
+    },
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "rest",
+      "build",
+      "gather_trip",
+      "gather_trip"
+    ],
+    "mood": "jealousy",
+    "where": [
+      73,
+      109
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
