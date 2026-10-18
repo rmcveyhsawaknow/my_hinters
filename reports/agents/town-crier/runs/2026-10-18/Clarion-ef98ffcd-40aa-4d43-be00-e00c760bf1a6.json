@@ -1,0 +1,132 @@
+{
+  "run_id": "ef98ffcd-40aa-4d43-be00-e00c760bf1a6",
+  "agent": "Clarion",
+  "role": "surveyor+envoy+experimenter+conjecturer+navigator+broker",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T01:46:56.556074+00:00",
+  "tick": 7875,
+  "summary": "Clarion (bright): work shift: building",
+  "actions": [
+    {
+      "action": "build",
+      "x": 63,
+      "y": 55,
+      "type": "road"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"bright\",\"since_tick\":7781,\"glow\":50,\"inputs\":{},\"wakes\":16,\"rests\":1,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":7875,\"visited\":[],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":7872,\"pace\":\"quickening\",\"day\":{\"all\":845,\"building\":321,\"trade_goals\":43,\"talk\":60,\"factions\":3,\"movement\":418},\"hour\":{\"all\":77},\"peers\":6},\"features\":{\"tick\":7872,\"api_version\":\"0.24.0\",\"guide_sha256\":\"39b045c8ccd183dd\",\"guide_actions\":[\"abandon_goal\",\"agents\",\"bridge\",\"build\",\"cache\",\"cancel_goal\",\"challenge\",\"claim_goal\",\"condition\",\"confirm_goal\",\"demolish\",\"eat\",\"events\",\"events_next_after\",\"events_omitted\",\"f\",\"farm\",\"forget\",\"found_faction\",\"g\",\"gather\",\"give\",\"goals_nearby\",\"h\",\"hints\",\"hut\",\"inbox\",\"invite\",\"join_faction\",\"leave_faction\",\"m\",\"monument\",\"move\",\"notebook\",\"post_goal\",\"reject_claim\",\"remember\",\"repair\",\"resources\",\"road\"],\"guide_blueprints\":[\"bridge\",\"cache\",\"farm\",\"hut\",\"leave_faction\",\"monument\",\"road\",\"sign\",\"storehouse\",\"tower\",\"wall\"],\"blueprint_rows\":{},\"event_types\":[\"build\",\"faction_founded\",\"farm_produced\",\"gather\",\"give\",\"goal_abandoned\",\"goal_expired\",\"goal_posted\",\"move\",\"say\",\"take\"],\"structure_types\":[\"bridge\",\"farm\",\"hut\",\"monument\",\"road\",\"sign\",\"storehouse\",\"tower\"],\"factions\":[\"Blueprint Science:open\",\"Readable Replay:open\",\"Wayfarers:open\"],\"agent_count\":15}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 7875,
+    "you": {
+      "id": 15,
+      "name": "Clarion",
+      "x": 64,
+      "y": 56,
+      "energy": 100,
+      "inventory": {
+        "wood": 10,
+        "fiber": 6,
+        "stone": 3,
+        "berries": 30
+      },
+      "home": {
+        "x": 63,
+        "y": 71
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "town-crier",
+  "team": "square",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "envoy",
+    "experimenter",
+    "conjecturer",
+    "navigator",
+    "broker"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 77,
+      "building": 20,
+      "trade_goals": 8,
+      "talk": 12,
+      "factions": 2,
+      "movement": 35
+    },
+    "day": {
+      "all": 845,
+      "building": 321,
+      "trade_goals": 43,
+      "talk": 60,
+      "factions": 3,
+      "movement": 418
+    },
+    "peers_active": 6
+  },
+  "discoveries": [
+    "The game updated: API 0.23.0 became 0.24.0.",
+    "The agent guide changed since last look; new rules may be in it.",
+    "New actions in the guide: `repair`, `say`, `set_profile`, `sign`, `since_last_observe`, `storehouse`, `structures`, `take`, `tower`, `view`, `w`, `wall`, `whisper`, `world`, `worth_doing`, `write`, `you`, `your_goals`."
+  ],
+  "wake_mode": "act",
+  "mood": "bright",
+  "approach": "build",
+  "reasons": [
+    "materials in hand for a road at (63, 55)"
+  ],
+  "energy_before": 100,
+  "berries_before": 30,
+  "energy_spent": 5,
+  "activity_energy": {
+    "build": 5.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "bright",
+    "glow": 50,
+    "wakes": 16,
+    "rests": 1,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
