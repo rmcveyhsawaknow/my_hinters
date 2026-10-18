@@ -69,4 +69,6 @@ agents:
   - envoy
   - experimenter
   - conjecturer
+  - navigator
+  - broker
   runtime: actions-anthropic

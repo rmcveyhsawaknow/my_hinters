@@ -165,6 +165,12 @@ jobs:
           AGENT: ${{ inputs.agent }}
           PYTHONUNBUFFERED: "1"
         run: hglab shift --agent "$AGENT" --scheduled
+      - name: Collector round (requests as goals, themes as factions; a no-op without duties)
+        if: always()
+        env:
+          AGENT: ${{ inputs.agent }}
+          PYTHONUNBUFFERED: "1"
+        run: hglab crier round --agent "$AGENT" --scheduled
       - name: Publish compact run records
         if: always()
         env:

@@ -442,6 +442,9 @@ def _llm_plan(
     if environment is not None:
         guidance["world_digest"] = render_digest(environment)
         guidance["world_last_wake"] = state.flags.get("world")
+        if environment.get("collector_board_text"):
+            guidance["community_board"] = environment["collector_board_text"]
+            guidance["your_faction"] = (observe.get("you") or {}).get("faction")
         if environment.get("discoveries"):
             guidance["discoveries_since_last_wake"] = environment["discoveries"]
     try:
@@ -473,11 +476,17 @@ def persona_prompt(
         " changed since your last wake. The observation's worth_doing and hints are the game's own"
         " suggestions worked out from your state (answer who spoke near you, claim a goal you can already"
         " fill, build what you carry the materials for): weigh them in character; they are not orders."
+        " If community_board is present it lists the collector's bug and feature themes (open factions) and"
+        " request goals: you belong to one faction at a time, so join the theme faction you would put first"
+        " (join_faction with its faction_id: your first vote), say a second theme's name in public to back it"
+        " too (your second), and argue your preference to peers in your one public line when it fits your"
+        " character; persuasion is fair, pressure and deceit are not. Never claim a goal posted by a collective"
+        " member; feedback for the makers goes in public lines near the collector or in a whisper to them."
         " Propose 0-3 in-character actions within the knobs; the notebook state"
         " update is added for you. Include exactly one public say each wake that tells your story or your plan"
         " in character (the collective reads the Talk feed to see you are alive); the validator enforces the"
-        " hourly caps, so never add a second. Public lines must be fresh, never copied, PG-13; never name or mock"
-        " other operators' agents. If discoveries_since_last_wake is present, your one public line announces"
+        " hourly caps, so never add a second. Public lines must be fresh, never copied, PG-13; never mock"
+        " other operators' agents, and name one only to invite, ask or answer them. If discoveries_since_last_wake is present, your one public line announces"
         " the most interesting of them with its checkable fact (tick, version, type or place)."
         " Set approach to a short tag from the metrics spec when one fits. If the digest changed your"
         " thinking, say so in journal_note; if your profile text, knobs, metrics or skills should change, put one"

@@ -23,19 +23,19 @@ SECRET = re.compile(
 ROLE_ACTIONS = {
     "navigator": {
         "post_goal", "claim_goal", "cancel_goal", "abandon_goal", "reject_claim", "remember", "forget", "say",
-        "move", "gather", "eat", "set_profile",
+        "move", "gather", "eat", "set_profile", "join_faction", "leave_faction",
     },
-    "builder": {"move", "gather", "build", "write", "give", "take", "remember", "forget", "eat"},
-    "surveyor": {"move", "gather", "write", "remember", "forget", "eat"},
+    "builder": {"move", "gather", "build", "write", "give", "take", "remember", "forget", "eat", "join_faction", "leave_faction"},
+    "surveyor": {"move", "gather", "write", "remember", "forget", "eat", "join_faction", "leave_faction"},
     "broker": {
         "move", "claim_goal", "confirm_goal", "reject_claim", "give", "take", "whisper", "write", "remember", "forget", "eat",
-        "found_faction", "invite",
+        "found_faction", "invite", "join_faction", "leave_faction",
     },
     "envoy": {
         "say", "whisper", "found_faction", "join_faction", "leave_faction", "invite", "set_profile",
         "remember", "forget", "eat",
     },
-    "experimenter": {"move", "gather", "build", "say", "remember", "forget", "eat"},
+    "experimenter": {"move", "gather", "build", "say", "remember", "forget", "eat", "join_faction", "leave_faction"},
     "observer": set(),
     "physicist": set(),
     "social-scientist": set(),

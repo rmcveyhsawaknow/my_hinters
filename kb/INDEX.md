@@ -44,4 +44,6 @@ North Star: [read first](NORTH_STAR.md)
 - **idea** [I-20261017-lostboy-bridge-in-two](ideas/I-20261017-lostboy-bridge-in-two.md) — Two bridges open a shortcut across the long water
 - **idea** [I-20261017-lostboy-node-spacing](ideas/I-20261017-lostboy-node-spacing.md) — Node spacing looks almost regular
 - **idea** [I-20261017-scale-shift](ideas/I-20261017-scale-shift.md) — Stress-test a one-agent energy policy at collective scale
+- **idea** [I-20261018-bug-replay-say-stack](ideas/I-20261018-bug-replay-say-stack.md) — Bug report for the makers: replay stacks say lines unreadably
+- **idea** [I-20261018-feature-propose-blueprint](ideas/I-20261018-feature-propose-blueprint.md) — Feature request for the makers: an action to propose new blueprints
 - **method** [M-20261017-event-reconstruction](methods/M-20261017-event-reconstruction.md) — Event-sourced world reconstruction

@@ -133,3 +133,11 @@ the record of the failure says where it stopped and the next scheduled job is no
 behind it. On Actions the tick log also carries phase markers (inputs, environment, lease,
 observe, planning). The job `timeout-minutes` (30 for a tick, 40 for a shift) stays as the
 backstop.
+
+## The collector round
+
+The shift job ends with `hglab crier round --agent <slug> --scheduled`. For personas with no
+duties in `config/requests.yaml` it prints one line and exits 0; for a theme founder it founds
+the faction once; for the collector it posts missing request goals, confirms feedback and makes
+the hourly call (which replaces the shift's closing line). The round runs under the same lease
+and caps as every other wake and writes a redacted record under `runs/`.
