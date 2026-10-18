@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792335747",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 12648,
+  "created_utc": "2026-10-18T15:02:27.982150+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes out exploring from [66, 103], no builds yet, but the storehouse is waiting and I'll bring back whatever I find. Neverland keeps its bridges mended."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1733,
+    "output_tokens": 67,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "brave",
+    "where": [
+      66,
+      103
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
