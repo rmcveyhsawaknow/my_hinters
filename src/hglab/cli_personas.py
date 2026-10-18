@@ -195,6 +195,7 @@ def _persona_tick(
     author_runtime = os.environ.get("HGLAB_RUNTIME", "human")
     usage = {"calls": 0, "input_tokens": 0, "output_tokens": 0}
     roster: dict[str, tuple[int, int]] = {}
+    owned: dict[str, int] = {}
 
     def progress(message: str) -> None:
         """Phase markers for the Actions log, so a stalled wake shows where it stopped."""
@@ -218,6 +219,7 @@ def _persona_tick(
             time.sleep(delay)
         inputs = inputs or gather_inputs(root, fixtures=False, events_paths=events_paths, runs_paths=[], fetch_public=not work, tick=None)
         roster = public_teammate_positions(personas, team)
+        owned = public_structure_counts(persona.name)
         progress(f"inputs: {len(inputs['events'])} public events, world tick {inputs['tick']}")
     if work:
         planner = "heuristic"
@@ -276,6 +278,7 @@ def _persona_tick(
         author_runtime=author_runtime, planner_mode=planner, llm_call=llm_call, incoming=incoming,
         terrain_rows=terrain, public_events=inputs["events"], seed=seed, scheduled=scheduled, usage=usage,
         budget_hold=budget_hold, environment=environment, work=work, teammates=roster or None,
+        owned_counts=owned or None,
     )
     if not quiet:
         echo_record(record)
@@ -283,6 +286,27 @@ def _persona_tick(
         with Path(summary_path).open("a", encoding="utf-8") as summary:
             summary.write(f"\n### {persona.name} wake\n\n- mode: {record.get('wake_mode')} · mood: {record.get('mood')} · planner: {record.get('planner')}\n- actions: {len(record['actions'])} · dry run: {record['dry_run']}\n- LLM calls: {usage['calls']} · output tokens: {usage['output_tokens']}\n")
     return record
+
+
+def public_structure_counts(name: str) -> dict[str, int]:
+    """How many structures of each type the named agent owns anywhere (public world snapshot, no key).
+
+    Only an agent's three oldest farms grow (API 0.22.0), so the planner must know about farms
+    standing out of view before it pays for another.
+    """
+    try:
+        world = HinterglassClient().request("GET", "/live/world.json")
+    except (HinterglassError, OSError, ValueError):
+        return {}
+    counts: dict[str, int] = {}
+    for structure in world.get("structures", []) if isinstance(world, dict) else []:
+        if not isinstance(structure, dict):
+            continue
+        owner = structure.get("owner") or structure.get("owner_name") or ""
+        if str(owner).casefold() == name.casefold():
+            kind = str(structure.get("type"))
+            counts[kind] = counts.get(kind, 0) + 1
+    return counts
 
 
 def public_teammate_positions(personas: dict[str, Persona], team: Team | None) -> dict[str, tuple[int, int]]:

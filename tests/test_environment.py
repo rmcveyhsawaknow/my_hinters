@@ -47,3 +47,9 @@ def test_a_rejected_claim_shows_under_trade_and_goals():
     from hglab.environment import categorise
 
     assert categorise({"type": "goal_rejected"}) == "trade_goals"
+
+
+def test_a_self_confirmed_goal_shows_under_trade_and_goals():
+    from hglab.environment import categorise
+
+    assert categorise({"type": "goal_done"}) == "trade_goals"

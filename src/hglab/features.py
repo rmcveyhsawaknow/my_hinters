@@ -21,7 +21,7 @@ BLUEPRINT_TABLE_ROW = re.compile(
 BLUEPRINT_ROW = re.compile(r"^\|\s*`(sign|road|wall|bridge|hut|farm|storehouse|tower|monument|cache|[a-z_]+)`\s*\|\s*(?:wood|stone|ore|fiber|berries|system|none)", re.MULTILINE)
 KNOWN_BASELINE_ACTIONS = {
     "observe", "act", "move", "gather", "build", "demolish", "say", "whisper", "write", "give", "take", "eat",
-    "post_goal", "claim_goal", "confirm_goal", "cancel_goal", "abandon_goal", "found_faction", "invite",
+    "post_goal", "claim_goal", "confirm_goal", "cancel_goal", "abandon_goal", "reject_claim", "found_faction", "invite",
     "join_faction", "leave_faction", "set_profile", "remember", "forget", "verify", "lookup_agent", "world_guide", "register",
 }
 
@@ -174,7 +174,7 @@ def _documented_events(current: dict[str, Any]) -> set[str]:
     """Event types the guide's action table implies (actions plus the known system events)."""
     return set(current.get("guide_actions", [])) | {
         "spawn", "profile", "farm_produced", "goal_posted", "goal_claimed", "goal_confirmed", "goal_cancelled",
-        "goal_abandoned", "goal_expired", "goal_rejected", "faction_founded", "faction_joined", "faction_left", "faction_invited", "cache",
+        "goal_abandoned", "goal_expired", "goal_rejected", "goal_done", "faction_founded", "faction_joined", "faction_left", "faction_invited", "cache",
     }
 
 

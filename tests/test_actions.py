@@ -95,3 +95,25 @@ def test_reject_claim_is_a_poster_action_that_needs_a_goal_id():
     assert validate_action({"action": "reject_claim", "goal_id": 3}, "navigator").action == "reject_claim"
     with pytest.raises(ValueError):
         validate_action({"action": "reject_claim"}, "navigator")
+
+
+def test_goal_conditions_are_checked_for_shape():
+    import pytest
+
+    from hglab.actions import validate_action
+
+    base = {"action": "post_goal", "title": "10 wood for 5 stone", "description": "give into my storehouse", "reward": {"stone": 5}}
+    deliver = {**base, "condition": {"type": "deliver", "x": 66, "y": 61, "item": "wood", "qty": 10}}
+    assert validate_action(deliver, "navigator").condition["type"] == "deliver"
+    build = {**base, "condition": {"type": "build", "blueprint": "bridge", "x": 60, "y": 70, "radius": 2}}
+    assert validate_action(build, "navigator").condition["blueprint"] == "bridge"
+    for bad in (
+        {"type": "deliver", "x": 66, "y": 61, "item": "wood"},
+        {"type": "deliver", "x": 66, "y": 61, "item": "gold", "qty": 10},
+        {"type": "deliver", "x": 66, "y": 61, "item": "wood", "qty": 51},
+        {"type": "build", "blueprint": "castle"},
+        {"type": "build", "blueprint": "hut", "radius": 3},
+        {"type": "wish"},
+    ):
+        with pytest.raises(ValueError):
+            validate_action({**base, "condition": bad}, "navigator")

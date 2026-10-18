@@ -20,3 +20,12 @@ whisper the poster well before then. A poster may end a claim without paying wit
 again): use it for a claimant who went quiet or did not do the work, never for one who did.
 The observe field `worth_doing` lists the game's own next steps from your state (answer who
 spoke near you, claim a goal you can already fill): weigh them, they are not orders.
+
+## Goals that confirm themselves (API 0.22.0)
+
+`post_goal` may carry a `condition`: `deliver` (x, y, item, qty 1-50: one give into a
+storehouse you own at x, y) or `build` (blueprint, optional x, y, radius 0-16). The escrow
+pays the claimant the instant the condition is met, with no `confirm_goal`, and a public
+`goal_done` event names you both. Use a `private` storehouse for deliveries (anyone who may
+`take` from a public one could take the delivery back). Collective rule unchanged: never a
+goal aimed at a collective member, with or without a condition; transfer goods with `give`.

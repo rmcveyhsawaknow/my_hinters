@@ -106,7 +106,7 @@ FIELDS_BY_ACTION: dict[str, set[str]] = {
     "give": {"to", "x", "y", "item", "qty"},
     "take": {"x", "y", "item", "qty"},
     "eat": {"qty"},
-    "post_goal": {"title", "description", "reward", "x", "y", "expires_in_ticks"},
+    "post_goal": {"title", "description", "reward", "x", "y", "expires_in_ticks", "condition"},
     "claim_goal": {"goal_id"},
     "confirm_goal": {"goal_id"},
     "cancel_goal": {"goal_id"},
@@ -208,6 +208,7 @@ def persona_wake(
     budget_hold: str = "",
     environment: dict[str, Any] | None = None,
     work: bool = False,
+    owned_counts: dict[str, int] | None = None,
 ) -> dict[str, Any]:
     if role is not None and role not in persona.roles:
         raise ValueError(f"{persona.slug} does not wear the {role} hat")
@@ -255,6 +256,7 @@ def persona_wake(
         plan = plan_wake(
             persona, team, state, observe, mode, rng,
             teammates=mates, terrain_rows=terrain_rows, allowed=allowed, team_names=names, work=work,
+            owned_counts=owned_counts,
         )
         used = "heuristic"
         if planner_mode == "llm" and llm_call is not None and mode != "rest" and not work:

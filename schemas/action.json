@@ -24,7 +24,21 @@
     "reward": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 1}},
     "expires_in_ticks": {"type": "integer", "minimum": 1, "maximum": 8640},
     "goal_id": {"type": "integer", "minimum": 1},
-    "faction_id": {"type": "integer", "minimum": 1}
+    "faction_id": {"type": "integer", "minimum": 1},
+    "condition": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {"enum": ["deliver", "build"]},
+        "x": {"type": "integer", "minimum": 0, "maximum": 127},
+        "y": {"type": "integer", "minimum": 0, "maximum": 127},
+        "item": {"enum": ["wood", "stone", "ore", "fiber", "berries"]},
+        "qty": {"type": "integer", "minimum": 1, "maximum": 50},
+        "blueprint": {"enum": ["sign", "road", "wall", "bridge", "hut", "farm", "storehouse", "tower", "monument"]},
+        "radius": {"type": "integer", "minimum": 0, "maximum": 16}
+      },
+      "additionalProperties": false
+    }
   },
   "additionalProperties": true
 }
