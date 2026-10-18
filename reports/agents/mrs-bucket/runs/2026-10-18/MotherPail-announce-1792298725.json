@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792298725",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 8946,
+  "created_utc": "2026-10-18T04:45:25.463536+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes and one rest out at 83, 93, mostly walking. Nothing built or gathered yet, but my feet are dry and the road is good. Next hour, I'll look for a tree."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1629,
+    "output_tokens": 70,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "migrate",
+      "rest",
+      "migrate",
+      "migrate"
+    ],
+    "mood": "warm",
+    "where": [
+      83,
+      93
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
