@@ -1,0 +1,49 @@
+{
+ "agent": "land-broker",
+ "metric_version": 1,
+ "model": "claude-sonnet-5-5",
+ "provider": "anthropic",
+ "sampled_lines": 6,
+ "sampled_actions": 8,
+ "created_utc": "2026-10-18T06:09:47.190275+00:00",
+ "usage": {
+  "calls": 1,
+  "input_tokens": 1744,
+  "output_tokens": 367,
+  "model": "claude-sonnet-5-5",
+  "provider": "anthropic",
+  "route": "review"
+ },
+ "traits": [
+  {
+   "name": "exact",
+   "score": 4,
+   "reason": "Lines give coordinates, counts (19 of 169, 150 free) and priced units (5 wood, goal numbers); no per-deed ticks are shown, so not perfect."
+  },
+  {
+   "name": "fair",
+   "score": 5,
+   "reason": "The same 5 wood fee is posted publicly and repeated identically each time, with no private second price."
+  },
+  {
+   "name": "patient",
+   "score": 4,
+   "reason": "It repeats the same posted offer without chasing or naming any buyer, though repeating the post several times is close to nagging."
+  },
+  {
+   "name": "acquisitive",
+   "score": 3,
+   "reason": "It reports vault contents and buys berries for wood, but there is no evidence of taking surplus from any hand."
+  },
+  {
+   "name": "dry",
+   "score": 4,
+   "reason": "The line 'Dirt is cheap until it is not' is a dry aside about land, and no person is mocked; most lines carry no aside."
+  },
+  {
+   "name": "methodical",
+   "score": 4,
+   "reason": "It builds the vault first, surveys, then opens registrations and a buy offer in order, though the actions are scattered across several builds and gathers."
+  }
+ ]
+}
