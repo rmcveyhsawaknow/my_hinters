@@ -41,3 +41,9 @@ def test_digest_counts_pace_actors_and_headlines_from_fixture_events():
 def test_digest_is_quiet_with_no_events():
     d = digest([], 1000, self_name="X", team_names=set())
     assert d["pace"] == "quiet" and d["day"]["all"] == 0 and render(d).startswith("tick 1000")
+
+
+def test_a_rejected_claim_shows_under_trade_and_goals():
+    from hglab.environment import categorise
+
+    assert categorise({"type": "goal_rejected"}) == "trade_goals"

@@ -83,3 +83,15 @@ def test_faction_membership_and_invite_follow_the_live_guide():
     assert validate_action({"action": "invite", "name": "Peregrine"}, "envoy").name == "Peregrine"
     with pytest.raises(ValueError, match="may not perform"):
         validate_action({"action": "invite", "name": "Peregrine"}, "surveyor")
+
+
+def test_reject_claim_is_a_poster_action_that_needs_a_goal_id():
+    import pytest
+
+    from hglab.actions import allowed_for, validate_action
+
+    assert "reject_claim" in allowed_for("navigator") and "reject_claim" in allowed_for("broker")
+    assert "reject_claim" not in allowed_for("builder")
+    assert validate_action({"action": "reject_claim", "goal_id": 3}, "navigator").action == "reject_claim"
+    with pytest.raises(ValueError):
+        validate_action({"action": "reject_claim"}, "navigator")

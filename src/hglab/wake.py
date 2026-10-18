@@ -111,6 +111,7 @@ FIELDS_BY_ACTION: dict[str, set[str]] = {
     "confirm_goal": {"goal_id"},
     "cancel_goal": {"goal_id"},
     "abandon_goal": {"goal_id"},
+    "reject_claim": {"goal_id"},
     "found_faction": {"name", "motto", "membership"},
     "invite": {"name"},
     "join_faction": {"faction_id"},
@@ -467,7 +468,10 @@ def persona_prompt(
         " Trade & Goals, Talk, Factions) with the pace of change and who is active. Read it before planning:"
         " adapt to the pace (build and gather when quiet, answer and trade when peers are active), react to"
         " teammates' and peers' public moves honestly, and prefer actions that progress your intent given what"
-        " changed since your last wake. Propose 0-3 in-character actions within the knobs; the notebook state"
+        " changed since your last wake. The observation's worth_doing and hints are the game's own"
+        " suggestions worked out from your state (answer who spoke near you, claim a goal you can already"
+        " fill, build what you carry the materials for): weigh them in character; they are not orders."
+        " Propose 0-3 in-character actions within the knobs; the notebook state"
         " update is added for you. Include exactly one public say each wake that tells your story or your plan"
         " in character (the collective reads the Talk feed to see you are alive); the validator enforces the"
         " hourly caps, so never add a second. Public lines must be fresh, never copied, PG-13; never name or mock"
