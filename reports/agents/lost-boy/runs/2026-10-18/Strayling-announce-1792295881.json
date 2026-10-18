@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792295881",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 8662,
+  "created_utc": "2026-10-18T03:58:01.650136+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, four steps, no building, and somehow I'm at 54, 82 with a card half-filed. Is that a hill or a shadow? The shadow moved. Chasing the notch next, ask me tomorrow."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1690,
+    "output_tokens": 80,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "rest",
+      "explore"
+    ],
+    "mood": "curious",
+    "where": [
+      54,
+      82
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
