@@ -1,0 +1,122 @@
+{
+  "run_id": "02ac504a-76b1-4cdc-8c75-1899eb5ff57c",
+  "agent": "MotherPail",
+  "role": "builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T12:29:35.854598+00:00",
+  "tick": 11731,
+  "summary": "MotherPail (warm): work shift: looking for nodes",
+  "actions": [
+    {
+      "action": "move",
+      "x": 86,
+      "y": 89
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"warm\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":45,\"rests\":4,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":11731,\"visited\":[\"62,56\",\"67,53\",\"65,55\",\"57,67\",\"69,79\",\"66,78\",\"63,73\",\"71,84\",\"67,87\",\"79,89\",\"78,94\",\"89,99\",\"88,98\",\"83,93\",\"82,94\",\"83,95\",\"85,92\",\"85,89\",\"90,92\",\"99,95\",\"93,90\",\"91,98\",\"90,91\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":11730,\"pace\":\"steady\",\"day\":{\"all\":1415,\"building\":429,\"trade_goals\":60,\"talk\":175,\"factions\":23,\"movement\":728},\"hour\":{\"all\":66},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 11731,
+    "you": {
+      "id": 4,
+      "name": "MotherPail",
+      "x": 90,
+      "y": 91,
+      "energy": 100,
+      "inventory": {
+        "wood": 20,
+        "fiber": 6,
+        "stone": 9,
+        "berries": 14
+      },
+      "home": {
+        "x": 62,
+        "y": 56
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "mrs-bucket",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 66,
+      "building": 17,
+      "trade_goals": 2,
+      "talk": 9,
+      "factions": 8,
+      "movement": 30
+    },
+    "day": {
+      "all": 1415,
+      "building": 429,
+      "trade_goals": 60,
+      "talk": 175,
+      "factions": 23,
+      "movement": 728
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "warm",
+  "approach": "explore",
+  "reasons": [
+    "looking around for something I have not seen: move to (86, 89)"
+  ],
+  "energy_before": 100,
+  "berries_before": 14,
+  "energy_spent": 4,
+  "activity_energy": {
+    "explore": 4.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "warm",
+    "glow": 50,
+    "wakes": 45,
+    "rests": 4,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}

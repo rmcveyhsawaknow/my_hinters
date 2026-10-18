@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792327789",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 11852,
+  "created_utc": "2026-10-18T12:49:49.157688+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Three road stones laid at (86,93) through (86,95) today. Walking them will save someone a long trip. Tomorrow, more stone, and maybe a loaf for whoever is hungry."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1649,
+    "output_tokens": 70,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (86,93)",
+      "road at (86,94)",
+      "road at (86,95)"
+    ],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "build",
+      "build",
+      "build"
+    ],
+    "mood": "warm",
+    "where": [
+      87,
+      94
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
