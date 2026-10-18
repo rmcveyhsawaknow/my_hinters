@@ -52,9 +52,12 @@ class WorldView:
     resources: list[dict[str, Any]] = field(default_factory=list)
     agents: list[dict[str, Any]] = field(default_factory=list)
     full_map: list[str] | None = None
+    owned_counts: dict[str, int] = field(default_factory=dict)  # own structures anywhere, by type (public snapshot)
 
     @classmethod
-    def from_observe(cls, observe: dict[str, Any], terrain_rows: list[str] | None = None) -> WorldView:
+    def from_observe(
+        cls, observe: dict[str, Any], terrain_rows: list[str] | None = None, owned_counts: dict[str, int] | None = None
+    ) -> WorldView:
         view = observe.get("view") if isinstance(observe.get("view"), dict) else {}
         rows = view.get("rows") or []
         return cls(
@@ -65,6 +68,7 @@ class WorldView:
             resources=[r for r in observe.get("resources", []) if isinstance(r, dict)],
             agents=[a for a in observe.get("agents", []) if isinstance(a, dict)],
             full_map=terrain_rows,
+            owned_counts=dict(owned_counts or {}),
         )
 
     def terrain(self, x: int, y: int) -> str | None:
@@ -170,6 +174,7 @@ def plan_wake(
     allowed: set[str] | None = None,
     team_names: dict[str, str] | None = None,
     work: bool = False,
+    owned_counts: dict[str, int] | None = None,
 ) -> dict[str, Any]:
     """Return ``{summary, actions, reasons, approach, remember}`` for one wake.
 
@@ -181,7 +186,7 @@ def plan_wake(
     energy = int(you.get("energy", 0) or 0)
     inventory = {k: int(v) for k, v in (you.get("inventory") or {}).items()}
     home = you.get("home") if isinstance(you.get("home"), dict) else None
-    view = WorldView.from_observe(observe, terrain_rows)
+    view = WorldView.from_observe(observe, terrain_rows, owned_counts)
     cap = persona.actions_per_wake
     reserve = persona.energy_reserve
     names = dict(team_names or {})
@@ -565,8 +570,8 @@ def _plan_build(
             continue
         if blueprint == "storehouse" and any(s.get("type") == "storehouse" for s in owned):
             continue
-        if blueprint == "farm" and sum(s.get("type") == "farm" for s in owned) >= 2:
-            continue
+        if blueprint == "farm" and max(sum(s.get("type") == "farm" for s in owned), view.owned_counts.get("farm", 0)) >= 3:
+            continue  # only an agent's three oldest farms grow (API 0.22.0); a fourth would stand idle
         if blueprint == "wall" and in_territory(team, *position) is not True:
             continue
         tile = _build_tile(blueprint, position, view, team)

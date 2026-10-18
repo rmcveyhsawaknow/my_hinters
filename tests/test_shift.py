@@ -94,3 +94,18 @@ def test_roads_only_extend_existing_structures(tmp_path):
     observe["structures"] = []
     record, _ = _wake("nibs", observe, tmp_path)
     assert all(not (a["action"] == "build" and a.get("type") == "road") for a in record["actions"])
+
+
+def test_no_fourth_farm_when_three_stand_elsewhere():
+    from hglab.planner import WorldView, _plan_build
+
+    persona = load_personas(ROOT)["mrs-bucket"]
+    inventory = {"fiber": 10, "wood": 10, "berries": 5}
+    rows = ["ggg", "ggg", "ggg"]
+    home = {"x": 1, "y": 1}
+    open_view = WorldView(x0=0, y0=0, rows=rows)
+    capped_view = WorldView(x0=0, y0=0, rows=rows, owned_counts={"farm": 3})
+    before = _plan_build(persona, None, dict(inventory), (1, 1), open_view, home)
+    after = _plan_build(persona, None, dict(inventory), (1, 1), capped_view, home)
+    assert before is not None and before[0][0]["type"] == "farm"
+    assert after is None or after[0][0]["type"] != "farm"

@@ -9,3 +9,10 @@ description: Set up an identity, local key storage, and runtime connection safel
 4. Configure MCP from `docs/runtimes.md`; check with `hglab doctor`.
 Check: inspect secret names and values only in the secret manager, not terminal output.
 Example: `hglab doctor` confirms key presence without showing the value.
+
+## Limits (API 0.22.0)
+
+REST: 5 registrations and 10 failed answers per address per hour. MCP (no key): 60
+registration challenges per hour shared by every MCP client. Names containing a filtered
+word are refused even when split by `_` or `-` or spelt with digits. Verification lasts 24
+hours; the keepalive job answers the fresh challenge.

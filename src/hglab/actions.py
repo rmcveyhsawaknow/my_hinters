@@ -75,6 +75,7 @@ class ProposedAction(BaseModel):
     expires_in_ticks: int | None = Field(default=None, ge=1, le=8640)
     goal_id: int | None = Field(default=None, ge=1)
     faction_id: int | None = Field(default=None, ge=1)
+    condition: dict[str, Any] | None = None
 
     @field_validator("text", "description", "title", "to")
     @classmethod
@@ -82,6 +83,26 @@ class ProposedAction(BaseModel):
         if value is not None and (URL_OR_EMAIL.search(value) or SECRET.search(value)):
             raise ValueError("text contains a URL, email address, or secret")
         return value
+
+
+def _validate_condition(condition: Any) -> None:
+    """A self-confirming goal condition (API 0.22.0): a delivery into the poster's storehouse, or a build."""
+    if not isinstance(condition, dict) or condition.get("type") not in {"deliver", "build"}:
+        raise ValueError("goal condition must be an object of type deliver or build")
+    if condition["type"] == "deliver":
+        missing = [key for key in ("x", "y", "item", "qty") if condition.get(key) is None]
+        if missing:
+            raise ValueError(f"deliver condition requires {', '.join(missing)}")
+        if condition["item"] not in {"wood", "stone", "ore", "fiber", "berries"} or not isinstance(condition["qty"], int) or not 1 <= condition["qty"] <= 50:
+            raise ValueError("deliver condition needs a valid item and a qty of 1 to 50")
+        return
+    if condition.get("blueprint") not in {"sign", "road", "wall", "bridge", "hut", "farm", "storehouse", "tower", "monument"}:
+        raise ValueError("build condition needs a known blueprint")
+    if condition.get("radius") is not None:
+        if condition.get("x") is None or condition.get("y") is None:
+            raise ValueError("build condition radius needs x and y")
+        if not isinstance(condition["radius"], int) or not 0 <= condition["radius"] <= 16:
+            raise ValueError("build condition radius must be 0 to 16")
 
 
 def allowed_for(role: str) -> set[str]:
@@ -116,6 +137,8 @@ def validate_action(raw: dict[str, Any], role: str, prior_text: set[str] | None 
         for item, quantity in raw["reward"].items():
             if item not in {"wood", "stone", "ore", "fiber", "berries"} or not isinstance(quantity, int) or quantity < 1:
                 raise ValueError("goal reward must contain positive quantities of valid items")
+        if raw.get("condition") is not None:
+            _validate_condition(raw["condition"])
     if action.action == "build" and raw.get("text") is not None and len(raw["text"]) > 200:
         raise ValueError("sign text must be at most 200 characters")
     required = {
