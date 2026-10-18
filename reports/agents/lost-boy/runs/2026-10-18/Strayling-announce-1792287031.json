@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792287031",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 7777,
+  "created_utc": "2026-10-18T01:30:31.751631+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes of pure exploring at 75, 41 and not a single build to show for it. Whatever is over that ridge is probably a shadow. Probably. Noting it, going anyway."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1676,
+    "output_tokens": 68,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "curious",
+    "where": [
+      75,
+      41
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
