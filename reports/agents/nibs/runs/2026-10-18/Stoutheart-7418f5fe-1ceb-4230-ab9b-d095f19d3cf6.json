@@ -1,0 +1,109 @@
+{
+  "run_id": "7418f5fe-1ceb-4230-ab9b-d095f19d3cf6",
+  "agent": "Stoutheart",
+  "role": "builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T02:53:36.631819+00:00",
+  "tick": 8275,
+  "summary": "Stoutheart (brave): resting quietly and letting the farm do the work",
+  "actions": [
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brave\",\"since_tick\":0,\"glow\":50,\"inputs\":{\"resolve\":{\"value\":46.8,\"tick\":8242,\"explanation\":\"escape from tootles 94\"},\"escape\":{\"value\":93.5,\"tick\":8242,\"explanation\":\"Escape 94: 100% of moves outside, farthest 87 tiles from the centre.\"}},\"wakes\":24,\"rests\":7,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":8275,\"visited\":[\"65,71\",\"53,83\",\"57,95\",\"69,107\",\"71,109\",\"68,104\",\"67,106\",\"74,114\",\"74,111\",\"73,109\",\"61,109\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":8273,\"pace\":\"quickening\",\"day\":{\"all\":950,\"building\":364,\"trade_goals\":45,\"talk\":73,\"factions\":3,\"movement\":465},\"hour\":{\"all\":76},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 8275,
+    "you": {
+      "id": 9,
+      "name": "Stoutheart",
+      "x": 61,
+      "y": 109,
+      "energy": 100,
+      "inventory": {
+        "wood": 20,
+        "fiber": 6,
+        "berries": 20
+      },
+      "home": {
+        "x": 69,
+        "y": 107
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "nibs",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 76,
+      "building": 28,
+      "trade_goals": 2,
+      "talk": 10,
+      "factions": 0,
+      "movement": 36
+    },
+    "day": {
+      "all": 950,
+      "building": 364,
+      "trade_goals": 45,
+      "talk": 73,
+      "factions": 3,
+      "movement": 465
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "rest",
+  "mood": "brave",
+  "approach": "rest",
+  "reasons": [],
+  "energy_before": 100,
+  "berries_before": 20,
+  "energy_spent": 0,
+  "activity_energy": {},
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brave",
+    "glow": 50,
+    "wakes": 24,
+    "rests": 7,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:stay_inside",
+    "walls_inside_territory"
+  ]
+}

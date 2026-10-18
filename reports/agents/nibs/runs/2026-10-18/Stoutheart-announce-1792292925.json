@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792292925",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 8366,
+  "created_utc": "2026-10-18T03:08:45.450758+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, four moves, nothing built yet; I'm out at (76, 105) scouting the edges so the next bridge goes up where it's needed. Worth it."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1735,
+    "output_tokens": 62,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "rest",
+      "migrate",
+      "explore",
+      "explore"
+    ],
+    "mood": "brave",
+    "where": [
+      76,
+      105
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
