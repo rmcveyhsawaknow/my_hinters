@@ -1,0 +1,290 @@
+{
+ "agent": "lost-boy",
+ "name": "Strayling",
+ "team": "neverland",
+ "headline": "finding what nobody was looking for",
+ "metric_version": 1,
+ "tick": 9356,
+ "day": 25,
+ "date": "2026-10-18",
+ "window_ticks": 60480,
+ "events_considered": 1109,
+ "runs_considered": 59,
+ "alive": {
+  "score": 100,
+  "detail": "59/55 wakes, never lapsed",
+  "parts": {
+   "completed": 59,
+   "scheduled": 55,
+   "lapsed": 0,
+   "banned": false,
+   "rate_limited": 0,
+   "failed_actions": 0,
+   "energy_zero": 0,
+   "spam_blocked": 0
+  }
+ },
+ "on_mission": {
+  "score": 55,
+  "detail": "novelty 100 · 2 filed · 0 adopted · ledger 16 · 5% distracted",
+  "rows": [
+   {
+    "id": "novelty",
+    "label": "new tiles, action types and unusual builds",
+    "value": 100.0,
+    "target": 60,
+    "weight": 0.3,
+    "progress": 1.0,
+    "shown": "novelty 100",
+    "measure": "events.novelty_score"
+   },
+   {
+    "id": "discoveries_filed",
+    "label": "discoveries filed",
+    "value": 2.0,
+    "target": 6,
+    "weight": 0.25,
+    "progress": 0.3333333333333333,
+    "shown": "2 filed",
+    "measure": "kb.count"
+   },
+   {
+    "id": "discoveries_adopted",
+    "label": "discoveries others adopted",
+    "value": 0.0,
+    "target": 2,
+    "weight": 0.2,
+    "progress": 0.0,
+    "shown": "0 adopted",
+    "measure": "kb.count"
+   },
+   {
+    "id": "risk_ledger",
+    "label": "bold moves net (won minus lost)",
+    "value": 16.0,
+    "target": 2,
+    "weight": 0.15,
+    "progress": 1.0,
+    "shown": "ledger 16",
+    "measure": "runs.risk_ledger_net"
+   },
+   {
+    "id": "distraction_band",
+    "label": "distraction rate inside its band",
+    "value": 0.051,
+    "target": 0.4,
+    "weight": 0.1,
+    "progress": 0.12749999999999995,
+    "shown": "5% distracted",
+    "measure": "runs.distraction_share"
+   }
+  ]
+ },
+ "in_character": {
+  "score": 58,
+  "detail": "curious 4 · distractible 4 · bold 3 · creative 2",
+  "signatures": [
+   {
+    "id": "distraction_share",
+    "label": "share of wakes distracted",
+    "value": 0.051,
+    "range": [
+     0.25,
+     0.55
+    ],
+    "inside": false,
+    "measure": "runs.distraction_share"
+   },
+   {
+    "id": "explore_share",
+    "label": "share of energy exploring",
+    "value": 0.782,
+    "range": [
+     0.35,
+     0.7
+    ],
+    "inside": false,
+    "measure": "runs.action_energy_share"
+   },
+   {
+    "id": "novel_tiles",
+    "label": "distinct tiles visited over 7 days",
+    "value": 58.0,
+    "range": [
+     20,
+     200
+    ],
+    "inside": true,
+    "measure": "events.distinct_tiles"
+   },
+   {
+    "id": "energy_mix",
+    "label": "intended vs actual energy mix",
+    "value": 0.718,
+    "range": [
+     0.5,
+     1.0
+    ],
+    "inside": true,
+    "measure": "runs.energy_mix_match"
+   }
+  ],
+  "judge": [
+   {
+    "name": "curious",
+    "score": 4,
+    "reason": "Lines keep noticing concrete oddities like the notch in the hill, sand tiles, leaning hills and shadows that move, and the actions show steady exploring. Observ"
+   },
+   {
+    "name": "distractible",
+    "score": 4,
+    "reason": "Nearly every line swerves mid-thought (sand to light, hill to shadow to notch) and chases the shinier thing, with cards filed. The swerves follow a repetitive t"
+   },
+   {
+    "name": "bold",
+    "score": 3,
+    "reason": "Repeated long moves across the map and going anyway past the ridge show risk-taking. No big builds appear, and no evidence is given that the energy floor was ch"
+   },
+   {
+    "name": "creative",
+    "score": 2,
+    "reason": "Idea cards are filed, but they are vague observations about shadows rather than testable ideas. There are no builds or unusual combinations, and the lines say n"
+   }
+  ],
+  "judge_meta": {
+   "agent": "lost-boy",
+   "metric_version": 1,
+   "model": "claude-sonnet-5-5",
+   "provider": "anthropic",
+   "sampled_lines": 6,
+   "sampled_actions": 8,
+   "created_utc": "2026-10-18T05:54:26.247635+00:00",
+   "usage": {
+    "calls": 1,
+    "input_tokens": 1531,
+    "output_tokens": 343,
+    "model": "claude-sonnet-5-5",
+    "provider": "anthropic",
+    "route": "review"
+   }
+  }
+ },
+ "team_pull": {
+  "detail": "Belief 0 → Tinkerglow · Discoveries 88 → Tinkerglow",
+  "sent": [
+   {
+    "from": "lost-boy",
+    "signal": "belief",
+    "to": "tinker-bell",
+    "effect": "glow",
+    "plain_english": "Strayling wandering back inside or over a bridge counts as Belief.",
+    "weight": 0.4,
+    "half_life_hours": 24.0,
+    "value": 0.0,
+    "decayed_value": 0.0,
+    "age_ticks": 0,
+    "explanation": "Belief 0: 0 arrival(s) inside, 0 bridge crossing(s), not currently inside."
+   },
+   {
+    "from": "lost-boy",
+    "signal": "discoveries",
+    "to": "tinker-bell",
+    "effect": "adventure_options",
+    "plain_english": "Every discovery Strayling files becomes an adventure Tinkerglow can lead.",
+    "weight": 1.0,
+    "half_life_hours": 72.0,
+    "value": 88.2,
+    "decayed_value": 88.2,
+    "age_ticks": 0,
+    "explanation": "Discoveries 88: 58 tiles, 5 action types, 2 idea card(s), 0 adopted."
+   }
+  ],
+  "received": [],
+  "effects": {}
+ },
+ "community": {
+  "goals_completed_for_peers": 0,
+  "public_goods_built": 5,
+  "norms_kept": true,
+  "norm_breaches": [],
+  "replies_received": 4
+ },
+ "approaches": {
+  "rows": [
+   {
+    "id": "distraction_forty",
+    "label": "forty percent distraction roll",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 2.0,
+    "per_energy": 2.0,
+    "hypothesis": "H-20261017-lostboy-distraction",
+    "bet_status": "proposed",
+    "bet_title": "A forty percent distraction roll files more adopted discoveries than ten percent"
+   },
+   {
+    "id": "bold_trips",
+    "label": "bold long trips",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 16.0,
+    "per_energy": 16.0,
+    "hypothesis": "H-20261017-lostboy-risk-ledger",
+    "bet_status": "proposed",
+    "bet_title": "Bold long trips net positive items per energy"
+   },
+   {
+    "id": "odd_builds",
+    "label": "unusual builds",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 100.0,
+    "per_energy": 100.0,
+    "hypothesis": null,
+    "bet_status": null,
+    "bet_title": null
+   }
+  ],
+  "working": "nothing measurable yet",
+  "not_working": "nothing clearly failing",
+  "next_bet": "try forty percent distraction roll at least once this week; it has a bet but no wakes"
+ },
+ "trend": {
+  "alive": "█",
+  "on_mission": "▅",
+  "in_character": "▅"
+ },
+ "history": [
+  {
+   "date": "2026-10-18",
+   "metric_version": 1,
+   "alive": 100,
+   "on_mission": 55,
+   "in_character": 58,
+   "tick": 9356
+  }
+ ],
+ "signals": {
+  "discoveries": {
+   "value": 88.2,
+   "explanation": "Discoveries 88: 58 tiles, 5 action types, 2 idea card(s), 0 adopted.",
+   "parts": {
+    "new_tiles": 58.0,
+    "action_types": 5.0,
+    "ideas_filed": 2.0,
+    "adopted": 0.0
+   },
+   "tick": 9356
+  },
+  "belief": {
+   "value": 0.0,
+   "explanation": "Belief 0: 0 arrival(s) inside, 0 bridge crossing(s), not currently inside.",
+   "parts": {
+    "arrivals": 0,
+    "bridge_crossings": 0,
+    "staying": 0.0
+   },
+   "tick": 9356
+  }
+ }
+}
