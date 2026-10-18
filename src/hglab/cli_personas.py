@@ -284,6 +284,7 @@ def _persona_tick(
         terrain_rows=terrain, public_events=inputs["events"], seed=seed, scheduled=scheduled, usage=usage,
         budget_hold=budget_hold, environment=environment, work=work, teammates=roster or None,
         owned_counts=owned or None, registrar_name=_registrar_name(root, personas),
+        public_structures=list(world.get("structures", [])) if world else (list(fixture_world(root).get("structures", [])) if fixture is not None else None),
     )
     if not quiet:
         echo_record(record)
@@ -697,6 +698,8 @@ def land_round(root: Path, persona: Persona, *, dry_run: bool, fixture: Path | N
                     recent_say_count += 1
                 if action["action"] == "post_goal":
                     open_goal_count += 1
+                if action["action"] == "cancel_goal":
+                    open_goal_count = max(0, open_goal_count - 1)
                 kept.append(validated)
             except ValueError as exc:
                 dropped.append(f"{action['action']}: {exc}")
@@ -902,6 +905,8 @@ def crier_round(root: Path, persona: Persona, *, dry_run: bool, fixture: Path | 
                     recent_say_count += 1
                 if action["action"] == "post_goal":
                     open_goal_count += 1
+                if action["action"] == "cancel_goal":
+                    open_goal_count = max(0, open_goal_count - 1)
                 kept.append(validated)
             except ValueError as exc:
                 dropped.append(f"{action['action']}: {exc}")

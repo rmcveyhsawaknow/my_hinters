@@ -44,7 +44,18 @@
         },
         "social_rate": {"type": "integer", "minimum": 0, "maximum": 3},
         "model_route": {"type": "string", "pattern": "^[a-z_]+$"},
-        "work": {
+        "stake_lots": {
+      "type": "object",
+      "description": "Land office acquisition: stake free lots with one claim sign each, this many per work wake.",
+      "required": ["per_wake"],
+      "properties": {
+        "size": {"type": "integer", "enum": [5]},
+        "per_wake": {"type": "integer", "minimum": 0, "maximum": 3},
+        "respect_homesteads": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "work": {
           "type": "object",
           "description": "Deterministic work shifts between character wakes: build, gather, deposit, migrate. No model calls.",
           "required": ["cron", "minutes", "interval_seconds"],

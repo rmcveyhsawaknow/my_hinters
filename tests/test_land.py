@@ -82,7 +82,7 @@ def test_with_a_vault_the_office_posts_the_registration_goal_and_an_offer():
     b2 = board(ledger, structures, [], posted, "LandBroker")
     assert b2["registration_goal"] == {"id": 21, "status": "open"} and b2["offers"][0]["goal_id"] == 22
     again, _, _ = plan_round(broker, ledger, observe, b2, public_events=[], structures=structures, agents=[], state={}, collective_names=COLLECTIVE)
-    assert [a["action"] for a in again] == ["say"] and "goal #21" in again[0]["text"] and "Buying" in again[0]["text"]
+    assert [a["action"] for a in again] == ["say"] and "goal #21" in again[0]["text"] and "lots staked" in again[0]["text"]
     assert "goal #21" in office_line(ledger, b2, 280)
 
 
@@ -104,7 +104,7 @@ def test_paid_registrations_become_deeds_from_goal_done_and_collective_gives():
     kinds = [a["action"] for a in actions]
     assert kinds[:2] == ["say", "set_profile"] and "build" in kinds  # standing in G05 with wood: the deed goes on a sign
     assert "deed G05 to Quill" in actions[0]["text"] and "H08 to Fudgewright" in actions[0]["text"]
-    assert actions[1]["goals"].startswith("Land registry") and "G05 Quill" in actions[1]["goals"] and "H08 Fudgewright" in actions[1]["goals"]
+    assert "Land registry" in actions[1]["goals"] and "G05 Quill" in actions[1]["goals"] and "H08 Fudgewright" in actions[1]["goals"]
     assert update["registered"] == ["G05:Quill:7950", "H08:Fudgewright:7960"]
     assert "Mara" not in json.dumps(actions)
     validate_actions(actions, "+".join(broker.roles), observe=observe)
@@ -137,3 +137,66 @@ def test_surplus_goes_into_the_vault_when_no_own_storehouse_is_near():
     assert _plan_deposit(joe, dict(inventory), (64, 64), view) is None
     plan = _plan_deposit(joe, dict(inventory), (64, 64), view, "LandBroker")
     assert plan is not None and plan[0][0] == {"action": "give", "x": 65, "y": 64, "item": "stone", "qty": 12} and "vault" in plan[1]
+
+
+def test_the_office_lists_lots_at_a_rising_price_and_sales_become_deeds():
+    from hglab.lots import stake_text
+
+    ledger = load_ledger(ROOT)
+    broker = load_personas(ROOT)["land-broker"]
+    observe = _observe(x=66, y=66, inventory={"berries": 4, "wood": 6})
+    signs = [{"type": "sign", "x": 62 + 5 * i, "y": 62, "owner": "LandBroker", "text": stake_text(f"G06-{q}", "LandBroker")} for i, q in enumerate(("NW", "NE"))]
+    structures = [VAULT, *signs]
+    posted = [{"id": 21, "title": ledger["registration_title"], "poster": "LandBroker", "status": "open"}]
+    observe["your_goals"] = {"claimed": None, "posted": posted}
+    b = board(ledger, structures, [], posted, "LandBroker")
+    assert b["lots"]["staked"] == 2 and b["lots"]["for_sale"] == 2 and b["lots"]["price"] == 5 and b["sale_goal"] is None
+    actions, _reasons, _ = plan_round(broker, ledger, observe, b, public_events=[], structures=structures, agents=[], state={"last_call_tick": observe["tick"]}, collective_names=COLLECTIVE)
+    assert [a["action"] for a in actions] == ["post_goal"]
+    listing = actions[0]
+    assert listing["title"] == "Buy a 5x5 lot from the land office" and listing["condition"]["qty"] == 5 and listing["reward"] == {"berries": 1}
+    validate_actions(actions, "+".join(broker.roles), open_goal_count=1, observe=observe)
+    # the price moved (most of the world filled up): the stale listing comes down and a fresh one goes up
+    posted2 = [*posted, {"id": 30, "title": listing["title"], "poster": "LandBroker", "status": "open", "condition": {"type": "deliver", "x": 65, "y": 64, "item": "wood", "qty": 5}}]
+    observe["your_goals"] = {"claimed": None, "posted": posted2}
+    crowded = structures + [{"type": "road", "x": (i * 5) % 128, "y": (i * 5) // 128 * 5, "owner": "Cairn"} for i in range(620)]
+    b2 = board(ledger, crowded, [], posted2, "LandBroker")
+    assert b2["lots"]["price"] > 5 and b2["sale_goal"] == {"id": 30, "status": "open", "qty": 5}
+    actions2, _, _ = plan_round(broker, ledger, observe, b2, public_events=[], structures=crowded, agents=[], state={"last_call_tick": observe["tick"]}, collective_names=COLLECTIVE)
+    assert [a["action"] for a in actions2] == ["cancel_goal", "post_goal"] and actions2[0]["goal_id"] == 30 and actions2[1]["condition"]["qty"] == b2["lots"]["price"]
+    validate_actions(actions2, "+".join(broker.roles), open_goal_count=2, observe=observe)
+    # a sale: Quill paid and named a lot by whisper; Mara paid and gets the unsold lot nearest her hut
+    observe["inbox"] = [{"id": 1, "from": "Quill", "text": "I want lot G06-NE please", "tick": observe["tick"]}]
+    events = [
+        {"type": "goal_done", "tick": 9000, "actor": "Quill", "data": {"goal_id": 30, "title": listing["title"], "poster": "LandBroker"}},
+        {"type": "goal_done", "tick": 9010, "actor": "Mara", "data": {"goal_id": 30, "title": listing["title"], "poster": "LandBroker"}},
+    ]
+    agents = [{"name": "Mara", "x": 61, "y": 66}]
+    actions3, _reasons3, update3 = plan_round(broker, ledger, observe, b, public_events=events, structures=structures, agents=agents, state={"registered": [], "last_call_tick": observe["tick"]}, collective_names=COLLECTIVE)
+    assert update3["registered"] == ["G06-NE:Quill:9000", "G06-NW:Mara:9010"]
+    assert actions3[0]["action"] == "say" and "lot G06-NE sold to Quill" in actions3[0]["text"] and "G06-NW to Mara" in actions3[0]["text"]
+    assert actions3[1]["action"] == "set_profile" and "G06-NE Quill" in actions3[1]["goals"] and "Lots (5x5)" in actions3[1]["goals"]
+    assert "I want lot" not in json.dumps(actions3)  # the whisper never leaves the inbox
+    validate_actions(actions3, "+".join(broker.roles), observe=observe)
+    after = board(ledger, structures, agents, posted, "LandBroker", {"registered": update3["registered"]})
+    assert after["lots"]["for_sale"] == 0 and after["lots"]["sold"] == 2
+
+
+def test_the_lot_listing_takes_an_offers_slot_when_both_are_full():
+    from hglab.lots import stake_text
+
+    ledger = load_ledger(ROOT)
+    broker = load_personas(ROOT)["land-broker"]
+    observe = _observe(x=66, y=66, inventory={"berries": 4, "wood": 6})
+    structures = [VAULT, {"type": "sign", "x": 62, "y": 67, "owner": "LandBroker", "text": stake_text("G06-NW", "LandBroker")}]
+    posted = [
+        {"id": 7, "title": ledger["registration_title"], "poster": "LandBroker", "status": "open"},
+        {"id": 8, "title": "Offer: 2 berries for 10 wood into the land office vault", "poster": "LandBroker", "status": "open"},
+    ]
+    observe["your_goals"] = {"claimed": None, "posted": posted}
+    b = board(ledger, structures, [], posted, "LandBroker")
+    assert b["offers"][0]["goal_id"] == 8 and b["sale_goal"] is None and b["lots"]["for_sale"] == 1
+    actions, reasons, _ = plan_round(broker, ledger, observe, b, public_events=[], structures=structures, agents=[], state={"last_call_tick": observe["tick"]}, collective_names=COLLECTIVE)
+    assert [a["action"] for a in actions] == ["cancel_goal", "post_goal"] and actions[0]["goal_id"] == 8
+    assert actions[1]["title"] == "Buy a 5x5 lot from the land office" and any("gives its slot" in r for r in reasons)
+    validate_actions(actions, "+".join(broker.roles), open_goal_count=2, observe=observe)

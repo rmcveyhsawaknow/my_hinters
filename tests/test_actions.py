@@ -129,3 +129,14 @@ def test_repair_is_a_builders_and_surveyors_action_that_needs_a_tile():
     assert validate_action({"action": "repair", "x": 71, "y": 84}, "builder").action == "repair"
     with pytest.raises(ValueError):
         validate_action({"action": "repair", "x": 71}, "builder")
+
+
+def test_a_cancel_in_the_batch_frees_a_goal_slot_for_the_post_after_it():
+    import pytest
+
+    from hglab.actions import validate_actions
+
+    post = {"action": "post_goal", "title": "Buy a lot", "description": "give wood into the vault", "reward": {"berries": 1}}
+    validate_actions([{"action": "cancel_goal", "goal_id": 8}, post], "navigator", open_goal_count=2)
+    with pytest.raises(ValueError):
+        validate_actions([post], "navigator", open_goal_count=2)

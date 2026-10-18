@@ -49,6 +49,7 @@ WORK_SUMMARIES = {
     "build_monument": "raising the monument from the storehouse", "build": "building", "deposit": "stocking the storehouse",
     "gather_trip": "gathering for the next build", "migrate": "walking to the team site", "explore": "looking for nodes",
     "repair": "mending what is damaged", "harvest": "collecting the farm", "salvage": "taking salvage from a ruin",
+    "stake": "staking open lots for the land office",
 }
 REPAIR_WORTH = 10  # mend only when at least half a repair's 20 hp is missing; a scratch is not worth a unit of material
 NODE_FLOOR = 5  # never take a node below this many units: local norm, never strip nodes
@@ -66,11 +67,16 @@ class WorldView:
     full_map: list[str] | None = None
     owned_counts: dict[str, int] = field(default_factory=dict)  # own structures anywhere, by type (public snapshot)
     weather: str = "clear"  # clear, rain, storm, drought: a storm day makes every move tile cost 1 more
+    world_structures: list[dict[str, Any]] = field(default_factory=list)  # every structure in the world (public snapshot)
     season: str = ""  # spring, summer, autumn, winter: wild berries do not regrow in winter
 
     @classmethod
     def from_observe(
-        cls, observe: dict[str, Any], terrain_rows: list[str] | None = None, owned_counts: dict[str, int] | None = None
+        cls,
+        observe: dict[str, Any],
+        terrain_rows: list[str] | None = None,
+        owned_counts: dict[str, int] | None = None,
+        world_structures: list[dict[str, Any]] | None = None,
     ) -> WorldView:
         view = observe.get("view") if isinstance(observe.get("view"), dict) else {}
         rows = view.get("rows") or []
@@ -85,6 +91,7 @@ class WorldView:
             owned_counts=dict(owned_counts or {}),
             weather=str(observe.get("weather") or "clear"),
             season=str(observe.get("season") or ""),
+            world_structures=[s for s in (world_structures or []) if isinstance(s, dict)],
         )
 
     def terrain(self, x: int, y: int) -> str | None:
@@ -192,6 +199,7 @@ def plan_wake(
     work: bool = False,
     owned_counts: dict[str, int] | None = None,
     registrar_name: str | None = None,
+    public_structures: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     """Return ``{summary, actions, reasons, approach, remember}`` for one wake.
 
@@ -203,7 +211,7 @@ def plan_wake(
     energy = int(you.get("energy", 0) or 0)
     inventory = {k: int(v) for k, v in (you.get("inventory") or {}).items()}
     home = you.get("home") if isinstance(you.get("home"), dict) else None
-    view = WorldView.from_observe(observe, terrain_rows, owned_counts)
+    view = WorldView.from_observe(observe, terrain_rows, owned_counts, public_structures)
     cap = persona.actions_per_wake
     reserve = persona.energy_reserve
     names = dict(team_names or {})
@@ -278,6 +286,7 @@ def plan_wake(
             step = (
                 _plan_repair(persona, team, inventory, here, view, teammates)
                 or _plan_harvest(persona, team, inventory, here, view, teammates)
+                or _plan_stake(persona, inventory, here, view)
                 or (_plan_build(persona, team, inventory, here, view, home) if here == position else None)
             )
         elif activity == "gather":
@@ -387,6 +396,16 @@ def _plan_work(
         return _result(persona, mood, "work shift: walking to the team site", actions, reasons, approach, remember)
     if far_from_home and actions:
         return _result(persona, mood, f"work shift: {WORK_SUMMARIES.get(approach or '', 'upkeep')}", actions, reasons, approach, remember)
+    # 1.5 the land office stakes open lots, one claim sign each, as fast as wood and energy allow
+    staked_now: set[str] = set()
+    per_wake = int((persona.knobs.get("stake_lots") or {}).get("per_wake", 0) or 0)
+    while len(staked_now) < per_wake:
+        step = _plan_stake(persona, inventory, here, view, exclude=staked_now)
+        if not step or not fits(step):
+            break
+        staked_now.add(step[2].split(":", 1)[1])
+        inventory["wood"] = inventory.get("wood", 0) - 1
+        approach = approach or "stake"
     # 2. the monument recipe when the storehouse beside us holds the materials
     monument = _plan_monument(persona, inventory, position, view)
     if here == position and fits(monument):
@@ -439,6 +458,43 @@ def _plan_monument(persona: Persona, inventory: dict[str, int], position: tuple[
                 f"pack plus the storehouse beside me hold {stone} stone and {ore} ore: the monument recipe (build pays the rest from storehouses within one tile)",
                 "build_monument",
             )
+    return None
+
+
+def _plan_stake(
+    persona: Persona,
+    inventory: dict[str, int],
+    position: tuple[int, int],
+    view: WorldView,
+    exclude: set[str] | None = None,
+) -> tuple[list[dict[str, Any]], str, str] | None:
+    """The land office's claim: one sign on the anchor of the nearest free lot (knob ``stake_lots``).
+
+    A lot is free when no structure stands in it anywhere in the world (the public snapshot), and
+    the office leaves a ring of lots around every other agent's hut. The tag carries the lot id.
+    """
+    from hglab.lots import free_lots, homestead_ring, lot_anchor, stake_text
+
+    knob = persona.knobs.get("stake_lots")
+    if not knob or inventory.get("wood", 0) < 1:
+        return None
+    structures = view.world_structures or view.structures
+    candidates = free_lots(structures) - (set(exclude or ()))
+    if knob.get("respect_homesteads", True):
+        candidates -= homestead_ring(structures, persona.name)
+    reach = reachable_tiles(view, position)
+    for lid in sorted(candidates, key=lambda lid: chebyshev(position, lot_anchor(lid)))[:60]:
+        anchor = lot_anchor(lid)
+        if chebyshev(position, anchor) > MOVE_STEP_CAP + 1:
+            break
+        if not view.free_tile(*anchor) or any(s.get("x") == anchor[0] and s.get("y") == anchor[1] for s in structures):
+            continue
+        build = {"action": "build", "type": "sign", "x": anchor[0], "y": anchor[1], "text": stake_text(lid, persona.name)}
+        if chebyshev(position, anchor) <= 1:
+            return [build], f"stake lot {lid}: a claim sign at {anchor}", f"stake:{lid}"
+        stand = next((t for t in sorted([anchor, *neighbours(*anchor)], key=lambda t: chebyshev(position, t)) if t in reach), None)
+        if stand is not None:
+            return [{"action": "move", "x": stand[0], "y": stand[1]}, build], f"walk to {stand} and stake lot {lid} with a claim sign at {anchor}", f"stake:{lid}"
     return None
 
 
@@ -702,8 +758,8 @@ def _plan_build(
             continue  # text-bearing builds need fresh words: the model-backed planner's job
         if blueprint == "hut" and home:
             continue
-        if blueprint == "storehouse" and any(s.get("type") == "storehouse" for s in owned):
-            continue
+        if blueprint == "storehouse" and (any(s.get("type") == "storehouse" for s in owned) or view.owned_counts.get("storehouse", 0) >= 1):
+            continue  # one storehouse per agent is the plan; the public snapshot counts the ones out of view
         if blueprint == "farm" and max(sum(s.get("type") == "farm" for s in owned), view.owned_counts.get("farm", 0)) >= 3:
             continue  # only an agent's three oldest farms grow (API 0.22.0); a fourth would stand idle
         if blueprint == "wall" and in_territory(team, *position) is not True:
