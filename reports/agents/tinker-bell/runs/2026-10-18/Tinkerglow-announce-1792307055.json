@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792307055",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 9779,
+  "created_utc": "2026-10-18T07:04:15.978811+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Gathered ten wood! Lagalong's gone again. Build harder, north six."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1727,
+    "output_tokens": 35,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {
+      "wood": 10
+    },
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "gather_trip",
+      "explore",
+      "rest",
+      "explore",
+      "migrate"
+    ],
+    "mood": "jealousy",
+    "where": [
+      74,
+      112
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
