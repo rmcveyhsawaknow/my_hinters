@@ -1,0 +1,124 @@
+{
+  "run_id": "73e0a296-e8c7-44e6-a08f-06bb4977cc7d",
+  "agent": "Fudgewright",
+  "role": "navigator+builder+broker",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T12:26:46.775090+00:00",
+  "tick": 11714,
+  "summary": "Fudgewright (gentle): work shift: looking for nodes",
+  "actions": [
+    {
+      "action": "move",
+      "x": 82,
+      "y": 94
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"gentle\",\"since_tick\":11351,\"glow\":50,\"inputs\":{\"inspiration\":{\"value\":42.5,\"tick\":11704,\"explanation\":\"hope from mrs-bucket 42\"},\"suspicion\":{\"value\":0.0,\"tick\":11704,\"explanation\":\"bluster from grandpa-joe 0\"},\"discernment\":{\"value\":0.0,\"tick\":11704,\"explanation\":\"bluster from grandpa-joe 0\"},\"hope\":{\"value\":42.5,\"tick\":11704,\"explanation\":\"Hope 42: contribution 76, uplift 7, resilience 0 (decayed over a day).\"},\"bluster\":{\"value\":0.0,\"tick\":11704,\"explanation\":\"Bluster 0: 0 claim(s) against own work 0, 0% of the team's logged work claimed.\"}},\"wakes\":30,\"rests\":8,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":11714,\"visited\":[\"62,64\",\"66,72\",\"65,71\",\"67,75\",\"66,74\",\"65,73\",\"71,84\",\"66,73\",\"79,93\",\"78,94\",\"89,99\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":11712,\"pace\":\"steady\",\"day\":{\"all\":1412,\"building\":427,\"trade_goals\":60,\"talk\":175,\"factions\":23,\"movement\":727},\"hour\":{\"all\":63},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 11714,
+    "you": {
+      "id": 3,
+      "name": "Fudgewright",
+      "x": 89,
+      "y": 99,
+      "energy": 100,
+      "inventory": {
+        "ore": 10,
+        "wood": 5,
+        "fiber": 6,
+        "stone": 17,
+        "berries": 11
+      },
+      "home": {
+        "x": 65,
+        "y": 71
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "wonka",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "navigator",
+    "builder",
+    "broker"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 63,
+      "building": 15,
+      "trade_goals": 2,
+      "talk": 9,
+      "factions": 8,
+      "movement": 29
+    },
+    "day": {
+      "all": 1412,
+      "building": 427,
+      "trade_goals": 60,
+      "talk": 175,
+      "factions": 23,
+      "movement": 727
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "gentle",
+  "approach": "explore",
+  "reasons": [
+    "looking around for something I have not seen: move to (82, 94)"
+  ],
+  "energy_before": 100,
+  "berries_before": 11,
+  "energy_spent": 7,
+  "activity_energy": {
+    "explore": 7.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "gentle",
+    "glow": 50,
+    "wakes": 30,
+    "rests": 8,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}

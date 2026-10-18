@@ -1,0 +1,59 @@
+{
+  "run_id": "announce-1792327624",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 11836,
+  "created_utc": "2026-10-18T12:47:04.486887+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Welcome, welcome, come see the farm at (82,94) and the road at (82,96)! Ten wood gathered, and the road is only slightly crooked. Mostly gentle. Mostly a road."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1843,
+    "output_tokens": 74,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "farm at (82,94)",
+      "road at (82,96)",
+      "road at (83,96)"
+    ],
+    "gathered": {
+      "wood": 10
+    },
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "build",
+      "gather_trip",
+      "build",
+      "build"
+    ],
+    "mood": "gentle",
+    "where": [
+      83,
+      95
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
