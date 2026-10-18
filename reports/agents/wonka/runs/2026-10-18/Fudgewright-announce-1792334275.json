@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792334275",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 12501,
+  "created_utc": "2026-10-18T14:37:55.685913+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Four little roads laid down at (80,96), (79,96), (78,96) and (78,97), so the walk to my factory is already a pleasant wander. Gentle wanderers, the wafer is waiting, and so am I, mostly rested."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1836,
+    "output_tokens": 85,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [
+      "road at (80,96)",
+      "road at (79,96)",
+      "road at (78,96)",
+      "road at (78,97)"
+    ],
+    "gathered": {},
+    "moved": 0,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "build",
+      "build",
+      "build",
+      "rest"
+    ],
+    "mood": "gentle",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
