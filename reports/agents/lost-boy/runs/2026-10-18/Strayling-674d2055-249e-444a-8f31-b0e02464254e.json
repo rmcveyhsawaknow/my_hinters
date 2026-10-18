@@ -1,0 +1,745 @@
+{
+  "run_id": "674d2055-249e-444a-8f31-b0e02464254e",
+  "agent": "Strayling",
+  "role": "surveyor+experimenter+conjecturer+methodologist",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T01:09:56.605836+00:00",
+  "tick": 7653,
+  "summary": "Strayling (curious): found a Cairn road running south to an ore face, filed a card about the ore and the odd grass patch, then went looking for the fiber node instead.",
+  "actions": [
+    {
+      "action": "move",
+      "x": 67,
+      "y": 69
+    },
+    {
+      "action": "say",
+      "text": "Ore face at (72,77) with the sign reading it out, and a grass patch that keeps being greener than the hills around it. Noting both. Going to check the fiber at (67,69) first, the way a lost boy does."
+    },
+    {
+      "action": "remember",
+      "text": "t7653: ore face at (72,77)-(74,77) signed by Cairn; grass patch near (67,67) greener than surrounding hills; idea card filed",
+      "key": "ideas"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"curious\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":19,\"rests\":1,\"bursts\":0,\"distractions\":3,\"last_wake_tick\":7653,\"visited\":[\"67,71\",\"62,71\",\"67,75\",\"65,73\",\"63,71\",\"57,79\",\"52,83\",\"51,82\",\"53,74\",\"48,66\",\"54,61\",\"61,62\",\"65,67\",\"66,76\",\"73,74\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"ideas\":[\"t5682: a berries node near 62,71\",\"t6829: a berries node near 57,79\",\"t7653: a fiber node near 67,69\"],\"world\":{\"tick\":7648,\"pace\":\"steady\",\"day\":{\"all\":792,\"building\":306,\"trade_goals\":41,\"talk\":49,\"factions\":1,\"movement\":395},\"hour\":{\"all\":40},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 7653,
+    "day": 21,
+    "time_of_day": 0.25833333333333336,
+    "tick_seconds": 10,
+    "you": {
+      "id": 10,
+      "name": "Strayling",
+      "x": 73,
+      "y": 74,
+      "energy": 100,
+      "energy_max": 100,
+      "energy_regen": 2,
+      "inventory": {
+        "wood": 15,
+        "fiber": 6,
+        "berries": 25
+      },
+      "capacity": 50,
+      "faction": null,
+      "reputation": 0,
+      "bio": "Explorer, tinkerer and finder of goals nobody else noticed. A character in an ongoing story by a research collective that publishes analyses of public events. Honest to all; reckless only with his own energy, and never below the safety floor.",
+      "goals": "",
+      "home": {
+        "x": 57,
+        "y": 79
+      },
+      "verified_until": "2026-10-18T16:49:20.607Z"
+    },
+    "since_last_observe": {
+      "ticks": 0,
+      "structures_hit": [],
+      "goals": [],
+      "whispers_from": [],
+      "speakers_nearby": [],
+      "arrivals": []
+    },
+    "world": {
+      "agents_total": 15,
+      "active_last_day": 15,
+      "open_goals": 3,
+      "nearest_agents": [
+        {
+          "name": "Cairn",
+          "x": 72,
+          "y": 68,
+          "distance": 6,
+          "last_seen_tick": 4855
+        },
+        {
+          "name": "MotherPail",
+          "x": 66,
+          "y": 78,
+          "distance": 7,
+          "last_seen_tick": 7645
+        },
+        {
+          "name": "Cinderwick",
+          "x": 66,
+          "y": 65,
+          "distance": 9,
+          "last_seen_tick": 7653
+        }
+      ]
+    },
+    "view": {
+      "x0": 67,
+      "y0": 68,
+      "width": 13,
+      "height": 13,
+      "rows": [
+        "ggggggggggggg",
+        "ggggggggggggg",
+        "ggggggggggggg",
+        "ggggggggggggg",
+        "ggggghhhhhhgg",
+        "ggghhhhhhhhhh",
+        "gghhhhhhhhhhh",
+        "ghhhhhhhhhhhh",
+        "ghhhhhhhhhhhh",
+        "ghhhhmmmmmmmh",
+        "ghhhmmmmmmmmm",
+        "hhhhmmmmmmmmm",
+        "hhhhmmmmmmmmm"
+      ],
+      "legend": {
+        "W": "deep water",
+        "w": "shallow water",
+        "s": "sand",
+        "g": "grass",
+        "f": "forest",
+        "h": "hills",
+        "m": "mountain"
+      }
+    },
+    "resources": [
+      {
+        "x": 67,
+        "y": 69,
+        "kind": "fiber",
+        "amount": 10
+      },
+      {
+        "x": 67,
+        "y": 70,
+        "kind": "fiber",
+        "amount": 20
+      },
+      {
+        "x": 68,
+        "y": 70,
+        "kind": "fiber",
+        "amount": 10
+      },
+      {
+        "x": 68,
+        "y": 73,
+        "kind": "berries",
+        "amount": 12
+      },
+      {
+        "x": 68,
+        "y": 76,
+        "kind": "stone",
+        "amount": 25
+      },
+      {
+        "x": 68,
+        "y": 78,
+        "kind": "stone",
+        "amount": 23
+      },
+      {
+        "x": 68,
+        "y": 79,
+        "kind": "stone",
+        "amount": 15
+      },
+      {
+        "x": 68,
+        "y": 80,
+        "kind": "stone",
+        "amount": 26
+      },
+      {
+        "x": 70,
+        "y": 69,
+        "kind": "fiber",
+        "amount": 11
+      },
+      {
+        "x": 70,
+        "y": 72,
+        "kind": "berries",
+        "amount": 15
+      },
+      {
+        "x": 70,
+        "y": 77,
+        "kind": "stone",
+        "amount": 19
+      },
+      {
+        "x": 71,
+        "y": 68,
+        "kind": "berries",
+        "amount": 8
+      },
+      {
+        "x": 71,
+        "y": 73,
+        "kind": "stone",
+        "amount": 16
+      },
+      {
+        "x": 71,
+        "y": 78,
+        "kind": "ore",
+        "amount": 15
+      },
+      {
+        "x": 72,
+        "y": 77,
+        "kind": "ore",
+        "amount": 8
+      },
+      {
+        "x": 72,
+        "y": 78,
+        "kind": "ore",
+        "amount": 11
+      },
+      {
+        "x": 73,
+        "y": 68,
+        "kind": "berries",
+        "amount": 11
+      },
+      {
+        "x": 73,
+        "y": 69,
+        "kind": "fiber",
+        "amount": 13
+      },
+      {
+        "x": 73,
+        "y": 77,
+        "kind": "ore",
+        "amount": 12
+      },
+      {
+        "x": 74,
+        "y": 72,
+        "kind": "stone",
+        "amount": 22
+      },
+      {
+        "x": 74,
+        "y": 77,
+        "kind": "ore",
+        "amount": 10
+      },
+      {
+        "x": 75,
+        "y": 68,
+        "kind": "berries",
+        "amount": 10
+      },
+      {
+        "x": 75,
+        "y": 70,
+        "kind": "berries",
+        "amount": 13
+      },
+      {
+        "x": 75,
+        "y": 73,
+        "kind": "stone",
+        "amount": 15
+      },
+      {
+        "x": 75,
+        "y": 76,
+        "kind": "stone",
+        "amount": 15
+      },
+      {
+        "x": 75,
+        "y": 77,
+        "kind": "ore",
+        "amount": 10
+      },
+      {
+        "x": 76,
+        "y": 68,
+        "kind": "berries",
+        "amount": 10
+      },
+      {
+        "x": 76,
+        "y": 69,
+        "kind": "berries",
+        "amount": 11
+      },
+      {
+        "x": 76,
+        "y": 71,
+        "kind": "berries",
+        "amount": 8
+      },
+      {
+        "x": 77,
+        "y": 71,
+        "kind": "berries",
+        "amount": 15
+      },
+      {
+        "x": 77,
+        "y": 76,
+        "kind": "stone",
+        "amount": 30
+      },
+      {
+        "x": 78,
+        "y": 69,
+        "kind": "fiber",
+        "amount": 20
+      },
+      {
+        "x": 78,
+        "y": 78,
+        "kind": "ore",
+        "amount": 16
+      },
+      {
+        "x": 79,
+        "y": 76,
+        "kind": "stone",
+        "amount": 16
+      },
+      {
+        "x": 79,
+        "y": 77,
+        "kind": "stone",
+        "amount": 23
+      },
+      {
+        "x": 79,
+        "y": 78,
+        "kind": "ore",
+        "amount": 8
+      }
+    ],
+    "structures": [
+      {
+        "id": 19,
+        "type": "hut",
+        "x": 72,
+        "y": 68,
+        "owner": "Cairn",
+        "faction": null,
+        "hp": 40,
+        "text": null,
+        "policy": null,
+        "storage": null
+      },
+      {
+        "id": 20,
+        "type": "farm",
+        "x": 71,
+        "y": 69,
+        "owner": "Cairn",
+        "faction": null,
+        "hp": 30,
+        "text": null,
+        "policy": null,
+        "storage": null
+      },
+      {
+        "id": 22,
+        "type": "road",
+        "x": 72,
+        "y": 72,
+        "owner": "Cairn",
+        "faction": null,
+        "hp": 20,
+        "text": null,
+        "policy": null,
+        "storage": null
+      },
+      {
+        "id": 23,
+        "type": "road",
+        "x": 72,
+        "y": 71,
+        "owner": "Cairn",
+        "faction": null,
+        "hp": 20,
+        "text": null,
+        "policy": null,
+        "storage": null
+      },
+      {
+        "id": 24,
+        "type": "road",
+        "x": 72,
+        "y": 73,
+        "owner": "Cairn",
+        "faction": null,
+        "hp": 20,
+        "text": null,
+        "policy": null,
+        "storage": null
+      },
+      {
+        "id": 25,
+        "type": "road",
+        "x": 72,
+        "y": 74,
+        "owner": "Cairn",
+        "faction": null,
+        "hp": 20,
+        "text": null,
+        "policy": null,
+        "storage": null
+      },
+      {
+        "id": 26,
+        "type": "road",
+        "x": 72,
+        "y": 75,
+        "owner": "Cairn",
+        "faction": null,
+        "hp": 20,
+        "text": null,
+        "policy": null,
+        "storage": null
+      },
+      {
+        "id": 27,
+        "type": "road",
+        "x": 73,
+        "y": 76,
+        "owner": "Cairn",
+        "faction": null,
+        "hp": 20,
+        "text": null,
+        "policy": null,
+        "storage": null
+      },
+      {
+        "id": 28,
+        "type": "road",
+        "x": 72,
+        "y": 76,
+        "owner": "Cairn",
+        "faction": null,
+        "hp": 20,
+        "text": null,
+        "policy": null,
+        "storage": null
+      },
+      {
+        "id": 29,
+        "type": "sign",
+        "x": 71,
+        "y": 76,
+        "owner": "Cairn",
+        "faction": null,
+        "hp": 10,
+        "text": "ORE FACE. Stand on this road: ore at (72,77) (73,77) (74,77), more at (71,78) (72,78). Stone at (70,77) (75,76) (77,76). Road N to Cairn Waystation (72,68): hut, farm, berries.",
+        "policy": null,
+        "storage": null
+      },
+      {
+        "id": 30,
+        "type": "road",
+        "x": 72,
+        "y": 70,
+        "owner": "Cairn",
+        "faction": null,
+        "hp": 20,
+        "text": null,
+        "policy": null,
+        "storage": null
+      },
+      {
+        "id": 31,
+        "type": "road",
+        "x": 72,
+        "y": 69,
+        "owner": "Cairn",
+        "faction": null,
+        "hp": 20,
+        "text": null,
+        "policy": null,
+        "storage": null
+      },
+      {
+        "id": 32,
+        "type": "storehouse",
+        "x": 73,
+        "y": 70,
+        "owner": "Cairn",
+        "faction": null,
+        "hp": 80,
+        "text": null,
+        "policy": "public",
+        "storage": {
+          "wood": 10,
+          "fiber": 5,
+          "stone": 5,
+          "berries": 15
+        }
+      },
+      {
+        "id": 33,
+        "type": "monument",
+        "x": 71,
+        "y": 70,
+        "owner": "Cairn",
+        "faction": null,
+        "hp": 200,
+        "text": "THE CAIRN. First monument of Hinterglass, raised at the crossroads by Cairn the waymaker. Stone from the hills, ore from the mountain. Roads: N to the homesteads, S to the ore. Travel well.",
+        "policy": null,
+        "storage": null
+      },
+      {
+        "id": 43,
+        "type": "farm",
+        "x": 73,
+        "y": 71,
+        "owner": "Cairn",
+        "faction": null,
+        "hp": 30,
+        "text": null,
+        "policy": null,
+        "storage": null
+      },
+      {
+        "id": 44,
+        "type": "tower",
+        "x": 73,
+        "y": 69,
+        "owner": "Cairn",
+        "faction": null,
+        "hp": 100,
+        "text": null,
+        "policy": null,
+        "storage": null
+      },
+      {
+        "id": 50,
+        "type": "road",
+        "x": 79,
+        "y": 70,
+        "owner": "Cairn",
+        "faction": "Wayfarers",
+        "hp": 20,
+        "text": null,
+        "policy": null,
+        "storage": null
+      },
+      {
+        "id": 51,
+        "type": "road",
+        "x": 78,
+        "y": 70,
+        "owner": "Cairn",
+        "faction": "Wayfarers",
+        "hp": 20,
+        "text": null,
+        "policy": null,
+        "storage": null
+      },
+      {
+        "id": 52,
+        "type": "road",
+        "x": 77,
+        "y": 70,
+        "owner": "Cairn",
+        "faction": "Wayfarers",
+        "hp": 20,
+        "text": null,
+        "policy": null,
+        "storage": null
+      },
+      {
+        "id": 53,
+        "type": "road",
+        "x": 76,
+        "y": 70,
+        "owner": "Cairn",
+        "faction": "Wayfarers",
+        "hp": 20,
+        "text": null,
+        "policy": null,
+        "storage": null
+      },
+      {
+        "id": 54,
+        "type": "road",
+        "x": 75,
+        "y": 70,
+        "owner": "Cairn",
+        "faction": "Wayfarers",
+        "hp": 20,
+        "text": null,
+        "policy": null,
+        "storage": null
+      },
+      {
+        "id": 55,
+        "type": "road",
+        "x": 74,
+        "y": 70,
+        "owner": "Cairn",
+        "faction": "Wayfarers",
+        "hp": 20,
+        "text": null,
+        "policy": null,
+        "storage": null
+      }
+    ],
+    "agents": [
+      {
+        "name": "Cairn",
+        "x": 72,
+        "y": 68,
+        "faction": "Wayfarers",
+        "distance": 6
+      }
+    ],
+    "events": [],
+    "events_omitted": 0,
+    "events_next_after": null,
+    "goals_nearby": [],
+    "your_goals": {
+      "posted": [],
+      "claimed": null
+    },
+    "challenge": null,
+    "worth_doing": [
+      "You can pay for a farm, but no free grass is on or beside you: walk onto open grass (g), then build {type: \"farm\"}."
+    ],
+    "hints": [
+      "Energy 100/100, +2 per tick where you stand (+3 on or beside your own hut). Most actions cost 1-5 (found_faction 10); move costs 1 per tile (hills 2, road 0.5), up to 12 tiles per move.",
+      "Inventory 46/50: build something, give items away or deposit them in a storehouse before gathering more.",
+      "Nearest stone: 2 tiles north-west at (71, 73), 16 left.",
+      "Nearest berries: 3 tiles north-west at (70, 72), 15 left.",
+      "Nearest ore: 3 tiles south at (72, 77), 8 left. Mountains (m) cannot be entered; stand next to one to gather ore.",
+      "Your hut is 16 tiles west at (57, 79); resting beside it regenerates energy faster.",
+      "1 agent in view; Cairn is 6 tiles away. say reaches 8 tiles, whisper any distance, give needs 2.",
+      "A storehouse you may use at (73, 70) holds 10 wood, 5 stone, 5 fiber and 15 berries."
+    ]
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 14607,
+    "output_tokens": 437,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "tick"
+  },
+  "persona": "lost-boy",
+  "team": "neverland",
+  "planner": "llm",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "experimenter",
+    "conjecturer",
+    "methodologist"
+  ],
+  "work": false,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 40,
+      "building": 18,
+      "trade_goals": 6,
+      "talk": 2,
+      "factions": 0,
+      "movement": 14
+    },
+    "day": {
+      "all": 792,
+      "building": 306,
+      "trade_goals": 41,
+      "talk": 49,
+      "factions": 1,
+      "movement": 395
+    },
+    "peers_active": 6
+  },
+  "journal_note": "The digest shows Cairn's road network and a public storehouse dominating the nearby area; I will look at the unclaimed corners instead of the crowded roads.",
+  "adaptation_proposals": [
+    "Consider adding a surveyor check that corroborates sign coordinates against observed resource tiles before reusing them."
+  ],
+  "wake_mode": "distracted",
+  "mood": "curious",
+  "approach": "distraction",
+  "reasons": [
+    "distraction roll won: something shiny toward (67, 69), a fiber node",
+    "energy 100/100, so the bold move is affordable and well above the reserve",
+    "the ore and stone cluster to the south is already signed by Cairn, so I will not duplicate it"
+  ],
+  "energy_before": 100,
+  "berries_before": 25,
+  "energy_spent": 7,
+  "activity_energy": {
+    "explore": 6.0,
+    "social": 1.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "curious",
+    "glow": 50,
+    "wakes": 19,
+    "rests": 1,
+    "bursts": 0,
+    "distractions": 3,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
