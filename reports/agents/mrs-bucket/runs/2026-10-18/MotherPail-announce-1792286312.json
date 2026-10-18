@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792286312",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 7705,
+  "created_utc": "2026-10-18T01:18:32.345779+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes and five steps, no rest and no building yet. The road is long but I am walking it at (78, 89), and the boots are dry."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1616,
+    "output_tokens": 52,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "migrate",
+      "migrate",
+      "migrate",
+      "migrate"
+    ],
+    "mood": "warm",
+    "where": [
+      78,
+      89
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
