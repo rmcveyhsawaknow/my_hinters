@@ -1,0 +1,59 @@
+{
+  "run_id": "announce-1792330653",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 12139,
+  "created_utc": "2026-10-18T13:37:33.322099+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Friends, I walked three roads of good sturdy path at (84,94) through (84,96), and gathered five spun sugar, which is fiber, which is my favorite fiber. The factory is coming. It is coming slowly, like a warm pudding."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1842,
+    "output_tokens": 87,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (84,94)",
+      "road at (84,95)",
+      "road at (84,96)"
+    ],
+    "gathered": {
+      "fiber": 5
+    },
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "build",
+      "harvest",
+      "explore",
+      "explore"
+    ],
+    "mood": "gentle",
+    "where": [
+      85,
+      90
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
