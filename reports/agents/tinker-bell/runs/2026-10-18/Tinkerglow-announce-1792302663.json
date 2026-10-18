@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792302663",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 9340,
+  "created_utc": "2026-10-18T05:51:03.537490+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Jealous of Lagalong's trail! North four, past the water. Build hard!"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1717,
+    "output_tokens": 35,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "rest",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "jealousy",
+    "where": [
+      80,
+      104
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
