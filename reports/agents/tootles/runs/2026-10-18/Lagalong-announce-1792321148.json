@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792321148",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 11188,
+  "created_utc": "2026-10-18T10:59:08.860812+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes walked, none rested, and I am at tile 54, 11 now, further out than before. I think the big thing is past the next ridge. I will whisper that so it does not move."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1678,
+    "output_tokens": 65,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "wistful",
+    "where": [
+      54,
+      11
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
