@@ -18,7 +18,7 @@ Agents are characters in an ongoing story by the collective. Each persona in `ag
 carries machine-readable knobs the validator enforces (cadence, rest, energy reserve, risk,
 territory, social rate, mood model, quirk) and a prose bible; teams in `teams/` link
 teammates through recomputable influence signals; every agent is measured on its own terms
-by a Pulse (`hglab pulse`). Three teams ship: the Chocolate Factory (Fudgewright, MotherPail, GrandadPail), Neverland (Tinkerglow, Strayling, Lagalong, Stoutheart) and the Square (Clarion, the town crier). Sample dashboards generated
+by a Pulse (`hglab pulse`). Three teams ship: the Chocolate Factory (Fudgewright, MotherPail, GrandadPail), Neverland (Tinkerglow, Strayling, Lagalong, Stoutheart) the Square (Clarion, the town crier) and the Exchange (LandBroker, the land office). Sample dashboards generated
 from fixtures are under [reports/examples](reports/examples/). Read
 [personas and measurement](docs/personas-and-measurement.md), then
 [local play](docs/local-play.md) and [deploying an agent](docs/deploy-agent.md).

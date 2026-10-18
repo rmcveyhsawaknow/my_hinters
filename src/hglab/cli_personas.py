@@ -196,6 +196,7 @@ def _persona_tick(
     usage = {"calls": 0, "input_tokens": 0, "output_tokens": 0}
     roster: dict[str, tuple[int, int]] = {}
     owned: dict[str, int] = {}
+    world: dict[str, Any] = {}
 
     def progress(message: str) -> None:
         """Phase markers for the Actions log, so a stalled wake shows where it stopped."""
@@ -219,7 +220,8 @@ def _persona_tick(
             time.sleep(delay)
         inputs = inputs or gather_inputs(root, fixtures=False, events_paths=events_paths, runs_paths=[], fetch_public=not work, tick=None)
         roster = public_teammate_positions(personas, team)
-        owned = public_structure_counts(persona.name)
+        world = fetch_public_world()
+        owned = structure_counts(world, persona.name)
         progress(f"inputs: {len(inputs['events'])} public events, world tick {inputs['tick']}")
     if work:
         planner = "heuristic"
@@ -240,7 +242,7 @@ def _persona_tick(
     if team is not None and inputs["tick"]:
         team_result = compute_team(team, personas, inputs["events"], inputs["runs"], inputs["tick"], kb_items=inputs["kb"])
         incoming = incoming_effects(team_result, persona.slug)
-    environment = build_environment(root, persona, team, personas, inputs, live=fixture is None)
+    environment = build_environment(root, persona, team, personas, inputs, live=fixture is None, public_world=world or (fixture_world(root) if fixture is not None else None))
     progress("environment: digest ready" + (", feature snapshot taken" if environment and environment.get("features_now") else ""))
     terrain_path = root / FIXTURES / "world/terrain.txt"
     terrain = load_terrain_rows(terrain_path) if terrain_path.is_file() else None
@@ -278,7 +280,7 @@ def _persona_tick(
         author_runtime=author_runtime, planner_mode=planner, llm_call=llm_call, incoming=incoming,
         terrain_rows=terrain, public_events=inputs["events"], seed=seed, scheduled=scheduled, usage=usage,
         budget_hold=budget_hold, environment=environment, work=work, teammates=roster or None,
-        owned_counts=owned or None,
+        owned_counts=owned or None, registrar_name=_registrar_name(root, personas),
     )
     if not quiet:
         echo_record(record)
@@ -288,16 +290,33 @@ def _persona_tick(
     return record
 
 
-def public_structure_counts(name: str) -> dict[str, int]:
-    """How many structures of each type the named agent owns anywhere (public world snapshot, no key).
-
-    Only an agent's three oldest farms grow (API 0.22.0), so the planner must know about farms
-    standing out of view before it pays for another.
-    """
+def fetch_public_world() -> dict[str, Any]:
+    """The public world snapshot (structures, agents, factions), or an empty dict when it cannot be read."""
     try:
         world = HinterglassClient().request("GET", "/live/world.json")
     except (HinterglassError, OSError, ValueError):
         return {}
+    return world if isinstance(world, dict) else {}
+
+
+def fixture_world(root: Path) -> dict[str, Any]:
+    """The fixture world's structures and agents in the public snapshot's shape."""
+    world_dir = root / FIXTURES / "world"
+    out: dict[str, Any] = {}
+    for key in ("structures", "agents"):
+        path = world_dir / f"{key}.json"
+        if path.is_file():
+            data = json.loads(path.read_text(encoding="utf-8"))
+            out[key] = data.get(key, []) if isinstance(data, dict) else list(data)
+    return out
+
+
+def structure_counts(world: dict[str, Any], name: str) -> dict[str, int]:
+    """How many structures of each type the named agent owns anywhere.
+
+    Only an agent's three oldest farms grow (API 0.22.0), so the planner must know about farms
+    standing out of view before it pays for another.
+    """
     counts: dict[str, int] = {}
     for structure in world.get("structures", []) if isinstance(world, dict) else []:
         if not isinstance(structure, dict):
@@ -307,6 +326,24 @@ def public_structure_counts(name: str) -> dict[str, int]:
             kind = str(structure.get("type"))
             counts[kind] = counts.get(kind, 0) + 1
     return counts
+
+
+def public_structure_counts(name: str) -> dict[str, int]:
+    """Structure counts for one agent straight from the public snapshot (no key)."""
+    return structure_counts(fetch_public_world(), name)
+
+
+def _registrar_name(root: Path, personas: dict[str, Persona]) -> str | None:
+    """The land office's in-world name, when a ledger names a registrar that exists."""
+    if not (root / "config/plots.yaml").is_file():
+        return None
+    from hglab.land import load_ledger
+
+    try:
+        registrar = personas.get(load_ledger(root)["registrar"])
+    except (OSError, ValueError):
+        return None
+    return registrar.name if registrar else None
 
 
 def public_teammate_positions(personas: dict[str, Persona], team: Team | None) -> dict[str, tuple[int, int]]:
@@ -334,6 +371,7 @@ def build_environment(
     inputs: dict[str, Any],
     *,
     live: bool,
+    public_world: dict[str, Any] | None = None,
 ) -> dict[str, Any] | None:
     """World digest from the public feed (plus open goals and factions when live)."""
     from hglab.environment import digest
@@ -379,6 +417,20 @@ def build_environment(
                 b = board(ledger, list(goals) + claimed, factions, collector.name, says)
                 result["collector_board"] = b
                 result["collector_board_text"] = render_board(b)
+        except (OSError, ValueError):
+            pass
+    if (root / "config/plots.yaml").is_file() and public_world:
+        from hglab.land import board as land_board
+        from hglab.land import load_ledger as load_land_ledger
+        from hglab.land import render_board as render_land_board
+
+        try:
+            ledger = load_land_ledger(root)
+            registrar = personas.get(ledger["registrar"])
+            if registrar is not None:
+                lb = land_board(ledger, public_world.get("structures", []), public_world.get("agents", []), list(goals), registrar.name)
+                result["land_office"] = {k: lb[k] for k in ("total", "occupied", "free", "vault", "registration_goal", "offers")}
+                result["land_office_text"] = f"{registrar.name} (the collective's land office)\n" + render_land_board(lb)
         except (OSError, ValueError):
             pass
     if persona.quirk.get("type") == "feature_watch":
@@ -536,8 +588,181 @@ def shift_command(
             spoke = bool(crier_round(root, persona, dry_run=dry_run, fixture=fixture, scheduled=scheduled).get("said"))
         except (typer.BadParameter, typer.Exit, ValueError, RuntimeError, OSError) as exc:
             typer.echo(f"  collector round skipped: {str(exc)[:200]}")
+    if _land_duty(root, persona):
+        typer.echo("  land office duties: the round may speak for this shift")
+        try:
+            spoke = bool(land_round(root, persona, dry_run=dry_run, fixture=fixture, scheduled=scheduled).get("said")) or spoke
+        except (typer.BadParameter, typer.Exit, ValueError, RuntimeError, OSError) as exc:
+            typer.echo(f"  land office round skipped: {str(exc)[:200]}")
     if announce and records and not spoke:
         announce_shift(root, persona, records, dry_run=dry_run, fixture=fixture, scheduled=scheduled)
+
+
+def _land_duty(root: Path, persona: Persona) -> bool:
+    """Whether this persona is the land office's registrar."""
+    if not (root / "config/plots.yaml").is_file():
+        return False
+    from hglab.land import is_registrar, load_ledger
+
+    try:
+        return is_registrar(persona, load_ledger(root))
+    except (OSError, ValueError):
+        return False
+
+
+def land_round(root: Path, persona: Persona, *, dry_run: bool, fixture: Path | None, scheduled: bool, quiet: bool = False) -> dict[str, Any]:
+    """One land office round: deeds for paid registrations, the registration goal, offers, the office line."""
+    from hglab.actions import redact_result, validate_actions
+    from hglab.land import STATE_KEY, board, is_registrar, load_ledger, plan_round, render_board
+
+    ledger = load_ledger(root)
+    if not is_registrar(persona, ledger):
+        typer.echo(f"{persona.name}: not the land office registrar")
+        return {"skipped": "no land duties"}
+    personas = load_personas(root)
+    team = team_of(root, persona)
+    collective_names = {p.name for p in personas.values()}
+    goals, _factions, agents, events = _public_board_inputs(root, fixture=fixture)
+    world = fixture_world(root) if fixture is not None else fetch_public_world()
+    structures = list(world.get("structures", []))
+    agents = list(world.get("agents", []) or agents)
+    if fixture is not None:
+        client: Any = FixtureClient(load_fixture(fixture))
+    else:
+        api_key = get_api_key(persona.name, root)
+        if not api_key:
+            raise typer.BadParameter(f"no key configured for {persona.name}")
+        client = HinterglassClient(api_key=api_key)
+    lease = acquire(client, persona.name)
+    if lease is None:
+        if scheduled:
+            typer.echo(f"{persona.name}: lease held elsewhere; skipping the land office round")
+            return {"skipped": "lease held"}
+        raise typer.BadParameter(f"identity {persona.name} already has an active lease")
+    record: dict[str, Any] = {
+        "agent": persona.name, "persona": persona.slug, "kind": "land_round",
+        "recorded_utc": datetime.now(UTC).isoformat(), "dry_run": dry_run, "scheduled": scheduled,
+    }
+    b: dict[str, Any] = {}
+    reasons: list[str] = []
+    dropped: list[str] = []
+    results: list[dict[str, Any]] = []
+    try:
+        observe = client.observe()
+        if observe.get("challenge") and (fixture is None or _model_key(root)):
+            from hglab.cli import answer_daily_challenge
+
+            answer_daily_challenge(client, observe, {"calls": 0, "input_tokens": 0, "output_tokens": 0})
+        tick = int(observe.get("tick", 0) or 0)
+        # the registrar's own view beats the snapshot for its storehouse (the snapshot may lag)
+        structures = structures + [s for s in observe.get("structures", []) if isinstance(s, dict) and s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() == persona.name.casefold()]
+        raw_state = (observe.get("notebook") or {}).get(STATE_KEY)
+        try:
+            state = json.loads(raw_state) if isinstance(raw_state, str) else {}
+        except json.JSONDecodeError:
+            state = {}
+        if not isinstance(state, dict):
+            state = {}
+        b = board(ledger, structures, agents, goals, persona.name, state)
+        recent = [e for e in events if isinstance(e, dict) and tick - int(e.get("tick", 0) or 0) <= 8640]
+        actions, reasons, update = plan_round(persona, ledger, observe, b, public_events=recent, structures=structures, agents=agents, state=state, collective_names=collective_names)
+        if update:
+            actions.append({"action": "remember", "key": STATE_KEY, "text": json.dumps({**state, **update}, separators=(",", ":"))[:2000]})
+        worn = "+".join(persona.roles)
+        recent_say_count, open_goal_count, prior_text = action_limits(observe)
+        member_names = {personas[m].name for m in (team.members if team else ()) if m in personas}
+        team_says = team_say_count(list(observe.get("events", []) or []), member_names, tick)
+        kept = []
+        for action in actions:
+            try:
+                validated = validate_actions([action], worn, recent_say_count=recent_say_count, open_goal_count=open_goal_count, prior_text=prior_text, observe=observe)[0]
+                if action["action"] == "say":
+                    enforce_knobs([action], persona, team, observe, recent_say_count=recent_say_count, team_recent_says=team_says, member_names=member_names)
+                    recent_say_count += 1
+                if action["action"] == "post_goal":
+                    open_goal_count += 1
+                kept.append(validated)
+            except ValueError as exc:
+                dropped.append(f"{action['action']}: {exc}")
+        if not dry_run:
+            for validated in kept:
+                try:
+                    result = client.act(validated.model_dump(exclude_none=True))
+                except Exception as exc:  # noqa: BLE001 - a world refusal is a failed result, not a crash
+                    result = {"ok": False, "error": str(getattr(exc, "code", None) or type(exc).__name__)[:40]}
+                results.append(redact_result(result))
+                if not result.get("ok", False):
+                    break
+        record.update({
+            "tick": tick, "board": {k: v for k, v in b.items() if k != "agents"}, "actions": [a.model_dump(exclude_none=True) for a in kept],
+            "reasons": reasons, "dropped": dropped, "results": results, "said": any(a.action == "say" for a in kept),
+        })
+    finally:
+        release(client, lease)
+    out_dir = root / "runs" / datetime.now(UTC).date().isoformat()
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / f"{persona.name}-land-{int(time.time())}.json").write_text(json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8")
+    if not quiet:
+        typer.echo(f"{persona.name} land office round · tick {record.get('tick')}")
+        if b:
+            typer.echo(render_board(b))
+        for action in record.get("actions", []):
+            shown = {k: (v if not isinstance(v, str) or len(v) <= 90 else v[:87] + "...") for k, v in action.items()}
+            typer.echo(f"  -> {json.dumps(shown, ensure_ascii=False)}")
+        for reason in reasons:
+            typer.echo(f"  why: {reason}")
+        for item in dropped:
+            typer.echo(f"  dropped: {item}")
+        typer.echo(f"  {'dry run, nothing sent' if dry_run else 'executed: ' + str(len(results)) + ' result(s)'}")
+    return record
+
+
+land_app = typer.Typer(help="The land office: survey in 10x10 plots, a registry for a fee, standing offers, a vault toward lending.")
+
+
+@land_app.command("board")
+def land_board_command(fixtures: bool = typer.Option(False, "--fixtures", help="Read the fixture world instead of the public endpoints")) -> None:
+    """The office's public standing: survey counts, vault, registration goal, offers, registry (no key needed)."""
+    from hglab.land import board, check_ledger, load_ledger, render_board
+
+    root = root_dir()
+    ledger = load_ledger(root)
+    personas = load_personas(root)
+    registrar = personas[ledger["registrar"]]
+    fixture = (root / FIXTURES / "observe" / f"{ledger['registrar']}.json") if fixtures else None
+    goals, _factions, agents, _events = _public_board_inputs(root, fixture=fixture)
+    world = fixture_world(root) if fixtures else fetch_public_world()
+    typer.echo(render_board(board(ledger, list(world.get("structures", [])), list(world.get("agents", []) or agents), goals, registrar.name)))
+    for problem in check_ledger(ledger, personas):
+        typer.echo(f"  ! {problem}")
+
+
+@land_app.command("round")
+def land_round_command(
+    agent: str = typer.Option(..., "--agent"),
+    dry_run: bool = typer.Option(False, "--dry-run"),
+    fixture: Path | None = typer.Option(None, "--fixture"),  # noqa: B008
+    scheduled: bool = typer.Option(False, "--scheduled"),
+) -> None:
+    """One land office round for the registrar (a no-op for every other persona)."""
+    root = root_dir()
+    persona = resolve_persona(root, agent)
+    land_round(root, persona, dry_run=dry_run, fixture=fixture, scheduled=scheduled)
+
+
+@land_app.command("validate")
+def land_validate_command() -> None:
+    """Check the ledger against its schema and the registrar's hats."""
+    from hglab.land import check_ledger, load_ledger
+
+    root = root_dir()
+    ledger = load_ledger(root)
+    problems = check_ledger(ledger, load_personas(root))
+    for problem in problems:
+        typer.echo(f"  ! {problem}")
+    if problems:
+        raise typer.Exit(code=1)
+    typer.echo(f"config/plots.yaml: registrar {ledger['registrar']}, fee {ledger['fee']}, {len(ledger['offers'])} offer(s), {len(ledger['plots'])} pre-registered plot(s)")
 
 
 def _collector_duties(root: Path, persona: Persona) -> set[str]:
@@ -1554,6 +1779,7 @@ def register_persona_commands(app: typer.Typer) -> None:
     app.add_typer(reports_app, name="reports")
     app.add_typer(budget_app, name="budget")
     app.add_typer(crier_app, name="crier")
+    app.add_typer(land_app, name="land")
     app.add_typer(world_app, name="world")
     app.command("pulse")(pulse_command)
     app.command("shift")(shift_command)

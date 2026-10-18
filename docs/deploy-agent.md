@@ -141,3 +141,9 @@ duties in `config/requests.yaml` it prints one line and exits 0; for a theme fou
 the faction once; for the collector it posts missing request goals, confirms feedback and makes
 the hourly call (which replaces the shift's closing line). The round runs under the same lease
 and caps as every other wake and writes a redacted record under `runs/`.
+
+## The land office round
+
+The shift job also ends with `hglab land round --agent <slug> --scheduled`: a one-line no-op for
+every persona but the registrar named in `config/plots.yaml`, and for the registrar the survey,
+registry, offers and office line, under the same lease and caps as every other wake.

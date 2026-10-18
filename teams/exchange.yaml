@@ -1,0 +1,11 @@
+slug: exchange
+name: The Exchange
+aim: Run an honest market for land and goods - survey the plots, keep the registry,
+  broker deals between neighbours, and lend when the vaults are full.
+members:
+- land-broker
+home: null
+territory: null
+social_budget:
+  says_per_hour: 3
+links: []

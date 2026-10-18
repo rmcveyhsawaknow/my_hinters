@@ -175,6 +175,7 @@ def plan_wake(
     team_names: dict[str, str] | None = None,
     work: bool = False,
     owned_counts: dict[str, int] | None = None,
+    registrar_name: str | None = None,
 ) -> dict[str, Any]:
     """Return ``{summary, actions, reasons, approach, remember}`` for one wake.
 
@@ -249,7 +250,7 @@ def plan_wake(
                 reasons.append(audit_reason)
                 approach = "audit"
     if work:
-        return _plan_work(persona, team, state, observe, rng, view, position, energy, inventory, home, reserve, cap, teammates, allowed, mood, reasons, remember)
+        return _plan_work(persona, team, state, observe, rng, view, position, energy, inventory, home, reserve, cap, teammates, allowed, mood, reasons, remember, registrar_name=registrar_name)
     budget = cap if mood != "sulk" else 1
     spendable = energy + 15 * sum(min(int(a.get("qty") or 0), inventory.get("berries", 0)) for a in actions if a.get("action") == "eat") - reserve
     here = position
@@ -315,6 +316,7 @@ def _plan_work(
     mood: str,
     reasons: list[str],
     remember: list[dict[str, str]],
+    registrar_name: str | None = None,
 ) -> dict[str, Any]:
     """A work shift wake: build first, then gather the shortfall, deposit surplus, migrate.
 
@@ -365,7 +367,7 @@ def _plan_work(
     if here == position and fits(_plan_build(persona, team, inventory, position, view, home)):
         approach = approach or "build"
     # 3. deposit surplus into an adjacent own storehouse (so the monument can draw on it)
-    if fits(_plan_deposit(persona, inventory, position, view)):
+    if fits(_plan_deposit(persona, inventory, position, view, registrar_name)):
         approach = approach or "deposit"
     # 4. gather the shortfall for the next blueprint
     while len(actions) < cap and fits(_plan_gather(persona, team, inventory, here, view, teammates, rng)):
@@ -415,13 +417,25 @@ def _plan_monument(persona: Persona, inventory: dict[str, int], position: tuple[
     return None
 
 
-def _plan_deposit(persona: Persona, inventory: dict[str, int], position: tuple[int, int], view: WorldView) -> tuple[list[dict[str, Any]], str, str] | None:
+def _plan_deposit(
+    persona: Persona, inventory: dict[str, int], position: tuple[int, int], view: WorldView, registrar_name: str | None = None
+) -> tuple[list[dict[str, Any]], str, str] | None:
+    """Put surplus into an adjacent storehouse: our own first, else the collective's land office vault.
+
+    ``give`` works into any storehouse (its policy only limits ``take``), so a full pack beside the
+    land office becomes a deposit; the office counts it toward lending.
+    """
     total = sum(inventory.values())
     if total < 35:
         return None
-    for structure in view.structures:
-        if structure.get("type") != "storehouse" or str(structure.get("owner", "")).casefold() != persona.name.casefold():
-            continue
+    owners = {persona.name.casefold()}
+    if registrar_name and registrar_name.casefold() != persona.name.casefold():
+        owners.add(registrar_name.casefold())
+    candidates = sorted(
+        (s for s in view.structures if s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() in owners),
+        key=lambda s: str(s.get("owner", "")).casefold() != persona.name.casefold(),
+    )
+    for structure in candidates:
         where = (int(structure["x"]), int(structure["y"]))
         if chebyshev(position, where) > 1:
             continue
@@ -429,9 +443,10 @@ def _plan_deposit(persona: Persona, inventory: dict[str, int], position: tuple[i
             qty = inventory.get(item, 0)
             if qty >= 10:
                 keep = 5 if item in {"wood", "fiber"} else 0
+                whose = "the storehouse" if str(structure.get("owner", "")).casefold() == persona.name.casefold() else f"{structure.get('owner')}'s vault"
                 return (
                     [{"action": "give", "x": where[0], "y": where[1], "item": item, "qty": qty - keep}],
-                    f"pack is {total}/50: put {qty - keep} {item} into the storehouse at {where}",
+                    f"pack is {total}/50: put {qty - keep} {item} into {whose} at {where}",
                     "deposit",
                 )
     return None

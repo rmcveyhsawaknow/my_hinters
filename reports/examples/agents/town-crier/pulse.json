@@ -8,7 +8,7 @@
  "day": 182,
  "date": "2026-10-17",
  "window_ticks": 60480,
- "events_considered": 396,
+ "events_considered": 401,
  "runs_considered": 60,
  "alive": {
   "score": 68,
@@ -25,8 +25,8 @@
   }
  },
  "on_mission": {
-  "score": 15,
-  "detail": "0 announced · 3 filed · 0 replies · 3 tiles",
+  "score": 19,
+  "detail": "0 announced · 3 filed · 1 replies · 3 tiles",
   "rows": [
    {
     "id": "announced",
@@ -51,11 +51,11 @@
    {
     "id": "replies",
     "label": "replies from the community",
-    "value": 0.0,
+    "value": 1.0,
     "target": 6,
     "weight": 0.2,
-    "progress": 0.0,
-    "shown": "0 replies",
+    "progress": 0.16666666666666666,
+    "shown": "1 replies",
     "measure": "events.replies_received"
    },
    {
@@ -167,7 +167,7 @@
   "public_goods_built": 0,
   "norms_kept": true,
   "norm_breaches": [],
-  "replies_received": 0
+  "replies_received": 1
  },
  "approaches": {
   "rows": [
@@ -176,8 +176,8 @@
     "label": "feature watch and announcement",
     "wakes": 16,
     "energy": 12.0,
-    "outcome": 0.0,
-    "per_energy": 0.0,
+    "outcome": 1.0,
+    "per_energy": 0.083,
     "hypothesis": null,
     "bet_status": null,
     "bet_title": null
@@ -195,8 +195,8 @@
    }
   ],
   "working": "far-ranging exploration: 3 outcome for 8 energy over 13 wake(s)",
-  "not_working": "feature watch and announcement: 0 outcome for 12 energy over 16 wake(s)",
-  "next_bet": "move energy from feature watch and announcement (12 energy, nothing to show) toward far-ranging exploration"
+  "not_working": "feature watch and announcement: 1 outcome for 12 energy over 16 wake(s)",
+  "next_bet": "keep testing far-ranging exploration; it has the best outcome per unit of energy"
  },
  "trend": {
   "alive": "██▇█▇█▆",
@@ -250,7 +250,7 @@
    "date": "2026-10-17",
    "metric_version": 2,
    "alive": 68,
-   "on_mission": 15,
+   "on_mission": 19,
    "in_character": 52,
    "tick": 65760
   }

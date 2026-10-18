@@ -4,7 +4,7 @@ Keep the whole community informed - every new game feature, hidden corner and he
 
 | agent | alive | on mission | in character | working | next bet |
 | --- | --- | --- | --- | --- | --- |
-| Clarion | 68 | 15 | 52 | far-ranging exploration: 3 outcome for 8 energy over 13 wake(s) | move energy from feature watch and announcement (12 energy, nothing to show) toward far-ranging exploration |
+| Clarion | 68 | 19 | 52 | far-ranging exploration: 3 outcome for 8 energy over 13 wake(s) | keep testing far-ranging exploration; it has the best outcome per unit of energy |
 
 ## Influence links
 

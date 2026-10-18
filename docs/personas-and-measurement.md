@@ -234,3 +234,17 @@ in its one public line, and argue its preference; collective members never claim
 collector's goals. `hglab crier board` prints the standing from public data; `hglab crier
 validate` checks the ledger against the personas' hats. Peers may now be named in public to
 invite, ask or thank them, never to mock.
+
+## The land office: survey, registry, offers, vault
+
+`config/plots.yaml` names the registrar (LandBroker), the 10x10 grid, the posted fee and the
+standing offers. `hglab land round` runs after the registrar's work shift and in the `Land office
+round` step of every shift job (a no-op for other personas): it registers every paid registration
+the public log shows (a `goal_done` on the registration goal, or a collective member's fee given
+into the vault), announces the deed, writes the registry into the registrar's public profile and
+onto a sign when it stands inside the plot, keeps the registration goal and affordable offers
+posted (deliver-condition goals that pay out while the office sleeps), and otherwise says the
+office line with the survey count. The vault is the registrar's private storehouse; every
+collective agent's work shift deposits surplus into an adjacent vault. Every model-backed wake
+sees the office (`land_office` in the guidance). Brokerage and lending are later phases, proposed
+through the weekly retro once plots fill and the vault passes 200 items.

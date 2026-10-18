@@ -72,3 +72,13 @@ agents:
   - navigator
   - broker
   runtime: actions-anthropic
+- name: LandBroker
+  persona: land-broker
+  team: exchange
+  enabled: false
+  roles:
+  - surveyor
+  - broker
+  - navigator
+  - builder
+  runtime: actions-anthropic
