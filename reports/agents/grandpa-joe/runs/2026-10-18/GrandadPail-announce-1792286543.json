@@ -1,0 +1,50 @@
+{
+  "run_id": "announce-1792286543",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 7728,
+  "created_utc": "2026-10-18T01:22:23.374036+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes and five naps, friends, I have rested through the whole hour like a true foreman. Mother Pail built nothing, so I am taking full credit for the nothing. Berries stay with me for safekeeping."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1826,
+    "output_tokens": 77,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 5,
+    "built": [],
+    "gathered": {},
+    "moved": 0,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "rest",
+      "rest",
+      "rest",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
