@@ -1,0 +1,60 @@
+{
+  "run_id": "announce-1792286792",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 7753,
+  "created_utc": "2026-10-18T01:26:32.069474+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five roads laid at seventy-two! Lagalong's gone, so I build harder."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1759,
+    "output_tokens": 36,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (72,108)",
+      "road at (72,109)",
+      "road at (73,108)",
+      "road at (73,110)",
+      "road at (74,108)"
+    ],
+    "gathered": {
+      "fiber": 5,
+      "wood": 5,
+      "berries": 5
+    },
+    "moved": 0,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "build",
+      "build",
+      "build",
+      "build"
+    ],
+    "mood": "jealousy",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
