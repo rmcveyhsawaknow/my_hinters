@@ -1,0 +1,123 @@
+{
+  "run_id": "f624101e-a9a5-43b0-b45c-d0a9ca7bb2c1",
+  "agent": "MotherPail",
+  "role": "builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T14:30:16.807710+00:00",
+  "tick": 12455,
+  "summary": "MotherPail (warm): work shift: building",
+  "actions": [
+    {
+      "action": "build",
+      "x": 85,
+      "y": 91,
+      "type": "road"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"warm\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":57,\"rests\":5,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":12455,\"visited\":[\"62,56\",\"67,53\",\"65,55\",\"57,67\",\"69,79\",\"66,78\",\"63,73\",\"71,84\",\"67,87\",\"79,89\",\"78,94\",\"89,99\",\"88,98\",\"83,93\",\"82,94\",\"83,95\",\"85,92\",\"85,89\",\"90,92\",\"99,95\",\"93,90\",\"91,98\",\"90,91\",\"86,89\",\"87,94\",\"84,92\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":12454,\"pace\":\"steady\",\"day\":{\"all\":1501,\"building\":445,\"trade_goals\":62,\"talk\":194,\"factions\":27,\"movement\":773},\"hour\":{\"all\":65},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 12455,
+    "you": {
+      "id": 4,
+      "name": "MotherPail",
+      "x": 84,
+      "y": 92,
+      "energy": 100,
+      "inventory": {
+        "wood": 5,
+        "fiber": 6,
+        "stone": 1,
+        "berries": 35
+      },
+      "home": {
+        "x": 62,
+        "y": 56
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "mrs-bucket",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 65,
+      "building": 23,
+      "trade_goals": 6,
+      "talk": 9,
+      "factions": 0,
+      "movement": 27
+    },
+    "day": {
+      "all": 1501,
+      "building": 445,
+      "trade_goals": 62,
+      "talk": 194,
+      "factions": 27,
+      "movement": 773
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "warm",
+  "approach": "build",
+  "reasons": [
+    "materials in hand for a road at (85, 91)"
+  ],
+  "energy_before": 100,
+  "berries_before": 35,
+  "energy_spent": 5,
+  "activity_energy": {
+    "build": 5.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "warm",
+    "glow": 50,
+    "wakes": 57,
+    "rests": 5,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}

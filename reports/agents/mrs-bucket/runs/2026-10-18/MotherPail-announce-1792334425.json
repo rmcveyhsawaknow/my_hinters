@@ -1,0 +1,56 @@
+{
+  "run_id": "announce-1792334425",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 12516,
+  "created_utc": "2026-10-18T14:40:25.486512+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Two new roads laid at (84,93) and (85,91), so the walk to the farm is shorter now. Rested once between the laying. Feet are dry, and that is a good hour."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1641,
+    "output_tokens": 65,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [
+      "road at (84,93)",
+      "road at (85,91)"
+    ],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "rest",
+      "build",
+      "explore",
+      "explore"
+    ],
+    "mood": "warm",
+    "where": [
+      79,
+      103
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
