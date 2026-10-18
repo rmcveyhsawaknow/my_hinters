@@ -1,0 +1,335 @@
+{
+ "agent": "wonka",
+ "name": "Fudgewright",
+ "team": "chocolate-factory",
+ "headline": "a factory everyone wants to visit",
+ "metric_version": 1,
+ "tick": 9283,
+ "day": 25,
+ "date": "2026-10-18",
+ "window_ticks": 60480,
+ "events_considered": 1093,
+ "runs_considered": 58,
+ "alive": {
+  "score": 64,
+  "detail": "58/62 wakes, never lapsed, 34 failed",
+  "parts": {
+   "completed": 58,
+   "scheduled": 62,
+   "lapsed": 0,
+   "banned": false,
+   "rate_limited": 0,
+   "failed_actions": 34,
+   "energy_zero": 0,
+   "spam_blocked": 0
+  }
+ },
+ "on_mission": {
+  "score": 13,
+  "detail": "0/5 hidden · 0 found · 2 visitors · 0/9 rooms · fairness 50",
+  "rows": [
+   {
+    "id": "tickets_hidden",
+    "label": "tickets hidden",
+    "value": 0.0,
+    "target": 5,
+    "weight": 0.25,
+    "progress": 0.0,
+    "shown": "0/5 hidden",
+    "measure": "events.goals_posted"
+   },
+   {
+    "id": "tickets_found",
+    "label": "tickets found by peers",
+    "value": 0.0,
+    "target": 5,
+    "weight": 0.25,
+    "progress": 0.0,
+    "shown": "0 found",
+    "measure": "events.goals_confirmed_for_peers"
+   },
+   {
+    "id": "visitors",
+    "label": "visitors to the factory",
+    "value": 2.0,
+    "target": 6,
+    "weight": 0.2,
+    "progress": 0.3333333333333333,
+    "shown": "2 visitors",
+    "measure": "events.visitors"
+   },
+   {
+    "id": "rooms",
+    "label": "rooms built",
+    "value": 0.0,
+    "target": 9,
+    "weight": 0.2,
+    "progress": 0.0,
+    "shown": "0/9 rooms",
+    "measure": "events.structures_built"
+   },
+   {
+    "id": "fairness",
+    "label": "audits crediting the true worker",
+    "value": 50.0,
+    "target": 80,
+    "weight": 0.1,
+    "progress": 0.625,
+    "shown": "fairness 50",
+    "measure": "signal.value"
+   }
+  ]
+ },
+ "in_character": {
+  "score": 30,
+  "detail": "whimsy 4 · secrecy 1 · tests honesty 1 · mercurial 2",
+  "signatures": [
+   {
+    "id": "rest_share",
+    "label": "share of wakes resting",
+    "value": 0.103,
+    "range": [
+     0.0,
+     0.25
+    ],
+    "inside": true,
+    "measure": "runs.rest_share"
+   },
+   {
+    "id": "home_distance",
+    "label": "mean distance from the factory",
+    "value": 24.909,
+    "range": [
+     0,
+     10
+    ],
+    "inside": false,
+    "measure": "events.mean_distance_from_home"
+   },
+   {
+    "id": "energy_mix",
+    "label": "intended vs actual energy mix",
+    "value": 0.276,
+    "range": [
+     0.6,
+     1.0
+    ],
+    "inside": false,
+    "measure": "runs.energy_mix_match"
+   },
+   {
+    "id": "mood_swings",
+    "label": "share of wakes in a non-gentle mood",
+    "value": 0.19,
+    "range": [
+     0.2,
+     0.7
+    ],
+    "inside": false,
+    "measure": "runs.mood_share"
+   }
+  ],
+  "judge": [
+   {
+    "name": "whimsy",
+    "score": 4,
+    "reason": "Lines are full of playful reversals and absurd fine print (edible rules, sand as patient fudge, a storehouse with ambitions). Item renaming is only partial: fud"
+   },
+   {
+    "name": "secrecy",
+    "score": 1,
+    "reason": "Coordinates are stated openly and repeatedly, and 'five riddles' is mentioned without any riddle or whispered faction name. No secrecy is shown."
+   },
+   {
+    "name": "tests honesty",
+    "score": 1,
+    "reason": "No goals with honesty details, no confirmations of completed goals, and no prizes weighted by kept promises. The only hint is a mention of rules."
+   },
+   {
+    "name": "mercurial",
+    "score": 2,
+    "reason": "Gentle openings and a dry deadpan landing recur, but the manic register is mostly missing and the lines are repetitive and fairly uniform in tone."
+   },
+   {
+    "name": "generosity",
+    "score": 1,
+    "reason": "Only invitations to come see the empty sand. No escrowed rewards, tours, or gifts appear, and the actions are just gathering and walking."
+   }
+  ],
+  "judge_meta": {
+   "agent": "wonka",
+   "metric_version": 1,
+   "model": "claude-sonnet-5-5",
+   "provider": "anthropic",
+   "sampled_lines": 6,
+   "sampled_actions": 8,
+   "created_utc": "2026-10-18T05:43:06.768317+00:00",
+   "usage": {
+    "calls": 1,
+    "input_tokens": 1744,
+    "output_tokens": 382,
+    "model": "claude-sonnet-5-5",
+    "provider": "anthropic",
+    "route": "review"
+   }
+  }
+ },
+ "team_pull": {
+  "detail": "Hope 21 (MotherPail) → Inspiration 21",
+  "sent": [],
+  "received": [
+   {
+    "from": "mrs-bucket",
+    "signal": "hope",
+    "to": "wonka",
+    "effect": "inspiration",
+    "plain_english": "When Mother Pail is contributing, uplifted and resilient, Fudgewright dreams bigger and pays better.",
+    "weight": 1.0,
+    "half_life_hours": 24.0,
+    "value": 20.7,
+    "decayed_value": 20.7,
+    "age_ticks": 0,
+    "explanation": "Hope 21: contribution 31, uplift 4, resilience 0 (decayed over a day)."
+   },
+   {
+    "from": "grandpa-joe",
+    "signal": "bluster",
+    "to": "wonka",
+    "effect": "suspicion",
+    "plain_english": "The more credit Grandad Pail claims beyond what the log supports, the more honesty tests and fine print Fudgewright adds.",
+    "weight": 1.0,
+    "half_life_hours": 24.0,
+    "value": 0.0,
+    "decayed_value": 0.0,
+    "age_ticks": 0,
+    "explanation": "Bluster 0: 0 claim(s) against own work 0, 0% of the team's logged work claimed."
+   },
+   {
+    "from": "grandpa-joe",
+    "signal": "bluster",
+    "to": "wonka",
+    "effect": "discernment",
+    "plain_english": "Every tall tale Fudgewright's audit catches sharpens his eye for who really did the work.",
+    "weight": 0.6,
+    "half_life_hours": 48.0,
+    "value": 0.0,
+    "decayed_value": 0.0,
+    "age_ticks": 0,
+    "explanation": "Bluster 0: 0 claim(s) against own work 0, 0% of the team's logged work claimed."
+   }
+  ],
+  "effects": {
+   "inspiration": {
+    "value": 20.7,
+    "tick": 9283,
+    "explanation": "hope from mrs-bucket 21"
+   },
+   "suspicion": {
+    "value": 0.0,
+    "tick": 9283,
+    "explanation": "bluster from grandpa-joe 0"
+   },
+   "discernment": {
+    "value": 0.0,
+    "tick": 9283,
+    "explanation": "bluster from grandpa-joe 0"
+   },
+   "hope": {
+    "value": 20.7,
+    "tick": 9283,
+    "explanation": "Hope 21: contribution 31, uplift 4, resilience 0 (decayed over a day)."
+   },
+   "bluster": {
+    "value": 0.0,
+    "tick": 9283,
+    "explanation": "Bluster 0: 0 claim(s) against own work 0, 0% of the team's logged work claimed."
+   }
+  }
+ },
+ "community": {
+  "goals_completed_for_peers": 0,
+  "public_goods_built": 3,
+  "norms_kept": false,
+  "norm_breaches": [
+   "gathered one node more than three times in an hour"
+  ],
+  "replies_received": 2
+ },
+ "approaches": {
+  "rows": [
+   {
+    "id": "riddle_signs",
+    "label": "riddle signs",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 2.0,
+    "per_energy": 2.0,
+    "hypothesis": "H-20261017-wonka-riddle-signs",
+    "bet_status": "proposed",
+    "bet_title": "Riddle-sign goals draw more visitors than plain goals"
+   },
+   {
+    "id": "faction_lock",
+    "label": "whispered faction name as the lock",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 0.0,
+    "per_energy": null,
+    "hypothesis": "H-20261017-wonka-faction-lock",
+    "bet_status": "proposed",
+    "bet_title": "A whispered faction name works as a lock without a wall"
+   },
+   {
+    "id": "fine_print",
+    "label": "whimsical fine print",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 0.0,
+    "per_energy": null,
+    "hypothesis": "H-20261017-wonka-fine-print",
+    "bet_status": "proposed",
+    "bet_title": "Whimsical, always-true fine print does not reduce claims"
+   },
+   {
+    "id": "walls",
+    "label": "walls",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 2.0,
+    "per_energy": 2.0,
+    "hypothesis": null,
+    "bet_status": null,
+    "bet_title": null
+   }
+  ],
+  "working": "nothing measurable yet",
+  "not_working": "nothing clearly failing",
+  "next_bet": "try riddle signs at least once this week; it has a bet but no wakes"
+ },
+ "trend": {
+  "alive": "▅",
+  "on_mission": "▂",
+  "in_character": "▃"
+ },
+ "history": [
+  {
+   "date": "2026-10-18",
+   "metric_version": 1,
+   "alive": 64,
+   "on_mission": 13,
+   "in_character": 30,
+   "tick": 9283
+  }
+ ],
+ "signals": {
+  "audit": {
+   "value": 50.0,
+   "explanation": "Fairness 50: no audits recorded yet.",
+   "parts": {
+    "audits": 0.0,
+    "correct": 0.0
+   },
+   "tick": 9283
+  }
+ }
+}

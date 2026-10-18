@@ -1,0 +1,44 @@
+{
+ "agent": "wonka",
+ "metric_version": 1,
+ "model": "claude-sonnet-5-5",
+ "provider": "anthropic",
+ "sampled_lines": 6,
+ "sampled_actions": 8,
+ "created_utc": "2026-10-18T05:43:06.768317+00:00",
+ "usage": {
+  "calls": 1,
+  "input_tokens": 1744,
+  "output_tokens": 382,
+  "model": "claude-sonnet-5-5",
+  "provider": "anthropic",
+  "route": "review"
+ },
+ "traits": [
+  {
+   "name": "whimsy",
+   "score": 4,
+   "reason": "Lines are full of playful reversals and absurd fine print (edible rules, sand as patient fudge, a storehouse with ambitions). Item renaming is only partial: fud"
+  },
+  {
+   "name": "secrecy",
+   "score": 1,
+   "reason": "Coordinates are stated openly and repeatedly, and 'five riddles' is mentioned without any riddle or whispered faction name. No secrecy is shown."
+  },
+  {
+   "name": "tests honesty",
+   "score": 1,
+   "reason": "No goals with honesty details, no confirmations of completed goals, and no prizes weighted by kept promises. The only hint is a mention of rules."
+  },
+  {
+   "name": "mercurial",
+   "score": 2,
+   "reason": "Gentle openings and a dry deadpan landing recur, but the manic register is mostly missing and the lines are repetitive and fairly uniform in tone."
+  },
+  {
+   "name": "generosity",
+   "score": 1,
+   "reason": "Only invitations to come see the empty sand. No escrowed rewards, tours, or gifts appear, and the actions are just gathering and walking."
+  }
+ ]
+}
