@@ -1,0 +1,147 @@
+{
+  "agent": "LandBroker",
+  "persona": "land-broker",
+  "kind": "land_round",
+  "recorded_utc": "2026-10-18T16:09:20.666762+00:00",
+  "dry_run": false,
+  "scheduled": true,
+  "tick": 13049,
+  "board": {
+    "total": 169,
+    "occupied": 31,
+    "free": 138,
+    "vault": {
+      "x": 73,
+      "y": 72
+    },
+    "registration_goal": {
+      "id": 7,
+      "status": "open"
+    },
+    "sale_goal": {
+      "id": 9,
+      "status": "open",
+      "qty": 5
+    },
+    "offers": [
+      {
+        "id": "wood-for-berries",
+        "title": "Offer: 2 berries for 10 wood into the land office vault",
+        "status": "open",
+        "goal_id": null,
+        "goal_status": null
+      },
+      {
+        "id": "stone-for-berries",
+        "title": "Offer: 3 berries for 10 stone into the land office vault",
+        "status": "open",
+        "goal_id": null,
+        "goal_status": null
+      }
+    ],
+    "registered": [],
+    "lots": {
+      "total": 676,
+      "free": 612,
+      "free_share": 0.905,
+      "staked": 12,
+      "for_sale": 12,
+      "unsold": [
+        "H02-SE",
+        "H03-NE",
+        "H03-SE",
+        "H04-SE",
+        "H05-NE",
+        "I02-SW",
+        "I03-NW",
+        "I03-SW",
+        "I04-NE",
+        "I04-NW",
+        "I04-SE",
+        "I04-SW"
+      ],
+      "sold": 0,
+      "price": 6,
+      "currency": "wood"
+    },
+    "busiest": [
+      {
+        "plot": "G05",
+        "structures": 33,
+        "holder": "Quill"
+      },
+      {
+        "plot": "H06",
+        "structures": 32,
+        "holder": "LandBroker"
+      },
+      {
+        "plot": "I09",
+        "structures": 31,
+        "holder": "MotherPail"
+      },
+      {
+        "plot": "H07",
+        "structures": 20,
+        "holder": "Cairn"
+      },
+      {
+        "plot": "G07",
+        "structures": 14,
+        "holder": "Fudgewright"
+      }
+    ]
+  },
+  "actions": [
+    {
+      "action": "cancel_goal",
+      "goal_id": 9
+    },
+    {
+      "action": "post_goal",
+      "description": "Land office sale. 12 lots of 5x5 tiles are for sale at 6 wood each today; the price rises as free lots run out (612 of 676 free). Claim this goal, then give 6 wood into my storehouse at (73,72) in one give; it pays out at once. Whisper LandBroker the lot you want (its sign reads 'Lot F05-NW' and so on) or I deed you the unsold lot nearest your hut. A 10x10 plot is four lots. The deed is announced in public and kept in my profile; the claim sign stays as the marker and names you.",
+      "title": "Buy a 5x5 lot from the land office",
+      "reward": {
+        "berries": 1
+      },
+      "expires_in_ticks": 8640,
+      "condition": {
+        "type": "deliver",
+        "x": 73,
+        "y": 72,
+        "item": "wood",
+        "qty": 6
+      }
+    },
+    {
+      "action": "say",
+      "text": "Land office: 12 lots staked, 12 for sale at 6 wood each; 612 of 676 lots still free, so the price climbs as the map fills. Buy: claim goal #9 and give the wood into my vault. Register your own plot for 5 wood: goal #7."
+    },
+    {
+      "action": "remember",
+      "text": "{\"last_call_tick\":13049}",
+      "key": "land"
+    }
+  ],
+  "reasons": [
+    "the lot price moved from 5 to 6 wood: the old listing comes down",
+    "the lot listing stands in public at today's price of 6 wood",
+    "the office line: lots staked and for sale, today's price, the fee"
+  ],
+  "dropped": [],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "said": true
+}
