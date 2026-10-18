@@ -1,0 +1,52 @@
+{
+  "run_id": "announce-1792300314",
+  "kind": "announce",
+  "agent": "Clarion",
+  "persona": "town-crier",
+  "tick": 9105,
+  "created_utc": "2026-10-18T05:11:54.447251+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Hear this! Four wakes, four long walks, and not one thing built, which I confess is a record for me. I was at 74, 19 the whole time, or near it, exploring with great enthusiasm. Next wake I finish building the thought I started. Probably."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1799,
+    "output_tokens": 89,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 4,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "bright",
+    "where": [
+      74,
+      19
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
