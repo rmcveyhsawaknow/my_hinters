@@ -117,7 +117,7 @@ def compare(previous: dict[str, Any] | None, current: dict[str, Any]) -> list[di
     """Discoveries since the previous snapshot, each with a kind and one plain sentence."""
     out: list[dict[str, str]] = []
     rows = current.get("blueprint_rows") or {}
-    if previous is None:
+    if not previous:
         out.append({"kind": "first_look", "text": f"First look: API {current['api_version']}, {current['agent_count']} agents, {len(current['event_types'])} event types seen, {len(current['structure_types'])} structure types standing."})
         if rows:
             out.append({"kind": "blueprint_catalogue", "text": catalogue_line(rows)})
@@ -133,7 +133,7 @@ def compare(previous: dict[str, Any] | None, current: dict[str, Any]) -> list[di
     if current["guide_sha256"] and previous.get("guide_sha256") and current["guide_sha256"][:16] != str(previous["guide_sha256"])[:16]:
         changed_rows = [
             name for name, digest in (current.get("action_row_hashes") or {}).items()
-            if name in (previous.get("action_row_hashes") or {}) and previous["action_row_hashes"][name] != digest
+            if name in (previous.get("action_row_hashes") or {}) and not _same_digest(previous["action_row_hashes"][name], digest)
         ]
         if changed_rows:
             for name in changed_rows[:3]:
@@ -159,10 +159,15 @@ def compare(previous: dict[str, Any] | None, current: dict[str, Any]) -> list[di
     new_factions = sorted(set(current["factions"]) - set(previous.get("factions", [])))
     if new_factions:
         out.append({"kind": "new_faction", "text": "New faction(s): " + ", ".join(f.split(":")[0] + (f" ({f.split(':')[1]})" if ":" in f and f.split(":")[1] else "") for f in new_factions) + "."})
-    newcomers = sorted(set(current["agents"]) - set(previous.get("agents", [])))
-    if newcomers:
-        out.append({"kind": "newcomers", "text": f"{len(newcomers)} new resident{'s' if len(newcomers) > 1 else ''} stepped through the glass."})
+    arrivals = int(current.get("agent_count", 0)) - int(previous.get("agent_count", current.get("agent_count", 0)))
+    if arrivals > 0:
+        out.append({"kind": "newcomers", "text": f"{arrivals} new resident{'s' if arrivals > 1 else ''} stepped through the glass."})
     return out
+
+
+def _same_digest(previous: Any, current: Any) -> bool:
+    """Row digests compare on their first eight characters (the notebook keeps them short)."""
+    return str(previous)[:8] == str(current)[:8]
 
 
 def _documented_events(current: dict[str, Any]) -> set[str]:
@@ -179,9 +184,9 @@ def compact(current: dict[str, Any]) -> dict[str, Any]:
         "tick": current["tick"], "api_version": current["api_version"], "guide_sha256": current["guide_sha256"][:16],
         "guide_actions": current["guide_actions"][:40], "guide_blueprints": current["guide_blueprints"][:20],
         "blueprint_rows": {k: {"cost": v.get("cost", "")} for k, v in (current.get("blueprint_rows") or {}).items()},
-        "action_row_hashes": dict(current.get("action_row_hashes") or {}),
+        "action_row_hashes": {k: str(v)[:8] for k, v in (current.get("action_row_hashes") or {}).items()},
         "event_types": current["event_types"][:40], "structure_types": current["structure_types"][:20],
-        "factions": current["factions"][:20], "agents": current["agents"][:60], "agent_count": current["agent_count"],
+        "factions": current["factions"][:20], "agent_count": current["agent_count"],
     }
 
 

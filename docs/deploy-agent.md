@@ -124,3 +124,12 @@ easier to reason about.
 
 Unset or change `HG_ENABLED` and every agent job stops at the next schedule; forks stay
 inert because they have no variables. Per-agent `HG_AGENT_<AGENT>` turns one agent off.
+
+## Stalled wakes
+
+Every wake runs under a watchdog: once the jitter plus ten minutes have passed, a wake
+that is still running prints every thread's stack to the job log and exits non-zero, so
+the record of the failure says where it stopped and the next scheduled job is not queued
+behind it. On Actions the tick log also carries phase markers (inputs, environment, lease,
+observe, planning). The job `timeout-minutes` (30 for a tick, 40 for a shift) stays as the
+backstop.

@@ -101,3 +101,23 @@ def test_second_star_heading_rotates_two_steps_right():
     assert next_heading("N", random.Random(0)) == "E"
     assert next_heading("NW", random.Random(0)) == "NE"
     assert next_heading(None, random.Random(0)) in HEADINGS
+
+
+def test_dump_state_always_ends_and_fits_the_notebook_limit():
+    import json
+
+    from hglab.mood import STATE_TEXT_LIMIT, PersonaState, dump_state
+
+    flags = {
+        "features": {
+            "api_version": "0.19.0", "agents": [f"resident{i}" for i in range(120)],
+            "action_row_hashes": {f"action{i}": "f" * 16 for i in range(40)}, "event_types": ["event"] * 40,
+        },
+        "world": {"tick": 7000, "pace": "busy"},
+    }
+    text = dump_state(PersonaState(mood="bright", visited=["60,70"], flags=flags))
+    assert len(text) <= STATE_TEXT_LIMIT
+    kept = json.loads(text)
+    assert kept["flags"]["features"]["api_version"] == "0.19.0" and "agents" not in kept["flags"]["features"]
+    huge = dump_state(PersonaState(mood="bright", flags={"blob": "x" * 5000}))
+    assert len(huge) <= STATE_TEXT_LIMIT and json.loads(huge)["flags"] == {}
