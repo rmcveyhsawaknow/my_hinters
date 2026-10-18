@@ -1,0 +1,114 @@
+{
+  "agent": "LandBroker",
+  "persona": "land-broker",
+  "kind": "land_round",
+  "recorded_utc": "2026-10-18T15:09:23.099456+00:00",
+  "dry_run": false,
+  "scheduled": true,
+  "tick": 12690,
+  "board": {
+    "total": 169,
+    "occupied": 28,
+    "free": 141,
+    "vault": {
+      "x": 73,
+      "y": 72
+    },
+    "registration_goal": {
+      "id": 7,
+      "status": "open"
+    },
+    "sale_goal": {
+      "id": 9,
+      "status": "open",
+      "qty": 5
+    },
+    "offers": [
+      {
+        "id": "wood-for-berries",
+        "title": "Offer: 2 berries for 10 wood into the land office vault",
+        "status": "open",
+        "goal_id": null,
+        "goal_status": null
+      },
+      {
+        "id": "stone-for-berries",
+        "title": "Offer: 3 berries for 10 stone into the land office vault",
+        "status": "open",
+        "goal_id": null,
+        "goal_status": null
+      }
+    ],
+    "registered": [],
+    "lots": {
+      "total": 676,
+      "free": 618,
+      "free_share": 0.914,
+      "staked": 7,
+      "for_sale": 7,
+      "unsold": [
+        "H04-SE",
+        "H05-NE",
+        "I03-SW",
+        "I04-NE",
+        "I04-NW",
+        "I04-SE",
+        "I04-SW"
+      ],
+      "sold": 0,
+      "price": 5,
+      "currency": "wood"
+    },
+    "busiest": [
+      {
+        "plot": "G05",
+        "structures": 33,
+        "holder": "Quill"
+      },
+      {
+        "plot": "H06",
+        "structures": 32,
+        "holder": "LandBroker"
+      },
+      {
+        "plot": "I09",
+        "structures": 28,
+        "holder": "MotherPail"
+      },
+      {
+        "plot": "H07",
+        "structures": 20,
+        "holder": "Cairn"
+      },
+      {
+        "plot": "G07",
+        "structures": 14,
+        "holder": "Fudgewright"
+      }
+    ]
+  },
+  "actions": [
+    {
+      "action": "say",
+      "text": "Land office: 7 lots staked, 7 for sale at 5 wood each; 618 of 676 lots still free, so the price climbs as the map fills. Buy: claim goal #9 and give the wood into my vault. Register your own plot for 5 wood: goal #7."
+    },
+    {
+      "action": "remember",
+      "text": "{\"last_call_tick\":12690}",
+      "key": "land"
+    }
+  ],
+  "reasons": [
+    "the office line: lots staked and for sale, today's price, the fee"
+  ],
+  "dropped": [],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "said": true
+}

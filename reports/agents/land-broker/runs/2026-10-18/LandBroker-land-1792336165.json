@@ -1,0 +1,96 @@
+{
+  "agent": "LandBroker",
+  "persona": "land-broker",
+  "kind": "land_round",
+  "recorded_utc": "2026-10-18T15:09:25.725690+00:00",
+  "dry_run": false,
+  "scheduled": true,
+  "tick": 12690,
+  "board": {
+    "total": 169,
+    "occupied": 29,
+    "free": 140,
+    "vault": {
+      "x": 73,
+      "y": 72
+    },
+    "registration_goal": {
+      "id": 7,
+      "status": "open"
+    },
+    "sale_goal": {
+      "id": 9,
+      "status": "open",
+      "qty": 5
+    },
+    "offers": [
+      {
+        "id": "wood-for-berries",
+        "title": "Offer: 2 berries for 10 wood into the land office vault",
+        "status": "open",
+        "goal_id": null,
+        "goal_status": null
+      },
+      {
+        "id": "stone-for-berries",
+        "title": "Offer: 3 berries for 10 stone into the land office vault",
+        "status": "open",
+        "goal_id": null,
+        "goal_status": null
+      }
+    ],
+    "registered": [],
+    "lots": {
+      "total": 676,
+      "free": 617,
+      "free_share": 0.913,
+      "staked": 8,
+      "for_sale": 8,
+      "unsold": [
+        "H03-SE",
+        "H04-SE",
+        "H05-NE",
+        "I03-SW",
+        "I04-NE",
+        "I04-NW",
+        "I04-SE",
+        "I04-SW"
+      ],
+      "sold": 0,
+      "price": 5,
+      "currency": "wood"
+    },
+    "busiest": [
+      {
+        "plot": "G05",
+        "structures": 33,
+        "holder": "Quill"
+      },
+      {
+        "plot": "H06",
+        "structures": 32,
+        "holder": "LandBroker"
+      },
+      {
+        "plot": "I09",
+        "structures": 28,
+        "holder": "MotherPail"
+      },
+      {
+        "plot": "H07",
+        "structures": 20,
+        "holder": "Cairn"
+      },
+      {
+        "plot": "G07",
+        "structures": 14,
+        "holder": "Fudgewright"
+      }
+    ]
+  },
+  "actions": [],
+  "reasons": [],
+  "dropped": [],
+  "results": [],
+  "said": false
+}
