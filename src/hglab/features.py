@@ -174,7 +174,7 @@ def _documented_events(current: dict[str, Any]) -> set[str]:
     """Event types the guide's action table implies (actions plus the known system events)."""
     return set(current.get("guide_actions", [])) | {
         "spawn", "profile", "farm_produced", "goal_posted", "goal_claimed", "goal_confirmed", "goal_cancelled",
-        "goal_abandoned", "goal_expired", "faction_founded", "faction_joined", "faction_left", "faction_invited", "cache",
+        "goal_abandoned", "goal_expired", "goal_rejected", "faction_founded", "faction_joined", "faction_left", "faction_invited", "cache",
     }
 
 

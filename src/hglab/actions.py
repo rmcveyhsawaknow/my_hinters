@@ -10,7 +10,7 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_valida
 ACTION_TEXT_LIMITS = {"say": 280, "whisper": 500, "write": 200, "remember": 2000}
 COMMON_ACTIONS = {
     "move", "gather", "build", "demolish", "say", "whisper", "write", "give", "take",
-    "eat", "post_goal", "claim_goal", "confirm_goal", "cancel_goal", "abandon_goal",
+    "eat", "post_goal", "claim_goal", "confirm_goal", "cancel_goal", "abandon_goal", "reject_claim",
     "found_faction", "join_faction", "leave_faction", "invite", "set_profile", "remember", "forget",
 }
 URL_OR_EMAIL = re.compile(
@@ -22,13 +22,13 @@ SECRET = re.compile(
 
 ROLE_ACTIONS = {
     "navigator": {
-        "post_goal", "claim_goal", "cancel_goal", "abandon_goal", "remember", "forget", "say",
+        "post_goal", "claim_goal", "cancel_goal", "abandon_goal", "reject_claim", "remember", "forget", "say",
         "move", "gather", "eat", "set_profile",
     },
     "builder": {"move", "gather", "build", "write", "give", "take", "remember", "forget", "eat"},
     "surveyor": {"move", "gather", "write", "remember", "forget", "eat"},
     "broker": {
-        "move", "claim_goal", "confirm_goal", "give", "take", "whisper", "write", "remember", "forget", "eat",
+        "move", "claim_goal", "confirm_goal", "reject_claim", "give", "take", "whisper", "write", "remember", "forget", "eat",
         "found_faction", "invite",
     },
     "envoy": {
@@ -134,6 +134,7 @@ def validate_action(raw: dict[str, Any], role: str, prior_text: set[str] | None 
         "confirm_goal": ("goal_id",),
         "cancel_goal": ("goal_id",),
         "abandon_goal": ("goal_id",),
+        "reject_claim": ("goal_id",),
         "join_faction": ("faction_id",),
     }
     missing = [field for field in required.get(action.action, ()) if raw.get(field) is None]

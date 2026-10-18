@@ -20,7 +20,7 @@ CATEGORIES: dict[str, set[str]] = {
     "building": {"build", "demolish", "write", "farm_produced", "structure_damaged", "structure_destroyed"},
     "trade_goals": {
         "give", "take", "goal_posted", "goal_claimed", "goal_confirmed", "goal_cancelled", "goal_abandoned",
-        "goal_expired", "cache",
+        "goal_expired", "goal_rejected", "cache",
     },
     "talk": {"say", "profile"},
     "factions": {"faction_founded", "faction_joined", "faction_left", "faction_invited"},

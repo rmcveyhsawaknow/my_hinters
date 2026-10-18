@@ -63,6 +63,18 @@ def test_changed_guide_rows_are_named():
     assert len(changed) == 1 and "`build`" in changed[0]["text"] and "storehouses within 1 tile" in changed[0]["text"]
 
 
+def test_an_api_bump_with_a_new_action_and_its_event_type_is_announced():
+    previous = _snap()
+    current = _snap(
+        api_version="0.19.0", guide_actions=["move", "say", "build", "reject_claim"],
+        event_types=["move", "say", "build", "goal_rejected"],
+    )
+    kinds = {d["kind"]: d["text"] for d in compare(previous, current)}
+    assert "0.19.0" in kinds["api_version"]
+    assert "reject_claim" in kinds["new_action"]
+    assert "goal_rejected (documented)" in kinds["new_event_type"]
+
+
 def test_the_notebook_snapshot_is_slim_and_still_finds_arrivals_and_rule_changes():
     import json
 
