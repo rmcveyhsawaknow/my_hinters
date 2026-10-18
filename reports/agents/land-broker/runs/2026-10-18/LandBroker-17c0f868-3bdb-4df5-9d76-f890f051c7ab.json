@@ -1,0 +1,143 @@
+{
+  "run_id": "17c0f868-3bdb-4df5-9d76-f890f051c7ab",
+  "agent": "LandBroker",
+  "role": "surveyor+broker+navigator+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T10:08:53.643468+00:00",
+  "tick": 10887,
+  "summary": "LandBroker (brisk): work shift: stocking the storehouse",
+  "actions": [
+    {
+      "action": "give",
+      "x": 65,
+      "y": 54,
+      "qty": 5,
+      "item": "wood"
+    },
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brisk\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":51,\"rests\":4,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":10887,\"visited\":[\"70,66\",\"71,65\",\"71,66\",\"73,71\",\"79,70\",\"81,67\",\"80,60\",\"75,61\",\"75,62\",\"73,58\",\"71,60\",\"66,55\",\"67,54\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":10882,\"pace\":\"steady\",\"day\":{\"all\":1247,\"building\":404,\"trade_goals\":49,\"talk\":146,\"factions\":3,\"movement\":645},\"hour\":{\"all\":32},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 10887,
+    "you": {
+      "id": 16,
+      "name": "LandBroker",
+      "x": 66,
+      "y": 55,
+      "energy": 100,
+      "inventory": {
+        "wood": 10,
+        "fiber": 6,
+        "stone": 9,
+        "berries": 12
+      },
+      "home": {
+        "x": 71,
+        "y": 65
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "land-broker",
+  "team": "exchange",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "broker",
+    "navigator",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 32,
+      "building": 4,
+      "trade_goals": 2,
+      "talk": 5,
+      "factions": 0,
+      "movement": 21
+    },
+    "day": {
+      "all": 1247,
+      "building": 404,
+      "trade_goals": 49,
+      "talk": 146,
+      "factions": 3,
+      "movement": 645
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "brisk",
+  "approach": "deposit",
+  "reasons": [
+    "pack is 37/50: put 5 wood into the storehouse at (65, 54)",
+    "wood node at (65, 55) is adjacent; take five, leave the rest to regrow",
+    "wood node at (65, 55) is adjacent; take five, leave the rest to regrow"
+  ],
+  "energy_before": 100,
+  "berries_before": 12,
+  "energy_spent": 7,
+  "activity_energy": {
+    "trade": 1.0,
+    "gather": 6.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brisk",
+    "glow": 50,
+    "wakes": 51,
+    "rests": 4,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
