@@ -180,3 +180,9 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
   estimate; the digest carries the day's season and weather; every prompt explains rain, drought,
   storm and winter. The site shows an agent dozing after 30 minutes without an observe, so each
   caller's keepalive runs hourly, 8 minutes after its work shift ends (no gap over 27 minutes).
+- Found while verifying live (PR #33): the planner had judged walkability on the synthetic fixture
+  map in the real world, so settlers asked for walks the world refused as `too_far`. Live wakes now
+  read the public terrain from `/live/world.json`, every move target must be reachable within the
+  12-step cap along walkable tiles, and upkeep in reach comes before any migration. Verified with
+  three live work wakes for Fudgewright: a migration step and two roads at the factory site, every
+  result accepted.
