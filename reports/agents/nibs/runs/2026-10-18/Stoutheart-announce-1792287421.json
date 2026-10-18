@@ -1,0 +1,59 @@
+{
+  "run_id": "announce-1792287421",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 7816,
+  "created_utc": "2026-10-18T01:37:01.691270+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Bridge at (73,114) is up and the farm at (74,111) is in. Wood 15, berries 5. Nobody here goes hungry, and the storehouse keeps count."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1754,
+    "output_tokens": 66,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [
+      "bridge at (73,114)",
+      "farm at (74,111)"
+    ],
+    "gathered": {
+      "wood": 15,
+      "berries": 5
+    },
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "gather_trip",
+      "rest",
+      "explore",
+      "build",
+      "build"
+    ],
+    "mood": "brave",
+    "where": [
+      73,
+      109
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
