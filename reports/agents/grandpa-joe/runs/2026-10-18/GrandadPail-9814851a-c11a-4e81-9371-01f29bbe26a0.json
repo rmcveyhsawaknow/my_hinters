@@ -1,0 +1,105 @@
+{
+  "run_id": "9814851a-c11a-4e81-9371-01f29bbe26a0",
+  "agent": "GrandadPail",
+  "role": "envoy+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T02:57:08.881250+00:00",
+  "tick": 8296,
+  "summary": "GrandadPail (in_bed): in bed, saving strength for the moment glory needs me",
+  "actions": [
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"in_bed\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":26,\"rests\":22,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":8296,\"visited\":[\"65,61\",\"63,73\",\"71,84\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":8296,\"pace\":\"quickening\",\"day\":{\"all\":955,\"building\":366,\"trade_goals\":45,\"talk\":75,\"factions\":3,\"movement\":466},\"hour\":{\"all\":73},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 8296,
+    "you": {
+      "id": 5,
+      "name": "GrandadPail",
+      "x": 71,
+      "y": 84,
+      "energy": 100,
+      "inventory": {
+        "wood": 5,
+        "berries": 15
+      },
+      "home": null
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "grandpa-joe",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "envoy",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 73,
+      "building": 28,
+      "trade_goals": 2,
+      "talk": 11,
+      "factions": 0,
+      "movement": 32
+    },
+    "day": {
+      "all": 955,
+      "building": 366,
+      "trade_goals": 45,
+      "talk": 75,
+      "factions": 3,
+      "movement": 466
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "rest",
+  "mood": "in_bed",
+  "approach": "rest",
+  "reasons": [],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 0,
+  "activity_energy": {},
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "in_bed",
+    "glow": 50,
+    "wakes": 26,
+    "rests": 22,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
