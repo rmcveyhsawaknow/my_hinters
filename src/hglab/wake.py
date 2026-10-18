@@ -100,6 +100,7 @@ FIELDS_BY_ACTION: dict[str, set[str]] = {
     "gather": {"kind"},
     "build": {"type", "x", "y", "text", "policy"},
     "demolish": {"x", "y"},
+    "repair": {"x", "y"},
     "say": {"text"},
     "whisper": {"to", "text"},
     "write": {"x", "y", "text"},
@@ -489,6 +490,11 @@ def persona_prompt(
         " surplus through posted offers: when you stand within a tile of its vault, give the surplus you do not"
         " need (collective members pay the registration fee by giving it into the vault, never by claiming the"
         " office's goals); negotiate land, boundaries and deals with it by whisper, and honour what you agree."
+        " Upkeep and weather: hp below hp_max on your structures never heals by itself; repair (3 energy, 1 stone for"
+        " roads, walls, towers and monuments, 1 wood for the rest) mends 20 hp, and the hints name the most damaged"
+        " one. Take berries from your full farms so they keep growing. Plan by the season in the hints and digest:"
+        " short moves on storm days (each tile costs 1 more), gather fiber and berries on rain days, stock berries"
+        " before winter, and take salvage from ruins (caches) when you pass them."
         " Propose 0-3 in-character actions within the knobs; the notebook state"
         " update is added for you. Include exactly one public say each wake that tells your story or your plan"
         " in character (the collective reads the Talk feed to see you are alive); the validator enforces the"

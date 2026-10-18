@@ -255,3 +255,12 @@ collector round therefore sends up to two invitations by name into the sender's 
 (residents in no faction, never the same agent twice): each `faction_invited` event keeps the theme
 in the feed and lands in the invitee's own events wherever they stand, and an open faction needs no
 invitation to join.
+
+## Upkeep, harvest, salvage and weather (API 0.26.2)
+
+Every embodied hat that builds or surveys may `repair`. The work-shift planner mends the most damaged
+own structure in reach before building (one unit of its material for 20 hp), takes berries from own
+farms once they hold 12 or more (a full farm grows nothing), and takes salvage from adjacent caches
+and ruins; the character wake does the same inside its build activity. Energy estimates double the
+per-tile move cost on storm days, so long trips wait for better weather. The digest carries the day's
+season and weather from the `weather_changed` headline, and every prompt explains what each one changes.

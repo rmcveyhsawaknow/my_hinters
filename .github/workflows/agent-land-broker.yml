@@ -4,7 +4,7 @@ name: Agent LandBroker
 on:
   schedule:
     - cron: "35 */2 * * *"  # persona wake
-    - cron: "5 */6 * * *"  # keepalive: verification never lapses
+    - cron: "18 * * * *"  # keepalive: verification never lapses
     - cron: "50 5 * * *"  # daily pulse
     - cron: "20 6 * * 0"  # weekly retrospective proposal
     - cron: "45 * * * *"  # work shift: deterministic building and gathering

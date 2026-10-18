@@ -4,7 +4,7 @@ name: Agent Fudgewright
 on:
   schedule:
     - cron: "23 1,4,7,10,13,16,19,22 * * *"  # persona wake
-    - cron: "53 */6 * * *"  # keepalive: verification never lapses
+    - cron: "36 * * * *"  # keepalive: verification never lapses
     - cron: "38 5 * * *"  # daily pulse
     - cron: "8 6 * * 0"  # weekly retrospective proposal
     - cron: "3 * * * *"  # work shift: deterministic building and gathering

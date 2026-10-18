@@ -109,3 +109,36 @@ def test_no_fourth_farm_when_three_stand_elsewhere():
     after = _plan_build(persona, None, dict(inventory), (1, 1), capped_view, home)
     assert before is not None and before[0][0]["type"] == "farm"
     assert after is None or after[0][0]["type"] != "farm"
+
+
+def test_upkeep_mends_damaged_structures_collects_full_farms_and_takes_salvage():
+    from hglab.planner import WorldView, _estimate, _plan_harvest, _plan_repair, _plan_salvage
+
+    nibs = load_personas(ROOT)["nibs"]
+    rows = ["g" * 8] * 8
+    road = {"type": "road", "x": 2, "y": 1, "owner": nibs.name, "hp": 5, "hp_max": 20}
+    far_hut = {"type": "hut", "x": 6, "y": 6, "owner": nibs.name, "hp": 10, "hp_max": 40}
+    other = {"type": "hut", "x": 1, "y": 2, "owner": "Quill", "hp": 1, "hp_max": 40}
+    view = WorldView(x0=0, y0=0, rows=rows, structures=[road, far_hut, other])
+    plan = _plan_repair(nibs, None, {"stone": 2, "wood": 3}, (1, 1), view, None)
+    assert plan is not None and plan[0] == [{"action": "repair", "x": 2, "y": 1}] and "1 stone" in plan[1]
+    scratch = {"type": "road", "x": 2, "y": 1, "owner": nibs.name, "hp": 15, "hp_max": 20}
+    unknown = {"type": "road", "x": 2, "y": 1, "owner": nibs.name}
+    assert _plan_repair(nibs, None, {"stone": 2}, (1, 1), WorldView(x0=0, y0=0, rows=rows, structures=[scratch]), None) is None  # 5 hp missing: not worth a stone
+    assert _plan_repair(nibs, None, {"stone": 2}, (1, 1), WorldView(x0=0, y0=0, rows=rows, structures=[unknown]), None) is None  # no hp in the snapshot
+    assert _plan_repair(nibs, None, {"wood": 3}, (1, 1), WorldView(x0=0, y0=0, rows=rows, structures=[road]), None) is None  # no stone, no mending
+    trip = _plan_repair(nibs, None, {"wood": 3}, (1, 1), WorldView(x0=0, y0=0, rows=rows, structures=[far_hut, other]), None)
+    assert trip is not None and [a["action"] for a in trip[0]] == ["move", "repair"] and trip[0][1] == {"action": "repair", "x": 6, "y": 6}
+    farm = {"type": "farm", "x": 2, "y": 2, "owner": nibs.name, "hp": 30, "hp_max": 30, "storage": {"berries": 24}}
+    harvest = _plan_harvest(nibs, None, {"wood": 10}, (1, 1), WorldView(x0=0, y0=0, rows=rows, structures=[farm]), None)
+    assert harvest is not None and harvest[0] == [{"action": "take", "x": 2, "y": 2, "item": "berries", "qty": 24}]
+    assert _plan_harvest(nibs, None, {"wood": 48}, (1, 1), WorldView(x0=0, y0=0, rows=rows, structures=[farm]), None) is None  # no room in the pack
+    ruin = {"type": "cache", "x": 1, "y": 0, "owner": None, "storage": {"stone": 7, "wood": 3}, "ruin": {"type": "hut", "owner": "Quill"}}
+    salvage = _plan_salvage({"wood": 5}, (1, 1), WorldView(x0=0, y0=0, rows=rows, structures=[ruin]))
+    assert salvage is not None and salvage[0] == [{"action": "take", "x": 1, "y": 0, "item": "stone", "qty": 7}] and "ruin of Quill's hut" in salvage[1]
+    assert _estimate([{"action": "move", "x": 5, "y": 1}, {"action": "repair", "x": 5, "y": 2}], (1, 1)) == 7
+    assert _estimate([{"action": "move", "x": 5, "y": 1}, {"action": "repair", "x": 5, "y": 2}], (1, 1), storm=True) == 11
+    observe = load_fixture(FIX / "observe/nibs.json")
+    observe["weather"], observe["season"] = "storm", "winter"
+    stormy = WorldView.from_observe(observe, None)
+    assert stormy.weather == "storm" and stormy.season == "winter"

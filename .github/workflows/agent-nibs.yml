@@ -4,7 +4,7 @@ name: Agent Stoutheart
 on:
   schedule:
     - cron: "37 */3 * * *"  # persona wake
-    - cron: "7 */6 * * *"  # keepalive: verification never lapses
+    - cron: "12 * * * *"  # keepalive: verification never lapses
     - cron: "52 5 * * *"  # daily pulse
     - cron: "22 6 * * 0"  # weekly retrospective proposal
     - cron: "39 * * * *"  # work shift: deterministic building and gathering

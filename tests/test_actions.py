@@ -117,3 +117,15 @@ def test_goal_conditions_are_checked_for_shape():
     ):
         with pytest.raises(ValueError):
             validate_action({**base, "condition": bad}, "navigator")
+
+
+def test_repair_is_a_builders_and_surveyors_action_that_needs_a_tile():
+    import pytest
+
+    from hglab.actions import allowed_for, validate_action
+
+    assert "repair" in allowed_for("builder") and "repair" in allowed_for("surveyor") and "repair" in allowed_for("experimenter")
+    assert "repair" not in allowed_for("navigator") and "repair" not in allowed_for("envoy")
+    assert validate_action({"action": "repair", "x": 71, "y": 84}, "builder").action == "repair"
+    with pytest.raises(ValueError):
+        validate_action({"action": "repair", "x": 71}, "builder")

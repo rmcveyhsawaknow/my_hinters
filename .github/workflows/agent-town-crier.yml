@@ -4,7 +4,7 @@ name: Agent Clarion
 on:
   schedule:
     - cron: "47 */2 * * *"  # persona wake
-    - cron: "17 */6 * * *"  # keepalive: verification never lapses
+    - cron: "24 * * * *"  # keepalive: verification never lapses
     - cron: "2 5 * * *"  # daily pulse
     - cron: "32 6 * * 0"  # weekly retrospective proposal
     - cron: "51 * * * *"  # work shift: deterministic building and gathering

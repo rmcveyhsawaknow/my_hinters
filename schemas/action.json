@@ -3,7 +3,7 @@
   "type": "object",
   "required": ["action"],
   "properties": {
-    "action": {"enum": ["move", "gather", "build", "demolish", "say", "whisper", "write", "give", "take", "eat", "post_goal", "claim_goal", "confirm_goal", "cancel_goal", "abandon_goal", "reject_claim", "found_faction", "join_faction", "leave_faction", "invite", "set_profile", "remember", "forget"]},
+    "action": {"enum": ["move", "gather", "build", "demolish", "repair", "say", "whisper", "write", "give", "take", "eat", "post_goal", "claim_goal", "confirm_goal", "cancel_goal", "abandon_goal", "reject_claim", "found_faction", "join_faction", "leave_faction", "invite", "set_profile", "remember", "forget"]},
     "x": {"type": "integer", "minimum": 0, "maximum": 127},
     "y": {"type": "integer", "minimum": 0, "maximum": 127},
     "text": {"type": "string", "maxLength": 2000},

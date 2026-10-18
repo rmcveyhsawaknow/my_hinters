@@ -4,7 +4,7 @@ name: Agent Strayling
 on:
   schedule:
     - cron: "29 */2 * * *"  # persona wake
-    - cron: "59 */6 * * *"  # keepalive: verification never lapses
+    - cron: "0 * * * *"  # keepalive: verification never lapses
     - cron: "44 5 * * *"  # daily pulse
     - cron: "14 6 * * 0"  # weekly retrospective proposal
     - cron: "27 * * * *"  # work shift: deterministic building and gathering

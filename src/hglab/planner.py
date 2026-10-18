@@ -39,6 +39,13 @@ BLUEPRINTS: dict[str, dict[str, int]] = {
     "monument": {"stone": 50, "ore": 10},
 }
 DEFAULT_BUILD_PRIORITY = ["hut", "farm", "storehouse", "road"]
+REPAIR_MATERIAL = {
+    "sign": "wood", "road": "stone", "wall": "stone", "bridge": "wood", "hut": "wood", "farm": "wood",
+    "storehouse": "wood", "tower": "stone", "monument": "stone",
+}  # one unit mends 20 hp (API 0.26.2); caches cannot be repaired
+BLUEPRINT_HP = {"sign": 10, "road": 20, "wall": 60, "bridge": 40, "hut": 40, "farm": 30, "storehouse": 80, "tower": 100, "monument": 200}
+HARVEST_FLOOR = 12  # take from an own farm once it holds this many berries (a full farm grows nothing)
+REPAIR_WORTH = 10  # mend only when at least half a repair's 20 hp is missing; a scratch is not worth a unit of material
 NODE_FLOOR = 5  # never take a node below this many units: local norm, never strip nodes
 ACTIVITIES = ("build", "gather", "social", "explore", "trade")
 
@@ -53,6 +60,8 @@ class WorldView:
     agents: list[dict[str, Any]] = field(default_factory=list)
     full_map: list[str] | None = None
     owned_counts: dict[str, int] = field(default_factory=dict)  # own structures anywhere, by type (public snapshot)
+    weather: str = "clear"  # clear, rain, storm, drought: a storm day makes every move tile cost 1 more
+    season: str = ""  # spring, summer, autumn, winter: wild berries do not regrow in winter
 
     @classmethod
     def from_observe(
@@ -69,6 +78,8 @@ class WorldView:
             agents=[a for a in observe.get("agents", []) if isinstance(a, dict)],
             full_map=terrain_rows,
             owned_counts=dict(owned_counts or {}),
+            weather=str(observe.get("weather") or "clear"),
+            season=str(observe.get("season") or ""),
         )
 
     def terrain(self, x: int, y: int) -> str | None:
@@ -259,7 +270,11 @@ def plan_wake(
             break
         if activity == "build":
             # builds are validated against the observed position, so only before any move
-            step = _plan_build(persona, team, inventory, here, view, home) if here == position else None
+            step = (
+                _plan_repair(persona, team, inventory, here, view, teammates)
+                or _plan_harvest(persona, team, inventory, here, view, teammates)
+                or (_plan_build(persona, team, inventory, here, view, home) if here == position else None)
+            )
         elif activity == "gather":
             step = _plan_gather(persona, team, inventory, here, view, teammates, rng)
         elif activity == "explore":
@@ -280,7 +295,7 @@ def plan_wake(
             for a in new_actions
         ):
             continue  # every target is checked against where the wake started
-        cost = _estimate(new_actions, here)
+        cost = _estimate(new_actions, here, storm=view.weather == "storm")
         if cost > spendable:
             reasons.append(f"skipped {activity}: it would cost {cost} and only {max(0, spendable)} is spendable above the reserve")
             continue
@@ -338,7 +353,7 @@ def _plan_work(
             return False
         if any(a.get("action") == "move" and chebyshev(position, (int(a["x"]), int(a["y"]))) > MOVE_STEP_CAP for a in new_actions):
             return False
-        cost = _estimate(new_actions, here)
+        cost = _estimate(new_actions, here, storm=view.weather == "storm")
         if cost > spendable:
             return False
         spendable -= cost
@@ -359,6 +374,9 @@ def _plan_work(
             pass
         summary = "walking to the team site"
         return _result(persona, mood, f"work shift: {summary}", actions, reasons, approach, remember)
+    # 0.5 mend what is damaged: hits and decay never heal on their own
+    if fits(_plan_repair(persona, team, inventory, here, view, teammates)):
+        approach = "repair"
     # 1. the monument recipe when the storehouse beside us holds the materials
     monument = _plan_monument(persona, inventory, position, view)
     if here == position and fits(monument):
@@ -366,6 +384,11 @@ def _plan_work(
     # 2. any build whose materials are in hand (hut, farm, storehouse, bridge, wall...)
     if here == position and fits(_plan_build(persona, team, inventory, position, view, home)):
         approach = approach or "build"
+    # 2.5 collect a filling farm (a full one grows nothing) and any salvage within reach
+    if fits(_plan_harvest(persona, team, inventory, here, view, teammates)):
+        approach = approach or "harvest"
+    if fits(_plan_salvage(inventory, here, view)):
+        approach = approach or "salvage"
     # 3. deposit surplus into an adjacent own storehouse (so the monument can draw on it)
     if fits(_plan_deposit(persona, inventory, position, view, registrar_name)):
         approach = approach or "deposit"
@@ -383,6 +406,7 @@ def _plan_work(
     summary = {
         "build_monument": "raising the monument from the storehouse", "build": "building", "deposit": "stocking the storehouse",
         "gather_trip": "gathering for the next build", "migrate": "walking to the team site", "explore": "looking for nodes",
+        "repair": "mending what is damaged", "harvest": "collecting the farm", "salvage": "taking salvage from a ruin",
     }.get(approach or "", "nothing worth the energy this shift wake")
     return _result(persona, mood, f"work shift: {summary}", actions, reasons, approach, remember)
 
@@ -414,6 +438,100 @@ def _plan_monument(persona: Persona, inventory: dict[str, int], position: tuple[
                 f"pack plus the storehouse beside me hold {stone} stone and {ore} ore: the monument recipe (build pays the rest from storehouses within one tile)",
                 "build_monument",
             )
+    return None
+
+
+def _own(persona: Persona, structure: dict[str, Any]) -> bool:
+    return str(structure.get("owner", "")).casefold() == persona.name.casefold()
+
+
+def _plan_repair(
+    persona: Persona,
+    team: Team | None,
+    inventory: dict[str, int],
+    position: tuple[int, int],
+    view: WorldView,
+    teammates: dict[str, tuple[int, int]] | None,
+) -> tuple[list[dict[str, Any]], str, str] | None:
+    """Mend the most damaged own structure in reach: +20 hp for one unit of its repair material (3 energy)."""
+    damaged: list[tuple[float, dict[str, Any]]] = []
+    for s in view.structures:
+        kind = str(s.get("type", ""))
+        if kind not in REPAIR_MATERIAL or not _own(persona, s):
+            continue
+        if s.get("hp") is None or s.get("hp_max") is None:
+            continue  # condition unknown (a snapshot older than API 0.26.2): nothing to mend on evidence
+        hp_max = int(s["hp_max"])
+        hp = int(s["hp"])
+        if hp_max and hp_max - hp >= REPAIR_WORTH and inventory.get(REPAIR_MATERIAL[kind], 0) >= 1:
+            damaged.append((hp / hp_max, s))
+    for _, s in sorted(damaged, key=lambda pair: pair[0]):
+        kind = str(s["type"])
+        where = (int(s["x"]), int(s["y"]))
+        material = REPAIR_MATERIAL[kind]
+        label = f"{kind} at {where} ({s.get('hp')}/{s.get('hp_max') or BLUEPRINT_HP.get(kind)} hp)"
+        if chebyshev(position, where) <= 1:
+            return [{"action": "repair", "x": where[0], "y": where[1]}], f"mend my {label} with 1 {material}", "repair"
+        stand = _adjacent_stand(where, position, view, persona, team, teammates)
+        if stand is not None:
+            return (
+                [{"action": "move", "x": stand[0], "y": stand[1]}, {"action": "repair", "x": where[0], "y": where[1]}],
+                f"walk to {stand} and mend my {label} with 1 {material}",
+                "repair",
+            )
+    return None
+
+
+def _plan_harvest(
+    persona: Persona,
+    team: Team | None,
+    inventory: dict[str, int],
+    position: tuple[int, int],
+    view: WorldView,
+    teammates: dict[str, tuple[int, int]] | None,
+) -> tuple[list[dict[str, Any]], str, str] | None:
+    """Take berries from an own farm that is filling up: a farm at its cap of 30 grows nothing."""
+    room = 50 - sum(inventory.values())
+    if room < 5:
+        return None
+    farms: list[tuple[int, dict[str, Any]]] = []
+    for s in view.structures:
+        if s.get("type") != "farm" or not _own(persona, s):
+            continue
+        storage = s.get("storage") if isinstance(s.get("storage"), dict) else {}
+        stored = int(storage.get("berries", 0) or 0)
+        if stored >= HARVEST_FLOOR:
+            farms.append((stored, s))
+    for stored, s in sorted(farms, key=lambda pair: -pair[0]):
+        where = (int(s["x"]), int(s["y"]))
+        qty = min(stored, room)
+        take = {"action": "take", "x": where[0], "y": where[1], "item": "berries", "qty": qty}
+        if chebyshev(position, where) <= 1:
+            return [take], f"my farm at {where} holds {stored} berries: take {qty} so it keeps growing", "harvest"
+        stand = _adjacent_stand(where, position, view, persona, team, teammates)
+        if stand is not None:
+            return [{"action": "move", "x": stand[0], "y": stand[1]}, take], f"walk to {stand}: my farm at {where} holds {stored} berries, take {qty}", "harvest"
+    return None
+
+
+def _plan_salvage(inventory: dict[str, int], position: tuple[int, int], view: WorldView) -> tuple[list[dict[str, Any]], str, str] | None:
+    """Take from an adjacent cache (dropped items, or the ruin of a fallen structure): salvage is open to anyone."""
+    room = 50 - sum(inventory.values())
+    if room < 5:
+        return None
+    for s in view.structures:
+        if s.get("type") != "cache":
+            continue
+        where = (int(s["x"]), int(s["y"]))
+        if chebyshev(position, where) > 1:
+            continue
+        storage = s.get("storage") if isinstance(s.get("storage"), dict) else {}
+        for item in ("ore", "stone", "wood", "fiber", "berries"):
+            qty = min(int(storage.get(item, 0) or 0), room)
+            if qty >= 1:
+                ruin = s.get("ruin") if isinstance(s.get("ruin"), dict) else {}
+                what = f"the ruin of {ruin.get('owner')}'s {ruin.get('type')}" if ruin.get("type") else "a cache"
+                return [{"action": "take", "x": where[0], "y": where[1], "item": item, "qty": qty}], f"{what} at {where} holds {qty} {item}: salvage is open to anyone", "salvage"
     return None
 
 
@@ -907,17 +1025,21 @@ def _credit_claim(
     return line[: int(persona.voice.get("max_say_chars", 280))], str(event.get("id"))
 
 
-def _estimate(actions: list[dict[str, Any]], position: tuple[int, int]) -> int:
+def _estimate(actions: list[dict[str, Any]], position: tuple[int, int], storm: bool = False) -> int:
+    """Energy a step costs at least: one per tile moved (two on a storm day), plus each action's price."""
     total = 0
     here = position
     for action in actions:
         kind = action.get("action")
         if kind == "move" and action.get("x") is not None:
             target = (int(action["x"]), int(action["y"]))
-            total += chebyshev(here, target)
+            total += chebyshev(here, target) * (2 if storm else 1)
             here = target
         else:
-            total += {"gather": 3, "build": 5, "demolish": 5, "say": 1, "whisper": 1, "write": 1, "give": 1, "take": 1, "post_goal": 2, "claim_goal": 1}.get(str(kind), 0)
+            total += {
+                "gather": 3, "build": 5, "demolish": 5, "repair": 3, "say": 1, "whisper": 1, "write": 1, "give": 1, "take": 1,
+                "post_goal": 2, "claim_goal": 1, "invite": 1, "found_faction": 10,
+            }.get(str(kind), 0)
     return total
 
 

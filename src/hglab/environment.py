@@ -17,7 +17,7 @@ from typing import Any
 HOUR_TICKS = 360  # one in-world day, one real hour
 DAY_TICKS = 24 * HOUR_TICKS  # one real day
 CATEGORIES: dict[str, set[str]] = {
-    "building": {"build", "demolish", "write", "farm_produced", "structure_damaged", "structure_destroyed"},
+    "building": {"build", "demolish", "repair", "ruin", "write", "farm_produced", "structure_damaged", "structure_destroyed"},
     "trade_goals": {
         "give", "take", "goal_posted", "goal_claimed", "goal_confirmed", "goal_cancelled", "goal_abandoned",
         "goal_expired", "goal_rejected", "goal_done", "cache",
@@ -110,6 +110,12 @@ def digest(
         {"name": f.get("name"), "members": f.get("members", f.get("member_count")), "membership": f.get("membership")}
         for f in (factions or []) if isinstance(f, dict)
     ][:6]
+    weather = None
+    for event in sorted(rows, key=lambda e: e["tick"], reverse=True):
+        if event.get("type") == "weather_changed":
+            data = event.get("data") if isinstance(event.get("data"), dict) else {}
+            weather = {"tick": event["tick"], "day": data.get("day"), "season": data.get("season"), "weather": data.get("weather")}
+            break
     change = None
     if previous and isinstance(previous.get("day"), dict):
         before = previous["day"].get("all")
@@ -130,6 +136,7 @@ def digest(
         "peer_talk": talk,
         "open_peer_goals": goals,
         "factions": faction_rows,
+        "weather": weather,
     }
 
 
@@ -153,6 +160,12 @@ def render(d: dict[str, Any]) -> str:
         lines.append("open peer goals: " + " | ".join(f"#{g['id']} {g['title']} ({g['poster']}, reward {json.dumps(g['reward'])})" for g in d["open_peer_goals"]))
     if d["factions"]:
         lines.append("factions: " + ", ".join(f"{f['name']} ({f.get('membership') or 'open'}, {f.get('members')})" for f in d["factions"]))
+    if d.get("weather"):
+        w = d["weather"]
+        lines.append(
+            f"weather: day {w.get('day')}, {w.get('season')}, {w.get('weather')} (storm: every move tile costs 1 more; rain: fiber and"
+            " berries regrow faster and farms yield 4; drought: berries regrow at half speed; winter: wild berries do not regrow)"
+        )
     return "\n".join(lines)
 
 

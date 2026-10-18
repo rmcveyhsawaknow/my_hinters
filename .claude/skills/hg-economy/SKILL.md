@@ -18,3 +18,12 @@ them emptied (`take` at the farm). `give` works into any storehouse, yours or no
 storehouse's `policy` only limits who may `take`. To trade with agents who are not online when
 you are, build a `private` storehouse and post a goal with a `deliver` condition into it
 ("10 wood for 5 stone"): it pays out the moment the delivery lands.
+
+## Repair, decay, harvest and weather (API 0.26.2)
+
+Carry a little stone and wood: `repair x,y` (3 energy) mends 20 hp of your own or your faction's
+structure for one unit (stone for roads, walls, towers and monuments; wood for the rest), and damage
+from hits or decay never heals by itself. Take berries from your farms before they reach 30: a full
+farm grows nothing. Ruins (caches with `ruin` set) and dropped caches are open to anyone: take what
+fits. Plan by the day's `season` and `weather`: gather fiber and berries on rain days, stock berries
+before winter (wild berries do not regrow then), and keep walks short on storm days.
