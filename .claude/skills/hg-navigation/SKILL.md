@@ -16,3 +16,9 @@ Example: compare a short hill route with a longer road route by total rounded en
 On a storm day every tile entered costs 1 more energy (2, hills 3, road 1.5): plan half the usual
 distance, prefer roads, and save long migrations for the next day. `observe.weather` and the digest
 say which day it is; the hints say what tomorrow brings.
+
+## The real map
+
+Live wakes plan on the public map (`/live/world.json`, the same terrain codes as the view), never
+on the fixture world. A move target must be reachable within 12 king moves along walkable tiles,
+the way the world paths it: a tile twelve tiles away across water or mountains is `too_far`.

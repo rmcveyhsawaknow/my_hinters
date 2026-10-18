@@ -45,6 +45,11 @@ REPAIR_MATERIAL = {
 }  # one unit mends 20 hp (API 0.26.2); caches cannot be repaired
 BLUEPRINT_HP = {"sign": 10, "road": 20, "wall": 60, "bridge": 40, "hut": 40, "farm": 30, "storehouse": 80, "tower": 100, "monument": 200}
 HARVEST_FLOOR = 12  # take from an own farm once it holds this many berries (a full farm grows nothing)
+WORK_SUMMARIES = {
+    "build_monument": "raising the monument from the storehouse", "build": "building", "deposit": "stocking the storehouse",
+    "gather_trip": "gathering for the next build", "migrate": "walking to the team site", "explore": "looking for nodes",
+    "repair": "mending what is damaged", "harvest": "collecting the farm", "salvage": "taking salvage from a ruin",
+}
 REPAIR_WORTH = 10  # mend only when at least half a repair's 20 hp is missing; a scratch is not worth a unit of material
 NODE_FLOOR = 5  # never take a node below this many units: local norm, never strip nodes
 ACTIVITIES = ("build", "gather", "social", "explore", "trade")
@@ -365,31 +370,31 @@ def _plan_work(
         return True
 
     approach = None
-    # 0. a settler far from the team site walks there first and builds only once inside
-    migrate = _plan_migrate(persona, team, position, view, teammates)
-    far_from_home = migrate is not None and persona.knobs["territory"]["mode"] in {"prefer_inside", "stay_inside", "near_teammate"}
-    if far_from_home and fits(migrate):
-        approach = "migrate"
-        if fits(_plan_gather_adjacent(persona, inventory, here, view)):
-            pass
-        summary = "walking to the team site"
-        return _result(persona, mood, f"work shift: {summary}", actions, reasons, approach, remember)
-    # 0.5 mend what is damaged: hits and decay never heal on their own
+    # 0. upkeep within reach comes before any walking: mend, collect the farm, take salvage
     if fits(_plan_repair(persona, team, inventory, here, view, teammates)):
         approach = "repair"
-    # 1. the monument recipe when the storehouse beside us holds the materials
-    monument = _plan_monument(persona, inventory, position, view)
-    if here == position and fits(monument):
-        approach = "build_monument"
-    # 2. any build whose materials are in hand (hut, farm, storehouse, bridge, wall...)
-    if here == position and fits(_plan_build(persona, team, inventory, position, view, home)):
-        approach = approach or "build"
-    # 2.5 collect a filling farm (a full one grows nothing) and any salvage within reach
     if fits(_plan_harvest(persona, team, inventory, here, view, teammates)):
         approach = approach or "harvest"
     if fits(_plan_salvage(inventory, here, view)):
         approach = approach or "salvage"
-    # 3. deposit surplus into an adjacent own storehouse (so the monument can draw on it)
+    # 1. a settler far from the team site walks there before building, once upkeep is done
+    migrate = _plan_migrate(persona, team, position, view, teammates)
+    far_from_home = migrate is not None and persona.knobs["territory"]["mode"] in {"prefer_inside", "stay_inside", "near_teammate"}
+    if far_from_home and not actions and fits(migrate):
+        approach = "migrate"
+        if fits(_plan_gather_adjacent(persona, inventory, here, view)):
+            pass
+        return _result(persona, mood, "work shift: walking to the team site", actions, reasons, approach, remember)
+    if far_from_home and actions:
+        return _result(persona, mood, f"work shift: {WORK_SUMMARIES.get(approach or '', 'upkeep')}", actions, reasons, approach, remember)
+    # 2. the monument recipe when the storehouse beside us holds the materials
+    monument = _plan_monument(persona, inventory, position, view)
+    if here == position and fits(monument):
+        approach = approach or "build_monument"
+    # 3. any build whose materials are in hand (hut, farm, storehouse, bridge, wall...)
+    if here == position and fits(_plan_build(persona, team, inventory, position, view, home)):
+        approach = approach or "build"
+    # 4. deposit surplus into an adjacent own storehouse (so the monument can draw on it)
     if fits(_plan_deposit(persona, inventory, position, view, registrar_name)):
         approach = approach or "deposit"
     # 4. gather the shortfall for the next blueprint
@@ -403,11 +408,7 @@ def _plan_work(
         approach = "migrate"
     if not actions and fits(_plan_explore(persona, team, state, position, view, rng, teammates)):
         approach = "explore"
-    summary = {
-        "build_monument": "raising the monument from the storehouse", "build": "building", "deposit": "stocking the storehouse",
-        "gather_trip": "gathering for the next build", "migrate": "walking to the team site", "explore": "looking for nodes",
-        "repair": "mending what is damaged", "harvest": "collecting the farm", "salvage": "taking salvage from a ruin",
-    }.get(approach or "", "nothing worth the energy this shift wake")
+    summary = WORK_SUMMARIES.get(approach or "", "nothing worth the energy this shift wake")
     return _result(persona, mood, f"work shift: {summary}", actions, reasons, approach, remember)
 
 
@@ -797,7 +798,8 @@ def _adjacent_stand(
     team: Team | None,
     teammates: dict[str, tuple[int, int]] | None,
 ) -> tuple[int, int] | None:
-    options = [t for t in [node, *neighbours(*node)] if view.walkable(*t) and chebyshev(position, t) <= MOVE_STEP_CAP]
+    reach = reachable_tiles(view, position)
+    options = [t for t in [node, *neighbours(*node)] if t == position or t in reach]
     options = [t for t in options if _territory_ok(persona, team, t, position, teammates)]
     options.sort(key=lambda t: chebyshev(position, t))
     return options[0] if options else None
@@ -872,18 +874,34 @@ def _plan_explore(
     return [{"action": "move", "x": target[0], "y": target[1]}], f"{reason}: move to {target}", "explore"
 
 
+def reachable_tiles(view: WorldView, position: tuple[int, int], steps: int = MOVE_STEP_CAP) -> set[tuple[int, int]]:
+    """Tiles one move can reach: within ``steps`` king moves along walkable tiles, as the world paths it.
+
+    A tile twelve tiles away in a straight line across water or mountains is ``too_far``; this is the
+    walk the world would actually find. Unknown terrain (off the view, no map) counts as not walkable.
+    """
+    seen = {position}
+    frontier = [position]
+    for _ in range(steps):
+        nxt: list[tuple[int, int]] = []
+        for x, y in frontier:
+            for tile in neighbours(x, y):
+                if tile not in seen and view.walkable(*tile):
+                    seen.add(tile)
+                    nxt.append(tile)
+        frontier = nxt
+        if not frontier:
+            break
+    return seen
+
+
 def _walkable_ring(position: tuple[int, int], view: WorldView, lo: int, hi: int) -> list[tuple[int, int]]:
-    out: list[tuple[int, int]] = []
+    """Reachable tiles between ``lo`` and ``hi`` king moves away (never beyond the 12-step cap)."""
     if not view.known():
-        return out
-    for dx in range(-hi, hi + 1):
-        for dy in range(-hi, hi + 1):
-            distance = max(abs(dx), abs(dy))
-            if lo <= distance <= min(hi, MOVE_STEP_CAP):
-                x, y = position[0] + dx, position[1] + dy
-                if view.walkable(x, y):
-                    out.append((x, y))
-    return out
+        return []
+    hi = min(hi, MOVE_STEP_CAP)
+    reach = reachable_tiles(view, position, hi)
+    return [t for t in reach if lo <= chebyshev(position, t) <= hi]
 
 
 def _novel_target(
@@ -1051,7 +1069,7 @@ def _step_toward(
     target = (int(home["x"]), int(home["y"]))
     if chebyshev(position, target) <= 1:
         return position
-    if chebyshev(position, target) <= MOVE_STEP_CAP and view.walkable(*target):
+    if chebyshev(position, target) <= MOVE_STEP_CAP and target in reachable_tiles(view, position):
         return target
     best = position
     for candidate in _walkable_ring(position, view, 1, MOVE_STEP_CAP):

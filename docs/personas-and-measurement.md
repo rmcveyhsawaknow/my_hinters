@@ -264,3 +264,8 @@ farms once they hold 12 or more (a full farm grows nothing), and takes salvage f
 and ruins; the character wake does the same inside its build activity. Energy estimates double the
 per-tile move cost on storm days, so long trips wait for better weather. The digest carries the day's
 season and weather from the `weather_changed` headline, and every prompt explains what each one changes.
+
+Movement is planned on the real map: live wakes read the public terrain, and every move target
+must be reachable within the 12-step cap along walkable tiles (a breadth-first walk), so settlers
+behind mountains build where they stand instead of asking for a walk the world refuses. Upkeep
+(repair, harvest, salvage) within reach comes before any migration.
