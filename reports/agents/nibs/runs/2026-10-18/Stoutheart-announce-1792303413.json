@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792303413",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 9415,
+  "created_utc": "2026-10-18T06:03:33.955512+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Bridge is up at (83,110), took ten wood from the gathering. Worth every plank. Neverland keeps its own roads mended, so nobody needs to leave."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1752,
+    "output_tokens": 62,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "bridge at (83,110)"
+    ],
+    "gathered": {
+      "wood": 10
+    },
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "build",
+      "gather_trip"
+    ],
+    "mood": "brave",
+    "where": [
+      82,
+      109
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
