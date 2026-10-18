@@ -15,7 +15,7 @@ import typer
 import yaml
 
 from hglab.actions import redact_observe, validate_actions
-from hglab.challenge import answer_with_retries, response_schema
+from hglab.challenge import answer_with_retries, finalize_answer, response_schema
 from hglab.client import HinterglassClient, HinterglassError
 from hglab.config import validate_config
 from hglab.kb import FRONT_MATTER, build_index, create, validate
@@ -57,8 +57,14 @@ def challenge_responder(prompt: str, usage: dict[str, int] | None = None) -> str
     output_tokens = min(500, budget["max_output_tokens"] - (usage or {}).get("output_tokens", 0))
     if output_tokens < 1:
         raise ValueError("tick output-token budget exhausted")
+    instructions = (
+        "Answer this verification challenge exactly and reply with the JSON object only, using the keys it names."
+        " Hard rules: a word limit is strict (count the words); a quoted word must appear verbatim; 'one word' means"
+        " a single word with no punctuation; 'two lines' or 'three lines' means separate lines joined with a newline;"
+        " an arithmetic or distance answer is a plain integer. The challenge:\n"
+    )
     result = structured_call(
-        "challenge", prompt, response_schema(prompt),
+        "challenge", instructions + prompt, response_schema(prompt),
         root=root, output_tokens=output_tokens,
     )
     if usage is not None:
@@ -70,7 +76,7 @@ def challenge_responder(prompt: str, usage: dict[str, int] | None = None) -> str
             provider=result.provider,
             route="challenge",
         )
-    return json.dumps(result.value)
+    return json.dumps(finalize_answer(prompt, result.value))
 
 
 def answer_daily_challenge(
@@ -91,7 +97,11 @@ def answer_daily_challenge(
         try:
             return client.verify(challenge_id, answer)
         except HinterglassError as error:
-            if error.code in {"challenge_failed", "challenge_expired"}:
+            if error.code in {"challenge_failed", "challenge_expired", "verification_required"}:
+                # a failed answer comes back as 403 verification_required with a fresh challenge in the body
+                fresh = error.details.get("challenge") if isinstance(error.details, dict) else None
+                if isinstance(fresh, dict) and fresh.get("id") and fresh.get("prompt"):
+                    pending.append(fresh)
                 return {"ok": False}
             raise
 
@@ -100,6 +110,19 @@ def answer_daily_challenge(
     )
     if not result.get("ok"):
         raise ValueError("daily verification did not succeed")
+    return True
+
+
+def ensure_verified(client: HinterglassClient, usage: dict[str, int] | None = None) -> bool:
+    """Observe and answer a pending verification challenge before anything else.
+
+    Once verification lapses every action but observe answers 403, the lease included, so this
+    runs before the lease is taken. Returns True when a challenge was answered.
+    """
+    observe = client.observe()
+    if not observe.get("challenge"):
+        return False
+    answer_daily_challenge(client, observe, usage)
     return True
 
 
@@ -368,12 +391,12 @@ def act(
         key, value = pair.split("=", 1)
         values[key] = value if key in text_fields else yaml.safe_load(value)
     client = HinterglassClient(api_key=api_key)
+    ensure_verified(client)
     lease = acquire(client, agent)
     if lease is None:
         raise typer.BadParameter(f"identity {agent} already has an active lease")
     try:
         observe = client.observe()
-        answer_daily_challenge(client, observe)
         recent_say_count, open_goal_count, prior_text = action_limits(observe)
         validated = validate_actions(
             [{"action": action, **values}],
