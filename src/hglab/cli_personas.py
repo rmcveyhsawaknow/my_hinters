@@ -1692,8 +1692,8 @@ def reports_pull(branch: str = typer.Option("reports", "--branch"), remote: str 
     count = 0
     with tarfile.open(fileobj=io.BytesIO(archive.stdout), mode="r:") as tar:
         for member in tar.getmembers():
-            if not member.name.startswith("reports/") or ".." in member.name:
-                continue
+            if not member.name.startswith("reports/") or ".." in member.name or member.name.startswith("reports/examples"):
+                continue  # examples are committed on main; a pull must not dirty them
             tar.extract(member, path=root, filter="data")
             count += 1
     typer.echo(f"pulled {count} entries into reports/ from {remote}/{branch}")

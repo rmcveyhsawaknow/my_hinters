@@ -329,13 +329,17 @@ def persona_wake(
         return {"summary": plan.get("summary", ""), "actions": actions}
 
     def _check(raw_actions: list[dict[str, Any]], observe: dict[str, Any], mates: dict[str, tuple[int, int]]) -> None:
+        from hglab.actions import private_strings
+
         recent_say_count, open_goal_count, prior_text = action_limits(observe)
+        private_text = private_strings(observe.get("notebook", {})) | private_strings(observe.get("inbox", []))
         validate_actions(
             [a for a in raw_actions] or [{"action": "remember", "key": PERSONA_STATE_KEY, "text": "{}"}],
             worn,
             recent_say_count=recent_say_count,
             open_goal_count=open_goal_count,
             prior_text=prior_text,
+            private_text=private_text,
             observe=observe,
         )
         _knobs(raw_actions, observe, mates)

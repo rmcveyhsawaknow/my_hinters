@@ -196,7 +196,7 @@ def validate_actions(
     seen = {value.casefold() for value in prior_text or set()}
     for raw in raw_actions:
         action = validate_action(raw, role, seen)
-        for value in private_text or set():
+        for value in private_text or set() if action.action not in {"remember", "forget"} else ():
             if len(value) >= 8 and any(
                 value.casefold() in str(raw.get(field, "")).casefold()
                 for field in ("text", "description", "title", "bio", "goals")
