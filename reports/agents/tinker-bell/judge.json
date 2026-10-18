@@ -1,0 +1,44 @@
+{
+ "agent": "tinker-bell",
+ "metric_version": 1,
+ "model": "claude-sonnet-5-5",
+ "provider": "anthropic",
+ "sampled_lines": 6,
+ "sampled_actions": 7,
+ "created_utc": "2026-10-18T05:51:34.994066+00:00",
+ "usage": {
+  "calls": 1,
+  "input_tokens": 1324,
+  "output_tokens": 303,
+  "model": "claude-sonnet-5-5",
+  "provider": "anthropic",
+  "route": "review"
+ },
+ "traits": [
+  {
+   "name": "fierce",
+   "score": 1,
+   "reason": "Lines say 'Build hard!' but no one crosses her and no sharp retorts or mending after damage appear."
+  },
+  {
+   "name": "loyal",
+   "score": 3,
+   "reason": "Gives directions ('East six', 'Bridges south. Come.'), builds bridges and roads, and calls to Stoutheart and Lagalong to come."
+  },
+  {
+   "name": "jealous",
+   "score": 5,
+   "reason": "Repeated clipped lines about Lagalong leaving and 'Jealous light tonight!', with 'Build harder' when Lagalong is away."
+  },
+  {
+   "name": "vain",
+   "score": 2,
+   "reason": "Announces her roads and bridges with some pleasure, but no pretended nonchalance about discoveries."
+  },
+  {
+   "name": "chime like",
+   "score": 4,
+   "reason": "Short bursts with headings and counts and exclamations, though some lines run past eight words and name peers."
+  }
+ ]
+}
