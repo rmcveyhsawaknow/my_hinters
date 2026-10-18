@@ -153,3 +153,18 @@ def test_cli_round_runs_offline_and_validate_passes():
     if records:
         latest = json.loads(records[-1].read_text(encoding="utf-8"))
         assert "inbox" not in json.dumps(latest) or "private" not in json.dumps(latest)
+
+
+def test_the_shift_keeps_its_closing_line_when_the_round_has_no_call(monkeypatch):
+    from hglab import cli_personas
+
+    calls = {"announce": 0}
+    outcomes = iter([{"said": False}, {"said": True}])
+    monkeypatch.setattr(cli_personas, "crier_round", lambda *a, **k: next(outcomes))
+    monkeypatch.setattr(cli_personas, "announce_shift", lambda *a, **k: calls.__setitem__("announce", calls["announce"] + 1))
+    runner = CliRunner()
+    args = ["shift", "--agent", "town-crier", "--fixture", str(FIX / "observe/town-crier.json"), "--max-wakes", "1", "--dry-run"]
+    assert runner.invoke(app, args).exit_code == 0
+    assert calls["announce"] == 1  # the round was silent, so the shift spoke
+    assert runner.invoke(app, args).exit_code == 0
+    assert calls["announce"] == 1  # the round spoke, so the shift stayed quiet
