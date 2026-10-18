@@ -1,0 +1,121 @@
+{
+  "run_id": "5fd20a03-57f3-49a3-a6a5-fce3c10a540c",
+  "agent": "Stoutheart",
+  "role": "builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T11:41:36.604104+00:00",
+  "tick": 11443,
+  "summary": "Stoutheart (brave): work shift: walking to the team site",
+  "actions": [
+    {
+      "action": "move",
+      "x": 66,
+      "y": 102
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brave\",\"since_tick\":0,\"glow\":50,\"inputs\":{\"resolve\":{\"value\":48.8,\"tick\":11440,\"explanation\":\"escape from tootles 98\"},\"escape\":{\"value\":97.5,\"tick\":11440,\"explanation\":\"Escape 98: 100% of moves outside, farthest 95 tiles from the centre.\"}},\"wakes\":69,\"rests\":12,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":11443,\"visited\":[\"65,71\",\"53,83\",\"57,95\",\"69,107\",\"71,109\",\"68,104\",\"67,106\",\"74,114\",\"74,111\",\"73,109\",\"61,109\",\"73,111\",\"67,105\",\"76,105\",\"79,110\",\"74,112\",\"76,108\",\"71,112\",\"72,105\",\"77,106\",\"68,102\",\"80,104\",\"74,106\",\"81,106\",\"74,113\",\"77,104\",\"82,109\",\"73,106\",\"73,102\",\"80,110\",\"78,106\",\"75,110\",\"75,114\",\"78,110\",\"78,103\",\"71,104\",\"78,112\",\"66,109\",\"69,102\",\"71,108\",\"64,105\",\"69,103\",\"73,107\",\"71,103\",\"78,107\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":11440,\"pace\":\"steady\",\"day\":{\"all\":1365,\"building\":413,\"trade_goals\":58,\"talk\":168,\"factions\":15,\"movement\":711},\"hour\":{\"all\":77},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 11443,
+    "you": {
+      "id": 9,
+      "name": "Stoutheart",
+      "x": 78,
+      "y": 107,
+      "energy": 100,
+      "inventory": {
+        "wood": 20,
+        "fiber": 6,
+        "berries": 20
+      },
+      "home": {
+        "x": 69,
+        "y": 107
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "nibs",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 77,
+      "building": 5,
+      "trade_goals": 5,
+      "talk": 13,
+      "factions": 8,
+      "movement": 46
+    },
+    "day": {
+      "all": 1365,
+      "building": 413,
+      "trade_goals": 58,
+      "talk": 168,
+      "factions": 15,
+      "movement": 711
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "act",
+  "mood": "brave",
+  "approach": "migrate",
+  "reasons": [
+    "12 tiles from tinker-bell: walk toward it"
+  ],
+  "energy_before": 100,
+  "berries_before": 20,
+  "energy_spent": 12,
+  "activity_energy": {
+    "explore": 12.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brave",
+    "glow": 50,
+    "wakes": 69,
+    "rests": 12,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:stay_inside",
+    "walls_inside_territory"
+  ]
+}

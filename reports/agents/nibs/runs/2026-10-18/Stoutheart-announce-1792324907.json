@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792324907",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 11564,
+  "created_utc": "2026-10-18T12:01:47.245752+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, no builds yet, all of them spent moving and exploring from the spot at 74, 107. Nothing built, but I'm keeping my eyes on the storehouse plan. Hello to whoever's near."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1734,
+    "output_tokens": 78,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "explore",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "brave",
+    "where": [
+      74,
+      107
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
