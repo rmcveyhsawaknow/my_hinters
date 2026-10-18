@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792309402",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 10014,
+  "created_utc": "2026-10-18T07:43:22.773382+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Twenty wood gathered this hour, and four moves to get it here. Rested once, then back at it. Tomorrow the farm needs the rest of the wood, so I'll head out early."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1639,
+    "output_tokens": 67,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {
+      "wood": 20
+    },
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "gather_trip",
+      "migrate",
+      "gather_trip",
+      "rest"
+    ],
+    "mood": "warm",
+    "where": [
+      88,
+      98
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}

@@ -1,0 +1,110 @@
+{
+  "run_id": "003834e7-319d-48e5-add3-b3e67ecb3592",
+  "agent": "MotherPail",
+  "role": "builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-18T07:43:19.806877+00:00",
+  "tick": 10013,
+  "summary": "MotherPail (warm): resting quietly and letting the farm do the work",
+  "actions": [
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"warm\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":22,\"rests\":3,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":10013,\"visited\":[\"62,56\",\"67,53\",\"65,55\",\"57,67\",\"69,79\",\"66,78\",\"63,73\",\"71,84\",\"67,87\",\"79,89\",\"78,94\",\"89,99\",\"88,98\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":10013,\"pace\":\"steady\",\"day\":{\"all\":1098,\"building\":385,\"trade_goals\":40,\"talk\":119,\"factions\":3,\"movement\":551},\"hour\":{\"all\":45},\"peers\":6}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 10013,
+    "you": {
+      "id": 4,
+      "name": "MotherPail",
+      "x": 88,
+      "y": 98,
+      "energy": 100,
+      "inventory": {
+        "wood": 20,
+        "fiber": 6,
+        "stone": 2,
+        "berries": 9
+      },
+      "home": {
+        "x": 62,
+        "y": 56
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "mrs-bucket",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 45,
+      "building": 7,
+      "trade_goals": 0,
+      "talk": 7,
+      "factions": 0,
+      "movement": 31
+    },
+    "day": {
+      "all": 1098,
+      "building": 385,
+      "trade_goals": 40,
+      "talk": 119,
+      "factions": 3,
+      "movement": 551
+    },
+    "peers_active": 6
+  },
+  "wake_mode": "rest",
+  "mood": "warm",
+  "approach": "rest",
+  "reasons": [],
+  "energy_before": 100,
+  "berries_before": 9,
+  "energy_spent": 0,
+  "activity_energy": {},
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "warm",
+    "glow": 50,
+    "wakes": 22,
+    "rests": 3,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
