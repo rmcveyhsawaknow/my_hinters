@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792383124",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 17386,
+  "created_utc": "2026-10-19T04:12:04.404424+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, four steps out and no builds yet; I'm scouting the edges so Neverland's bridges have somewhere to go. Brave is just walking back to the store."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1734,
+    "output_tokens": 63,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "migrate",
+      "explore",
+      "rest",
+      "explore"
+    ],
+    "mood": "brave",
+    "where": [
+      79,
+      102
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
