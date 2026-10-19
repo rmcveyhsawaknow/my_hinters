@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792429670",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 22040,
+  "created_utc": "2026-10-19T17:07:50.178383+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, no builds yet, all moving out at [80, 112]. Storehouse is waiting on stone, and I'll not stop until Neverland holds its own bridges."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1734,
+    "output_tokens": 65,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "migrate",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "brave",
+    "where": [
+      80,
+      112
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
