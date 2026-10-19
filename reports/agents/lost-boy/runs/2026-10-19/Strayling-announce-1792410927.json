@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792410927",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 20166,
+  "created_utc": "2026-10-19T11:55:27.464795+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes of exploring at tile 12,58 and not one rest, which is either a plan or a symptom. Edge of something, maybe sand, maybe shadow. Chasing it. Card later."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1690,
+    "output_tokens": 72,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "curious",
+    "where": [
+      12,
+      58
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
