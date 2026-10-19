@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792443888",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 23462,
+  "created_utc": "2026-10-19T21:04:48.701954+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, no bridges built this hour, three steps out across the grass at [79, 113]. Stores are steady and I'm still on my feet. Farm's next. Ask if you need a hand."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1733,
+    "output_tokens": 71,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [],
+    "gathered": {},
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "rest",
+      "rest",
+      "explore",
+      "explore"
+    ],
+    "mood": "brave",
+    "where": [
+      79,
+      113
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
