@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792435620",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 22635,
+  "created_utc": "2026-10-19T18:47:00.878335+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Friends, I walked. Five wakes of walking, four of them spent exploring at [80, 95], and I have gathered nothing but a lovely view and a sore opinion of sand. Factory still a rumor. Gentle rumor. Wafer soon, I promise, or at least a shrug."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1809,
+    "output_tokens": 102,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "explore",
+      "rest"
+    ],
+    "mood": "gentle",
+    "where": [
+      80,
+      95
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
