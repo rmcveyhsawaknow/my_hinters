@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792381819",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 17255,
+  "created_utc": "2026-10-19T03:50:19.257323+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, five steps out across the grass with nothing built and nothing carried yet. The land is wide and still mine to walk. Tomorrow I start with a basket."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1625,
+    "output_tokens": 62,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "warm",
+    "where": [
+      99,
+      89
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
