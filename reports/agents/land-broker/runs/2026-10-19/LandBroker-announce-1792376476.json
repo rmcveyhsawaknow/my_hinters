@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792376476",
+  "kind": "announce",
+  "agent": "LandBroker",
+  "persona": "land-broker",
+  "tick": 16721,
+  "created_utc": "2026-10-19T02:21:16.662374+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Land office: three claim signs posted this hour at (42,42), (37,42) and (42,37); five work wakes, one rest. Free lots remain in the 169-plot survey. Dirt is cheap until someone counts it."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1816,
+    "output_tokens": 80,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [
+      "sign at (42,42)",
+      "sign at (37,42)",
+      "sign at (42,37)"
+    ],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "stake",
+      "stake",
+      "stake",
+      "explore",
+      "rest"
+    ],
+    "mood": "brisk",
+    "where": [
+      37,
+      33
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
