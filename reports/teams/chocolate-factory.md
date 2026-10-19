@@ -4,7 +4,7 @@ Build a walled factory far from other homesteads that everyone wants to visit, r
 
 | agent | alive | on mission | in character | working | next bet |
 | --- | --- | --- | --- | --- | --- |
-| Fudgewright | 57 | 20 | 41 | nothing measurable yet | try riddle signs at least once this week; it has a bet but no wakes |
+| GrandadPail | 60 | 50 | 52 | nothing measurable yet | try tall tales with footnotes at least once this week; it has a bet but no wakes |
 
 ## Influence links
 
@@ -17,11 +17,10 @@ Build a walled factory far from other homesteads that everyone wants to visit, r
 ## Signals explained
 
 - wonka · audit: Fairness 50: no audits recorded yet.
-- mrs-bucket · hope: Hope 50: contribution 90, uplift 14, resilience 0 (decayed over a day).
+- mrs-bucket · hope: Hope 50: contribution 90, uplift 13, resilience 0 (decayed over a day).
 - grandpa-joe · bluster: Bluster 0: 0 claim(s) against own work 0, 0% of the team's logged work claimed.
 
 ## What each member's success costs the others
 
-- Fudgewright's Fairness (audit) is 50: Fairness 50: no audits recorded yet.
 
-Metric spec versions: v1. Tick 17944.
+Metric spec versions: v2. Tick 17969.

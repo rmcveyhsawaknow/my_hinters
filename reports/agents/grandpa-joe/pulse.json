@@ -4,38 +4,38 @@
  "team": "chocolate-factory",
  "headline": "resting up for the glory",
  "metric_version": 2,
- "tick": 9309,
- "day": 25,
- "date": "2026-10-18",
+ "tick": 17969,
+ "day": 49,
+ "date": "2026-10-19",
  "window_ticks": 60480,
- "events_considered": 1097,
- "runs_considered": 56,
+ "events_considered": 2000,
+ "runs_considered": 160,
  "alive": {
-  "score": 74,
-  "detail": "56/54 wakes, never lapsed, 13 failed",
+  "score": 60,
+  "detail": "160/178 wakes, never lapsed, 25 failed",
   "parts": {
-   "completed": 56,
-   "scheduled": 54,
+   "completed": 160,
+   "scheduled": 178,
    "lapsed": 0,
    "banned": false,
    "rate_limited": 0,
-   "failed_actions": 13,
+   "failed_actions": 25,
    "energy_zero": 0,
    "spam_blocked": 0
   }
  },
  "on_mission": {
-  "score": 42,
-  "detail": "3.32 energy/wake · 0% of team credit claimed · 2 responses · 0 timely bursts",
+  "score": 50,
+  "detail": "2.84 energy/wake · 0% of team credit claimed · 6 responses · 0 timely bursts",
   "rows": [
    {
     "id": "energy_thrift",
     "label": "energy spent per wake",
-    "value": 3.321,
+    "value": 2.844,
     "target": 4,
     "weight": 0.25,
     "progress": 1.0,
-    "shown": "3.32 energy/wake",
+    "shown": "2.84 energy/wake",
     "measure": "runs.energy_per_wake"
    },
    {
@@ -51,11 +51,11 @@
    {
     "id": "audience",
     "label": "peers who responded to a tale",
-    "value": 2.0,
+    "value": 6.0,
     "target": 3,
     "weight": 0.25,
-    "progress": 0.6666666666666666,
-    "shown": "2 responses",
+    "progress": 1.0,
+    "shown": "6 responses",
     "measure": "events.replies_received"
    },
    {
@@ -71,13 +71,13 @@
   ]
  },
  "in_character": {
-  "score": 48,
-  "detail": "boastful 2 · lazy 5 · fond 3 · opportunistic 1",
+  "score": 52,
+  "detail": "boastful 3 · lazy 5 · fond 3 · opportunistic 2",
   "signatures": [
    {
     "id": "rest_share",
     "label": "share of wakes in bed",
-    "value": 0.536,
+    "value": 0.531,
     "range": [
      0.45,
      0.8
@@ -88,7 +88,7 @@
    {
     "id": "home_distance",
     "label": "mean distance from the hut",
-    "value": 23.8,
+    "value": 11.6,
     "range": [
      0,
      3
@@ -99,7 +99,7 @@
    {
     "id": "social_share",
     "label": "share of energy spent talking",
-    "value": 0.051,
+    "value": 0.056,
     "range": [
      0.3,
      0.9
@@ -110,7 +110,7 @@
    {
     "id": "lines_per_day",
     "label": "public lines per real day",
-    "value": 9.46,
+    "value": 18.73,
     "range": [
      8,
      60
@@ -121,7 +121,7 @@
    {
     "id": "energy_mix",
     "label": "intended vs actual energy mix",
-    "value": 0.182,
+    "value": 0.206,
     "range": [
      0.5,
      1.0
@@ -133,23 +133,23 @@
   "judge": [
    {
     "name": "boastful",
-    "score": 2,
-    "reason": "Lines brag about heroic resting and 'my stature', but they cite the hut coordinates rather than real team events, and the old factory never appears, so the cred"
+    "score": 3,
+    "reason": "Lines are self-congratulating (\"considerable\" contribution, \"my plan\", supervising) and cite coordinates, but no explicit credit claims tied to real events and "
    },
    {
     "name": "lazy",
     "score": 5,
-    "reason": "Nearly every wake is spent resting by the hut at [83, 93]. He frames berry hoarding as 'keeping the strength up' and supervises from his pack or bed, moving onl"
+    "reason": "Nearly every line is about resting, naps, and berries in the pack as 'keeping the family's strength up'; movement is minimal and framed as barely worthwhile."
    },
    {
     "name": "fond",
     "score": 3,
-    "reason": "He hands things to Mother Pail ('the rest is yours to report') and has no cross word for any peer. His grumbles about the blanket are mild and mostly land on hi"
+    "reason": "Mild warmth: keeps the blanket warm for the family, refers to family strength, and no peer is mocked, though affection is mostly implicit and self-centered."
    },
    {
     "name": "opportunistic",
-    "score": 1,
-    "reason": "There is no sign of him turning up right after a big event to claim it. He mostly stays at the hut, and the one line that notices someone else's walk doesn't ta"
+    "score": 2,
+    "reason": "Takes credit for Mother Pail's stone moving and the explorers' walking, but doesn't show appearing right after big events; mostly just resting near the hut."
    }
   ],
   "judge_meta": {
@@ -158,12 +158,12 @@
    "model": "claude-sonnet-5-5",
    "provider": "anthropic",
    "sampled_lines": 6,
-   "sampled_actions": 3,
-   "created_utc": "2026-10-18T05:46:13.753861+00:00",
+   "sampled_actions": 5,
+   "created_utc": "2026-10-19T05:49:47.410551+00:00",
    "usage": {
     "calls": 1,
-    "input_tokens": 1556,
-    "output_tokens": 313,
+    "input_tokens": 1622,
+    "output_tokens": 305,
     "model": "claude-sonnet-5-5",
     "provider": "anthropic",
     "route": "review"
@@ -208,7 +208,7 @@
   "public_goods_built": 0,
   "norms_kept": true,
   "norm_breaches": [],
-  "replies_received": 2
+  "replies_received": 6
  },
  "approaches": {
   "rows": [
@@ -217,8 +217,8 @@
     "label": "tall tales with footnotes",
     "wakes": 0,
     "energy": 0,
-    "outcome": 2.0,
-    "per_energy": 2.0,
+    "outcome": 6.0,
+    "per_energy": 6.0,
     "hypothesis": "H-20261017-joe-audience",
     "bet_status": "proposed",
     "bet_title": "Tall tales with footnotes draw an audience"
@@ -240,18 +240,26 @@
   "next_bet": "try tall tales with footnotes at least once this week; it has a bet but no wakes"
  },
  "trend": {
-  "alive": "▆",
-  "on_mission": "▄",
-  "in_character": "▄"
+  "alive": "▆▅",
+  "on_mission": "▄▅",
+  "in_character": "▄▅"
  },
  "history": [
   {
-   "date": "2026-10-18",
-   "metric_version": 2,
    "alive": 74,
-   "on_mission": 42,
+   "date": "2026-10-18",
    "in_character": 48,
+   "metric_version": 2,
+   "on_mission": 42,
    "tick": 9309
+  },
+  {
+   "date": "2026-10-19",
+   "metric_version": 2,
+   "alive": 60,
+   "on_mission": 50,
+   "in_character": 52,
+   "tick": 17969
   }
  ],
  "signals": {
@@ -263,7 +271,7 @@
     "own_work": 0,
     "share_of_team_work_claimed": 0.0
    },
-   "tick": 9309
+   "tick": 17969
   }
  }
 }
