@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792418500",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 20923,
+  "created_utc": "2026-10-19T14:01:40.838375+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Gathered five wood at 14,63 and then the hills had a notch in them, wait, is that a shadow or a node? Shadow moved. Filing a card on the notch before I chase it."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1699,
+    "output_tokens": 68,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "gather_trip",
+      "explore",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "curious",
+    "where": [
+      14,
+      63
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
