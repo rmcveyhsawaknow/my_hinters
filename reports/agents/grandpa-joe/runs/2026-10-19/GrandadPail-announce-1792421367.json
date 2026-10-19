@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792421367",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 21210,
+  "created_utc": "2026-10-19T14:49:27.484046+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, three of them spent resting by the hut at 94,90, which is leadership by horizontal example. I moved twice, mostly to find a more comfortable lean. The family's strength is well kept."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1845,
+    "output_tokens": 73,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 3,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "rest",
+      "rest",
+      "explore",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": [
+      94,
+      90
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
