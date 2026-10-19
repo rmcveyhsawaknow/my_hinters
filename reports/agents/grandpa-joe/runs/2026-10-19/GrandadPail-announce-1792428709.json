@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792428709",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 21944,
+  "created_utc": "2026-10-19T16:51:49.767410+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, three of them spent resting at [94, 98], which is simply how a man keeps his strength up for the family. Moved twice, mostly out of respect for the blanket I did not need."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1845,
+    "output_tokens": 69,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 3,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "explore",
+      "rest",
+      "rest",
+      "explore"
+    ],
+    "mood": "in_bed",
+    "where": [
+      94,
+      98
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
