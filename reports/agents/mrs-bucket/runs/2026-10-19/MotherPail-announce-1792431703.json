@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792431703",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 22244,
+  "created_utc": "2026-10-19T17:41:43.721974+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes spent walking the grass at [81, 95], nothing built or gathered yet. Still moving, still looking. Next hour I'll put the boots to a patch of ground and see what grows."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1625,
+    "output_tokens": 71,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "warm",
+    "where": [
+      81,
+      95
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
