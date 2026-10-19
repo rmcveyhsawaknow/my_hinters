@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792439005",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 22974,
+  "created_utc": "2026-10-19T19:43:25.039005+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, three of them spent resting by the hut at [92, 91], which is what a sensible grandad does with a long hour. Moved twice, mostly for the view. Harvest credit to be claimed when the log says so."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1845,
+    "output_tokens": 79,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 3,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "rest",
+      "rest",
+      "rest",
+      "explore"
+    ],
+    "mood": "in_bed",
+    "where": [
+      92,
+      91
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
