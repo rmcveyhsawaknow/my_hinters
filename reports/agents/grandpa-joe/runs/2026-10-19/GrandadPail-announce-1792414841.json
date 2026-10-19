@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792414841",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 20558,
+  "created_utc": "2026-10-19T13:00:41.875712+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, four of them spent resting by the hut at [90, 90], and I'd call that a full day's leadership. The one move I made was a stroll, and I'm still recovering from it."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1845,
+    "output_tokens": 68,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 4,
+    "built": [],
+    "gathered": {},
+    "moved": 1,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "explore",
+      "rest",
+      "rest",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": [
+      90,
+      90
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
