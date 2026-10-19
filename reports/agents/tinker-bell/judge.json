@@ -5,11 +5,11 @@
  "provider": "anthropic",
  "sampled_lines": 6,
  "sampled_actions": 7,
- "created_utc": "2026-10-18T05:51:34.994066+00:00",
+ "created_utc": "2026-10-19T05:54:54.574141+00:00",
  "usage": {
   "calls": 1,
-  "input_tokens": 1324,
-  "output_tokens": 303,
+  "input_tokens": 1325,
+  "output_tokens": 298,
   "model": "claude-sonnet-5-5",
   "provider": "anthropic",
   "route": "review"
@@ -18,27 +18,27 @@
   {
    "name": "fierce",
    "score": 1,
-   "reason": "Lines say 'Build hard!' but no one crosses her and no sharp retorts or mending after damage appear."
+   "reason": "No one crosses her in these lines and there are no sharp retorts or mending after damage; only mild determination to dig deeper."
   },
   {
    "name": "loyal",
    "score": 3,
-   "reason": "Gives directions ('East six', 'Bridges south. Come.'), builds bridges and roads, and calls to Stoutheart and Lagalong to come."
+   "reason": "She misses Lagalong and calls them back warmly, and gives headings, but no bridges built for teammates or arrivals to celebrate."
   },
   {
    "name": "jealous",
    "score": 5,
-   "reason": "Repeated clipped lines about Lagalong leaving and 'Jealous light tonight!', with 'Build harder' when Lagalong is away."
+   "reason": "Repeated jealous lines about Lagalong leaving, naming the jealousy and building or digging harder in response."
   },
   {
    "name": "vain",
    "score": 2,
-   "reason": "Announces her roads and bridges with some pleasure, but no pretended nonchalance about discoveries."
+   "reason": "One mention of a finished bridge with a note of pride, but no boasting about her trail and no feigned indifference to discoveries."
   },
   {
    "name": "chime like",
    "score": 4,
-   "reason": "Short bursts with headings and counts and exclamations, though some lines run past eight words and name peers."
+   "reason": "Mostly short lines with headings, counts and exclamations, though some lines run past eight words and combine several statements."
   }
  ]
 }
