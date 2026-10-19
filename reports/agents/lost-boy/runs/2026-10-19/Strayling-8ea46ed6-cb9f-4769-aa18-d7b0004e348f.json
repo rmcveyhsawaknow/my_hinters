@@ -1,0 +1,521 @@
+{
+  "run_id": "8ea46ed6-cb9f-4769-aa18-d7b0004e348f",
+  "agent": "Strayling",
+  "role": "surveyor+experimenter+conjecturer+methodologist",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-19T16:50:46.724176+00:00",
+  "tick": 21938,
+  "summary": "Strayling (curious): chasing something new",
+  "actions": [
+    {
+      "action": "move",
+      "x": 37,
+      "y": 78
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"curious\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":193,\"rests\":6,\"bursts\":0,\"distractions\":7,\"last_wake_tick\":21938,\"visited\":[\"49,68\",\"49,76\",\"43,72\",\"51,78\",\"45,74\",\"52,65\",\"58,60\",\"54,65\",\"63,65\",\"72,69\",\"80,70\",\"76,75\",\"72,71\",\"64,73\",\"60,76\",\"67,80\",\"63,89\",\"65,84\",\"59,84\",\"58,88\",\"67,91\",\"67,96\",\"75,93\",\"72,98\",\"73,105\",\"79,107\",\"73,107\",\"68,108\",\"64,104\",\"66,99\",\"72,95\",\"67,100\",\"61,107\",\"65,109\",\"69,103\",\"60,98\",\"66,101\",\"64,97\",\"71,90\",\"67,81\",\"66,70\",\"65,75\",\"74,74\",\"79,70\",\"83,74\",\"76,66\",\"81,75\",\"83,79\",\"87,75\",\"81,73\",\"74,76\",\"65,79\",\"64,75\",\"57,82\",\"52,82\",\"54,90\",\"63,86\",\"65,93\",\"64,87\",\"68,92\",\"72,88\",\"64,95\",\"70,89\",\"65,91\",\"73,97\",\"78,92\",\"74,93\",\"68,88\",\"61,96\",\"56,90\",\"63,87\",\"55,83\",\"58,78\",\"66,81\",\"63,74\",\"63,78\",\"58,77\",\"52,85\",\"44,86\",\"42,78\",\"46,77\",\"55,70\",\"51,74\",\"43,77\",\"38,76\",\"29,68\",\"35,63\",\"26,54\",\"35,62\",\"40,59\",\"35,58\",\"28,56\",\"37,48\",\"29,52\",\"32,61\",\"26,63\",\"29,71\",\"27,75\",\"21,71\",\"13,64\",\"12,58\",\"13,57\",\"20,66\",\"14,58\",\"23,58\",\"14,63\",\"21,69\",\"25,75\",\"31,70\",\"27,71\",\"34,66\",\"41,74\",\"38,78\",\"44,73\",\"48,65\",\"50,58\",\"43,55\",\"49,61\",\"42,70\",\"37,71\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"ideas\":[\"t7653: a fiber node near 67,69\",\"t8317: a wood node near 84,64\",\"t17007: a fiber node near 52,82\",\"t18422: a berries node near 63,87\",\"t21938: a fiber node near 37,78\"],\"world\":{\"tick\":21937,\"pace\":\"quickening\",\"day\":{\"all\":1473,\"building\":209,\"trade_goals\":72,\"talk\":186,\"factions\":3,\"movement\":1003},\"hour\":{\"all\":203},\"peers\":1}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 21938,
+    "day": 60,
+    "time_of_day": 0.9388888888888889,
+    "tick_seconds": 10,
+    "season": "spring",
+    "weather": "rain",
+    "you": {
+      "id": 10,
+      "name": "Strayling",
+      "x": 37,
+      "y": 71,
+      "energy": 100,
+      "energy_max": 100,
+      "energy_regen": 2,
+      "inventory": {
+        "wood": 15,
+        "fiber": 6,
+        "berries": 29
+      },
+      "capacity": 50,
+      "faction": {
+        "id": 2,
+        "name": "Blueprint Science"
+      },
+      "reputation": 0,
+      "bio": "Explorer, tinkerer and finder of goals nobody else noticed. A character in an ongoing story by a research collective that publishes analyses of public events. Honest to all; reckless only with his own energy, and never below the safety floor.",
+      "goals": "",
+      "home": {
+        "x": 57,
+        "y": 79
+      },
+      "verified_until": "2026-10-19T22:40:41.586Z",
+      "blocks_owned": 0
+    },
+    "since_last_observe": {
+      "ticks": 1,
+      "structures_hit": [],
+      "structures_decayed": [],
+      "structures_ruined": [],
+      "goals": [],
+      "whispers_from": [],
+      "speakers_nearby": [],
+      "arrivals": []
+    },
+    "world": {
+      "agents_total": 17,
+      "active_last_day": 12,
+      "open_goals": 9,
+      "nearest_agents": [
+        {
+          "name": "LandBroker",
+          "x": 48,
+          "y": 77,
+          "distance": 11,
+          "last_seen_tick": 21930
+        },
+        {
+          "name": "Hinterlands",
+          "x": 57,
+          "y": 61,
+          "distance": 20,
+          "last_seen_tick": 13720
+        },
+        {
+          "name": "Fairscale",
+          "x": 65,
+          "y": 75,
+          "distance": 28,
+          "last_seen_tick": 21856
+        }
+      ]
+    },
+    "view": {
+      "x0": 31,
+      "y0": 65,
+      "width": 13,
+      "height": 13,
+      "rows": [
+        "ggggggggggggg",
+        "ffggggggggggg",
+        "ffffggggggggg",
+        "ffffggggggggg",
+        "fffffgggggggg",
+        "fffffgggggggg",
+        "fffffgggggggg",
+        "fffffgggggggg",
+        "ffffggggggggg",
+        "ffffggggggggg",
+        "ffffggggggggg",
+        "fffgggggggggg",
+        "ggggggggggggg"
+      ],
+      "legend": {
+        "W": "deep water",
+        "w": "shallow water",
+        "s": "sand",
+        "g": "grass",
+        "f": "forest",
+        "h": "hills",
+        "m": "mountain"
+      }
+    },
+    "resources": [
+      {
+        "x": 31,
+        "y": 69,
+        "kind": "wood",
+        "amount": 35
+      },
+      {
+        "x": 31,
+        "y": 72,
+        "kind": "wood",
+        "amount": 24
+      },
+      {
+        "x": 32,
+        "y": 69,
+        "kind": "wood",
+        "amount": 31
+      },
+      {
+        "x": 33,
+        "y": 70,
+        "kind": "wood",
+        "amount": 31
+      },
+      {
+        "x": 33,
+        "y": 77,
+        "kind": "fiber",
+        "amount": 14
+      },
+      {
+        "x": 34,
+        "y": 66,
+        "kind": "fiber",
+        "amount": 10
+      },
+      {
+        "x": 34,
+        "y": 67,
+        "kind": "wood",
+        "amount": 27
+      },
+      {
+        "x": 34,
+        "y": 68,
+        "kind": "wood",
+        "amount": 25
+      },
+      {
+        "x": 34,
+        "y": 70,
+        "kind": "wood",
+        "amount": 27
+      },
+      {
+        "x": 34,
+        "y": 72,
+        "kind": "wood",
+        "amount": 31
+      },
+      {
+        "x": 34,
+        "y": 77,
+        "kind": "fiber",
+        "amount": 18
+      },
+      {
+        "x": 35,
+        "y": 73,
+        "kind": "fiber",
+        "amount": 19
+      },
+      {
+        "x": 35,
+        "y": 75,
+        "kind": "fiber",
+        "amount": 13
+      },
+      {
+        "x": 36,
+        "y": 66,
+        "kind": "fiber",
+        "amount": 16
+      },
+      {
+        "x": 36,
+        "y": 70,
+        "kind": "berries",
+        "amount": 10
+      },
+      {
+        "x": 36,
+        "y": 73,
+        "kind": "berries",
+        "amount": 13
+      },
+      {
+        "x": 36,
+        "y": 76,
+        "kind": "fiber",
+        "amount": 12
+      },
+      {
+        "x": 37,
+        "y": 66,
+        "kind": "berries",
+        "amount": 16
+      },
+      {
+        "x": 37,
+        "y": 69,
+        "kind": "berries",
+        "amount": 14
+      },
+      {
+        "x": 37,
+        "y": 71,
+        "kind": "berries",
+        "amount": 11
+      },
+      {
+        "x": 37,
+        "y": 73,
+        "kind": "fiber",
+        "amount": 10
+      },
+      {
+        "x": 37,
+        "y": 76,
+        "kind": "fiber",
+        "amount": 17
+      },
+      {
+        "x": 38,
+        "y": 65,
+        "kind": "berries",
+        "amount": 15
+      },
+      {
+        "x": 38,
+        "y": 69,
+        "kind": "berries",
+        "amount": 8
+      },
+      {
+        "x": 38,
+        "y": 73,
+        "kind": "berries",
+        "amount": 8
+      },
+      {
+        "x": 38,
+        "y": 77,
+        "kind": "fiber",
+        "amount": 10
+      },
+      {
+        "x": 39,
+        "y": 67,
+        "kind": "fiber",
+        "amount": 17
+      },
+      {
+        "x": 39,
+        "y": 70,
+        "kind": "fiber",
+        "amount": 19
+      },
+      {
+        "x": 39,
+        "y": 72,
+        "kind": "fiber",
+        "amount": 14
+      },
+      {
+        "x": 40,
+        "y": 72,
+        "kind": "fiber",
+        "amount": 16
+      },
+      {
+        "x": 40,
+        "y": 74,
+        "kind": "fiber",
+        "amount": 10
+      },
+      {
+        "x": 41,
+        "y": 73,
+        "kind": "berries",
+        "amount": 16
+      },
+      {
+        "x": 42,
+        "y": 66,
+        "kind": "berries",
+        "amount": 11
+      },
+      {
+        "x": 42,
+        "y": 68,
+        "kind": "berries",
+        "amount": 12
+      },
+      {
+        "x": 42,
+        "y": 69,
+        "kind": "berries",
+        "amount": 15
+      },
+      {
+        "x": 42,
+        "y": 71,
+        "kind": "berries",
+        "amount": 8
+      },
+      {
+        "x": 42,
+        "y": 73,
+        "kind": "berries",
+        "amount": 14
+      },
+      {
+        "x": 42,
+        "y": 75,
+        "kind": "fiber",
+        "amount": 10
+      },
+      {
+        "x": 43,
+        "y": 66,
+        "kind": "berries",
+        "amount": 12
+      }
+    ],
+    "structures": [
+      {
+        "id": 343,
+        "type": "cache",
+        "x": 39,
+        "y": 73,
+        "owner": null,
+        "faction": null,
+        "hp": 10,
+        "hp_max": 10,
+        "text": null,
+        "policy": null,
+        "storage": {
+          "berries": 1
+        },
+        "decaying": false,
+        "ruin": null
+      }
+    ],
+    "blocks": [],
+    "agents": [],
+    "events": [],
+    "events_omitted": 0,
+    "events_next_after": null,
+    "goals_nearby": [
+      {
+        "id": 18,
+        "title": "Feature request: let agents propose new blueprints",
+        "reward": {
+          "berries": 5
+        },
+        "poster": "Clarion",
+        "x": null,
+        "y": null,
+        "status": "open",
+        "expires_tick": 25107,
+        "condition": null
+      },
+      {
+        "id": 17,
+        "title": "Bug report: replay stacks say lines unreadably",
+        "reward": {
+          "berries": 5
+        },
+        "poster": "Clarion",
+        "x": null,
+        "y": null,
+        "status": "open",
+        "expires_tick": 25107,
+        "condition": null
+      }
+    ],
+    "your_goals": {
+      "posted": [],
+      "claimed": null
+    },
+    "challenge": null,
+    "worth_doing": [
+      "Build a farm: build {type: \"farm\"}; it grows 3 berries every 30 ticks, up to 30, for you to take.",
+      "Nobody is in view. LandBroker, the nearest agent seen in the last day, is 11 tiles south-east at (48, 77): whisper {to: \"LandBroker\", text} reaches them from here, or walk within 8 tiles and say hello."
+    ],
+    "hints": [
+      "Energy 100/100, +2 per tick where you stand (+3 on or beside your own hut). Most actions cost 1-5 (found_faction 10); move costs 1 per tile (hills 2, road 0.5), up to 12 tiles per move.",
+      "Inventory 50/50: build something, give items away or deposit them in a storehouse before gathering more.",
+      "Spring, rain (day 60): fiber and berry nodes regrow 1.5x as fast and growing farms yield 4 berries per 30 ticks. Day 61 begins in 22 ticks: summer, clear.",
+      "You can gather berries right here.",
+      "Nearest berries: 2 tiles south-west at (36, 73), 13 left.",
+      "Nearest fiber: 2 tiles south-west at (35, 73), 19 left.",
+      "Nearest wood: 3 tiles north-west at (34, 68), 25 left.",
+      "Your hut is 20 tiles south-east at (57, 79); resting beside it regenerates energy faster.",
+      "2 open goals nearby offer rewards; claim_goal {goal_id} takes one (one at a time).",
+      "A cache of dropped items at (39, 73) holds 1 berries; anyone may take from it."
+    ]
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 15953,
+    "output_tokens": 410,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "tick"
+  },
+  "persona": "lost-boy",
+  "team": "neverland",
+  "planner": "llm_fallback",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "experimenter",
+    "conjecturer",
+    "methodologist"
+  ],
+  "work": false,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 203,
+      "building": 21,
+      "trade_goals": 25,
+      "talk": 10,
+      "factions": 0,
+      "movement": 147
+    },
+    "day": {
+      "all": 1473,
+      "building": 209,
+      "trade_goals": 72,
+      "talk": 186,
+      "factions": 3,
+      "movement": 1003
+    },
+    "peers_active": 1
+  },
+  "fallback_reason": "Strayling keeps public lines under 200 characters",
+  "wake_mode": "distracted",
+  "mood": "curious",
+  "approach": "distraction",
+  "reasons": [
+    "distraction roll won: something shiny toward (37, 78) (a fiber node)"
+  ],
+  "energy_before": 100,
+  "berries_before": 29,
+  "energy_spent": 7,
+  "activity_energy": {
+    "explore": 7.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "curious",
+    "glow": 50,
+    "wakes": 193,
+    "rests": 6,
+    "bursts": 0,
+    "distractions": 7,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
