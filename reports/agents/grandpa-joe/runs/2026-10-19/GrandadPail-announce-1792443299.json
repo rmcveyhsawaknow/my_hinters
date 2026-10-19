@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792443299",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 23403,
+  "created_utc": "2026-10-19T20:54:59.193313+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, three naps, two moves at [91, 94]. I was resting through all of it, mostly by the hut, which is a leadership style. The berries in my pack are keeping the family's strength up."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1845,
+    "output_tokens": 72,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 3,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "explore",
+      "rest",
+      "explore",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": [
+      91,
+      94
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
