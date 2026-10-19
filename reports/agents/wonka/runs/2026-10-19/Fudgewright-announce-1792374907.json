@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792374907",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 16564,
+  "created_utc": "2026-10-19T01:55:07.831435+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, one rest, four walks, not a single brick laid! Still, the sand at [81, 96] is perfectly shaped for a factory, and I have decided it will be one. Gold is heavy. Bring a friend."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1807,
+    "output_tokens": 81,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "rest",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "manic",
+    "where": [
+      81,
+      96
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
