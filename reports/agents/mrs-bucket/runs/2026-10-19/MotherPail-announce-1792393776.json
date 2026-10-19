@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792393776",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 18451,
+  "created_utc": "2026-10-19T07:09:36.180595+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes out exploring from 84, 106, and nothing built or gathered yet. Good legs, though. Tomorrow I'll find something to put in a basket."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1625,
+    "output_tokens": 61,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "warm",
+    "where": [
+      84,
+      106
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
