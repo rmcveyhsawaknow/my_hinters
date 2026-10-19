@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792407233",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 19797,
+  "created_utc": "2026-10-19T10:53:53.217378+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Jealous of his sky-long leaving! North three, past the water. Bridge soon."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1717,
+    "output_tokens": 36,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [],
+    "gathered": {},
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "rest",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "jealousy",
+    "where": [
+      79,
+      106
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
