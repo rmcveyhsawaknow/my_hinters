@@ -1,0 +1,54 @@
+{
+  "run_id": "announce-1792376307",
+  "kind": "announce",
+  "agent": "Clarion",
+  "persona": "town-crier",
+  "tick": 16704,
+  "created_utc": "2026-10-19T02:18:27.486085+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Hear this! At [60, 100] I gathered 10 berries over four wakes and moved three times, and the ground kept opening up to show me more. I have never been so dazzled by a berry in my life, and I have been looking at berries for a while."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1812,
+    "output_tokens": 84,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 4,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "berries": 10
+    },
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "gather_trip",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "dazzled",
+    "where": [
+      60,
+      100
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
