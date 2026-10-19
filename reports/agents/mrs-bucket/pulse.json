@@ -4,48 +4,48 @@
  "team": "chocolate-factory",
  "headline": "the engine nobody sees",
  "metric_version": 1,
- "tick": 9378,
- "day": 26,
- "date": "2026-10-18",
+ "tick": 18014,
+ "day": 50,
+ "date": "2026-10-19",
  "window_ticks": 60480,
- "events_considered": 1111,
- "runs_considered": 59,
+ "events_considered": 2000,
+ "runs_considered": 166,
  "alive": {
-  "score": 70,
-  "detail": "59/55 wakes, never lapsed, 35 failed",
+  "score": 59,
+  "detail": "166/187 wakes, never lapsed, 41 failed",
   "parts": {
-   "completed": 59,
-   "scheduled": 55,
+   "completed": 166,
+   "scheduled": 187,
    "lapsed": 0,
    "banned": false,
    "rate_limited": 0,
-   "failed_actions": 35,
+   "failed_actions": 41,
    "energy_zero": 0,
    "spam_blocked": 0
   }
  },
  "on_mission": {
-  "score": 26,
-  "detail": "36 contributed · 1 replies · 0 lean wakes · 0 goals for peers · Hope 20.5",
+  "score": 61,
+  "detail": "161.5 contributed · 6 replies · 0 lean wakes · 0 goals for peers · Hope 49.7",
   "rows": [
    {
     "id": "contribution",
     "label": "items given and structures built",
-    "value": 36.0,
+    "value": 161.5,
     "target": 60,
     "weight": 0.3,
-    "progress": 0.6,
-    "shown": "36 contributed",
+    "progress": 1.0,
+    "shown": "161.5 contributed",
     "measure": "events.contribution"
    },
    {
     "id": "uplift",
     "label": "replies and thanks received",
-    "value": 1.0,
+    "value": 6.0,
     "target": 6,
     "weight": 0.2,
-    "progress": 0.16666666666666666,
-    "shown": "1 replies",
+    "progress": 1.0,
+    "shown": "6 replies",
     "measure": "events.replies_received"
    },
    {
@@ -71,11 +71,11 @@
    {
     "id": "hope_emitted",
     "label": "Hope sent to Fudgewright",
-    "value": 20.5,
+    "value": 49.7,
     "target": 70,
     "weight": 0.15,
-    "progress": 0.29285714285714287,
-    "shown": "Hope 20.5",
+    "progress": 0.7100000000000001,
+    "shown": "Hope 49.7",
     "measure": "signal.value"
    }
   ]
@@ -87,7 +87,7 @@
    {
     "id": "rest_share",
     "label": "share of wakes resting",
-    "value": 0.034,
+    "value": 0.03,
     "range": [
      0.0,
      0.1
@@ -98,7 +98,7 @@
    {
     "id": "gather_share",
     "label": "share of energy spent gathering",
-    "value": 0.071,
+    "value": 0.08,
     "range": [
      0.3,
      0.6
@@ -109,7 +109,7 @@
    {
     "id": "home_distance",
     "label": "mean distance from the homestead",
-    "value": 35.095,
+    "value": 15.62,
     "range": [
      0,
      8
@@ -120,7 +120,7 @@
    {
     "id": "energy_mix",
     "label": "intended vs actual energy mix",
-    "value": 0.2,
+    "value": 0.271,
     "range": [
      0.6,
      1.0
@@ -133,22 +133,22 @@
    {
     "name": "warmth",
     "score": 3,
-    "reason": "Gave 3 berries to Fudgewright and offered berries at the storehouse, with a warm tone ('kettle is still warm'), but there are no specific thanks for deeds."
+    "reason": "She gave 3 berries to Fudgewright and her lines are gentle and upbeat, but none thank anyone for a deed and she mostly talks about herself."
    },
    {
     "name": "humility",
     "score": 3,
-    "reason": "No credit-seeking and no mention of the grandfather, but the lines narrate her own movement and progress heavily rather than redirecting to the work."
+    "reason": "She makes no boasts and claims no credit, but she says nothing that redirects praise to the work, and the lines are all self-narration."
    },
    {
     "name": "resilience",
     "score": 3,
-    "reason": "Hopeful lines about hard times ('Lean weeks end', 'light is kind') and keeps moving, but little gathering or giving in the period (one stone, one gift) and 'not"
+    "reason": "She stays hopeful about having nothing built or gathered and keeps exploring, but she is not tested by a lean wake and the repeated 'nothing yet' lines are pass"
    },
    {
     "name": "practicality",
     "score": 2,
-    "reason": "The first line has a plain next-step plan with the storehouse, and coordinates are given, but the other lines are repetitive, poetic, and mostly status chatter;"
+    "reason": "She gives coordinates and a few vague next steps such as bringing a basket tomorrow, but the repetitive lines carry little concrete coordination, and her plans "
    }
   ],
   "judge_meta": {
@@ -158,11 +158,11 @@
    "provider": "anthropic",
    "sampled_lines": 6,
    "sampled_actions": 8,
-   "created_utc": "2026-10-18T05:58:29.335486+00:00",
+   "created_utc": "2026-10-19T05:58:49.416098+00:00",
    "usage": {
     "calls": 1,
-    "input_tokens": 1476,
-    "output_tokens": 324,
+    "input_tokens": 1468,
+    "output_tokens": 291,
     "model": "claude-sonnet-5-5",
     "provider": "anthropic",
     "route": "review"
@@ -170,7 +170,7 @@
   }
  },
  "team_pull": {
-  "detail": "Hope 20 → Fudgewright",
+  "detail": "Hope 50 → Fudgewright",
   "sent": [
    {
     "from": "mrs-bucket",
@@ -180,10 +180,10 @@
     "plain_english": "When Mother Pail is contributing, uplifted and resilient, Fudgewright dreams bigger and pays better.",
     "weight": 1.0,
     "half_life_hours": 24.0,
-    "value": 20.5,
-    "decayed_value": 20.5,
+    "value": 49.7,
+    "decayed_value": 49.7,
     "age_ticks": 0,
-    "explanation": "Hope 20: contribution 31, uplift 4, resilience 0 (decayed over a day)."
+    "explanation": "Hope 50: contribution 90, uplift 13, resilience 0 (decayed over a day)."
    }
   ],
   "received": [],
@@ -191,12 +191,12 @@
  },
  "community": {
   "goals_completed_for_peers": 0,
-  "public_goods_built": 3,
+  "public_goods_built": 20,
   "norms_kept": false,
   "norm_breaches": [
    "gathered one node more than three times in an hour"
   ],
-  "replies_received": 1
+  "replies_received": 6
  },
  "approaches": {
   "rows": [
@@ -205,8 +205,8 @@
     "label": "specific thank-you lines",
     "wakes": 0,
     "energy": 0,
-    "outcome": 1.0,
-    "per_energy": 1.0,
+    "outcome": 6.0,
+    "per_energy": 6.0,
     "hypothesis": "H-20261017-bucket-thanks",
     "bet_status": "proposed",
     "bet_title": "Specific thank-you lines earn replies"
@@ -216,8 +216,8 @@
     "label": "keep the storehouse stocked",
     "wakes": 0,
     "energy": 0,
-    "outcome": 0.0,
-    "per_energy": null,
+    "outcome": 15.0,
+    "per_energy": 15.0,
     "hypothesis": "H-20261017-bucket-stocks",
     "bet_status": "proposed",
     "bet_title": "A stocked storehouse keeps teammates above the energy floor"
@@ -239,30 +239,38 @@
   "next_bet": "try specific thank-you lines at least once this week; it has a bet but no wakes"
  },
  "trend": {
-  "alive": "▆",
-  "on_mission": "▃",
-  "in_character": "▄"
+  "alive": "▆▅",
+  "on_mission": "▃▅",
+  "in_character": "▄▄"
  },
  "history": [
   {
-   "date": "2026-10-18",
-   "metric_version": 1,
    "alive": 70,
-   "on_mission": 26,
+   "date": "2026-10-18",
    "in_character": 40,
+   "metric_version": 1,
+   "on_mission": 26,
    "tick": 9378
+  },
+  {
+   "date": "2026-10-19",
+   "metric_version": 1,
+   "alive": 59,
+   "on_mission": 61,
+   "in_character": 40,
+   "tick": 18014
   }
  ],
  "signals": {
   "hope": {
-   "value": 20.5,
-   "explanation": "Hope 20: contribution 31, uplift 4, resilience 0 (decayed over a day).",
+   "value": 49.7,
+   "explanation": "Hope 50: contribution 90, uplift 13, resilience 0 (decayed over a day).",
    "parts": {
-    "contribution": 30.7,
-    "uplift": 3.8,
+    "contribution": 89.7,
+    "uplift": 13.4,
     "resilience": 0
    },
-   "tick": 9378
+   "tick": 18014
   }
  }
 }

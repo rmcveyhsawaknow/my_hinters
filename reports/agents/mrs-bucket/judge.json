@@ -5,11 +5,11 @@
  "provider": "anthropic",
  "sampled_lines": 6,
  "sampled_actions": 8,
- "created_utc": "2026-10-18T05:58:29.335486+00:00",
+ "created_utc": "2026-10-19T05:58:49.416098+00:00",
  "usage": {
   "calls": 1,
-  "input_tokens": 1476,
-  "output_tokens": 324,
+  "input_tokens": 1468,
+  "output_tokens": 291,
   "model": "claude-sonnet-5-5",
   "provider": "anthropic",
   "route": "review"
@@ -18,22 +18,22 @@
   {
    "name": "warmth",
    "score": 3,
-   "reason": "Gave 3 berries to Fudgewright and offered berries at the storehouse, with a warm tone ('kettle is still warm'), but there are no specific thanks for deeds."
+   "reason": "She gave 3 berries to Fudgewright and her lines are gentle and upbeat, but none thank anyone for a deed and she mostly talks about herself."
   },
   {
    "name": "humility",
    "score": 3,
-   "reason": "No credit-seeking and no mention of the grandfather, but the lines narrate her own movement and progress heavily rather than redirecting to the work."
+   "reason": "She makes no boasts and claims no credit, but she says nothing that redirects praise to the work, and the lines are all self-narration."
   },
   {
    "name": "resilience",
    "score": 3,
-   "reason": "Hopeful lines about hard times ('Lean weeks end', 'light is kind') and keeps moving, but little gathering or giving in the period (one stone, one gift) and 'not"
+   "reason": "She stays hopeful about having nothing built or gathered and keeps exploring, but she is not tested by a lean wake and the repeated 'nothing yet' lines are pass"
   },
   {
    "name": "practicality",
    "score": 2,
-   "reason": "The first line has a plain next-step plan with the storehouse, and coordinates are given, but the other lines are repetitive, poetic, and mostly status chatter;"
+   "reason": "She gives coordinates and a few vague next steps such as bringing a basket tomorrow, but the repetitive lines carry little concrete coordination, and her plans "
   }
  ]
 }
