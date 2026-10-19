@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792372551",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 16329,
+  "created_utc": "2026-10-19T01:15:51.931472+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Welcome, welcome to the road at (78,98), which is nearly finished, I think, the way most of my factories are nearly finished. Five wakes of walking, and the sand has only mildly objected."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1817,
+    "output_tokens": 71,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (78,98)"
+    ],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "explore",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "gentle",
+    "where": [
+      84,
+      98
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
