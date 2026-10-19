@@ -1,0 +1,121 @@
+{
+  "run_id": "d7cb64bb-02b0-40c5-acc8-d8b1cfd974ab",
+  "agent": "MotherPail",
+  "role": "builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-19T22:37:31.059253+00:00",
+  "tick": 24018,
+  "summary": "MotherPail (warm): work shift: looking for nodes",
+  "actions": [
+    {
+      "action": "move",
+      "x": 80,
+      "y": 93
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"warm\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":192,\"rests\":9,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":24018,\"visited\":[\"86,90\",\"86,98\",\"92,96\",\"92,89\",\"98,91\",\"93,93\",\"90,97\",\"86,100\",\"82,98\",\"79,107\",\"79,98\",\"83,98\",\"88,90\",\"89,96\",\"80,89\",\"89,95\",\"98,97\",\"93,92\",\"88,93\",\"93,97\",\"87,101\",\"88,107\",\"87,100\",\"96,97\",\"99,89\",\"96,94\",\"96,89\",\"92,90\",\"89,97\",\"85,93\",\"81,93\",\"85,91\",\"94,97\",\"85,104\",\"82,99\",\"82,108\",\"80,103\",\"82,95\",\"80,102\",\"84,106\",\"84,102\",\"85,97\",\"79,94\",\"88,95\",\"81,92\",\"90,96\",\"94,99\",\"98,99\",\"92,92\",\"92,98\",\"91,92\",\"98,90\",\"98,98\",\"97,93\",\"91,94\",\"88,100\",\"82,92\",\"81,96\",\"87,103\",\"87,97\",\"81,94\",\"79,90\",\"86,95\",\"95,99\",\"92,95\",\"87,102\",\"85,94\",\"90,93\",\"89,100\",\"82,106\",\"89,106\",\"80,105\",\"86,99\",\"93,91\",\"99,97\",\"96,93\",\"99,98\",\"98,93\",\"90,98\",\"87,104\",\"91,95\",\"86,91\",\"80,95\",\"89,98\",\"80,97\",\"85,105\",\"80,100\",\"86,93\",\"95,89\",\"95,93\",\"90,94\",\"97,98\",\"91,96\",\"92,91\",\"83,100\",\"79,99\",\"81,95\",\"84,90\",\"92,94\",\"96,96\",\"87,92\",\"82,89\",\"87,93\",\"83,101\",\"86,105\",\"88,97\",\"90,90\",\"99,95\",\"90,99\",\"97,95\",\"89,92\",\"98,94\",\"96,98\",\"94,93\",\"99,90\",\"91,90\",\"99,99\",\"90,92\",\"94,96\",\"85,89\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":24016,\"pace\":\"steady\",\"day\":{\"all\":1495,\"building\":138,\"trade_goals\":57,\"talk\":221,\"factions\":1,\"movement\":1078},\"hour\":{\"all\":40},\"peers\":1}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 24018,
+    "you": {
+      "id": 4,
+      "name": "MotherPail",
+      "x": 85,
+      "y": 89,
+      "energy": 100,
+      "inventory": {
+        "wood": 5,
+        "fiber": 6,
+        "berries": 35
+      },
+      "home": {
+        "x": 62,
+        "y": 56
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "mrs-bucket",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 40,
+      "building": 5,
+      "trade_goals": 0,
+      "talk": 9,
+      "factions": 0,
+      "movement": 26
+    },
+    "day": {
+      "all": 1495,
+      "building": 138,
+      "trade_goals": 57,
+      "talk": 221,
+      "factions": 1,
+      "movement": 1078
+    },
+    "peers_active": 1
+  },
+  "wake_mode": "act",
+  "mood": "warm",
+  "approach": "explore",
+  "reasons": [
+    "looking around for something I have not seen: move to (80, 93)"
+  ],
+  "energy_before": 100,
+  "berries_before": 35,
+  "energy_spent": 5,
+  "activity_energy": {
+    "explore": 5.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "warm",
+    "glow": 50,
+    "wakes": 192,
+    "rests": 9,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
