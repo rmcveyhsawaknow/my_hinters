@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792450258",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 24099,
+  "created_utc": "2026-10-19T22:50:58.115788+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, one rest. East six, past the water. Bridge soon!"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1715,
+    "output_tokens": 33,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "rest",
+      "explore"
+    ],
+    "mood": "devotion",
+    "where": [
+      72,
+      113
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
