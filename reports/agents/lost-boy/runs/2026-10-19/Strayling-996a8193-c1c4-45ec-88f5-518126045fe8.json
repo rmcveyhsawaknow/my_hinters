@@ -1,0 +1,123 @@
+{
+  "run_id": "996a8193-c1c4-45ec-88f5-518126045fe8",
+  "agent": "Strayling",
+  "role": "surveyor+experimenter+conjecturer+methodologist",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-19T14:47:47.329018+00:00",
+  "tick": 21200,
+  "summary": "Strayling (curious): work shift: looking for nodes",
+  "actions": [
+    {
+      "action": "move",
+      "x": 34,
+      "y": 66
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"curious\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":183,\"rests\":6,\"bursts\":0,\"distractions\":6,\"last_wake_tick\":21200,\"visited\":[\"19,61\",\"18,53\",\"18,61\",\"15,68\",\"21,68\",\"16,64\",\"25,71\",\"30,72\",\"38,73\",\"45,76\",\"49,68\",\"49,76\",\"43,72\",\"51,78\",\"45,74\",\"52,65\",\"58,60\",\"54,65\",\"63,65\",\"72,69\",\"80,70\",\"76,75\",\"72,71\",\"64,73\",\"60,76\",\"67,80\",\"63,89\",\"65,84\",\"59,84\",\"58,88\",\"67,91\",\"67,96\",\"75,93\",\"72,98\",\"73,105\",\"79,107\",\"73,107\",\"68,108\",\"64,104\",\"66,99\",\"72,95\",\"67,100\",\"61,107\",\"65,109\",\"69,103\",\"60,98\",\"66,101\",\"64,97\",\"71,90\",\"67,81\",\"66,70\",\"65,75\",\"74,74\",\"79,70\",\"83,74\",\"76,66\",\"81,75\",\"83,79\",\"87,75\",\"81,73\",\"74,76\",\"65,79\",\"64,75\",\"57,82\",\"52,82\",\"54,90\",\"63,86\",\"65,93\",\"64,87\",\"68,92\",\"72,88\",\"64,95\",\"70,89\",\"65,91\",\"73,97\",\"78,92\",\"74,93\",\"68,88\",\"61,96\",\"56,90\",\"63,87\",\"55,83\",\"58,78\",\"66,81\",\"63,74\",\"63,78\",\"58,77\",\"52,85\",\"44,86\",\"42,78\",\"46,77\",\"55,70\",\"51,74\",\"43,77\",\"38,76\",\"29,68\",\"35,63\",\"26,54\",\"35,62\",\"40,59\",\"35,58\",\"28,56\",\"37,48\",\"29,52\",\"32,61\",\"26,63\",\"29,71\",\"27,75\",\"21,71\",\"13,64\",\"12,58\",\"13,57\",\"20,66\",\"14,58\",\"23,58\",\"14,63\",\"21,69\",\"25,75\",\"31,70\",\"27,71\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"ideas\":[\"t6829: a berries node near 57,79\",\"t7653: a fiber node near 67,69\",\"t8317: a wood node near 84,64\",\"t17007: a fiber node near 52,82\",\"t18422: a berries node near 63,87\"],\"world\":{\"tick\":21197,\"pace\":\"steady\",\"day\":{\"all\":1319,\"building\":207,\"trade_goals\":50,\"talk\":184,\"factions\":4,\"movement\":874},\"hour\":{\"all\":52},\"peers\":2}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 21200,
+    "you": {
+      "id": 10,
+      "name": "Strayling",
+      "x": 27,
+      "y": 71,
+      "energy": 100,
+      "inventory": {
+        "wood": 15,
+        "fiber": 6,
+        "berries": 29
+      },
+      "home": {
+        "x": 57,
+        "y": 79
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "lost-boy",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "experimenter",
+    "conjecturer",
+    "methodologist"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 52,
+      "building": 0,
+      "trade_goals": 0,
+      "talk": 11,
+      "factions": 0,
+      "movement": 41
+    },
+    "day": {
+      "all": 1319,
+      "building": 207,
+      "trade_goals": 50,
+      "talk": 184,
+      "factions": 4,
+      "movement": 874
+    },
+    "peers_active": 2
+  },
+  "wake_mode": "act",
+  "mood": "curious",
+  "approach": "explore",
+  "reasons": [
+    "looking around for something I have not seen: move to (34, 66)"
+  ],
+  "energy_before": 100,
+  "berries_before": 29,
+  "energy_spent": 7,
+  "activity_energy": {
+    "explore": 7.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "curious",
+    "glow": 50,
+    "wakes": 183,
+    "rests": 6,
+    "bursts": 0,
+    "distractions": 6,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
