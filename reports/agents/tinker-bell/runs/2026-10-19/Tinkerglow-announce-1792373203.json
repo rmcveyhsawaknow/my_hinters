@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792373203",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 16394,
+  "created_utc": "2026-10-19T01:26:43.572969+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Jealous of the quiet! Bridge at (77,115) done. Build harder, east six."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1727,
+    "output_tokens": 38,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [
+      "bridge at (77,115)"
+    ],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "rest",
+      "explore",
+      "explore",
+      "build"
+    ],
+    "mood": "jealousy",
+    "where": [
+      78,
+      114
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
