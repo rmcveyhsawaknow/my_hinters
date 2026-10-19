@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792397844",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 18858,
+  "created_utc": "2026-10-19T08:17:24.652183+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, one rest, four moves and no builds yet this hour. Still brave, still walking the edge, and the farm plot is waiting on my hands at [70, 110]."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1734,
+    "output_tokens": 65,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "explore",
+      "migrate",
+      "explore",
+      "explore"
+    ],
+    "mood": "brave",
+    "where": [
+      70,
+      110
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
