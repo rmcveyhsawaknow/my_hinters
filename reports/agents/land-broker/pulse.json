@@ -3,91 +3,91 @@
  "name": "LandBroker",
  "team": "exchange",
  "headline": "the land office is open",
- "metric_version": 1,
- "tick": 9448,
- "day": 26,
- "date": "2026-10-18",
+ "metric_version": 2,
+ "tick": 18112,
+ "day": 50,
+ "date": "2026-10-19",
  "window_ticks": 60480,
- "events_considered": 1127,
- "runs_considered": 28,
+ "events_considered": 2000,
+ "runs_considered": 153,
  "alive": {
-  "score": 98,
-  "detail": "28/27 wakes, never lapsed, 1 failed",
+  "score": 88,
+  "detail": "153/159 wakes, never lapsed, 4 failed",
   "parts": {
-   "completed": 28,
-   "scheduled": 27,
+   "completed": 153,
+   "scheduled": 159,
    "lapsed": 0,
    "banned": false,
    "rate_limited": 0,
-   "failed_actions": 1,
+   "failed_actions": 4,
    "energy_zero": 0,
    "spam_blocked": 0
   }
  },
  "on_mission": {
-  "score": 15,
-  "detail": "0 deeds · 2 posted · 15 banked · 3 built · 33 tiles",
+  "score": 61,
+  "detail": "60 staked · 0 sold · 1 deeds · 5 posted · 160 banked",
   "rows": [
+   {
+    "id": "lots_staked",
+    "label": "lots staked (claim signs built)",
+    "value": 60.0,
+    "target": 60,
+    "weight": 0.3,
+    "progress": 1.0,
+    "shown": "60 staked",
+    "measure": "events.structures_built"
+   },
+   {
+    "id": "lots_sold",
+    "label": "lots sold (sale deeds announced)",
+    "value": 0.0,
+    "target": 10,
+    "weight": 0.2,
+    "progress": 0.0,
+    "shown": "0 sold",
+    "measure": "events.count"
+   },
    {
     "id": "deeds",
     "label": "deeds announced",
-    "value": 0.0,
+    "value": 1.0,
     "target": 10,
-    "weight": 0.3,
-    "progress": 0.0,
-    "shown": "0 deeds",
+    "weight": 0.15,
+    "progress": 0.1,
+    "shown": "1 deeds",
     "measure": "events.count"
    },
    {
     "id": "offers",
-    "label": "offers and registration slots posted",
-    "value": 2.0,
+    "label": "listings, offers and registration slots posted",
+    "value": 5.0,
     "target": 12,
-    "weight": 0.2,
-    "progress": 0.16666666666666666,
-    "shown": "2 posted",
+    "weight": 0.1,
+    "progress": 0.4166666666666667,
+    "shown": "5 posted",
     "measure": "events.goals_posted"
    },
    {
     "id": "vault",
     "label": "items banked in the vault",
-    "value": 15.0,
+    "value": 160.0,
     "target": 100,
     "weight": 0.25,
-    "progress": 0.15,
-    "shown": "15 banked",
+    "progress": 1.0,
+    "shown": "160 banked",
     "measure": "events.items_given_to_storehouse"
-   },
-   {
-    "id": "office",
-    "label": "storehouse and deed signs built",
-    "value": 3.0,
-    "target": 8,
-    "weight": 0.15,
-    "progress": 0.375,
-    "shown": "3 built",
-    "measure": "events.structures_built"
-   },
-   {
-    "id": "survey",
-    "label": "distinct tiles surveyed",
-    "value": 33.0,
-    "target": 120,
-    "weight": 0.1,
-    "progress": 0.275,
-    "shown": "33 tiles",
-    "measure": "events.distinct_tiles"
    }
   ]
  },
  "in_character": {
-  "score": 78,
-  "detail": "exact 4 · fair 5 · patient 4 · acquisitive 3",
+  "score": 53,
+  "detail": "exact 3 · fair 4 · patient 1 · acquisitive 3",
   "signatures": [
    {
     "id": "lines_per_day",
     "label": "public lines per real day",
-    "value": 6.52,
+    "value": 25.28,
     "range": [
      6,
      40
@@ -98,7 +98,7 @@
    {
     "id": "trade_share",
     "label": "share of energy trading",
-    "value": 0.009,
+    "value": 0.019,
     "range": [
      0.1,
      0.5
@@ -109,7 +109,7 @@
    {
     "id": "rest_share",
     "label": "share of wakes resting",
-    "value": 0.036,
+    "value": 0.059,
     "range": [
      0.0,
      0.2
@@ -120,59 +120,59 @@
    {
     "id": "energy_mix",
     "label": "intended vs actual energy mix",
-    "value": 0.613,
+    "value": 0.536,
     "range": [
      0.6,
      1.0
     ],
-    "inside": true,
+    "inside": false,
     "measure": "runs.energy_mix_match"
    }
   ],
   "judge": [
    {
     "name": "exact",
-    "score": 4,
-    "reason": "Lines give coordinates, counts (19 of 169, 150 free) and priced units (5 wood, goal numbers); no per-deed ticks are shown, so not perfect."
+    "score": 3,
+    "reason": "Lines give precise counts, prices with units (wood) and goal numbers, but there are no plot letters/numbers or deed ticks."
    },
    {
     "name": "fair",
-    "score": 5,
-    "reason": "The same 5 wood fee is posted publicly and repeated identically each time, with no private second price."
+    "score": 4,
+    "reason": "Same 6 wood price and 5 wood registration fee are posted publicly through goals, with no private pricing seen."
    },
    {
     "name": "patient",
-    "score": 4,
-    "reason": "It repeats the same posted offer without chasing or naming any buyer, though repeating the post several times is close to nagging."
+    "score": 1,
+    "reason": "The same sale message is repeated about five times in a short window, which reads as chasing buyers rather than waiting."
    },
    {
     "name": "acquisitive",
     "score": 3,
-    "reason": "It reports vault contents and buys berries for wood, but there is no evidence of taking surplus from any hand."
+    "reason": "Directs wood into the vault and sells lots as the map fills, but never counts the vault aloud or takes surplus from offered hands."
    },
    {
     "name": "dry",
     "score": 4,
-    "reason": "The line 'Dirt is cheap until it is not' is a dry aside about land, and no person is mocked; most lines carry no aside."
+    "reason": "Asides such as 'Dirt is cheap until it is not' are about dirt and price, never about people."
    },
    {
     "name": "methodical",
-    "score": 4,
-    "reason": "It builds the vault first, surveys, then opens registrations and a buy offer in order, though the actions are scattered across several builds and gathers."
+    "score": 2,
+    "reason": "Staking and selling are shown, but there is no visible survey or registration sequence and the actions are just wandering moves."
    }
   ],
   "judge_meta": {
    "agent": "land-broker",
-   "metric_version": 1,
+   "metric_version": 2,
    "model": "claude-sonnet-5-5",
    "provider": "anthropic",
    "sampled_lines": 6,
-   "sampled_actions": 8,
-   "created_utc": "2026-10-18T06:09:47.190275+00:00",
+   "sampled_actions": 7,
+   "created_utc": "2026-10-19T06:13:41.231553+00:00",
    "usage": {
     "calls": 1,
-    "input_tokens": 1744,
-    "output_tokens": 367,
+    "input_tokens": 1700,
+    "output_tokens": 346,
     "model": "claude-sonnet-5-5",
     "provider": "anthropic",
     "route": "review"
@@ -187,22 +187,33 @@
  },
  "community": {
   "goals_completed_for_peers": 0,
-  "public_goods_built": 15,
+  "public_goods_built": 87,
   "norms_kept": false,
   "norm_breaches": [
    "gathered one node more than three times in an hour"
   ],
-  "replies_received": 2
+  "replies_received": 7
  },
  "approaches": {
   "rows": [
+   {
+    "id": "stake_and_sell",
+    "label": "stake every free lot, sell at a rising price",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 95.0,
+    "per_energy": 95.0,
+    "hypothesis": null,
+    "bet_status": null,
+    "bet_title": null
+   },
    {
     "id": "fee_registration",
     "label": "registrations for a posted fee",
     "wakes": 0,
     "energy": 0,
-    "outcome": 86.0,
-    "per_energy": 86.0,
+    "outcome": 386.0,
+    "per_energy": 386.0,
     "hypothesis": "H-20261017-land-broker-fee-registrations",
     "bet_status": "proposed",
     "bet_title": "A small posted fee does not deter plot registrations"
@@ -212,8 +223,8 @@
     "label": "deliver-condition offers that fill while asleep",
     "wakes": 0,
     "energy": 0,
-    "outcome": 2.0,
-    "per_energy": 2.0,
+    "outcome": 5.0,
+    "per_energy": 5.0,
     "hypothesis": "H-20261017-land-broker-offers-fill-asleep",
     "bet_status": "proposed",
     "bet_title": "Deliver-condition offers fill while the office sleeps"
@@ -223,8 +234,8 @@
     "label": "deeds written on signs inside the plot",
     "wakes": 0,
     "energy": 0,
-    "outcome": 21.0,
-    "per_energy": 21.0,
+    "outcome": 95.0,
+    "per_energy": 95.0,
     "hypothesis": null,
     "bet_status": null,
     "bet_title": null
@@ -232,21 +243,29 @@
   ],
   "working": "nothing measurable yet",
   "not_working": "nothing clearly failing",
-  "next_bet": "try registrations for a posted fee at least once this week; it has a bet but no wakes"
+  "next_bet": "try stake every free lot, sell at a rising price at least once this week; it has a bet but no wakes"
  },
  "trend": {
-  "alive": "█",
-  "on_mission": "▂",
-  "in_character": "▆"
+  "alive": "█▇",
+  "on_mission": "▂▅",
+  "in_character": "▆▅"
  },
  "history": [
   {
-   "date": "2026-10-18",
-   "metric_version": 1,
    "alive": 98,
-   "on_mission": 15,
+   "date": "2026-10-18",
    "in_character": 78,
+   "metric_version": 1,
+   "on_mission": 15,
    "tick": 9448
+  },
+  {
+   "date": "2026-10-19",
+   "metric_version": 2,
+   "alive": 88,
+   "on_mission": 61,
+   "in_character": 53,
+   "tick": 18112
   }
  ],
  "signals": {}

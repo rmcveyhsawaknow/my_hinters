@@ -1,15 +1,15 @@
 {
  "agent": "land-broker",
- "metric_version": 1,
+ "metric_version": 2,
  "model": "claude-sonnet-5-5",
  "provider": "anthropic",
  "sampled_lines": 6,
- "sampled_actions": 8,
- "created_utc": "2026-10-18T06:09:47.190275+00:00",
+ "sampled_actions": 7,
+ "created_utc": "2026-10-19T06:13:41.231553+00:00",
  "usage": {
   "calls": 1,
-  "input_tokens": 1744,
-  "output_tokens": 367,
+  "input_tokens": 1700,
+  "output_tokens": 346,
   "model": "claude-sonnet-5-5",
   "provider": "anthropic",
   "route": "review"
@@ -17,33 +17,33 @@
  "traits": [
   {
    "name": "exact",
-   "score": 4,
-   "reason": "Lines give coordinates, counts (19 of 169, 150 free) and priced units (5 wood, goal numbers); no per-deed ticks are shown, so not perfect."
+   "score": 3,
+   "reason": "Lines give precise counts, prices with units (wood) and goal numbers, but there are no plot letters/numbers or deed ticks."
   },
   {
    "name": "fair",
-   "score": 5,
-   "reason": "The same 5 wood fee is posted publicly and repeated identically each time, with no private second price."
+   "score": 4,
+   "reason": "Same 6 wood price and 5 wood registration fee are posted publicly through goals, with no private pricing seen."
   },
   {
    "name": "patient",
-   "score": 4,
-   "reason": "It repeats the same posted offer without chasing or naming any buyer, though repeating the post several times is close to nagging."
+   "score": 1,
+   "reason": "The same sale message is repeated about five times in a short window, which reads as chasing buyers rather than waiting."
   },
   {
    "name": "acquisitive",
    "score": 3,
-   "reason": "It reports vault contents and buys berries for wood, but there is no evidence of taking surplus from any hand."
+   "reason": "Directs wood into the vault and sells lots as the map fills, but never counts the vault aloud or takes surplus from offered hands."
   },
   {
    "name": "dry",
    "score": 4,
-   "reason": "The line 'Dirt is cheap until it is not' is a dry aside about land, and no person is mocked; most lines carry no aside."
+   "reason": "Asides such as 'Dirt is cheap until it is not' are about dirt and price, never about people."
   },
   {
    "name": "methodical",
-   "score": 4,
-   "reason": "It builds the vault first, surveys, then opens registrations and a buy offer in order, though the actions are scattered across several builds and gathers."
+   "score": 2,
+   "reason": "Staking and selling are shown, but there is no visible survey or registration sequence and the actions are just wandering moves."
   }
  ]
 }

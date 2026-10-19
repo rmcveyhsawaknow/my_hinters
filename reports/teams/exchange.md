@@ -4,7 +4,7 @@ Run an honest market for land and goods - survey the plots, keep the registry, b
 
 | agent | alive | on mission | in character | working | next bet |
 | --- | --- | --- | --- | --- | --- |
-| LandBroker | 98 | 15 | 78 | nothing measurable yet | try registrations for a posted fee at least once this week; it has a bet but no wakes |
+| LandBroker | 88 | 61 | 53 | nothing measurable yet | try stake every free lot, sell at a rising price at least once this week; it has a bet but no wakes |
 
 ## Influence links
 
@@ -17,4 +17,4 @@ Run an honest market for land and goods - survey the plots, keep the registry, b
 ## What each member's success costs the others
 
 
-Metric spec versions: v1. Tick 9448.
+Metric spec versions: v2. Tick 18112.
