@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792402112",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 19285,
+  "created_utc": "2026-10-19T09:28:32.414372+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes of pure exploring at 29,68 and not one thing built, which the ledger will have opinions about. The ground here is folding, or my eyes are, anyway the ridge moved. Card's filed."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1690,
+    "output_tokens": 83,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "curious",
+    "where": [
+      29,
+      68
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
