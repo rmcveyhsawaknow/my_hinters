@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792447389",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 23812,
+  "created_utc": "2026-10-19T22:03:09.373998+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, no builds yet, two steps out to explore at [77, 111]. Brave hands are still waiting for stone. Neverland keeps its bridges mended, and I'll mend them."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1733,
+    "output_tokens": 71,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 3,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "rest",
+      "rest",
+      "explore",
+      "explore"
+    ],
+    "mood": "brave",
+    "where": [
+      77,
+      111
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
