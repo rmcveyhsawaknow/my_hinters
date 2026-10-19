@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792393630",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 18436,
+  "created_utc": "2026-10-19T07:07:10.495975+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes of wandering, gentle as a loaf rising, and the sand at 84, 92 has not yet agreed to be a factory. Patience is also fudge, I am told. Tomorrow I build something edible."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1809,
+    "output_tokens": 78,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "gentle",
+    "where": [
+      84,
+      92
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
