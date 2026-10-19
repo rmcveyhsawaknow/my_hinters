@@ -1,0 +1,110 @@
+{
+  "run_id": "cb4008d1-f5aa-4e0c-acf0-39d707bf5b3a",
+  "agent": "Lagalong",
+  "role": "surveyor+builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-19T07:14:23.399425+00:00",
+  "tick": 18480,
+  "summary": "Lagalong (wistful): work shift: nothing worth the energy this shift wake",
+  "actions": [
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"wistful\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":89,\"rests\":21,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":18480,\"visited\":[\"71,70\",\"61,60\",\"58,56\",\"60,58\",\"59,57\",\"57,55\",\"47,45\",\"37,35\",\"44,25\",\"46,21\",\"54,17\",\"64,8\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":18479,\"pace\":\"slowing\",\"day\":{\"all\":1353,\"building\":291,\"trade_goals\":73,\"talk\":186,\"factions\":27,\"movement\":776},\"hour\":{\"all\":18},\"peers\":3}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 18480,
+    "you": {
+      "id": 11,
+      "name": "Lagalong",
+      "x": 64,
+      "y": 8,
+      "energy": 100,
+      "inventory": {
+        "wood": 10,
+        "fiber": 6,
+        "berries": 34
+      },
+      "home": {
+        "x": 60,
+        "y": 58
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "tootles",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "slowing",
+    "hour": {
+      "all": 18,
+      "building": 0,
+      "trade_goals": 0,
+      "talk": 2,
+      "factions": 0,
+      "movement": 16
+    },
+    "day": {
+      "all": 1353,
+      "building": 291,
+      "trade_goals": 73,
+      "talk": 186,
+      "factions": 27,
+      "movement": 776
+    },
+    "peers_active": 3
+  },
+  "wake_mode": "act",
+  "mood": "wistful",
+  "approach": null,
+  "reasons": [],
+  "energy_before": 100,
+  "berries_before": 34,
+  "energy_spent": 0,
+  "activity_energy": {},
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "wistful",
+    "glow": 50,
+    "wakes": 89,
+    "rests": 21,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_outside",
+    "walls_inside_territory"
+  ]
+}
