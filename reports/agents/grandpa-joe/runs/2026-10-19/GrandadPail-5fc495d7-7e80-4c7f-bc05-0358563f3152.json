@@ -1,0 +1,117 @@
+{
+  "run_id": "5fc495d7-7e80-4c7f-bc05-0358563f3152",
+  "agent": "GrandadPail",
+  "role": "envoy+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-19T11:27:28.733779+00:00",
+  "tick": 19998,
+  "summary": "GrandadPail (in_bed): work shift: looking for nodes",
+  "actions": [
+    {
+      "action": "move",
+      "x": 93,
+      "y": 89
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"in_bed\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":138,\"rests\":102,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":19998,\"visited\":[\"65,61\",\"63,73\",\"71,84\",\"79,93\",\"78,94\",\"89,99\",\"89,97\",\"91,95\",\"96,95\",\"96,89\",\"89,94\",\"84,93\",\"92,90\",\"86,95\",\"87,91\",\"81,95\",\"88,90\",\"84,96\",\"81,89\",\"80,98\",\"86,99\",\"93,99\",\"87,102\",\"92,97\",\"88,92\",\"90,98\",\"81,106\",\"88,101\",\"80,107\",\"88,100\",\"87,93\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":19996,\"pace\":\"steady\",\"day\":{\"all\":1319,\"building\":265,\"trade_goals\":55,\"talk\":186,\"factions\":15,\"movement\":798},\"hour\":{\"all\":53},\"peers\":3}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 19998,
+    "you": {
+      "id": 5,
+      "name": "GrandadPail",
+      "x": 87,
+      "y": 93,
+      "energy": 100,
+      "inventory": {
+        "wood": 10,
+        "berries": 37
+      },
+      "home": null
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "grandpa-joe",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "envoy",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 53,
+      "building": 1,
+      "trade_goals": 0,
+      "talk": 10,
+      "factions": 0,
+      "movement": 42
+    },
+    "day": {
+      "all": 1319,
+      "building": 265,
+      "trade_goals": 55,
+      "talk": 186,
+      "factions": 15,
+      "movement": 798
+    },
+    "peers_active": 3
+  },
+  "wake_mode": "act",
+  "mood": "in_bed",
+  "approach": "explore",
+  "reasons": [
+    "looking around for something I have not seen: move to (93, 89)"
+  ],
+  "energy_before": 100,
+  "berries_before": 37,
+  "energy_spent": 6,
+  "activity_energy": {
+    "explore": 6.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "in_bed",
+    "glow": 50,
+    "wakes": 138,
+    "rests": 102,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
