@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792439408",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 23014,
+  "created_utc": "2026-10-19T19:50:08.039596+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Lagalong's away again. East six, past the water. Bridge soon!"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1717,
+    "output_tokens": 32,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "rest",
+      "explore"
+    ],
+    "mood": "jealousy",
+    "where": [
+      79,
+      106
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
