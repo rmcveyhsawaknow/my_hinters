@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792390040",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 18077,
+  "created_utc": "2026-10-19T06:07:20.337053+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, four steps out and no bridge yet, but the south water is still standing. Storehouse holds, so nobody needs to go far. Ask if you need a hand."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1733,
+    "output_tokens": 63,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "rest",
+      "explore",
+      "explore"
+    ],
+    "mood": "brave",
+    "where": [
+      78,
+      113
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
