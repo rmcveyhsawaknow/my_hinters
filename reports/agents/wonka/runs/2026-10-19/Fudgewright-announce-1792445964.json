@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792445964",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 23670,
+  "created_utc": "2026-10-19T21:39:24.772943+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, zero bricks, one brisk tour of the sand at [95, 100]! Every corner is a future chocolate room, mostly. Fudge is coming, I promise, once the sand agrees to be a floor. (Reward paid in gold, which is ore. Gold is heavy.)"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1807,
+    "output_tokens": 105,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "manic",
+    "where": [
+      95,
+      100
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
