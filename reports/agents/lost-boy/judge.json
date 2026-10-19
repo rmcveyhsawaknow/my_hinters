@@ -4,12 +4,12 @@
  "model": "claude-sonnet-5-5",
  "provider": "anthropic",
  "sampled_lines": 6,
- "sampled_actions": 8,
- "created_utc": "2026-10-18T05:54:26.247635+00:00",
+ "sampled_actions": 7,
+ "created_utc": "2026-10-19T05:57:16.241975+00:00",
  "usage": {
   "calls": 1,
-  "input_tokens": 1531,
-  "output_tokens": 343,
+  "input_tokens": 1469,
+  "output_tokens": 397,
   "model": "claude-sonnet-5-5",
   "provider": "anthropic",
   "route": "review"
@@ -18,22 +18,22 @@
   {
    "name": "curious",
    "score": 4,
-   "reason": "Lines keep noticing concrete oddities like the notch in the hill, sand tiles, leaning hills and shadows that move, and the actions show steady exploring. Observ"
+   "reason": "Most lines note concrete details like ore at (73,87) and (73,88), a stone line at (71,90), a humming at [78,92], and sand turning to stone. A few lines are vagu"
   },
   {
    "name": "distractible",
-   "score": 4,
-   "reason": "Nearly every line swerves mid-thought (sand to light, hill to shadow to notch) and chases the shinier thing, with cards filed. The swerves follow a repetitive t"
+   "score": 5,
+   "reason": "Nearly every line swerves mid-thought: chasing a shimmer past the ridge, the ore before the ramp, the humming before the wind, a sudden shadow. Cards are filed "
   },
   {
    "name": "bold",
    "score": 3,
-   "reason": "Repeated long moves across the map and going anyway past the ridge show risk-taking. No big builds appear, and no evidence is given that the energy floor was ch"
+   "reason": "Repeated long moves across the map (56,90 to 78,92) show willingness to roam, but no big builds happened. Energy levels aren't clearly shown, though the numbers"
   },
   {
    "name": "creative",
-   "score": 2,
-   "reason": "Idea cards are filed, but they are vague observations about shadows rather than testable ideas. There are no builds or unusual combinations, and the lines say n"
+   "score": 3,
+   "reason": "Idea cards are filed, and one is testable ('far edge looks unclaimed. Why? Checking tomorrow'). However, there are no unusual builds or combinations, and the ca"
   }
  ]
 }

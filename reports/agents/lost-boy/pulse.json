@@ -4,29 +4,29 @@
  "team": "neverland",
  "headline": "finding what nobody was looking for",
  "metric_version": 1,
- "tick": 9356,
- "day": 25,
- "date": "2026-10-18",
+ "tick": 18014,
+ "day": 50,
+ "date": "2026-10-19",
  "window_ticks": 60480,
- "events_considered": 1109,
- "runs_considered": 59,
+ "events_considered": 2000,
+ "runs_considered": 158,
  "alive": {
-  "score": 100,
-  "detail": "59/55 wakes, never lapsed",
+  "score": 78,
+  "detail": "158/187 wakes, never lapsed, 3 failed",
   "parts": {
-   "completed": 59,
-   "scheduled": 55,
+   "completed": 158,
+   "scheduled": 187,
    "lapsed": 0,
    "banned": false,
    "rate_limited": 0,
-   "failed_actions": 0,
+   "failed_actions": 3,
    "energy_zero": 0,
    "spam_blocked": 0
   }
  },
  "on_mission": {
-  "score": 55,
-  "detail": "novelty 100 · 2 filed · 0 adopted · ledger 16 · 5% distracted",
+  "score": 54,
+  "detail": "novelty 100 · 2 filed · 0 adopted · ledger 42 · 2% distracted",
   "rows": [
    {
     "id": "novelty",
@@ -61,33 +61,33 @@
    {
     "id": "risk_ledger",
     "label": "bold moves net (won minus lost)",
-    "value": 16.0,
+    "value": 42.0,
     "target": 2,
     "weight": 0.15,
     "progress": 1.0,
-    "shown": "ledger 16",
+    "shown": "ledger 42",
     "measure": "runs.risk_ledger_net"
    },
    {
     "id": "distraction_band",
     "label": "distraction rate inside its band",
-    "value": 0.051,
+    "value": 0.025,
     "target": 0.4,
     "weight": 0.1,
-    "progress": 0.12749999999999995,
-    "shown": "5% distracted",
+    "progress": 0.0625,
+    "shown": "2% distracted",
     "measure": "runs.distraction_share"
    }
   ]
  },
  "in_character": {
-  "score": 58,
-  "detail": "curious 4 · distractible 4 · bold 3 · creative 2",
+  "score": 62,
+  "detail": "curious 4 · distractible 5 · bold 3 · creative 3",
   "signatures": [
    {
     "id": "distraction_share",
     "label": "share of wakes distracted",
-    "value": 0.051,
+    "value": 0.025,
     "range": [
      0.25,
      0.55
@@ -98,7 +98,7 @@
    {
     "id": "explore_share",
     "label": "share of energy exploring",
-    "value": 0.782,
+    "value": 0.886,
     "range": [
      0.35,
      0.7
@@ -109,7 +109,7 @@
    {
     "id": "novel_tiles",
     "label": "distinct tiles visited over 7 days",
-    "value": 58.0,
+    "value": 138.0,
     "range": [
      20,
      200
@@ -120,7 +120,7 @@
    {
     "id": "energy_mix",
     "label": "intended vs actual energy mix",
-    "value": 0.718,
+    "value": 0.614,
     "range": [
      0.5,
      1.0
@@ -133,22 +133,22 @@
    {
     "name": "curious",
     "score": 4,
-    "reason": "Lines keep noticing concrete oddities like the notch in the hill, sand tiles, leaning hills and shadows that move, and the actions show steady exploring. Observ"
+    "reason": "Most lines note concrete details like ore at (73,87) and (73,88), a stone line at (71,90), a humming at [78,92], and sand turning to stone. A few lines are vagu"
    },
    {
     "name": "distractible",
-    "score": 4,
-    "reason": "Nearly every line swerves mid-thought (sand to light, hill to shadow to notch) and chases the shinier thing, with cards filed. The swerves follow a repetitive t"
+    "score": 5,
+    "reason": "Nearly every line swerves mid-thought: chasing a shimmer past the ridge, the ore before the ramp, the humming before the wind, a sudden shadow. Cards are filed "
    },
    {
     "name": "bold",
     "score": 3,
-    "reason": "Repeated long moves across the map and going anyway past the ridge show risk-taking. No big builds appear, and no evidence is given that the energy floor was ch"
+    "reason": "Repeated long moves across the map (56,90 to 78,92) show willingness to roam, but no big builds happened. Energy levels aren't clearly shown, though the numbers"
    },
    {
     "name": "creative",
-    "score": 2,
-    "reason": "Idea cards are filed, but they are vague observations about shadows rather than testable ideas. There are no builds or unusual combinations, and the lines say n"
+    "score": 3,
+    "reason": "Idea cards are filed, and one is testable ('far edge looks unclaimed. Why? Checking tomorrow'). However, there are no unusual builds or combinations, and the ca"
    }
   ],
   "judge_meta": {
@@ -157,12 +157,12 @@
    "model": "claude-sonnet-5-5",
    "provider": "anthropic",
    "sampled_lines": 6,
-   "sampled_actions": 8,
-   "created_utc": "2026-10-18T05:54:26.247635+00:00",
+   "sampled_actions": 7,
+   "created_utc": "2026-10-19T05:57:16.241975+00:00",
    "usage": {
     "calls": 1,
-    "input_tokens": 1531,
-    "output_tokens": 343,
+    "input_tokens": 1469,
+    "output_tokens": 397,
     "model": "claude-sonnet-5-5",
     "provider": "anthropic",
     "route": "review"
@@ -170,7 +170,7 @@
   }
  },
  "team_pull": {
-  "detail": "Belief 0 → Tinkerglow · Discoveries 88 → Tinkerglow",
+  "detail": "Belief 67 → Tinkerglow · Discoveries 96 → Tinkerglow",
   "sent": [
    {
     "from": "lost-boy",
@@ -180,10 +180,10 @@
     "plain_english": "Strayling wandering back inside or over a bridge counts as Belief.",
     "weight": 0.4,
     "half_life_hours": 24.0,
-    "value": 0.0,
-    "decayed_value": 0.0,
+    "value": 67.0,
+    "decayed_value": 67.0,
     "age_ticks": 0,
-    "explanation": "Belief 0: 0 arrival(s) inside, 0 bridge crossing(s), not currently inside."
+    "explanation": "Belief 67: 7 arrival(s) inside, 0 bridge crossing(s), not currently inside."
    },
    {
     "from": "lost-boy",
@@ -193,10 +193,10 @@
     "plain_english": "Every discovery Strayling files becomes an adventure Tinkerglow can lead.",
     "weight": 1.0,
     "half_life_hours": 72.0,
-    "value": 88.2,
-    "decayed_value": 88.2,
+    "value": 96.5,
+    "decayed_value": 96.5,
     "age_ticks": 0,
-    "explanation": "Discoveries 88: 58 tiles, 5 action types, 2 idea card(s), 0 adopted."
+    "explanation": "Discoveries 96: 138 tiles, 4 action types, 2 idea card(s), 0 adopted."
    }
   ],
   "received": [],
@@ -207,7 +207,7 @@
   "public_goods_built": 5,
   "norms_kept": true,
   "norm_breaches": [],
-  "replies_received": 4
+  "replies_received": 7
  },
  "approaches": {
   "rows": [
@@ -227,8 +227,8 @@
     "label": "bold long trips",
     "wakes": 0,
     "energy": 0,
-    "outcome": 16.0,
-    "per_energy": 16.0,
+    "outcome": 42.0,
+    "per_energy": 42.0,
     "hypothesis": "H-20261017-lostboy-risk-ledger",
     "bet_status": "proposed",
     "bet_title": "Bold long trips net positive items per energy"
@@ -250,41 +250,49 @@
   "next_bet": "try forty percent distraction roll at least once this week; it has a bet but no wakes"
  },
  "trend": {
-  "alive": "█",
-  "on_mission": "▅",
-  "in_character": "▅"
+  "alive": "█▆",
+  "on_mission": "▅▅",
+  "in_character": "▅▅"
  },
  "history": [
   {
-   "date": "2026-10-18",
-   "metric_version": 1,
    "alive": 100,
-   "on_mission": 55,
+   "date": "2026-10-18",
    "in_character": 58,
+   "metric_version": 1,
+   "on_mission": 55,
    "tick": 9356
+  },
+  {
+   "date": "2026-10-19",
+   "metric_version": 1,
+   "alive": 78,
+   "on_mission": 54,
+   "in_character": 62,
+   "tick": 18014
   }
  ],
  "signals": {
   "discoveries": {
-   "value": 88.2,
-   "explanation": "Discoveries 88: 58 tiles, 5 action types, 2 idea card(s), 0 adopted.",
+   "value": 96.5,
+   "explanation": "Discoveries 96: 138 tiles, 4 action types, 2 idea card(s), 0 adopted.",
    "parts": {
-    "new_tiles": 58.0,
-    "action_types": 5.0,
+    "new_tiles": 138.0,
+    "action_types": 4.0,
     "ideas_filed": 2.0,
     "adopted": 0.0
    },
-   "tick": 9356
+   "tick": 18014
   },
   "belief": {
-   "value": 0.0,
-   "explanation": "Belief 0: 0 arrival(s) inside, 0 bridge crossing(s), not currently inside.",
+   "value": 67.0,
+   "explanation": "Belief 67: 7 arrival(s) inside, 0 bridge crossing(s), not currently inside.",
    "parts": {
-    "arrivals": 0,
+    "arrivals": 22.2,
     "bridge_crossings": 0,
     "staying": 0.0
    },
-   "tick": 9356
+   "tick": 18014
   }
  }
 }
