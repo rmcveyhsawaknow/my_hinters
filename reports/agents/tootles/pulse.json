@@ -4,29 +4,29 @@
  "team": "neverland",
  "headline": "always just behind the adventure",
  "metric_version": 1,
- "tick": 9114,
- "day": 25,
- "date": "2026-10-18",
+ "tick": 17797,
+ "day": 49,
+ "date": "2026-10-19",
  "window_ticks": 60480,
- "events_considered": 1087,
- "runs_considered": 50,
+ "events_considered": 2000,
+ "runs_considered": 157,
  "alive": {
-  "score": 70,
-  "detail": "50/45 wakes, never lapsed, 23 failed",
+  "score": 61,
+  "detail": "157/172 wakes, never lapsed, 53 failed",
   "parts": {
-   "completed": 50,
-   "scheduled": 45,
+   "completed": 157,
+   "scheduled": 172,
    "lapsed": 0,
    "banned": false,
    "rate_limited": 0,
-   "failed_actions": 23,
+   "failed_actions": 53,
    "energy_zero": 0,
    "spam_blocked": 0
   }
  },
  "on_mission": {
-  "score": 65,
-  "detail": "100% outside · 0/40 saved · 3 landmarks · humility 5/5",
+  "score": 59,
+  "detail": "100% outside · 0/40 saved · 2 landmarks · humility 5/5",
   "rows": [
    {
     "id": "escape_progress",
@@ -51,11 +51,11 @@
    {
     "id": "landmarks",
     "label": "landmarks found",
-    "value": 3.0,
+    "value": 2.0,
     "target": 4,
     "weight": 0.2,
-    "progress": 0.75,
-    "shown": "3 landmarks",
+    "progress": 0.5,
+    "shown": "2 landmarks",
     "measure": "events.landmarks_found"
    },
    {
@@ -81,24 +81,24 @@
   ]
  },
  "in_character": {
-  "score": 75,
-  "detail": "humble 5 · persistent 4 · gentle 3 · wistful 3",
+  "score": 68,
+  "detail": "humble 5 · persistent 3 · gentle 4 · wistful 5",
   "signatures": [
    {
     "id": "max_distance",
     "label": "farthest distance from Neverland's centre",
-    "value": 87.0,
+    "value": 104.0,
     "range": [
      15,
      90
     ],
-    "inside": true,
+    "inside": false,
     "measure": "events.max_distance_from_home"
    },
    {
     "id": "explore_share",
     "label": "share of energy exploring",
-    "value": 0.856,
+    "value": 0.903,
     "range": [
      0.35,
      0.7
@@ -109,7 +109,7 @@
    {
     "id": "rest_share",
     "label": "share of wakes resting",
-    "value": 0.16,
+    "value": 0.134,
     "range": [
      0.05,
      0.3
@@ -120,7 +120,7 @@
    {
     "id": "energy_mix",
     "label": "intended vs actual energy mix",
-    "value": 0.644,
+    "value": 0.597,
     "range": [
      0.5,
      1.0
@@ -133,22 +133,22 @@
    {
     "name": "humble",
     "score": 5,
-    "reason": "Nearly every line hedges with 'I think' and 'if that is all right', and reports plain facts like nothing built or gathered without boasting."
+    "reason": "Nearly every line uses hedges like \"I think\" and \"if that is all right\", self-deprecates about resting, and reports without boasting."
    },
    {
     "name": "persistent",
-    "score": 4,
-    "reason": "Repeated moves toward [52, 15] and repeated vows to keep walking show steady ranging across wakes, though nothing was built or saved and the moves are repetitiv"
+    "score": 3,
+    "reason": "He keeps counting wakes and says he is walking toward the far country, but several lines admit he did not move at all, so progress is weak."
    },
    {
     "name": "gentle",
-    "score": 3,
-    "reason": "The tone is soft and free of sharp words, but no builders are thanked, so the gentleness shows only in phrasing."
+    "score": 4,
+    "reason": "The tone is soft and courteous with no sharp words, though no thanks to builders appear in these lines."
    },
    {
     "name": "wistful",
-    "score": 3,
-    "reason": "The big thing is mentioned as still unfound and the haven as far behind, with no complaint, but the longing stays understated."
+    "score": 5,
+    "reason": "He repeatedly says he is still wistful about the far country and the big thing he has not yet reached, without complaint."
    }
   ],
   "judge_meta": {
@@ -157,12 +157,12 @@
    "model": "claude-sonnet-5-5",
    "provider": "anthropic",
    "sampled_lines": 6,
-   "sampled_actions": 6,
-   "created_utc": "2026-10-18T05:18:38.012784+00:00",
+   "sampled_actions": 2,
+   "created_utc": "2026-10-19T05:22:06.426754+00:00",
    "usage": {
     "calls": 1,
-    "input_tokens": 1415,
-    "output_tokens": 261,
+    "input_tokens": 1226,
+    "output_tokens": 239,
     "model": "claude-sonnet-5-5",
     "provider": "anthropic",
     "route": "review"
@@ -170,7 +170,7 @@
   }
  },
  "team_pull": {
-  "detail": "Escape 94 → Tinkerglow, Stoutheart · Belief 0 → Tinkerglow",
+  "detail": "Escape 100 → Tinkerglow, Stoutheart · Belief 0 → Tinkerglow",
   "sent": [
    {
     "from": "tootles",
@@ -180,10 +180,10 @@
     "plain_english": "Time and distance Lagalong spends outside Neverland dim Tinkerglow's Glow; she feels abandoned.",
     "weight": -0.4,
     "half_life_hours": 24.0,
-    "value": 93.5,
-    "decayed_value": 93.5,
+    "value": 100.0,
+    "decayed_value": 100.0,
     "age_ticks": 0,
-    "explanation": "Escape 94: 100% of moves outside, farthest 87 tiles from the centre."
+    "explanation": "Escape 100: 100% of moves outside, farthest 104 tiles from the centre."
    },
    {
     "from": "tootles",
@@ -193,10 +193,10 @@
     "plain_english": "The more Lagalong leaves, the more firmly Stoutheart stays and stocks the stores.",
     "weight": 0.5,
     "half_life_hours": 48.0,
-    "value": 93.5,
-    "decayed_value": 93.5,
+    "value": 100.0,
+    "decayed_value": 100.0,
     "age_ticks": 0,
-    "explanation": "Escape 94: 100% of moves outside, farthest 87 tiles from the centre."
+    "explanation": "Escape 100: 100% of moves outside, farthest 104 tiles from the centre."
    },
    {
     "from": "tootles",
@@ -220,7 +220,7 @@
   "public_goods_built": 0,
   "norms_kept": true,
   "norm_breaches": [],
-  "replies_received": 2
+  "replies_received": 4
  },
  "approaches": {
   "rows": [
@@ -229,8 +229,8 @@
     "label": "ranging ever farther",
     "wakes": 0,
     "energy": 0,
-    "outcome": 3.0,
-    "per_energy": 3.0,
+    "outcome": 2.0,
+    "per_energy": 2.0,
     "hypothesis": "H-20261017-tootles-near-misses",
     "bet_status": "proposed",
     "bet_title": "Lagalong arrives after big events more often than chance"
@@ -252,29 +252,37 @@
   "next_bet": "try ranging ever farther at least once this week; it has a bet but no wakes"
  },
  "trend": {
-  "alive": "▆",
-  "on_mission": "▆",
-  "in_character": "▆"
+  "alive": "▆▅",
+  "on_mission": "▆▅",
+  "in_character": "▆▆"
  },
  "history": [
   {
-   "date": "2026-10-18",
-   "metric_version": 1,
    "alive": 70,
-   "on_mission": 65,
+   "date": "2026-10-18",
    "in_character": 75,
+   "metric_version": 1,
+   "on_mission": 65,
    "tick": 9114
+  },
+  {
+   "date": "2026-10-19",
+   "metric_version": 1,
+   "alive": 61,
+   "on_mission": 59,
+   "in_character": 68,
+   "tick": 17797
   }
  ],
  "signals": {
   "escape": {
-   "value": 93.5,
-   "explanation": "Escape 94: 100% of moves outside, farthest 87 tiles from the centre.",
+   "value": 100.0,
+   "explanation": "Escape 100: 100% of moves outside, farthest 104 tiles from the centre.",
    "parts": {
     "share_outside": 1.0,
-    "farthest": 87.0
+    "farthest": 104.0
    },
-   "tick": 9114
+   "tick": 17797
   },
   "belief": {
    "value": 0.0,
@@ -284,7 +292,7 @@
     "bridge_crossings": 0,
     "staying": 0.0
    },
-   "tick": 9114
+   "tick": 17797
   }
  }
 }
