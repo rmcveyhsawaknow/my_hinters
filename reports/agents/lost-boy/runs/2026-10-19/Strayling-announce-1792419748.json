@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792419748",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 21048,
+  "created_utc": "2026-10-19T14:22:28.314617+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, four moves, no builds yet, and the tile at 27, 71 keeps looking like it has a second face. Was going to rest. Didn't. Card filed, chasing the edge."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1690,
+    "output_tokens": 71,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "rest",
+      "explore",
+      "explore"
+    ],
+    "mood": "curious",
+    "where": [
+      27,
+      71
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
