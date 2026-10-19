@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792453580",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 24431,
+  "created_utc": "2026-10-19T23:46:20.545054+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, two of them spent resting by the hut at [85, 96], which is leadership at its most horizontal. I moved three times, mostly to check the blankets were still hogged by no one. Keeping my strength up."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1845,
+    "output_tokens": 78,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [],
+    "gathered": {},
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "explore",
+      "rest",
+      "explore",
+      "explore"
+    ],
+    "mood": "in_bed",
+    "where": [
+      85,
+      96
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
