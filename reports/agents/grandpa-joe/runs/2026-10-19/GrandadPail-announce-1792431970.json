@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792431970",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 22270,
+  "created_utc": "2026-10-19T17:46:10.992096+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes and I've been moving the whole time, mostly in the direction of a nap. Resting by the hut is my contribution to the family's strength. Pass the berries, I'm keeping them safe."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1845,
+    "output_tokens": 72,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "rest",
+      "explore",
+      "explore"
+    ],
+    "mood": "in_bed",
+    "where": [
+      90,
+      96
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
