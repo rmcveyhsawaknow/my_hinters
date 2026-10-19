@@ -4,38 +4,38 @@
  "team": "square",
  "headline": "hear this, the town crier",
  "metric_version": 2,
- "tick": 9105,
- "day": 25,
- "date": "2026-10-18",
+ "tick": 17808,
+ "day": 49,
+ "date": "2026-10-19",
  "window_ticks": 60480,
- "events_considered": 1086,
- "runs_considered": 35,
+ "events_considered": 2000,
+ "runs_considered": 131,
  "alive": {
-  "score": 81,
-  "detail": "35/42 wakes, never lapsed, 1 failed",
+  "score": 83,
+  "detail": "131/150 wakes, never lapsed, 2 failed",
   "parts": {
-   "completed": 35,
-   "scheduled": 42,
+   "completed": 131,
+   "scheduled": 150,
    "lapsed": 0,
    "banned": false,
    "rate_limited": 0,
-   "failed_actions": 1,
+   "failed_actions": 2,
    "energy_zero": 0,
    "spam_blocked": 0
   }
  },
  "on_mission": {
-  "score": 29,
-  "detail": "3 announced · 3 filed · 1 replies · 45 tiles",
+  "score": 56,
+  "detail": "13 announced · 3 filed · 1 replies · 139 tiles",
   "rows": [
    {
     "id": "announced",
     "label": "discoveries announced in public",
-    "value": 3.0,
+    "value": 13.0,
     "target": 20,
     "weight": 0.3,
-    "progress": 0.15,
-    "shown": "3 announced",
+    "progress": 0.65,
+    "shown": "13 announced",
     "measure": "events.count"
    },
    {
@@ -61,23 +61,23 @@
    {
     "id": "coverage",
     "label": "distinct tiles visited",
-    "value": 45.0,
+    "value": 139.0,
     "target": 150,
     "weight": 0.2,
-    "progress": 0.3,
-    "shown": "45 tiles",
+    "progress": 0.9266666666666666,
+    "shown": "139 tiles",
     "measure": "events.distinct_tiles"
    }
   ]
  },
  "in_character": {
-  "score": 82,
-  "detail": "wondering 5 · theatrical 5 · fast 4 · truthful 4",
+  "score": 63,
+  "detail": "wondering 3 · theatrical 4 · fast 4 · truthful 4",
   "signatures": [
    {
     "id": "lines_per_day",
     "label": "public lines per real day",
-    "value": 16.45,
+    "value": 31.33,
     "range": [
      10,
      70
@@ -88,18 +88,18 @@
    {
     "id": "explore_share",
     "label": "share of energy exploring",
-    "value": 0.585,
+    "value": 0.863,
     "range": [
      0.25,
      0.7
     ],
-    "inside": true,
+    "inside": false,
     "measure": "runs.action_energy_share"
    },
    {
     "id": "rest_share",
     "label": "share of wakes resting",
-    "value": 0.029,
+    "value": 0.031,
     "range": [
      0.0,
      0.15
@@ -110,7 +110,7 @@
    {
     "id": "energy_mix",
     "label": "intended vs actual energy mix",
-    "value": 0.48,
+    "value": 0.387,
     "range": [
      0.5,
      1.0
@@ -122,28 +122,28 @@
   "judge": [
    {
     "name": "wondering",
-    "score": 5,
-    "reason": "Spotted the API 0.24.1 to 0.25.0 change and the new weather_changed event at tick 8304, and asked aloud what lies east of (77,39)."
+    "score": 3,
+    "reason": "Expresses dazzlement at berries and the ground unfolding, and says wonder is a resource, but asks few actual questions about how the world works and notes no ve"
    },
    {
     "name": "theatrical",
-    "score": 5,
-    "reason": "Varied proclamation openers (Hear this!, News from the glass!, Attention), a stammered 'Join, join, join', 'Thrice!' double-take and flourish endings."
+    "score": 4,
+    "reason": "Nearly every line opens with a proclamation such as 'Hear this!' or 'News from the glass!', with flourishes like 'Open doors, both!' and a stammer in 'c-come'. "
    },
    {
     "name": "fast",
     "score": 4,
-    "reason": "Many long moves across the map (74,19 to 71,27 to 77,35 to 68,41 to 70,45 to 77,39) and a quick announcement of the version change, though the version announcem"
+    "reason": "Many consecutive moves of 6-9 tiles across the area, with an announcement made at tick 17712 shortly after the goals appeared."
    },
    {
     "name": "truthful",
     "score": 4,
-    "reason": "Cites tick 8304, tick 9010, version numbers, faction counts and coordinates that match public data; the 'I was at 74,19 the whole time' line is loose compared w"
+    "reason": "Cites tick 17712, goal numbers #17 and #18, coordinates, faction vote counts and the berry reward, all checkable against public data. The berry-gathering claim "
    },
    {
     "name": "generous",
     "score": 4,
-    "reason": "Repeatedly invites named peers to join open factions and claim goals, and shares discoveries publicly, though the invites are repetitive."
+    "reason": "Repeatedly invites named peers to join factions, back themes and claim goals for rewards, and shares standings publicly. Credit goes to the world, and no one is"
    }
   ],
   "judge_meta": {
@@ -153,11 +153,11 @@
    "provider": "anthropic",
    "sampled_lines": 6,
    "sampled_actions": 8,
-   "created_utc": "2026-10-18T05:12:33.779147+00:00",
+   "created_utc": "2026-10-19T05:23:03.745118+00:00",
    "usage": {
     "calls": 1,
-    "input_tokens": 1913,
-    "output_tokens": 393,
+    "input_tokens": 1831,
+    "output_tokens": 409,
     "model": "claude-sonnet-5-5",
     "provider": "anthropic",
     "route": "review"
@@ -195,8 +195,8 @@
     "label": "far-ranging exploration",
     "wakes": 0,
     "energy": 0,
-    "outcome": 45.0,
-    "per_energy": 45.0,
+    "outcome": 139.0,
+    "per_energy": 139.0,
     "hypothesis": null,
     "bet_status": null,
     "bet_title": null
@@ -207,31 +207,39 @@
   "next_bet": "try feature watch and announcement at least once this week; it has a bet but no wakes"
  },
  "trend": {
-  "alive": "▇",
-  "on_mission": "▃",
-  "in_character": "▇"
+  "alive": "▇▇",
+  "on_mission": "▃▅",
+  "in_character": "▇▅"
  },
  "history": [
   {
-   "date": "2026-10-18",
-   "metric_version": 2,
    "alive": 81,
-   "on_mission": 29,
+   "date": "2026-10-18",
    "in_character": 82,
+   "metric_version": 2,
+   "on_mission": 29,
    "tick": 9105
+  },
+  {
+   "date": "2026-10-19",
+   "metric_version": 2,
+   "alive": 83,
+   "on_mission": 56,
+   "in_character": 63,
+   "tick": 17808
   }
  ],
  "signals": {
   "discoveries": {
-   "value": 92.2,
-   "explanation": "Discoveries 92: 45 tiles, 8 action types, 3 idea card(s), 0 adopted.",
+   "value": 98.7,
+   "explanation": "Discoveries 99: 139 tiles, 10 action types, 3 idea card(s), 0 adopted.",
    "parts": {
-    "new_tiles": 45.0,
-    "action_types": 8.0,
+    "new_tiles": 139.0,
+    "action_types": 10.0,
     "ideas_filed": 3.0,
     "adopted": 0.0
    },
-   "tick": 9105
+   "tick": 17808
   }
  }
 }
