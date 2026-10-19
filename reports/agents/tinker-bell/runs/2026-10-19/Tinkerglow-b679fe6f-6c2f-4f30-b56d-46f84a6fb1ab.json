@@ -1,0 +1,122 @@
+{
+  "run_id": "b679fe6f-6c2f-4f30-b56d-46f84a6fb1ab",
+  "agent": "Tinkerglow",
+  "role": "navigator+surveyor+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-19T20:33:43.870820+00:00",
+  "tick": 23276,
+  "summary": "Tinkerglow (mischief): work shift: looking for nodes",
+  "actions": [
+    {
+      "action": "move",
+      "x": 79,
+      "y": 113
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"mischief\",\"since_tick\":23276,\"glow\":100,\"inputs\":{\"glow\":{\"value\":100.0,\"tick\":23265,\"explanation\":\"courage from nibs 43; escape from tootles 0; belief from nibs 100; belief from tootles 0; belief from lost-boy 52\"},\"adventure_options\":{\"value\":96.3,\"tick\":23265,\"explanation\":\"discoveries from lost-boy 96\"},\"courage\":{\"value\":43.1,\"tick\":23265,\"explanation\":\"Courage 43: 1 hard job(s) inside, 0 greeting(s), structures standing 100%.\"},\"escape\":{\"value\":0.0,\"tick\":23265,\"explanation\":\"Escape 0: 0% of moves outside, farthest 0 tiles from the centre.\"},\"belief\":{\"value\":51.6,\"tick\":23265,\"explanation\":\"Belief 52: 7 arrival(s) inside, 0 bridge crossing(s), not currently inside.\"},\"discoveries\":{\"value\":96.3,\"tick\":23265,\"explanation\":\"Discoveries 96: 128 tiles, 5 action types, 2 idea card(s), 0 adopted.\"}},\"wakes\":213,\"rests\":27,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":23276,\"heading\":\"S\",\"visited\":[\"70,56\",\"68,54\",\"67,55\",\"55,67\",\"43,79\",\"53,91\",\"65,103\",\"63,98\",\"72,110\",\"73,109\",\"73,114\",\"68,109\",\"61,109\",\"73,111\",\"73,104\",\"80,104\",\"80,111\",\"80,107\",\"73,107\",\"73,100\",\"74,112\",\"81,112\",\"79,110\",\"79,113\",\"78,110\",\"66,109\",\"66,102\",\"73,102\",\"71,109\",\"78,109\",\"78,114\",\"72,108\",\"72,114\",\"72,107\",\"79,107\",\"72,113\",\"72,106\",\"79,106\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":23272,\"pace\":\"steady\",\"day\":{\"all\":1430,\"building\":138,\"trade_goals\":63,\"talk\":204,\"factions\":1,\"movement\":1024},\"hour\":{\"all\":39},\"peers\":1}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 23276,
+    "you": {
+      "id": 6,
+      "name": "Tinkerglow",
+      "x": 79,
+      "y": 106,
+      "energy": 100,
+      "inventory": {
+        "wood": 4,
+        "fiber": 7,
+        "berries": 38
+      },
+      "home": {
+        "x": 80,
+        "y": 104
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "tinker-bell",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "navigator",
+    "surveyor",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 39,
+      "building": 0,
+      "trade_goals": 0,
+      "talk": 8,
+      "factions": 0,
+      "movement": 31
+    },
+    "day": {
+      "all": 1430,
+      "building": 138,
+      "trade_goals": 63,
+      "talk": 204,
+      "factions": 1,
+      "movement": 1024
+    },
+    "peers_active": 1
+  },
+  "wake_mode": "act",
+  "mood": "mischief",
+  "approach": "explore",
+  "reasons": [
+    "second star to the right: heading S: move to (79, 113)"
+  ],
+  "energy_before": 100,
+  "berries_before": 38,
+  "energy_spent": 7,
+  "activity_energy": {
+    "explore": 7.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "mischief",
+    "glow": 100,
+    "wakes": 213,
+    "rests": 27,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": "S"
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
