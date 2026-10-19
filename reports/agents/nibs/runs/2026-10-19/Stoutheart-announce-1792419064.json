@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792419064",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 20980,
+  "created_utc": "2026-10-19T14:11:04.074833+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, five moves, nothing built yet, but I walked the edge at [76, 102] so the ground knows my name. Storehouse next. Worth it."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1735,
+    "output_tokens": 60,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "explore",
+      "migrate",
+      "explore",
+      "explore"
+    ],
+    "mood": "brave",
+    "where": [
+      76,
+      102
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
