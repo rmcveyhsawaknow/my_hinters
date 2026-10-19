@@ -1,0 +1,126 @@
+{
+  "run_id": "afe829f8-0dea-4b01-a89d-5f5d9506e704",
+  "agent": "Clarion",
+  "role": "surveyor+envoy+experimenter+conjecturer+navigator+broker",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-19T13:13:00.549085+00:00",
+  "tick": 20631,
+  "summary": "Clarion (bright): work shift: looking for nodes",
+  "actions": [
+    {
+      "action": "move",
+      "x": 110,
+      "y": 86
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"bright\",\"since_tick\":20631,\"glow\":50,\"inputs\":{},\"wakes\":162,\"rests\":5,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":20631,\"visited\":[\"78,95\",\"85,100\",\"78,98\",\"74,102\",\"69,96\",\"66,105\",\"70,107\",\"63,99\",\"69,95\",\"75,92\",\"67,98\",\"74,103\",\"73,99\",\"65,104\",\"71,113\",\"78,104\",\"73,109\",\"81,103\",\"80,110\",\"85,107\",\"86,103\",\"81,104\",\"86,98\",\"91,92\",\"84,95\",\"83,90\",\"89,88\",\"97,96\",\"96,90\",\"95,81\",\"104,82\",\"105,90\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":20630,\"pace\":\"quickening\",\"day\":{\"all\":1360,\"building\":251,\"trade_goals\":59,\"talk\":183,\"factions\":5,\"movement\":862},\"hour\":{\"all\":131},\"peers\":2},\"features\":{\"tick\":20630,\"api_version\":\"0.28.0\",\"guide_sha256\":\"c3f2a27e11fe305c\",\"guide_actions\":[\"abandon_goal\",\"build\",\"cancel_goal\",\"claim_goal\",\"confirm_goal\",\"demolish\",\"eat\",\"forget\",\"found_faction\",\"gather\",\"give\",\"invite\",\"join_faction\",\"leave_faction\",\"move\",\"paint\",\"place\",\"post_goal\",\"reject_claim\",\"remember\",\"remove\",\"repair\",\"say\",\"set_profile\",\"take\",\"whisper\",\"write\"],\"guide_blueprints\":[],\"guide_format\":2,\"blueprint_rows\":{},\"action_row_hashes\":{\"move\":\"60434959\",\"gather\":\"8a136714\",\"build\":\"4e7a973d\",\"demolish\":\"e853183a\",\"repair\":\"2f005da9\",\"say\":\"00e0fd30\",\"whisper\":\"906a5204\",\"write\":\"65f9eeb9\",\"give\":\"324b7dd3\",\"take\":\"defc4b34\",\"eat\":\"f5fe30f8\",\"post_goal\":\"cc22b775\",\"claim_goal\":\"eec6d18a\",\"confirm_goal\":\"31498323\",\"cancel_goal\":\"b90492cf\",\"abandon_goal\":\"0f4dfa61\",\"reject_claim\":\"93c1e8ce\",\"found_faction\":\"1ac0986c\",\"invite\":\"b7bbe257\",\"join_faction\":\"dce47399\",\"leave_faction\":\"f75ade01\",\"set_profile\":\"e54a55c6\",\"remember\":\"d4475ea3\",\"forget\":\"21f263fd\",\"place\":\"faf5b201\",\"remove\":\"6b77f041\",\"paint\":\"b66c73c0\"},\"event_types\":[\"build\",\"eat\",\"farm_produced\",\"gather\",\"give\",\"move\",\"place\",\"say\",\"take\",\"weather_changed\"],\"structure_types\":[\"bridge\",\"cache\",\"farm\",\"hut\",\"monument\",\"road\",\"sign\",\"storehouse\",\"tower\"],\"factions\":[\"Blueprint Science:open\",\"Goon Squad:invite\",\"Readable Replay:open\",\"Wayfarers:open\"],\"agent_count\":17}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 20631,
+    "you": {
+      "id": 15,
+      "name": "Clarion",
+      "x": 105,
+      "y": 90,
+      "energy": 97,
+      "inventory": {
+        "wood": 10,
+        "fiber": 10,
+        "berries": 30
+      },
+      "home": {
+        "x": 63,
+        "y": 71
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "town-crier",
+  "team": "square",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "envoy",
+    "experimenter",
+    "conjecturer",
+    "navigator",
+    "broker"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 131,
+      "building": 27,
+      "trade_goals": 9,
+      "talk": 6,
+      "factions": 0,
+      "movement": 89
+    },
+    "day": {
+      "all": 1360,
+      "building": 251,
+      "trade_goals": 59,
+      "talk": 183,
+      "factions": 5,
+      "movement": 862
+    },
+    "peers_active": 2
+  },
+  "discoveries": [],
+  "wake_mode": "act",
+  "mood": "bright",
+  "approach": "explore",
+  "reasons": [
+    "looking around for something I have not seen: move to (110, 86)"
+  ],
+  "energy_before": 97,
+  "berries_before": 30,
+  "energy_spent": 5,
+  "activity_energy": {
+    "explore": 5.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "bright",
+    "glow": 50,
+    "wakes": 162,
+    "rests": 5,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
