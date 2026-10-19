@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792444111",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 23484,
+  "created_utc": "2026-10-19T21:08:31.054471+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Put a bridge at (27,33) and then, wait, fifteen wood is a lot of wood for one hour, so who was that for, me? Anyway the ledger says ask me tomorrow about the rest."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1712,
+    "output_tokens": 74,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "bridge at (27,33)"
+    ],
+    "gathered": {
+      "wood": 15
+    },
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "gather_trip",
+      "gather_trip",
+      "explore",
+      "explore"
+    ],
+    "mood": "curious",
+    "where": [
+      44,
+      45
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
