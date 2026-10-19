@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792378343",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 16908,
+  "created_utc": "2026-10-19T02:52:23.689972+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Friends, I have walked five wakes in search of a good place for the factory and found only sand and a very agreeable breeze. Five steps, no fudge yet, and I am calling it progress. Bring a hand cart. Or a friend."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1809,
+    "output_tokens": 82,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "gentle",
+    "where": [
+      99,
+      99
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
