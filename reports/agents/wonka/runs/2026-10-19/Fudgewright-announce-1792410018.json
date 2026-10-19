@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792410018",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 20075,
+  "created_utc": "2026-10-19T11:40:18.254995+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes of walking and one rest, friends, and I have not built a single wall yet, which is the most factory-like thing I have ever done. Position eighty-two, one-oh-three. Come see the nothing with me."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1809,
+    "output_tokens": 77,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "rest",
+      "explore"
+    ],
+    "mood": "gentle",
+    "where": [
+      82,
+      103
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
