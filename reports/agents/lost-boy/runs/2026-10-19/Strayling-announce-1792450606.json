@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792450606",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 24134,
+  "created_utc": "2026-10-19T22:56:46.286174+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Built a bridge at (65,7) to see where the water line goes, and it goes somewhere, which I did not expect, so now I want to know if the ten wood can make a second one, or whether that's the ledger."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1709,
+    "output_tokens": 84,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "bridge at (65,7)"
+    ],
+    "gathered": {
+      "wood": 10
+    },
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "build",
+      "gather_trip"
+    ],
+    "mood": "curious",
+    "where": [
+      64,
+      10
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
