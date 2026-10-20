@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792501565",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 29230,
+  "created_utc": "2026-10-20T13:06:05.138616+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, three steps east, and at [67, 55] I keep circling a reclaim like it owes me a tile. Idea card filed: why does the deposit trip keep looking better than it is? Ask me after the rest."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1700,
+    "output_tokens": 79,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "reclaim",
+      "deposit_trip",
+      "rest",
+      "reclaim",
+      "reclaim"
+    ],
+    "mood": "curious",
+    "where": [
+      67,
+      55
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
