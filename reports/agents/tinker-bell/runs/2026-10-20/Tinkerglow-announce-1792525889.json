@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792525889",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 31662,
+  "created_utc": "2026-10-20T19:51:29.155061+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Moved four tiles, still no bridge! Lagalong, east six, past the water?"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1717,
+    "output_tokens": 36,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "rest",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "jealousy",
+    "where": [
+      79,
+      106
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
