@@ -179,3 +179,15 @@ def test_the_shift_keeps_its_closing_line_when_the_round_has_no_call(monkeypatch
     assert calls["announce"] == 1  # the round was silent, so the shift spoke
     assert runner.invoke(app, args).exit_code == 0
     assert calls["announce"] == 1  # the round spoke, so the shift stayed quiet
+
+
+def test_an_agent_already_invited_in_public_is_not_invited_again():
+    from hglab.crier import plan_invites
+    from hglab.persona import load_personas
+
+    clarion = load_personas(ROOT)["town-crier"]
+    theme = {"name": "Readable Replay", "founded": True}
+    events = [{"type": "faction_invited", "actor": "Clarion", "text": "Clarion invited LandBroker to Readable Replay."}]
+    actions, _reasons, names = plan_invites(clarion, {}, theme, ["LandBroker", "Quill", "Cairn"], {"Cairn": "Goon Squad"}, {}, public_events=events)
+    assert names == ["Quill"] and actions == [{"action": "invite", "name": "Quill"}]
+    assert plan_invites(clarion, {}, theme, ["LandBroker"], {}, {"invited": ["LandBroker"]})[2] == []
