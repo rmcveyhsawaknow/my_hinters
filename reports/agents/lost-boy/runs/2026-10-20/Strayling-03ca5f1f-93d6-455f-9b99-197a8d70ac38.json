@@ -1,0 +1,123 @@
+{
+  "run_id": "03ca5f1f-93d6-455f-9b99-197a8d70ac38",
+  "agent": "Strayling",
+  "role": "surveyor+experimenter+conjecturer+methodologist",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-20T01:46:19.469655+00:00",
+  "tick": 25151,
+  "summary": "Strayling (curious): work shift: looking for nodes",
+  "actions": [
+    {
+      "action": "move",
+      "x": 95,
+      "y": 27
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"curious\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":242,\"rests\":7,\"bursts\":0,\"distractions\":7,\"last_wake_tick\":25151,\"visited\":[\"74,74\",\"79,70\",\"83,74\",\"76,66\",\"81,75\",\"83,79\",\"87,75\",\"81,73\",\"74,76\",\"65,79\",\"64,75\",\"57,82\",\"52,82\",\"54,90\",\"63,86\",\"65,93\",\"64,87\",\"68,92\",\"72,88\",\"64,95\",\"70,89\",\"65,91\",\"73,97\",\"78,92\",\"74,93\",\"68,88\",\"61,96\",\"56,90\",\"63,87\",\"55,83\",\"58,78\",\"66,81\",\"63,74\",\"63,78\",\"58,77\",\"52,85\",\"44,86\",\"42,78\",\"46,77\",\"55,70\",\"51,74\",\"43,77\",\"38,76\",\"29,68\",\"35,63\",\"26,54\",\"35,62\",\"40,59\",\"35,58\",\"28,56\",\"37,48\",\"29,52\",\"32,61\",\"26,63\",\"29,71\",\"27,75\",\"21,71\",\"13,64\",\"12,58\",\"13,57\",\"20,66\",\"14,58\",\"23,58\",\"14,63\",\"21,69\",\"25,75\",\"31,70\",\"27,71\",\"34,66\",\"41,74\",\"38,78\",\"44,73\",\"48,65\",\"50,58\",\"43,55\",\"49,61\",\"42,70\",\"37,71\",\"37,78\",\"41,80\",\"35,72\",\"31,64\",\"32,71\",\"27,74\",\"30,69\",\"25,60\",\"24,64\",\"26,55\",\"31,54\",\"35,57\",\"26,50\",\"30,44\",\"27,35\",\"32,41\",\"40,45\",\"42,39\",\"37,36\",\"28,34\",\"29,33\",\"37,39\",\"44,45\",\"43,39\",\"50,38\",\"56,31\",\"65,31\",\"65,26\",\"74,23\",\"69,15\",\"66,8\",\"64,10\",\"70,15\",\"65,23\",\"68,29\",\"77,38\",\"81,38\",\"89,30\",\"87,35\",\"93,30\",\"85,37\",\"92,33\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"ideas\":[\"t7653: a fiber node near 67,69\",\"t8317: a wood node near 84,64\",\"t17007: a fiber node near 52,82\",\"t18422: a berries node near 63,87\",\"t21938: a fiber node near 37,78\"],\"world\":{\"tick\":25150,\"pace\":\"steady\",\"day\":{\"all\":1419,\"building\":94,\"trade_goals\":46,\"talk\":227,\"factions\":1,\"movement\":1051},\"hour\":{\"all\":60},\"peers\":1}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 25151,
+    "you": {
+      "id": 10,
+      "name": "Strayling",
+      "x": 92,
+      "y": 33,
+      "energy": 100,
+      "inventory": {
+        "wood": 15,
+        "fiber": 6,
+        "berries": 29
+      },
+      "home": {
+        "x": 57,
+        "y": 79
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "lost-boy",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "experimenter",
+    "conjecturer",
+    "methodologist"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 60,
+      "building": 4,
+      "trade_goals": 3,
+      "talk": 12,
+      "factions": 0,
+      "movement": 41
+    },
+    "day": {
+      "all": 1419,
+      "building": 94,
+      "trade_goals": 46,
+      "talk": 227,
+      "factions": 1,
+      "movement": 1051
+    },
+    "peers_active": 1
+  },
+  "wake_mode": "act",
+  "mood": "curious",
+  "approach": "explore",
+  "reasons": [
+    "looking around for something I have not seen: move to (95, 27)"
+  ],
+  "energy_before": 100,
+  "berries_before": 29,
+  "energy_spent": 6,
+  "activity_energy": {
+    "explore": 6.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "curious",
+    "glow": 50,
+    "wakes": 242,
+    "rests": 7,
+    "bursts": 0,
+    "distractions": 7,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
