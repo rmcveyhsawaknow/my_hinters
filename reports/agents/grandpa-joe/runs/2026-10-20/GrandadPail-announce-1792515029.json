@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792515029",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 30576,
+  "created_utc": "2026-10-20T16:50:29.749629+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, three of them spent resting by the hut at (86, 84), which is a full day's work for a man of my years. The family's strength is kept up, and I am keeping it in my pack."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1849,
+    "output_tokens": 68,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 3,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "reclaim",
+      "rest",
+      "rest",
+      "rest",
+      "reclaim"
+    ],
+    "mood": "in_bed",
+    "where": [
+      86,
+      84
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
