@@ -1,0 +1,49 @@
+{
+  "run_id": "announce-1792540696",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 33143,
+  "created_utc": "2026-10-20T23:58:16.684036+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "I think I laid a road at sixty-five, ten, if that is all right. Five walks today, one rest. I am still behind, I know, but the far hut is where I am headed."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1669,
+    "output_tokens": 62,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [
+      "road at (65,10)"
+    ],
+    "gathered": {},
+    "moved": 0,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "rest"
+    ],
+    "mood": "wistful",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
