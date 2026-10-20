@@ -1,0 +1,50 @@
+{
+  "run_id": "announce-1792508024",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 29876,
+  "created_utc": "2026-10-20T14:53:44.984726+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "My contribution today, which was considerable: walked 3 legs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [],
+    "gathered": {},
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "reclaim",
+      "migrate",
+      "rest",
+      "reclaim",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": [
+      88,
+      86
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
