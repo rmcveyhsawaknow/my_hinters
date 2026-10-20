@@ -9,7 +9,7 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_valida
 
 ACTION_TEXT_LIMITS = {"say": 280, "whisper": 500, "write": 200, "remember": 2000}
 COMMON_ACTIONS = {
-    "move", "gather", "build", "demolish", "repair", "say", "whisper", "write", "give", "take",
+    "move", "gather", "build", "demolish", "repair", "place", "remove", "paint", "say", "whisper", "write", "give", "take",
     "eat", "post_goal", "claim_goal", "confirm_goal", "cancel_goal", "abandon_goal", "reject_claim",
     "found_faction", "join_faction", "leave_faction", "invite", "set_profile", "remember", "forget",
 }
@@ -25,8 +25,8 @@ ROLE_ACTIONS = {
         "post_goal", "claim_goal", "cancel_goal", "abandon_goal", "reject_claim", "remember", "forget", "say",
         "move", "gather", "eat", "set_profile", "join_faction", "leave_faction",
     },
-    "builder": {"move", "gather", "build", "repair", "write", "give", "take", "remember", "forget", "eat", "join_faction", "leave_faction"},
-    "surveyor": {"move", "gather", "repair", "write", "remember", "forget", "eat", "join_faction", "leave_faction"},
+    "builder": {"move", "gather", "build", "repair", "place", "remove", "paint", "write", "give", "take", "remember", "forget", "eat", "join_faction", "leave_faction"},
+    "surveyor": {"move", "gather", "repair", "paint", "write", "remember", "forget", "eat", "join_faction", "leave_faction"},
     "broker": {
         "move", "claim_goal", "confirm_goal", "reject_claim", "give", "take", "whisper", "write", "remember", "forget", "eat",
         "found_faction", "invite", "join_faction", "leave_faction",
@@ -35,7 +35,7 @@ ROLE_ACTIONS = {
         "say", "whisper", "found_faction", "join_faction", "leave_faction", "invite", "set_profile",
         "remember", "forget", "eat",
     },
-    "experimenter": {"move", "gather", "build", "repair", "say", "remember", "forget", "eat", "join_faction", "leave_faction"},
+    "experimenter": {"move", "gather", "build", "repair", "place", "paint", "say", "remember", "forget", "eat", "join_faction", "leave_faction"},
     "observer": set(),
     "physicist": set(),
     "social-scientist": set(),
@@ -76,6 +76,20 @@ class ProposedAction(BaseModel):
     goal_id: int | None = Field(default=None, ge=1)
     faction_id: int | None = Field(default=None, ge=1)
     condition: dict[str, Any] | None = None
+    bx: int | None = Field(default=None, ge=0, le=511)
+    by: int | None = Field(default=None, ge=0, le=511)
+    bz: int | None = Field(default=None, ge=0, le=15)
+    bx2: int | None = Field(default=None, ge=0, le=511)
+    by2: int | None = Field(default=None, ge=0, le=511)
+    bz2: int | None = Field(default=None, ge=0, le=15)
+    material: Literal["wood", "stone", "thatch", "metal"] | None = None
+    shape: Literal["cube", "slab", "slope", "door", "window"] | None = None
+    facing: Literal["north", "east", "south", "west"] | None = None
+    color: Literal[
+        "natural", "white", "grey", "black", "brown", "red", "orange", "yellow", "lime", "green", "teal", "cyan", "blue",
+        "indigo", "purple", "pink", "tan",
+    ] | None = None
+    fill: Literal["walls"] | None = None
 
     @field_validator("text", "description", "title", "to")
     @classmethod
@@ -160,6 +174,9 @@ def validate_action(raw: dict[str, Any], role: str, prior_text: set[str] | None 
         "abandon_goal": ("goal_id",),
         "reject_claim": ("goal_id",),
         "join_faction": ("faction_id",),
+        "place": ("bx", "by", "bz", "material"),
+        "remove": ("bx", "by", "bz"),
+        "paint": ("bx", "by", "bz", "color"),
     }
     missing = [field for field in required.get(action.action, ()) if raw.get(field) is None]
     if missing:
@@ -240,6 +257,19 @@ def validate_actions(
                 and max(abs(action.x - position[0]), abs(action.y - position[1])) > 1
             ):
                 raise ValueError("build target must be on or adjacent to the agent")
+            if action.action in {"place", "remove", "paint"} and isinstance(action.bx, int) and isinstance(action.by, int) and isinstance(action.bz, int):
+                bx2 = action.bx2 if isinstance(action.bx2, int) else action.bx
+                by2 = action.by2 if isinstance(action.by2, int) else action.by
+                bz2 = action.bz2 if isinstance(action.bz2, int) else action.bz
+                w, d, h = abs(bx2 - action.bx) + 1, abs(by2 - action.by) + 1, abs(bz2 - action.bz) + 1
+                cells = (w * d - max(w - 2, 0) * max(d - 2, 0)) * h if action.fill == "walls" else w * d * h
+                if cells > 256:
+                    raise ValueError("a block box holds at most 256 cells")
+                if all(isinstance(v, int) for v in position) and any(
+                    max(abs(cx // 4 - position[0]), abs(cy // 4 - position[1])) > 2
+                    for cx in (action.bx, bx2) for cy in (action.by, by2)
+                ):
+                    raise ValueError("a block box must lie within 2 tiles of the agent")
         if actions[0].action == "eat" and actions[0].qty and actions[0].qty > berries:
             raise ValueError("cannot eat more berries than are in inventory")
     return actions

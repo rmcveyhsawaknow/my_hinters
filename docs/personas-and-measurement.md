@@ -275,3 +275,12 @@ free 5x5 lots per wake (one claim sign each, nearest first, a ring left around o
 and the land round keeps one sale listing open at a price that rises as free lots run out, cancelling
 and reposting when the price moves. Sales become deeds like registrations do. The world enforces no
 land rights, so a claim is a sign, a public record and the office's word.
+
+## Houses (API 0.30.0)
+
+Every persona has a `house` knob (size 1 or 3 tiles, a roof colour in team colours: purple and
+brown for the Chocolate Factory, greens for Neverland, yellow for the Square, tan for the Exchange).
+The work-shift planner, and the character wake's build activity, place the next step of the house
+around the hut (door, windows, walls, roof) whenever its material is in the pack, walking home first
+when within reach; progress is read from `observe.blocks`, so a finished step is never repeated. The
+model may add touches of its own with `place` when standing by the hut.

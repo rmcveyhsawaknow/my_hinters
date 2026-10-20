@@ -205,3 +205,38 @@ def test_the_land_office_stakes_the_nearest_free_lots_and_spares_homesteads():
     assert _plan_stake(load_personas(ROOT)["wonka"], {"wood": 3}, (62, 62), view) is None  # only the office stakes
     occupied = WorldView(x0=60, y0=60, rows=rows, structures=[], world_structures=[far_hut, {"type": "sign", "x": 62, "y": 62, "owner": "LandBroker", "text": "Lot G06-NW: staked"}])
     assert _plan_stake(broker, {"wood": 3}, (62, 62), occupied)[2] != "stake:G06-NW"
+
+
+def test_the_house_rises_step_by_step_from_the_pack():
+    from hglab.planner import WorldView, _house_shortfall, _plan_house
+
+    clarion = load_personas(ROOT)["town-crier"]
+    rows = ["g" * 128] * 128
+    hut = {"type": "hut", "x": 63, "y": 71, "owner": clarion.name, "hp": 40, "hp_max": 40}
+    view = WorldView(x0=57, y0=65, rows=rows, structures=[hut])
+    home = {"x": 63, "y": 71}
+    observe = {"you": {"blocks_owned": 0}, "blocks": []}
+    door = _plan_house(clarion, {"wood": 3, "stone": 2}, (64, 71), view, home, observe)
+    assert door is not None and door[0][0]["action"] == "place" and door[0][0]["shape"] == "door" and door[2] == "house"
+    assert _plan_house(clarion, {"stone": 20}, (64, 71), view, home, observe) is None  # the door wants wood first
+    observe["blocks"] = [{"x": 63, "y": 71, "count": 7, "owner": clarion.name}]  # door and window stand
+    walls = _plan_house(clarion, {"stone": 9}, (64, 71), view, home, observe)
+    assert walls is not None and walls[0][0]["fill"] == "walls" and _house_shortfall(clarion, {"wood": 2}, view) == ["stone"]
+    far = _plan_house(clarion, {"wood": 3, "stone": 9}, (70, 71), view, home, observe)  # out of view: starts from the door
+    assert far is not None and [a["action"] for a in far[0]] == ["move", "place"] and abs(far[0][0]["x"] - 63) <= 2
+    observe["blocks"] = [{"x": 63, "y": 71, "count": 52, "owner": clarion.name}]
+    assert _plan_house(clarion, {"stone": 9, "fiber": 9, "wood": 9}, (64, 71), view, home, observe) is None  # the house stands
+    assert _plan_house(load_personas(ROOT)["wonka"], {"wood": 9}, (64, 71), view, None, observe) is None  # no hut, no house
+
+
+def test_a_builder_carries_house_materials_home_before_wandering():
+    from hglab.planner import WorldView, _plan_homing
+
+    clarion = load_personas(ROOT)["town-crier"]
+    rows = ["g" * 128] * 128
+    view = WorldView(x0=84, y0=65, rows=rows, structures=[])
+    home = {"x": 63, "y": 71}
+    step = _plan_homing(clarion, {"wood": 3}, (90, 71), view, home, {"you": {}, "blocks": []})
+    assert step is not None and step[0][0]["action"] == "move" and step[0][0]["x"] < 90 and step[2] == "homing"
+    assert _plan_homing(clarion, {"stone": 3}, (90, 71), view, home, {"you": {}, "blocks": []}) is None  # the door wants wood
+    assert _plan_homing(clarion, {"wood": 3}, (70, 71), view, home, {"you": {}, "blocks": []}) is None  # within one move: the house step walks it

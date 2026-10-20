@@ -165,3 +165,21 @@ def test_a_private_note_may_be_restated_in_the_notebook_but_not_said():
     validate_actions([{"action": "remember", "key": "notes", "text": secret + " and more"}], "builder", private_text={secret})
     with pytest.raises(ValueError):
         validate_actions([{"action": "say", "text": "Hear this: " + secret}], "envoy", private_text={secret})
+
+
+def test_block_actions_are_checked_for_size_and_reach():
+    import pytest
+
+    from hglab.actions import allowed_for, validate_actions
+
+    assert {"place", "remove", "paint"} <= allowed_for("builder") and "place" not in allowed_for("navigator")
+    observe = {"you": {"x": 66, "y": 61, "energy": 50, "inventory": {"stone": 20}}, "tick": 1}
+    walls = {"action": "place", "bx": 260, "by": 240, "bz": 0, "bx2": 271, "by2": 251, "bz2": 2, "material": "stone", "fill": "walls"}
+    assert validate_actions([walls], "builder", observe=observe)[0].fill == "walls"
+    with pytest.raises(ValueError):
+        validate_actions([{**walls, "bz2": 5}], "builder", observe=observe)  # 432 cells
+    with pytest.raises(ValueError):
+        validate_actions([{"action": "place", "bx": 300, "by": 240, "bz": 0, "material": "stone"}], "builder", observe=observe)  # 9 tiles east
+    with pytest.raises(ValueError):
+        validate_actions([{"action": "place", "bx": 264, "by": 244, "bz": 0}], "builder", observe=observe)  # no material
+    assert validate_actions([{"action": "paint", "bx": 264, "by": 244, "bz": 3, "color": "purple"}], "surveyor", observe=observe)[0].color == "purple"

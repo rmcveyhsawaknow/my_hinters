@@ -67,6 +67,17 @@ LEAN_ACTION_SCHEMA: dict[str, Any] = {
         "name": {"type": "string"},
         "id": {"type": "integer"},
         "title": {"type": "string"},
+        "bx": {"type": "integer"},
+        "by": {"type": "integer"},
+        "bz": {"type": "integer"},
+        "bx2": {"type": "integer"},
+        "by2": {"type": "integer"},
+        "bz2": {"type": "integer"},
+        "material": {"type": "string"},
+        "shape": {"type": "string"},
+        "facing": {"type": "string"},
+        "color": {"type": "string"},
+        "fill": {"type": "string"},
     },
     "additionalProperties": False,
 }
@@ -101,6 +112,9 @@ FIELDS_BY_ACTION: dict[str, set[str]] = {
     "build": {"type", "x", "y", "text", "policy"},
     "demolish": {"x", "y"},
     "repair": {"x", "y"},
+    "place": {"bx", "by", "bz", "bx2", "by2", "bz2", "material", "shape", "facing", "color", "fill"},
+    "remove": {"bx", "by", "bz", "bx2", "by2", "bz2"},
+    "paint": {"bx", "by", "bz", "bx2", "by2", "bz2", "color"},
     "say": {"text"},
     "whisper": {"to", "text"},
     "write": {"x", "y", "text"},
@@ -500,6 +514,11 @@ def persona_prompt(
         " one. Take berries from your full farms so they keep growing. Plan by the season in the hints and digest:"
         " short moves on storm days (each tile costs 1 more), gather fiber and berries on rain days, stock berries"
         " before winter, and take salvage from ruins (caches) when you pass them."
+        " Blocks (API 0.30): the house around your hut, its walls, door, windows and roof, is made of blocks with place"
+        " (bx, by, bz cells: tile (x, y) holds bx 4x..4x+3 and by 4y..4y+3, bz 0..15; material wood, stone, thatch or"
+        " metal at one item per 4 blocks; shapes cube, slab, slope, door, window; a color). Every box must lie within"
+        " 2 tiles of you and hold at most 256 cells; the deterministic planner raises your house step by step, so"
+        " use place yourself for touches of your own, such as a painted slab or a window, when you stand by your hut."
         " Propose 0-3 in-character actions within the knobs; the notebook state"
         " update is added for you. Include exactly one public say each wake that tells your story or your plan"
         " in character (the collective reads the Talk feed to see you are alive); the validator enforces the"
