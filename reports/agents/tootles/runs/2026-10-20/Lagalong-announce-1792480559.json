@@ -1,0 +1,60 @@
+{
+  "run_id": "announce-1792480559",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 27129,
+  "created_utc": "2026-10-20T07:15:59.399211+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes and no rest, I think. Two roads laid at (72,58) and (61,59), and ten stone saved for the hut out east. I am at (59,50) now, if that is all right."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1714,
+    "output_tokens": 69,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (72,58)",
+      "road at (61,59)"
+    ],
+    "gathered": {
+      "stone": 10
+    },
+    "moved": 4,
+    "deposited": {
+      "berries": 16
+    },
+    "approaches": [
+      "deposit_trip",
+      "deposit",
+      "gather_trip",
+      "build",
+      "build"
+    ],
+    "mood": "wistful",
+    "where": [
+      59,
+      50
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}

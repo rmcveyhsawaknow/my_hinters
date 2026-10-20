@@ -1,0 +1,66 @@
+{
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "kind": "collector_round",
+  "recorded_utc": "2026-10-20T07:16:01.475571+00:00",
+  "dry_run": false,
+  "scheduled": true,
+  "tick": 27130,
+  "duties": [
+    "found"
+  ],
+  "board": {
+    "themes": [
+      {
+        "name": "Readable Replay",
+        "kind": "bug",
+        "founder": "tootles",
+        "founded": true,
+        "faction_id": 3,
+        "members": 1,
+        "endorsers": [],
+        "votes": 1
+      },
+      {
+        "name": "Blueprint Science",
+        "kind": "feature",
+        "founder": "town-crier",
+        "founded": true,
+        "faction_id": 2,
+        "members": 2,
+        "endorsers": [
+          "Strayling"
+        ],
+        "votes": 3
+      }
+    ],
+    "requests": [
+      {
+        "id": "R-20261018-replay-say-stack",
+        "kind": "bug",
+        "theme": "Readable Replay",
+        "title": "Bug report: replay stacks say lines unreadably",
+        "ledger_status": "open",
+        "goal_id": 21,
+        "goal_status": "open",
+        "claimant": null
+      },
+      {
+        "id": "R-20261018-propose-blueprint",
+        "kind": "feature",
+        "theme": "Blueprint Science",
+        "title": "Feature request: let agents propose new blueprints",
+        "ledger_status": "open",
+        "goal_id": 22,
+        "goal_status": "open",
+        "claimant": null
+      }
+    ]
+  },
+  "actions": [],
+  "reasons": [],
+  "dropped": [],
+  "results": [],
+  "asked": [],
+  "said": false
+}
