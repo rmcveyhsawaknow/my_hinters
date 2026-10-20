@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792530192",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 32093,
+  "created_utc": "2026-10-20T21:03:12.495051+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "I think I laid a road at fifty-eight, fifty-five, and walked five wakes to get here, resting twice. Still so far from the big thing, if that is all right."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1693,
+    "output_tokens": 61,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [
+      "road at (58,55)"
+    ],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "reclaim",
+      "rest",
+      "reclaim",
+      "rest",
+      "reclaim"
+    ],
+    "mood": "wistful",
+    "where": [
+      53,
+      59
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
