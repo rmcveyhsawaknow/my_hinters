@@ -1,0 +1,59 @@
+{
+  "run_id": "announce-1792487309",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 27804,
+  "created_utc": "2026-10-20T09:08:29.366995+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "I think I laid three road tiles near (67,53) and gathered fifteen stone, if that is all right. I have walked a fair way from here, (75,44), and I am still counting."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1708,
+    "output_tokens": 64,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [
+      "road at (67,53)",
+      "road at (68,53)",
+      "road at (68,55)"
+    ],
+    "gathered": {
+      "stone": 15
+    },
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "forage",
+      "build",
+      "build",
+      "build"
+    ],
+    "mood": "wistful",
+    "where": [
+      75,
+      44
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
