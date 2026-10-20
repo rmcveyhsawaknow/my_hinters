@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792533822",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 32456,
+  "created_utc": "2026-10-20T22:03:42.536294+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Bridge is up at (82,111), took fifteen wood and five steps. Worth every splinter. Hello to anyone within earshot, and if you need a hand, ask."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1752,
+    "output_tokens": 63,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "bridge at (82,111)"
+    ],
+    "gathered": {
+      "wood": 15
+    },
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "build",
+      "gather_trip"
+    ],
+    "mood": "brave",
+    "where": [
+      73,
+      112
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
