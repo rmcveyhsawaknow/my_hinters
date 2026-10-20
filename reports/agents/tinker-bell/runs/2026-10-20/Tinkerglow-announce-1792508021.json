@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792508021",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 29876,
+  "created_utc": "2026-10-20T14:53:41.704377+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Jealous of the far grass! Sign at (69,102). Lagalong, come back, bridge soon."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1728,
+    "output_tokens": 42,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [
+      "sign at (69,102)"
+    ],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "border",
+      "border",
+      "migrate",
+      "reclaim"
+    ],
+    "mood": "jealousy",
+    "where": [
+      62,
+      90
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}

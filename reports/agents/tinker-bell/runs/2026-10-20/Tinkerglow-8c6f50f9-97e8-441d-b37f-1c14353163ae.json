@@ -1,0 +1,134 @@
+{
+  "run_id": "8c6f50f9-97e8-441d-b37f-1c14353163ae",
+  "agent": "Tinkerglow",
+  "role": "navigator+surveyor+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-20T14:43:30.925000+00:00",
+  "tick": 29814,
+  "summary": "Tinkerglow (jealousy): work shift: raising the border signs",
+  "actions": [
+    {
+      "action": "build",
+      "text": "First: the sea holds the south, so look for no door there. Count the signs sunwise from this corner; the last one stands nearest the welcome.",
+      "x": 69,
+      "y": 102,
+      "type": "sign"
+    },
+    {
+      "action": "move",
+      "x": 58,
+      "y": 90
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"jealousy\",\"since_tick\":26168,\"glow\":68,\"inputs\":{\"glow\":{\"value\":67.9,\"tick\":29745,\"explanation\":\"courage from nibs 54; escape from tootles 96; belief from nibs 100; belief from tootles 0; belief from lost-boy 0\"},\"adventure_options\":{\"value\":97.2,\"tick\":29745,\"explanation\":\"discoveries from lost-boy 97\"},\"courage\":{\"value\":54.3,\"tick\":29745,\"explanation\":\"Courage 54: 1 hard job(s) inside, 0 greeting(s), structures standing 100%.\"},\"escape\":{\"value\":96.0,\"tick\":29745,\"explanation\":\"Escape 96: 100% of moves outside, farthest 92 tiles from the centre.\"},\"belief\":{\"value\":0.0,\"tick\":29745,\"explanation\":\"Belief 0: 0 arrival(s) inside, 0 bridge crossing(s), not currently inside.\"},\"discoveries\":{\"value\":97.2,\"tick\":29745,\"explanation\":\"Discoveries 97: 126 tiles, 8 action types, 2 idea card(s), 0 adopted.\"}},\"wakes\":285,\"rests\":39,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":29814,\"heading\":\"S\",\"visited\":[\"70,56\",\"68,54\",\"67,55\",\"55,67\",\"43,79\",\"53,91\",\"65,103\",\"63,98\",\"72,110\",\"73,109\",\"73,114\",\"68,109\",\"61,109\",\"73,111\",\"73,104\",\"80,104\",\"80,111\",\"80,107\",\"73,107\",\"73,100\",\"74,112\",\"81,112\",\"79,110\",\"79,113\",\"78,110\",\"66,109\",\"66,102\",\"73,102\",\"71,109\",\"78,109\",\"78,114\",\"72,108\",\"72,114\",\"72,107\",\"79,107\",\"72,113\",\"72,106\",\"79,106\",\"78,105\",\"71,105\",\"71,98\",\"73,110\",\"80,110\",\"87,98\",\"75,110\",\"87,105\",\"75,113\",\"77,101\",\"81,100\",\"64,102\",\"58,90\",\"65,102\",\"64,105\",\"69,102\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":29812,\"pace\":\"steady\",\"day\":{\"all\":1570,\"building\":195,\"trade_goals\":86,\"talk\":292,\"factions\":0,\"movement\":997},\"hour\":{\"all\":69},\"peers\":1},\"engaged\":{\"gifted\":{\"MotherPail\":26992,\"GrandadPail\":27727},\"replied\":{\"MotherPail\":29114,\"Fudgewright\":29118,\"GrandadPail\":29239}},\"house\":{\"hut\":[80,104],\"done\":10,\"tick\":27697}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 29814,
+    "you": {
+      "id": 6,
+      "name": "Tinkerglow",
+      "x": 69,
+      "y": 102,
+      "energy": 100,
+      "inventory": {
+        "wood": 5,
+        "fiber": 7,
+        "berries": 35
+      },
+      "home": {
+        "x": 80,
+        "y": 104
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "tinker-bell",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "navigator",
+    "surveyor",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 69,
+      "building": 14,
+      "trade_goals": 1,
+      "talk": 12,
+      "factions": 0,
+      "movement": 42
+    },
+    "day": {
+      "all": 1570,
+      "building": 195,
+      "trade_goals": 86,
+      "talk": 292,
+      "factions": 0,
+      "movement": 997
+    },
+    "peers_active": 1
+  },
+  "wake_mode": "act",
+  "mood": "jealousy",
+  "approach": "border",
+  "reasons": [
+    "the border sign at (69, 102) is missing: raise it with its words",
+    "Cairn gone 2.9 days: walk toward their storehouse at (73, 70) to reclaim it"
+  ],
+  "energy_before": 100,
+  "berries_before": 35,
+  "energy_spent": 17,
+  "activity_energy": {
+    "build": 5.0,
+    "explore": 12.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "jealousy",
+    "glow": 68,
+    "wakes": 285,
+    "rests": 39,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": "S"
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
