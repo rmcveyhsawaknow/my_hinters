@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792488242",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 27898,
+  "created_utc": "2026-10-20T09:24:02.714824+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, four steps, and I was at (73, 58) hauling deposits like a good little courier, then one rest, then more deposits... wait, is that a shadow at the edge of the tile or a node? Noting it."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1706,
+    "output_tokens": 88,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "deposit_trip",
+      "deposit_trip",
+      "deposit_trip",
+      "rest",
+      "deposit_trip"
+    ],
+    "mood": "curious",
+    "where": [
+      73,
+      58
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
