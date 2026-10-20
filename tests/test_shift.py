@@ -266,7 +266,7 @@ def test_a_pack_heavy_with_berries_is_lightened_not_topped_up():
     bucket = load_personas(ROOT)["mrs-bucket"]
     rows = ["g" * 128] * 128
     hoard = {"wood": 5, "fiber": 6, "berries": 37}
-    assert _plan_lighten(hoard, 100)[0] == [{"action": "eat", "qty": 2}]  # full pack, full energy: two berries a wake anyway
+    assert _plan_lighten(hoard, 100) is None  # the world refuses a meal at full energy
     eat = _plan_lighten(hoard, 70)
     assert eat is not None and eat[0] == [{"action": "eat", "qty": 2}] and eat[2] == "lighten"
     assert _plan_lighten({"wood": 5, "berries": 12}, 70) is None  # a dozen berries is food, not ballast
@@ -289,8 +289,8 @@ def test_a_full_pack_eats_even_at_full_energy_and_walks_to_a_collective_storehou
 
     joe = load_personas(ROOT)["grandpa-joe"]
     rows = ["g" * 128] * 128
-    assert _plan_lighten({"wood": 10, "berries": 40}, 100) == ([{"action": "eat", "qty": 2}], "pack 50/50 with 40 berries: eat 2 to make room for materials", "lighten")
-    assert _plan_lighten({"wood": 20, "berries": 22}, 100) is None  # not full: wait for energy to make the meal worth it
+    assert _plan_lighten({"wood": 10, "berries": 40}, 100) is None  # the world refuses a meal at full energy
+    assert _plan_lighten({"wood": 10, "berries": 40}, 60) == ([{"action": "eat", "qty": 2}], "pack 50/50 with 40 berries: eat 2 to make room for materials", "lighten")
     world = [{"type": "storehouse", "x": 85, "y": 92, "owner": "MotherPail"}, {"type": "storehouse", "x": 76, "y": 62, "owner": "Bishop"}]
     view = WorldView(x0=91, y0=93, rows=rows, structures=[], world_structures=world)
     mates = {"motherpail", "fudgewright", "grandadpail"}
