@@ -1,0 +1,50 @@
+{
+  "run_id": "announce-1792468652",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 25939,
+  "created_utc": "2026-10-20T03:57:32.675653+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Lagalong's gone again. East five? Build harder, Tinkerglow!"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1707,
+    "output_tokens": 35,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 0,
+    "deposited": {},
+    "approaches": [
+      "house",
+      "house",
+      "house",
+      "house",
+      "house"
+    ],
+    "mood": "jealousy",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
