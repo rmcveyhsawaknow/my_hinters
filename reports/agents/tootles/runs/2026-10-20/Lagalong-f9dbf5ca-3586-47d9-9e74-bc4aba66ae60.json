@@ -1,0 +1,126 @@
+{
+  "run_id": "f9dbf5ca-3586-47d9-9e74-bc4aba66ae60",
+  "agent": "Lagalong",
+  "role": "surveyor+builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-20T05:53:58.678677+00:00",
+  "tick": 26637,
+  "summary": "Lagalong (wistful): work shift: eating into the berry hoard to make room",
+  "actions": [
+    {
+      "action": "eat",
+      "qty": 2
+    },
+    {
+      "action": "move",
+      "x": 65,
+      "y": 54
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"wistful\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":206,\"rests\":36,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":26637,\"visited\":[\"71,70\",\"61,60\",\"58,56\",\"60,58\",\"59,57\",\"57,55\",\"47,45\",\"37,35\",\"44,25\",\"46,21\",\"54,17\",\"64,8\",\"71,20\",\"59,32\",\"48,44\",\"60,46\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":26635,\"pace\":\"slowing\",\"day\":{\"all\":1380,\"building\":88,\"trade_goals\":49,\"talk\":229,\"factions\":1,\"movement\":1013},\"hour\":{\"all\":28},\"peers\":1},\"engaged\":{\"gifted\":{\"tide_scribe\":25878},\"replied\":{\"tide_scribe\":25908,\"Quillwright\":25939,\"Hinterlands\":25969},\"whispered\":{\"Fairscale\":25999,\"MotherPail\":26224,\"LandBroker\":26315}},\"house\":{\"hut\":[60,58],\"done\":9,\"tick\":26345}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": false,
+      "error": "not_allowed"
+    }
+  ],
+  "failed_actions": 1,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 26637,
+    "you": {
+      "id": 11,
+      "name": "Lagalong",
+      "x": 60,
+      "y": 46,
+      "energy": 100,
+      "inventory": {
+        "wood": 12,
+        "fiber": 6,
+        "berries": 31
+      },
+      "home": {
+        "x": 60,
+        "y": 58
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "tootles",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "slowing",
+    "hour": {
+      "all": 28,
+      "building": 2,
+      "trade_goals": 0,
+      "talk": 9,
+      "factions": 0,
+      "movement": 17
+    },
+    "day": {
+      "all": 1380,
+      "building": 88,
+      "trade_goals": 49,
+      "talk": 229,
+      "factions": 1,
+      "movement": 1013
+    },
+    "peers_active": 1
+  },
+  "wake_mode": "act",
+  "mood": "wistful",
+  "approach": "lighten",
+  "reasons": [
+    "pack 49/50 with 31 berries: eat 2 to make room for materials",
+    "pack 49/50: walk toward LandBroker's storehouse at (65, 54) to unload"
+  ],
+  "energy_before": 100,
+  "berries_before": 31,
+  "energy_spent": 8,
+  "activity_energy": {
+    "gather": 0.0,
+    "explore": 8.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "wistful",
+    "glow": 50,
+    "wakes": 206,
+    "rests": 36,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_outside",
+    "walls_inside_territory"
+  ]
+}
