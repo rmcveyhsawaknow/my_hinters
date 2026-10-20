@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792536145",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 32688,
+  "created_utc": "2026-10-20T22:42:25.636176+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes and one rest, and I moved four times without building or gathering yet. Still walking toward the farm at [80, 84]. Warm feet, steady plan."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1627,
+    "output_tokens": 61,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "homing",
+      "migrate",
+      "homing",
+      "rest",
+      "migrate"
+    ],
+    "mood": "warm",
+    "where": [
+      80,
+      84
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
