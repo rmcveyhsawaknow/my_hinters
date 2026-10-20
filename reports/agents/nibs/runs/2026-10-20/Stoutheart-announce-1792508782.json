@@ -1,0 +1,59 @@
+{
+  "run_id": "announce-1792508782",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 29952,
+  "created_utc": "2026-10-20T15:06:22.975082+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Three signs up at (74,102), (84,102) and (84,108), five wood in hand and five steps taken. Neverland marks its own edges. Ask if you need a hand."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1764,
+    "output_tokens": 64,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "sign at (74,102)",
+      "sign at (84,102)",
+      "sign at (84,108)"
+    ],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "border",
+      "border",
+      "border",
+      "border",
+      "border"
+    ],
+    "mood": "brave",
+    "where": [
+      82,
+      108
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
