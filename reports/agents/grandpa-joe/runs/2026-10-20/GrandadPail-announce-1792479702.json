@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792479702",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 27044,
+  "created_utc": "2026-10-20T07:01:42.172045+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, four of them spent in bed by the hut at [85, 92], and I call that keeping the family's strength up. One deposit trip, which I supervised from the blanket. Rest now, glory later."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1849,
+    "output_tokens": 74,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 4,
+    "built": [],
+    "gathered": {},
+    "moved": 1,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "deposit_trip",
+      "rest",
+      "rest",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": [
+      85,
+      92
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
