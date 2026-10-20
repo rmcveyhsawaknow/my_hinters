@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792504208",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 29494,
+  "created_utc": "2026-10-20T13:50:08.235976+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, three of them spent resting by the hut at [92, 96], which is exactly how a man keeps the family's strength up. Mother Pail moved two loads, and I supervised the moving from the blanket."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1848,
+    "output_tokens": 76,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 3,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "reclaim",
+      "rest",
+      "migrate",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": [
+      92,
+      96
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
