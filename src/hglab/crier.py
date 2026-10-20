@@ -13,6 +13,7 @@ never written anywhere.
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -168,15 +169,28 @@ def plan_invites(
     active_names: list[str],
     factions_of: dict[str, str | None],
     state: dict[str, Any],
+    public_events: list[dict[str, Any]] | tuple[dict[str, Any], ...] = (),
 ) -> tuple[list[dict[str, Any]], list[str], list[str]]:
     """Invitations into the theme faction this persona belongs to, for residents in no faction, never twice.
 
     An invitation is 1 energy, reaches any distance, never expires, shows in the site's Factions feed and
-    in the invitee's own events; an open faction needs none to join, so it is the visible nudge.
+    in the invitee's own events; an open faction needs none to join, so it is the visible nudge. A second
+    invitation to the same agent is refused by the world, so names already invited (the notebook state,
+    or a public faction_invited event by this persona) are never asked again.
     """
     if theme is None or not theme["founded"]:
         return [], [], []
     invited = {n for n in state.get("invited", []) if isinstance(n, str)}
+    for event in public_events:
+        if not isinstance(event, dict) or event.get("type") != "faction_invited" or str(event.get("actor")) != persona.name:
+            continue
+        data = event.get("data") if isinstance(event.get("data"), dict) else {}
+        name = str(data.get("invitee") or data.get("name") or data.get("to") or "")
+        if not name:
+            match = re.search(r"invited\s+([A-Za-z0-9_-]{3,24})", str(event.get("text") or ""))
+            name = match.group(1) if match else ""
+        if name:
+            invited.add(name)
     names = [n for n in active_names if n != persona.name and n not in invited and not factions_of.get(n)][:INVITE_LIMIT]
     actions = [{"action": "invite", "name": n} for n in names]
     reasons = [f"invitation to {n}: {theme['name']} shows in the Factions feed and in their events" for n in names]
@@ -210,7 +224,7 @@ def plan_round(
     reasons: list[str] = []
     my_faction = faction_name(you.get("faction"))
     my_theme = next((t for t in b["themes"] if my_faction and t["name"].casefold() == my_faction.casefold()), None)
-    invites, invite_reasons, invited_now = plan_invites(persona, b, my_theme, active_names, factions_of or {}, state)
+    invites, invite_reasons, invited_now = plan_invites(persona, b, my_theme, active_names, factions_of or {}, state, public_events=public_events)
     if "found" in mine and not you.get("faction"):
         for theme, entry in zip(ledger["themes"], b["themes"], strict=True):
             if theme["founder"] != persona.slug or entry["founded"]:

@@ -12,11 +12,11 @@ def test_a_one_tile_house_is_cheap_and_its_steps_add_up():
     assert [s["name"] for s in plan] == ["door", "window", "walls", "roof"]
     door, window, walls, roof = plan
     assert door["action"]["shape"] == "door" and door["action"]["facing"] == "south" and door["cells"] == 3 and door["items"] == 1
-    assert window["action"]["shape"] == "window" and window["cells"] == 4 and window["item"] == "wood"
-    assert walls["action"]["fill"] == "walls" and walls["cells"] == 29 and walls["items"] == 8 and walls["item"] == "stone"
+    assert window["action"]["shape"] == "window" and window["cells"] == 6 and window["item"] == "wood"
+    assert walls["action"]["fill"] == "walls" and walls["cells"] == 27 and walls["items"] == 7 and walls["item"] == "stone"
     assert roof["action"]["shape"] == "slab" and roof["action"]["color"] == "yellow" and roof["cells"] == 16 and roof["items"] == 4 and roof["item"] == "fiber"
-    assert [s["cumulative"] for s in plan] == [3, 7, 36, 52]
-    assert next_step(plan, 0)["name"] == "door" and next_step(plan, 5)["name"] == "window" and next_step(plan, 7)["name"] == "walls" and next_step(plan, 52) is None
+    assert [s["cumulative"] for s in plan] == [3, 9, 36, 52]
+    assert next_step(plan, 0)["name"] == "door" and next_step(plan, 5)["name"] == "window" and next_step(plan, 9)["name"] == "walls" and next_step(plan, 52) is None
     for step in plan:
         act = step["action"]
         for key in ("bx", "by", "bx2", "by2"):

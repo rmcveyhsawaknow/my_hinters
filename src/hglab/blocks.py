@@ -73,7 +73,7 @@ def house_plan(hx: int, hy: int, size: int = 1, color: str = "natural") -> list[
     door_top = 2 if size == 1 else 3
     steps: list[dict[str, Any]] = [
         {"name": "door", "action": box(door_x, by1, 0, bz2=door_top, material="wood", shape="door", facing="south")},
-        {"name": "window", "action": box(bx0, by0 + width // 2 - 1, 1, by2=by0 + width // 2, bz2=2, material="wood", shape="window", facing="west")},
+        {"name": "window", "action": box(bx0, by0 + width // 2 - 1, 0, by2=by0 + width // 2, bz2=2, material="wood", shape="window", facing="west")},  # from the ground: a placement must reach level 0 or touch a block
     ]
     if size == 1:
         steps.append({"name": "walls", "action": box(bx0, by0, 0, bx1, by1, levels - 1, material="stone", fill="walls")})

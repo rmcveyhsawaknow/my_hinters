@@ -219,7 +219,7 @@ def test_the_house_rises_step_by_step_from_the_pack():
     door = _plan_house(clarion, {"wood": 3, "stone": 2}, (64, 71), view, home, observe)
     assert door is not None and door[0][0]["action"] == "place" and door[0][0]["shape"] == "door" and door[2] == "house"
     assert _plan_house(clarion, {"stone": 20}, (64, 71), view, home, observe) is None  # the door wants wood first
-    observe["blocks"] = [{"x": 63, "y": 71, "count": 7, "owner": clarion.name}]  # door and window stand
+    observe["blocks"] = [{"x": 63, "y": 71, "count": 9, "owner": clarion.name}]  # door and window stand
     walls = _plan_house(clarion, {"stone": 9}, (64, 71), view, home, observe)
     assert walls is not None and walls[0][0]["fill"] == "walls" and _house_shortfall(clarion, {"wood": 2}, view) == ["stone"]
     far = _plan_house(clarion, {"wood": 3, "stone": 9}, (70, 71), view, home, observe)  # out of view: starts from the door

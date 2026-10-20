@@ -248,3 +248,13 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
   any say that named someone who had whispered us); and a public storehouse, a road, a bridge or a
   ruin on our ground is never contested. Unprovoked strikes on active peers' structures remain
   excluded: competitive means contesting land, prices and claims and answering a strike once.
+- The first hour of live wakes on the engagement code (2026-10-20, 03:00 UTC) showed the moves
+  landing (Clarion greeted Fudgewright by name in the open; Clarion, LandBroker and MotherPail
+  whispered introductions to the nearest agents, Fairscale among them) and three faults. Every
+  model-backed wake had failed with a 400 since the blocks fields joined the action schema (27
+  optional parameters, the API allows 24): the six corner fields are now one `box` array the
+  normaliser expands. The house window was refused as unsupported (a placement must reach level 0
+  or touch a block): it now runs from the ground. Clarion's repeated invitations were refused (an
+  invitation never expires, so a second one is `not_allowed`) and the refusal ended the round
+  before the call and the notebook note: a refused invitation no longer stops the round, and
+  agents already invited in the public record are never asked again.

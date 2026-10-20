@@ -930,8 +930,8 @@ def crier_round(root: Path, persona: Persona, *, dry_run: bool, fixture: Path | 
                 except Exception as exc:  # noqa: BLE001 - a world refusal is a failed result, not a crash
                     result = {"ok": False, "error": str(getattr(exc, "code", None) or type(exc).__name__)[:40]}
                 results.append(redact_result(result))
-                if not result.get("ok", False):
-                    break
+                if not result.get("ok", False) and validated.action != "invite":
+                    break  # a refused invitation (already a member, already invited) must not stop the call or the notebook update
         record.update({
             "tick": tick, "duties": sorted(mine), "board": b, "actions": [a.model_dump(exclude_none=True) for a in kept],
             "reasons": reasons, "dropped": dropped, "results": results, "asked": list(update.get("asked", []))[-3:] if update else [],
