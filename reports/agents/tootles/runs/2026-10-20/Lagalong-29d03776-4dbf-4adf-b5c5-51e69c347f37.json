@@ -1,0 +1,123 @@
+{
+  "run_id": "29d03776-4dbf-4adf-b5c5-51e69c347f37",
+  "agent": "Lagalong",
+  "role": "surveyor+builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-20T19:55:59.900523+00:00",
+  "tick": 31689,
+  "summary": "Lagalong (wistful): work shift: reclaiming what the departed left standing",
+  "actions": [
+    {
+      "action": "move",
+      "x": 59,
+      "y": 55
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"wistful\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":265,\"rests\":45,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":31689,\"visited\":[\"71,70\",\"61,60\",\"58,56\",\"60,58\",\"59,57\",\"57,55\",\"47,45\",\"37,35\",\"44,25\",\"46,21\",\"54,17\",\"64,8\",\"71,20\",\"59,32\",\"48,44\",\"60,46\",\"65,54\",\"73,58\",\"62,60\",\"59,50\",\"56,47\",\"68,54\",\"75,44\",\"63,43\",\"74,48\",\"71,38\",\"62,50\",\"70,50\",\"67,55\",\"67,54\",\"66,53\",\"67,53\",\"71,50\",\"69,56\",\"77,61\",\"74,61\",\"76,64\",\"74,70\",\"74,64\",\"73,69\",\"68,59\",\"66,57\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":31684,\"pace\":\"steady\",\"day\":{\"all\":1570,\"building\":288,\"trade_goals\":64,\"talk\":310,\"factions\":0,\"movement\":908},\"hour\":{\"all\":72},\"peers\":1},\"engaged\":{\"gifted\":{\"tide_scribe\":25878},\"replied\":{\"tide_scribe\":25908,\"Quillwright\":25939,\"Hinterlands\":25969,\"LandBroker\":27743,\"Clarion\":31300},\"whispered\":{\"Fairscale\":25999,\"MotherPail\":26224,\"LandBroker\":26315,\"Clarion\":27068,\"GrandadPail\":30596,\"Fudgewright\":30908},\"reclaimed\":{\"Quill:67,55\":29261,\"Quill:69,57\":29876,\"Bishop:75,62\":30596,\"Bishop:75,63\":30908,\"Cairn:73,69\":30999,\"Cairn:72,68\":31300,\"Quill:66,57\":31629,\"Quill:67,56\":31659}},\"house\":{\"hut\":[60,58],\"done\":52,\"tick\":31689}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 31689,
+    "you": {
+      "id": 11,
+      "name": "Lagalong",
+      "x": 66,
+      "y": 53,
+      "energy": 100,
+      "inventory": {
+        "wood": 16,
+        "fiber": 7,
+        "stone": 11,
+        "berries": 15
+      },
+      "home": {
+        "x": 60,
+        "y": 58
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "tootles",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 72,
+      "building": 17,
+      "trade_goals": 4,
+      "talk": 8,
+      "factions": 0,
+      "movement": 43
+    },
+    "day": {
+      "all": 1570,
+      "building": 288,
+      "trade_goals": 64,
+      "talk": 310,
+      "factions": 0,
+      "movement": 908
+    },
+    "peers_active": 1
+  },
+  "wake_mode": "act",
+  "mood": "wistful",
+  "approach": "reclaim",
+  "reasons": [
+    "tide_scribe gone 3.1 days: walk toward their hut at (60, 56) to reclaim it"
+  ],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 7,
+  "activity_energy": {
+    "explore": 7.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "wistful",
+    "glow": 50,
+    "wakes": 265,
+    "rests": 45,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_outside",
+    "walls_inside_territory"
+  ]
+}
