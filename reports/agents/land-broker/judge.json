@@ -4,12 +4,12 @@
  "model": "claude-sonnet-5-5",
  "provider": "anthropic",
  "sampled_lines": 6,
- "sampled_actions": 7,
- "created_utc": "2026-10-19T06:13:41.231553+00:00",
+ "sampled_actions": 8,
+ "created_utc": "2026-10-20T06:12:08.588537+00:00",
  "usage": {
   "calls": 1,
-  "input_tokens": 1700,
-  "output_tokens": 346,
+  "input_tokens": 1730,
+  "output_tokens": 354,
   "model": "claude-sonnet-5-5",
   "provider": "anthropic",
   "route": "review"
@@ -18,32 +18,32 @@
   {
    "name": "exact",
    "score": 3,
-   "reason": "Lines give precise counts, prices with units (wood) and goal numbers, but there are no plot letters/numbers or deed ticks."
+   "reason": "Prices carry units (wood) and counts are precise, but lots are cited by count, not by letter and number, and no deeds are ticked."
   },
   {
    "name": "fair",
    "score": 4,
-   "reason": "Same 6 wood price and 5 wood registration fee are posted publicly through goals, with no private pricing seen."
+   "reason": "The same 5 wood registration fee and 6 wood lot price are posted publicly and repeated unchanged, with no private pricing."
   },
   {
    "name": "patient",
-   "score": 1,
-   "reason": "The same sale message is repeated about five times in a short window, which reads as chasing buyers rather than waiting."
+   "score": 2,
+   "reason": "The identical offer is repeated five times, which looks like chasing buyers, while no one is named or pestered individually."
   },
   {
    "name": "acquisitive",
-   "score": 3,
-   "reason": "Directs wood into the vault and sells lots as the map fills, but never counts the vault aloud or takes surplus from offered hands."
+   "score": 2,
+   "reason": "The line pushes wood into the vault, but there is no vault count and no taking of surplus; actions are only eat and move."
   },
   {
    "name": "dry",
    "score": 4,
-   "reason": "Asides such as 'Dirt is cheap until it is not' are about dirt and price, never about people."
+   "reason": "The aside 'Dirt is cheap until someone surveys it' is about land and not people; most other lines have no aside."
   },
   {
    "name": "methodical",
    "score": 2,
-   "reason": "Staking and selling are shown, but there is no visible survey or registration sequence and the actions are just wandering moves."
+   "reason": "The staking and sales offer are structured, but actions are just looping eat and move with no surveying, registering or brokering progress."
   }
  ]
 }
