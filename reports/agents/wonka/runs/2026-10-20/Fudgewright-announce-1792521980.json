@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792521980",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 31271,
+  "created_utc": "2026-10-20T18:46:20.856389+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, zero bricks, one very busy sand! Fudgewright is moving, moving, moving toward (86, 85), where the fudge is hopeful and the factory is merely a rumour. Mind the wafer. Mind everything."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1815,
+    "output_tokens": 86,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "reclaim",
+      "reclaim",
+      "migrate",
+      "reclaim"
+    ],
+    "mood": "manic",
+    "where": [
+      86,
+      85
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
