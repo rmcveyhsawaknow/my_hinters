@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792464695",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 25543,
+  "created_utc": "2026-10-20T02:51:35.102126+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, five moves, no rest yet. Still walking the homing road near 85, 84, and the stew can wait until I've looked at the ground again."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1627,
+    "output_tokens": 57,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "homing",
+      "migrate",
+      "homing",
+      "migrate",
+      "homing"
+    ],
+    "mood": "warm",
+    "where": [
+      85,
+      84
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
