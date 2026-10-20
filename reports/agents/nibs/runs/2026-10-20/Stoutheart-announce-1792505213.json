@@ -1,0 +1,58 @@
+{
+  "run_id": "announce-1792505213",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 29595,
+  "created_utc": "2026-10-20T14:06:53.185870+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Two signs up at (64,105) and (64,109), five wood gathered, five steps walked out by the border. Neverland's edges are getting marked, and I'm not going anywhere."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1754,
+    "output_tokens": 66,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "sign at (64,105)",
+      "sign at (64,109)"
+    ],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "border",
+      "border",
+      "border",
+      "border",
+      "border"
+    ],
+    "mood": "brave",
+    "where": [
+      69,
+      102
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
