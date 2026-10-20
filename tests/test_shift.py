@@ -370,3 +370,32 @@ def test_a_build_spends_the_pack_before_the_deposit_is_sized():
     builds = [a for a in plan["actions"] if a["action"] == "build"]
     stone_given = sum(a["qty"] for a in gives if a["item"] == "stone")
     assert stone_given <= 10 - sum(1 for b in builds if b.get("type") == "road"), json.dumps(plan["actions"])  # the road's stone is not deposited twice
+
+
+def test_a_full_pack_eats_one_berry_after_its_walk_and_never_gifts_a_collective_member():
+    import random
+
+    from hglab.mood import PersonaState
+    from hglab.planner import WorldView, _meal_after_move, _plan_engage, plan_wake
+
+    assert _meal_after_move([{"action": "move", "x": 1, "y": 1}], {"wood": 10, "berries": 40}, 100, 3) == {"action": "eat", "qty": 1}
+    assert _meal_after_move([{"action": "say", "text": "x"}], {"wood": 10, "berries": 40}, 100, 3) is None  # no walk: the meal would be refused at full energy
+    assert _meal_after_move([{"action": "move", "x": 1, "y": 1}], {"wood": 10, "berries": 20}, 100, 3) is None  # twenty berries is not a hoard
+    assert _meal_after_move([{"action": "move", "x": 1, "y": 1}, {"action": "gather", "kind": "wood"}, {"action": "gather", "kind": "wood"}], {"wood": 10, "berries": 40}, 100, 3) is None  # no room
+    personas = load_personas(ROOT)
+    nibs = personas["nibs"]
+    team = load_team(ROOT, nibs.team)
+    observe = load_fixture(FIX / "observe/nibs.json")
+    observe["you"].update({"energy": 100, "inventory": {"wood": 22, "berries": 28}})
+    observe["resources"] = []
+    observe["structures"] = []
+    names = {personas[m].name.casefold(): m for m in team.members if m in personas}
+    plan = plan_wake(nibs, team, PersonaState(mood=nibs.mood_model["initial"]), observe, "act", random.Random("m"), teammates=None, terrain_rows=None, allowed=None, team_names=names, work=True, collective_names={p.name for p in personas.values()})
+    kinds = [a["action"] for a in plan["actions"]]
+    assert "move" in kinds and kinds[-1] == "eat" and plan["actions"][-1]["qty"] == 1
+    bucket = personas["mrs-bucket"]
+    bucket.knobs["stance"] = {"cooperative": 1, "neutral": 0, "competitive": 0}
+    obs = {"tick": 30000, "you": {"name": bucket.name, "x": 60, "y": 60, "inventory": {"wood": 20}}, "agents": [{"name": "Clarion", "x": 61, "y": 60}], "events": [], "structures": [], "goals_nearby": [], "your_goals": {}, "since_last_observe": {}, "world": {}, "notebook": {}}
+    view = WorldView(x0=54, y0=54, rows=["g" * 128] * 128, agents=obs["agents"], liveness={"Clarion": 29990})
+    step = _plan_engage(bucket, load_team(ROOT, bucket.team), PersonaState(mood="warm"), {"wood": 20}, (60, 60), view, obs, None, {}, random.Random("c"), {"Clarion", "MotherPail"})
+    assert step is None or step[2] != "gift"  # a collective member on another team gets a word, never a gift that their full pack refuses

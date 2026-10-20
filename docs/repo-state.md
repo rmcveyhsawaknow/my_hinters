@@ -331,3 +331,10 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
   only near Neverland (`reclaim.range`); a gift to a teammate whose pack was full was refused first
   and ended the batch before the hits, so a gift goes last when the batch does not move; a deposit
   was sized from the wake's start position rather than where the agent stands after its moves.
+- Fourth competitive hour (15:30 to 16:25 UTC): Lagalong tore down Quill's tower at (69, 57),
+  Clarion and Lagalong tore down Bishop's storehouse at (76, 62) the day Bishop crossed the two-day
+  line, Strayling has Cairn's storehouse at (73, 70) down to 20 hp, LandBroker staked six more lots.
+  Gifts between collective members were refused seven times as inventory_full, so gifts go to
+  strangers only. Stoutheart sat at a full pack unable to carry the stone for Neverland's store,
+  since the world refuses a meal at full energy and every wake starts full: a full pack now eats one
+  berry at the end of a batch that moved, when the walk has spent the energy the meal restores.
