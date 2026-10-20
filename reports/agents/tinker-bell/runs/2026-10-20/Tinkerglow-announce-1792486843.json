@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792486843",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 27758,
+  "created_utc": "2026-10-20T09:00:43.551456+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Jealous glow tonight! Wood five, east of 79, 104. Build harder!"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1737,
+    "output_tokens": 37,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 6,
+    "deposited": {},
+    "approaches": [
+      "deposit_trip",
+      "migrate",
+      "deposit_trip",
+      "migrate",
+      "deposit_trip"
+    ],
+    "mood": "jealousy",
+    "where": [
+      79,
+      104
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
