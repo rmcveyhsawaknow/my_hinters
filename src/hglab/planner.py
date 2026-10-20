@@ -55,6 +55,7 @@ WORK_SUMMARIES = {
     "engage": "a word, a gift or a deal with a neighbour",
     "deliver": "delivering on a claimed goal",
     "lighten": "eating into the berry hoard to make room",
+    "deposit_trip": "carrying a full pack to the storehouse",
     "forage": "walking toward a node the map knows",
 }
 REPAIR_WORTH = 10  # mend only when at least half a repair's 20 hp is missing; a scratch is not worth a unit of material
@@ -317,7 +318,12 @@ def plan_wake(
                 or (_plan_build(persona, team, inventory, here, view, home) if here == position else None)
             )
         elif activity == "gather":
-            step = _plan_gather(persona, team, inventory, here, view, teammates, rng) or _plan_forage(persona, team, inventory, here, view, teammates)
+            step = (
+                _plan_gather(persona, team, inventory, here, view, teammates, rng)
+                or _plan_deposit(persona, inventory, here, view, None, mates=set(collective_names or ()) | set(names or ()))
+                or _plan_deposit_trip(persona, team, inventory, here, view, teammates, {n.casefold() for n in set(collective_names or ()) | set(names or ())} | {persona.name.casefold()})
+                or _plan_forage(persona, team, inventory, here, view, teammates)
+            )
         elif activity == "explore":
             step = _plan_explore(persona, team, state, here, view, rng, teammates)
         elif activity == "social":
@@ -453,9 +459,13 @@ def _plan_work(
     # 3.5 the house around the hut, one step per wake, when its material is in the pack
     if fits(_plan_house(persona, inventory, here, view, home, observe, state=state)):
         approach = approach or "house"
-    # 4. deposit surplus into an adjacent own storehouse (so the monument can draw on it)
-    if fits(_plan_deposit(persona, inventory, position, view, registrar_name)):
+    # 4. deposit surplus into an adjacent storehouse of ours (so the monument can draw on it)
+    ours = set(collective_names or ()) | set(names or ())
+    if fits(_plan_deposit(persona, inventory, position, view, registrar_name, mates=ours)):
         approach = approach or "deposit"
+    # 4.2 a full pack walks to the nearest storehouse of ours to unload
+    if all(a.get("action") == "eat" for a in actions) and fits(_plan_deposit_trip(persona, team, inventory, position, view, teammates, {n.casefold() for n in ours} | {persona.name.casefold()})):
+        approach = approach or "deposit_trip"
     # 4. gather the shortfall for the next blueprint
     while len(actions) < cap and fits(_plan_gather(persona, team, inventory, here, view, teammates, rng)):
         approach = approach or "gather_trip"
@@ -568,15 +578,49 @@ FORAGE_RANGE = 40  # how far a trip toward a node seen only in the public snapsh
 
 
 def _plan_lighten(inventory: dict[str, int], energy: int) -> tuple[list[dict[str, Any]], str, str] | None:
-    """Eat into a berry hoard when the pack is tight and the energy has room: every berry is 15 energy."""
+    """Eat into a berry hoard when the pack is tight: every berry is 15 energy, and a full pack builds nothing.
+
+    With energy to spare the meal is sized to it; a pack that is full of berries eats two a wake anyway,
+    since berries regrow and a blocked pack costs more than ten wasted energy.
+    """
     berries = inventory.get("berries", 0)
     total = sum(inventory.values())
-    if total < PACK_TIGHT or berries <= BERRY_KEEP or energy > 85:
+    if total < PACK_TIGHT or berries <= BERRY_KEEP:
         return None
-    qty = min(berries - BERRY_KEEP, (100 - energy) // 15, 3)
+    qty = min(berries - BERRY_KEEP, max((100 - energy) // 15, 0), 3)
+    if qty < 1 and total >= 46 and berries > BERRY_KEEP + 10:
+        qty = min(2, berries - BERRY_KEEP)
     if qty < 1:
         return None
     return [{"action": "eat", "qty": qty}], f"pack {total}/50 with {berries} berries: eat {qty} to make room for materials", "lighten"
+
+
+def _plan_deposit_trip(
+    persona: Persona,
+    team: Team | None,
+    inventory: dict[str, int],
+    position: tuple[int, int],
+    view: WorldView,
+    teammates: dict[str, tuple[int, int]] | None,
+    mates: set[str],
+) -> tuple[list[dict[str, Any]], str, str] | None:
+    """Walk toward the nearest storehouse of ours (own, a teammate's or the collective's) when the pack is full."""
+    total = sum(inventory.values())
+    if total < 46 and not (total >= PACK_TIGHT and inventory.get("berries", 0) > BERRY_KEEP + 10):
+        return None
+    stores = sorted(
+        (s for s in (view.world_structures or view.structures) if s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() in mates),
+        key=lambda s: (str(s.get("owner", "")).casefold() != persona.name.casefold(), chebyshev(position, (int(s["x"]), int(s["y"])))),
+    )
+    for store in stores[:4]:
+        where = (int(store["x"]), int(store["y"]))
+        if chebyshev(position, where) <= 1 or chebyshev(position, where) > FORAGE_RANGE:
+            continue
+        target = _step_toward(position, {"x": where[0], "y": where[1]}, view)
+        if target is None or target == position or not _territory_ok(persona, team, target, position, teammates):
+            continue
+        return [{"action": "move", "x": target[0], "y": target[1]}], f"pack {total}/50: walk toward {store.get('owner')}'s storehouse at {where} to unload", "deposit_trip"
+    return None
 
 
 def _plan_forage(
@@ -811,9 +855,14 @@ def _plan_salvage(inventory: dict[str, int], position: tuple[int, int], view: Wo
 
 
 def _plan_deposit(
-    persona: Persona, inventory: dict[str, int], position: tuple[int, int], view: WorldView, registrar_name: str | None = None
+    persona: Persona,
+    inventory: dict[str, int],
+    position: tuple[int, int],
+    view: WorldView,
+    registrar_name: str | None = None,
+    mates: set[str] | None = None,
 ) -> tuple[list[dict[str, Any]], str, str] | None:
-    """Put surplus into an adjacent storehouse: our own first, else the collective's land office vault.
+    """Put surplus into an adjacent storehouse: our own first, else a teammate's or the collective's vault.
 
     ``give`` works into any storehouse (its policy only limits ``take``), so a full pack beside the
     land office becomes a deposit; the office counts it toward lending.
@@ -821,7 +870,7 @@ def _plan_deposit(
     total = sum(inventory.values())
     if total < 35 and inventory.get("berries", 0) <= BERRY_KEEP + 10:
         return None
-    owners = {persona.name.casefold()}
+    owners = {persona.name.casefold()} | {m.casefold() for m in (mates or set())}
     if registrar_name and registrar_name.casefold() != persona.name.casefold():
         owners.add(registrar_name.casefold())
     candidates = sorted(
