@@ -84,14 +84,18 @@ def _items_named(text: str) -> list[str]:
     return [item for item in ("wood", "stone", "ore", "fiber", "berries") if item in low]
 
 
-def board(persona: Any, observe: dict[str, Any], collective_names: set[str], team_names: set[str]) -> dict[str, Any]:
-    """What is there to engage with, from this observe alone (no network): the prompt and the planner both read it."""
+def board(persona: Any, observe: dict[str, Any], collective_names: set[str], team_names: set[str], here: tuple[int, int] | None = None) -> dict[str, Any]:
+    """What is there to engage with, from this observe alone (no network): the prompt and the planner both read it.
+
+    ``here`` is where the agent will stand when the move is made (after any move already planned in
+    the batch); distances to agents and ruins are measured from there, so a gift is never ``too_far``.
+    """
     me = persona.name
     mine = me.casefold()
     ours = {n.casefold() for n in collective_names} | {mine}
     mates = {n.casefold() for n in team_names} | {mine}
     you = observe.get("you") or {}
-    here = (int(you.get("x", 0) or 0), int(you.get("y", 0) or 0))
+    here = here or (int(you.get("x", 0) or 0), int(you.get("y", 0) or 0))
     since = observe.get("since_last_observe") if isinstance(observe.get("since_last_observe"), dict) else {}
     speakers = [n for n in (_name(v) for v in since.get("speakers_nearby") or []) if n and n.casefold() != mine]
     in_view = []
