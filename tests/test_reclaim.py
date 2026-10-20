@@ -88,3 +88,58 @@ def test_the_gatekeeper_whispers_the_opening_to_a_visitor_she_finds():
     assert "(84,105)" in step[0][0]["text"] and "found" in step[0][0]["text"]
     again = _plan_engage(bell, team, state, {"wood": 3}, (80, 104), view, observe, None, names, random.Random("gate"), OURS)
     assert again is None or again[2] != "gatekeep"  # once a day per visitor
+
+
+def test_the_gatekeeper_reclaims_only_near_neverland_and_an_expedition_holds_the_walk_home():
+    import json
+
+    from hglab.fixtures import load_fixture
+    from hglab.planner import plan_wake
+
+    personas = load_personas(ROOT)
+    bell = personas["tinker-bell"]
+    team = load_team(ROOT, bell.team)
+    far_store = [{"id": 1, "type": "storehouse", "x": 73, "y": 70, "owner": "Cairn", "hp": 80}]
+    view = WorldView(x0=68, y0=106, rows=ROWS, world_structures=far_store, liveness={"Cairn": 30000 - 3 * 8640})
+    assert _plan_reclaim(bell, team, PersonaState(mood="devotion"), {}, (74, 112), view, _observe(x=74, y=112), None, OURS) is None  # forty tiles out: not hers
+    near_hut = [{"id": 2, "type": "hut", "x": 78, "y": 104, "owner": "Cairn", "hp": 40}]
+    view = WorldView(x0=68, y0=106, rows=ROWS, world_structures=near_hut, liveness={"Cairn": 30000 - 3 * 8640})
+    assert _plan_reclaim(bell, team, PersonaState(mood="devotion"), {}, (74, 112), view, _observe(x=74, y=112), None, OURS)[2] == "reclaim_trip"
+    # MotherPail (prefer_inside) far from the Chocolate Factory with a target in range: the expedition, not the walk home
+    bucket = personas["mrs-bucket"]
+    bteam = load_team(ROOT, bucket.team)
+    observe = load_fixture(ROOT / "tests/fixtures/observe/mrs-bucket.json")
+    observe["you"].update({"x": 76, "y": 72, "energy": 100, "inventory": {"wood": 5, "berries": 10}})
+    observe["resources"] = []
+    observe["structures"] = []
+    observe["tick"] = 30000
+    names = {personas[m].name.casefold(): m for m in bteam.members if m in personas}
+    plan = plan_wake(bucket, bteam, PersonaState(mood="warm"), observe, "act", __import__("random").Random("e"), teammates=None, terrain_rows=ROWS, allowed=None, team_names=names, work=True, collective_names=OURS, public_structures=far_store, public_agents=[{"name": "Cairn", "last_seen_tick": 30000 - 3 * 8640, "x": 72, "y": 68}])
+    assert plan["approach"] in {"reclaim_trip", "reclaim"}, json.dumps(plan)
+
+
+def test_a_gift_goes_last_when_the_batch_does_not_move():
+    import json
+    import random
+
+    from hglab.fixtures import load_fixture
+    from hglab.planner import plan_wake
+
+    personas = load_personas(ROOT)
+    crier = personas["town-crier"]
+    team = load_team(ROOT, crier.team)
+    observe = load_fixture(ROOT / "tests/fixtures/observe/town-crier.json")
+    you = observe["you"]
+    you.update({"x": 69, "y": 56, "energy": 100, "inventory": {"wood": 20, "berries": 10}})
+    observe["tick"] = 30000
+    observe["resources"] = []
+    observe["structures"] = []
+    observe["agents"] = [{"name": "Quill", "x": 70, "y": 56, "faction": None}]
+    observe["since_last_observe"] = {}
+    tower = [{"id": 1, "type": "tower", "x": 69, "y": 57, "owner": "Marlow", "hp": 100}]
+    names = {personas[m].name.casefold(): m for m in team.members if m in personas}
+    crier.knobs["stance"] = {"cooperative": 1, "neutral": 0, "competitive": 0}
+    plan = plan_wake(crier, team, PersonaState(mood=crier.mood_model["initial"]), observe, "act", random.Random("g"), teammates=None, terrain_rows=ROWS, allowed=None, team_names=names, work=True, collective_names=OURS, public_structures=tower, public_agents=[{"name": "Marlow", "last_seen_tick": 30000 - 3 * 8640, "x": 1, "y": 1}, {"name": "Quill", "last_seen_tick": 29990, "x": 70, "y": 56}])
+    kinds = [a["action"] for a in plan["actions"] if a["action"] != "remember"]
+    assert "demolish" in kinds and "give" in kinds, json.dumps(plan["actions"])
+    assert kinds.index("give") > kinds.index("demolish")  # the hits land before the gift that a full pack may refuse
