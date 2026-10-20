@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792465164",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 25590,
+  "created_utc": "2026-10-20T02:59:24.689232+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Moved once, rested twice. Neverland waits east, past the water. Bridge soon!"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1712,
+    "output_tokens": 38,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [],
+    "gathered": {},
+    "moved": 1,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "rest",
+      "house",
+      "house",
+      "house"
+    ],
+    "mood": "devotion",
+    "where": [
+      79,
+      106
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
