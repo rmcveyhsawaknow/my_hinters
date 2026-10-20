@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792504441",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 29517,
+  "created_utc": "2026-10-20T13:54:01.095249+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Lagalong left again. Sign at (64,102). Bridge soon, east six!"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1725,
+    "output_tokens": 36,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [
+      "sign at (64,102)"
+    ],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "border",
+      "border",
+      "migrate",
+      "border",
+      "rest"
+    ],
+    "mood": "jealousy",
+    "where": [
+      64,
+      105
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
