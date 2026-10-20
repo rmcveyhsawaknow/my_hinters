@@ -364,6 +364,10 @@ def plan_wake(
         actions.extend(new_actions)
         reasons.append(reason)
         approach = approach or tag
+    meal = _meal_after_move(actions, inventory, energy, budget)
+    if meal is not None:
+        actions.append(meal)
+        reasons.append(f"pack {sum(inventory.values())}/50 with {inventory.get('berries', 0)} berries: one berry after the walk, when the meal is not refused")
     summary = _summary(persona, mood, approach)
     result = _result(persona, mood, summary, actions, reasons, approach, remember)
     if audit is not None:
@@ -524,6 +528,10 @@ def _plan_work(
         gifts = [a for a in actions if a.get("action") == "give" and a.get("to")]
         if gifts:
             actions[:] = [a for a in actions if not (a.get("action") == "give" and a.get("to"))] + gifts  # a refused gift (their pack full) must not end the batch before the work
+    meal = _meal_after_move(actions, inventory, energy, cap)
+    if meal is not None:
+        actions.append(meal)
+        reasons.append(f"pack {sum(inventory.values())}/50 with {inventory.get('berries', 0)} berries: one berry after the walk, when the meal is not refused")
     summary = WORK_SUMMARIES.get(approach or "", "nothing worth the energy this shift wake")
     return _result(persona, mood, f"work shift: {summary}", actions, reasons, approach, remember)
 
@@ -725,6 +733,24 @@ def _plan_border_sign(
             continue
         return [{"action": "move", "x": target[0], "y": target[1]}], f"walk toward the border sign spot at {where}", "border_trip"
     return None
+
+
+def _meal_after_move(actions: list[dict[str, Any]], inventory: dict[str, int], energy: int, cap: int) -> dict[str, Any] | None:
+    """One berry at the end of a batch that moved: the walk spent energy, so the meal is no longer refused.
+
+    Every wake starts at full energy (the pack regenerates between wakes), so a pack that is full of
+    berries never qualifies for ``_plan_lighten``; this is the slow sink for those who keep inside
+    their ground with no storehouse to unload into.
+    """
+    berries = inventory.get("berries", 0)
+    if len(actions) >= cap or sum(inventory.values()) < PACK_TIGHT or berries <= BERRY_KEEP + 10:
+        return None
+    if any(a.get("action") == "eat" for a in actions):
+        return None
+    walked = sum(1 for a in actions if a.get("action") == "move")
+    if not walked and energy >= 100:
+        return None
+    return {"action": "eat", "qty": 1}
 
 
 def _plan_lighten(inventory: dict[str, int], energy: int) -> tuple[list[dict[str, Any]], str, str] | None:
@@ -1598,8 +1624,8 @@ def _plan_engage(
         candidates.append(("neutral", step, ""))
     # a gift to someone within reach (cooperative)
     for agent in b["agents_in_view"]:
-        if agent["distance"] > 2 or agent["name"].casefold() in mates or dormant(agent["name"], 1) or _recent(flags, "gifted", agent["name"], tick, GIFT_SPACING):
-            continue
+        if agent["distance"] > 2 or agent["name"].casefold() in mates or agent["name"].casefold() in collective or dormant(agent["name"], 1) or _recent(flags, "gifted", agent["name"], tick, GIFT_SPACING):
+            continue  # collective members share storehouses and carry full packs: a gift to them is refused as inventory_full
         spare = next((i for i, n in SURPLUS.items() if inventory.get(i, 0) >= n), None)
         if spare:
             candidates.append(("cooperative", ([{"action": "give", "to": agent["name"], "item": spare, "qty": GIFT_QTY}], f"{agent['name']} is within reach and the pack has {spare} to spare: a gift", "gift"), f"gifted:{agent['name']}"))
