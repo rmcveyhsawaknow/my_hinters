@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792476584",
+  "kind": "announce",
+  "agent": "Clarion",
+  "persona": "town-crier",
+  "tick": 26732,
+  "created_utc": "2026-10-20T06:09:44.815410+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Hear this! Three roads laid at (70,88), (71,86) and (71,88), and five stone gathered on the way. I laid the first one twice in my head before my hands caught up. News from the glass: the road is real, and so am I."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1827,
+    "output_tokens": 82,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 4,
+    "rests": 0,
+    "built": [
+      "road at (70,88)",
+      "road at (71,86)",
+      "road at (71,88)"
+    ],
+    "gathered": {
+      "stone": 5
+    },
+    "moved": 0,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "build",
+      "gather_trip",
+      "build"
+    ],
+    "mood": "bright",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
