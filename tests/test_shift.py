@@ -249,3 +249,36 @@ def test_a_builder_carries_house_materials_home_before_wandering():
     assert step is not None and step[0][0]["action"] == "move" and step[0][0]["x"] < 90 and step[2] == "homing"
     assert _plan_homing(clarion, {"stone": 3}, (90, 71), view, home, {"you": {}, "blocks": []}) is None  # the door wants wood
     assert _plan_homing(clarion, {"wood": 3}, (70, 71), view, home, {"you": {}, "blocks": []}) is None  # within one move: the house step walks it
+
+
+def test_a_pack_heavy_with_berries_is_lightened_not_topped_up():
+    import random
+
+    from hglab.planner import (
+        WorldView,
+        _plan_deposit,
+        _plan_forage,
+        _plan_gather,
+        _plan_harvest,
+        _plan_lighten,
+    )
+
+    bucket = load_personas(ROOT)["mrs-bucket"]
+    rows = ["g" * 128] * 128
+    hoard = {"wood": 5, "fiber": 6, "berries": 37}
+    assert _plan_lighten(hoard, 100) is None  # full energy: nothing to eat into
+    eat = _plan_lighten(hoard, 70)
+    assert eat is not None and eat[0] == [{"action": "eat", "qty": 2}] and eat[2] == "lighten"
+    assert _plan_lighten({"wood": 5, "berries": 12}, 70) is None  # a dozen berries is food, not ballast
+    berries_only = WorldView(x0=54, y0=54, rows=rows, resources=[{"x": 61, "y": 60, "kind": "berries", "amount": 30}, {"x": 62, "y": 60, "kind": "wood", "amount": 30}])
+    trip = _plan_gather(bucket, None, {"wood": 2, "berries": 20}, (60, 60), berries_only, None, random.Random(1))
+    assert trip is not None and all(a.get("kind") != "berries" for a in trip[0])  # berries at the keep: the pack fills with wood
+    store = WorldView(x0=54, y0=54, rows=rows, structures=[{"type": "storehouse", "x": 61, "y": 60, "owner": bucket.name, "policy": "private"}])
+    deposit = _plan_deposit(bucket, hoard, (60, 60), store)
+    assert deposit is not None and deposit[0][0] == {"action": "give", "x": 61, "y": 60, "item": "berries", "qty": 22}  # keeps fifteen
+    farm = WorldView(x0=54, y0=54, rows=rows, structures=[{"type": "farm", "x": 61, "y": 60, "owner": bucket.name, "storage": {"berries": 20}}])
+    assert _plan_harvest(bucket, None, hoard, (60, 60), farm, None) is None  # the farm holds the berries for now
+    known = WorldView(x0=54, y0=54, rows=rows, resources=[], world_resources=[{"x": 80, "y": 60, "kind": "wood", "amount": 30}, {"x": 90, "y": 90, "kind": "stone", "amount": 9}])
+    forage = _plan_forage(bucket, None, {"wood": 2, "berries": 15}, (60, 60), known, None)
+    assert forage is not None and forage[0][0]["action"] == "move" and forage[0][0]["x"] > 60 and forage[2] == "forage"
+    assert _plan_forage(bucket, None, {"wood": 2, "berries": 15}, (60, 60), berries_only, None) is None  # wood is in view: the gather step takes it

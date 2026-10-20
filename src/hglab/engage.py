@@ -194,7 +194,7 @@ def whisper_line(persona: Any, stance: str, name: str, team_label: str, here: tu
 
 
 def contest_line(persona: Any, name: str, team_label: str, kind: str, where: tuple[int, int]) -> str:
-    return f"{name}, that {kind} at ({where[0]},{where[1]}) stands on {team_label}'s ground. We were here first and we keep building; talk to me before the next one."
+    return f"{name}, that {kind} at ({where[0]},{where[1]}) stands on ground {team_label} works and keeps building. Talk to me before the next one; I would rather trade than quarrel."
 
 
 def strike_line(persona: Any, name: str, kind: str, where: tuple[int, int]) -> str:

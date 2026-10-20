@@ -159,3 +159,20 @@ def test_dormant_residents_get_no_gifts_words_or_whispers():
     view.liveness = {"tide_scribe": 39900, "Quill": 39000}
     step = _plan_engage(persona, team, PersonaState(mood="warm"), {"wood": 20}, (60, 60), view, observe, None, names, random.Random("d"), OURS)
     assert step is not None and step[2] == "gift"
+
+
+def test_contests_need_owner_confirmed_ground():
+    from hglab.persona import Team
+
+    road = {"id": 70, "type": "hut", "x": 61, "y": 60, "owner": "Peregrine", "hp": 40, "hp_max": 40}
+    comp = {"cooperative": 0, "neutral": 0, "competitive": 1}
+    quiet, _ = _run("mrs-bucket", _observe(structures=[road]), stance=comp)
+    assert quiet is None or quiet[2] != "contest"  # a proposed region or a team home is not a claim on the ground
+    personas = load_personas(ROOT)
+    persona = personas["mrs-bucket"]
+    persona.knobs["stance"] = comp
+    base = load_team(ROOT, persona.team)
+    team = Team(slug=base.slug, name=base.name, aim=base.aim, members=base.members, home=base.home, territory={"kind": "circle", "x": 60, "y": 60, "radius": 8, "status": "confirmed"}, social_budget=base.social_budget, links=base.links)
+    view = WorldView(x0=54, y0=54, rows=["g" * 128] * 128, structures=[road])
+    step = _plan_engage(persona, team, PersonaState(mood="warm"), {"wood": 20}, (60, 60), view, _observe(structures=[road]), None, {}, random.Random("c"), OURS)
+    assert step is not None and step[2] == "contest" and "Peregrine" in step[0][0]["text"] and "first" not in step[0][0]["text"]

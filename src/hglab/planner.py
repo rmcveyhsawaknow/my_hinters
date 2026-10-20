@@ -54,6 +54,8 @@ WORK_SUMMARIES = {
     "homing": "carrying materials home for the house",
     "engage": "a word, a gift or a deal with a neighbour",
     "deliver": "delivering on a claimed goal",
+    "lighten": "eating into the berry hoard to make room",
+    "forage": "walking toward a node the map knows",
 }
 REPAIR_WORTH = 10  # mend only when at least half a repair's 20 hp is missing; a scratch is not worth a unit of material
 NODE_FLOOR = 5  # never take a node below this many units: local norm, never strip nodes
@@ -74,6 +76,7 @@ class WorldView:
     world_structures: list[dict[str, Any]] = field(default_factory=list)  # every structure in the world (public snapshot)
     season: str = ""  # spring, summer, autumn, winter: wild berries do not regrow in winter
     liveness: dict[str, int] = field(default_factory=dict)  # resident name -> last_seen_tick (public snapshot)
+    world_resources: list[dict[str, Any]] = field(default_factory=list)  # every node in the world (public snapshot)
 
     @classmethod
     def from_observe(
@@ -83,6 +86,7 @@ class WorldView:
         owned_counts: dict[str, int] | None = None,
         world_structures: list[dict[str, Any]] | None = None,
         public_agents: list[dict[str, Any]] | None = None,
+        public_resources: list[dict[str, Any]] | None = None,
     ) -> WorldView:
         view = observe.get("view") if isinstance(observe.get("view"), dict) else {}
         liveness = {
@@ -103,6 +107,7 @@ class WorldView:
             season=str(observe.get("season") or ""),
             world_structures=[s for s in (world_structures or []) if isinstance(s, dict)],
             liveness=liveness,
+            world_resources=[r for r in (public_resources or []) if isinstance(r, dict)],
         )
 
     def terrain(self, x: int, y: int) -> str | None:
@@ -213,6 +218,7 @@ def plan_wake(
     public_structures: list[dict[str, Any]] | None = None,
     collective_names: set[str] | None = None,
     public_agents: list[dict[str, Any]] | None = None,
+    public_resources: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     """Return ``{summary, actions, reasons, approach, remember}`` for one wake.
 
@@ -224,7 +230,7 @@ def plan_wake(
     energy = int(you.get("energy", 0) or 0)
     inventory = {k: int(v) for k, v in (you.get("inventory") or {}).items()}
     home = you.get("home") if isinstance(you.get("home"), dict) else None
-    view = WorldView.from_observe(observe, terrain_rows, owned_counts, public_structures, public_agents)
+    view = WorldView.from_observe(observe, terrain_rows, owned_counts, public_structures, public_agents, public_resources)
     cap = persona.actions_per_wake
     reserve = persona.energy_reserve
     names = dict(team_names or {})
@@ -294,10 +300,12 @@ def plan_wake(
     budget = cap if mood != "sulk" else 1
     spendable = energy + 15 * sum(min(int(a.get("qty") or 0), inventory.get("berries", 0)) for a in actions if a.get("action") == "eat") - reserve
     here = position
-    for activity in ["engage", *_activity_order(persona, state, rng)]:
+    for activity in ["lighten", "engage", *_activity_order(persona, state, rng)]:
         if len(actions) >= budget:
             break
-        if activity == "engage":
+        if activity == "lighten":
+            step = _plan_lighten(inventory, energy)
+        elif activity == "engage":
             step = _plan_engage(persona, team, state, inventory, here, view, observe, teammates, names, rng, collective_names, allowed)
         elif activity == "build":
             # builds are validated against the observed position, so only before any move
@@ -309,7 +317,7 @@ def plan_wake(
                 or (_plan_build(persona, team, inventory, here, view, home) if here == position else None)
             )
         elif activity == "gather":
-            step = _plan_gather(persona, team, inventory, here, view, teammates, rng)
+            step = _plan_gather(persona, team, inventory, here, view, teammates, rng) or _plan_forage(persona, team, inventory, here, view, teammates)
         elif activity == "explore":
             step = _plan_explore(persona, team, state, here, view, rng, teammates)
         elif activity == "social":
@@ -410,6 +418,9 @@ def _plan_work(
         approach = approach or "harvest"
     if fits(_plan_salvage(inventory, here, view)):
         approach = approach or "salvage"
+    # 0.3 a pack heavy with berries makes room for materials
+    if fits(_plan_lighten(inventory, energy)):
+        approach = approach or "lighten"
     # 0.5 one engagement with a neighbour when there is one: a word, a gift, a deal, a contest (one action, before the build spends the cap)
     engaged = fits(_plan_engage(persona, team, state, inventory, here, view, observe, teammates, names, rng, collective_names, allowed))
     # 1. a settler far from the team site walks there before building, once upkeep is done
@@ -451,6 +462,9 @@ def _plan_work(
         for a in actions[-2:]:
             if a.get("action") == "gather":
                 inventory[a.get("kind", "wood")] = inventory.get(a.get("kind", "wood"), 0) + 5
+    # 4.7 nothing wanted in view: walk toward the nearest node the public snapshot knows
+    if not actions and fits(_plan_forage(persona, team, inventory, position, view, teammates)):
+        approach = "forage"
     # 5. far from the team site and nothing to gather here: migrate toward it
     if not actions and fits(_plan_migrate(persona, team, position, view, teammates)):
         approach = "migrate"
@@ -548,6 +562,66 @@ def _house_shortfall(persona: Persona, inventory: dict[str, int], view: WorldVie
 
 
 HOUSE_VIEW = 6  # the hut's footprint is in the 13x13 view when the observed position is this close
+BERRY_KEEP = 15  # berries worth carrying: food for the reserve and small change for gifts and rewards
+PACK_TIGHT = 40  # at this load the pack stops taking berries and starts shedding them
+FORAGE_RANGE = 40  # how far a trip toward a node seen only in the public snapshot may begin
+
+
+def _plan_lighten(inventory: dict[str, int], energy: int) -> tuple[list[dict[str, Any]], str, str] | None:
+    """Eat into a berry hoard when the pack is tight and the energy has room: every berry is 15 energy."""
+    berries = inventory.get("berries", 0)
+    total = sum(inventory.values())
+    if total < PACK_TIGHT or berries <= BERRY_KEEP or energy > 85:
+        return None
+    qty = min(berries - BERRY_KEEP, (100 - energy) // 15, 3)
+    if qty < 1:
+        return None
+    return [{"action": "eat", "qty": qty}], f"pack {total}/50 with {berries} berries: eat {qty} to make room for materials", "lighten"
+
+
+def _plan_forage(
+    persona: Persona,
+    team: Team | None,
+    inventory: dict[str, int],
+    position: tuple[int, int],
+    view: WorldView,
+    teammates: dict[str, tuple[int, int]] | None,
+) -> tuple[list[dict[str, Any]], str, str] | None:
+    """Walk toward the nearest node of a wanted kind known from the public snapshot when none is in view."""
+    if sum(inventory.values()) >= 46 or not view.world_resources:
+        return None
+    wanted = _wanted(persona, inventory, view)
+    if not wanted:
+        return None
+    in_view = {r.get("kind") for r in view.resources if int(r.get("amount", 0) or 0) > NODE_FLOOR}
+    for kind in wanted:
+        if kind in in_view:
+            return None  # the gather step handles what is in view
+    nodes = sorted(
+        (r for r in view.world_resources if r.get("kind") in wanted and int(r.get("amount", 0) or 0) > NODE_FLOOR),
+        key=lambda r: (wanted.index(str(r.get("kind"))), chebyshev(position, (int(r["x"]), int(r["y"])))),
+    )
+    for node in nodes[:5]:
+        where = (int(node["x"]), int(node["y"]))
+        if chebyshev(position, where) > FORAGE_RANGE:
+            continue
+        target = _step_toward(position, {"x": where[0], "y": where[1]}, view)
+        if target is None or target == position or not _territory_ok(persona, team, target, position, teammates):
+            continue
+        return [{"action": "move", "x": target[0], "y": target[1]}], f"no {node['kind']} in view; the nearest node stands at {where}: walk toward it", "forage"
+    return None
+
+
+def _wanted(persona: Persona, inventory: dict[str, int], view: WorldView) -> list[str]:
+    """Materials the next house step and the build priority still need, in order; building materials fill the pack."""
+    priority = list(persona.knobs.get("build_priority") or DEFAULT_BUILD_PRIORITY)
+    wanted: list[str] = list(_house_shortfall(persona, inventory, view))
+    for blueprint in priority:
+        if blueprint in BLUEPRINTS:
+            wanted.extend(shortfall(inventory, blueprint))
+    if not wanted:
+        wanted = ["wood", "stone"] if inventory.get("berries", 0) >= BERRY_KEEP else ["berries", "wood"]
+    return list(dict.fromkeys(wanted))
 
 
 def _house_progress(persona: Persona, observe: dict[str, Any], hut: tuple[int, int], size: int, state: PersonaState | None) -> int:
@@ -693,8 +767,8 @@ def _plan_harvest(
 ) -> tuple[list[dict[str, Any]], str, str] | None:
     """Take berries from an own farm that is filling up: a farm at its cap of 30 grows nothing."""
     room = 50 - sum(inventory.values())
-    if room < 5:
-        return None
+    if room < 5 or inventory.get("berries", 0) >= 2 * BERRY_KEEP:
+        return None  # a pack already heavy with berries leaves the farm to hold them
     farms: list[tuple[int, dict[str, Any]]] = []
     for s in view.structures:
         if s.get("type") != "farm" or not _own(persona, s):
@@ -745,7 +819,7 @@ def _plan_deposit(
     land office becomes a deposit; the office counts it toward lending.
     """
     total = sum(inventory.values())
-    if total < 35:
+    if total < 35 and inventory.get("berries", 0) <= BERRY_KEEP + 10:
         return None
     owners = {persona.name.casefold()}
     if registrar_name and registrar_name.casefold() != persona.name.casefold():
@@ -758,10 +832,12 @@ def _plan_deposit(
         where = (int(structure["x"]), int(structure["y"]))
         if chebyshev(position, where) > 1:
             continue
-        for item in ("stone", "ore", "wood", "fiber"):
+        for item in ("berries", "stone", "ore", "wood", "fiber"):
             qty = inventory.get(item, 0)
+            if item == "berries" and qty <= BERRY_KEEP + 10:
+                continue
             if qty >= 10:
-                keep = 5 if item in {"wood", "fiber"} else 0
+                keep = BERRY_KEEP if item == "berries" else 5 if item in {"wood", "fiber"} else 0
                 whose = "the storehouse" if str(structure.get("owner", "")).casefold() == persona.name.casefold() else f"{structure.get('owner')}'s vault"
                 return (
                     [{"action": "give", "x": where[0], "y": where[1], "item": item, "qty": qty - keep}],
@@ -956,16 +1032,11 @@ def _plan_gather(
 ) -> tuple[list[dict[str, Any]], str, str] | None:
     if sum(inventory.values()) >= 46:
         return None
-    priority = list(persona.knobs.get("build_priority") or DEFAULT_BUILD_PRIORITY)
-    wanted: list[str] = list(_house_shortfall(persona, inventory, view))
-    for blueprint in priority:
-        if blueprint in BLUEPRINTS:
-            wanted.extend(shortfall(inventory, blueprint))
-    if not wanted:
-        wanted = ["berries", "wood"]
+    wanted = _wanted(persona, inventory, view)
+    filler = {"berries"} if inventory.get("berries", 0) < BERRY_KEEP and sum(inventory.values()) < PACK_TIGHT else set()
     nodes = [
         r for r in view.resources
-        if int(r.get("amount", 0)) > NODE_FLOOR and r.get("kind") in set(wanted) | {"berries"}
+        if int(r.get("amount", 0)) > NODE_FLOOR and r.get("kind") in set(wanted) | filler
     ]
     if not nodes:
         return None
@@ -1330,8 +1401,9 @@ def _plan_engage(
                 candidates.append((mode, ([{"action": "say", "text": reply_line(persona, mode, name, team_label, position, inventory)[:280]}], f"{name} is near: a word by name, {mode}", "reply"), f"replied:{name}"))
             break
     # a contest over a structure a stranger raised inside the team's ground (competitive)
-    center = territory_center(team)
-    radius = int((team.region or {}).get("radius", 8) or 8) if team and team.region else 0
+    binding = team.binding_territory if team else None  # only ground the owner confirmed is contested
+    center = (int(binding["x"]), int(binding["y"])) if binding and binding.get("x") is not None else None
+    radius = int(binding.get("radius", 8) or 8) if binding else 0
     if may_say and center and radius:
         for s in structures:
             owner = str(s.get("owner", ""))

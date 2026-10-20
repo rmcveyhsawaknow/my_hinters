@@ -228,6 +228,7 @@ def persona_wake(
     registrar_name: str | None = None,
     public_structures: list[dict[str, Any]] | None = None,
     public_agents: list[dict[str, Any]] | None = None,
+    public_resources: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     if role is not None and role not in persona.roles:
         raise ValueError(f"{persona.slug} does not wear the {role} hat")
@@ -276,7 +277,7 @@ def persona_wake(
             persona, team, state, observe, mode, rng,
             teammates=mates, terrain_rows=terrain_rows, allowed=allowed, team_names=names, work=work,
             owned_counts=owned_counts, registrar_name=registrar_name, public_structures=public_structures,
-            collective_names={p.name for p in personas.values()}, public_agents=public_agents,
+            collective_names={p.name for p in personas.values()}, public_agents=public_agents, public_resources=public_resources,
         )
         used = "heuristic"
         if planner_mode == "llm" and llm_call is not None and mode != "rest" and not work:

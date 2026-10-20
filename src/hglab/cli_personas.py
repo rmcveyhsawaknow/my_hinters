@@ -291,6 +291,7 @@ def _persona_tick(
         owned_counts=owned or None, registrar_name=_registrar_name(root, personas),
         public_structures=list(world.get("structures", [])) if world else (list(fixture_world(root).get("structures", [])) if fixture is not None else None),
         public_agents=list(world.get("agents", [])) if world else (list(fixture_world(root).get("agents", [])) if fixture is not None else None),
+        public_resources=list(world.get("resources", [])) if world else None,
     )
     if not quiet:
         echo_record(record)
