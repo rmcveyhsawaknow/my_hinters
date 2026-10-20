@@ -323,3 +323,11 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
   band of eight tiles before the richest target, so the cast no longer converges on one store. An
   accepted step now spends the pack the later steps plan with, which ends deposits of stone a road
   had already used.
+- Third competitive hour (14:40 to 15:30 UTC): all eight riddle signs stand (Tinkerglow raised the
+  first two, Stoutheart the rest), Lagalong took Quill's tower at (69, 57) from 100 to 30 hp after
+  the announcement, Clarion joined him, LandBroker staked six more lots. Three inefficiencies fixed:
+  inside-keepers oscillated between a reclaim expedition and the walk home, so an expedition now
+  holds the migration while a target is in range, and the gatekeeper and the storekeeper reclaim
+  only near Neverland (`reclaim.range`); a gift to a teammate whose pack was full was refused first
+  and ended the batch before the hits, so a gift goes last when the batch does not move; a deposit
+  was sized from the wake's start position rather than where the agent stands after its moves.

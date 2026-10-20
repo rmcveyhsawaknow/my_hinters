@@ -453,9 +453,10 @@ def _plan_work(
         approach = approach or "lighten"
     # 0.5 one engagement with a neighbour when there is one: a word, a gift, a deal, a contest (one action, before the build spends the cap)
     engaged = fits(_plan_engage(persona, team, state, inventory, here, view, observe, teammates, names, rng, collective_names, allowed))
-    # 1. a settler far from the team site walks there before building, once upkeep is done
+    # 1. a settler far from the team site walks there before building, once upkeep is done; an expedition to reclaim holds the walk home
     migrate = _plan_migrate(persona, team, position, view, teammates)
-    far_from_home = migrate is not None and persona.knobs["territory"]["mode"] in {"prefer_inside", "stay_inside", "near_teammate"}
+    expedition = _plan_reclaim(persona, team, state, inventory, here, view, observe, teammates, collective_names, room=cap - len(actions))
+    far_from_home = migrate is not None and persona.knobs["territory"]["mode"] in {"prefer_inside", "stay_inside", "near_teammate"} and expedition is None
     if far_from_home and not actions and fits(migrate):
         approach = "migrate"
         if fits(_plan_gather_adjacent(persona, inventory, here, view)):
@@ -495,7 +496,7 @@ def _plan_work(
         approach = approach or "border"
     # 4. deposit surplus into an adjacent storehouse of ours (so the monument can draw on it)
     ours = set(collective_names or ()) | set(names or ())
-    if fits(_plan_deposit(persona, inventory, position, view, registrar_name, mates=ours)):
+    if fits(_plan_deposit(persona, inventory, here, view, registrar_name, mates=ours)):
         approach = approach or "deposit"
     # 4.2 a full pack walks to the nearest storehouse of ours to unload (a word or a meal may precede the walk)
     if not moved() and fits(_plan_deposit_trip(persona, team, inventory, position, view, teammates, {n.casefold() for n in ours} | {persona.name.casefold()})):
@@ -519,6 +520,10 @@ def _plan_work(
         approach = approach or "explore"
     if engaged and not approach:
         approach = "engage"  # the neighbour was the whole of this wake
+    if not moved():
+        gifts = [a for a in actions if a.get("action") == "give" and a.get("to")]
+        if gifts:
+            actions[:] = [a for a in actions if not (a.get("action") == "give" and a.get("to"))] + gifts  # a refused gift (their pack full) must not end the batch before the work
     summary = WORK_SUMMARIES.get(approach or "", "nothing worth the energy this shift wake")
     return _result(persona, mood, f"work shift: {summary}", actions, reasons, approach, remember)
 
@@ -645,6 +650,7 @@ def _plan_reclaim(
         return None
     days = float(knob.get("dormant_days", 2))
     per_wake = int(knob.get("per_wake", 3) or 3)
+    reach_limit = int(knob.get("range", FORAGE_RANGE) or FORAGE_RANGE)
     tick = int(observe.get("tick", 0) or 0)
     ours = {n.casefold() for n in (collective_names or ())} | {persona.name.casefold()}
     targets = []
@@ -658,7 +664,7 @@ def _plan_reclaim(
             continue
         where = (int(s.get("x", 0)), int(s.get("y", 0)))
         distance = chebyshev(position, where)
-        if distance > FORAGE_RANGE:
+        if distance > reach_limit:
             continue
         targets.append((distance > 1, distance // 8, -RECLAIM_VALUE[kind], distance, where, s, owner, gone))
     if not targets:

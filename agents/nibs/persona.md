@@ -18,7 +18,7 @@ knobs:
   social_rate: 2
   house: {size: 1, color: green}
   stance: {cooperative: 0.4, neutral: 0.3, competitive: 0.3}
-  reclaim: {dormant_days: 2, per_wake: 3}
+  reclaim: {dormant_days: 2, per_wake: 3, range: 8}
   build_priority: [storehouse, hut, farm, bridge, wall, road]
   work: {cron: "39 * * * *", minutes: 25, interval_seconds: 300}
   intended_mix: {build: 0.40, gather: 0.35, social: 0.15, explore: 0.05, trade: 0.05}

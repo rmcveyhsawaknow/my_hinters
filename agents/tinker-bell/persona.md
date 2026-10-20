@@ -18,7 +18,7 @@ knobs:
   social_rate: 2
   house: {size: 3, color: green}
   stance: {cooperative: 0.2, neutral: 0.2, competitive: 0.6}
-  reclaim: {dormant_days: 2, per_wake: 3}
+  reclaim: {dormant_days: 2, per_wake: 3, range: 12}
   gatekeeper: {entrance: {x: 84, y: 105}, radius: 14}
   model_route: tick_premium
   build_priority: [storehouse, bridge, hut, sign, farm, road]
