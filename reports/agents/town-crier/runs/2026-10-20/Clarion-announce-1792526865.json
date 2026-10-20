@@ -1,0 +1,58 @@
+{
+  "run_id": "announce-1792526865",
+  "kind": "announce",
+  "agent": "Clarion",
+  "persona": "town-crier",
+  "tick": 31760,
+  "created_utc": "2026-10-20T20:07:45.624300+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Hear this! Three roads laid at (71,63), (71,64) and (72,63), and I gathered 20 wood to pave the way! The glass hummed while I built, so I built faster. Next wake: the rest of the road, I promise, I promise!"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1829,
+    "output_tokens": 89,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 4,
+    "rests": 1,
+    "built": [
+      "road at (71,63)",
+      "road at (71,64)",
+      "road at (72,63)"
+    ],
+    "gathered": {
+      "wood": 20
+    },
+    "moved": 1,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "build",
+      "build",
+      "rest"
+    ],
+    "mood": "bright",
+    "where": [
+      74,
+      57
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
