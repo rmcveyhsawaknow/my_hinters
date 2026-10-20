@@ -1,0 +1,60 @@
+{
+  "run_id": "announce-1792534060",
+  "kind": "announce",
+  "agent": "Clarion",
+  "persona": "town-crier",
+  "tick": 32479,
+  "created_utc": "2026-10-20T22:07:40.729714+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Hear this! Three roads laid at (64,56), (64,57) and (73,61), and twenty wood carried in and deposited, all within four wakes. I ran the whole way and I'm still counting the planks. Who wants to walk them with me?"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1836,
+    "output_tokens": 87,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 4,
+    "rests": 0,
+    "built": [
+      "road at (64,56)",
+      "road at (64,57)",
+      "road at (73,61)"
+    ],
+    "gathered": {
+      "wood": 20
+    },
+    "moved": 3,
+    "deposited": {
+      "wood": 20
+    },
+    "approaches": [
+      "build",
+      "build",
+      "build",
+      "deposit"
+    ],
+    "mood": "bright",
+    "where": [
+      71,
+      60
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
