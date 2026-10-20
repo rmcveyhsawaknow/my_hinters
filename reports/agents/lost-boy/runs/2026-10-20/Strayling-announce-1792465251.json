@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792465251",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 25598,
+  "created_utc": "2026-10-20T03:00:51.523296+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, zero rests, and I moved every single one at (57, 77), homing homing homing, then the house, wait, is that a shadow or a door? Filing a card before I chase it."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1689,
+    "output_tokens": 68,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "homing",
+      "homing",
+      "homing",
+      "homing",
+      "house"
+    ],
+    "mood": "curious",
+    "where": [
+      57,
+      77
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
