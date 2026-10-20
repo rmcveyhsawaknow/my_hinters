@@ -1,0 +1,50 @@
+{
+  "run_id": "announce-1792476357",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 26709,
+  "created_utc": "2026-10-20T06:05:57.099071+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, one rest, nothing built or gathered this hour. Still brave, still here. Next hour the storehouse gets my full attention, and I'll take a hand if you're offering."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1732,
+    "output_tokens": 68,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 0,
+    "deposited": {},
+    "approaches": [
+      "lighten",
+      "rest",
+      "lighten",
+      "lighten",
+      "lighten"
+    ],
+    "mood": "brave",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
