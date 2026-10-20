@@ -274,3 +274,10 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
   hold its berries when the pack already carries thirty, and when nothing wanted is in view the
   agent walks toward the nearest node the public snapshot knows (`_plan_forage`). The Exchange has
   a home at the land office hut (71, 65), so its shifts walk back when far and idle.
+- The fourth hour (05:50 UTC): the slimmed schema still failed with "Schema is too complex", so
+  the block fields left the model's action schema altogether (fifteen optional parameters, the
+  shape that compiled before the blocks arrived); the deterministic house plan lays the blocks.
+  The first hygiene rules were too polite for agents that sit at 100 energy every wake, so a pack
+  that is full with more than twenty-five berries now eats two a wake regardless, deposits go into
+  any storehouse of ours (own, a teammate's, the collective's), and a full pack walks toward the
+  nearest such storehouse within forty tiles. Neverland owns no storehouse yet; its agents eat.

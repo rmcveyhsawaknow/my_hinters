@@ -51,8 +51,7 @@ LEAN_ACTION_SCHEMA: dict[str, Any] = {
         "to: recipient name. qty: quantity (give/take/eat, or the reward quantity for post_goal). item: wood|stone|ore|fiber|berries "
         "(give/take, or the reward item for post_goal). kind: gather kind, or storehouse policy private|faction|public, or faction membership open|invite. "
         "type: blueprint for build. key: notebook key. name: faction or invitee name. id: goal_id or faction_id. title: goal title, or profile goals text. "
-        "box: block cells for place/remove/paint as [bx,by,bz] or [bx,by,bz,bx2,by2,bz2] (tile (x,y) holds bx 4x..4x+3, by 4y..4y+3, bz 0..15). "
-        "material: wood|stone|thatch|metal. shape: cube|slab|slope|door|window. facing: north|south|east|west. color: a colour name. fill: walls."
+        "Blocks (place/remove/paint) are laid by the deterministic house plan, not proposed here."
     ),
     "required": ["action"],
     "properties": {
@@ -69,12 +68,6 @@ LEAN_ACTION_SCHEMA: dict[str, Any] = {
         "name": {"type": "string"},
         "id": {"type": "integer"},
         "title": {"type": "string"},
-        "box": {"type": "array", "items": {"type": "integer"}},
-        "material": {"type": "string"},
-        "shape": {"type": "string"},
-        "facing": {"type": "string"},
-        "color": {"type": "string"},
-        "fill": {"type": "string"},
     },
     "additionalProperties": False,
 }
@@ -95,7 +88,6 @@ def plan_schema(action_schema: dict[str, Any] | None = None) -> dict[str, Any]:
             "reasons": {"type": "array", "items": {"type": "string"}},
             "approach": {"type": ["string", "null"], "description": "An approach id from the metrics spec, or null"},
             "remember": {"type": "array", "items": {"type": "object", "required": ["key", "text"], "properties": {"key": {"type": "string"}, "text": {"type": "string"}}, "additionalProperties": False}},
-            "whisper_tags": {"type": "array", "items": {"type": "string"}},
             "journal_note": {"type": "string", "description": "One line on what the world digest changed in your thinking, if anything"},
             "adaptation_proposals": {"type": "array", "items": {"type": "string"}, "description": "Changes to your own profile text, knobs, metrics or skills you would propose to the collective, one sentence each; humans review them weekly"},
         },
@@ -530,9 +522,9 @@ def persona_prompt(
         " one. Take berries from your full farms so they keep growing. Plan by the season in the hints and digest:"
         " short moves on storm days (each tile costs 1 more), gather fiber and berries on rain days, stock berries"
         " before winter, and take salvage from ruins (caches) when you pass them."
-        " Blocks (API 0.30): the house around your hut, its walls, door, windows and roof, is made of blocks with place"
-        " (box [bx,by,bz] or [bx,by,bz,bx2,by2,bz2]: tile (x, y) holds bx 4x..4x+3 and by 4y..4y+3, bz 0..15; every"
-        " placement must reach level 0 or touch an existing block; material wood, stone, thatch or"
+        " Blocks (API 0.30): the house around your hut, its walls, door, windows and roof, is made of blocks; your"
+        " deterministic house plan lays them step by step in your work shifts and wakes (every placement must reach"
+        " level 0 or touch an existing block; material wood, stone, thatch or"
         " metal at one item per 4 blocks; shapes cube, slab, slope, door, window; a color). Every box must lie within"
         " 2 tiles of you and hold at most 256 cells; the deterministic planner raises your house step by step, so"
         " use place yourself for touches of your own, such as a painted slab or a window, when you stand by your hut."

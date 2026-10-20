@@ -266,7 +266,7 @@ def test_a_pack_heavy_with_berries_is_lightened_not_topped_up():
     bucket = load_personas(ROOT)["mrs-bucket"]
     rows = ["g" * 128] * 128
     hoard = {"wood": 5, "fiber": 6, "berries": 37}
-    assert _plan_lighten(hoard, 100) is None  # full energy: nothing to eat into
+    assert _plan_lighten(hoard, 100)[0] == [{"action": "eat", "qty": 2}]  # full pack, full energy: two berries a wake anyway
     eat = _plan_lighten(hoard, 70)
     assert eat is not None and eat[0] == [{"action": "eat", "qty": 2}] and eat[2] == "lighten"
     assert _plan_lighten({"wood": 5, "berries": 12}, 70) is None  # a dozen berries is food, not ballast
@@ -282,3 +282,21 @@ def test_a_pack_heavy_with_berries_is_lightened_not_topped_up():
     forage = _plan_forage(bucket, None, {"wood": 2, "berries": 15}, (60, 60), known, None)
     assert forage is not None and forage[0][0]["action"] == "move" and forage[0][0]["x"] > 60 and forage[2] == "forage"
     assert _plan_forage(bucket, None, {"wood": 2, "berries": 15}, (60, 60), berries_only, None) is None  # wood is in view: the gather step takes it
+
+
+def test_a_full_pack_eats_even_at_full_energy_and_walks_to_a_collective_storehouse():
+    from hglab.planner import WorldView, _plan_deposit, _plan_deposit_trip, _plan_lighten
+
+    joe = load_personas(ROOT)["grandpa-joe"]
+    rows = ["g" * 128] * 128
+    assert _plan_lighten({"wood": 10, "berries": 40}, 100) == ([{"action": "eat", "qty": 2}], "pack 50/50 with 40 berries: eat 2 to make room for materials", "lighten")
+    assert _plan_lighten({"wood": 20, "berries": 22}, 100) is None  # not full: wait for energy to make the meal worth it
+    world = [{"type": "storehouse", "x": 85, "y": 92, "owner": "MotherPail"}, {"type": "storehouse", "x": 76, "y": 62, "owner": "Bishop"}]
+    view = WorldView(x0=91, y0=93, rows=rows, structures=[], world_structures=world)
+    mates = {"motherpail", "fudgewright", "grandadpail"}
+    trip = _plan_deposit_trip(joe, None, {"wood": 10, "berries": 40}, (97, 99), view, None, mates)
+    assert trip is not None and trip[2] == "deposit_trip" and trip[0][0]["x"] < 97 and "MotherPail" in trip[1]
+    assert _plan_deposit_trip(joe, None, {"wood": 10, "berries": 40}, (97, 99), view, None, {"grandadpail"}) is None  # a stranger's store is not ours
+    beside = WorldView(x0=79, y0=86, rows=rows, structures=[{"type": "storehouse", "x": 85, "y": 92, "owner": "MotherPail", "policy": "private"}])
+    deposit = _plan_deposit(joe, {"wood": 10, "berries": 40}, (84, 92), beside, None, mates={"MotherPail"})
+    assert deposit is not None and deposit[0][0] == {"action": "give", "x": 85, "y": 92, "item": "berries", "qty": 25}
