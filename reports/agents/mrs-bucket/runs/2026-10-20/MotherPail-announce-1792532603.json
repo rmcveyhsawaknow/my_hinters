@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792532603",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 32334,
+  "created_utc": "2026-10-20T21:43:23.893986+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, five loads of stone gathered at (80, 84), and no rest taken. Now I'll carry them where they're needed and see what the hour brings."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1639,
+    "output_tokens": 59,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "stone": 5
+    },
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "reclaim",
+      "deposit_trip",
+      "migrate",
+      "homing",
+      "migrate"
+    ],
+    "mood": "warm",
+    "where": [
+      80,
+      84
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
