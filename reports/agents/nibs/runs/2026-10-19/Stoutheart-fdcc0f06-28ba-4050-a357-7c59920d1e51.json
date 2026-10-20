@@ -1,0 +1,121 @@
+{
+  "run_id": "fdcc0f06-28ba-4050-a357-7c59920d1e51",
+  "agent": "Stoutheart",
+  "role": "builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-19T23:48:37.061416+00:00",
+  "tick": 24445,
+  "summary": "Stoutheart (brave): work shift: looking for nodes",
+  "actions": [
+    {
+      "action": "move",
+      "x": 70,
+      "y": 107
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brave\",\"since_tick\":0,\"glow\":50,\"inputs\":{\"resolve\":{\"value\":0.0,\"tick\":24412,\"explanation\":\"escape from tootles 0\"},\"escape\":{\"value\":0.0,\"tick\":24412,\"explanation\":\"Escape 0: 0% of moves outside, farthest 0 tiles from the centre.\"}},\"wakes\":229,\"rests\":27,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":24445,\"visited\":[\"69,110\",\"65,108\",\"69,111\",\"72,104\",\"65,105\",\"72,102\",\"66,103\",\"70,108\",\"76,106\",\"73,110\",\"69,109\",\"73,108\",\"77,109\",\"74,115\",\"78,108\",\"72,112\",\"64,106\",\"68,108\",\"70,113\",\"69,105\",\"72,109\",\"68,105\",\"77,110\",\"81,110\",\"76,109\",\"75,113\",\"82,108\",\"75,104\",\"79,111\",\"71,113\",\"68,107\",\"64,107\",\"69,108\",\"64,104\",\"72,108\",\"72,114\",\"75,103\",\"79,102\",\"74,108\",\"70,106\",\"74,104\",\"75,111\",\"76,103\",\"67,108\",\"65,104\",\"73,104\",\"72,110\",\"78,113\",\"67,110\",\"72,113\",\"72,106\",\"77,105\",\"69,104\",\"70,110\",\"79,103\",\"70,112\",\"71,105\",\"67,107\",\"72,103\",\"77,108\",\"73,105\",\"74,109\",\"77,115\",\"84,108\",\"74,105\",\"75,109\",\"74,103\",\"82,105\",\"75,108\",\"81,104\",\"78,109\",\"80,113\",\"76,113\",\"75,107\",\"80,106\",\"73,113\",\"68,110\",\"75,102\",\"67,111\",\"79,106\",\"80,111\",\"76,102\",\"78,111\",\"80,102\",\"73,109\",\"77,106\",\"74,114\",\"66,111\",\"78,105\",\"84,103\",\"83,108\",\"76,111\",\"68,103\",\"77,114\",\"81,108\",\"80,112\",\"77,104\",\"83,107\",\"78,114\",\"71,107\",\"73,102\",\"82,107\",\"75,110\",\"76,104\",\"81,107\",\"78,112\",\"78,106\",\"83,103\",\"75,106\",\"79,104\",\"75,105\",\"75,112\",\"79,113\",\"80,107\",\"77,111\",\"68,112\",\"81,109\",\"74,113\",\"66,107\",\"71,111\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":24442,\"pace\":\"steady\",\"day\":{\"all\":1430,\"building\":103,\"trade_goals\":48,\"talk\":224,\"factions\":1,\"movement\":1054},\"hour\":{\"all\":50},\"peers\":1},\"greeted\":{\"MotherPail\":21754}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 24445,
+    "you": {
+      "id": 9,
+      "name": "Stoutheart",
+      "x": 71,
+      "y": 111,
+      "energy": 100,
+      "inventory": {
+        "wood": 5,
+        "fiber": 6,
+        "berries": 39
+      },
+      "home": {
+        "x": 69,
+        "y": 107
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "nibs",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 50,
+      "building": 7,
+      "trade_goals": 1,
+      "talk": 9,
+      "factions": 0,
+      "movement": 33
+    },
+    "day": {
+      "all": 1430,
+      "building": 103,
+      "trade_goals": 48,
+      "talk": 224,
+      "factions": 1,
+      "movement": 1054
+    },
+    "peers_active": 1
+  },
+  "wake_mode": "act",
+  "mood": "brave",
+  "approach": "explore",
+  "reasons": [
+    "looking around for something I have not seen: move to (70, 107)"
+  ],
+  "energy_before": 100,
+  "berries_before": 39,
+  "energy_spent": 4,
+  "activity_energy": {
+    "explore": 4.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brave",
+    "glow": 50,
+    "wakes": 229,
+    "rests": 27,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:stay_inside",
+    "walls_inside_territory"
+  ]
+}
