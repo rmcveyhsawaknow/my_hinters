@@ -265,3 +265,12 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
   days, so engagement now reads every resident's last_seen_tick from the public snapshot and skips
   gifts and words to anyone unseen for a day and whispers to anyone unseen for three. Refused
   invitations are written into the collector's notebook state, so no agent is asked twice.
+- The third hour (05:00 UTC) found the structural cause of the stalled building: every agent's
+  pack stood at 45 to 50 of 50, mostly berries (20 to 42), every agent at 100 energy, so nobody
+  ate and the gather step refused to run on a full pack; builds stalled, agents explored or rested,
+  LandBroker roamed 45 tiles west of its office with no wood beside wood nodes. Pack hygiene now:
+  berries above fifteen are shed (eaten when energy has room, deposited in an own storehouse along
+  with other surplus), berries are no longer the filler once fifteen are held, a farm is left to
+  hold its berries when the pack already carries thirty, and when nothing wanted is in view the
+  agent walks toward the nearest node the public snapshot knows (`_plan_forage`). The Exchange has
+  a home at the land office hut (71, 65), so its shifts walk back when far and idle.

@@ -4,7 +4,7 @@ aim: Run an honest market for land and goods - survey the plots, keep the regist
   broker deals between neighbours, and lend when the vaults are full.
 members:
 - land-broker
-home: null
+home: {x: 71, y: 65}  # the land office hut; shifts walk back here when far and idle
 territory: null
 social_budget:
   says_per_hour: 3
