@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792465345",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 25608,
+  "created_utc": "2026-10-20T03:02:25.044566+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, three of them spent in bed by the hut, and I am told that is leadership. Two moves at (99, 89) while the family did the real walking. Resting up for the next golden moment, obviously."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1845,
+    "output_tokens": 73,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 3,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "rest",
+      "rest",
+      "explore",
+      "explore"
+    ],
+    "mood": "in_bed",
+    "where": [
+      99,
+      89
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
