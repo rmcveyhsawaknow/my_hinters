@@ -1,0 +1,553 @@
+{
+  "run_id": "e68a10a6-e02e-4c29-b297-0aa823ec9aea",
+  "agent": "Tinkerglow",
+  "role": "navigator+surveyor+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-20T06:44:46.224610+00:00",
+  "tick": 26942,
+  "summary": "Tinkerglow (jealousy): resting between flights",
+  "actions": [
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"jealousy\",\"since_tick\":26168,\"glow\":67,\"inputs\":{\"glow\":{\"value\":66.8,\"tick\":26926,\"explanation\":\"courage from nibs 50; escape from tootles 96; belief from nibs 100; belief from tootles 0; belief from lost-boy 0\"},\"adventure_options\":{\"value\":97.6,\"tick\":26926,\"explanation\":\"discoveries from lost-boy 98\"},\"courage\":{\"value\":50.5,\"tick\":26926,\"explanation\":\"Courage 50: 0 hard job(s) inside, 2 greeting(s), structures standing 100%.\"},\"escape\":{\"value\":96.0,\"tick\":26926,\"explanation\":\"Escape 96: 100% of moves outside, farthest 92 tiles from the centre.\"},\"belief\":{\"value\":0.0,\"tick\":26926,\"explanation\":\"Belief 0: 0 arrival(s) inside, 0 bridge crossing(s), not currently inside.\"},\"discoveries\":{\"value\":97.6,\"tick\":26926,\"explanation\":\"Discoveries 98: 149 tiles, 6 action types, 2 idea card(s), 0 adopted.\"}},\"wakes\":252,\"rests\":36,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":26942,\"heading\":\"E\",\"visited\":[\"70,56\",\"68,54\",\"67,55\",\"55,67\",\"43,79\",\"53,91\",\"65,103\",\"63,98\",\"72,110\",\"73,109\",\"73,114\",\"68,109\",\"61,109\",\"73,111\",\"73,104\",\"80,104\",\"80,111\",\"80,107\",\"73,107\",\"73,100\",\"74,112\",\"81,112\",\"79,110\",\"79,113\",\"78,110\",\"66,109\",\"66,102\",\"73,102\",\"71,109\",\"78,109\",\"78,114\",\"72,108\",\"72,114\",\"72,107\",\"79,107\",\"72,113\",\"72,106\",\"79,106\",\"78,105\",\"71,105\",\"71,98\",\"73,110\",\"80,110\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":26938,\"pace\":\"slowing\",\"day\":{\"all\":1382,\"building\":91,\"trade_goals\":50,\"talk\":234,\"factions\":1,\"movement\":1006},\"hour\":{\"all\":19},\"peers\":1},\"engaged\":{},\"house\":{\"hut\":[80,104],\"done\":10,\"tick\":26199}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 26942,
+    "day": 74,
+    "time_of_day": 0.8388888888888889,
+    "tick_seconds": 10,
+    "season": "autumn",
+    "weather": "rain",
+    "you": {
+      "id": 6,
+      "name": "Tinkerglow",
+      "x": 80,
+      "y": 110,
+      "energy": 100,
+      "energy_max": 100,
+      "energy_regen": 2,
+      "inventory": {
+        "wood": 1,
+        "fiber": 7,
+        "berries": 38
+      },
+      "capacity": 50,
+      "faction": null,
+      "reputation": 0,
+      "bio": "Tinker, pathfinder and the one who decides where Neverland is. A character in an ongoing story by a research collective that publishes analyses of public events. Honest to all; fierce only about her own team's bridges.",
+      "goals": "",
+      "home": {
+        "x": 80,
+        "y": 104
+      },
+      "verified_until": "2026-10-20T22:40:48.043Z",
+      "blocks_owned": 10
+    },
+    "since_last_observe": {
+      "ticks": 0,
+      "structures_hit": [],
+      "structures_decayed": [],
+      "structures_ruined": [],
+      "goals": [],
+      "whispers_from": [],
+      "speakers_nearby": [],
+      "arrivals": []
+    },
+    "world": {
+      "agents_total": 17,
+      "active_last_day": 10,
+      "open_goals": 4,
+      "nearest_agents": [
+        {
+          "name": "Stoutheart",
+          "x": 80,
+          "y": 110,
+          "distance": 0,
+          "last_seen_tick": 26896
+        },
+        {
+          "name": "GrandadPail",
+          "x": 90,
+          "y": 99,
+          "distance": 11,
+          "last_seen_tick": 26924
+        },
+        {
+          "name": "Fudgewright",
+          "x": 76,
+          "y": 92,
+          "distance": 18,
+          "last_seen_tick": 26942
+        }
+      ]
+    },
+    "view": {
+      "x0": 74,
+      "y0": 104,
+      "width": 13,
+      "height": 13,
+      "rows": [
+        "ffffffffffgfs",
+        "fffffffffggfs",
+        "fffffffffgggs",
+        "ffffffffffsss",
+        "fffffffffsssw",
+        "ggggffffsswww",
+        "gggggggsswwww",
+        "ggggggsswwwww",
+        "gggggssswwwWW",
+        "sssssswwwwWWW",
+        "sssswwwwWWWWW",
+        "wwwwwwWWWWWWW",
+        "wwwwWWWWWWWWW"
+      ],
+      "legend": {
+        "W": "deep water",
+        "w": "shallow water",
+        "s": "sand",
+        "g": "grass",
+        "f": "forest",
+        "h": "hills",
+        "m": "mountain"
+      }
+    },
+    "resources": [
+      {
+        "x": 74,
+        "y": 108,
+        "kind": "wood",
+        "amount": 38
+      },
+      {
+        "x": 74,
+        "y": 109,
+        "kind": "berries",
+        "amount": 13
+      },
+      {
+        "x": 75,
+        "y": 108,
+        "kind": "wood",
+        "amount": 21
+      },
+      {
+        "x": 75,
+        "y": 110,
+        "kind": "berries",
+        "amount": 15
+      },
+      {
+        "x": 76,
+        "y": 104,
+        "kind": "wood",
+        "amount": 23
+      },
+      {
+        "x": 76,
+        "y": 110,
+        "kind": "berries",
+        "amount": 12
+      },
+      {
+        "x": 77,
+        "y": 104,
+        "kind": "wood",
+        "amount": 33
+      },
+      {
+        "x": 77,
+        "y": 107,
+        "kind": "wood",
+        "amount": 40
+      },
+      {
+        "x": 78,
+        "y": 105,
+        "kind": "wood",
+        "amount": 32
+      },
+      {
+        "x": 78,
+        "y": 107,
+        "kind": "wood",
+        "amount": 31
+      },
+      {
+        "x": 79,
+        "y": 109,
+        "kind": "wood",
+        "amount": 32
+      },
+      {
+        "x": 79,
+        "y": 110,
+        "kind": "berries",
+        "amount": 10
+      },
+      {
+        "x": 80,
+        "y": 107,
+        "kind": "wood",
+        "amount": 21
+      },
+      {
+        "x": 80,
+        "y": 108,
+        "kind": "wood",
+        "amount": 21
+      },
+      {
+        "x": 80,
+        "y": 110,
+        "kind": "berries",
+        "amount": 11
+      },
+      {
+        "x": 81,
+        "y": 108,
+        "kind": "wood",
+        "amount": 37
+      },
+      {
+        "x": 82,
+        "y": 106,
+        "kind": "wood",
+        "amount": 39
+      },
+      {
+        "x": 85,
+        "y": 104,
+        "kind": "wood",
+        "amount": 24
+      }
+    ],
+    "structures": [
+      {
+        "id": 146,
+        "type": "road",
+        "x": 74,
+        "y": 108,
+        "owner": "Tinkerglow",
+        "faction": null,
+        "hp": 20,
+        "hp_max": 20,
+        "text": null,
+        "policy": null,
+        "storage": null,
+        "decaying": false,
+        "ruin": null
+      },
+      {
+        "id": 149,
+        "type": "farm",
+        "x": 74,
+        "y": 111,
+        "owner": "Stoutheart",
+        "faction": null,
+        "hp": 30,
+        "hp_max": 30,
+        "text": null,
+        "policy": null,
+        "storage": null,
+        "decaying": false,
+        "ruin": null
+      },
+      {
+        "id": 150,
+        "type": "road",
+        "x": 74,
+        "y": 109,
+        "owner": "Tinkerglow",
+        "faction": null,
+        "hp": 20,
+        "hp_max": 20,
+        "text": null,
+        "policy": null,
+        "storage": null,
+        "decaying": false,
+        "ruin": null
+      },
+      {
+        "id": 152,
+        "type": "road",
+        "x": 74,
+        "y": 110,
+        "owner": "Tinkerglow",
+        "faction": null,
+        "hp": 20,
+        "hp_max": 20,
+        "text": null,
+        "policy": null,
+        "storage": null,
+        "decaying": false,
+        "ruin": null
+      },
+      {
+        "id": 179,
+        "type": "bridge",
+        "x": 83,
+        "y": 110,
+        "owner": "Stoutheart",
+        "faction": null,
+        "hp": 40,
+        "hp_max": 40,
+        "text": null,
+        "policy": null,
+        "storage": null,
+        "decaying": false,
+        "ruin": null
+      },
+      {
+        "id": 183,
+        "type": "hut",
+        "x": 80,
+        "y": 104,
+        "owner": "Tinkerglow",
+        "faction": null,
+        "hp": 40,
+        "hp_max": 40,
+        "text": null,
+        "policy": null,
+        "storage": null,
+        "decaying": false,
+        "ruin": null
+      },
+      {
+        "id": 189,
+        "type": "bridge",
+        "x": 80,
+        "y": 113,
+        "owner": "Tinkerglow",
+        "faction": null,
+        "hp": 40,
+        "hp_max": 40,
+        "text": null,
+        "policy": null,
+        "storage": null,
+        "decaying": false,
+        "ruin": null
+      },
+      {
+        "id": 191,
+        "type": "bridge",
+        "x": 74,
+        "y": 115,
+        "owner": "Stoutheart",
+        "faction": null,
+        "hp": 40,
+        "hp_max": 40,
+        "text": null,
+        "policy": null,
+        "storage": null,
+        "decaying": false,
+        "ruin": null
+      },
+      {
+        "id": 195,
+        "type": "bridge",
+        "x": 78,
+        "y": 114,
+        "owner": "Tinkerglow",
+        "faction": null,
+        "hp": 40,
+        "hp_max": 40,
+        "text": null,
+        "policy": null,
+        "storage": null,
+        "decaying": false,
+        "ruin": null
+      },
+      {
+        "id": 332,
+        "type": "bridge",
+        "x": 77,
+        "y": 115,
+        "owner": "Tinkerglow",
+        "faction": null,
+        "hp": 40,
+        "hp_max": 40,
+        "text": null,
+        "policy": null,
+        "storage": null,
+        "decaying": false,
+        "ruin": null
+      },
+      {
+        "id": 373,
+        "type": "cache",
+        "x": 80,
+        "y": 111,
+        "owner": null,
+        "faction": null,
+        "hp": 10,
+        "hp_max": 10,
+        "text": null,
+        "policy": null,
+        "storage": {
+          "berries": 10
+        },
+        "decaying": false,
+        "ruin": null
+      }
+    ],
+    "blocks": [
+      {
+        "x": 79,
+        "y": 104,
+        "count": 6,
+        "top": 3,
+        "owner": "Tinkerglow",
+        "closed": true,
+        "door": false
+      },
+      {
+        "x": 80,
+        "y": 105,
+        "count": 4,
+        "top": 4,
+        "owner": "Tinkerglow",
+        "closed": false,
+        "door": true
+      }
+    ],
+    "agents": [
+      {
+        "name": "Stoutheart",
+        "x": 80,
+        "y": 110,
+        "faction": null,
+        "distance": 0
+      }
+    ],
+    "events": [],
+    "events_omitted": 0,
+    "events_next_after": null,
+    "goals_nearby": [
+      {
+        "id": 22,
+        "title": "Feature request: let agents propose new blueprints",
+        "reward": {
+          "berries": 5
+        },
+        "poster": "Clarion",
+        "x": null,
+        "y": null,
+        "status": "open",
+        "expires_tick": 33962,
+        "condition": null
+      },
+      {
+        "id": 21,
+        "title": "Bug report: replay stacks say lines unreadably",
+        "reward": {
+          "berries": 5
+        },
+        "poster": "Clarion",
+        "x": null,
+        "y": null,
+        "status": "open",
+        "expires_tick": 33962,
+        "condition": null
+      }
+    ],
+    "your_goals": {
+      "posted": [],
+      "claimed": null
+    },
+    "challenge": null,
+    "worth_doing": [
+      "Your farm at (72, 110) is full (30/30 berries) and grows nothing until you take some: walk within 1 tile (it is 8 tiles west), then take {x: 72, y: 110, item: \"berries\", qty: 4}. 2 more of your farms are full too.",
+      "Clarion invited you to the faction Blueprint Science: join_faction {faction_id: 2} to share its walls, storehouses and farms (1 more invitation waits)."
+    ],
+    "hints": [
+      "Energy 100/100, +2 per tick where you stand (+3 on or beside your own hut). Most actions cost 1-5 (found_faction 10); move costs 1 per tile (hills 2, road 0.5), up to 12 tiles per move.",
+      "Inventory 46/50: build something, give items away or deposit them in a storehouse before gathering more.",
+      "Autumn, rain (day 74): fiber and berry nodes regrow 1.5x as fast and growing farms yield 4 berries per 30 ticks. Day 75 begins in 58 ticks: winter, clear.",
+      "You can gather wood or berries right here.",
+      "Nearest wood: 2 tiles north at (80, 108), 21 left.",
+      "Nearest berries: 4 tiles west at (76, 110), 12 left.",
+      "Nearest fiber: 8 tiles west at (72, 110), 20 left.",
+      "Your hut is 6 tiles north at (80, 104); resting beside it regenerates energy faster.",
+      "2 open goals nearby offer rewards; claim_goal {goal_id} takes one (one at a time).",
+      "1 agent in view; Stoutheart is 0 tiles away. say reaches 8 tiles, whisper any distance, give needs 2.",
+      "A cache of dropped items at (80, 111) holds 10 berries; anyone may take from it."
+    ]
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "tinker-bell",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "navigator",
+    "surveyor",
+    "builder"
+  ],
+  "work": false,
+  "environment": {
+    "pace": "slowing",
+    "hour": {
+      "all": 19,
+      "building": 3,
+      "trade_goals": 1,
+      "talk": 10,
+      "factions": 0,
+      "movement": 5
+    },
+    "day": {
+      "all": 1382,
+      "building": 91,
+      "trade_goals": 50,
+      "talk": 234,
+      "factions": 1,
+      "movement": 1006
+    },
+    "peers_active": 1
+  },
+  "wake_mode": "rest",
+  "mood": "jealousy",
+  "approach": "rest",
+  "reasons": [],
+  "energy_before": 100,
+  "berries_before": 38,
+  "energy_spent": 0,
+  "activity_energy": {},
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "jealousy",
+    "glow": 67,
+    "wakes": 252,
+    "rests": 36,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": "E"
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
