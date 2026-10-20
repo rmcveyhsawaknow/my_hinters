@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792461641",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 25238,
+  "created_utc": "2026-10-20T02:00:41.868804+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Wandered five wakes, rested once! Second star right, east six!"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1715,
+    "output_tokens": 30,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "rest",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "mischief",
+    "where": [
+      79,
+      113
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
