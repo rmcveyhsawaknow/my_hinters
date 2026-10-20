@@ -1,0 +1,52 @@
+{
+  "run_id": "announce-1792489838",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 28057,
+  "created_utc": "2026-10-20T09:50:38.468746+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Four naps this hour, a grand total of zero wood gathered by me, five wood gathered by the family, and I am taking the wood personally. Resting my bones by the hut, strength kept up."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1849,
+    "output_tokens": 69,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 4,
+    "built": [],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 0,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "gather_trip",
+      "rest",
+      "rest",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
