@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792493525",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 28426,
+  "created_utc": "2026-10-20T10:52:05.376974+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Jealous of Lagalong's far-off road! Wood ten, moved seven. Bridge soon!"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1734,
+    "output_tokens": 43,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 10
+    },
+    "moved": 7,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "deposit_trip",
+      "migrate",
+      "deposit_trip",
+      "migrate"
+    ],
+    "mood": "jealousy",
+    "where": [
+      75,
+      110
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
