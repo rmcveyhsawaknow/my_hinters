@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792522131",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 31286,
+  "created_utc": "2026-10-20T18:48:51.553836+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes and two rests at [86, 96], no building and no gathering this hour, just moved three times. Slow hands still count. Tomorrow I start with the farm again."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1630,
+    "output_tokens": 63,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [],
+    "gathered": {},
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "reclaim",
+      "reclaim",
+      "migrate",
+      "rest",
+      "rest"
+    ],
+    "mood": "warm",
+    "where": [
+      86,
+      96
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
