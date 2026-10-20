@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792482571",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 27330,
+  "created_utc": "2026-10-20T07:49:31.302492+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Three wakes, one rest, and 24 berries carried to the storehouse at [87, 98]. Tired hands, full baskets. Next hour I move on, and the farm will keep."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1625,
+    "output_tokens": 67,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 3,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {
+      "berries": 24
+    },
+    "approaches": [
+      "deposit",
+      "rest",
+      "migrate"
+    ],
+    "mood": "warm",
+    "where": [
+      87,
+      98
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
