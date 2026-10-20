@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792539637",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 33037,
+  "created_utc": "2026-10-20T23:40:37.421578+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Laid a road at (81,83) this hour, five wakes of steady walking. The long way is shorter now. Good work underfoot, friends."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1635,
+    "output_tokens": 53,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (81,83)"
+    ],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "migrate",
+      "homing",
+      "migrate",
+      "homing"
+    ],
+    "mood": "warm",
+    "where": [
+      83,
+      78
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
