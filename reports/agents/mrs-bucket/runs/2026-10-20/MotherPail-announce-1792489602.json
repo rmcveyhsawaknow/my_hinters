@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792489602",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 28034,
+  "created_utc": "2026-10-20T09:46:42.790059+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five steps, fourteen berries carried to the storehouse, and the hour is done. Tired hands, full baskets. Back out to the grass for the next load."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1639,
+    "output_tokens": 58,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {
+      "berries": 14
+    },
+    "approaches": [
+      "harvest",
+      "deposit_trip",
+      "deposit",
+      "migrate",
+      "harvest"
+    ],
+    "mood": "warm",
+    "where": [
+      83,
+      94
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
