@@ -321,3 +321,25 @@ def test_the_harvest_stops_at_the_keep_and_gifts_are_judged_from_where_we_stand(
     bucket.knobs["stance"] = {"cooperative": 1, "neutral": 0, "competitive": 0}
     far = _plan_engage(bucket, None, PersonaState(mood="warm"), {"wood": 20}, (70, 60), view, observe, None, {}, random.Random("g"), set())
     assert far is None or far[2] != "gift"  # after a move away, no gift that the world would refuse as too_far
+
+
+def test_reachability_costs_hills_double_and_a_trip_stops_beside_a_structure():
+    from hglab.planner import WorldView, _plan_deposit_trip, _step_toward, reachable_tiles
+
+    rows = ["g" * 128] * 128
+    hills = ["g" * 128] * 60 + ["g" * 64 + "h" * 64] * 8 + ["g" * 128] * 60  # rows 60..67 are hills east of x=64
+    flat = WorldView(x0=0, y0=0, rows=rows, full_map=rows)
+    hilly = WorldView(x0=0, y0=0, rows=hills, full_map=hills)
+    assert (72, 64) in reachable_tiles(flat, (60, 64))  # twelve grass tiles cost twelve
+    assert (72, 64) not in reachable_tiles(hilly, (60, 64)) and (68, 64) in reachable_tiles(hilly, (60, 64))  # eight hill tiles cost sixteen; four cost eight
+    road = WorldView(x0=0, y0=0, rows=rows, full_map=rows, world_structures=[{"type": "road", "x": 60 + i, "y": 64, "owner": "Cairn"} for i in range(1, 25)])
+    assert (84, 64) in reachable_tiles(road, (60, 64))  # roads halve the cost
+    store = WorldView(x0=0, y0=0, rows=rows, full_map=rows, world_structures=[{"type": "storehouse", "x": 70, "y": 64, "owner": "Cairn"}])  # known only from the public snapshot
+    step = _step_toward((60, 64), {"x": 70, "y": 64}, store)
+    assert step is not None and step != (70, 64) and max(abs(step[0] - 70), abs(step[1] - 64)) == 1  # beside the store, never on it
+    bell = load_personas(ROOT)["tinker-bell"]
+    team = load_team(ROOT, bell.team)
+    far = WorldView(x0=68, y0=106, rows=rows, full_map=rows, world_structures=[{"type": "storehouse", "x": 85, "y": 92, "owner": "MotherPail"}])
+    assert _plan_deposit_trip(bell, team, {"wood": 3, "berries": 45}, (74, 112), far, None, {"motherpail", "tinkerglow"}) is None  # twenty tiles out of Neverland: the migration would only walk her back
+    near = WorldView(x0=68, y0=106, rows=rows, full_map=rows, world_structures=[{"type": "storehouse", "x": 78, "y": 106, "owner": "Stoutheart"}])
+    assert _plan_deposit_trip(bell, team, {"wood": 3, "berries": 45}, (74, 112), near, None, {"stoutheart", "tinkerglow"}) is not None
