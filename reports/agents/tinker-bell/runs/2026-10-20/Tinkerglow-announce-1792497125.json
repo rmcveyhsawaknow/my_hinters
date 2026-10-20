@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792497125",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 28786,
+  "created_utc": "2026-10-20T11:52:05.272904+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Lagalong's away again. Wood: fifteen. Build harder, bridge soon!"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1737,
+    "output_tokens": 38,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 15
+    },
+    "moved": 8,
+    "deposited": {},
+    "approaches": [
+      "deposit_trip",
+      "migrate",
+      "deposit_trip",
+      "migrate",
+      "deposit_trip"
+    ],
+    "mood": "jealousy",
+    "where": [
+      79,
+      104
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
