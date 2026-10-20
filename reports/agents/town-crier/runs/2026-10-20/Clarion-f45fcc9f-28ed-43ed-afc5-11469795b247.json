@@ -1,0 +1,134 @@
+{
+  "run_id": "f45fcc9f-28ed-43ed-afc5-11469795b247",
+  "agent": "Clarion",
+  "role": "surveyor+envoy+experimenter+conjecturer+navigator+broker",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-20T08:00:12.417225+00:00",
+  "tick": 27395,
+  "summary": "Clarion (bright): work shift: gathering for the next build",
+  "actions": [
+    {
+      "action": "move",
+      "x": 55,
+      "y": 63
+    },
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"bright\",\"since_tick\":27155,\"glow\":50,\"inputs\":{},\"wakes\":246,\"rests\":13,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":27395,\"visited\":[],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":27394,\"pace\":\"quickening\",\"day\":{\"all\":1430,\"building\":111,\"trade_goals\":62,\"talk\":243,\"factions\":1,\"movement\":1013},\"hour\":{\"all\":99},\"peers\":1},\"features\":{\"tick\":27394,\"api_version\":\"0.30.0\",\"guide_sha256\":\"035a084e345e7f72\",\"guide_actions\":[\"abandon_goal\",\"build\",\"cancel_goal\",\"claim_goal\",\"confirm_goal\",\"demolish\",\"eat\",\"forget\",\"found_faction\",\"gather\",\"give\",\"invite\",\"join_faction\",\"leave_faction\",\"move\",\"paint\",\"place\",\"post_goal\",\"reject_claim\",\"remember\",\"remove\",\"repair\",\"say\",\"set_profile\",\"take\",\"whisper\",\"write\"],\"guide_blueprints\":[],\"guide_format\":2,\"blueprint_rows\":{},\"action_row_hashes\":{\"move\":\"60434959\",\"gather\":\"8a136714\",\"build\":\"4e7a973d\",\"demolish\":\"e853183a\",\"repair\":\"2f005da9\",\"say\":\"00e0fd30\",\"whisper\":\"906a5204\",\"write\":\"65f9eeb9\",\"give\":\"324b7dd3\",\"take\":\"defc4b34\",\"eat\":\"f5fe30f8\",\"post_goal\":\"cc22b775\",\"claim_goal\":\"eec6d18a\",\"confirm_goal\":\"31498323\",\"cancel_goal\":\"b90492cf\",\"abandon_goal\":\"0f4dfa61\",\"reject_claim\":\"93c1e8ce\",\"found_faction\":\"1ac0986c\",\"invite\":\"b7bbe257\",\"join_faction\":\"dce47399\",\"leave_faction\":\"f75ade01\",\"set_profile\":\"e54a55c6\",\"remember\":\"d4475ea3\",\"forget\":\"21f263fd\",\"place\":\"faf5b201\",\"remove\":\"6b77f041\",\"paint\":\"b66c73c0\"},\"event_types\":[\"build\",\"farm_produced\",\"gather\",\"give\",\"goal_posted\",\"move\",\"place\",\"say\",\"take\",\"weather_changed\"],\"structure_types\":[\"bridge\",\"cache\",\"farm\",\"hut\",\"monument\",\"road\",\"sign\",\"storehouse\",\"tower\"],\"factions\":[\"Blueprint Science:open\",\"Goon Squad:invite\",\"Readable Replay:open\",\"Wayfarers:open\"],\"agent_count\":17},\"engaged\":{\"replied\":{\"Fudgewright\":26355,\"Fairscale\":27185},\"whispered\":{\"Fudgewright\":25614,\"Stoutheart\":25645,\"Tinkerglow\":25675,\"GrandadPail\":25928,\"MotherPail\":25989,\"Fairscale\":26416,\"Strayling\":26446,\"LandBroker\":27364}},\"house\":{\"hut\":[63,71],\"done\":9,\"tick\":27395}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 27395,
+    "you": {
+      "id": 15,
+      "name": "Clarion",
+      "x": 59,
+      "y": 67,
+      "energy": 100,
+      "inventory": {
+        "wood": 7,
+        "fiber": 10,
+        "berries": 25
+      },
+      "home": {
+        "x": 63,
+        "y": 71
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "town-crier",
+  "team": "square",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "envoy",
+    "experimenter",
+    "conjecturer",
+    "navigator",
+    "broker"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 99,
+      "building": 18,
+      "trade_goals": 8,
+      "talk": 20,
+      "factions": 0,
+      "movement": 53
+    },
+    "day": {
+      "all": 1430,
+      "building": 111,
+      "trade_goals": 62,
+      "talk": 243,
+      "factions": 1,
+      "movement": 1013
+    },
+    "peers_active": 1
+  },
+  "discoveries": [],
+  "wake_mode": "act",
+  "mood": "bright",
+  "approach": "gather_trip",
+  "reasons": [
+    "walk to (55, 63) beside the wood node at (54, 63), then gather"
+  ],
+  "energy_before": 100,
+  "berries_before": 25,
+  "energy_spent": 7,
+  "activity_energy": {
+    "explore": 4.0,
+    "gather": 3.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "bright",
+    "glow": 50,
+    "wakes": 246,
+    "rests": 13,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}

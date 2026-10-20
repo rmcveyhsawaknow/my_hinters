@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792483821",
+  "kind": "announce",
+  "agent": "Clarion",
+  "persona": "town-crier",
+  "tick": 27455,
+  "created_utc": "2026-10-20T08:10:21.116642+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Hear this! Three wakes, one road laid at (61,72), five wood gathered and carried home from (65,54) by my own two feet. The road is new and so am I, and I am going to walk it twice to be sure."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1816,
+    "output_tokens": 76,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 3,
+    "rests": 0,
+    "built": [
+      "road at (61,72)"
+    ],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "gather_trip",
+      "deposit_trip"
+    ],
+    "mood": "bright",
+    "where": [
+      65,
+      54
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}

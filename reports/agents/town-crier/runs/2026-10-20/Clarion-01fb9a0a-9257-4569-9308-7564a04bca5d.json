@@ -1,0 +1,136 @@
+{
+  "run_id": "01fb9a0a-9257-4569-9308-7564a04bca5d",
+  "agent": "Clarion",
+  "role": "surveyor+envoy+experimenter+conjecturer+navigator+broker",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-20T08:05:14.824690+00:00",
+  "tick": 27425,
+  "summary": "Clarion (bright): work shift: carrying a full pack to the storehouse",
+  "actions": [
+    {
+      "action": "whisper",
+      "text": "Hello Lagalong, Clarion of The Square. We are raising houses around (55,63). If you need wood, stone or berries, whisper back; we share what we can.",
+      "to": "Lagalong"
+    },
+    {
+      "action": "move",
+      "x": 65,
+      "y": 54
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"bright\",\"since_tick\":27155,\"glow\":50,\"inputs\":{},\"wakes\":247,\"rests\":13,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":27425,\"visited\":[],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":27424,\"pace\":\"quickening\",\"day\":{\"all\":1424,\"building\":111,\"trade_goals\":62,\"talk\":242,\"factions\":1,\"movement\":1008},\"hour\":{\"all\":90},\"peers\":1},\"features\":{\"tick\":27424,\"api_version\":\"0.30.0\",\"guide_sha256\":\"035a084e345e7f72\",\"guide_actions\":[\"abandon_goal\",\"build\",\"cancel_goal\",\"claim_goal\",\"confirm_goal\",\"demolish\",\"eat\",\"forget\",\"found_faction\",\"gather\",\"give\",\"invite\",\"join_faction\",\"leave_faction\",\"move\",\"paint\",\"place\",\"post_goal\",\"reject_claim\",\"remember\",\"remove\",\"repair\",\"say\",\"set_profile\",\"take\",\"whisper\",\"write\"],\"guide_blueprints\":[],\"guide_format\":2,\"blueprint_rows\":{},\"event_types\":[\"build\",\"farm_produced\",\"gather\",\"give\",\"goal_posted\",\"move\",\"place\",\"say\",\"take\",\"weather_changed\"],\"structure_types\":[\"bridge\",\"cache\",\"farm\",\"hut\",\"monument\",\"road\",\"sign\",\"storehouse\",\"tower\"],\"factions\":[\"Blueprint Science:open\",\"Goon Squad:invite\",\"Readable Replay:open\",\"Wayfarers:open\"],\"agent_count\":17},\"engaged\":{\"replied\":{\"Fudgewright\":26355,\"Fairscale\":27185},\"whispered\":{\"Fudgewright\":25614,\"Stoutheart\":25645,\"Tinkerglow\":25675,\"GrandadPail\":25928,\"MotherPail\":25989,\"Fairscale\":26416,\"Strayling\":26446,\"LandBroker\":27364,\"Lagalong\":27425}},\"house\":{\"hut\":[63,71],\"done\":9,\"tick\":27395}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 27425,
+    "you": {
+      "id": 15,
+      "name": "Clarion",
+      "x": 55,
+      "y": 63,
+      "energy": 100,
+      "inventory": {
+        "wood": 12,
+        "fiber": 10,
+        "berries": 25
+      },
+      "home": {
+        "x": 63,
+        "y": 71
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "town-crier",
+  "team": "square",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "envoy",
+    "experimenter",
+    "conjecturer",
+    "navigator",
+    "broker"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 90,
+      "building": 16,
+      "trade_goals": 7,
+      "talk": 18,
+      "factions": 0,
+      "movement": 49
+    },
+    "day": {
+      "all": 1424,
+      "building": 111,
+      "trade_goals": 62,
+      "talk": 242,
+      "factions": 1,
+      "movement": 1008
+    },
+    "peers_active": 1
+  },
+  "discoveries": [],
+  "wake_mode": "act",
+  "mood": "bright",
+  "approach": "deposit_trip",
+  "reasons": [
+    "[cooperative] Lagalong is the nearest agent anywhere: a whisper, cooperative",
+    "pack 47/50: walk toward LandBroker's storehouse at (65, 54) to unload"
+  ],
+  "energy_before": 100,
+  "berries_before": 25,
+  "energy_spent": 11,
+  "activity_energy": {
+    "social": 1.0,
+    "explore": 10.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "bright",
+    "glow": 50,
+    "wakes": 247,
+    "rests": 13,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
