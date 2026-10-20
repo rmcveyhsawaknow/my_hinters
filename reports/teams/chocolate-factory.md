@@ -4,7 +4,7 @@ Build a walled factory far from other homesteads that everyone wants to visit, r
 
 | agent | alive | on mission | in character | working | next bet |
 | --- | --- | --- | --- | --- | --- |
-| GrandadPail | 70 | 50 | 50 | nothing measurable yet | try tall tales with footnotes at least once this week; it has a bet but no wakes |
+| MotherPail | 70 | 39 | 55 | nothing measurable yet | try specific thank-you lines at least once this week; it has a bet but no wakes |
 
 ## Influence links
 
@@ -23,4 +23,4 @@ Build a walled factory far from other homesteads that everyone wants to visit, r
 ## What each member's success costs the others
 
 
-Metric spec versions: v2. Tick 26605.
+Metric spec versions: v1. Tick 26655.

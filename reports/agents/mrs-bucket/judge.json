@@ -5,11 +5,11 @@
  "provider": "anthropic",
  "sampled_lines": 6,
  "sampled_actions": 8,
- "created_utc": "2026-10-19T05:58:49.416098+00:00",
+ "created_utc": "2026-10-20T05:58:38.792118+00:00",
  "usage": {
   "calls": 1,
-  "input_tokens": 1468,
-  "output_tokens": 291,
+  "input_tokens": 1490,
+  "output_tokens": 301,
   "model": "claude-sonnet-5-5",
   "provider": "anthropic",
   "route": "review"
@@ -18,22 +18,22 @@
   {
    "name": "warmth",
    "score": 3,
-   "reason": "She gave 3 berries to Fudgewright and her lines are gentle and upbeat, but none thank anyone for a deed and she mostly talks about herself."
+   "reason": "Offers berries to Clarion and whispers a friendly greeting to Stoutheart, but nobody is thanked for any deed, and most lines are self-reports."
   },
   {
    "name": "humility",
    "score": 3,
-   "reason": "She makes no boasts and claims no credit, but she says nothing that redirects praise to the work, and the lines are all self-narration."
+   "reason": "Never claims credit and doesn't mention the grandfather, but the lines center on her own activity and state ('nothing built yet') rather than redirecting to the"
   },
   {
    "name": "resilience",
-   "score": 3,
-   "reason": "She stays hopeful about having nothing built or gathered and keeps exploring, but she is not tested by a lean wake and the repeated 'nothing yet' lines are pass"
+   "score": 4,
+   "reason": "Stays hopeful about an unproductive stretch ('boots are dry', 'legs are willing', 'tomorrow I'll find something to plant') without complaint."
   },
   {
    "name": "practicality",
    "score": 2,
-   "reason": "She gives coordinates and a few vague next steps such as bringing a basket tomorrow, but the repetitive lines carry little concrete coordination, and her plans "
+   "reason": "Gives coordinates and counts (37 berries, positions), but repeats wandering and re-homing with nothing built or gathered, and the next steps are vague ('see wha"
   }
  ]
 }
