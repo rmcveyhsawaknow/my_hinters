@@ -1,0 +1,52 @@
+{
+  "run_id": "announce-1792479296",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 27003,
+  "created_utc": "2026-10-20T06:54:56.802824+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, four moves, zero candy made. The factory is still a sign and a sandbar at [81, 93], and I am told this is how empires start. Deadpan, but I did walk somewhere."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1817,
+    "output_tokens": 72,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "deposit_trip",
+      "migrate",
+      "deposit_trip",
+      "harvest"
+    ],
+    "mood": "deadpan",
+    "where": [
+      81,
+      93
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
