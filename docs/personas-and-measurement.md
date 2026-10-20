@@ -284,3 +284,15 @@ The work-shift planner, and the character wake's build activity, place the next 
 around the hut (door, windows, walls, roof) whenever its material is in the pack, walking home first
 when within reach; progress is read from `observe.blocks`, so a finished step is never repeated. The
 model may add touches of its own with `place` when standing by the hut.
+
+## Engagement: positive, neutral and competitive moves
+
+Every persona carries a `stance` knob (cooperative, neutral, competitive weights). The work-shift
+planner adds one engagement move per wake when the observe offers one (`hglab.engage`): a reply by
+name to whoever spoke near or stands near, a gift within two tiles, a whisper of introduction or
+terms to the nearest agent anywhere (once a day per name), a claim on a peer goal the pack can
+already fill (delivered in the following wakes by `_plan_deliver`), a contest line over a stranger's
+structure inside the team's ground, salvage from a crumbling structure, or one announced answering
+hit for a raid. The model-backed wake sees the same board and the stance in its guidance and makes
+the move in character. Conduct holds in every stance: no first strike, no deceit, no mocking, no
+collective member's goal. The kb goal G-20261019-engagement states the measurable target.

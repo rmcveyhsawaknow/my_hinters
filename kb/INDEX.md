@@ -19,6 +19,7 @@ North Star: [read first](NORTH_STAR.md)
 - **goal** [G-20261017-town-crier-first-aim](goals/G-20261017-town-crier-first-aim.md) — Clarion: Wonder at everything, hunt the game's hidden corners and new
 - **goal** [G-20261017-wonka-tickets](goals/G-20261017-wonka-tickets.md) — Fudgewright: five golden-ticket riddle hunts settled honestly
 - **goal** [G-20261017-wonka](goals/G-20261017-wonka.md) — Fudgewright: a factory everyone wants to visit
+- **goal** [G-20261019-engagement](goals/G-20261019-engagement.md) — The collective: every agent engages a neighbour every day, in its own stance
 - **hypothesis** [H-20261017-bucket-stocks](hypotheses/H-20261017-bucket-stocks.md) — A stocked storehouse keeps teammates above the energy floor
 - **hypothesis** [H-20261017-bucket-thanks](hypotheses/H-20261017-bucket-thanks.md) — Specific thank-you lines earn replies
 - **hypothesis** [H-20261017-item-conservation](hypotheses/H-20261017-item-conservation.md) — Item conservation holds in the public event log

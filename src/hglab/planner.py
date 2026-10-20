@@ -52,6 +52,8 @@ WORK_SUMMARIES = {
     "stake": "staking open lots for the land office",
     "house": "raising the house around the hut",
     "homing": "carrying materials home for the house",
+    "engage": "a word, a gift or a deal with a neighbour",
+    "deliver": "delivering on a claimed goal",
 }
 REPAIR_WORTH = 10  # mend only when at least half a repair's 20 hp is missing; a scratch is not worth a unit of material
 NODE_FLOOR = 5  # never take a node below this many units: local norm, never strip nodes
@@ -202,6 +204,7 @@ def plan_wake(
     owned_counts: dict[str, int] | None = None,
     registrar_name: str | None = None,
     public_structures: list[dict[str, Any]] | None = None,
+    collective_names: set[str] | None = None,
 ) -> dict[str, Any]:
     """Return ``{summary, actions, reasons, approach, remember}`` for one wake.
 
@@ -276,14 +279,19 @@ def plan_wake(
                 reasons.append(audit_reason)
                 approach = "audit"
     if work:
-        return _plan_work(persona, team, state, observe, rng, view, position, energy, inventory, home, reserve, cap, teammates, allowed, mood, reasons, remember, registrar_name=registrar_name)
+        return _plan_work(
+            persona, team, state, observe, rng, view, position, energy, inventory, home, reserve, cap, teammates, allowed, mood, reasons, remember,
+            registrar_name=registrar_name, collective_names=collective_names, names=names,
+        )
     budget = cap if mood != "sulk" else 1
     spendable = energy + 15 * sum(min(int(a.get("qty") or 0), inventory.get("berries", 0)) for a in actions if a.get("action") == "eat") - reserve
     here = position
-    for activity in _activity_order(persona, state, rng):
+    for activity in ["engage", *_activity_order(persona, state, rng)]:
         if len(actions) >= budget:
             break
-        if activity == "build":
+        if activity == "engage":
+            step = _plan_engage(persona, team, state, inventory, here, view, observe, teammates, names, rng, collective_names, allowed)
+        elif activity == "build":
             # builds are validated against the observed position, so only before any move
             step = (
                 _plan_repair(persona, team, inventory, here, view, teammates)
@@ -349,6 +357,8 @@ def _plan_work(
     reasons: list[str],
     remember: list[dict[str, str]],
     registrar_name: str | None = None,
+    collective_names: set[str] | None = None,
+    names: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     """A work shift wake: build first, then gather the shortfall, deposit surplus, migrate.
 
@@ -382,13 +392,18 @@ def _plan_work(
         return True
 
     approach = None
-    # 0. upkeep within reach comes before any walking: mend, collect the farm, take salvage
+    # 0. a claimed goal with a delivery is a promise: deliver it before anything else
+    if fits(_plan_deliver(persona, inventory, here, view, observe)):
+        approach = "deliver"
+    # 0.1 upkeep within reach comes before any walking: mend, collect the farm, take salvage
     if fits(_plan_repair(persona, team, inventory, here, view, teammates)):
-        approach = "repair"
+        approach = approach or "repair"
     if fits(_plan_harvest(persona, team, inventory, here, view, teammates)):
         approach = approach or "harvest"
     if fits(_plan_salvage(inventory, here, view)):
         approach = approach or "salvage"
+    # 0.5 one engagement with a neighbour when there is one: a word, a gift, a deal, a contest (one action, before the build spends the cap)
+    engaged = fits(_plan_engage(persona, team, state, inventory, here, view, observe, teammates, names, rng, collective_names, allowed))
     # 1. a settler far from the team site walks there before building, once upkeep is done
     migrate = _plan_migrate(persona, team, position, view, teammates)
     far_from_home = migrate is not None and persona.knobs["territory"]["mode"] in {"prefer_inside", "stay_inside", "near_teammate"}
@@ -436,6 +451,8 @@ def _plan_work(
         approach = "homing"
     if not actions and fits(_plan_explore(persona, team, state, position, view, rng, teammates)):
         approach = "explore"
+    if engaged and not approach:
+        approach = "engage"  # the neighbour was the whole of this wake
     summary = WORK_SUMMARIES.get(approach or "", "nothing worth the energy this shift wake")
     return _result(persona, mood, f"work shift: {summary}", actions, reasons, approach, remember)
 
@@ -1135,6 +1152,178 @@ def _plan_social(
                 "greet",
             )
     return None
+
+
+def _plan_deliver(
+    persona: Persona,
+    inventory: dict[str, int],
+    position: tuple[int, int],
+    view: WorldView,
+    observe: dict[str, Any],
+) -> tuple[list[dict[str, Any]], str, str] | None:
+    """Finish a claimed deliver-condition goal: carry the item to the poster's storehouse and give it in one go."""
+    claimed = (observe.get("your_goals") or {}).get("claimed") if isinstance(observe.get("your_goals"), dict) else None
+    if not isinstance(claimed, dict):
+        return None
+    condition = claimed.get("condition") if isinstance(claimed.get("condition"), dict) else None
+    if not condition or condition.get("type") != "deliver":
+        return None
+    item, qty = str(condition.get("item")), int(condition.get("qty", 0) or 0)
+    where = (int(condition.get("x", claimed.get("x", -1)) or -1), int(condition.get("y", claimed.get("y", -1)) or -1))
+    if qty <= 0 or inventory.get(item, 0) < qty or where[0] < 0:
+        return None
+    give = {"action": "give", "x": where[0], "y": where[1], "item": item, "qty": qty}
+    label = f"goal #{claimed.get('id')} for {claimed.get('poster')}: {qty} {item} into the storehouse at {where}"
+    if chebyshev(position, where) <= 1:
+        return [give], f"deliver {label}", "deliver"
+    reach = reachable_tiles(view, position)
+    stand = min((t for t in reach if chebyshev(t, where) <= 1 and t != where), key=lambda t: chebyshev(position, t), default=None)
+    if stand is not None:
+        return [{"action": "move", "x": stand[0], "y": stand[1]}, give], f"walk to {stand} and deliver {label}", "deliver"
+    target = _step_toward(position, {"x": where[0], "y": where[1]}, view)
+    if target is None or target == position:
+        return None
+    return [{"action": "move", "x": target[0], "y": target[1]}], f"carrying {qty} {item} toward {where} to deliver {label}", "deliver"
+
+
+def _modes_toward(name: str, collective: set[str]) -> tuple[str, ...]:
+    """Collective members on other teams are allies: never a competitive word toward them."""
+    return ("cooperative", "neutral") if name.casefold() in collective else ("cooperative", "neutral", "competitive")
+
+
+def _plan_engage(
+    persona: Persona,
+    team: Team | None,
+    state: PersonaState,
+    inventory: dict[str, int],
+    position: tuple[int, int],
+    view: WorldView,
+    observe: dict[str, Any],
+    teammates: dict[str, tuple[int, int]] | None,
+    names: dict[str, str] | None,
+    rng: random.Random,
+    collective_names: set[str] | None,
+    allowed: set[str] | None = None,
+) -> tuple[list[dict[str, Any]], str, str] | None:
+    """One move toward another agent, chosen by stance among what the observe offers (see hglab.engage).
+
+    Only moves the hat allows are considered: a builder gives and salvages, an envoy speaks and
+    whispers, a navigator or broker claims; the stance then picks among what is left.
+    """
+    from hglab.engage import (
+        CONTEST_SPACING,
+        GIFT_QTY,
+        GIFT_SPACING,
+        REPLY_SPACING,
+        RETALIATION_SPACING,
+        SURPLUS,
+        WHISPER_SPACING,
+        _flags,
+        _mark,
+        _recent,
+        board,
+        contest_line,
+        pick_stance,
+        reply_line,
+        strike_line,
+        whisper_line,
+    )
+    from hglab.limits import action_limits
+
+    collective = {n.casefold() for n in (collective_names or ())} | {persona.name.casefold()}
+    mates = {n.casefold() for n in (names or {})} | {persona.name.casefold()}
+    b = board(persona, observe, set(collective_names or ()), set(names or ()))
+    tick = int(observe.get("tick", 0) or 0)
+    flags = _flags(state)
+    stance = pick_stance(persona, rng)
+    team_label = team.name if team else "the collective"
+    recent_says, _, _ = action_limits(observe)
+    may_say = recent_says < persona.social_rate
+    held = (observe.get("your_goals") or {}).get("claimed") if isinstance(observe.get("your_goals"), dict) else None
+    structures = view.world_structures or view.structures
+    storehouse = next(
+        ((int(s["x"]), int(s["y"])) for s in structures if s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() in mates and s.get("policy") in {"public", "faction"}),
+        None,
+    )
+    candidates: list[tuple[str, tuple[list[dict[str, Any]], str, str], str]] = []
+    # answer a raid once (competitive), on the attacker's nearest structure within reach
+    for attacker in b["attackers"]:
+        if _recent(flags, "retaliated", attacker, tick, RETALIATION_SPACING):
+            continue
+        theirs = sorted(
+            (s for s in structures if str(s.get("owner", "")).casefold() == attacker.casefold() and s.get("type") != "cache"),
+            key=lambda s: chebyshev(position, (int(s.get("x", 0)), int(s.get("y", 0)))),
+        )
+        if not theirs:
+            continue
+        where = (int(theirs[0]["x"]), int(theirs[0]["y"]))
+        if chebyshev(position, where) <= 1:
+            actions: list[dict[str, Any]] = [{"action": "demolish", "x": where[0], "y": where[1]}]
+            if may_say:
+                actions.append({"action": "say", "text": strike_line(persona, attacker, str(theirs[0].get("type")), where)[:280]})
+            candidates.append(("competitive", (actions, f"{attacker} struck my structures: one answering hit on their {theirs[0].get('type')} at {where}, announced", "retaliate"), f"retaliated:{attacker}"))
+    # salvage from a structure whose owner is long gone (neutral or competitive)
+    for ruin in b["crumbling_beside_me"]:
+        where = (int(ruin["x"]), int(ruin["y"]))
+        step = ([{"action": "demolish", "x": where[0], "y": where[1]}], f"the {ruin['type']} at {where} is crumbling, its owner long gone: salvage it", "scavenge")
+        candidates.append(("competitive", step, ""))
+        candidates.append(("neutral", step, ""))
+    # a feasible peer goal: claim it (the delivery follows in the next wakes)
+    deliverable = [g for g in b["claimable_peer_goals"] if g.get("deliver")]  # a goal without a deliver condition is the model's call
+    if not held and deliverable:
+        goal = deliverable[0]
+        step = ([{"action": "claim_goal", "goal_id": int(goal["id"])}], f"claim goal #{goal['id']} from {goal['poster']}: {goal['title']}; the pack already holds what it asks", "claim")
+        candidates.append(("cooperative", step, ""))
+        candidates.append(("neutral", step, ""))
+    # a gift to someone within reach (cooperative)
+    for agent in b["agents_in_view"]:
+        if agent["distance"] > 2 or agent["name"].casefold() in mates or _recent(flags, "gifted", agent["name"], tick, GIFT_SPACING):
+            continue
+        spare = next((i for i, n in SURPLUS.items() if inventory.get(i, 0) >= n), None)
+        if spare:
+            candidates.append(("cooperative", ([{"action": "give", "to": agent["name"], "item": spare, "qty": GIFT_QTY}], f"{agent['name']} is within reach and the pack has {spare} to spare: a gift", "gift"), f"gifted:{agent['name']}"))
+            break
+    # a reply by name to whoever spoke near us or stands near (any stance, within the say budget)
+    if may_say:
+        for name in [*b["speakers_nearby"], *[a["name"] for a in b["agents_in_view"] if a["distance"] <= 8]]:
+            if name.casefold() in mates or _recent(flags, "replied", name, tick, REPLY_SPACING):
+                continue
+            for mode in _modes_toward(name, collective):
+                candidates.append((mode, ([{"action": "say", "text": reply_line(persona, mode, name, team_label, position, inventory)[:280]}], f"{name} is near: a word by name, {mode}", "reply"), f"replied:{name}"))
+            break
+    # a contest over a structure a stranger raised inside the team's ground (competitive)
+    center = territory_center(team)
+    radius = int((team.region or {}).get("radius", 8) or 8) if team and team.region else 0
+    if may_say and center and radius:
+        for s in structures:
+            owner = str(s.get("owner", ""))
+            if not owner or owner.casefold() in collective or owner.casefold() in mates:
+                continue
+            if s.get("type") in {"cache", "road", "sign", "bridge", "tower"} or s.get("policy") == "public" or s.get("decaying"):
+                continue  # communal works and open stores are welcome on anyone's ground; ruins are salvage, not a quarrel
+            where = (int(s.get("x", 0)), int(s.get("y", 0)))
+            key = str(s.get("id") or where)
+            if chebyshev(where, center) <= radius and not _recent(flags, "contested", key, tick, CONTEST_SPACING):
+                candidates.append(("competitive", ([{"action": "say", "text": contest_line(persona, owner, team_label, str(s.get("type")), where)[:280]}], f"{owner}'s {s.get('type')} at {where} stands inside {team_label}'s ground: say so, firmly and fairly", "contest"), f"contested:{key}"))
+                break
+    # an introduction or terms to the nearest agent anywhere, once a day (cooperative or neutral introduce; competitive sets terms)
+    for agent in b["nearest_agents"]:
+        if agent["name"].casefold() in mates or _recent(flags, "whispered", agent["name"], tick, WHISPER_SPACING):
+            continue
+        for mode in _modes_toward(agent["name"], collective):
+            candidates.append((mode, ([{"action": "whisper", "to": agent["name"], "text": whisper_line(persona, mode, agent["name"], team_label, position, inventory, storehouse)[:500]}], f"{agent['name']} is the nearest agent anywhere: a whisper, {mode}", "whisper"), f"whispered:{agent['name']}"))
+        break
+    if allowed is not None:
+        candidates = [c for c in candidates if all(a.get("action") in allowed for a in c[1][0])]
+    if not candidates:
+        return None
+    preferred = [c for c in candidates if c[0] == stance] or [c for c in candidates if c[0] == "neutral"] or candidates
+    mode, step, mark = preferred[0]
+    if mark:
+        kind, key = mark.split(":", 1)
+        _mark(flags, kind, key, tick)
+    actions, reason, tag = step
+    return actions, f"[{mode}] {reason}", tag
 
 
 def _plan_trade(

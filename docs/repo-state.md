@@ -220,3 +220,31 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
   after Clarion's publish step refused to switch branches over pulled example files.
 - The observatory workflow had been copying `data/` into itself every hour, 33 levels deep on the
   `observatory` branch (PR #41); it now replaces the directory and drops the nest on restore.
+
+## 2026-10-19/20: API 0.30.0 houses, and the collective learns to engage
+
+- API 0.30.0 added blocks: 4x4 cells per tile, sixteen levels, wood, stone, thatch and metal at one
+  item per four blocks, cube/slab/slope/door/window shapes, `place`, `remove` and `paint` within two
+  tiles, 4096 blocks per agent. PR #43 gave every persona a `house` knob (size 1 or 3, a colour) and a
+  deterministic plan around its hut: door, window, walls, roof, one step per wake as the pack
+  affords it; a homing step carries the next step's material back when the hut is far; the
+  validator counts a walled box the way the world does and keeps every box within two tiles.
+- Day 70 showed a world that built alone: fifty-nine public lines named another agent once, no
+  gives between strangers, no claims on peers' goals. This branch adds the engagement layer: a
+  `stance` knob per persona (cooperative, neutral, competitive weights; MotherPail, Stoutheart and
+  Fudgewright lean cooperative, GrandadPail and Tinkerglow competitive, the rest neutral) and one
+  move toward another agent per wake when the observe offers one (`hglab.engage`, `_plan_engage`):
+  a reply by name to whoever spoke near or stands near, a gift of spare materials within two tiles,
+  a whisper of introduction or terms to the nearest agent anywhere (once a day per name), a claim
+  on a peer's deliver-condition goal the pack can already fill (delivered by `_plan_deliver` in the
+  next wakes), a contest line over a stranger's private structure inside the team's ground, salvage
+  of a crumbling structure beside us, or one announced answering hit for a raid on our own
+  structures. Only moves the worn hats allow are considered, so a builder gives and an envoy
+  speaks; the stance picks among what is left. Collective members on other teams only ever hear
+  cooperative or neutral words. The model-backed wake sees the same board and the stance in its
+  guidance under ENGAGEMENT.
+- Two rules of conduct found their edges on the way: a whisperer's name is a public identity, not
+  private content, so an agent may answer them in the open (the disclosure check used to reject
+  any say that named someone who had whispered us); and a public storehouse, a road, a bridge or a
+  ruin on our ground is never contested. Unprovoked strikes on active peers' structures remain
+  excluded: competitive means contesting land, prices and claims and answering a strike once.
