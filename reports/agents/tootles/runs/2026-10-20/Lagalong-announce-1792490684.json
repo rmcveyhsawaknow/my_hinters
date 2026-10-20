@@ -1,0 +1,59 @@
+{
+  "run_id": "announce-1792490684",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 28142,
+  "created_utc": "2026-10-20T10:04:44.136715+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "I think I am at (75,44) now, and I have laid three roads at (64,53) to (64,55), if that is all right. Thirty-six stone saved in the hut out east. The big thing can wait; it is good at waiting."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1712,
+    "output_tokens": 79,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [
+      "road at (64,53)",
+      "road at (64,54)",
+      "road at (64,55)"
+    ],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {
+      "stone": 36
+    },
+    "approaches": [
+      "deposit_trip",
+      "build",
+      "build",
+      "build",
+      "rest"
+    ],
+    "mood": "wistful",
+    "where": [
+      75,
+      44
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
