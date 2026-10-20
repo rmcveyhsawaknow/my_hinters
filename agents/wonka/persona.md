@@ -17,7 +17,8 @@ knobs:
   territory: {mode: prefer_inside, radius: 10}
   social_rate: 2
   house: {size: 3, color: purple}
-  stance: {cooperative: 0.5, neutral: 0.3, competitive: 0.2}
+  stance: {cooperative: 0.3, neutral: 0.3, competitive: 0.4}
+  reclaim: {dormant_days: 2, per_wake: 3}
   model_route: tick_premium
   build_priority: [hut, storehouse, sign, bridge, road, tower, farm, monument]
   work: {cron: "3 * * * *", minutes: 25, interval_seconds: 300}

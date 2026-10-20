@@ -29,7 +29,8 @@ knobs:
     mode: free
   social_rate: 3
   house: {size: 1, color: yellow}
-  stance: {cooperative: 0.4, neutral: 0.5, competitive: 0.1}
+  stance: {cooperative: 0.3, neutral: 0.4, competitive: 0.3}
+  reclaim: {dormant_days: 2, per_wake: 3}
   model_route: tick_premium
   work: {cron: "51 * * * *", minutes: 20, interval_seconds: 300}
   intended_mix:

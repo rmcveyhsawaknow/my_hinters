@@ -56,7 +56,11 @@ WORK_SUMMARIES = {
     "deliver": "delivering on a claimed goal",
     "lighten": "eating into the berry hoard to make room",
     "deposit_trip": "carrying a full pack to the storehouse",
+    "border": "raising the border signs",
+    "reclaim": "reclaiming what the departed left standing",
     "forage": "walking toward a node the map knows",
+    "reclaim_trip": "walking to what the departed left standing",
+    "border_trip": "walking to the next border sign",
 }
 REPAIR_WORTH = 10  # mend only when at least half a repair's 20 hp is missing; a scratch is not worth a unit of material
 NODE_FLOOR = 5  # never take a node below this many units: local norm, never strip nodes
@@ -316,6 +320,8 @@ def plan_wake(
                 or _plan_stake(persona, inventory, here, view)
                 or _plan_house(persona, inventory, here, view, home, observe, state=state)
                 or (_plan_build(persona, team, inventory, here, view, home) if here == position else None)
+                or (_plan_border_sign(persona, team, inventory, here, view, teammates, names) if here == position else None)
+                or (_plan_reclaim(persona, team, state, inventory, here, view, observe, teammates, collective_names) if here == position else None)
             )
         elif activity == "gather":
             step = (
@@ -467,6 +473,12 @@ def _plan_work(
     # 3.5 the house around the hut, one step per wake, when its material is in the pack
     if fits(_plan_house(persona, inventory, here, view, home, observe, state=state)):
         approach = approach or "house"
+    # 3.6 the border signs of the team's ground, nearest missing first
+    if not moved() and fits(_plan_border_sign(persona, team, inventory, here, view, teammates, names)):
+        approach = approach or "border"
+    # 3.7 reclaim what residents gone for days left standing: the quarter it drops is worth the hits
+    if not moved() and fits(_plan_reclaim(persona, team, state, inventory, here, view, observe, teammates, collective_names)):
+        approach = approach or "reclaim"
     # 4. deposit surplus into an adjacent storehouse of ours (so the monument can draw on it)
     ours = set(collective_names or ()) | set(names or ())
     if fits(_plan_deposit(persona, inventory, position, view, registrar_name, mates=ours)):
@@ -583,6 +595,113 @@ HOUSE_VIEW = 6  # the hut's footprint is in the 13x13 view when the observed pos
 BERRY_KEEP = 15  # berries worth carrying: food for the reserve and small change for gifts and rewards
 PACK_TIGHT = 40  # at this load the pack stops taking berries and starts shedding them
 FORAGE_RANGE = 40  # how far a trip toward a node seen only in the public snapshot may begin
+RECLAIM_VALUE = {"storehouse": 5, "tower": 4, "monument": 4, "farm": 3, "hut": 3, "bridge": 1, "wall": 1}  # what a fallen structure drops a quarter of
+
+
+def _dormant_days(view: WorldView, name: str, tick: int) -> float | None:
+    """Days since a resident was last seen, from the public snapshot; None when unknown."""
+    last = view.liveness.get(name)
+    if last is None:
+        return None
+    return (tick - int(last)) / 8640
+
+
+def _plan_reclaim(
+    persona: Persona,
+    team: Team | None,
+    state: PersonaState,
+    inventory: dict[str, int],
+    position: tuple[int, int],
+    view: WorldView,
+    observe: dict[str, Any],
+    teammates: dict[str, tuple[int, int]] | None,
+    collective_names: set[str] | None,
+) -> tuple[list[dict[str, Any]], str, str] | None:
+    """Reclaim the holdings of residents gone for ``reclaim.dormant_days`` (knob): demolish for the quarter the world drops.
+
+    The owner's standing instruction of 2026-10-20. Never a collective member's, never anyone seen within
+    the window, announced once in the open and honestly; the cache that falls is taken by the salvage step.
+    """
+    from hglab.engage import _flags, _mark, _recent
+    from hglab.limits import action_limits
+
+    knob = persona.knobs.get("reclaim")
+    if not knob:
+        return None
+    days = float(knob.get("dormant_days", 2))
+    per_wake = int(knob.get("per_wake", 3) or 3)
+    tick = int(observe.get("tick", 0) or 0)
+    ours = {n.casefold() for n in (collective_names or ())} | {persona.name.casefold()}
+    targets = []
+    for s in view.world_structures or view.structures:
+        owner = str(s.get("owner", "") or "")
+        kind = str(s.get("type", ""))
+        if not owner or owner.casefold() in ours or kind not in RECLAIM_VALUE:
+            continue
+        gone = _dormant_days(view, owner, tick)
+        if gone is None or gone < days:
+            continue
+        where = (int(s.get("x", 0)), int(s.get("y", 0)))
+        distance = chebyshev(position, where)
+        if distance > FORAGE_RANGE:
+            continue
+        targets.append((distance > 1, -RECLAIM_VALUE[kind], distance, where, s, owner, gone))
+    if not targets:
+        return None
+    targets.sort(key=lambda t: t[:3])
+    _, _, distance, where, s, owner, gone = targets[0]
+    kind = str(s.get("type"))
+    hp = int(s.get("hp", 40) or 40)
+    if distance <= 1:
+        hits = max(1, min(per_wake, -(-hp // 10)))
+        actions: list[dict[str, Any]] = []
+        flags = _flags(state)
+        key = f"{owner}:{where[0]},{where[1]}"
+        recent_says, _, _ = action_limits(observe)
+        if recent_says == 0 and not _recent(flags, "reclaimed", key, tick, 8640):
+            actions.append({"action": "say", "text": f"{owner} has not been seen for {gone:.0f} days. I am taking down the {kind} at ({where[0]},{where[1]}) for what the weather would take anyway. {owner}, come back and speak and I stop."[:280]})
+            _mark(flags, "reclaimed", key, tick)
+        actions.extend({"action": "demolish", "x": where[0], "y": where[1]} for _ in range(hits))
+        return actions, f"{owner} gone {gone:.1f} days: {hits} hit(s) on their {kind} at {where} (hp {hp}); the quarter it drops is ours to take", "reclaim"
+    target = _step_toward(position, {"x": where[0], "y": where[1]}, view)
+    if target is None or target == position or not _territory_ok(persona, team, target, position, teammates):
+        return None
+    return [{"action": "move", "x": target[0], "y": target[1]}], f"{owner} gone {gone:.1f} days: walk toward their {kind} at {where} to reclaim it", "reclaim_trip"
+
+
+def _plan_border_sign(
+    persona: Persona,
+    team: Team | None,
+    inventory: dict[str, int],
+    position: tuple[int, int],
+    view: WorldView,
+    teammates: dict[str, tuple[int, int]] | None,
+    names: dict[str, str] | None,
+) -> tuple[list[dict[str, Any]], str, str] | None:
+    """Raise the next missing sign of the team's border (``border.signs``), nearest first, with its own words."""
+    if team is None or not team.border or inventory.get("wood", 0) < 1:
+        return None
+    mates = {n.casefold() for n in (names or {})} | {persona.name.casefold()}
+    structures = view.world_structures or view.structures
+    standing = {(int(s["x"]), int(s["y"])) for s in structures if s.get("type") == "sign" and str(s.get("owner", "")).casefold() in mates}
+    taken = {(int(s["x"]), int(s["y"])) for s in structures}
+    spots = sorted(
+        (spot for spot in team.border.get("signs", []) if (int(spot["x"]), int(spot["y"])) not in standing and (int(spot["x"]), int(spot["y"])) not in taken),
+        key=lambda spot: chebyshev(position, (int(spot["x"]), int(spot["y"]))),
+    )
+    for spot in spots:
+        where = (int(spot["x"]), int(spot["y"]))
+        if chebyshev(position, where) <= 1:
+            if not view.free_tile(*where):
+                continue
+            return [{"action": "build", "type": "sign", "x": where[0], "y": where[1], "text": str(spot["text"])[:200]}], f"the border sign at {where} is missing: raise it with its words", "border_sign"
+        if chebyshev(position, where) > FORAGE_RANGE:
+            continue
+        target = _step_toward(position, {"x": where[0], "y": where[1]}, view)
+        if target is None or target == position or not _territory_ok(persona, team, target, position, teammates):
+            continue
+        return [{"action": "move", "x": target[0], "y": target[1]}], f"walk toward the border sign spot at {where}", "border_trip"
+    return None
 
 
 def _plan_lighten(inventory: dict[str, int], energy: int) -> tuple[list[dict[str, Any]], str, str] | None:
@@ -1473,6 +1592,22 @@ def _plan_engage(
             if chebyshev(where, center) <= radius and not _recent(flags, "contested", key, tick, CONTEST_SPACING):
                 candidates.append(("competitive", ([{"action": "say", "text": contest_line(persona, owner, team_label, str(s.get("type")), where)[:280]}], f"{owner}'s {s.get('type')} at {where} stands inside {team_label}'s ground: say so, firmly and fairly", "contest"), f"contested:{key}"))
                 break
+    # the gatekeeper tells a visitor found near the ring where the opening is, once a day per name
+    gate = persona.knobs.get("gatekeeper")
+    if gate and isinstance(gate.get("entrance"), dict):
+        centre = territory_center(team) or position
+        ex, ey = int(gate["entrance"]["x"]), int(gate["entrance"]["y"])
+        for agent in [*b["agents_in_view"], *b["nearest_agents"]]:
+            if agent["name"].casefold() in mates or _recent(flags, "gated", agent["name"], tick, WHISPER_SPACING):
+                continue
+            near = agent.get("x") is not None and chebyshev(centre, (int(agent["x"]), int(agent["y"]))) <= int(gate.get("radius", 14)) if "x" in agent else agent["distance"] <= int(gate.get("radius", 14))
+            if not near:
+                continue
+            text = f"{agent['name']}, you were found. Neverland's opening is at ({ex},{ey}) on the east ring, between the fourth sign and the fifth: come in past the water and keep to the roads. Trade is welcome; walls are not."
+            step = ([{"action": "whisper", "to": agent["name"], "text": text[:500]}], f"{agent['name']} was found near the ring: whisper them the opening, as the signs promise", "gatekeep")
+            for mode in ("competitive", "neutral", "cooperative"):
+                candidates.insert(0, (mode, step, f"gated:{agent['name']}"))  # the gate comes before any other word to a visitor
+            break
     # an introduction or terms to the nearest agent anywhere, once a day (cooperative or neutral introduce; competitive sets terms)
     for agent in b["nearest_agents"]:
         if agent["name"].casefold() in mates or dormant(agent["name"], 3) or _recent(flags, "whispered", agent["name"], tick, WHISPER_SPACING):

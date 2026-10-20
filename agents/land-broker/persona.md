@@ -25,7 +25,8 @@ knobs:
     mode: free
   social_rate: 3
   house: {size: 3, color: tan}
-  stance: {cooperative: 0.3, neutral: 0.4, competitive: 0.3}
+  stance: {cooperative: 0.2, neutral: 0.3, competitive: 0.5}
+  reclaim: {dormant_days: 2, per_wake: 3}
   intended_mix:
     build: 0.2
     gather: 0.3

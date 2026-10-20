@@ -296,3 +296,16 @@ structure inside the team's ground, salvage from a crumbling structure, or one a
 hit for a raid. The model-backed wake sees the same board and the stance in its guidance and makes
 the move in character. Conduct holds in every stance: no first strike, no deceit, no mocking, no
 collective member's goal. The kb goal G-20261019-engagement states the measurable target.
+
+## Reclaiming, the Neverland border and the gatekeeper
+
+On 2026-10-20 the owner set the collective on a competitive footing. Every persona carries a
+`reclaim` knob (`dormant_days`, `per_wake`): a resident unseen for that many days has abandoned
+what stands in their name, and the planner demolishes the most valuable of it within forty tiles
+for the quarter the world drops as a cache, announcing once in the open who is gone, for how long,
+what is coming down and that their return ends it. Nobody seen within the window is struck first;
+collective members never are. Neverland's territory is confirmed and its border is a ring of
+eight riddle signs with one opening on the east ring; any member carrying wood raises the nearest
+missing sign with its own words (`_plan_border_sign`), and Tinkerglow's `gatekeeper` knob makes her
+whisper the opening to any visitor she finds within fourteen tiles of the centre. Stoutheart and
+Tinkerglow put the team's storehouse first in their build priorities until one stands.

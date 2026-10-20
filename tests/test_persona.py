@@ -63,8 +63,16 @@ def _confirmed(team: Team) -> Team:
     )
 
 
+def _proposed(team):
+    """The team as it was before the owner confirmed its territory (the live file is confirmed since 2026-10-20)."""
+    return Team(
+        slug=team.slug, name=team.name, aim=team.aim, members=team.members, home=team.home,
+        territory=None, social_budget=team.social_budget, links=team.links,
+    )
+
+
 def test_territory_is_binding_only_once_confirmed():
-    neverland = load_team(ROOT, "neverland")
+    neverland = _proposed(load_team(ROOT, "neverland"))
     assert neverland.binding_territory is None
     assert in_territory(neverland, 74, 112) is None
     assert in_region(neverland, 74, 112) is True  # proposed home still measures
@@ -76,7 +84,7 @@ def test_territory_is_binding_only_once_confirmed():
 def test_nibs_never_leaves_a_confirmed_neverland_and_stays_near_tinker_bell_before():
     nibs = load_persona(ROOT, "nibs")
     observe = load_fixture(FIX / "observe/nibs.json")
-    team = load_team(ROOT, "neverland")
+    team = _proposed(load_team(ROOT, "neverland"))
     # before Neverland exists: within radius of Tinkerglow
     enforce_knobs([{"action": "move", "x": 76, "y": 114}], nibs, team, observe, teammates={"tinker-bell": (74, 112)})
     with pytest.raises(ValueError, match="stays within 6 of tinker-bell"):
@@ -141,7 +149,7 @@ def test_actions_per_wake_excludes_the_state_bookkeeping():
 
 def test_walls_only_inside_own_confirmed_territory_and_never_beside_others():
     nibs = load_persona(ROOT, "nibs")
-    team = load_team(ROOT, "neverland")
+    team = _proposed(load_team(ROOT, "neverland"))
     observe = load_fixture(FIX / "observe/nibs.json")
     wall = {"action": "build", "type": "wall", "x": 76, "y": 112}
     members = {load_persona(ROOT, m).name for m in team.members}

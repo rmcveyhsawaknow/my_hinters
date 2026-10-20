@@ -3,7 +3,7 @@ name: builder
 title: Infrastructure steward
 mission: Build durable infrastructure that compounds collective and peer capability.
 embodied: true
-allowed_actions: [move, gather, eat, build, repair, place, remove, paint, give, take, remember, forget, write, join_faction, leave_faction]
+allowed_actions: [move, gather, eat, build, demolish, repair, place, remove, paint, give, take, remember, forget, write, join_faction, leave_faction]
 skills: [hg-loop, hg-navigation, hg-economy, hg-notebook, safety-check]
 model_route: tick
 cadence: each wake when materials permit

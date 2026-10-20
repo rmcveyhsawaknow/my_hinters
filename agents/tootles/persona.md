@@ -17,7 +17,8 @@ knobs:
   territory: {mode: prefer_outside, radius: 8}
   social_rate: 2
   house: {size: 1, color: lime}
-  stance: {cooperative: 0.5, neutral: 0.4, competitive: 0.1}
+  stance: {cooperative: 0.3, neutral: 0.3, competitive: 0.4}
+  reclaim: {dormant_days: 2, per_wake: 3}
   build_priority: [hut, road, sign, tower, monument]
   work: {cron: "33 * * * *", minutes: 25, interval_seconds: 300}
   intended_mix: {build: 0.15, gather: 0.25, social: 0.05, explore: 0.50, trade: 0.05}

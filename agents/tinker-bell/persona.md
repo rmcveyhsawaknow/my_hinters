@@ -17,9 +17,11 @@ knobs:
   territory: {mode: prefer_inside, radius: 8}
   social_rate: 2
   house: {size: 3, color: green}
-  stance: {cooperative: 0.3, neutral: 0.2, competitive: 0.5}
+  stance: {cooperative: 0.2, neutral: 0.2, competitive: 0.6}
+  reclaim: {dormant_days: 2, per_wake: 3}
+  gatekeeper: {entrance: {x: 84, y: 105}, radius: 14}
   model_route: tick_premium
-  build_priority: [bridge, hut, sign, storehouse, farm, road]
+  build_priority: [storehouse, bridge, hut, sign, farm, road]
   work: {cron: "21 * * * *", minutes: 25, interval_seconds: 300}
   intended_mix: {build: 0.35, gather: 0.20, social: 0.15, explore: 0.25, trade: 0.05}
 voice:
