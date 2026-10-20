@@ -1,0 +1,56 @@
+{
+  "run_id": "announce-1792501886",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 29262,
+  "created_utc": "2026-10-20T13:11:26.991646+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Two roads laid, at (70,37) and (69,49), I think. Five wakes, two rests. I am at (65,54) now, still a walk from anywhere I was. I will carry on, if that is all right."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1698,
+    "output_tokens": 74,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [
+      "road at (70,37)",
+      "road at (69,49)"
+    ],
+    "gathered": {},
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "rest",
+      "build",
+      "rest",
+      "deposit_trip"
+    ],
+    "mood": "wistful",
+    "where": [
+      65,
+      54
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
