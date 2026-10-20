@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792529125",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 31986,
+  "created_utc": "2026-10-20T20:45:25.810515+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, five steps, and no rest yet. Reclaiming and carrying to the storehouse again, back and forth at (77, 75). Slow work, but the path is worn now."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1639,
+    "output_tokens": 67,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "reclaim",
+      "deposit_trip",
+      "reclaim",
+      "deposit_trip",
+      "reclaim"
+    ],
+    "mood": "warm",
+    "where": [
+      77,
+      75
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
