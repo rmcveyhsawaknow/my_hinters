@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792461330",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 25206,
+  "created_utc": "2026-10-20T01:55:30.617283+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, two of them spent resting by the hut at [93, 93], which is leadership, Grandad says, and the moved tally of 3 is mostly me pointing at things. Mother Pail did the rest. Hush, blankets."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1845,
+    "output_tokens": 84,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [],
+    "gathered": {},
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "rest",
+      "rest",
+      "explore",
+      "explore"
+    ],
+    "mood": "in_bed",
+    "where": [
+      93,
+      93
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
