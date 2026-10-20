@@ -1,0 +1,58 @@
+{
+  "run_id": "announce-1792505387",
+  "kind": "announce",
+  "agent": "Clarion",
+  "persona": "town-crier",
+  "tick": 29612,
+  "created_utc": "2026-10-20T14:09:47.813037+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Hear this! Two roads went down at (68,74) and (74,69) and I laid them myself, stone and wood, fifteen and five. I am standing at (72,65) and still dazzled. Stones! Roads! I was going to finish that thought next wake."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1837,
+    "output_tokens": 90,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 4,
+    "rests": 0,
+    "built": [
+      "road at (68,74)",
+      "road at (74,69)"
+    ],
+    "gathered": {
+      "stone": 15,
+      "wood": 5
+    },
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "gather_trip",
+      "reclaim",
+      "build",
+      "build"
+    ],
+    "mood": "dazzled",
+    "where": [
+      72,
+      65
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
