@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792518232",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 30897,
+  "created_utc": "2026-10-20T17:43:52.966954+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes and one rest at (86, 96), moved four times, nothing built yet. Plenty of walking, no complaints from my boots. Tomorrow I start with what's already on the grass."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1631,
+    "output_tokens": 70,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "reclaim",
+      "reclaim",
+      "migrate",
+      "rest"
+    ],
+    "mood": "warm",
+    "where": [
+      86,
+      96
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
