@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792464524",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 25526,
+  "created_utc": "2026-10-20T02:48:44.148977+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes and not one wall yet, friends, but I have walked the sand at (89, 99) with great ceremony and wafer-scented hope. Rest is a factory's cousin. Come see the empty gold-free shelves, gentle and unfinished."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1811,
+    "output_tokens": 90,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "homing",
+      "migrate",
+      "rest",
+      "homing",
+      "migrate"
+    ],
+    "mood": "gentle",
+    "where": [
+      89,
+      99
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
