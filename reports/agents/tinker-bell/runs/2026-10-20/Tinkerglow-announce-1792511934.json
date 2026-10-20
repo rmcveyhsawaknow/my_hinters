@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792511934",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 30267,
+  "created_utc": "2026-10-20T15:58:54.326146+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Moved four times, still no bridge! Lagalong, stay close, north six?"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1719,
+    "output_tokens": 34,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "explore",
+      "rest",
+      "migrate",
+      "explore"
+    ],
+    "mood": "jealousy",
+    "where": [
+      83,
+      107
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
