@@ -1,0 +1,50 @@
+{
+  "run_id": "announce-1792474850",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 26558,
+  "created_utc": "2026-10-20T05:40:50.635962+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes now, and still no walls, only sand and a sign that means well. Gently, gently, I am lightening the mood of the shallows. The factory is patient. So am I. Mostly."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1809,
+    "output_tokens": 69,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 0,
+    "deposited": {},
+    "approaches": [
+      "lighten",
+      "lighten",
+      "lighten",
+      "lighten",
+      "lighten"
+    ],
+    "mood": "gentle",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
