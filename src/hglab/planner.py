@@ -1401,8 +1401,9 @@ def _plan_engage(
                 candidates.append((mode, ([{"action": "say", "text": reply_line(persona, mode, name, team_label, position, inventory)[:280]}], f"{name} is near: a word by name, {mode}", "reply"), f"replied:{name}"))
             break
     # a contest over a structure a stranger raised inside the team's ground (competitive)
-    center = territory_center(team)
-    radius = int((team.region or {}).get("radius", 8) or 8) if team and team.region else 0
+    binding = team.binding_territory if team else None  # only ground the owner confirmed is contested
+    center = (int(binding["x"]), int(binding["y"])) if binding and binding.get("x") is not None else None
+    radius = int(binding.get("radius", 8) or 8) if binding else 0
     if may_say and center and radius:
         for s in structures:
             owner = str(s.get("owner", ""))
