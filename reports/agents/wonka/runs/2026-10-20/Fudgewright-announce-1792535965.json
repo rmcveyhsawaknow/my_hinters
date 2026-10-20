@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792535965",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 32670,
+  "created_utc": "2026-10-20T22:39:25.665914+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, five fiber gathered, spun sugar everywhere! Ten ore deposited, which is gold, which is heavy, so I am only a little sorry about my back. Come see the factory at 84, 93, it is almost a factory!"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1828,
+    "output_tokens": 87,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "fiber": 5
+    },
+    "moved": 5,
+    "deposited": {
+      "ore": 10
+    },
+    "approaches": [
+      "migrate",
+      "migrate",
+      "deposit_trip",
+      "deposit",
+      "harvest"
+    ],
+    "mood": "manic",
+    "where": [
+      84,
+      93
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
