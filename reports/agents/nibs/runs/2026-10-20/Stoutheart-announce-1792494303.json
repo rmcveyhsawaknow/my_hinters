@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792494303",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 28504,
+  "created_utc": "2026-10-20T11:05:03.069984+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Moved three times this hour, never built a thing, and still the storehouse waits. Brave hearts walk first, so I'll go gather before the next wake."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1736,
+    "output_tokens": 56,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [],
+    "gathered": {},
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "migrate",
+      "rest",
+      "migrate",
+      "rest"
+    ],
+    "mood": "brave",
+    "where": [
+      75,
+      110
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
