@@ -1,0 +1,52 @@
+{
+  "run_id": "announce-1792472852",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 26359,
+  "created_utc": "2026-10-20T05:07:32.685338+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, two steps, no builds yet, but I'm on my feet at [80, 110] and the storehouse is waiting. Hardest job first, and the hour's not done."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1727,
+    "output_tokens": 65,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "house",
+      "house",
+      "explore",
+      "engage"
+    ],
+    "mood": "brave",
+    "where": [
+      80,
+      110
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
