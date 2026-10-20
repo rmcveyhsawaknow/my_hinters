@@ -1,0 +1,56 @@
+{
+  "run_id": "announce-1792507489",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 29822,
+  "created_utc": "2026-10-20T14:44:49.942057+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Two roads laid at (86,96) and (87,98), and I walked the whole way on them. Five steps out, five steps back, and the boots stayed dry. Good hour."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1644,
+    "output_tokens": 63,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (86,96)",
+      "road at (87,98)"
+    ],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "build",
+      "migrate",
+      "build",
+      "migrate"
+    ],
+    "mood": "warm",
+    "where": [
+      88,
+      97
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
