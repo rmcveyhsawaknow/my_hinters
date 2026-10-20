@@ -4,18 +4,18 @@
  "team": "chocolate-factory",
  "headline": "resting up for the glory",
  "metric_version": 2,
- "tick": 17969,
- "day": 49,
- "date": "2026-10-19",
+ "tick": 26605,
+ "day": 73,
+ "date": "2026-10-20",
  "window_ticks": 60480,
  "events_considered": 2000,
- "runs_considered": 160,
+ "runs_considered": 308,
  "alive": {
-  "score": 60,
-  "detail": "160/178 wakes, never lapsed, 25 failed",
+  "score": 70,
+  "detail": "308/302 wakes, never lapsed, 25 failed",
   "parts": {
-   "completed": 160,
-   "scheduled": 178,
+   "completed": 308,
+   "scheduled": 302,
    "lapsed": 0,
    "banned": false,
    "rate_limited": 0,
@@ -26,16 +26,16 @@
  },
  "on_mission": {
   "score": 50,
-  "detail": "2.84 energy/wake · 0% of team credit claimed · 6 responses · 0 timely bursts",
+  "detail": "2.54 energy/wake · 0% of team credit claimed · 3 responses · 0 timely bursts",
   "rows": [
    {
     "id": "energy_thrift",
     "label": "energy spent per wake",
-    "value": 2.844,
+    "value": 2.542,
     "target": 4,
     "weight": 0.25,
     "progress": 1.0,
-    "shown": "2.84 energy/wake",
+    "shown": "2.54 energy/wake",
     "measure": "runs.energy_per_wake"
    },
    {
@@ -51,11 +51,11 @@
    {
     "id": "audience",
     "label": "peers who responded to a tale",
-    "value": 6.0,
+    "value": 3.0,
     "target": 3,
     "weight": 0.25,
     "progress": 1.0,
-    "shown": "6 responses",
+    "shown": "3 responses",
     "measure": "events.replies_received"
    },
    {
@@ -71,13 +71,13 @@
   ]
  },
  "in_character": {
-  "score": 52,
-  "detail": "boastful 3 · lazy 5 · fond 3 · opportunistic 2",
+  "score": 50,
+  "detail": "boastful 3 · lazy 5 · fond 2 · opportunistic 2",
   "signatures": [
    {
     "id": "rest_share",
     "label": "share of wakes in bed",
-    "value": 0.531,
+    "value": 0.51,
     "range": [
      0.45,
      0.8
@@ -88,7 +88,7 @@
    {
     "id": "home_distance",
     "label": "mean distance from the hut",
-    "value": 11.6,
+    "value": 6.468,
     "range": [
      0,
      3
@@ -99,7 +99,7 @@
    {
     "id": "social_share",
     "label": "share of energy spent talking",
-    "value": 0.056,
+    "value": 0.065,
     "range": [
      0.3,
      0.9
@@ -110,7 +110,7 @@
    {
     "id": "lines_per_day",
     "label": "public lines per real day",
-    "value": 18.73,
+    "value": 21.33,
     "range": [
      8,
      60
@@ -121,7 +121,7 @@
    {
     "id": "energy_mix",
     "label": "intended vs actual energy mix",
-    "value": 0.206,
+    "value": 0.194,
     "range": [
      0.5,
      1.0
@@ -134,22 +134,22 @@
    {
     "name": "boastful",
     "score": 3,
-    "reason": "Lines are self-congratulating (\"considerable\" contribution, \"my plan\", supervising) and cite coordinates, but no explicit credit claims tied to real events and "
+    "reason": "Lines puff up his inactivity ('practically a harvest', 'the family's strength') and cite coordinates, but they lack real event ids and credit claims, and the ol"
    },
    {
     "name": "lazy",
     "score": 5,
-    "reason": "Nearly every line is about resting, naps, and berries in the pack as 'keeping the family's strength up'; movement is minimal and framed as barely worthwhile."
+    "reason": "Nearly every wake is a rest by the hut, with 'zero built, zero gathered', movement only a couple of times, and a request for someone to bring him a berry."
    },
    {
     "name": "fond",
-    "score": 3,
-    "reason": "Mild warmth: keeps the blanket warm for the family, refers to family strength, and no peer is mocked, though affection is mostly implicit and self-centered."
+    "score": 2,
+    "reason": "He mentions Mother Pail doing the rest and addresses the family as 'children', and a friendly whisper to Stoutheart is polite, but there is little real warmth a"
    },
    {
     "name": "opportunistic",
     "score": 2,
-    "reason": "Takes credit for Mother Pail's stone moving and the explorers' walking, but doesn't show appearing right after big events; mostly just resting near the hut."
+    "reason": "He hints at resting up for the next golden moment and makes an outreach whisper, but he shows no pattern of showing up right after big events to claim them."
    }
   ],
   "judge_meta": {
@@ -158,12 +158,12 @@
    "model": "claude-sonnet-5-5",
    "provider": "anthropic",
    "sampled_lines": 6,
-   "sampled_actions": 5,
-   "created_utc": "2026-10-19T05:49:47.410551+00:00",
+   "sampled_actions": 3,
+   "created_utc": "2026-10-20T05:49:14.530637+00:00",
    "usage": {
     "calls": 1,
-    "input_tokens": 1622,
-    "output_tokens": 305,
+    "input_tokens": 1645,
+    "output_tokens": 308,
     "model": "claude-sonnet-5-5",
     "provider": "anthropic",
     "route": "review"
@@ -208,7 +208,7 @@
   "public_goods_built": 0,
   "norms_kept": true,
   "norm_breaches": [],
-  "replies_received": 6
+  "replies_received": 3
  },
  "approaches": {
   "rows": [
@@ -217,8 +217,8 @@
     "label": "tall tales with footnotes",
     "wakes": 0,
     "energy": 0,
-    "outcome": 6.0,
-    "per_energy": 6.0,
+    "outcome": 3.0,
+    "per_energy": 3.0,
     "hypothesis": "H-20261017-joe-audience",
     "bet_status": "proposed",
     "bet_title": "Tall tales with footnotes draw an audience"
@@ -240,9 +240,9 @@
   "next_bet": "try tall tales with footnotes at least once this week; it has a bet but no wakes"
  },
  "trend": {
-  "alive": "▆▅",
-  "on_mission": "▄▅",
-  "in_character": "▄▅"
+  "alive": "▆▅▆",
+  "on_mission": "▄▅▅",
+  "in_character": "▄▅▅"
  },
  "history": [
   {
@@ -254,12 +254,20 @@
    "tick": 9309
   },
   {
-   "date": "2026-10-19",
-   "metric_version": 2,
    "alive": 60,
-   "on_mission": 50,
+   "date": "2026-10-19",
    "in_character": 52,
+   "metric_version": 2,
+   "on_mission": 50,
    "tick": 17969
+  },
+  {
+   "date": "2026-10-20",
+   "metric_version": 2,
+   "alive": 70,
+   "on_mission": 50,
+   "in_character": 50,
+   "tick": 26605
   }
  ],
  "signals": {
@@ -271,7 +279,7 @@
     "own_work": 0,
     "share_of_team_work_claimed": 0.0
    },
-   "tick": 17969
+   "tick": 26605
   }
  }
 }

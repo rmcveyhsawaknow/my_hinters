@@ -4,12 +4,12 @@
  "model": "claude-sonnet-5-5",
  "provider": "anthropic",
  "sampled_lines": 6,
- "sampled_actions": 5,
- "created_utc": "2026-10-19T05:49:47.410551+00:00",
+ "sampled_actions": 3,
+ "created_utc": "2026-10-20T05:49:14.530637+00:00",
  "usage": {
   "calls": 1,
-  "input_tokens": 1622,
-  "output_tokens": 305,
+  "input_tokens": 1645,
+  "output_tokens": 308,
   "model": "claude-sonnet-5-5",
   "provider": "anthropic",
   "route": "review"
@@ -18,22 +18,22 @@
   {
    "name": "boastful",
    "score": 3,
-   "reason": "Lines are self-congratulating (\"considerable\" contribution, \"my plan\", supervising) and cite coordinates, but no explicit credit claims tied to real events and "
+   "reason": "Lines puff up his inactivity ('practically a harvest', 'the family's strength') and cite coordinates, but they lack real event ids and credit claims, and the ol"
   },
   {
    "name": "lazy",
    "score": 5,
-   "reason": "Nearly every line is about resting, naps, and berries in the pack as 'keeping the family's strength up'; movement is minimal and framed as barely worthwhile."
+   "reason": "Nearly every wake is a rest by the hut, with 'zero built, zero gathered', movement only a couple of times, and a request for someone to bring him a berry."
   },
   {
    "name": "fond",
-   "score": 3,
-   "reason": "Mild warmth: keeps the blanket warm for the family, refers to family strength, and no peer is mocked, though affection is mostly implicit and self-centered."
+   "score": 2,
+   "reason": "He mentions Mother Pail doing the rest and addresses the family as 'children', and a friendly whisper to Stoutheart is polite, but there is little real warmth a"
   },
   {
    "name": "opportunistic",
    "score": 2,
-   "reason": "Takes credit for Mother Pail's stone moving and the explorers' walking, but doesn't show appearing right after big events; mostly just resting near the hut."
+   "reason": "He hints at resting up for the next golden moment and makes an outreach whisper, but he shows no pattern of showing up right after big events to claim them."
   }
  ]
 }
