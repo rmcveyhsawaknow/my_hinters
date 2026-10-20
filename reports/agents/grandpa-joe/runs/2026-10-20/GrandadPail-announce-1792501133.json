@@ -1,0 +1,52 @@
+{
+  "run_id": "announce-1792501133",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 29187,
+  "created_utc": "2026-10-20T12:58:53.173223+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, four of them spent resting by the hut like a respectable grandfather, and one gather trip for five wood. Mother Pail hauled it all, I merely supervised from the blanket."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1849,
+    "output_tokens": 70,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 4,
+    "built": [],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 0,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "rest",
+      "gather_trip",
+      "rest",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
