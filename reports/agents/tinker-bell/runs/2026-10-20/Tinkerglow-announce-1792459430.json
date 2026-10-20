@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792459430",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 25016,
+  "created_utc": "2026-10-20T01:23:50.019792+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Moved four tiles, mischief in my pockets! East six, past the water?"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1715,
+    "output_tokens": 33,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "rest",
+      "explore",
+      "explore"
+    ],
+    "mood": "mischief",
+    "where": [
+      79,
+      113
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
