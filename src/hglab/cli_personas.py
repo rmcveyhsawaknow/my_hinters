@@ -290,6 +290,7 @@ def _persona_tick(
         budget_hold=budget_hold, environment=environment, work=work, teammates=roster or None,
         owned_counts=owned or None, registrar_name=_registrar_name(root, personas),
         public_structures=list(world.get("structures", [])) if world else (list(fixture_world(root).get("structures", [])) if fixture is not None else None),
+        public_agents=list(world.get("agents", [])) if world else (list(fixture_world(root).get("agents", [])) if fixture is not None else None),
     )
     if not quiet:
         echo_record(record)
@@ -924,14 +925,33 @@ def crier_round(root: Path, persona: Persona, *, dry_run: bool, fixture: Path | 
             except ValueError as exc:
                 dropped.append(f"{action['action']}: {exc}")
         if not dry_run:
+            refused_invites: list[str] = []
+            noted = False
             for validated in kept:
+                payload = validated.model_dump(exclude_none=True)
+                if payload.get("action") == "remember" and payload.get("key") == STATE_KEY:
+                    noted = True
+                    if refused_invites:  # a refused invitation means the agent already holds one: never ask again
+                        merged = {**state, **(update or {})}
+                        merged["invited"] = (list(merged.get("invited", [])) + refused_invites)[-80:]
+                        payload["text"] = json.dumps(merged, separators=(",", ":"))[:2000]
                 try:
-                    result = client.act(validated.model_dump(exclude_none=True))
+                    result = client.act(payload)
                 except Exception as exc:  # noqa: BLE001 - a world refusal is a failed result, not a crash
                     result = {"ok": False, "error": str(getattr(exc, "code", None) or type(exc).__name__)[:40]}
                 results.append(redact_result(result))
-                if not result.get("ok", False) and validated.action != "invite":
-                    break  # a refused invitation (already a member, already invited) must not stop the call or the notebook update
+                if not result.get("ok", False) and validated.action == "invite" and validated.name:
+                    refused_invites.append(str(validated.name))
+                    continue  # a refused invitation (already a member, already invited) must not stop the call or the notebook update
+                if not result.get("ok", False):
+                    break
+            if refused_invites and not noted and len(kept) < 4:
+                merged = {**state, **(update or {})}
+                merged["invited"] = (list(merged.get("invited", [])) + refused_invites)[-80:]
+                try:
+                    results.append(redact_result(client.act({"action": "remember", "key": STATE_KEY, "text": json.dumps(merged, separators=(",", ":"))[:2000]})))
+                except Exception as exc:  # noqa: BLE001 - the note is best effort
+                    results.append({"ok": False, "error": str(getattr(exc, "code", None) or type(exc).__name__)[:40]})
         record.update({
             "tick": tick, "duties": sorted(mine), "board": b, "actions": [a.model_dump(exclude_none=True) for a in kept],
             "reasons": reasons, "dropped": dropped, "results": results, "asked": list(update.get("asked", []))[-3:] if update else [],

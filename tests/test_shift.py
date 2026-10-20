@@ -215,15 +215,24 @@ def test_the_house_rises_step_by_step_from_the_pack():
     hut = {"type": "hut", "x": 63, "y": 71, "owner": clarion.name, "hp": 40, "hp_max": 40}
     view = WorldView(x0=57, y0=65, rows=rows, structures=[hut])
     home = {"x": 63, "y": 71}
-    observe = {"you": {"blocks_owned": 0}, "blocks": []}
+    observe = {"you": {"x": 64, "y": 71, "blocks_owned": 0}, "blocks": []}  # observed beside the hut: the footprint is in view
     door = _plan_house(clarion, {"wood": 3, "stone": 2}, (64, 71), view, home, observe)
     assert door is not None and door[0][0]["action"] == "place" and door[0][0]["shape"] == "door" and door[2] == "house"
     assert _plan_house(clarion, {"stone": 20}, (64, 71), view, home, observe) is None  # the door wants wood first
     observe["blocks"] = [{"x": 63, "y": 71, "count": 9, "owner": clarion.name}]  # door and window stand
     walls = _plan_house(clarion, {"stone": 9}, (64, 71), view, home, observe)
     assert walls is not None and walls[0][0]["fill"] == "walls" and _house_shortfall(clarion, {"wood": 2}, view) == ["stone"]
-    far = _plan_house(clarion, {"wood": 3, "stone": 9}, (70, 71), view, home, observe)  # out of view: starts from the door
-    assert far is not None and [a["action"] for a in far[0]] == ["move", "place"] and abs(far[0][0]["x"] - 63) <= 2
+    from hglab.mood import PersonaState
+
+    state = PersonaState(mood="warm")
+    seen = {"you": {"x": 64, "y": 71, "blocks_owned": 9}, "blocks": observe["blocks"], "tick": 100}
+    assert _plan_house(clarion, {"stone": 9}, (64, 71), view, home, seen, state=state)[0][0]["fill"] == "walls"
+    assert state.flags["house"] == {"hut": [63, 71], "done": 9, "tick": 100}  # progress noted while the hut is in view
+    afar = {"you": {"x": 75, "y": 71, "blocks_owned": 9}, "tick": 160}  # the hut is out of view: no blocks field at all
+    far = _plan_house(clarion, {"wood": 3, "stone": 9}, (70, 71), view, home, afar, state=state)
+    assert far is not None and [a["action"] for a in far[0]] == ["move", "place"] and far[0][1]["fill"] == "walls"  # remembered, not the door again
+    fresh = _plan_house(clarion, {"wood": 3, "stone": 9}, (70, 71), view, home, afar)  # nothing remembered: starts from the door
+    assert fresh is not None and fresh[0][1]["shape"] == "door" and abs(fresh[0][0]["x"] - 63) <= 2
     observe["blocks"] = [{"x": 63, "y": 71, "count": 52, "owner": clarion.name}]
     assert _plan_house(clarion, {"stone": 9, "fiber": 9, "wood": 9}, (64, 71), view, home, observe) is None  # the house stands
     assert _plan_house(load_personas(ROOT)["wonka"], {"wood": 9}, (64, 71), view, None, observe) is None  # no hut, no house

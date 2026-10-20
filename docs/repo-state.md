@@ -258,3 +258,10 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
   invitation never expires, so a second one is `not_allowed`) and the refusal ended the round
   before the call and the notebook note: a refused invitation no longer stops the round, and
   agents already invited in the public record are never asked again.
+- The second hour (04:40 UTC) showed the house loop and the gifts needing memory: a builder that
+  woke out of view of its hut assumed no blocks stood and placed the door again (refused, every cell
+  filled), so house progress is now counted from the observed position when the hut is in view and
+  kept in the persona state otherwise; Lagalong gave berries to tide_scribe, a resident unseen for
+  days, so engagement now reads every resident's last_seen_tick from the public snapshot and skips
+  gifts and words to anyone unseen for a day and whispers to anyone unseen for three. Refused
+  invitations are written into the collector's notebook state, so no agent is asked twice.

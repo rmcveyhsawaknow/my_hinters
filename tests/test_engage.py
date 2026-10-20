@@ -139,3 +139,23 @@ def test_a_whisperer_may_be_answered_by_name_in_the_open():
         assert "private" in str(exc)
     else:  # pragma: no cover - the check must still bite on content
         raise AssertionError("whisper content leaked")
+
+
+def test_dormant_residents_get_no_gifts_words_or_whispers():
+    observe = _observe(
+        tick=40000,
+        agents=[{"name": "tide_scribe", "x": 61, "y": 61, "faction": None}],
+        since_last_observe={"speakers_nearby": []},
+        world={"nearest_agents": [{"name": "Quill", "x": 90, "y": 20, "distance": 30, "last_seen_tick": 1000}]},
+    )
+    personas = load_personas(ROOT)
+    persona = personas["mrs-bucket"]
+    persona.knobs["stance"] = {"cooperative": 1, "neutral": 0, "competitive": 0}
+    team = load_team(ROOT, persona.team)
+    names = {personas[m].name.casefold(): m for m in team.members if m in personas}
+    view = WorldView(x0=54, y0=54, rows=["g" * 128] * 128, agents=list(observe["agents"]), liveness={"tide_scribe": 4508, "Quill": 1000})
+    step = _plan_engage(persona, team, PersonaState(mood="warm"), {"wood": 20}, (60, 60), view, observe, None, names, random.Random("d"), OURS)
+    assert step is None  # unseen for days: a gift or a whisper would be wasted
+    view.liveness = {"tide_scribe": 39900, "Quill": 39000}
+    step = _plan_engage(persona, team, PersonaState(mood="warm"), {"wood": 20}, (60, 60), view, observe, None, names, random.Random("d"), OURS)
+    assert step is not None and step[2] == "gift"

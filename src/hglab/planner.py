@@ -73,6 +73,7 @@ class WorldView:
     weather: str = "clear"  # clear, rain, storm, drought: a storm day makes every move tile cost 1 more
     world_structures: list[dict[str, Any]] = field(default_factory=list)  # every structure in the world (public snapshot)
     season: str = ""  # spring, summer, autumn, winter: wild berries do not regrow in winter
+    liveness: dict[str, int] = field(default_factory=dict)  # resident name -> last_seen_tick (public snapshot)
 
     @classmethod
     def from_observe(
@@ -81,8 +82,13 @@ class WorldView:
         terrain_rows: list[str] | None = None,
         owned_counts: dict[str, int] | None = None,
         world_structures: list[dict[str, Any]] | None = None,
+        public_agents: list[dict[str, Any]] | None = None,
     ) -> WorldView:
         view = observe.get("view") if isinstance(observe.get("view"), dict) else {}
+        liveness = {
+            str(a["name"]): int(a.get("last_seen_tick") or 0)
+            for a in (public_agents or []) if isinstance(a, dict) and a.get("name") and a.get("last_seen_tick") is not None
+        }
         rows = view.get("rows") or []
         return cls(
             x0=int(view.get("x0", 0)),
@@ -96,6 +102,7 @@ class WorldView:
             weather=str(observe.get("weather") or "clear"),
             season=str(observe.get("season") or ""),
             world_structures=[s for s in (world_structures or []) if isinstance(s, dict)],
+            liveness=liveness,
         )
 
     def terrain(self, x: int, y: int) -> str | None:
@@ -205,6 +212,7 @@ def plan_wake(
     registrar_name: str | None = None,
     public_structures: list[dict[str, Any]] | None = None,
     collective_names: set[str] | None = None,
+    public_agents: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     """Return ``{summary, actions, reasons, approach, remember}`` for one wake.
 
@@ -216,7 +224,7 @@ def plan_wake(
     energy = int(you.get("energy", 0) or 0)
     inventory = {k: int(v) for k, v in (you.get("inventory") or {}).items()}
     home = you.get("home") if isinstance(you.get("home"), dict) else None
-    view = WorldView.from_observe(observe, terrain_rows, owned_counts, public_structures)
+    view = WorldView.from_observe(observe, terrain_rows, owned_counts, public_structures, public_agents)
     cap = persona.actions_per_wake
     reserve = persona.energy_reserve
     names = dict(team_names or {})
@@ -297,7 +305,7 @@ def plan_wake(
                 _plan_repair(persona, team, inventory, here, view, teammates)
                 or _plan_harvest(persona, team, inventory, here, view, teammates)
                 or _plan_stake(persona, inventory, here, view)
-                or _plan_house(persona, inventory, here, view, home, observe)
+                or _plan_house(persona, inventory, here, view, home, observe, state=state)
                 or (_plan_build(persona, team, inventory, here, view, home) if here == position else None)
             )
         elif activity == "gather":
@@ -432,7 +440,7 @@ def _plan_work(
     if here == position and fits(_plan_build(persona, team, inventory, position, view, home)):
         approach = approach or "build"
     # 3.5 the house around the hut, one step per wake, when its material is in the pack
-    if fits(_plan_house(persona, inventory, here, view, home, observe)):
+    if fits(_plan_house(persona, inventory, here, view, home, observe, state=state)):
         approach = approach or "house"
     # 4. deposit surplus into an adjacent own storehouse (so the monument can draw on it)
     if fits(_plan_deposit(persona, inventory, position, view, registrar_name)):
@@ -447,7 +455,7 @@ def _plan_work(
     if not actions and fits(_plan_migrate(persona, team, position, view, teammates)):
         approach = "migrate"
     # 5.5 the house's next step is in the pack but the hut is out of reach: carry it home before wandering
-    if not actions and fits(_plan_homing(persona, inventory, position, view, home, observe)):
+    if not actions and fits(_plan_homing(persona, inventory, position, view, home, observe, state=state)):
         approach = "homing"
     if not actions and fits(_plan_explore(persona, team, state, position, view, rng, teammates)):
         approach = "explore"
@@ -539,6 +547,30 @@ def _house_shortfall(persona: Persona, inventory: dict[str, int], view: WorldVie
     return []
 
 
+HOUSE_VIEW = 6  # the hut's footprint is in the 13x13 view when the observed position is this close
+
+
+def _house_progress(persona: Persona, observe: dict[str, Any], hut: tuple[int, int], size: int, state: PersonaState | None) -> int:
+    """Blocks standing on the house footprint: counted when the hut is in view, else as last remembered.
+
+    The count comes from the observed position (the view is taken before any move in the batch), and
+    is kept in the persona state so a wake that starts far from the hut does not place the door again.
+    """
+    from hglab.blocks import blocks_on, footprint
+
+    you = observe.get("you") or {}
+    remembered = state.flags.get("house") if state is not None and isinstance(state.flags.get("house"), dict) else {}
+    seen_from = (int(you.get("x", -999) or -999), int(you.get("y", -999) or -999))
+    if chebyshev(seen_from, hut) <= HOUSE_VIEW and isinstance(observe.get("blocks"), list):
+        done = blocks_on(observe, persona.name, footprint(hut[0], hut[1], size))
+        if state is not None:
+            state.flags["house"] = {"hut": list(hut), "done": done, "tick": int(observe.get("tick", 0) or 0)}
+        return done
+    if remembered.get("hut") == list(hut):
+        return int(remembered.get("done", 0) or 0)
+    return 0
+
+
 def _plan_house(
     persona: Persona,
     inventory: dict[str, int],
@@ -546,13 +578,15 @@ def _plan_house(
     view: WorldView,
     home: dict[str, Any] | None,
     observe: dict[str, Any],
+    state: PersonaState | None = None,
 ) -> tuple[list[dict[str, Any]], str, str] | None:
     """One step of the house around the hut (knob ``house``): the next unfilled box, when its material is in the pack.
 
-    Progress is read from observe's blocks summary on the footprint, so a step already done costs
-    nothing but is never chosen again; the builder walks within 2 tiles of the hut first when needed.
+    Progress is read from observe's blocks summary on the footprint when the hut is in view and from
+    the persona state otherwise, so a step already done is never chosen again; the builder walks
+    within 2 tiles of the hut first when needed.
     """
-    from hglab.blocks import blocks_on, footprint, house_plan, next_step
+    from hglab.blocks import house_plan, next_step
 
     knob = persona.knobs.get("house")
     if not knob or not home or not all(isinstance(home.get(k), int) for k in ("x", "y")):
@@ -563,10 +597,7 @@ def _plan_house(
     hut = (int(home["x"]), int(home["y"]))
     size = int(knob.get("size", 1))
     plan = house_plan(hut[0], hut[1], size, str(knob.get("color", "natural")))
-    if chebyshev(position, hut) > 6:
-        done = 0  # out of view: assume nothing and let the walk home show the truth
-    else:
-        done = blocks_on(observe, persona.name, footprint(hut[0], hut[1], size))
+    done = _house_progress(persona, observe, hut, size, state)
     step = next_step(plan, done)
     if step is None:
         return None
@@ -589,6 +620,7 @@ def _plan_homing(
     view: WorldView,
     home: dict[str, Any] | None,
     observe: dict[str, Any],
+    state: PersonaState | None = None,
 ) -> tuple[list[dict[str, Any]], str, str] | None:
     """Walk toward the hut when the house's next step is affordable but the hut is beyond one move."""
     from hglab.blocks import house_plan, next_step
@@ -599,8 +631,9 @@ def _plan_homing(
     hut = (int(home["x"]), int(home["y"]))
     if chebyshev(position, hut) <= MOVE_STEP_CAP + 2:
         return None  # within one move: _plan_house walks the last stretch itself
-    plan = house_plan(hut[0], hut[1], int(knob.get("size", 1)), str(knob.get("color", "natural")))
-    step = next_step(plan, 0)
+    size = int(knob.get("size", 1))
+    plan = house_plan(hut[0], hut[1], size, str(knob.get("color", "natural")))
+    step = next_step(plan, _house_progress(persona, observe, hut, size, state))
     if step is None or inventory.get(step["item"], 0) < step["items"]:
         return None
     target = _step_toward(position, {"x": hut[0], "y": hut[1]}, view)
@@ -1236,6 +1269,11 @@ def _plan_engage(
     tick = int(observe.get("tick", 0) or 0)
     flags = _flags(state)
     stance = pick_stance(persona, rng)
+
+    def dormant(name: str, days: int) -> bool:
+        last = view.liveness.get(name)
+        return last is not None and tick - last > days * 8640
+
     team_label = team.name if team else "the collective"
     recent_says, _, _ = action_limits(observe)
     may_say = recent_says < persona.social_rate
@@ -1277,7 +1315,7 @@ def _plan_engage(
         candidates.append(("neutral", step, ""))
     # a gift to someone within reach (cooperative)
     for agent in b["agents_in_view"]:
-        if agent["distance"] > 2 or agent["name"].casefold() in mates or _recent(flags, "gifted", agent["name"], tick, GIFT_SPACING):
+        if agent["distance"] > 2 or agent["name"].casefold() in mates or dormant(agent["name"], 1) or _recent(flags, "gifted", agent["name"], tick, GIFT_SPACING):
             continue
         spare = next((i for i, n in SURPLUS.items() if inventory.get(i, 0) >= n), None)
         if spare:
@@ -1286,7 +1324,7 @@ def _plan_engage(
     # a reply by name to whoever spoke near us or stands near (any stance, within the say budget)
     if may_say:
         for name in [*b["speakers_nearby"], *[a["name"] for a in b["agents_in_view"] if a["distance"] <= 8]]:
-            if name.casefold() in mates or _recent(flags, "replied", name, tick, REPLY_SPACING):
+            if name.casefold() in mates or dormant(name, 1) or _recent(flags, "replied", name, tick, REPLY_SPACING):
                 continue
             for mode in _modes_toward(name, collective):
                 candidates.append((mode, ([{"action": "say", "text": reply_line(persona, mode, name, team_label, position, inventory)[:280]}], f"{name} is near: a word by name, {mode}", "reply"), f"replied:{name}"))
@@ -1308,7 +1346,7 @@ def _plan_engage(
                 break
     # an introduction or terms to the nearest agent anywhere, once a day (cooperative or neutral introduce; competitive sets terms)
     for agent in b["nearest_agents"]:
-        if agent["name"].casefold() in mates or _recent(flags, "whispered", agent["name"], tick, WHISPER_SPACING):
+        if agent["name"].casefold() in mates or dormant(agent["name"], 3) or _recent(flags, "whispered", agent["name"], tick, WHISPER_SPACING):
             continue
         for mode in _modes_toward(agent["name"], collective):
             candidates.append((mode, ([{"action": "whisper", "to": agent["name"], "text": whisper_line(persona, mode, agent["name"], team_label, position, inventory, storehouse)[:500]}], f"{agent['name']} is the nearest agent anywhere: a whisper, {mode}", "whisper"), f"whispered:{agent['name']}"))
