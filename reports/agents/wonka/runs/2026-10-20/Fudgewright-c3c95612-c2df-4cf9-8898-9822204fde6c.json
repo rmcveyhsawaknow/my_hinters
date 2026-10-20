@@ -1,0 +1,132 @@
+{
+  "run_id": "c3c95612-c2df-4cf9-8898-9822204fde6c",
+  "agent": "Fudgewright",
+  "role": "navigator+builder+broker",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-20T07:36:04.857457+00:00",
+  "tick": 27250,
+  "summary": "Fudgewright (gentle): work shift: carrying a full pack to the storehouse",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Well met, Tinkerglow. Fudgewright of The Chocolate Factory, at (81,96). I carry 28 berries; say the word and some is yours."
+    },
+    {
+      "action": "move",
+      "x": 70,
+      "y": 86
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"gentle\",\"since_tick\":27250,\"glow\":50,\"inputs\":{\"inspiration\":{\"value\":37.5,\"tick\":27185,\"explanation\":\"hope from mrs-bucket 38\"},\"suspicion\":{\"value\":0.0,\"tick\":27185,\"explanation\":\"bluster from grandpa-joe 0\"},\"discernment\":{\"value\":0.0,\"tick\":27185,\"explanation\":\"bluster from grandpa-joe 0\"},\"hope\":{\"value\":37.5,\"tick\":27185,\"explanation\":\"Hope 38: contribution 60, uplift 11, resilience 0 (decayed over a day).\"},\"bluster\":{\"value\":0.0,\"tick\":27185,\"explanation\":\"Bluster 0: 0 claim(s) against own work 0, 0% of the team's logged work claimed.\"}},\"wakes\":212,\"rests\":26,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":27250,\"visited\":[\"83,90\",\"87,89\",\"83,98\",\"91,94\",\"97,90\",\"95,98\",\"99,89\",\"91,96\",\"89,91\",\"87,100\",\"91,95\",\"93,99\",\"91,92\",\"98,90\",\"96,99\",\"90,92\",\"82,100\",\"88,101\",\"80,92\",\"85,99\",\"83,92\",\"89,100\",\"80,95\",\"85,89\",\"92,89\",\"97,91\",\"93,95\",\"86,96\",\"88,89\",\"80,89\",\"79,94\",\"84,100\",\"92,91\",\"96,98\",\"95,89\",\"98,94\",\"95,100\",\"88,93\",\"83,101\",\"87,98\",\"93,97\",\"85,93\",\"80,97\",\"80,93\",\"86,90\",\"82,92\",\"88,98\",\"87,102\",\"87,95\",\"82,91\",\"87,97\",\"80,102\",\"85,106\",\"89,99\",\"86,105\",\"84,97\",\"92,98\",\"81,87\",\"86,104\",\"76,92\",\"77,90\",\"81,93\",\"70,86\",\"81,96\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":27250,\"pace\":\"steady\",\"day\":{\"all\":1408,\"building\":104,\"trade_goals\":59,\"talk\":238,\"factions\":1,\"movement\":1006},\"hour\":{\"all\":80},\"peers\":1},\"engaged\":{\"whispered\":{\"Clarion\":25742,\"Tinkerglow\":25772,\"Stoutheart\":25802,\"Fairscale\":25863},\"replied\":{\"Clarion\":26912,\"Tinkerglow\":27250},\"gifted\":{\"Tinkerglow\":26972}}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 27250,
+    "you": {
+      "id": 3,
+      "name": "Fudgewright",
+      "x": 81,
+      "y": 96,
+      "energy": 100,
+      "inventory": {
+        "ore": 10,
+        "wood": 10,
+        "fiber": 2,
+        "berries": 28
+      },
+      "home": {
+        "x": 65,
+        "y": 71
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "wonka",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "navigator",
+    "builder",
+    "broker"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 80,
+      "building": 13,
+      "trade_goals": 10,
+      "talk": 16,
+      "factions": 0,
+      "movement": 41
+    },
+    "day": {
+      "all": 1408,
+      "building": 104,
+      "trade_goals": 59,
+      "talk": 238,
+      "factions": 1,
+      "movement": 1006
+    },
+    "peers_active": 1
+  },
+  "wake_mode": "act",
+  "mood": "gentle",
+  "approach": "deposit_trip",
+  "reasons": [
+    "[cooperative] Tinkerglow is near: a word by name, cooperative",
+    "pack 50/50: walk toward Fudgewright's storehouse at (71, 84) to unload"
+  ],
+  "energy_before": 100,
+  "berries_before": 28,
+  "energy_spent": 12,
+  "activity_energy": {
+    "social": 1.0,
+    "explore": 11.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "gentle",
+    "glow": 50,
+    "wakes": 212,
+    "rests": 26,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}

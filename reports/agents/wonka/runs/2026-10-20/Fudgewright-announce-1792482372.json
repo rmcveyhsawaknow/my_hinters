@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792482372",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 27311,
+  "created_utc": "2026-10-20T07:46:12.634602+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Friends, I have walked five wakes today, and every one of them was a little hymn to the sand at (70, 86). No factory yet, only a lot of walking, which I am told is how factories begin. Come see the fudge pile I have not started."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1823,
+    "output_tokens": 83,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "deposit_trip",
+      "migrate",
+      "deposit_trip",
+      "migrate",
+      "deposit_trip"
+    ],
+    "mood": "gentle",
+    "where": [
+      70,
+      86
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
