@@ -33,6 +33,10 @@ def test_a_dormant_residents_store_is_taken_down_with_one_honest_announcement():
     assert step is not None and step[2] == "reclaim"
     assert step[0][0]["action"] == "say" and "Quill" in step[0][0]["text"] and "3 days" in step[0][0]["text"] and "stop" in step[0][0]["text"]
     assert [a for a in step[0] if a["action"] == "demolish"] == [{"action": "demolish", "x": 61, "y": 60}] * 3  # the store first: it drops the most
+    two_left = _plan_reclaim(tootles, team, PersonaState(mood="hopeful"), {"wood": 12}, (60, 60), view, _observe(), None, OURS, room=2)
+    assert two_left is not None and [a["action"] for a in two_left[0]] == ["say", "demolish"]  # sized to the actions left in the wake
+    one_left = _plan_reclaim(tootles, team, PersonaState(mood="hopeful"), {"wood": 12}, (60, 60), view, _observe(), None, OURS, room=1)
+    assert one_left is not None and [a["action"] for a in one_left[0]] == ["demolish"]  # no room for the word: the hit still lands
     again = _plan_reclaim(tootles, team, state, {"wood": 12}, (60, 60), view, _observe(), None, OURS)
     assert again is not None and again[0][0]["action"] == "demolish"  # announced once a day per target
     validate_actions(step[0], "surveyor+builder+envoy")  # the builder hat may demolish
@@ -47,6 +51,10 @@ def test_a_far_target_is_walked_to_and_an_unknown_resident_is_left_alone():
     view = WorldView(x0=54, y0=54, rows=ROWS, world_structures=world, liveness={"Cairn": 30000 - 4 * 8640})
     step = _plan_reclaim(tootles, team, PersonaState(mood="hopeful"), {}, (60, 60), view, _observe(), None, OURS)
     assert step is not None and step[2] == "reclaim_trip" and step[0][0]["action"] == "move" and step[0][0]["x"] > 60
+    spread = [{"id": 1, "type": "storehouse", "x": 90, "y": 60, "owner": "Cairn", "hp": 80}, {"id": 2, "type": "farm", "x": 66, "y": 60, "owner": "Quill", "hp": 40}]
+    near = WorldView(x0=54, y0=54, rows=ROWS, world_structures=spread, liveness={"Cairn": 30000 - 4 * 8640, "Quill": 30000 - 3 * 8640})
+    step = _plan_reclaim(tootles, team, PersonaState(mood="hopeful"), {}, (60, 60), near, _observe(), None, OURS)
+    assert step is not None and "farm at (66, 60)" in step[1]  # the nearest band of eight tiles first, so the cast does not all walk to one store
 
 
 def test_the_border_signs_rise_nearest_first_with_their_own_words():

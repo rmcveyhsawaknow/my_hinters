@@ -314,3 +314,12 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
   towers and monuments a route stops beside), and a trip step never lands on a structure. Those who
   keep inside their ground only carry a full pack to a storehouse near it, which ends Tinkerglow's
   walk out toward the Chocolate Factory's store and back.
+- Second competitive hour (13:40 to 14:35 UTC): Strayling tore down Quill's storehouse at (67, 55)
+  and looted it, Lagalong laid a road on the cleared tile and banked ten stone in the land office's
+  vault, Tinkerglow and Stoutheart raised the first, sixth and seventh riddle signs (four of eight
+  stand), LandBroker staked five more lots. Clarion reached Cairn's storehouse but spent the wake on
+  a road, since the reclaim came after the build and its four actions no longer fitted; the reclaim
+  now comes before the ordinary build, sizes its hits to the actions left, and picks the nearest
+  band of eight tiles before the richest target, so the cast no longer converges on one store. An
+  accepted step now spends the pack the later steps plan with, which ends deposits of stone a road
+  had already used.
