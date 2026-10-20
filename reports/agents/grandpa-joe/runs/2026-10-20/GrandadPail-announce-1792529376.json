@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792529376",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 32011,
+  "created_utc": "2026-10-20T20:49:36.044471+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, three of them spent resting by the hut at [83, 81], which is a full day's labour by my reckoning. The stone I gathered, ten pieces, is also mine by right of having carried the thought of it."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1856,
+    "output_tokens": 77,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 3,
+    "built": [],
+    "gathered": {
+      "stone": 10
+    },
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "reclaim",
+      "gather_trip",
+      "rest",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": [
+      83,
+      81
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
