@@ -1,0 +1,59 @@
+{
+  "run_id": "announce-1792497689",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 28842,
+  "created_utc": "2026-10-20T12:01:29.273987+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "I think I am at (71,38) now, having built a road at (71,37) and carried fourteen stone to my hut. Fifteen gathered, one still in my pack. The big thing can wait."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1709,
+    "output_tokens": 68,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (71,37)"
+    ],
+    "gathered": {
+      "stone": 15
+    },
+    "moved": 5,
+    "deposited": {
+      "stone": 14
+    },
+    "approaches": [
+      "build",
+      "deposit_trip",
+      "deposit",
+      "gather_trip",
+      "gather_trip"
+    ],
+    "mood": "wistful",
+    "where": [
+      71,
+      38
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}

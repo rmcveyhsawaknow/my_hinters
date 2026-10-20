@@ -1,0 +1,139 @@
+{
+  "run_id": "e0b7a10c-eed4-4c5a-8cb1-64221b6f68a9",
+  "agent": "Lagalong",
+  "role": "surveyor+builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-20T11:56:23.062295+00:00",
+  "tick": 28812,
+  "summary": "Lagalong (wistful): work shift: gathering for the next build",
+  "actions": [
+    {
+      "action": "gather",
+      "kind": "stone"
+    },
+    {
+      "action": "gather",
+      "kind": "stone"
+    },
+    {
+      "action": "move",
+      "x": 74,
+      "y": 48
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"wistful\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":230,\"rests\":41,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":28812,\"visited\":[\"71,70\",\"61,60\",\"58,56\",\"60,58\",\"59,57\",\"57,55\",\"47,45\",\"37,35\",\"44,25\",\"46,21\",\"54,17\",\"64,8\",\"71,20\",\"59,32\",\"48,44\",\"60,46\",\"65,54\",\"73,58\",\"62,60\",\"59,50\",\"56,47\",\"68,54\",\"75,44\",\"63,43\",\"74,48\",\"71,38\",\"62,50\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":28810,\"pace\":\"steady\",\"day\":{\"all\":1547,\"building\":172,\"trade_goals\":85,\"talk\":268,\"factions\":1,\"movement\":1021},\"hour\":{\"all\":51},\"peers\":1},\"engaged\":{\"gifted\":{\"tide_scribe\":25878},\"replied\":{\"tide_scribe\":25908,\"Quillwright\":25939,\"Hinterlands\":25969,\"LandBroker\":27743,\"Clarion\":27773},\"whispered\":{\"Fairscale\":25999,\"MotherPail\":26224,\"LandBroker\":26315,\"Clarion\":27068}},\"house\":{\"hut\":[60,58],\"done\":52,\"tick\":28781}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 28812,
+    "you": {
+      "id": 11,
+      "name": "Lagalong",
+      "x": 73,
+      "y": 58,
+      "energy": 100,
+      "inventory": {
+        "wood": 12,
+        "fiber": 7,
+        "berries": 15
+      },
+      "home": {
+        "x": 60,
+        "y": 58
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "tootles",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 51,
+      "building": 6,
+      "trade_goals": 3,
+      "talk": 11,
+      "factions": 0,
+      "movement": 31
+    },
+    "day": {
+      "all": 1547,
+      "building": 172,
+      "trade_goals": 85,
+      "talk": 268,
+      "factions": 1,
+      "movement": 1021
+    },
+    "peers_active": 1
+  },
+  "wake_mode": "act",
+  "mood": "wistful",
+  "approach": "gather_trip",
+  "reasons": [
+    "stone node at (74, 57) is adjacent; take five, leave the rest to regrow",
+    "stone node at (74, 57) is adjacent; take five, leave the rest to regrow",
+    "ranging farther from the territory, toward bigger things: move to (74, 48)"
+  ],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 16,
+  "activity_energy": {
+    "gather": 6.0,
+    "explore": 10.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "wistful",
+    "glow": 50,
+    "wakes": 230,
+    "rests": 41,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_outside",
+    "walls_inside_territory"
+  ]
+}
