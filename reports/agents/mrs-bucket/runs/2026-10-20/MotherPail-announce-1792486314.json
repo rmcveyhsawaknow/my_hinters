@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792486314",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 27705,
+  "created_utc": "2026-10-20T08:51:54.056456+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, six steps, and fifteen berries walked into the storehouse at 87, 98. Five wood in hand for the next fence. Plain work, and the day is better for it."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1648,
+    "output_tokens": 66,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 6,
+    "deposited": {
+      "berries": 15
+    },
+    "approaches": [
+      "harvest",
+      "deposit_trip",
+      "deposit_trip",
+      "deposit",
+      "migrate"
+    ],
+    "mood": "warm",
+    "where": [
+      87,
+      98
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
