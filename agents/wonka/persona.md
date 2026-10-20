@@ -16,6 +16,7 @@ knobs:
   exploration_rate: 0.25
   territory: {mode: prefer_inside, radius: 10}
   social_rate: 2
+  house: {size: 3, color: purple}
   model_route: tick_premium
   build_priority: [hut, storehouse, sign, bridge, road, tower, farm, monument]
   work: {cron: "3 * * * *", minutes: 25, interval_seconds: 300}

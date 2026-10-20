@@ -50,6 +50,8 @@ WORK_SUMMARIES = {
     "gather_trip": "gathering for the next build", "migrate": "walking to the team site", "explore": "looking for nodes",
     "repair": "mending what is damaged", "harvest": "collecting the farm", "salvage": "taking salvage from a ruin",
     "stake": "staking open lots for the land office",
+    "house": "raising the house around the hut",
+    "homing": "carrying materials home for the house",
 }
 REPAIR_WORTH = 10  # mend only when at least half a repair's 20 hp is missing; a scratch is not worth a unit of material
 NODE_FLOOR = 5  # never take a node below this many units: local norm, never strip nodes
@@ -287,6 +289,7 @@ def plan_wake(
                 _plan_repair(persona, team, inventory, here, view, teammates)
                 or _plan_harvest(persona, team, inventory, here, view, teammates)
                 or _plan_stake(persona, inventory, here, view)
+                or _plan_house(persona, inventory, here, view, home, observe)
                 or (_plan_build(persona, team, inventory, here, view, home) if here == position else None)
             )
         elif activity == "gather":
@@ -413,6 +416,9 @@ def _plan_work(
     # 3. any build whose materials are in hand (hut, farm, storehouse, bridge, wall...)
     if here == position and fits(_plan_build(persona, team, inventory, position, view, home)):
         approach = approach or "build"
+    # 3.5 the house around the hut, one step per wake, when its material is in the pack
+    if fits(_plan_house(persona, inventory, here, view, home, observe)):
+        approach = approach or "house"
     # 4. deposit surplus into an adjacent own storehouse (so the monument can draw on it)
     if fits(_plan_deposit(persona, inventory, position, view, registrar_name)):
         approach = approach or "deposit"
@@ -425,6 +431,9 @@ def _plan_work(
     # 5. far from the team site and nothing to gather here: migrate toward it
     if not actions and fits(_plan_migrate(persona, team, position, view, teammates)):
         approach = "migrate"
+    # 5.5 the house's next step is in the pack but the hut is out of reach: carry it home before wandering
+    if not actions and fits(_plan_homing(persona, inventory, position, view, home, observe)):
+        approach = "homing"
     if not actions and fits(_plan_explore(persona, team, state, position, view, rng, teammates)):
         approach = "explore"
     summary = WORK_SUMMARIES.get(approach or "", "nothing worth the energy this shift wake")
@@ -496,6 +505,91 @@ def _plan_stake(
         if stand is not None:
             return [{"action": "move", "x": stand[0], "y": stand[1]}, build], f"walk to {stand} and stake lot {lid} with a claim sign at {anchor}", f"stake:{lid}"
     return None
+
+
+def _house_shortfall(persona: Persona, inventory: dict[str, int], view: WorldView) -> list[str]:
+    """The item the next house step still needs, so gathering trips fetch it before anything else."""
+    from hglab.blocks import house_plan
+
+    knob = persona.knobs.get("house")
+    home = next((s for s in view.structures if s.get("type") == "hut" and _own(persona, s)), None)
+    if not knob or home is None:
+        return []
+    plan = house_plan(int(home["x"]), int(home["y"]), int(knob.get("size", 1)), str(knob.get("color", "natural")))
+    for step in plan:
+        if inventory.get(step["item"], 0) < step["items"]:
+            return [step["item"]]
+    return []
+
+
+def _plan_house(
+    persona: Persona,
+    inventory: dict[str, int],
+    position: tuple[int, int],
+    view: WorldView,
+    home: dict[str, Any] | None,
+    observe: dict[str, Any],
+) -> tuple[list[dict[str, Any]], str, str] | None:
+    """One step of the house around the hut (knob ``house``): the next unfilled box, when its material is in the pack.
+
+    Progress is read from observe's blocks summary on the footprint, so a step already done costs
+    nothing but is never chosen again; the builder walks within 2 tiles of the hut first when needed.
+    """
+    from hglab.blocks import blocks_on, footprint, house_plan, next_step
+
+    knob = persona.knobs.get("house")
+    if not knob or not home or not all(isinstance(home.get(k), int) for k in ("x", "y")):
+        return None
+    you = observe.get("you") or {}
+    if int(you.get("blocks_owned", 0) or 0) >= 3900:
+        return None
+    hut = (int(home["x"]), int(home["y"]))
+    size = int(knob.get("size", 1))
+    plan = house_plan(hut[0], hut[1], size, str(knob.get("color", "natural")))
+    if chebyshev(position, hut) > 6:
+        done = 0  # out of view: assume nothing and let the walk home show the truth
+    else:
+        done = blocks_on(observe, persona.name, footprint(hut[0], hut[1], size))
+    step = next_step(plan, done)
+    if step is None:
+        return None
+    if inventory.get(step["item"], 0) < step["items"]:
+        return None
+    label = f"the {step['name']} of the house at {hut} ({step['cells']} blocks, {step['items']} {step['item']})"
+    if chebyshev(position, hut) <= 2:
+        return [step["action"]], f"place {label}", "house"
+    reach = reachable_tiles(view, position)
+    stand = min((t for t in reach if chebyshev(t, hut) <= 2 and t != hut), key=lambda t: chebyshev(position, t), default=None)
+    if stand is None:
+        return None
+    return [{"action": "move", "x": stand[0], "y": stand[1]}, step["action"]], f"walk to {stand} and place {label}", "house"
+
+
+def _plan_homing(
+    persona: Persona,
+    inventory: dict[str, int],
+    position: tuple[int, int],
+    view: WorldView,
+    home: dict[str, Any] | None,
+    observe: dict[str, Any],
+) -> tuple[list[dict[str, Any]], str, str] | None:
+    """Walk toward the hut when the house's next step is affordable but the hut is beyond one move."""
+    from hglab.blocks import house_plan, next_step
+
+    knob = persona.knobs.get("house")
+    if not knob or not home or not all(isinstance(home.get(k), int) for k in ("x", "y")):
+        return None
+    hut = (int(home["x"]), int(home["y"]))
+    if chebyshev(position, hut) <= MOVE_STEP_CAP + 2:
+        return None  # within one move: _plan_house walks the last stretch itself
+    plan = house_plan(hut[0], hut[1], int(knob.get("size", 1)), str(knob.get("color", "natural")))
+    step = next_step(plan, 0)
+    if step is None or inventory.get(step["item"], 0) < step["items"]:
+        return None
+    target = _step_toward(position, {"x": hut[0], "y": hut[1]}, view)
+    if target is None or target == position or chebyshev(target, hut) >= chebyshev(position, hut):
+        return None
+    return [{"action": "move", "x": target[0], "y": target[1]}], f"carrying {step['items']} {step['item']} home for the {step['name']} of the house at {hut}: {chebyshev(position, hut)} tiles to go", "homing"
 
 
 def _own(persona: Persona, structure: dict[str, Any]) -> bool:
@@ -813,7 +907,7 @@ def _plan_gather(
     if sum(inventory.values()) >= 46:
         return None
     priority = list(persona.knobs.get("build_priority") or DEFAULT_BUILD_PRIORITY)
-    wanted: list[str] = []
+    wanted: list[str] = list(_house_shortfall(persona, inventory, view))
     for blueprint in priority:
         if blueprint in BLUEPRINTS:
             wanted.extend(shortfall(inventory, blueprint))
@@ -1110,6 +1204,11 @@ def _estimate(actions: list[dict[str, Any]], position: tuple[int, int], storm: b
             total += chebyshev(here, target) * (2 if storm else 1)
             here = target
         else:
+            if kind in {"place", "remove", "paint"} and action.get("bx") is not None:
+                from hglab.blocks import cells_of
+
+                total += 1 + -(-cells_of(action) // 32)
+                continue
             total += {
                 "gather": 3, "build": 5, "demolish": 5, "repair": 3, "say": 1, "whisper": 1, "write": 1, "give": 1, "take": 1,
                 "post_goal": 2, "claim_goal": 1, "invite": 1, "found_faction": 10,

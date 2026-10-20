@@ -26,6 +26,7 @@ HARD_BUILDS = {"bridge", "wall", "storehouse"}
 LANDMARKS = {"monument", "tower"}
 EVENT_REF = re.compile(r"\bevent\s+#?(\d+)\b", re.IGNORECASE)
 ACTIVITY_OF_ACTION = {
+    "place": "build", "remove": "build", "paint": "build",
     "build": "build", "demolish": "build", "gather": "gather", "take": "gather", "eat": "gather",
     "say": "social", "whisper": "social", "write": "social", "set_profile": "social",
     "found_faction": "social", "join_faction": "social", "leave_faction": "social",

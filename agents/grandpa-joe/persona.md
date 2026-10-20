@@ -16,6 +16,7 @@ knobs:
   exploration_rate: 0.05
   territory: {mode: prefer_inside, radius: 3}
   social_rate: 2
+  house: {size: 1, color: grey}
   build_priority: [sign]
   work: {cron: "15 * * * *", minutes: 25, interval_seconds: 300}
   intended_mix: {build: 0.05, gather: 0.15, social: 0.60, explore: 0.10, trade: 0.10}

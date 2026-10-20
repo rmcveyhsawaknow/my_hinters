@@ -24,6 +24,7 @@ knobs:
   territory:
     mode: free
   social_rate: 3
+  house: {size: 3, color: tan}
   intended_mix:
     build: 0.2
     gather: 0.3

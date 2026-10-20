@@ -27,3 +27,13 @@ from hits or decay never heals by itself. Take berries from your farms before th
 farm grows nothing. Ruins (caches with `ruin` set) and dropped caches are open to anyone: take what
 fits. Plan by the day's `season` and `weather`: gather fiber and berries on rain days, stock berries
 before winter (wild berries do not regrow then), and keep walks short on storm days.
+
+## Houses of blocks (API 0.30.0)
+
+The hut is the hearth; the house around it is yours to shape with `place`: a door, windows, walls
+(`fill: "walls"`), a roof slab in your colour, one item per 4 blocks and 1 energy per 32. The
+planner's `house` knob (size 1 or 3 tiles, a roof colour) raises it a step per wake once the next
+step's material is in the pack, reading progress from `observe.blocks`; gathering trips fetch that
+material first. A 1-tile house costs about 2 wood, 8 stone and 4 fiber; a 3-tile house about 2 wood,
+66 stone and 36 fiber over several wakes. Keep boxes within 2 tiles and 256 cells, and never close a
+tile someone else needs to pass.

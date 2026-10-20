@@ -28,6 +28,7 @@ knobs:
   territory:
     mode: free
   social_rate: 3
+  house: {size: 1, color: yellow}
   model_route: tick_premium
   work: {cron: "51 * * * *", minutes: 20, interval_seconds: 300}
   intended_mix:
