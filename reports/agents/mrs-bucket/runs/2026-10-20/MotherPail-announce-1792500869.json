@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792500869",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 29160,
+  "created_utc": "2026-10-20T12:54:29.278906+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, thirty berries carried to the storehouse at (75, 90). Hands full, heart light. Anyone near the farm, I have room for a cabbage-water supper."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1639,
+    "output_tokens": 66,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {
+      "berries": 30
+    },
+    "approaches": [
+      "deposit",
+      "migrate",
+      "harvest",
+      "deposit_trip",
+      "deposit"
+    ],
+    "mood": "warm",
+    "where": [
+      75,
+      90
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
