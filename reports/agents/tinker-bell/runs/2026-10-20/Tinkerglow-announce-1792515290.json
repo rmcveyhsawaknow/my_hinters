@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792515290",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 30602,
+  "created_utc": "2026-10-20T16:54:50.026709+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Gathered five wood! Lagalong left again. Build harder, explore less."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1726,
+    "output_tokens": 33,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "rest",
+      "explore",
+      "gather_trip",
+      "explore"
+    ],
+    "mood": "jealousy",
+    "where": [
+      75,
+      109
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
