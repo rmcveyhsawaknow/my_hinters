@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792516920",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 30765,
+  "created_utc": "2026-10-20T17:22:00.497819+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes at 72, 71 and I moved three times, no builds, nothing gathered; the reclaim approach keeps coming up, which is odd, so noting it. Chasing the other thing first."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1698,
+    "output_tokens": 72,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "reclaim",
+      "reclaim",
+      "reclaim",
+      "rest",
+      "reclaim"
+    ],
+    "mood": "curious",
+    "where": [
+      72,
+      71
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
