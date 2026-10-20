@@ -27,6 +27,7 @@ from hglab.persona import (
 )
 
 WALKABLE = set("sgfh")
+BLOCKING = {"wall", "hut", "storehouse", "tower", "monument"}  # a route never passes through these; it stops beside them
 BLUEPRINTS: dict[str, dict[str, int]] = {
     "sign": {"wood": 1},
     "road": {"stone": 1},
@@ -125,7 +126,11 @@ class WorldView:
         return None
 
     def structure_at(self, x: int, y: int) -> dict[str, Any] | None:
+        """The structure on a tile: the view first, then the public snapshot (bridges and walls beyond the view matter to a route)."""
         for structure in self.structures:
+            if structure.get("x") == x and structure.get("y") == y:
+                return structure
+        for structure in self.world_structures:
             if structure.get("x") == x and structure.get("y") == y:
                 return structure
         return None
@@ -137,7 +142,7 @@ class WorldView:
         structure = self.structure_at(x, y)
         if structure and structure.get("type") == "bridge":
             return True
-        if structure and structure.get("type") == "wall":
+        if structure and structure.get("type") in BLOCKING:
             return False
         return code in WALKABLE
 
@@ -737,6 +742,11 @@ def _plan_deposit_trip(
         (s for s in (view.world_structures or view.structures) if s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() in mates),
         key=lambda s: (str(s.get("owner", "")).casefold() != persona.name.casefold(), chebyshev(position, (int(s["x"]), int(s["y"])))),
     )
+    mode = persona.knobs["territory"]["mode"]
+    centre = territory_center(team)
+    if mode in {"prefer_inside", "stay_inside", "near_teammate"} and centre is not None:
+        radius = int((team.region or {}).get("radius", 8) or 8) if team and team.region else int(persona.knobs["territory"].get("radius", 8))
+        stores = [s for s in stores if chebyshev(centre, (int(s["x"]), int(s["y"]))) <= radius + 6]  # no trips that the migration step walks back
     for store in stores[:4]:
         where = (int(store["x"]), int(store["y"]))
         if chebyshev(position, where) <= 1 or chebyshev(position, where) > FORAGE_RANGE:
@@ -1322,24 +1332,32 @@ def _plan_explore(
 
 
 def reachable_tiles(view: WorldView, position: tuple[int, int], steps: int = MOVE_STEP_CAP) -> set[tuple[int, int]]:
-    """Tiles one move can reach: within ``steps`` king moves along walkable tiles, as the world paths it.
+    """Tiles one move can reach: the cheapest route costs at most ``steps``, as the world paths it.
 
-    A tile twelve tiles away in a straight line across water or mountains is ``too_far``; this is the
-    walk the world would actually find. Unknown terrain (off the view, no map) counts as not walkable.
+    Entering a tile costs 1, a hill 2, a road 0.5 (the world's rule: "hills 2, roads 0.5, rounded up;
+    cheapest route max 12 steps"). A tile twelve tiles away across hills or around water is
+    ``too_far``; this is the walk the world would actually find. Unknown terrain (off the view, no
+    map) counts as not walkable.
     """
-    seen = {position}
-    frontier = [position]
-    for _ in range(steps):
-        nxt: list[tuple[int, int]] = []
-        for x, y in frontier:
-            for tile in neighbours(x, y):
-                if tile not in seen and view.walkable(*tile):
-                    seen.add(tile)
-                    nxt.append(tile)
-        frontier = nxt
-        if not frontier:
-            break
-    return seen
+    import heapq
+
+    roads = {(int(s["x"]), int(s["y"])) for s in (view.world_structures or view.structures) if s.get("type") == "road"}
+    best: dict[tuple[int, int], float] = {position: 0.0}
+    heap: list[tuple[float, int, int]] = [(0.0, position[0], position[1])]
+    while heap:
+        cost, x, y = heapq.heappop(heap)
+        if cost > best.get((x, y), float("inf")):
+            continue
+        for tile in neighbours(x, y):
+            if not view.walkable(*tile):
+                continue
+            code = view.terrain(*tile)
+            step_cost = 0.5 if tile in roads else 2.0 if code == "h" else 1.0
+            total = cost + step_cost
+            if total <= steps and total < best.get(tile, float("inf")):
+                best[tile] = total
+                heapq.heappush(heap, (total, tile[0], tile[1]))
+    return set(best)
 
 
 def _walkable_ring(position: tuple[int, int], view: WorldView, lo: int, hi: int) -> list[tuple[int, int]]:
@@ -1715,11 +1733,14 @@ def _step_toward(
     target = (int(home["x"]), int(home["y"]))
     if chebyshev(position, target) <= 1:
         return position
-    if chebyshev(position, target) <= MOVE_STEP_CAP and target in reachable_tiles(view, position):
-        return target
+    reach = reachable_tiles(view, position)
+    if target in reach:
+        return target  # a blocking structure is never in reach, so this is a tile one may stand on
     best = position
-    for candidate in _walkable_ring(position, view, 1, MOVE_STEP_CAP):
-        if chebyshev(candidate, target) < chebyshev(best, target):
+    for candidate in reach:
+        if candidate == position or candidate == target:
+            continue
+        if chebyshev(candidate, target) < chebyshev(best, target) or (chebyshev(candidate, target) == chebyshev(best, target) and best == position):
             best = candidate
     return best
 

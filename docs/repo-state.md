@@ -304,3 +304,13 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
   member carrying wood, with one opening on the east ring at (84, 105). Tinkerglow is the
   gatekeeper: she whispers the opening to any visitor she finds within fourteen tiles of the
   centre, once a day per name. Stoutheart and Tinkerglow put the team's storehouse first.
+- First live hour on the competitive code (13:00 to 13:40 UTC): Strayling struck Quill's storehouse
+  at (67, 55) three times (80 to 50 hp) after the announcement, Lagalong walked to join him,
+  Stoutheart raised the third border sign at (79, 102) and a wall inside the ring, LandBroker staked
+  five more lots. Clarion's walk toward Cairn's storehouse was refused as too_far four times: the
+  world's move budget is a cost of 12 with hills at 2 and roads at 0.5, and the reachability search
+  had counted every tile as 1 and allowed a route to end on the storehouse itself. The search now
+  prices hills and roads, structures beyond the view count (bridges, walls, and the huts, stores,
+  towers and monuments a route stops beside), and a trip step never lands on a structure. Those who
+  keep inside their ground only carry a full pack to a storehouse near it, which ends Tinkerglow's
+  walk out toward the Chocolate Factory's store and back.
