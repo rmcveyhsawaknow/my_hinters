@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792458694",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 24943,
+  "created_utc": "2026-10-20T01:11:34.009056+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes of walking and not one brick laid, which is how you know the tour is nearly ready. Come see the empty factory at [87, 97]. Mind the sand; it is mostly fudge, and fudge is very forgiving."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1809,
+    "output_tokens": 82,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "gentle",
+    "where": [
+      87,
+      97
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
