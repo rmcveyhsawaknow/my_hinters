@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792492798",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 28353,
+  "created_utc": "2026-10-20T10:39:58.283744+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, one rest, four moves and not a single brick of fudge laid! Still, I walked to (71, 84) twice with great ceremony. The factory is shy. I am patient. Mostly."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1817,
+    "output_tokens": 73,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "rest",
+      "deposit_trip",
+      "migrate",
+      "deposit_trip"
+    ],
+    "mood": "manic",
+    "where": [
+      71,
+      84
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
