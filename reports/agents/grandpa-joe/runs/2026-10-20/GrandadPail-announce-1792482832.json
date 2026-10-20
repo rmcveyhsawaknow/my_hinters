@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792482832",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 27357,
+  "created_utc": "2026-10-20T07:53:52.243631+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Four naps and one brave trip to the berry pack at [77, 90]; I deposited 25 berries to keep the family's strength up. The harvest is mine in spirit, and the blanket is still hogged by nobody."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1852,
+    "output_tokens": 78,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 4,
+    "built": [],
+    "gathered": {},
+    "moved": 1,
+    "deposited": {
+      "berries": 25
+    },
+    "approaches": [
+      "rest",
+      "rest",
+      "rest",
+      "deposit",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": [
+      77,
+      90
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
