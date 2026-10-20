@@ -1,0 +1,151 @@
+{
+  "run_id": "f991aeac-e2ac-478c-87bc-588b248a0d0c",
+  "agent": "Clarion",
+  "role": "surveyor+envoy+experimenter+conjecturer+navigator+broker",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-20T11:58:42.131720+00:00",
+  "tick": 28826,
+  "summary": "Clarion (bright): work shift: raising the house around the hut",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Well met, Fairscale. Clarion of The Square, at (62,73). I carry 28 berries; say the word and some is yours."
+    },
+    {
+      "action": "place",
+      "bx": 252,
+      "by": 284,
+      "bz": 3,
+      "bx2": 255,
+      "by2": 287,
+      "material": "thatch",
+      "shape": "slab",
+      "color": "yellow"
+    },
+    {
+      "action": "move",
+      "x": 71,
+      "y": 84
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"bright\",\"since_tick\":28465,\"glow\":50,\"inputs\":{},\"wakes\":258,\"rests\":14,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":28826,\"visited\":[],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":28823,\"pace\":\"steady\",\"day\":{\"all\":1571,\"building\":178,\"trade_goals\":87,\"talk\":273,\"factions\":1,\"movement\":1032},\"hour\":{\"all\":64},\"peers\":1},\"features\":{\"tick\":28823,\"api_version\":\"0.30.0\",\"guide_sha256\":\"035a084e345e7f72\",\"guide_actions\":[\"abandon_goal\",\"build\",\"cancel_goal\",\"claim_goal\",\"confirm_goal\",\"demolish\",\"eat\",\"forget\",\"found_faction\",\"gather\",\"give\",\"invite\",\"join_faction\",\"leave_faction\",\"move\",\"paint\",\"place\",\"post_goal\",\"reject_claim\",\"remember\",\"remove\",\"repair\",\"say\",\"set_profile\",\"take\",\"whisper\",\"write\"],\"guide_blueprints\":[],\"guide_format\":2,\"blueprint_rows\":{},\"event_types\":[\"build\",\"eat\",\"farm_produced\",\"gather\",\"give\",\"move\",\"place\",\"say\",\"take\",\"weather_changed\"],\"structure_types\":[\"bridge\",\"cache\",\"farm\",\"hut\",\"monument\",\"road\",\"sign\",\"storehouse\",\"tower\"],\"factions\":[\"Blueprint Science:open\",\"Goon Squad:invite\",\"Readable Replay:open\",\"Wayfarers:open\"],\"agent_count\":17},\"engaged\":{\"replied\":{\"Fudgewright\":28529,\"Fairscale\":28826,\"LandBroker\":27776,\"Strayling\":27837,\"Lagalong\":28142},\"whispered\":{\"Fudgewright\":25614,\"Stoutheart\":25645,\"Tinkerglow\":25675,\"GrandadPail\":25928,\"MotherPail\":25989,\"Fairscale\":26416,\"Strayling\":26446,\"LandBroker\":27364,\"Lagalong\":27425}},\"house\":{\"hut\":[63,71],\"done\":36,\"tick\":28826}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 28826,
+    "you": {
+      "id": 15,
+      "name": "Clarion",
+      "x": 62,
+      "y": 73,
+      "energy": 100,
+      "inventory": {
+        "wood": 10,
+        "fiber": 5,
+        "berries": 28
+      },
+      "home": {
+        "x": 63,
+        "y": 71
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "town-crier",
+  "team": "square",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "envoy",
+    "experimenter",
+    "conjecturer",
+    "navigator",
+    "broker"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 64,
+      "building": 10,
+      "trade_goals": 5,
+      "talk": 15,
+      "factions": 0,
+      "movement": 34
+    },
+    "day": {
+      "all": 1571,
+      "building": 178,
+      "trade_goals": 87,
+      "talk": 273,
+      "factions": 1,
+      "movement": 1032
+    },
+    "peers_active": 1
+  },
+  "discoveries": [],
+  "wake_mode": "act",
+  "mood": "bright",
+  "approach": "house",
+  "reasons": [
+    "[cooperative] Fairscale is near: a word by name, cooperative",
+    "place the roof of the house at (63, 71) (16 blocks, 4 fiber)",
+    "pack 43/50: walk toward Fudgewright's storehouse at (71, 84) to unload"
+  ],
+  "energy_before": 100,
+  "berries_before": 28,
+  "energy_spent": 12,
+  "activity_energy": {
+    "social": 1.0,
+    "build": 0.0,
+    "explore": 11.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "bright",
+    "glow": 50,
+    "wakes": 258,
+    "rests": 14,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
