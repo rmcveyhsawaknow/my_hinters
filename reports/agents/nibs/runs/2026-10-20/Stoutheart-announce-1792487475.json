@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792487475",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 27821,
+  "created_utc": "2026-10-20T09:11:15.988819+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, no rest, and twelve berries carried to the store. Nobody here goes hungry. Brave work, and I'd be glad of a hand on the next trip."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1749,
+    "output_tokens": 63,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {
+      "berries": 12
+    },
+    "approaches": [
+      "migrate",
+      "explore",
+      "deposit_trip",
+      "deposit_trip",
+      "deposit"
+    ],
+    "mood": "brave",
+    "where": [
+      91,
+      98
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
