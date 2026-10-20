@@ -381,6 +381,8 @@ def test_a_full_pack_eats_one_berry_after_its_walk_and_never_gifts_a_collective_
     assert _meal_after_move([{"action": "move", "x": 1, "y": 1}], {"wood": 10, "berries": 40}, 100, 3) == {"action": "eat", "qty": 1}
     assert _meal_after_move([{"action": "say", "text": "x"}], {"wood": 10, "berries": 40}, 100, 3) is None  # no walk: the meal would be refused at full energy
     assert _meal_after_move([{"action": "move", "x": 1, "y": 1}], {"wood": 10, "berries": 20}, 100, 3) is None  # twenty berries is not a hoard
+    assert _meal_after_move([{"action": "move", "x": 1, "y": 1}], {"wood": 14, "fiber": 7, "berries": 25}, 100, 3) == {"action": "eat", "qty": 1}  # a pack of 46 refuses gathering: shed to the keep
+    assert _meal_after_move([{"action": "move", "x": 1, "y": 1}], {"wood": 24, "fiber": 7, "berries": 15}, 100, 3) is None  # at the keep, the berries stay
     assert _meal_after_move([{"action": "move", "x": 1, "y": 1}, {"action": "gather", "kind": "wood"}, {"action": "gather", "kind": "wood"}], {"wood": 10, "berries": 40}, 100, 3) is None  # no room
     personas = load_personas(ROOT)
     nibs = personas["nibs"]

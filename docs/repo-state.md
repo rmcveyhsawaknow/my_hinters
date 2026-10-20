@@ -350,3 +350,10 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
   knob walks him two hops a wake along it, laps counted from tiles walked. He still takes down a
   departed resident's structure he stands beside and gathers from a node beside him; nothing else
   walks him inland, and a model plan that leaves the coast falls back to the patrol.
+- Overnight (17:15 to 23:50 UTC) the cast reclaimed every storehouse, tower, monument, farm and hut
+  of the five residents gone for days; only their signs and roads stand, and those are not reclaim
+  targets. Neverland's storehouse is still missing: Tinkerglow (46 items, 25 berries) and
+  Stoutheart (50 items) were stuck, because a pack of 46 refuses gathering and the one-berry meal
+  only fired above 25 berries. A pack too full to gather now sheds berries down to the keep, which
+  frees Tinkerglow to fill her wood and fetch the stone the ring lacks (no stone node lies inside
+  it, and Stoutheart never leaves it).
