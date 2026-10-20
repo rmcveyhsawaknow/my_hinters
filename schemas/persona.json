@@ -44,7 +44,18 @@
         },
         "social_rate": {"type": "integer", "minimum": 0, "maximum": 3},
         "model_route": {"type": "string", "pattern": "^[a-z_]+$"},
-        "house": {
+        "stance": {
+      "type": "object",
+      "description": "How the agent engages others: weights for cooperative, neutral and competitive moves (normalised).",
+      "required": ["cooperative", "neutral", "competitive"],
+      "properties": {
+        "cooperative": {"type": "number", "minimum": 0, "maximum": 1},
+        "neutral": {"type": "number", "minimum": 0, "maximum": 1},
+        "competitive": {"type": "number", "minimum": 0, "maximum": 1}
+      },
+      "additionalProperties": false
+    },
+    "house": {
       "type": "object",
       "description": "The house of blocks around the hut: its footprint (1 or 3 tiles square) and roof colour.",
       "required": ["size"],

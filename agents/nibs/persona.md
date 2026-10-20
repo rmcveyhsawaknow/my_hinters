@@ -17,6 +17,7 @@ knobs:
   territory: {mode: stay_inside, radius: 6, teammate: tinker-bell, fallback: near_teammate}
   social_rate: 2
   house: {size: 1, color: green}
+  stance: {cooperative: 0.6, neutral: 0.3, competitive: 0.1}
   build_priority: [hut, farm, storehouse, bridge, wall, road]
   work: {cron: "39 * * * *", minutes: 25, interval_seconds: 300}
   intended_mix: {build: 0.40, gather: 0.35, social: 0.15, explore: 0.05, trade: 0.05}

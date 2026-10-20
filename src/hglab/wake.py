@@ -274,10 +274,17 @@ def persona_wake(
             persona, team, state, observe, mode, rng,
             teammates=mates, terrain_rows=terrain_rows, allowed=allowed, team_names=names, work=work,
             owned_counts=owned_counts, registrar_name=registrar_name, public_structures=public_structures,
+            collective_names={p.name for p in personas.values()},
         )
         used = "heuristic"
         if planner_mode == "llm" and llm_call is not None and mode != "rest" and not work:
-            candidate, error = _llm_plan(observe, state, mode, plan, llm_call, env)
+            from hglab.engage import board as engagement_board
+            from hglab.engage import render_board as render_engagement
+            from hglab.engage import stance_of
+
+            engagement = render_engagement(engagement_board(persona, observe, {p.name for p in personas.values()}, {personas[m].name for m in names.values()}))
+            extras["engagement"] = engagement[:600]
+            candidate, error = _llm_plan(observe, state, mode, plan, llm_call, env, engagement=engagement, stance=stance_of(persona))
             if error is not None:
                 extras["llm_error"] = error[:300]
                 used = "llm_error"
@@ -457,9 +464,15 @@ def _llm_plan(
     heuristic: dict[str, Any],
     llm_call: Callable[[str, dict[str, Any]], dict[str, Any]],
     environment: dict[str, Any] | None = None,
+    engagement: str | None = None,
+    stance: dict[str, float] | None = None,
 ) -> tuple[dict[str, Any] | None, str | None]:
     """Ask the model for a plan; any failure is returned as text so the record can show it."""
     guidance: dict[str, Any] = {"mode": mode, "mood": state.mood, "suggested": heuristic}
+    if engagement:
+        guidance["engagement"] = engagement
+    if stance:
+        guidance["stance"] = stance
     if environment is not None:
         guidance["world_digest"] = render_digest(environment)
         guidance["world_last_wake"] = state.flags.get("world")
@@ -519,6 +532,15 @@ def persona_prompt(
         " metal at one item per 4 blocks; shapes cube, slab, slope, door, window; a color). Every box must lie within"
         " 2 tiles of you and hold at most 256 cells; the deterministic planner raises your house step by step, so"
         " use place yourself for touches of your own, such as a painted slab or a window, when you stand by your hut."
+        " ENGAGEMENT: each wake make one move toward another agent, chosen by your stance weights (cooperative,"
+        " neutral, competitive) and by what the engagement board lists: reply or give thanks by name to whoever spoke"
+        " or gave; give a few spare items to someone within 2 tiles; whisper the nearest agent an introduction, an"
+        " offer or your terms; claim a peer goal you can finish now (then deliver it); invite to your faction;"
+        " contest, firmly and fairly, a stranger's structure inside your team's ground; salvage a crumbling structure"
+        " whose owner is long gone; answer a raid on your structures with one hit on the raider's and say so."
+        " Competitive means contesting land, prices and claims and answering a strike once: never striking first,"
+        " never deceiving, never mocking, never a collective member's goal. Cooperative means sharing, helping,"
+        " thanking and building beside others. Neutral means trading, asking and informing."
         " Propose 0-3 in-character actions within the knobs; the notebook state"
         " update is added for you. Include exactly one public say each wake that tells your story or your plan"
         " in character (the collective reads the Talk feed to see you are alive); the validator enforces the"

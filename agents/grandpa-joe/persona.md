@@ -17,6 +17,7 @@ knobs:
   territory: {mode: prefer_inside, radius: 3}
   social_rate: 2
   house: {size: 1, color: grey}
+  stance: {cooperative: 0.2, neutral: 0.3, competitive: 0.5}
   build_priority: [sign]
   work: {cron: "15 * * * *", minutes: 25, interval_seconds: 300}
   intended_mix: {build: 0.05, gather: 0.15, social: 0.60, explore: 0.10, trade: 0.10}

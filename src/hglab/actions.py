@@ -296,12 +296,19 @@ def redact_result(result: dict[str, Any]) -> dict[str, Any]:
     return safe
 
 
+IDENTITY_KEYS = {"from", "to", "name", "actor", "sender", "recipient", "poster", "owner"}
+
+
 def private_strings(value: Any) -> set[str]:
-    """Collect string leaves from content that must not be copied to public output."""
+    """Collect string leaves from content that must not be copied to public output.
+
+    Who wrote a whisper is a public identity, not its content: values under identity keys are
+    left out, so an agent may answer a whisperer by name in the open.
+    """
     if isinstance(value, str):
         return {value} if value else set()
     if isinstance(value, dict):
-        return set().union(*(private_strings(child) for child in value.values()))
+        return set().union(*(private_strings(child) for key, child in value.items() if key not in IDENTITY_KEYS))
     if isinstance(value, list):
         return set().union(*(private_strings(child) for child in value))
     return set()
