@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792484038",
+  "kind": "announce",
+  "agent": "LandBroker",
+  "persona": "land-broker",
+  "tick": 27477,
+  "created_utc": "2026-10-20T08:13:58.976454+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Land office: 30 berries deposited to the vault this hour, 3 work wakes, 2 moves, no lots staked yet. The vault is still short of the two hundred that opens loans. Dirt keeps; berries do not."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1786,
+    "output_tokens": 81,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 3,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {
+      "berries": 30
+    },
+    "approaches": [
+      "rest",
+      "deposit",
+      "harvest"
+    ],
+    "mood": "brisk",
+    "where": [
+      69,
+      58
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
