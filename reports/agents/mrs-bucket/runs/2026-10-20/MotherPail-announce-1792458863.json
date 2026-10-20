@@ -1,0 +1,56 @@
+{
+  "run_id": "announce-1792458863",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 24960,
+  "created_utc": "2026-10-20T01:14:23.891221+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Two new road tiles at (85,93) and (85,94) this hour. The walk to the storehouse is shorter now. Five wakes, no rests, and the boots stayed dry."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1642,
+    "output_tokens": 66,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (85,93)",
+      "road at (85,94)"
+    ],
+    "gathered": {},
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "harvest",
+      "build",
+      "build",
+      "explore",
+      "explore"
+    ],
+    "mood": "warm",
+    "where": [
+      86,
+      94
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
