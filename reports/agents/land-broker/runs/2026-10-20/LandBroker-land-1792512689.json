@@ -1,0 +1,211 @@
+{
+  "agent": "LandBroker",
+  "persona": "land-broker",
+  "kind": "land_round",
+  "recorded_utc": "2026-10-20T16:11:29.093992+00:00",
+  "dry_run": false,
+  "scheduled": true,
+  "tick": 30342,
+  "board": {
+    "total": 169,
+    "occupied": 59,
+    "free": 110,
+    "vault": {
+      "x": 73,
+      "y": 72
+    },
+    "registration_goal": {
+      "id": 20,
+      "status": "open"
+    },
+    "sale_goal": {
+      "id": 23,
+      "status": "open",
+      "qty": 7
+    },
+    "offers": [
+      {
+        "id": "wood-for-berries",
+        "title": "Offer: 2 berries for 10 wood into the land office vault",
+        "status": "open",
+        "goal_id": null,
+        "goal_status": null
+      },
+      {
+        "id": "stone-for-berries",
+        "title": "Offer: 3 berries for 10 stone into the land office vault",
+        "status": "open",
+        "goal_id": null,
+        "goal_status": null
+      }
+    ],
+    "registered": [
+      {
+        "plot": "G07",
+        "holder": "Fairscale",
+        "tick": 13455
+      }
+    ],
+    "lots": {
+      "total": 676,
+      "free": 512,
+      "free_share": 0.757,
+      "staked": 98,
+      "for_sale": 98,
+      "unsold": [
+        "B04-SE",
+        "B05-NE",
+        "B05-SE",
+        "B05-SW",
+        "B06-NE",
+        "B06-NW",
+        "B06-SE",
+        "B06-SW",
+        "C03-SE",
+        "C04-NE",
+        "C04-NW",
+        "C04-SE",
+        "C04-SW",
+        "C05-NE",
+        "C05-NW",
+        "C05-SE",
+        "C05-SW",
+        "C06-NW",
+        "D02-SE",
+        "D03-NE",
+        "D03-NW",
+        "D03-SE",
+        "D03-SW",
+        "D04-NE",
+        "D04-NW",
+        "D04-SE",
+        "D04-SW",
+        "D05-NE",
+        "D05-NW",
+        "D05-SE",
+        "D05-SW",
+        "D06-NE",
+        "D06-NW",
+        "D06-SE",
+        "D07-SE",
+        "E02-NE",
+        "E02-SE",
+        "E02-SW",
+        "E03-NE",
+        "E03-NW",
+        "E03-SE",
+        "E03-SW",
+        "E04-NE",
+        "E04-NW",
+        "E04-SE",
+        "E05-NW",
+        "E05-SW",
+        "E06-NW",
+        "E06-SW",
+        "E07-SE",
+        "E07-SW",
+        "E08-NE",
+        "E08-NW",
+        "F01-NE",
+        "F01-SE",
+        "F02-NE",
+        "F02-NW",
+        "F02-SE",
+        "F02-SW",
+        "F03-NE",
+        "F03-NW",
+        "F03-SE",
+        "F03-SW",
+        "F04-NE",
+        "F04-NW",
+        "F04-SE",
+        "F04-SW",
+        "G01-NE",
+        "G01-SE",
+        "G02-NE",
+        "G02-SE",
+        "G03-NE",
+        "G03-SE",
+        "H01-SE",
+        "H01-SW",
+        "H02-NE",
+        "H02-NW",
+        "H02-SE",
+        "H02-SW",
+        "H03-NE",
+        "H03-NW",
+        "H03-SE",
+        "H03-SW",
+        "H04-NE",
+        "H04-NW",
+        "H04-SE",
+        "H05-NE",
+        "I01-SE",
+        "I01-SW",
+        "I02-NE",
+        "I02-NW",
+        "I02-SW",
+        "I03-NW",
+        "I03-SW",
+        "I04-NE",
+        "I04-NW",
+        "I04-SE",
+        "I04-SW"
+      ],
+      "sold": 0,
+      "price": 7,
+      "currency": "wood"
+    },
+    "busiest": [
+      {
+        "plot": "G05",
+        "structures": 45,
+        "holder": "Lagalong"
+      },
+      {
+        "plot": "I09",
+        "structures": 45,
+        "holder": "MotherPail"
+      },
+      {
+        "plot": "H06",
+        "structures": 36,
+        "holder": "LandBroker"
+      },
+      {
+        "plot": "H07",
+        "structures": 31,
+        "holder": "Cairn"
+      },
+      {
+        "plot": "G07",
+        "structures": 30,
+        "holder": "Fairscale"
+      }
+    ]
+  },
+  "actions": [
+    {
+      "action": "say",
+      "text": "Land office: 98 lots staked, 98 for sale at 7 wood each; 512 of 676 lots still free, so the price climbs as the map fills. Buy: claim goal #23 and give the wood into my vault. Register your own plot for 5 wood: goal #20."
+    },
+    {
+      "action": "remember",
+      "text": "{\"last_call_tick\":30342,\"registered\":[\"G07:Fairscale:13455\"]}",
+      "key": "land"
+    }
+  ],
+  "reasons": [
+    "the office line: lots staked and for sale, today's price, the fee"
+  ],
+  "dropped": [],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "said": true
+}
