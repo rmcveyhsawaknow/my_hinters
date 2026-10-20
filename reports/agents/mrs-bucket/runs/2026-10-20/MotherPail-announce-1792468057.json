@@ -1,0 +1,52 @@
+{
+  "run_id": "announce-1792468057",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 25879,
+  "created_utc": "2026-10-20T03:47:37.880051+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, no rests, four steps at [92, 96]. Homing, then migrate, then homing again. Nothing built or gathered yet, but the road is walked and I'm not hungry."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1623,
+    "output_tokens": 70,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "homing",
+      "migrate",
+      "homing",
+      "migrate"
+    ],
+    "mood": "warm",
+    "where": [
+      92,
+      96
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
