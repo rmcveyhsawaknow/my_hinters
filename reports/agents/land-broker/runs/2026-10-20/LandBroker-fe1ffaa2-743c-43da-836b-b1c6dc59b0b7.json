@@ -1,0 +1,134 @@
+{
+  "run_id": "fe1ffaa2-743c-43da-836b-b1c6dc59b0b7",
+  "agent": "LandBroker",
+  "role": "surveyor+broker+navigator+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-20T20:09:32.880392+00:00",
+  "tick": 31771,
+  "summary": "LandBroker (brisk): work shift: staking open lots for the land office",
+  "actions": [
+    {
+      "action": "move",
+      "x": 41,
+      "y": 73
+    },
+    {
+      "action": "build",
+      "text": "Lot E07-NW: staked by LandBroker for the land office. For sale; buy through my posted goal or ask by whisper.",
+      "x": 42,
+      "y": 72,
+      "type": "sign"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brisk\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":351,\"rests\":17,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":31771,\"visited\":[\"39,73\",\"48,77\",\"57,76\",\"54,81\",\"48,78\",\"54,75\",\"63,80\",\"61,73\",\"69,75\",\"62,67\",\"66,70\",\"75,74\",\"73,73\",\"66,80\",\"60,74\",\"59,65\",\"62,65\",\"59,69\",\"57,72\",\"48,81\",\"46,78\",\"43,81\",\"41,78\",\"38,76\",\"31,74\",\"34,69\",\"37,76\",\"43,67\",\"49,72\",\"45,80\",\"38,87\",\"44,91\",\"53,84\",\"60,88\",\"69,85\",\"61,77\",\"57,69\",\"59,76\",\"56,69\",\"49,67\",\"41,72\",\"37,68\",\"33,70\",\"25,63\",\"21,56\",\"25,50\",\"30,52\",\"35,44\",\"26,52\",\"26,44\",\"32,39\",\"40,45\",\"41,51\",\"33,56\",\"37,64\",\"49,65\",\"61,53\",\"65,54\",\"73,58\",\"72,59\",\"69,58\",\"67,56\",\"56,43\",\"53,46\",\"51,43\",\"48,41\",\"51,38\",\"71,41\",\"76,43\",\"71,38\",\"68,36\",\"71,33\",\"68,31\",\"66,28\",\"66,23\",\"71,26\",\"62,50\",\"56,38\",\"64,43\",\"56,33\",\"53,31\",\"56,28\",\"53,26\",\"56,23\",\"48,31\",\"46,28\",\"38,36\",\"33,41\",\"36,34\",\"38,28\",\"46,36\",\"46,46\",\"55,56\",\"43,56\",\"38,61\",\"41,61\",\"41,66\",\"38,66\",\"33,61\",\"28,61\",\"26,66\",\"23,66\",\"26,71\",\"23,71\",\"26,76\",\"31,71\",\"31,68\",\"31,76\",\"26,81\",\"31,86\",\"31,81\",\"26,86\",\"26,91\",\"31,96\",\"36,96\",\"36,93\",\"41,91\",\"41,88\",\"38,86\",\"36,83\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":31768,\"pace\":\"steady\",\"day\":{\"all\":1578,\"building\":294,\"trade_goals\":64,\"talk\":311,\"factions\":0,\"movement\":909},\"hour\":{\"all\":56},\"peers\":1},\"engaged\":{\"whispered\":{\"Strayling\":25579,\"Lagalong\":25609,\"Fairscale\":25639,\"Clarion\":27069,\"Stoutheart\":30613,\"Tinkerglow\":30643},\"replied\":{\"Lagalong\":28866,\"Strayling\":28896},\"gifted\":{\"Strayling\":27788}},\"house\":{\"hut\":[71,65],\"done\":0,\"tick\":27386}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 31771,
+    "you": {
+      "id": 16,
+      "name": "LandBroker",
+      "x": 36,
+      "y": 83,
+      "energy": 100,
+      "inventory": {
+        "wood": 6,
+        "fiber": 5,
+        "berries": 23
+      },
+      "home": {
+        "x": 71,
+        "y": 65
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "land-broker",
+  "team": "exchange",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "broker",
+    "navigator",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 56,
+      "building": 12,
+      "trade_goals": 3,
+      "talk": 7,
+      "factions": 0,
+      "movement": 34
+    },
+    "day": {
+      "all": 1578,
+      "building": 294,
+      "trade_goals": 64,
+      "talk": 311,
+      "factions": 0,
+      "movement": 909
+    },
+    "peers_active": 1
+  },
+  "wake_mode": "act",
+  "mood": "brisk",
+  "approach": "stake",
+  "reasons": [
+    "walk to (41, 73) and stake lot E07-NW with a claim sign at (42, 72)"
+  ],
+  "energy_before": 100,
+  "berries_before": 23,
+  "energy_spent": 15,
+  "activity_energy": {
+    "explore": 10.0,
+    "build": 5.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brisk",
+    "glow": 50,
+    "wakes": 351,
+    "rests": 17,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
