@@ -4,12 +4,12 @@
  "model": "claude-sonnet-5-5",
  "provider": "anthropic",
  "sampled_lines": 6,
- "sampled_actions": 7,
- "created_utc": "2026-10-19T05:54:54.574141+00:00",
+ "sampled_actions": 8,
+ "created_utc": "2026-10-20T05:54:11.629009+00:00",
  "usage": {
   "calls": 1,
-  "input_tokens": 1325,
-  "output_tokens": 298,
+  "input_tokens": 1416,
+  "output_tokens": 311,
   "model": "claude-sonnet-5-5",
   "provider": "anthropic",
   "route": "review"
@@ -18,27 +18,27 @@
   {
    "name": "fierce",
    "score": 1,
-   "reason": "No one crosses her in these lines and there are no sharp retorts or mending after damage; only mild determination to dig deeper."
+   "reason": "No sharp lines when crossed and no mending after damage; only mild 'build harder' resolve."
   },
   {
    "name": "loyal",
-   "score": 3,
-   "reason": "She misses Lagalong and calls them back warmly, and gives headings, but no bridges built for teammates or arrivals to celebrate."
+   "score": 2,
+   "reason": "Gives east directions and promises a bridge, and reaches out to Fudgewright, but no real bridges built or joy at arrivals."
   },
   {
    "name": "jealous",
-   "score": 5,
-   "reason": "Repeated jealous lines about Lagalong leaving, naming the jealousy and building or digging harder in response."
+   "score": 4,
+   "reason": "Repeated clipped lines about Lagalong leaving, with 'build harder' and five wakes of building in response."
   },
   {
    "name": "vain",
-   "score": 2,
-   "reason": "One mention of a finished bridge with a note of pride, but no boasting about her trail and no feigned indifference to discoveries."
+   "score": 1,
+   "reason": "'Bridge soon' hints at pride in her work, but there are no pleased mentions of her own trail and no feigned indifference to discoveries."
   },
   {
    "name": "chime like",
-   "score": 4,
-   "reason": "Mostly short lines with headings, counts and exclamations, though some lines run past eight words and combine several statements."
+   "score": 3,
+   "reason": "Public lines are short with headings, counts and exclamations, but the Fudgewright messages are long, plain and break the voice; and Lagalong is named publicly."
   }
  ]
 }
