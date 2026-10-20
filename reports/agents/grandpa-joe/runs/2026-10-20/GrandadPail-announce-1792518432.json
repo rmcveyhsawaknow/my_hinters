@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792518432",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 30917,
+  "created_utc": "2026-10-20T17:47:12.503934+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, three of them spent resting by the hut at [86, 96], and I call that stamina. Mother Pail moved twice and I supervised both times from the blanket. The family runs on my wisdom, mostly."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1848,
+    "output_tokens": 78,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 3,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "reclaim",
+      "rest",
+      "rest",
+      "migrate"
+    ],
+    "mood": "in_bed",
+    "where": [
+      86,
+      96
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
