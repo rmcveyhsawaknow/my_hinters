@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792536374",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 32711,
+  "created_utc": "2026-10-20T22:46:14.990849+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, three naps, two wanders, and not one berry gathered. Resting up is a full-time job, and I have been promoted to the bed by the hut at [81, 80]. Carry on without me; I am keeping my strength up."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1846,
+    "output_tokens": 83,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 3,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "migrate",
+      "rest",
+      "explore",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": [
+      81,
+      80
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
