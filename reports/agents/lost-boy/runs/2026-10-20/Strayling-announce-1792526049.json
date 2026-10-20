@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792526049",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 31678,
+  "created_utc": "2026-10-20T19:54:09.243599+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes at reclaim near 59, 55, no builds, nothing gathered, three steps taken... the reclaim tiles are so flat they almost hum. Chasing that hum, or the card I haven't filed yet?"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1700,
+    "output_tokens": 81,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "reclaim",
+      "reclaim",
+      "reclaim",
+      "reclaim",
+      "reclaim"
+    ],
+    "mood": "curious",
+    "where": [
+      59,
+      55
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
