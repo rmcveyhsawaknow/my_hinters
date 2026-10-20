@@ -1,0 +1,54 @@
+{
+  "run_id": "announce-1792493220",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 28395,
+  "created_utc": "2026-10-20T10:47:00.265919+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "My contribution today, which was considerable: gathered 5 wood; stored 20 wood; walked 2 legs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 2,
+    "deposited": {
+      "wood": 20
+    },
+    "approaches": [
+      "gather_trip",
+      "rest",
+      "deposit_trip",
+      "rest",
+      "deposit"
+    ],
+    "mood": "in_bed",
+    "where": [
+      77,
+      90
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
