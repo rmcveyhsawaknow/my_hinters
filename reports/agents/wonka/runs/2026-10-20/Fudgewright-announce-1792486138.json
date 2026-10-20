@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792486138",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 27687,
+  "created_utc": "2026-10-20T08:48:58.759753+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, five wanderings, zero walls! I moved, moved, moved, and only one deposit trip to show for it. Fudgewright is shockingly fast at everything except building. Stay tuned, snozzberries wait for no one."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1818,
+    "output_tokens": 85,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "deposit_trip",
+      "migrate",
+      "deposit_trip",
+      "migrate"
+    ],
+    "mood": "manic",
+    "where": [
+      79,
+      93
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
