@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792493838",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 28457,
+  "created_utc": "2026-10-20T10:57:18.116647+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Moved five times near 73, 58 and somehow never built a thing; four deposit trips and a lighten, which, wait, is that a road or just my feet remembering? Filing it. Chasing the next tile."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1707,
+    "output_tokens": 74,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "lighten",
+      "deposit_trip",
+      "deposit_trip",
+      "deposit_trip",
+      "deposit_trip"
+    ],
+    "mood": "curious",
+    "where": [
+      73,
+      58
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
