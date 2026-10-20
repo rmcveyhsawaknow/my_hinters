@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792519260",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 30999,
+  "created_utc": "2026-10-20T18:01:00.038530+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, no rest, and I have moved two tiles out to about (74, 70), I think. Still nothing built. The big thing is probably just past where I stand, if that is all right."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1688,
+    "output_tokens": 66,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "reclaim",
+      "reclaim",
+      "reclaim",
+      "reclaim",
+      "reclaim"
+    ],
+    "mood": "wistful",
+    "where": [
+      74,
+      70
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
