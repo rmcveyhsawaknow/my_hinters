@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792518095",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 30883,
+  "created_utc": "2026-10-20T17:41:35.295180+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, zero factories, one very enthusiastic walk! Moved to [85, 84] and reclaimed the sand twice, so the sand is officially my fudge now. Gold is heavy. Bring a friend."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1816,
+    "output_tokens": 80,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "reclaim",
+      "reclaim",
+      "migrate",
+      "reclaim",
+      "reclaim"
+    ],
+    "mood": "manic",
+    "where": [
+      85,
+      84
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
