@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792514650",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 30538,
+  "created_utc": "2026-10-20T16:44:10.192159+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, zero fudge, one very determined walk! Snozzberries, gold, wafer, spun sugar: all still out there, waiting. Position eighty-six, eighty-four. The factory is a promise, and I am keeping it, mostly by walking."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1817,
+    "output_tokens": 93,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "reclaim",
+      "reclaim",
+      "reclaim",
+      "reclaim",
+      "reclaim"
+    ],
+    "mood": "manic",
+    "where": [
+      86,
+      84
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
