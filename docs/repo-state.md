@@ -291,3 +291,16 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
   twenty-six, harvests and gathering trips resuming, Clarion building roads, gifts and words by
   name between the teams, Tinkerglow's window standing. The harvest is capped so a pack never
   refills with berries past thirty, and gifts are judged from where the agent will stand.
+
+## 2026-10-20, 07:40 UTC: the competitive footing, reclaiming and the Neverland border
+
+- The owner set the collective on a competitive footing: the holdings of residents unseen for two
+  days or more are reclaimed (demolished for the quarter the world drops as a cache, 5 energy and
+  10 damage a hit, announced once in the open and stopped if the owner returns and speaks); nobody
+  seen within two days is struck first and collective members never are. Every persona carries a
+  `reclaim` knob; the builder and experimenter hats may demolish; stances lean competitive.
+- Neverland's territory is confirmed (a circle at (74, 112), radius 10, the sea to the south) and its
+  border is eight riddle signs on the north ring and the two flanks, raised nearest-first by any
+  member carrying wood, with one opening on the east ring at (84, 105). Tinkerglow is the
+  gatekeeper: she whispers the opening to any visitor she finds within fourteen tiles of the
+  centre, once a day per name. Stoutheart and Tinkerglow put the team's storehouse first.

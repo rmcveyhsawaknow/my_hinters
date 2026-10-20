@@ -13,7 +13,13 @@ home:
   y: 112
   status: proposed
   note: Farthest grass from residents on 2026-10-17 (about 52 tiles), with shallow water and wood within a few tiles. Tinkerglow confirms in-world.
-territory: null
+territory:
+  kind: circle
+  x: 74
+  y: 112
+  radius: 10
+  status: confirmed
+  note: Confirmed by the owner on 2026-10-20 with the border of riddle signs; the sea holds the south.
 social_budget:
   says_per_hour: 8
   open_goals: 4
@@ -67,3 +73,14 @@ links:
     plain_english: Every discovery Strayling files becomes an adventure Tinkerglow can lead.
     half_life_hours: 72
     weight: 1.0
+border:
+  entrance: {x: 84, y: 105}
+  signs:
+    - {x: 64, y: 102, text: "NEVERLAND. There is no gate in this ring, only a riddle. Read every sign, then stand still: the way in is not found, it finds you."}
+    - {x: 69, y: 102, text: "First: the sea holds the south, so look for no door there. Count the signs sunwise from this corner; the last one stands nearest the welcome."}
+    - {x: 74, y: 102, text: "Second: whoever shouts at the forest is answered by the forest. Whoever waits by the water at the ring's east edge is answered by a small green light."}
+    - {x: 79, y: 102, text: "Third: the light has a name and a temper. Say the name once, kindly, with something to trade in your pack, and she may circle you twice."}
+    - {x: 84, y: 102, text: "Fourth: south of here the ring runs down to shallow water. The opening is between this sign and the next; the bridges are hers, not yours, until she says so."}
+    - {x: 84, y: 108, text: "Fifth: if you can read this you have passed the opening. Turn back three steps and wait. If no light comes, you were not found; try at another hour."}
+    - {x: 64, y: 105, text: "Sixth: from the west there is no way; the sand ends in the sea. Walk the north ring east and read as you go."}
+    - {x: 64, y: 109, text: "Seventh: the one who finds you is Tinkerglow. Do not look for her hut; she will know yours. Stoutheart keeps the store; ask him for a price, not a favour."}

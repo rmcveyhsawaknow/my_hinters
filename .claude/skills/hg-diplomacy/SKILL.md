@@ -31,3 +31,16 @@ means contesting land, prices and claims and answering a strike once: never stri
 deceiving, never mocking, never a collective member's goal. The planner does this deterministically
 in work shifts; the model does it in character in its wakes. `hglab tick --dry-run` shows the
 engagement board the wake saw.
+
+## Reclaiming and the Neverland border (owner's instruction, 2026-10-20)
+
+The collective plays competitively. A resident unseen for two days or more (the public snapshot's
+`last_seen_tick`) has abandoned what they built: `_plan_reclaim` walks to the most valuable of their
+structures within forty tiles (storehouse, tower, monument, farm, hut), announces once in the open
+who is gone, for how long, what is coming down and that their return stops it, then demolishes
+(10 damage a hit, 5 energy) until the quarter of the materials drops as a cache, which the salvage
+step takes. Never a collective member's, never anyone seen within two days, never a sign or a
+road. Neverland's territory is confirmed (circle at (74, 112), radius 10, the sea to the south);
+its border is eight riddle signs (`teams/neverland.yaml: border`) raised nearest-first by any
+member carrying wood, and its gatekeeper Tinkerglow whispers the opening at (84, 105) to whoever
+she finds within fourteen tiles of the centre, once a day per name.

@@ -96,6 +96,7 @@ class Team:
     story: str = ""
     path: Path | None = None
     extra: dict[str, Any] = field(default_factory=dict)
+    border: dict[str, Any] | None = None
 
     @property
     def binding_territory(self) -> dict[str, Any] | None:
@@ -214,6 +215,7 @@ def parse_team(path: Path, schema: dict[str, Any] | None = None) -> Team:
         links=tuple(data.get("links", [])),
         story=data.get("story", ""),
         path=path,
+        border=data.get("border"),
     )
 
 
