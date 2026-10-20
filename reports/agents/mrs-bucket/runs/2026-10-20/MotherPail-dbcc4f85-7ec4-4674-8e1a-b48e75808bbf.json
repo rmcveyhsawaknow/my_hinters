@@ -1,0 +1,122 @@
+{
+  "run_id": "dbcc4f85-7ec4-4674-8e1a-b48e75808bbf",
+  "agent": "MotherPail",
+  "role": "builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-20T13:26:50.607920+00:00",
+  "tick": 29354,
+  "summary": "MotherPail (warm): work shift: walking to the team site",
+  "actions": [
+    {
+      "action": "move",
+      "x": 79,
+      "y": 93
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"warm\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":262,\"rests\":12,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":29354,\"visited\":[\"99,89\",\"96,94\",\"96,89\",\"92,90\",\"89,97\",\"85,93\",\"81,93\",\"85,91\",\"94,97\",\"85,104\",\"82,99\",\"82,108\",\"80,103\",\"82,95\",\"80,102\",\"84,106\",\"84,102\",\"85,97\",\"79,94\",\"88,95\",\"81,92\",\"90,96\",\"94,99\",\"98,99\",\"92,92\",\"92,98\",\"91,92\",\"98,90\",\"98,98\",\"97,93\",\"91,94\",\"88,100\",\"82,92\",\"81,96\",\"87,103\",\"87,97\",\"81,94\",\"79,90\",\"86,95\",\"95,99\",\"92,95\",\"87,102\",\"85,94\",\"90,93\",\"89,100\",\"82,106\",\"89,106\",\"80,105\",\"86,99\",\"93,91\",\"99,97\",\"96,93\",\"99,98\",\"98,93\",\"90,98\",\"87,104\",\"91,95\",\"86,91\",\"80,95\",\"89,98\",\"80,97\",\"85,105\",\"80,100\",\"86,93\",\"95,89\",\"95,93\",\"90,94\",\"97,98\",\"91,96\",\"92,91\",\"83,100\",\"79,99\",\"81,95\",\"84,90\",\"92,94\",\"96,96\",\"87,92\",\"82,89\",\"87,93\",\"83,101\",\"86,105\",\"88,97\",\"90,90\",\"99,95\",\"90,99\",\"97,95\",\"89,92\",\"98,94\",\"96,98\",\"94,93\",\"99,90\",\"91,90\",\"99,99\",\"90,92\",\"94,96\",\"85,89\",\"80,93\",\"86,89\",\"94,91\",\"90,87\",\"89,99\",\"84,94\",\"82,101\",\"86,94\",\"95,91\",\"87,95\",\"93,94\",\"98,92\",\"88,84\",\"92,96\",\"85,84\",\"86,92\",\"92,89\",\"85,92\",\"75,90\",\"87,98\",\"83,94\",\"83,95\",\"89,91\",\"68,84\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":29350,\"pace\":\"steady\",\"day\":{\"all\":1532,\"building\":170,\"trade_goals\":84,\"talk\":287,\"factions\":0,\"movement\":991},\"hour\":{\"all\":85},\"peers\":1},\"engaged\":{\"whispered\":{\"Clarion\":25606,\"Fairscale\":25788,\"Tinkerglow\":26234,\"Stoutheart\":26896},\"replied\":{\"Clarion\":26956,\"Tinkerglow\":29100,\"Stoutheart\":29039},\"gifted\":{\"Stoutheart\":28248}}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 29354,
+    "you": {
+      "id": 4,
+      "name": "MotherPail",
+      "x": 68,
+      "y": 84,
+      "energy": 100,
+      "inventory": {
+        "wood": 12,
+        "fiber": 6,
+        "stone": 5,
+        "berries": 15
+      },
+      "home": {
+        "x": 62,
+        "y": 56
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "mrs-bucket",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 85,
+      "building": 18,
+      "trade_goals": 5,
+      "talk": 18,
+      "factions": 0,
+      "movement": 44
+    },
+    "day": {
+      "all": 1532,
+      "building": 170,
+      "trade_goals": 84,
+      "talk": 287,
+      "factions": 0,
+      "movement": 991
+    },
+    "peers_active": 1
+  },
+  "wake_mode": "act",
+  "mood": "warm",
+  "approach": "migrate",
+  "reasons": [
+    "21 tiles from The Chocolate Factory: walk toward it"
+  ],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 11,
+  "activity_energy": {
+    "explore": 11.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "warm",
+    "glow": 50,
+    "wakes": 262,
+    "rests": 12,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}

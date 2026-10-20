@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792504026",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 29476,
+  "created_utc": "2026-10-20T13:47:06.520667+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, one road laid at (81,91), and I walked the whole way with my hands free. Next hour I'll carry what the storehouse needs and see who is short."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1638,
+    "output_tokens": 61,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (81,91)"
+    ],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "harvest",
+      "build",
+      "migrate",
+      "reclaim"
+    ],
+    "mood": "warm",
+    "where": [
+      85,
+      84
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
