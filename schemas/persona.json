@@ -66,6 +66,17 @@
       },
       "additionalProperties": false
     },
+    "patrol": {
+      "type": "object",
+      "description": "Walk a fixed route without end: the outermost edge of the world (the coast of the main landmass), one or two hops a wake.",
+      "required": ["route"],
+      "properties": {
+        "route": {"enum": ["perimeter"]},
+        "direction": {"enum": ["clockwise", "counterclockwise"]},
+        "hops": {"type": "integer", "minimum": 1, "maximum": 2}
+      },
+      "additionalProperties": false
+    },
     "gatekeeper": {
       "type": "object",
       "description": "Whisper the team's border opening to visitors found within the radius of the team centre.",

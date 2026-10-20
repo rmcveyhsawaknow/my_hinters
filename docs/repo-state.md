@@ -338,3 +338,15 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
   strangers only. Stoutheart sat at a full pack unable to carry the stone for Neverland's store,
   since the world refuses a meal at full energy and every wake starts full: a full pack now eats one
   berry at the end of a batch that moved, when the walk has spent the energy the meal restores.
+- Fifth competitive hour (16:30 to 17:15 UTC): Strayling tore down Cairn's storehouse at (73, 70),
+  Clarion tore down Bishop's tower at (75, 62) after Lagalong's hits, and the one-berry meal after
+  a walk landed eight times. MotherPail and Fudgewright bounced between two tiles below a mountain
+  ridge on their way to Cairn's farm, because a step toward a target only looked twelve tiles
+  ahead; trips now follow the cheapest full-map route (hills 2, roads 0.5, the straightest among
+  equal routes) and stand still rather than step sideways.
+- By the owner's instruction Lagalong now walks the outermost perimeter of the world, behind the
+  glass, without end: `hglab.patrol` traces the coast of the island (the largest walkable region,
+  bridges included, lakes excluded) as a closed clockwise loop of 347 tiles, and the `patrol`
+  knob walks him two hops a wake along it, laps counted from tiles walked. He still takes down a
+  departed resident's structure he stands beside and gathers from a node beside him; nothing else
+  walks him inland, and a model plan that leaves the coast falls back to the patrol.

@@ -272,6 +272,12 @@ def persona_wake(
             collective_names={p.name for p in personas.values()}, public_agents=public_agents, public_resources=public_resources,
         )
         used = "heuristic"
+        patrol_loop: tuple[tuple[int, int], ...] = ()
+        if persona.knobs.get("patrol") and terrain_rows:
+            from hglab.patrol import oriented, perimeter_loop
+
+            bridges = frozenset((int(s["x"]), int(s["y"])) for s in (public_structures or []) if isinstance(s, dict) and s.get("type") == "bridge")
+            patrol_loop = oriented(perimeter_loop(tuple(terrain_rows), bridges), str(persona.knobs["patrol"].get("direction", "clockwise")))
         if planner_mode == "llm" and llm_call is not None and mode != "rest" and not work:
             from hglab.engage import board as engagement_board
             from hglab.engage import render_board as render_engagement
@@ -279,7 +285,20 @@ def persona_wake(
 
             engagement = render_engagement(engagement_board(persona, observe, {p.name for p in personas.values()}, {personas[m].name for m in names.values()}))
             extras["engagement"] = engagement[:600]
-            candidate, error = _llm_plan(observe, state, mode, plan, llm_call, env, engagement=engagement, stance=stance_of(persona))
+            patrol_text = None
+            if patrol_loop:
+                from hglab.patrol import ahead
+
+                here_now = (int(you.get("x", 0) or 0), int(you.get("y", 0) or 0))
+                hint = state.flags["patrol"].get("i") if isinstance(state.flags.get("patrol"), dict) else None
+                marks = ahead(patrol_loop, here_now, hint)
+                patrol_text = (
+                    f"You walk the outermost edge of the world, behind the glass, {persona.knobs['patrol'].get('direction', 'clockwise')},"
+                    f" without end: the coast ahead of you runs through {marks[0]} and then {marks[1]}. Every move keeps within"
+                    f" {3} tiles of the coast (or heads back to it); stop only to gather beside you, take down what a long-departed"
+                    " resident left on the edge, or say a word to whoever you meet, then walk on."
+                )
+            candidate, error = _llm_plan(observe, state, mode, plan, llm_call, env, engagement=engagement, stance=stance_of(persona), patrol=patrol_text)
             if error is not None:
                 extras["llm_error"] = error[:300]
                 used = "llm_error"
@@ -289,6 +308,8 @@ def persona_wake(
                 candidate["actions"] = _place_builds(candidate["actions"], observe, terrain_rows, extras)
                 try:
                     _check(candidate.get("actions", []), observe, mates)
+                    if patrol_loop:
+                        _keep_to_edge(persona.name, candidate.get("actions", []), observe, patrol_loop)
                     plan = {**plan, **candidate, "reasons": candidate.get("reasons") or plan["reasons"]}
                     used = "llm"
                     extras["journal_note"] = str(candidate.get("journal_note", ""))[:300]
@@ -452,6 +473,22 @@ def _far(action: dict[str, Any], position: tuple[Any, Any]) -> bool:
         return False
 
 
+def _keep_to_edge(name: str, actions: list[dict[str, Any]], observe: dict[str, Any], loop: tuple[tuple[int, int], ...]) -> None:
+    """A patrolling persona's moves stay within three tiles of the coast, or close the distance to it."""
+    from hglab.patrol import distance_to
+
+    you = observe.get("you") or {}
+    walker = (int(you.get("x", 0) or 0), int(you.get("y", 0) or 0))
+    for action in actions:
+        if action.get("action") != "move" or action.get("x") is None:
+            continue
+        target = (int(action["x"]), int(action["y"]))
+        off = distance_to(loop, target)
+        if off > 3 and off >= distance_to(loop, walker):
+            raise ValueError(f"{name} keeps to the outermost edge: a move to {target} leaves the coast by {off} tiles")
+        walker = target
+
+
 def _llm_plan(
     observe: dict[str, Any],
     state: PersonaState,
@@ -461,9 +498,12 @@ def _llm_plan(
     environment: dict[str, Any] | None = None,
     engagement: str | None = None,
     stance: dict[str, float] | None = None,
+    patrol: str | None = None,
 ) -> tuple[dict[str, Any] | None, str | None]:
     """Ask the model for a plan; any failure is returned as text so the record can show it."""
     guidance: dict[str, Any] = {"mode": mode, "mood": state.mood, "suggested": heuristic}
+    if patrol:
+        guidance["patrol"] = patrol
     if engagement:
         guidance["engagement"] = engagement
     if stance:

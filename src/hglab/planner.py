@@ -58,6 +58,7 @@ WORK_SUMMARIES = {
     "lighten": "eating into the berry hoard to make room",
     "deposit_trip": "carrying a full pack to the storehouse",
     "border": "raising the border signs",
+    "patrol": "walking the outermost edge of the world, behind the glass",
     "reclaim": "reclaiming what the departed left standing",
     "forage": "walking toward a node the map knows",
     "reclaim_trip": "walking to what the departed left standing",
@@ -310,11 +311,17 @@ def plan_wake(
     budget = cap if mood != "sulk" else 1
     spendable = energy + 15 * sum(min(int(a.get("qty") or 0), inventory.get("berries", 0)) for a in actions if a.get("action") == "eat") - reserve
     here = position
-    for activity in ["lighten", "engage", *_activity_order(persona, state, rng)]:
+    patrolling = bool(persona.knobs.get("patrol"))
+    activities = ["lighten", "engage", *_activity_order(persona, state, rng)]
+    if patrolling:
+        activities = ["lighten", "engage", "patrol", *[a for a in activities[2:] if a != "explore"]]
+    for activity in activities:
         if len(actions) >= budget:
             break
         if activity == "lighten":
             step = _plan_lighten(inventory, energy)
+        elif activity == "patrol":
+            step = _plan_patrol(persona, state, here, view, room=budget - len(actions), energy_room=spendable)
         elif activity == "engage":
             step = _plan_engage(persona, team, state, inventory, here, view, observe, teammates, names, rng, collective_names, allowed)
         elif activity == "build":
@@ -344,15 +351,19 @@ def plan_wake(
         if not step:
             continue
         new_actions, reason, tag = step
+        if patrolling and activity != "patrol" and any(a.get("action") == "move" for a in new_actions):
+            continue  # the patrol is the only road: nothing walks the persona off the edge
         if allowed is not None and any(a.get("action") not in allowed for a in new_actions):
             continue
         if len(actions) + len(new_actions) > budget:
             continue  # a step is all or nothing: a trip without its gather is wasted energy
-        if any(
-            a.get("action") == "move" and chebyshev(position, (int(a["x"]), int(a["y"]))) > MOVE_STEP_CAP
-            for a in new_actions
-        ):
-            continue  # every target is checked against where the wake started
+        walker, too_far = here, False
+        for a in new_actions:
+            if a.get("action") == "move" and a.get("x") is not None:
+                too_far = too_far or chebyshev(walker, (int(a["x"]), int(a["y"]))) > MOVE_STEP_CAP
+                walker = (int(a["x"]), int(a["y"]))
+        if too_far:
+            continue  # each hop is one move of the world's: twelve from where the previous one ended
         cost = _estimate(new_actions, here, storm=view.weather == "storm")
         if cost > spendable:
             reasons.append(f"skipped {activity}: it would cost {cost} and only {max(0, spendable)} is spendable above the reserve")
@@ -415,8 +426,12 @@ def _plan_work(
             return False
         if len(actions) + len(new_actions) > cap:
             return False
-        if any(a.get("action") == "move" and chebyshev(position, (int(a["x"]), int(a["y"]))) > MOVE_STEP_CAP for a in new_actions):
-            return False
+        walker = here
+        for a in new_actions:
+            if a.get("action") == "move" and a.get("x") is not None:
+                if chebyshev(walker, (int(a["x"]), int(a["y"]))) > MOVE_STEP_CAP:
+                    return False  # each hop is one move of the world's: twelve from where the previous one ended
+                walker = (int(a["x"]), int(a["y"]))
         cost = _estimate(new_actions, here, storm=view.weather == "storm")
         if cost > spendable:
             return False
@@ -457,6 +472,22 @@ def _plan_work(
         approach = approach or "lighten"
     # 0.5 one engagement with a neighbour when there is one: a word, a gift, a deal, a contest (one action, before the build spends the cap)
     engaged = fits(_plan_engage(persona, team, state, inventory, here, view, observe, teammates, names, rng, collective_names, allowed))
+    # 0.7 the patrol: the outermost edge of the world is this persona's whole road
+    if persona.knobs.get("patrol"):
+        beside = _plan_reclaim(persona, team, state, inventory, here, view, observe, teammates, collective_names, room=cap - len(actions))
+        if beside is not None and beside[2] == "reclaim" and fits(beside):
+            approach = approach or "reclaim"  # a long-departed resident's structure on the edge: take it down on the way
+        if cap - len(actions) >= 2 and sum(inventory.values()) < 45 and fits(_plan_gather_adjacent(persona, inventory, here, view)):
+            approach = approach or "gather_near"
+        if fits(_plan_patrol(persona, state, here, view, room=cap - len(actions), energy_room=spendable)):
+            approach = "patrol" if approach in (None, "gather_near") else approach
+        if engaged and not approach:
+            approach = "engage"
+        meal = _meal_after_move(actions, inventory, energy, cap)
+        if meal is not None:
+            actions.append(meal)
+            reasons.append(f"pack {sum(inventory.values())}/50 with {inventory.get('berries', 0)} berries: one berry after the walk")
+        return _result(persona, mood, f"work shift: {WORK_SUMMARIES.get(approach or '', 'keeping to the edge')}", actions, reasons, approach, remember)
     # 1. a settler far from the team site walks there before building, once upkeep is done; an expedition to reclaim holds the walk home
     migrate = _plan_migrate(persona, team, position, view, teammates)
     expedition = _plan_reclaim(persona, team, state, inventory, here, view, observe, teammates, collective_names, room=cap - len(actions))
@@ -733,6 +764,90 @@ def _plan_border_sign(
             continue
         return [{"action": "move", "x": target[0], "y": target[1]}], f"walk toward the border sign spot at {where}", "border_trip"
     return None
+
+
+EDGE_SLACK = 3  # a patrolling persona's moves stay this close to the coast
+
+
+def _perimeter(persona: Persona, view: WorldView) -> tuple[tuple[int, int], ...]:
+    """The patrol loop for this persona's ``patrol`` knob, oriented by its direction; empty without a map."""
+    from hglab.patrol import oriented, perimeter_loop
+
+    knob = persona.knobs.get("patrol")
+    if not knob or not view.full_map:
+        return ()
+    bridges = frozenset((int(s["x"]), int(s["y"])) for s in (view.world_structures or view.structures) if s.get("type") == "bridge")
+    return oriented(perimeter_loop(tuple(view.full_map), bridges), str(knob.get("direction", "clockwise")))
+
+
+def _plan_patrol(
+    persona: Persona,
+    state: PersonaState,
+    position: tuple[int, int],
+    view: WorldView,
+    room: int = 2,
+    energy_room: float | None = None,
+) -> tuple[list[dict[str, Any]], str, str] | None:
+    """Walk the outermost edge of the world (knob ``patrol``): one or two hops along the coast loop, never back.
+
+    Progress is kept in the persona state (index on the loop, laps done); a walker found more than a
+    few tiles from where the state says it is re-anchors on the nearest coast tile. Inland, the walk
+    first routes out to the coast.
+    """
+    from hglab.patrol import nearest_index
+
+    knob = persona.knobs.get("patrol")
+    loop = _perimeter(persona, view)
+    if not knob or len(loop) < 8 or room < 1:
+        return None
+    n = len(loop)
+    direction = str(knob.get("direction", "clockwise"))
+    flags = state.flags.get("patrol") if isinstance(state.flags.get("patrol"), dict) else {}
+    i = flags.get("i")
+    walked_before = int(flags.get("walked", 0) or 0)  # tiles of coast walked since the patrol began: laps are counted from these
+    if flags.get("n") != n or flags.get("dir") != direction or not isinstance(i, int) or not 0 <= i < n or chebyshev(position, loop[i]) > EDGE_SLACK:
+        i = nearest_index(loop, position)
+    hops = max(1, min(int(knob.get("hops", 2) or 2), room))
+    actions: list[dict[str, Any]] = []
+    here = position
+    walked = 0
+    spent = 0.0
+    storm = view.weather == "storm"
+    for _ in range(hops):
+        reach = reachable_tiles(view, here)
+        step_k = next((k for k in range(24, 0, -1) if loop[(i + k) % n] in reach and loop[(i + k) % n] != here), None)
+        if step_k is None:
+            inland = _route_step(here, loop[(i + 4) % n], view)
+            if inland is None or inland == here:
+                break
+            cost = _estimate([{"action": "move", "x": inland[0], "y": inland[1]}], here, storm=storm)
+            if energy_room is not None and spent + cost > energy_room:
+                break
+            spent += cost
+            actions.append({"action": "move", "x": inland[0], "y": inland[1]})
+            here = inland
+            continue
+        target = loop[(i + step_k) % n]
+        cost = _estimate([{"action": "move", "x": target[0], "y": target[1]}], here, storm=storm)
+        while energy_room is not None and spent + cost > energy_room and step_k > 1:
+            step_k -= 1  # a shorter hop along the coast when the energy above the reserve is short
+            target = loop[(i + step_k) % n]
+            if target not in reach:
+                continue
+            cost = _estimate([{"action": "move", "x": target[0], "y": target[1]}], here, storm=storm)
+        if energy_room is not None and spent + cost > energy_room:
+            break
+        spent += cost
+        i = (i + step_k) % n
+        walked += step_k
+        here = target
+        actions.append({"action": "move", "x": here[0], "y": here[1]})
+    if not actions:
+        return None
+    total = walked_before + walked
+    state.flags["patrol"] = {"i": i, "walked": total, "n": n, "dir": direction}
+    where = "along the coast" if walked else "out toward the coast"
+    return actions, f"walking the outermost edge of the world, behind the glass, {direction}, {where}: lap {total // n + 1}, {total % n} of {n} coast tiles", "patrol"
 
 
 def _meal_after_move(actions: list[dict[str, Any]], inventory: dict[str, int], energy: int, cap: int) -> dict[str, Any] | None:
@@ -1780,13 +1895,64 @@ def _step_toward(
     reach = reachable_tiles(view, position)
     if target in reach:
         return target  # a blocking structure is never in reach, so this is a tile one may stand on
+    routed = _route_step(position, target, view)
+    if routed is not None:
+        return routed
     best = position
     for candidate in reach:
         if candidate == position or candidate == target:
             continue
-        if chebyshev(candidate, target) < chebyshev(best, target) or (chebyshev(candidate, target) == chebyshev(best, target) and best == position):
+        if chebyshev(candidate, target) < chebyshev(best, target):
             best = candidate
-    return best
+    return best  # the position itself when nothing is strictly closer: a sideways step is a wasted wake
+
+
+def _route_step(position: tuple[int, int], target: tuple[int, int], view: WorldView, horizon: int = 70) -> tuple[int, int] | None:
+    """The farthest tile within one move along the cheapest full-map route to the target (or beside it).
+
+    A Dijkstra over the known map with the world's step costs (hills 2, roads 0.5, else 1), bounded to
+    a square ``horizon`` around the start. Returns None when the map is unknown or the target is
+    beyond reach, so the caller may fall back to a greedy step or give up.
+    """
+    import heapq
+
+    if not view.full_map:
+        return None
+    roads = {(int(s["x"]), int(s["y"])) for s in (view.world_structures or view.structures) if s.get("type") == "road"}
+    # cost first, then the fewest diagonal steps: among equally cheap routes, the straightest one
+    best: dict[tuple[int, int], tuple[float, int]] = {position: (0.0, 0)}
+    prev: dict[tuple[int, int], tuple[int, int]] = {}
+    heap: list[tuple[float, int, int, int]] = [(0.0, 0, position[0], position[1])]
+    goal: tuple[int, int] | None = None
+    while heap:
+        cost, bends, x, y = heapq.heappop(heap)
+        if (cost, bends) > best.get((x, y), (float("inf"), 0)):
+            continue
+        if chebyshev((x, y), target) <= 1 and (x, y) != position:
+            goal = (x, y)
+            break
+        for tile in neighbours(x, y):
+            if chebyshev(tile, position) > horizon or not view.walkable(*tile):
+                continue
+            code = view.terrain(*tile)
+            total = (cost + (0.5 if tile in roads else 2.0 if code == "h" else 1.0), bends + (tile[0] != x and tile[1] != y))
+            if total < best.get(tile, (float("inf"), 0)):
+                best[tile] = total
+                prev[tile] = (x, y)
+                heapq.heappush(heap, (total[0], total[1], tile[0], tile[1]))
+    if goal is None:
+        return None
+    path = [goal]
+    while path[-1] != position:
+        path.append(prev[path[-1]])
+    path.reverse()
+    step = position
+    for tile in path[1:]:
+        if best[tile][0] <= MOVE_STEP_CAP:
+            step = tile
+        else:
+            break
+    return step if step != position else None
 
 
 def _rest_line(persona: Persona, mood: str) -> str:

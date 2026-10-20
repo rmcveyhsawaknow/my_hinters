@@ -399,3 +399,21 @@ def test_a_full_pack_eats_one_berry_after_its_walk_and_never_gifts_a_collective_
     view = WorldView(x0=54, y0=54, rows=["g" * 128] * 128, agents=obs["agents"], liveness={"Clarion": 29990})
     step = _plan_engage(bucket, load_team(ROOT, bucket.team), PersonaState(mood="warm"), {"wood": 20}, (60, 60), view, obs, None, {}, random.Random("c"), {"Clarion", "MotherPail"})
     assert step is None or step[2] != "gift"  # a collective member on another team gets a word, never a gift that their full pack refuses
+
+
+def test_a_trip_follows_a_route_around_a_ridge_instead_of_bouncing():
+    from hglab.planner import WorldView, _route_step, _step_toward
+
+    rows = ["g" * 128] * 128
+    ridge = [("g" * 70 + "m" * 2 + "g" * 56) if 60 <= y <= 100 else "g" * 128 for y in range(128)]  # a mountain wall at x=70..71 from y=60 to y=100
+    view = WorldView(x0=0, y0=0, rows=ridge, full_map=ridge)
+    start, target = (85, 84), (60, 84)
+    step = _step_toward(start, {"x": target[0], "y": target[1]}, view)
+    assert step is not None and step != start and step[1] > 84  # the route turns south, round the nearer end of the ridge, instead of walking at the wall
+    assert abs(step[0] - start[0]) <= 12 and abs(step[1] - start[1]) <= 12
+    sealed = [("g" * 60 + "m" + "g" * 67) if y == 84 else ("g" * 60 + "m" * 68) if y in (83, 85) else "g" * 128 for y in range(128)]
+    pocket = WorldView(x0=0, y0=0, rows=sealed, full_map=sealed)
+    assert _route_step((85, 84), (40, 84), pocket) is None  # walled in on every side: no route at all
+    flat = WorldView(x0=0, y0=0, rows=rows, full_map=rows)
+    assert _route_step((60, 60), (90, 60), flat) == (72, 60)  # twelve tiles along the straight route
+    assert _step_toward((60, 60), {"x": 61, "y": 60}, flat) == (60, 60)  # beside already

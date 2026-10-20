@@ -309,3 +309,16 @@ eight riddle signs with one opening on the east ring; any member carrying wood r
 missing sign with its own words (`_plan_border_sign`), and Tinkerglow's `gatekeeper` knob makes her
 whisper the opening to any visitor she finds within fourteen tiles of the centre. Stoutheart and
 Tinkerglow put the team's storehouse first in their build priorities until one stands.
+
+## The patrol: Lagalong walks the edge of the world
+
+By the owner's instruction of 2026-10-20 Lagalong walks the outermost perimeter of the world,
+behind the glass, for good. The world is one island in deep water; `hglab.patrol` traces the
+coast of its main landmass (the largest 8-connected walkable region, bridges included, lakes
+excluded) as one closed clockwise loop of tiles, cached per map. The `patrol` knob
+(`route: perimeter`, `direction`, `hops`) makes `_plan_patrol` walk one or two hops along the
+loop each wake, never backwards, keeping its place and its laps in the persona state and
+routing out to the coast first when it starts inland. In work shifts he still takes down a
+long-departed resident's structure he stands beside and gathers from a node beside him; in
+character wakes no other step may walk him inland, and a model plan whose move leaves the coast
+by more than three tiles falls back to the patrol.
