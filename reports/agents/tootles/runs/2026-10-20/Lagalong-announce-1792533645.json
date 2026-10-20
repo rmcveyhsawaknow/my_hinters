@@ -1,0 +1,58 @@
+{
+  "run_id": "announce-1792533645",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 32438,
+  "created_utc": "2026-10-20T22:00:45.361407+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Four roads laid, the last at (63,28), and I am now at (60,19), I think. Five wakes, one rest. If that is all right, I will keep walking outward; the big thing is probably past the next ridge."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1710,
+    "output_tokens": 75,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [
+      "road at (52,59)",
+      "road at (51,48)",
+      "road at (58,38)",
+      "road at (63,28)"
+    ],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "rest",
+      "build",
+      "build",
+      "build"
+    ],
+    "mood": "wistful",
+    "where": [
+      60,
+      19
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
