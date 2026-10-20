@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792468746",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 25948,
+  "created_utc": "2026-10-20T03:59:06.659793+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, zero rests, and I keep flipping between the house and the explore option at [57, 77] like a coin that won't land. Is the house the point or the excuse? Noting it. Card filed. Going anyway."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1687,
+    "output_tokens": 78,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "house",
+      "explore",
+      "house",
+      "explore",
+      "house"
+    ],
+    "mood": "curious",
+    "where": [
+      57,
+      77
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
