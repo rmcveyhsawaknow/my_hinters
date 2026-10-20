@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792507329",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 29806,
+  "created_utc": "2026-10-20T14:42:09.380865+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, zero rests, ten ore deposited at [88, 85] and I am already running! Gold is heavy, friends, bring a cart. Fudgewright's factory opens when the river finally agrees to stop taking my wafer."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1821,
+    "output_tokens": 85,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {
+      "ore": 10
+    },
+    "approaches": [
+      "reclaim",
+      "migrate",
+      "reclaim",
+      "migrate",
+      "reclaim"
+    ],
+    "mood": "manic",
+    "where": [
+      88,
+      85
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
