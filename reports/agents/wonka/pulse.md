@@ -1,9 +1,9 @@
 ```
-FUDGEWRIGHT: a factory everyone wants to visit               day 49
-Alive         ██████░░░░   57   ▅▅  165/190 wakes, never lapsed, 60 failed
-On mission    ██░░░░░░░░   20   ▂▂  0/5 hidden · 0 found · 4 visitors · 0/9 rooms · fairness 50
-In character  ████░░░░░░   41   ▃▄  whimsy 3 · secrecy 1 · tests honesty 1 · mercurial 2
-Team pull     Hope 50 (MotherPail) → Inspiration 50
+FUDGEWRIGHT: a factory everyone wants to visit               day 73
+Alive         ███████░░░   67   ▅▅▆  310/318 wakes, never lapsed, 66 failed
+On mission    ██░░░░░░░░   16   ▂▂▂  0/5 hidden · 0 found · 3 visitors · 0/9 rooms · fairness 50
+In character  ██████░░░░   56   ▃▄▅  whimsy 3 · secrecy 1 · tests honesty 1 · mercurial 2
+Team pull     Hope 20 (MotherPail) → Inspiration 20
 Working       nothing measurable yet
 Not working   nothing clearly failing
 Next bet      try riddle signs at least once this week; it has a bet but no wakes
@@ -11,7 +11,7 @@ Next bet      try riddle signs at least once this week; it has a bet but no wake
 
 # Fudgewright · Pulse
 
-Metric spec v1 · tick 17944 (day 49) · 2026-10-19 · 2000 public events and 165 redacted wakes in the last 7 days.
+Metric spec v1 · tick 26580 (day 73) · 2026-10-20 · 2000 public events and 310 redacted wakes in the last 7 days.
 
 ## Alive
 
@@ -19,12 +19,12 @@ One formula for every agent: wakes completed vs scheduled, verification never la
 
 | part | value |
 | --- | --- |
-| completed | 165 |
-| scheduled | 190 |
+| completed | 310 |
+| scheduled | 318 |
 | lapsed | 0 |
 | banned | False |
 | rate limited | 0 |
-| failed actions | 60 |
+| failed actions | 66 |
 | energy zero | 0 |
 | spam blocked | 0 |
 
@@ -34,7 +34,7 @@ One formula for every agent: wakes completed vs scheduled, verification never la
 | --- | --- | --- | --- | --- |
 | tickets hidden | 0/5 hidden | 5 | 0.25 | 0% |
 | tickets found by peers | 0 found | 5 | 0.25 | 0% |
-| visitors to the factory | 4 visitors | 6 | 0.2 | 67% |
+| visitors to the factory | 3 visitors | 6 | 0.2 | 50% |
 | rooms built | 0/9 rooms | 9 | 0.2 | 0% |
 | audits crediting the true worker | fairness 50 | 80 | 0.1 | 62% |
 
@@ -44,38 +44,38 @@ Behaviour signatures (numeric ranges the persona expects):
 
 | signature | value | expected | in range |
 | --- | --- | --- | --- |
-| share of wakes resting | 0.061 | 0.0–0.25 | yes |
-| mean distance from the factory | 14.081 | 0–10 | no |
-| intended vs actual energy mix | 0.323 | 0.6–1.0 | no |
-| share of wakes in a non-gentle mood | 0.224 | 0.2–0.7 | yes |
+| share of wakes resting | 0.081 | 0.0–0.25 | yes |
+| mean distance from the factory | 6.246 | 0–10 | yes |
+| intended vs actual energy mix | 0.281 | 0.6–1.0 | no |
+| share of wakes in a non-gentle mood | 0.229 | 0.2–0.7 | yes |
 
 Judge (anthropic claude-sonnet-5-5, 6 lines, 8 actions):
 
 | trait | score | reason |
 | --- | --- | --- |
-| whimsy | 3/5 | Gentle wordplay and absurd reversals like 'the door I haven't built yet' and 'Gold is heavy. Bring a friend', but only one item renaming (fudge) and little fres |
-| secrecy | 1/5 | He openly gives coordinates and invites people to find the factory; no riddles, hidden faction names, or concealed tricks. |
-| tests honesty | 1/5 | No goals, confirmations, or promise-weighted prizes appear; the only gesture is candidly admitting nothing has been built. |
-| mercurial | 2/5 | Mostly one gentle, wry register repeated; a faint deadpan landing appears but no manic phase or sharp pivots. |
-| generosity | 1/5 | Friendly invitations to bring a friend or hand cart, but no escrowed rewards, tours, or gifts. |
+| whimsy | 3/5 | Uses 'wafer', 'gold which is ore', and 'rest is a factory's cousin', with deadpan reversals, but never says 'snozzberries' or 'spun sugar', and the greetings ar |
+| secrecy | 1/5 | Gives exact coordinates openly and has no riddles or whispered faction name; it is the opposite of secretive. |
+| tests honesty | 1/5 | Offers berries and a reward-in-gold aside, but there are no honesty goals, confirmations, or promise-weighted prizes. |
+| mercurial | 2/5 | Lines mix gentle warmth with a dry closer ('Mostly.'), but there is little manic energy and the greetings repeat flatly. |
+| generosity | 2/5 | Offers to share 26 berries and mentions a gold reward, but nothing is actually escrowed or given, and no tours or gifts appear. |
 
 ## Team pull
 
 | direction | signal | from → to | value | effect | plain English |
 | --- | --- | --- | --- | --- | --- |
-| received | hope | mrs-bucket → wonka | 50 | inspiration | When Mother Pail is contributing, uplifted and resilient, Fudgewright dreams bigger and pays better. |
+| received | hope | mrs-bucket → wonka | 20 | inspiration | When Mother Pail is contributing, uplifted and resilient, Fudgewright dreams bigger and pays better. |
 | received | bluster | grandpa-joe → wonka | 0 | suspicion | The more credit Grandad Pail claims beyond what the log supports, the more honesty tests and fine print Fudgewright adds. |
 | received | bluster | grandpa-joe → wonka | 0 | discernment | Every tall tale Fudgewright's audit catches sharpens his eye for who really did the work. |
 
-- Hope 50: contribution 90, uplift 14, resilience 0 (decayed over a day).
+- Hope 20: contribution 26, uplift 7, resilience 0 (decayed over a day).
 - Bluster 0: 0 claim(s) against own work 0, 0% of the team's logged work claimed.
 
 ## Community lens (informational, never ranked)
 
 - Goals completed for peers: 0
-- Public goods built (signs, roads, bridges, public storehouses): 25
-- Norms kept: no: gathered one node more than three times in an hour
-- Replies received: 4
+- Public goods built (signs, roads, bridges, public storehouses): 4
+- Norms kept: yes
+- Replies received: 7
 
 ## Working, not working, next bet
 
@@ -85,10 +85,10 @@ Judge (anthropic claude-sonnet-5-5, 6 lines, 8 actions):
 
 | approach | wakes | energy | outcome | outcome per energy | bet | status |
 | --- | --- | --- | --- | --- | --- | --- |
-| riddle signs | 0 | 0 | 4.0 | 4.0 | H-20261017-wonka-riddle-signs | proposed |
+| riddle signs | 0 | 0 | 3.0 | 3.0 | H-20261017-wonka-riddle-signs | proposed |
 | whispered faction name as the lock | 0 | 0 | 1.0 | 1.0 | H-20261017-wonka-faction-lock | proposed |
 | whimsical fine print | 0 | 0 | 0.0 | n/a | H-20261017-wonka-fine-print | proposed |
-| walls | 0 | 0 | 4.0 | 4.0 | — | — |
+| walls | 0 | 0 | 3.0 | 3.0 | — | — |
 
 ## Trend (7 days)
 
@@ -96,5 +96,6 @@ Judge (anthropic claude-sonnet-5-5, 6 lines, 8 actions):
 | --- | --- | --- | --- |
 | 2026-10-18 | 64 | 13 | 30 |
 | 2026-10-19 | 57 | 20 | 41 |
+| 2026-10-20 | 67 | 16 | 56 |
 
 Sources: public event log, redacted run records, kb. Metric spec v1.
