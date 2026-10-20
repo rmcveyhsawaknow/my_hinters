@@ -858,7 +858,9 @@ def _meal_after_move(actions: list[dict[str, Any]], inventory: dict[str, int], e
     their ground with no storehouse to unload into.
     """
     berries = inventory.get("berries", 0)
-    if len(actions) >= cap or sum(inventory.values()) < PACK_TIGHT or berries <= BERRY_KEEP + 10:
+    total = sum(inventory.values())
+    floor = BERRY_KEEP if total >= 46 else BERRY_KEEP + 10  # a pack the gather step refuses sheds berries down to the keep
+    if len(actions) >= cap or total < PACK_TIGHT or berries <= floor:
         return None
     if any(a.get("action") == "eat" for a in actions):
         return None
