@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792511738",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 30247,
+  "created_utc": "2026-10-20T15:55:38.386015+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes at tile 73,71 and one rest, the reclaim approach four times over. Is it the same ground twice or a shadow that moved? Filing a card on it, then chasing whatever's on the far hill."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1698,
+    "output_tokens": 77,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "reclaim",
+      "reclaim",
+      "reclaim",
+      "reclaim"
+    ],
+    "mood": "curious",
+    "where": [
+      73,
+      71
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
