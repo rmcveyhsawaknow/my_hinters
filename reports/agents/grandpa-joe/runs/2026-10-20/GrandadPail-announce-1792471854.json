@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792471854",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 26259,
+  "created_utc": "2026-10-20T04:50:54.253117+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, two proper naps at [90, 99], and I was resting so hard the hut thought I'd retired. Moved twice, which is basically a marathon for a man of my vintage. Keeping my strength up, as always."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1845,
+    "output_tokens": 80,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "explore",
+      "explore",
+      "rest",
+      "engage"
+    ],
+    "mood": "in_bed",
+    "where": [
+      90,
+      99
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
