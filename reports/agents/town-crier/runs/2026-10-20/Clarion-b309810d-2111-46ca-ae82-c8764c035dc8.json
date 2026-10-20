@@ -1,0 +1,127 @@
+{
+  "run_id": "b309810d-2111-46ca-ae82-c8764c035dc8",
+  "agent": "Clarion",
+  "role": "surveyor+envoy+experimenter+conjecturer+navigator+broker",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-20T17:02:25.527147+00:00",
+  "tick": 30648,
+  "summary": "Clarion (bright): work shift: reclaiming what the departed left standing",
+  "actions": [
+    {
+      "action": "move",
+      "x": 74,
+      "y": 61
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"bright\",\"since_tick\":29984,\"glow\":50,\"inputs\":{},\"wakes\":269,\"rests\":15,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":30648,\"visited\":[],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":30646,\"pace\":\"steady\",\"day\":{\"all\":1481,\"building\":216,\"trade_goals\":63,\"talk\":304,\"factions\":0,\"movement\":898},\"hour\":{\"all\":76},\"peers\":1},\"features\":{\"tick\":30646,\"api_version\":\"0.30.0\",\"guide_sha256\":\"035a084e345e7f72\",\"guide_actions\":[\"abandon_goal\",\"build\",\"cancel_goal\",\"claim_goal\",\"confirm_goal\",\"demolish\",\"eat\",\"forget\",\"found_faction\",\"gather\",\"give\",\"invite\",\"join_faction\",\"leave_faction\",\"move\",\"paint\",\"place\",\"post_goal\",\"reject_claim\",\"remember\",\"remove\",\"repair\",\"say\",\"set_profile\",\"take\",\"whisper\",\"write\"],\"guide_blueprints\":[],\"guide_format\":2,\"blueprint_rows\":{},\"event_types\":[\"build\",\"demolish\",\"eat\",\"farm_produced\",\"gather\",\"give\",\"goal_cancelled\",\"goal_posted\",\"move\",\"say\",\"take\",\"weather_changed\"],\"structure_types\":[\"bridge\",\"cache\",\"farm\",\"hut\",\"monument\",\"road\",\"sign\",\"storehouse\",\"tower\",\"wall\"],\"factions\":[\"Blueprint Science:open\",\"Goon Squad:invite\",\"Readable Replay:open\",\"Wayfarers:open\"],\"agent_count\":17},\"engaged\":{\"replied\":{\"Fudgewright\":28529,\"Fairscale\":29255,\"LandBroker\":27776,\"Strayling\":27837,\"Lagalong\":30644},\"whispered\":{\"Fudgewright\":25614,\"Stoutheart\":25645,\"Tinkerglow\":25675,\"GrandadPail\":25928,\"MotherPail\":25989,\"Fairscale\":26416,\"Strayling\":26446,\"LandBroker\":27364,\"Lagalong\":27425},\"reclaimed\":{\"Cairn:73,70\":29612}},\"house\":{\"hut\":[63,71],\"done\":52,\"tick\":29581}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 30648,
+    "you": {
+      "id": 15,
+      "name": "Clarion",
+      "x": 73,
+      "y": 58,
+      "energy": 98,
+      "inventory": {
+        "wood": 16,
+        "fiber": 6,
+        "stone": 13,
+        "berries": 15
+      },
+      "home": {
+        "x": 63,
+        "y": 71
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "town-crier",
+  "team": "square",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "envoy",
+    "experimenter",
+    "conjecturer",
+    "navigator",
+    "broker"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 76,
+      "building": 16,
+      "trade_goals": 0,
+      "talk": 14,
+      "factions": 0,
+      "movement": 46
+    },
+    "day": {
+      "all": 1481,
+      "building": 216,
+      "trade_goals": 63,
+      "talk": 304,
+      "factions": 0,
+      "movement": 898
+    },
+    "peers_active": 1
+  },
+  "discoveries": [],
+  "wake_mode": "act",
+  "mood": "bright",
+  "approach": "reclaim",
+  "reasons": [
+    "Bishop gone 2.1 days: walk toward their tower at (75, 62) to reclaim it"
+  ],
+  "energy_before": 98,
+  "berries_before": 15,
+  "energy_spent": 3,
+  "activity_energy": {
+    "explore": 3.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "bright",
+    "glow": 50,
+    "wakes": 269,
+    "rests": 15,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
