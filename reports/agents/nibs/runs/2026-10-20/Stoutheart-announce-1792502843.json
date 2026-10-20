@@ -1,0 +1,59 @@
+{
+  "run_id": "announce-1792502843",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 29358,
+  "created_utc": "2026-10-20T13:27:23.480181+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Wall's up at (79,103) and the road at (78,102) is laid. Took five wood from the grove. Neverland keeps its edges mended, so nobody needs to go far."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1768,
+    "output_tokens": 65,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [
+      "wall at (79,103)",
+      "road at (78,102)",
+      "sign at (79,102)"
+    ],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "build",
+      "build",
+      "harvest",
+      "rest"
+    ],
+    "mood": "brave",
+    "where": [
+      69,
+      108
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
