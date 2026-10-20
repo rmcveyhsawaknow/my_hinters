@@ -343,3 +343,30 @@ def test_reachability_costs_hills_double_and_a_trip_stops_beside_a_structure():
     assert _plan_deposit_trip(bell, team, {"wood": 3, "berries": 45}, (74, 112), far, None, {"motherpail", "tinkerglow"}) is None  # twenty tiles out of Neverland: the migration would only walk her back
     near = WorldView(x0=68, y0=106, rows=rows, full_map=rows, world_structures=[{"type": "storehouse", "x": 78, "y": 106, "owner": "Stoutheart"}])
     assert _plan_deposit_trip(bell, team, {"wood": 3, "berries": 45}, (74, 112), near, None, {"stoutheart", "tinkerglow"}) is not None
+
+
+def test_a_build_spends_the_pack_before_the_deposit_is_sized():
+    import json
+    import random
+
+    from hglab.mood import PersonaState
+    from hglab.planner import plan_wake
+
+    personas = load_personas(ROOT)
+    tootles = personas["tootles"]
+    team = load_team(ROOT, tootles.team)
+    observe = load_fixture(FIX / "observe/tootles.json")
+    you = observe["you"]
+    you["inventory"] = {"stone": 10, "berries": 36}
+    you["energy"] = 100
+    observe["resources"] = []
+    observe["structures"] = [
+        {"id": 1, "type": "road", "x": you["x"] - 1, "y": you["y"], "owner": tootles.name, "hp": 20},
+        {"id": 2, "type": "storehouse", "x": you["x"] + 1, "y": you["y"], "owner": "LandBroker", "policy": "public"},
+    ]
+    names = {personas[m].name.casefold(): m for m in team.members if m in personas}
+    plan = plan_wake(tootles, team, PersonaState(mood=tootles.mood_model["initial"]), observe, "act", random.Random("r"), teammates=None, terrain_rows=None, allowed=None, team_names=names, work=True, collective_names={p.name for p in personas.values()}, registrar_name="LandBroker")
+    gives = [a for a in plan["actions"] if a["action"] == "give"]
+    builds = [a for a in plan["actions"] if a["action"] == "build"]
+    stone_given = sum(a["qty"] for a in gives if a["item"] == "stone")
+    assert stone_given <= 10 - sum(1 for b in builds if b.get("type") == "road"), json.dumps(plan["actions"])  # the road's stone is not deposited twice

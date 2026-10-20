@@ -326,7 +326,7 @@ def plan_wake(
                 or _plan_house(persona, inventory, here, view, home, observe, state=state)
                 or (_plan_build(persona, team, inventory, here, view, home) if here == position else None)
                 or (_plan_border_sign(persona, team, inventory, here, view, teammates, names) if here == position else None)
-                or (_plan_reclaim(persona, team, state, inventory, here, view, observe, teammates, collective_names) if here == position else None)
+                or (_plan_reclaim(persona, team, state, inventory, here, view, observe, teammates, collective_names, room=budget - len(actions)) if here == position else None)
             )
         elif activity == "gather":
             step = (
@@ -420,6 +420,15 @@ def _plan_work(
         for a in new_actions:
             if a.get("action") == "move" and a.get("x") is not None:
                 here = (int(a["x"]), int(a["y"]))
+            elif a.get("action") == "build" and a.get("type") in BLUEPRINTS:
+                for item, qty in BLUEPRINTS[str(a["type"])].items():
+                    inventory[item] = max(0, inventory.get(item, 0) - qty)
+            elif a.get("action") == "give" and a.get("item"):
+                inventory[str(a["item"])] = max(0, inventory.get(str(a["item"]), 0) - int(a.get("qty", 0) or 0))
+            elif a.get("action") == "take" and a.get("item"):
+                inventory[str(a["item"])] = inventory.get(str(a["item"]), 0) + int(a.get("qty", 0) or 0)
+            elif a.get("action") == "eat":
+                inventory["berries"] = max(0, inventory.get("berries", 0) - int(a.get("qty", 0) or 0))
         actions.extend(new_actions)
         reasons.append(reason)
         return True
@@ -472,6 +481,9 @@ def _plan_work(
     monument = _plan_monument(persona, inventory, position, view)
     if here == position and fits(monument):
         approach = approach or "build_monument"
+    # 2.7 reclaim what residents gone for days left standing: the quarter it drops is worth the hits, and beats a road
+    if not moved() and fits(_plan_reclaim(persona, team, state, inventory, here, view, observe, teammates, collective_names, room=cap - len(actions))):
+        approach = approach or "reclaim"
     # 3. any build whose materials are in hand (hut, farm, storehouse, bridge, wall...)
     if here == position and fits(_plan_build(persona, team, inventory, position, view, home)):
         approach = approach or "build"
@@ -481,9 +493,6 @@ def _plan_work(
     # 3.6 the border signs of the team's ground, nearest missing first
     if not moved() and fits(_plan_border_sign(persona, team, inventory, here, view, teammates, names)):
         approach = approach or "border"
-    # 3.7 reclaim what residents gone for days left standing: the quarter it drops is worth the hits
-    if not moved() and fits(_plan_reclaim(persona, team, state, inventory, here, view, observe, teammates, collective_names)):
-        approach = approach or "reclaim"
     # 4. deposit surplus into an adjacent storehouse of ours (so the monument can draw on it)
     ours = set(collective_names or ()) | set(names or ())
     if fits(_plan_deposit(persona, inventory, position, view, registrar_name, mates=ours)):
@@ -621,6 +630,7 @@ def _plan_reclaim(
     observe: dict[str, Any],
     teammates: dict[str, tuple[int, int]] | None,
     collective_names: set[str] | None,
+    room: int = 4,
 ) -> tuple[list[dict[str, Any]], str, str] | None:
     """Reclaim the holdings of residents gone for ``reclaim.dormant_days`` (knob): demolish for the quarter the world drops.
 
@@ -650,22 +660,24 @@ def _plan_reclaim(
         distance = chebyshev(position, where)
         if distance > FORAGE_RANGE:
             continue
-        targets.append((distance > 1, -RECLAIM_VALUE[kind], distance, where, s, owner, gone))
+        targets.append((distance > 1, distance // 8, -RECLAIM_VALUE[kind], distance, where, s, owner, gone))
     if not targets:
         return None
-    targets.sort(key=lambda t: t[:3])
-    _, _, distance, where, s, owner, gone = targets[0]
+    targets.sort(key=lambda t: t[:4])  # beside us first, then the nearest band of eight tiles, the richest within it
+    _, _, _, distance, where, s, owner, gone = targets[0]
     kind = str(s.get("type"))
     hp = int(s.get("hp", 40) or 40)
+    if room < 1:
+        return None
     if distance <= 1:
-        hits = max(1, min(per_wake, -(-hp // 10)))
         actions: list[dict[str, Any]] = []
         flags = _flags(state)
         key = f"{owner}:{where[0]},{where[1]}"
         recent_says, _, _ = action_limits(observe)
-        if recent_says == 0 and not _recent(flags, "reclaimed", key, tick, 8640):
+        if room >= 2 and recent_says == 0 and not _recent(flags, "reclaimed", key, tick, 8640):
             actions.append({"action": "say", "text": f"{owner} has not been seen for {gone:.0f} days. I am taking down the {kind} at ({where[0]},{where[1]}) for what the weather would take anyway. {owner}, come back and speak and I stop."[:280]})
             _mark(flags, "reclaimed", key, tick)
+        hits = max(1, min(per_wake, -(-hp // 10), room - len(actions)))
         actions.extend({"action": "demolish", "x": where[0], "y": where[1]} for _ in range(hits))
         return actions, f"{owner} gone {gone:.1f} days: {hits} hit(s) on their {kind} at {where} (hp {hp}); the quarter it drops is ours to take", "reclaim"
     target = _step_toward(position, {"x": where[0], "y": where[1]}, view)
