@@ -300,3 +300,24 @@ def test_a_full_pack_eats_even_at_full_energy_and_walks_to_a_collective_storehou
     beside = WorldView(x0=79, y0=86, rows=rows, structures=[{"type": "storehouse", "x": 85, "y": 92, "owner": "MotherPail", "policy": "private"}])
     deposit = _plan_deposit(joe, {"wood": 10, "berries": 40}, (84, 92), beside, None, mates={"MotherPail"})
     assert deposit is not None and deposit[0][0] == {"action": "give", "x": 85, "y": 92, "item": "berries", "qty": 25}
+
+
+def test_the_harvest_stops_at_the_keep_and_gifts_are_judged_from_where_we_stand():
+    import random
+
+    from hglab.engage import board
+    from hglab.mood import PersonaState
+    from hglab.planner import WorldView, _plan_engage, _plan_harvest
+
+    bucket = load_personas(ROOT)["mrs-bucket"]
+    rows = ["g" * 128] * 128
+    farm = WorldView(x0=54, y0=54, rows=rows, structures=[{"type": "farm", "x": 61, "y": 60, "owner": bucket.name, "storage": {"berries": 30}}])
+    step = _plan_harvest(bucket, None, {"wood": 5, "berries": 18}, (60, 60), farm, None)
+    assert step is not None and step[0][-1]["action"] == "take" and step[0][-1]["qty"] == 12  # up to thirty berries in the pack, no more
+    assert _plan_harvest(bucket, None, {"wood": 5, "berries": 27}, (60, 60), farm, None) is None  # three more are not worth the trip
+    observe = {"tick": 25000, "you": {"name": bucket.name, "x": 60, "y": 60, "inventory": {"wood": 20}}, "agents": [{"name": "Quill", "x": 61, "y": 60}], "events": [], "structures": [], "goals_nearby": [], "your_goals": {}, "since_last_observe": {}, "world": {}, "notebook": {}}
+    assert board(bucket, observe, set(), set(), here=(70, 60))["agents_in_view"][0]["distance"] == 9  # measured from where we will stand
+    view = WorldView(x0=54, y0=54, rows=rows, agents=observe["agents"])
+    bucket.knobs["stance"] = {"cooperative": 1, "neutral": 0, "competitive": 0}
+    far = _plan_engage(bucket, None, PersonaState(mood="warm"), {"wood": 20}, (70, 60), view, observe, None, {}, random.Random("g"), set())
+    assert far is None or far[2] != "gift"  # after a move away, no gift that the world would refuse as too_far

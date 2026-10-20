@@ -281,3 +281,13 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
   that is full with more than twenty-five berries now eats two a wake regardless, deposits go into
   any storehouse of ours (own, a teammate's, the collective's), and a full pack walks toward the
   nearest such storehouse within forty tiles. Neverland owns no storehouse yet; its agents eat.
+- Hours five and six (06:00 to 07:10 UTC): the world refuses a meal at full energy and a refused
+  first action ends the batch, so meals are sized to the energy room again and the storehouse walk,
+  the forage, the migration and the homing run when no move is planned yet, so a word may precede
+  them; a far-from-home wake that already spoke keeps its label and walks after the word. The plan
+  schema was proved to compile with one real model call. The live records then showed the whole
+  loop turning: model wakes answering again (LandBroker's wake spoke and built a sign), MotherPail
+  depositing twenty-two berries into her storehouse and her pack falling from forty-eight to
+  twenty-six, harvests and gathering trips resuming, Clarion building roads, gifts and words by
+  name between the teams, Tinkerglow's window standing. The harvest is capped so a pack never
+  refills with berries past thirty, and gifts are judged from where the agent will stand.

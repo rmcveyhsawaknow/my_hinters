@@ -442,6 +442,10 @@ def _plan_work(
             pass
         return _result(persona, mood, "work shift: walking to the team site", actions, reasons, approach, remember)
     if far_from_home and actions:
+        if not moved() and fits(migrate):
+            approach = approach or "migrate"  # a word or a mend, then the walk home in the same wake
+        if engaged and not approach:
+            approach = "engage"
         return _result(persona, mood, f"work shift: {WORK_SUMMARIES.get(approach or '', 'upkeep')}", actions, reasons, approach, remember)
     # 1.5 the land office stakes open lots, one claim sign each, as fast as wood and energy allow
     staked_now: set[str] = set()
@@ -825,7 +829,9 @@ def _plan_harvest(
             farms.append((stored, s))
     for stored, s in sorted(farms, key=lambda pair: -pair[0]):
         where = (int(s["x"]), int(s["y"]))
-        qty = min(stored, room)
+        qty = min(stored, room, 2 * BERRY_KEEP - inventory.get("berries", 0))  # the pack never refills with berries past the keep
+        if qty < 5:
+            continue
         take = {"action": "take", "x": where[0], "y": where[1], "item": "berries", "qty": qty}
         if chebyshev(position, where) <= 1:
             return [take], f"my farm at {where} holds {stored} berries: take {qty} so it keeps growing", "harvest"
@@ -1387,7 +1393,7 @@ def _plan_engage(
 
     collective = {n.casefold() for n in (collective_names or ())} | {persona.name.casefold()}
     mates = {n.casefold() for n in (names or {})} | {persona.name.casefold()}
-    b = board(persona, observe, set(collective_names or ()), set(names or ()))
+    b = board(persona, observe, set(collective_names or ()), set(names or ()), here=position)
     tick = int(observe.get("tick", 0) or 0)
     flags = _flags(state)
     stance = pick_stance(persona, rng)
