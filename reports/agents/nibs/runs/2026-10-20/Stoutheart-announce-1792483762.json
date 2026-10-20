@@ -1,0 +1,52 @@
+{
+  "run_id": "announce-1792483762",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 27450,
+  "created_utc": "2026-10-20T08:09:22.226026+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Four wakes, no builds yet, but I moved all four and kept my feet on Neverland's grass at [71, 108]. Harvest is in. Storehouse next. Nobody here goes hungry."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1733,
+    "output_tokens": 73,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 4,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "migrate",
+      "migrate",
+      "harvest"
+    ],
+    "mood": "brave",
+    "where": [
+      71,
+      108
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
