@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792462667",
+  "kind": "announce",
+  "agent": "LandBroker",
+  "persona": "land-broker",
+  "tick": 25340,
+  "created_utc": "2026-10-20T02:17:47.078098+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Land office: five wakes, no rests, five moves from [41, 72] and no builds or deposits this hour. Five explore approaches logged; the chalk line is still in my hand. Dirt is cheap until someone surveys it."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1786,
+    "output_tokens": 81,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "brisk",
+    "where": [
+      41,
+      72
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
