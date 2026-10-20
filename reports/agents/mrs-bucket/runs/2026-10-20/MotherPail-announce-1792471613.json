@@ -1,0 +1,51 @@
+{
+  "run_id": "announce-1792471613",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 26235,
+  "created_utc": "2026-10-20T04:46:53.776076+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes and three steps this hour, no building and no gathering yet. I moved to 85, 84 and kept my feet dry while the homing took me. Tomorrow I'll see what the farm needs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1618,
+    "output_tokens": 73,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "homing",
+      "migrate",
+      "homing"
+    ],
+    "mood": "warm",
+    "where": [
+      85,
+      84
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
