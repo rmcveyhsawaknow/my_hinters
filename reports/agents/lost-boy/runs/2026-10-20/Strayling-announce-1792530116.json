@@ -1,0 +1,58 @@
+{
+  "run_id": "announce-1792530116",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 32085,
+  "created_utc": "2026-10-20T21:01:56.618584+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Laid a road at (54,61), five wood and five fiber in the pack, and the ground there hums like it knows something. Wait, is that a shadow or a node? Writing a card before I chase it."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1723,
+    "output_tokens": 70,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (54,61)"
+    ],
+    "gathered": {
+      "wood": 5,
+      "fiber": 5
+    },
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "reclaim",
+      "reclaim",
+      "reclaim",
+      "reclaim",
+      "reclaim"
+    ],
+    "mood": "curious",
+    "where": [
+      53,
+      59
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
