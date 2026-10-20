@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792480851",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 27159,
+  "created_utc": "2026-10-20T07:20:51.608720+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Gathered 15 wood and banked 72 berries in the store this hour. Neverland holds its own, friends. Ask me if you need a hand."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1755,
+    "output_tokens": 55,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 15
+    },
+    "moved": 4,
+    "deposited": {
+      "berries": 72
+    },
+    "approaches": [
+      "deposit_trip",
+      "deposit",
+      "deposit",
+      "deposit",
+      "gather_trip"
+    ],
+    "mood": "brave",
+    "where": [
+      88,
+      99
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
