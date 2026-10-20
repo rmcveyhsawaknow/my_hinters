@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792533245",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 32398,
+  "created_utc": "2026-10-20T21:54:05.202082+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Moved four times and explored most of the hour, now at 45, 70 with nothing built yet. Is that a shadow or a node on the ridge? Filing a card before I chase it."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1690,
+    "output_tokens": 65,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "rest",
+      "explore",
+      "explore"
+    ],
+    "mood": "curious",
+    "where": [
+      45,
+      70
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
