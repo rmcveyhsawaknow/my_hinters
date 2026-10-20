@@ -414,6 +414,10 @@ def _plan_work(
         return True
 
     approach = None
+
+    def moved() -> bool:
+        return any(a.get("action") == "move" for a in actions)
+
     # 0. a claimed goal with a delivery is a promise: deliver it before anything else
     if fits(_plan_deliver(persona, inventory, here, view, observe)):
         approach = "deliver"
@@ -463,8 +467,8 @@ def _plan_work(
     ours = set(collective_names or ()) | set(names or ())
     if fits(_plan_deposit(persona, inventory, position, view, registrar_name, mates=ours)):
         approach = approach or "deposit"
-    # 4.2 a full pack walks to the nearest storehouse of ours to unload
-    if all(a.get("action") == "eat" for a in actions) and fits(_plan_deposit_trip(persona, team, inventory, position, view, teammates, {n.casefold() for n in ours} | {persona.name.casefold()})):
+    # 4.2 a full pack walks to the nearest storehouse of ours to unload (a word or a meal may precede the walk)
+    if not moved() and fits(_plan_deposit_trip(persona, team, inventory, position, view, teammates, {n.casefold() for n in ours} | {persona.name.casefold()})):
         approach = approach or "deposit_trip"
     # 4. gather the shortfall for the next blueprint
     while len(actions) < cap and fits(_plan_gather(persona, team, inventory, here, view, teammates, rng)):
@@ -473,16 +477,16 @@ def _plan_work(
             if a.get("action") == "gather":
                 inventory[a.get("kind", "wood")] = inventory.get(a.get("kind", "wood"), 0) + 5
     # 4.7 nothing wanted in view: walk toward the nearest node the public snapshot knows
-    if not actions and fits(_plan_forage(persona, team, inventory, position, view, teammates)):
-        approach = "forage"
+    if not moved() and fits(_plan_forage(persona, team, inventory, position, view, teammates)):
+        approach = approach or "forage"
     # 5. far from the team site and nothing to gather here: migrate toward it
-    if not actions and fits(_plan_migrate(persona, team, position, view, teammates)):
-        approach = "migrate"
+    if not moved() and fits(_plan_migrate(persona, team, position, view, teammates)):
+        approach = approach or "migrate"
     # 5.5 the house's next step is in the pack but the hut is out of reach: carry it home before wandering
-    if not actions and fits(_plan_homing(persona, inventory, position, view, home, observe, state=state)):
-        approach = "homing"
-    if not actions and fits(_plan_explore(persona, team, state, position, view, rng, teammates)):
-        approach = "explore"
+    if not moved() and fits(_plan_homing(persona, inventory, position, view, home, observe, state=state)):
+        approach = approach or "homing"
+    if not moved() and fits(_plan_explore(persona, team, state, position, view, rng, teammates)):
+        approach = approach or "explore"
     if engaged and not approach:
         approach = "engage"  # the neighbour was the whole of this wake
     summary = WORK_SUMMARIES.get(approach or "", "nothing worth the energy this shift wake")
@@ -578,18 +582,16 @@ FORAGE_RANGE = 40  # how far a trip toward a node seen only in the public snapsh
 
 
 def _plan_lighten(inventory: dict[str, int], energy: int) -> tuple[list[dict[str, Any]], str, str] | None:
-    """Eat into a berry hoard when the pack is tight: every berry is 15 energy, and a full pack builds nothing.
+    """Eat into a berry hoard when the pack is tight and the energy has room: every berry is 15 energy.
 
-    With energy to spare the meal is sized to it; a pack that is full of berries eats two a wake anyway,
-    since berries regrow and a blocked pack costs more than ten wasted energy.
+    The world refuses a meal at full energy (``not_allowed``), so the meal is sized to the room there is;
+    a pack that stays full walks to a storehouse instead (``_plan_deposit_trip``).
     """
     berries = inventory.get("berries", 0)
     total = sum(inventory.values())
-    if total < PACK_TIGHT or berries <= BERRY_KEEP:
+    if total < PACK_TIGHT or berries <= BERRY_KEEP or energy > 85:
         return None
-    qty = min(berries - BERRY_KEEP, max((100 - energy) // 15, 0), 3)
-    if qty < 1 and total >= 46 and berries > BERRY_KEEP + 10:
-        qty = min(2, berries - BERRY_KEEP)
+    qty = min(berries - BERRY_KEEP, (100 - energy) // 15, 3)
     if qty < 1:
         return None
     return [{"action": "eat", "qty": qty}], f"pack {total}/50 with {berries} berries: eat {qty} to make room for materials", "lighten"
