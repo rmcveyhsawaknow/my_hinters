@@ -1,0 +1,56 @@
+{
+  "run_id": "announce-1792490820",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 28155,
+  "created_utc": "2026-10-20T10:07:00.459125+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Bridge is up at (91,99), took twenty wood from the trips out. Worth every splinter. Neverland stays put, and so do I."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1751,
+    "output_tokens": 53,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 4,
+    "rests": 0,
+    "built": [
+      "bridge at (91,99)"
+    ],
+    "gathered": {
+      "wood": 20
+    },
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "gather_trip",
+      "gather_trip",
+      "forage"
+    ],
+    "mood": "brave",
+    "where": [
+      82,
+      93
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
