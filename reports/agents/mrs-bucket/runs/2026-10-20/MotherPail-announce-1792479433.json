@@ -1,0 +1,54 @@
+{
+  "run_id": "announce-1792479433",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 27017,
+  "created_utc": "2026-10-20T06:57:13.151421+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Twenty-two berries went into the storehouse this hour, and the walk back from the farm at 83, 94 was dry. Next I'll carry the next load while the light holds."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1634,
+    "output_tokens": 63,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {
+      "berries": 22
+    },
+    "approaches": [
+      "deposit_trip",
+      "deposit",
+      "migrate",
+      "harvest"
+    ],
+    "mood": "warm",
+    "where": [
+      83,
+      94
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
