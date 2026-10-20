@@ -5,11 +5,11 @@
  "provider": "anthropic",
  "sampled_lines": 6,
  "sampled_actions": 7,
- "created_utc": "2026-10-19T06:07:50.778345+00:00",
+ "created_utc": "2026-10-20T06:06:34.239482+00:00",
  "usage": {
   "calls": 1,
-  "input_tokens": 1432,
-  "output_tokens": 278,
+  "input_tokens": 1435,
+  "output_tokens": 263,
   "model": "claude-sonnet-5-5",
   "provider": "anthropic",
   "route": "review"
@@ -18,22 +18,22 @@
   {
    "name": "brave",
    "score": 2,
-   "reason": "Walks the edges and speaks calmly, but no costly build has been started; five wakes pass with scouting only."
+   "reason": "Calm, steady statements and talk of hardest job first, but no costly build happened; actions were only eating and talking."
   },
   {
    "name": "cheerful",
-   "score": 4,
-   "reason": "Lines are consistently upbeat with small flourishes like 'Worth the walk' and 'Brave is just walking back to the store'."
+   "score": 3,
+   "reason": "Upbeat tone and small flourishes like 'Worth the walk' and 'Still brave, still here', though reports admit nothing was built."
   },
   {
    "name": "steadfast",
    "score": 3,
-   "reason": "Repeatedly mentions the storehouse and farm as duty and stays near Neverland's edges, though no actual stocking or farm work appears in the actions and the move"
+   "reason": "Stays around the territory at (80,110) and mentions the storehouse as duty, but the storehouse was not tended and a scouting trip toward the edge was planned."
   },
   {
    "name": "protective",
-   "score": 3,
-   "reason": "Offers help ('Ask if you need a hand'), greets those within earshot, and notes the storehouse holds so nobody goes far, but no concrete restocking is shown."
+   "score": 2,
+   "reason": "Offers help and greets whoever is out there, but one greeting named a peer (Fudgewright), and nothing was stocked for teammates."
   }
  ]
 }
