@@ -1,0 +1,47 @@
+{
+  "run_id": "announce-1792465842",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 25658,
+  "created_utc": "2026-10-20T03:10:42.402405+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Quiet hour, two rests and no builds yet. Still standing, pack counted, bridge plans drawn. Next hour the south water gets its hands."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1716,
+    "output_tokens": 57,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 2,
+    "rests": 2,
+    "built": [],
+    "gathered": {},
+    "moved": 0,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "rest"
+    ],
+    "mood": "brave",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
