@@ -1,0 +1,52 @@
+{
+  "run_id": "announce-1792469262",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 26000,
+  "created_utc": "2026-10-20T04:07:42.107923+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes and no rest, and I only gathered wood, five pieces. I think I was walking the whole time, if that is all right. The big thing can wait; it is good at waiting."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1681,
+    "output_tokens": 65,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 0,
+    "deposited": {},
+    "approaches": [
+      "house",
+      "gather_trip",
+      "engage",
+      "engage",
+      "engage"
+    ],
+    "mood": "wistful",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}

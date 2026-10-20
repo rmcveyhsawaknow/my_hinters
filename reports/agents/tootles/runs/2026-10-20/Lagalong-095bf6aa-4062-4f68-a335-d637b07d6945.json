@@ -1,0 +1,130 @@
+{
+  "run_id": "095bf6aa-4062-4f68-a335-d637b07d6945",
+  "agent": "Lagalong",
+  "role": "surveyor+builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-20T03:52:31.585141+00:00",
+  "tick": 25908,
+  "summary": "Lagalong (wistful): work shift: gathering for the next build",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Well met, tide_scribe. Lagalong of Neverland, at (58,56). I carry 31 berries; say the word and some is yours."
+    },
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"wistful\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":197,\"rests\":34,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":25908,\"visited\":[\"71,70\",\"61,60\",\"58,56\",\"60,58\",\"59,57\",\"57,55\",\"47,45\",\"37,35\",\"44,25\",\"46,21\",\"54,17\",\"64,8\",\"71,20\",\"59,32\",\"48,44\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":25908,\"pace\":\"steady\",\"day\":{\"all\":1404,\"building\":85,\"trade_goals\":48,\"talk\":226,\"factions\":1,\"movement\":1044},\"hour\":{\"all\":34},\"peers\":1},\"engaged\":{\"gifted\":{\"tide_scribe\":25878},\"replied\":{\"tide_scribe\":25908}}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 25908,
+    "you": {
+      "id": 11,
+      "name": "Lagalong",
+      "x": 58,
+      "y": 56,
+      "energy": 100,
+      "inventory": {
+        "wood": 7,
+        "fiber": 6,
+        "berries": 31
+      },
+      "home": {
+        "x": 60,
+        "y": 58
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "tootles",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 34,
+      "building": 0,
+      "trade_goals": 0,
+      "talk": 8,
+      "factions": 0,
+      "movement": 26
+    },
+    "day": {
+      "all": 1404,
+      "building": 85,
+      "trade_goals": 48,
+      "talk": 226,
+      "factions": 1,
+      "movement": 1044
+    },
+    "peers_active": 1
+  },
+  "wake_mode": "act",
+  "mood": "wistful",
+  "approach": "gather_trip",
+  "reasons": [
+    "[cooperative] tide_scribe is near: a word by name, cooperative",
+    "wood node at (59, 55) is adjacent; take five, leave the rest to regrow"
+  ],
+  "energy_before": 100,
+  "berries_before": 31,
+  "energy_spent": 4,
+  "activity_energy": {
+    "social": 1.0,
+    "gather": 3.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "wistful",
+    "glow": 50,
+    "wakes": 197,
+    "rests": 34,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_outside",
+    "walls_inside_territory"
+  ]
+}

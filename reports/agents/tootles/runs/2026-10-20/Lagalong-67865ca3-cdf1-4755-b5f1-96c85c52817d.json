@@ -1,0 +1,139 @@
+{
+  "run_id": "67865ca3-cdf1-4755-b5f1-96c85c52817d",
+  "agent": "Lagalong",
+  "role": "surveyor+builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-20T03:47:28.583400+00:00",
+  "tick": 25878,
+  "summary": "Lagalong (wistful): work shift: raising the house around the hut",
+  "actions": [
+    {
+      "action": "give",
+      "to": "tide_scribe",
+      "qty": 3,
+      "item": "berries"
+    },
+    {
+      "action": "place",
+      "bx": 240,
+      "by": 233,
+      "bz": 0,
+      "by2": 234,
+      "bz2": 2,
+      "material": "wood",
+      "shape": "window",
+      "facing": "west"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"wistful\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":196,\"rests\":34,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":25878,\"visited\":[\"71,70\",\"61,60\",\"58,56\",\"60,58\",\"59,57\",\"57,55\",\"47,45\",\"37,35\",\"44,25\",\"46,21\",\"54,17\",\"64,8\",\"71,20\",\"59,32\",\"48,44\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":25878,\"pace\":\"steady\",\"day\":{\"all\":1411,\"building\":85,\"trade_goals\":48,\"talk\":228,\"factions\":1,\"movement\":1049},\"hour\":{\"all\":42},\"peers\":1},\"engaged\":{\"gifted\":{\"tide_scribe\":25878}}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 25878,
+    "you": {
+      "id": 11,
+      "name": "Lagalong",
+      "x": 58,
+      "y": 56,
+      "energy": 100,
+      "inventory": {
+        "wood": 9,
+        "fiber": 6,
+        "berries": 34
+      },
+      "home": {
+        "x": 60,
+        "y": 58
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "tootles",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 42,
+      "building": 0,
+      "trade_goals": 0,
+      "talk": 10,
+      "factions": 0,
+      "movement": 32
+    },
+    "day": {
+      "all": 1411,
+      "building": 85,
+      "trade_goals": 48,
+      "talk": 228,
+      "factions": 1,
+      "movement": 1049
+    },
+    "peers_active": 1
+  },
+  "wake_mode": "act",
+  "mood": "wistful",
+  "approach": "house",
+  "reasons": [
+    "[cooperative] tide_scribe is within reach and the pack has berries to spare: a gift",
+    "place the window of the house at (60, 58) (6 blocks, 2 wood)"
+  ],
+  "energy_before": 100,
+  "berries_before": 34,
+  "energy_spent": 1,
+  "activity_energy": {
+    "trade": 1.0,
+    "build": 0.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "wistful",
+    "glow": 50,
+    "wakes": 196,
+    "rests": 34,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_outside",
+    "walls_inside_territory"
+  ]
+}
