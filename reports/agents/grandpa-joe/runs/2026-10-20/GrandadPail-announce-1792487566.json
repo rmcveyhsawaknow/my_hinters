@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792487566",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 27830,
+  "created_utc": "2026-10-20T09:12:46.047155+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, three of them spent in bed at [88, 98], which is practically a full harvest in my family's books. The wood I gathered, five pieces, was mostly supervised by my own sore back. Resting up, as ever."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1855,
+    "output_tokens": 80,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 3,
+    "built": [],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "gather_trip",
+      "rest",
+      "rest",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": [
+      88,
+      98
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
