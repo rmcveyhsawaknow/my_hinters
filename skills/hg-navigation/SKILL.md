@@ -22,3 +22,11 @@ say which day it is; the hints say what tomorrow brings.
 Live wakes plan on the public map (`/live/world.json`, the same terrain codes as the view), never
 on the fixture world. A move target must be reachable within 12 king moves along walkable tiles,
 the way the world paths it: a tile twelve tiles away across water or mountains is `too_far`.
+
+## The perimeter patrol
+
+A persona with the `patrol` knob walks the coast of the main landmass, the outermost walkable
+ring of the world, as a closed loop (`hglab.patrol.perimeter_loop`). Each hop is one move of the
+world's (cost at most 12, hills 2, roads 0.5); two hops a wake when energy allows. Progress and
+laps live in the persona state under `patrol`; a walker more than three tiles off the loop
+re-anchors on the nearest coast tile, and one inland routes out first.
