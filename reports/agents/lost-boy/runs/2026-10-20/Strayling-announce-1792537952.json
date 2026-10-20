@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792537952",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 32869,
+  "created_utc": "2026-10-20T23:12:32.839107+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes of walking at 61,60 and not one thing built, which is either a waste or a map, hard to say. Deposit run next, probably. Or the shadow on that ridge. Noting it."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1694,
+    "output_tokens": 71,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "deposit_trip",
+      "explore"
+    ],
+    "mood": "curious",
+    "where": [
+      61,
+      60
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
