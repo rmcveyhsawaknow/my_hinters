@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792503789",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 29452,
+  "created_utc": "2026-10-20T13:43:09.053132+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, one rest, four moves, and not a single crumb of fudge yet! Grandad says the river gets the credit, which is fair, since it keeps taking my wafer. Factory at [81, 87] is still a sign. Signs are very productive."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1813,
+    "output_tokens": 90,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "reclaim",
+      "rest",
+      "migrate",
+      "reclaim"
+    ],
+    "mood": "manic",
+    "where": [
+      81,
+      87
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
