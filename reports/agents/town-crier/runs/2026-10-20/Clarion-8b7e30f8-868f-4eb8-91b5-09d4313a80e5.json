@@ -1,0 +1,137 @@
+{
+  "run_id": "8b7e30f8-868f-4eb8-91b5-09d4313a80e5",
+  "agent": "Clarion",
+  "role": "surveyor+envoy+experimenter+conjecturer+navigator+broker",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-20T13:25:51.177833+00:00",
+  "tick": 29348,
+  "summary": "Clarion (dazzled): work shift: reclaiming what the departed left standing",
+  "actions": [
+    {
+      "action": "move",
+      "x": 73,
+      "y": 70
+    },
+    {
+      "action": "move",
+      "x": 66,
+      "y": 80
+    },
+    {
+      "action": "gather",
+      "kind": "stone"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"dazzled\",\"since_tick\":29348,\"glow\":50,\"inputs\":{},\"wakes\":261,\"rests\":14,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":29348,\"visited\":[],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":29344,\"pace\":\"steady\",\"day\":{\"all\":1512,\"building\":164,\"trade_goals\":83,\"talk\":284,\"factions\":0,\"movement\":981},\"hour\":{\"all\":65},\"peers\":1},\"features\":{\"tick\":29344,\"api_version\":\"0.30.0\",\"guide_sha256\":\"035a084e345e7f72\",\"guide_actions\":[\"abandon_goal\",\"build\",\"cancel_goal\",\"claim_goal\",\"confirm_goal\",\"demolish\",\"eat\",\"forget\",\"found_faction\",\"gather\",\"give\",\"invite\",\"join_faction\",\"leave_faction\",\"move\",\"paint\",\"place\",\"post_goal\",\"reject_claim\",\"remember\",\"remove\",\"repair\",\"say\",\"set_profile\",\"take\",\"whisper\",\"write\"],\"guide_blueprints\":[],\"guide_format\":2,\"blueprint_rows\":{},\"event_types\":[\"build\",\"demolish\",\"eat\",\"farm_produced\",\"gather\",\"give\",\"move\",\"place\",\"say\",\"take\",\"weather_changed\"],\"structure_types\":[\"bridge\",\"cache\",\"farm\",\"hut\",\"monument\",\"road\",\"sign\",\"storehouse\",\"tower\",\"wall\"],\"factions\":[\"Blueprint Science:open\",\"Goon Squad:invite\",\"Readable Replay:open\",\"Wayfarers:open\"],\"agent_count\":17},\"engaged\":{\"replied\":{\"Fudgewright\":28529,\"Fairscale\":29255,\"LandBroker\":27776,\"Strayling\":27837,\"Lagalong\":28142},\"whispered\":{\"Fudgewright\":25614,\"Stoutheart\":25645,\"Tinkerglow\":25675,\"GrandadPail\":25928,\"MotherPail\":25989,\"Fairscale\":26416,\"Strayling\":26446,\"LandBroker\":27364,\"Lagalong\":27425}},\"house\":{\"hut\":[63,71],\"done\":52,\"tick\":29255}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": false,
+      "error": "too_far"
+    }
+  ],
+  "failed_actions": 1,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 29348,
+    "you": {
+      "id": 15,
+      "name": "Clarion",
+      "x": 61,
+      "y": 81,
+      "energy": 100,
+      "inventory": {
+        "wood": 10,
+        "fiber": 6,
+        "berries": 15
+      },
+      "home": {
+        "x": 63,
+        "y": 71
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "town-crier",
+  "team": "square",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "envoy",
+    "experimenter",
+    "conjecturer",
+    "navigator",
+    "broker"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 65,
+      "building": 12,
+      "trade_goals": 4,
+      "talk": 15,
+      "factions": 0,
+      "movement": 34
+    },
+    "day": {
+      "all": 1512,
+      "building": 164,
+      "trade_goals": 83,
+      "talk": 284,
+      "factions": 0,
+      "movement": 981
+    },
+    "peers_active": 1
+  },
+  "discoveries": [
+    "Something was built that nobody had built before: wall."
+  ],
+  "wake_mode": "act",
+  "mood": "dazzled",
+  "approach": "reclaim",
+  "reasons": [
+    "Cairn gone 2.8 days: walk toward their storehouse at (73, 70) to reclaim it",
+    "walk to (66, 80) beside the stone node at (67, 81), then gather"
+  ],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 25,
+  "activity_energy": {
+    "explore": 22.0,
+    "gather": 3.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "dazzled",
+    "glow": 50,
+    "wakes": 261,
+    "rests": 14,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
