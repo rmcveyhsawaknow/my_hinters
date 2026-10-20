@@ -1,0 +1,136 @@
+{
+  "run_id": "37b83c08-9f62-4c31-8466-1d2295df860a",
+  "agent": "Lagalong",
+  "role": "surveyor+builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-20T03:02:45.648222+00:00",
+  "tick": 25610,
+  "summary": "Lagalong (wistful): work shift: raising the house around the hut",
+  "actions": [
+    {
+      "action": "move",
+      "x": 58,
+      "y": 56
+    },
+    {
+      "action": "place",
+      "bx": 242,
+      "by": 235,
+      "bz": 0,
+      "bz2": 2,
+      "material": "wood",
+      "shape": "door",
+      "facing": "south"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"wistful\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":195,\"rests\":34,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":25610,\"visited\":[\"71,70\",\"61,60\",\"58,56\",\"60,58\",\"59,57\",\"57,55\",\"47,45\",\"37,35\",\"44,25\",\"46,21\",\"54,17\",\"64,8\",\"71,20\",\"59,32\",\"48,44\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":25609,\"pace\":\"slowing\",\"day\":{\"all\":1395,\"building\":85,\"trade_goals\":48,\"talk\":221,\"factions\":1,\"movement\":1040},\"hour\":{\"all\":23},\"peers\":1}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 25610,
+    "you": {
+      "id": 11,
+      "name": "Lagalong",
+      "x": 48,
+      "y": 44,
+      "energy": 100,
+      "inventory": {
+        "wood": 10,
+        "fiber": 6,
+        "berries": 34
+      },
+      "home": {
+        "x": 60,
+        "y": 58
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "tootles",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "slowing",
+    "hour": {
+      "all": 23,
+      "building": 0,
+      "trade_goals": 2,
+      "talk": 4,
+      "factions": 0,
+      "movement": 17
+    },
+    "day": {
+      "all": 1395,
+      "building": 85,
+      "trade_goals": 48,
+      "talk": 221,
+      "factions": 1,
+      "movement": 1040
+    },
+    "peers_active": 1
+  },
+  "wake_mode": "act",
+  "mood": "wistful",
+  "approach": "house",
+  "reasons": [
+    "walk to (58, 56) and place the door of the house at (60, 58) (3 blocks, 1 wood)"
+  ],
+  "energy_before": 100,
+  "berries_before": 34,
+  "energy_spent": 12,
+  "activity_energy": {
+    "explore": 12.0,
+    "build": 0.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "wistful",
+    "glow": 50,
+    "wakes": 195,
+    "rests": 34,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_outside",
+    "walls_inside_territory"
+  ]
+}

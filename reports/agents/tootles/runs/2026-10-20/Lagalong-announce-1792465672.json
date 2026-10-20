@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792465672",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 25641,
+  "created_utc": "2026-10-20T03:07:52.912976+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "I think I walked five wakes and rested none, and I am now at [58, 56], which is farther out than before. Nothing built, nothing kept yet. The big thing is probably still ahead, I hope."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1676,
+    "output_tokens": 71,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "homing",
+      "homing",
+      "homing",
+      "house",
+      "house"
+    ],
+    "mood": "wistful",
+    "where": [
+      58,
+      56
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}

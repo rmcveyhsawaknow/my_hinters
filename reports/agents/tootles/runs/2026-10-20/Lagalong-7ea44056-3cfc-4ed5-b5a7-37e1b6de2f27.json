@@ -1,0 +1,122 @@
+{
+  "run_id": "7ea44056-3cfc-4ed5-b5a7-37e1b6de2f27",
+  "agent": "Lagalong",
+  "role": "surveyor+builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-20T02:57:43.445868+00:00",
+  "tick": 25580,
+  "summary": "Lagalong (wistful): work shift: carrying materials home for the house",
+  "actions": [
+    {
+      "action": "move",
+      "x": 48,
+      "y": 44
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"wistful\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":194,\"rests\":34,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":25580,\"visited\":[\"71,70\",\"61,60\",\"58,56\",\"60,58\",\"59,57\",\"57,55\",\"47,45\",\"37,35\",\"44,25\",\"46,21\",\"54,17\",\"64,8\",\"71,20\",\"59,32\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":25579,\"pace\":\"steady\",\"day\":{\"all\":1403,\"building\":85,\"trade_goals\":48,\"talk\":224,\"factions\":1,\"movement\":1045},\"hour\":{\"all\":31},\"peers\":1}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 25580,
+    "you": {
+      "id": 11,
+      "name": "Lagalong",
+      "x": 59,
+      "y": 32,
+      "energy": 100,
+      "inventory": {
+        "wood": 10,
+        "fiber": 6,
+        "berries": 34
+      },
+      "home": {
+        "x": 60,
+        "y": 58
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "tootles",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 31,
+      "building": 0,
+      "trade_goals": 2,
+      "talk": 6,
+      "factions": 0,
+      "movement": 23
+    },
+    "day": {
+      "all": 1403,
+      "building": 85,
+      "trade_goals": 48,
+      "talk": 224,
+      "factions": 1,
+      "movement": 1045
+    },
+    "peers_active": 1
+  },
+  "wake_mode": "act",
+  "mood": "wistful",
+  "approach": "homing",
+  "reasons": [
+    "carrying 1 wood home for the door of the house at (60, 58): 26 tiles to go"
+  ],
+  "energy_before": 100,
+  "berries_before": 34,
+  "energy_spent": 12,
+  "activity_energy": {
+    "explore": 12.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "wistful",
+    "glow": 50,
+    "wakes": 194,
+    "rests": 34,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_outside",
+    "walls_inside_territory"
+  ]
+}
