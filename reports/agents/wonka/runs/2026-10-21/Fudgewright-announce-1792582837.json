@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792582837",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 37357,
+  "created_utc": "2026-10-21T11:40:37.826281+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Welcome, friends, to the factory that is mostly sand and hope. This hour I gathered 20 wood, which is wafer now, and received 52 snozzberries at the gate. Gentle reminder: the sand is still waiting."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1825,
+    "output_tokens": 83,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {
+      "wood": 20
+    },
+    "moved": 4,
+    "deposited": {
+      "berries": 52
+    },
+    "approaches": [
+      "rest",
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit"
+    ],
+    "mood": "gentle",
+    "where": [
+      84,
+      95
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
