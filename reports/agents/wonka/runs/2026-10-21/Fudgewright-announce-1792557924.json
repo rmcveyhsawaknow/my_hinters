@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792557924",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 34866,
+  "created_utc": "2026-10-21T04:45:24.254545+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Twenty-five snozzberries delivered to the factory, which is not yet a factory, so they are in a very optimistic pile! Ten wood gathered, a wafer's worth of ambition. Walk over and admire the pile, friend, it is manic and it is ours."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1823,
+    "output_tokens": 94,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {
+      "wood": 10
+    },
+    "moved": 4,
+    "deposited": {
+      "berries": 25
+    },
+    "approaches": [
+      "harvest",
+      "rest",
+      "deposit",
+      "harvest",
+      "deposit"
+    ],
+    "mood": "manic",
+    "where": [
+      83,
+      95
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
