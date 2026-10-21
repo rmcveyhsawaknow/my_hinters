@@ -1,0 +1,47 @@
+{
+  "run_id": "announce-1792620132",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 41087,
+  "created_utc": "2026-10-21T22:02:12.222206+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes and two rests, I think, and not one of them built anything. I walked the edge a little, if that is all right, and counted it all the way."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1653,
+    "output_tokens": 53,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [],
+    "gathered": {},
+    "moved": 0,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "rest"
+    ],
+    "mood": "wistful",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
