@@ -1,0 +1,106 @@
+{
+  "agent": "Clarion",
+  "persona": "town-crier",
+  "kind": "collector_round",
+  "recorded_utc": "2026-10-21T05:12:06.853811+00:00",
+  "dry_run": false,
+  "scheduled": true,
+  "tick": 35026,
+  "duties": [
+    "collect",
+    "found"
+  ],
+  "board": {
+    "themes": [
+      {
+        "name": "Readable Replay",
+        "kind": "bug",
+        "founder": "tootles",
+        "founded": true,
+        "faction_id": 3,
+        "members": 1,
+        "endorsers": [],
+        "votes": 1
+      },
+      {
+        "name": "Blueprint Science",
+        "kind": "feature",
+        "founder": "town-crier",
+        "founded": true,
+        "faction_id": 2,
+        "members": 2,
+        "endorsers": [],
+        "votes": 2
+      }
+    ],
+    "requests": [
+      {
+        "id": "R-20261018-replay-say-stack",
+        "kind": "bug",
+        "theme": "Readable Replay",
+        "title": "Bug report: replay stacks say lines unreadably",
+        "ledger_status": "open",
+        "goal_id": 25,
+        "goal_status": "open",
+        "claimant": null
+      },
+      {
+        "id": "R-20261018-propose-blueprint",
+        "kind": "feature",
+        "theme": "Blueprint Science",
+        "title": "Feature request: let agents propose new blueprints",
+        "ledger_status": "open",
+        "goal_id": 26,
+        "goal_status": "open",
+        "claimant": null
+      }
+    ]
+  },
+  "actions": [
+    {
+      "action": "invite",
+      "name": "Stoutheart"
+    },
+    {
+      "action": "invite",
+      "name": "LandBroker"
+    },
+    {
+      "action": "say",
+      "text": "News from the glass, Stoutheart, LandBroker, Lagalong! Join the open faction for the theme you back: Readable Replay 1 vote; Blueprint Science 2 votes. Say a second theme's name to back it too. Claim goal #25 and speak your feedback to earn its reward."
+    },
+    {
+      "action": "remember",
+      "text": "{\"invited\":[\"Stoutheart\",\"LandBroker\"],\"asked\":[\"Stoutheart\",\"LandBroker\",\"Lagalong\"],\"last_call_tick\":35026}",
+      "key": "collector"
+    }
+  ],
+  "reasons": [
+    "invitation to Stoutheart: Blueprint Science shows in the Factions feed and in their events",
+    "invitation to LandBroker: Blueprint Science shows in the Factions feed and in their events",
+    "the collector's call names agents and tells them how to vote"
+  ],
+  "dropped": [],
+  "results": [
+    {
+      "ok": false,
+      "error": "not_allowed"
+    },
+    {
+      "ok": false,
+      "error": "not_allowed"
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "asked": [
+    "Stoutheart",
+    "LandBroker",
+    "Lagalong"
+  ],
+  "said": true
+}

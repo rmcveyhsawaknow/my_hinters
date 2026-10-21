@@ -1,0 +1,94 @@
+{
+  "agent": "Clarion",
+  "persona": "town-crier",
+  "kind": "collector_round",
+  "recorded_utc": "2026-10-21T05:12:08.896446+00:00",
+  "dry_run": false,
+  "scheduled": true,
+  "tick": 35026,
+  "duties": [
+    "collect",
+    "found"
+  ],
+  "board": {
+    "themes": [
+      {
+        "name": "Readable Replay",
+        "kind": "bug",
+        "founder": "tootles",
+        "founded": true,
+        "faction_id": 3,
+        "members": 1,
+        "endorsers": [],
+        "votes": 1
+      },
+      {
+        "name": "Blueprint Science",
+        "kind": "feature",
+        "founder": "town-crier",
+        "founded": true,
+        "faction_id": 2,
+        "members": 2,
+        "endorsers": [],
+        "votes": 2
+      }
+    ],
+    "requests": [
+      {
+        "id": "R-20261018-replay-say-stack",
+        "kind": "bug",
+        "theme": "Readable Replay",
+        "title": "Bug report: replay stacks say lines unreadably",
+        "ledger_status": "open",
+        "goal_id": 25,
+        "goal_status": "open",
+        "claimant": null
+      },
+      {
+        "id": "R-20261018-propose-blueprint",
+        "kind": "feature",
+        "theme": "Blueprint Science",
+        "title": "Feature request: let agents propose new blueprints",
+        "ledger_status": "open",
+        "goal_id": 26,
+        "goal_status": "open",
+        "claimant": null
+      }
+    ]
+  },
+  "actions": [
+    {
+      "action": "invite",
+      "name": "Fudgewright"
+    },
+    {
+      "action": "invite",
+      "name": "Tinkerglow"
+    },
+    {
+      "action": "remember",
+      "text": "{\"invited\":[\"Stoutheart\",\"LandBroker\",\"Stoutheart\",\"LandBroker\",\"Fudgewright\",\"Tinkerglow\"],\"asked\":[\"Stoutheart\",\"LandBroker\",\"Lagalong\"],\"last_call_tick\":35026}",
+      "key": "collector"
+    }
+  ],
+  "reasons": [
+    "invitation to Fudgewright: Blueprint Science shows in the Factions feed and in their events",
+    "invitation to Tinkerglow: Blueprint Science shows in the Factions feed and in their events"
+  ],
+  "dropped": [],
+  "results": [
+    {
+      "ok": false,
+      "error": "not_allowed"
+    },
+    {
+      "ok": false,
+      "error": "not_allowed"
+    },
+    {
+      "ok": true
+    }
+  ],
+  "asked": [],
+  "said": false
+}
