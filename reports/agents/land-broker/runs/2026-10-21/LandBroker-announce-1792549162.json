@@ -1,0 +1,59 @@
+{
+  "run_id": "announce-1792549162",
+  "kind": "announce",
+  "agent": "LandBroker",
+  "persona": "land-broker",
+  "tick": 33990,
+  "created_utc": "2026-10-21T02:19:22.913575+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Land office: five claim signs staked this hour, at (97,67), (102,72), (102,67), (97,62) and (92,62). Lots are one wood and five energy each; the price posts at five wood. Dirt holds its value until someone wants it."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1836,
+    "output_tokens": 87,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "sign at (97,67)",
+      "sign at (102,72)",
+      "sign at (102,67)",
+      "sign at (97,62)",
+      "sign at (92,62)"
+    ],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "stake",
+      "stake",
+      "stake",
+      "stake",
+      "stake"
+    ],
+    "mood": "brisk",
+    "where": [
+      93,
+      61
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
