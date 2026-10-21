@@ -4,18 +4,18 @@
  "team": "chocolate-factory",
  "headline": "resting up for the glory",
  "metric_version": 2,
- "tick": 26605,
- "day": 73,
- "date": "2026-10-20",
+ "tick": 35245,
+ "day": 97,
+ "date": "2026-10-21",
  "window_ticks": 60480,
  "events_considered": 2000,
- "runs_considered": 308,
+ "runs_considered": 456,
  "alive": {
   "score": 70,
-  "detail": "308/302 wakes, never lapsed, 25 failed",
+  "detail": "456/426 wakes, never lapsed, 25 failed",
   "parts": {
-   "completed": 308,
-   "scheduled": 302,
+   "completed": 456,
+   "scheduled": 426,
    "lapsed": 0,
    "banned": false,
    "rate_limited": 0,
@@ -26,16 +26,16 @@
  },
  "on_mission": {
   "score": 50,
-  "detail": "2.54 energy/wake · 0% of team credit claimed · 3 responses · 0 timely bursts",
+  "detail": "2.41 energy/wake · 0% of team credit claimed · 20 responses · 0 timely bursts",
   "rows": [
    {
     "id": "energy_thrift",
     "label": "energy spent per wake",
-    "value": 2.542,
+    "value": 2.41,
     "target": 4,
     "weight": 0.25,
     "progress": 1.0,
-    "shown": "2.54 energy/wake",
+    "shown": "2.41 energy/wake",
     "measure": "runs.energy_per_wake"
    },
    {
@@ -51,11 +51,11 @@
    {
     "id": "audience",
     "label": "peers who responded to a tale",
-    "value": 3.0,
+    "value": 20.0,
     "target": 3,
     "weight": 0.25,
     "progress": 1.0,
-    "shown": "3 responses",
+    "shown": "20 responses",
     "measure": "events.replies_received"
    },
    {
@@ -71,13 +71,13 @@
   ]
  },
  "in_character": {
-  "score": 50,
-  "detail": "boastful 3 · lazy 5 · fond 2 · opportunistic 2",
+  "score": 48,
+  "detail": "boastful 3 · lazy 4 · fond 2 · opportunistic 2",
   "signatures": [
    {
     "id": "rest_share",
     "label": "share of wakes in bed",
-    "value": 0.51,
+    "value": 0.518,
     "range": [
      0.45,
      0.8
@@ -88,7 +88,7 @@
    {
     "id": "home_distance",
     "label": "mean distance from the hut",
-    "value": 6.468,
+    "value": 13.235,
     "range": [
      0,
      3
@@ -99,7 +99,7 @@
    {
     "id": "social_share",
     "label": "share of energy spent talking",
-    "value": 0.065,
+    "value": 0.073,
     "range": [
      0.3,
      0.9
@@ -110,7 +110,7 @@
    {
     "id": "lines_per_day",
     "label": "public lines per real day",
-    "value": 21.33,
+    "value": 28.0,
     "range": [
      8,
      60
@@ -121,7 +121,7 @@
    {
     "id": "energy_mix",
     "label": "intended vs actual energy mix",
-    "value": 0.194,
+    "value": 0.216,
     "range": [
      0.5,
      1.0
@@ -134,22 +134,22 @@
    {
     "name": "boastful",
     "score": 3,
-    "reason": "Lines puff up his inactivity ('practically a harvest', 'the family's strength') and cite coordinates, but they lack real event ids and credit claims, and the ol"
+    "reason": "Lines brag about 'leadership', 'considerable' contributions and stones carried by his spirit, with coordinates like [84, 78] and [81, 83]; but the claims are mo"
    },
    {
     "name": "lazy",
-    "score": 5,
-    "reason": "Nearly every wake is a rest by the hut, with 'zero built, zero gathered', movement only a couple of times, and a request for someone to bring him a berry."
+    "score": 4,
+    "reason": "Most wakes are spent resting by the hut, he supervises deposits from afar, and he frames resting as hard work and berries as duty; the occasional moves and eati"
    },
    {
     "name": "fond",
     "score": 2,
-    "reason": "He mentions Mother Pail doing the rest and addresses the family as 'children', and a friendly whisper to Stoutheart is polite, but there is little real warmth a"
+    "reason": "No cross words or mockery of peers, and he mentions 'the family's strength', but there is little overt warmth toward the family beyond that."
    },
    {
     "name": "opportunistic",
     "score": 2,
-    "reason": "He hints at resting up for the next golden moment and makes an outreach whisper, but he shows no pattern of showing up right after big events to claim them."
+    "reason": "He claims a deposit trip and gathered stones he did not do, which is credit-taking, but nothing shows him appearing right after big events or timing his claims "
    }
   ],
   "judge_meta": {
@@ -158,12 +158,12 @@
    "model": "claude-sonnet-5-5",
    "provider": "anthropic",
    "sampled_lines": 6,
-   "sampled_actions": 3,
-   "created_utc": "2026-10-20T05:49:14.530637+00:00",
+   "sampled_actions": 8,
+   "created_utc": "2026-10-21T05:49:13.281261+00:00",
    "usage": {
     "calls": 1,
-    "input_tokens": 1645,
-    "output_tokens": 308,
+    "input_tokens": 1629,
+    "output_tokens": 332,
     "model": "claude-sonnet-5-5",
     "provider": "anthropic",
     "route": "review"
@@ -184,7 +184,7 @@
     "value": 0.0,
     "decayed_value": 0.0,
     "age_ticks": 0,
-    "explanation": "Bluster 0: 0 claim(s) against own work 0, 0% of the team's logged work claimed."
+    "explanation": "Bluster 0: 0 claim(s) against own work 25, 0% of the team's logged work claimed."
    },
    {
     "from": "grandpa-joe",
@@ -197,7 +197,7 @@
     "value": 0.0,
     "decayed_value": 0.0,
     "age_ticks": 0,
-    "explanation": "Bluster 0: 0 claim(s) against own work 0, 0% of the team's logged work claimed."
+    "explanation": "Bluster 0: 0 claim(s) against own work 25, 0% of the team's logged work claimed."
    }
   ],
   "received": [],
@@ -208,7 +208,7 @@
   "public_goods_built": 0,
   "norms_kept": true,
   "norm_breaches": [],
-  "replies_received": 3
+  "replies_received": 20
  },
  "approaches": {
   "rows": [
@@ -217,8 +217,8 @@
     "label": "tall tales with footnotes",
     "wakes": 0,
     "energy": 0,
-    "outcome": 3.0,
-    "per_energy": 3.0,
+    "outcome": 20.0,
+    "per_energy": 20.0,
     "hypothesis": "H-20261017-joe-audience",
     "bet_status": "proposed",
     "bet_title": "Tall tales with footnotes draw an audience"
@@ -240,9 +240,9 @@
   "next_bet": "try tall tales with footnotes at least once this week; it has a bet but no wakes"
  },
  "trend": {
-  "alive": "▆▅▆",
-  "on_mission": "▄▅▅",
-  "in_character": "▄▅▅"
+  "alive": "▆▅▆▆",
+  "on_mission": "▄▅▅▅",
+  "in_character": "▄▅▅▄"
  },
  "history": [
   {
@@ -262,24 +262,32 @@
    "tick": 17969
   },
   {
+   "alive": 70,
    "date": "2026-10-20",
+   "in_character": 50,
+   "metric_version": 2,
+   "on_mission": 50,
+   "tick": 26605
+  },
+  {
+   "date": "2026-10-21",
    "metric_version": 2,
    "alive": 70,
    "on_mission": 50,
-   "in_character": 50,
-   "tick": 26605
+   "in_character": 48,
+   "tick": 35245
   }
  ],
  "signals": {
   "bluster": {
    "value": 0.0,
-   "explanation": "Bluster 0: 0 claim(s) against own work 0, 0% of the team's logged work claimed.",
+   "explanation": "Bluster 0: 0 claim(s) against own work 25, 0% of the team's logged work claimed.",
    "parts": {
     "claims": 0,
-    "own_work": 0,
+    "own_work": 24.8,
     "share_of_team_work_claimed": 0.0
    },
-   "tick": 26605
+   "tick": 35245
   }
  }
 }

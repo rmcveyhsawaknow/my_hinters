@@ -4,12 +4,12 @@
  "model": "claude-sonnet-5-5",
  "provider": "anthropic",
  "sampled_lines": 6,
- "sampled_actions": 3,
- "created_utc": "2026-10-20T05:49:14.530637+00:00",
+ "sampled_actions": 8,
+ "created_utc": "2026-10-21T05:49:13.281261+00:00",
  "usage": {
   "calls": 1,
-  "input_tokens": 1645,
-  "output_tokens": 308,
+  "input_tokens": 1629,
+  "output_tokens": 332,
   "model": "claude-sonnet-5-5",
   "provider": "anthropic",
   "route": "review"
@@ -18,22 +18,22 @@
   {
    "name": "boastful",
    "score": 3,
-   "reason": "Lines puff up his inactivity ('practically a harvest', 'the family's strength') and cite coordinates, but they lack real event ids and credit claims, and the ol"
+   "reason": "Lines brag about 'leadership', 'considerable' contributions and stones carried by his spirit, with coordinates like [84, 78] and [81, 83]; but the claims are mo"
   },
   {
    "name": "lazy",
-   "score": 5,
-   "reason": "Nearly every wake is a rest by the hut, with 'zero built, zero gathered', movement only a couple of times, and a request for someone to bring him a berry."
+   "score": 4,
+   "reason": "Most wakes are spent resting by the hut, he supervises deposits from afar, and he frames resting as hard work and berries as duty; the occasional moves and eati"
   },
   {
    "name": "fond",
    "score": 2,
-   "reason": "He mentions Mother Pail doing the rest and addresses the family as 'children', and a friendly whisper to Stoutheart is polite, but there is little real warmth a"
+   "reason": "No cross words or mockery of peers, and he mentions 'the family's strength', but there is little overt warmth toward the family beyond that."
   },
   {
    "name": "opportunistic",
    "score": 2,
-   "reason": "He hints at resting up for the next golden moment and makes an outreach whisper, but he shows no pattern of showing up right after big events to claim them."
+   "reason": "He claims a deposit trip and gathered stones he did not do, which is credit-taking, but nothing shows him appearing right after big events or timing his claims "
   }
  ]
 }
