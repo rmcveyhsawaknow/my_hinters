@@ -1,0 +1,141 @@
+{
+  "run_id": "443b1b65-b0fc-4ac1-a3a8-d75cce54042a",
+  "agent": "Strayling",
+  "role": "surveyor+experimenter+conjecturer+methodologist",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-21T21:50:06.646761+00:00",
+  "tick": 41014,
+  "summary": "Strayling (curious): work shift: reclaiming what the departed left standing",
+  "actions": [
+    {
+      "action": "say",
+      "text": "MotherPail, Strayling here, at (71,71). What are you building, and what do you need for it? I trade."
+    },
+    {
+      "action": "demolish",
+      "x": 70,
+      "y": 70
+    },
+    {
+      "action": "demolish",
+      "x": 70,
+      "y": 70
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"curious\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":434,\"rests\":15,\"bursts\":0,\"distractions\":16,\"last_wake_tick\":41014,\"visited\":[\"48,65\",\"50,58\",\"43,55\",\"49,61\",\"42,70\",\"37,71\",\"37,78\",\"41,80\",\"35,72\",\"31,64\",\"32,71\",\"27,74\",\"30,69\",\"25,60\",\"24,64\",\"26,55\",\"31,54\",\"35,57\",\"26,50\",\"30,44\",\"27,35\",\"32,41\",\"40,45\",\"42,39\",\"37,36\",\"28,34\",\"29,33\",\"37,39\",\"44,45\",\"43,39\",\"50,38\",\"56,31\",\"65,31\",\"65,26\",\"74,23\",\"69,15\",\"66,8\",\"64,10\",\"70,15\",\"65,23\",\"68,29\",\"77,38\",\"81,38\",\"89,30\",\"87,35\",\"93,30\",\"85,37\",\"92,33\",\"95,27\",\"86,36\",\"80,28\",\"84,28\",\"86,40\",\"74,52\",\"70,64\",\"58,76\",\"57,77\",\"51,73\",\"55,77\",\"61,68\",\"67,66\",\"61,66\",\"53,57\",\"52,62\",\"53,71\",\"57,60\",\"65,54\",\"73,58\",\"64,62\",\"67,55\",\"74,66\",\"81,78\",\"80,84\",\"80,78\",\"73,71\",\"80,66\",\"74,70\",\"73,73\",\"72,71\",\"71,69\",\"72,61\",\"68,59\",\"66,57\",\"59,55\",\"68,63\",\"55,61\",\"52,57\",\"53,59\",\"51,66\",\"51,59\",\"53,64\",\"45,70\",\"53,66\",\"45,58\",\"45,65\",\"40,63\",\"52,60\",\"61,60\",\"66,53\",\"74,57\",\"64,55\",\"72,57\",\"66,55\",\"67,54\",\"62,58\",\"61,63\",\"73,56\",\"73,57\",\"65,64\",\"80,68\",\"81,68\",\"74,71\",\"82,66\",\"70,76\",\"72,73\",\"78,74\",\"74,72\",\"69,71\",\"88,67\",\"71,71\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"ideas\":[\"t31959: a fiber node near 68,63\",\"t34332: a berries node near 61,63\",\"t35068: a fiber node near 65,64\",\"t36362: a stone node near 70,76\",\"t37830: a stone node near 88,67\"],\"world\":{\"tick\":41014,\"pace\":\"steady\",\"day\":{\"all\":1406,\"building\":251,\"trade_goals\":96,\"talk\":187,\"factions\":2,\"movement\":870},\"hour\":{\"all\":57},\"peers\":1},\"engaged\":{\"replied\":{\"LandBroker\":40953,\"Clarion\":31259,\"MotherPail\":41014,\"Fudgewright\":31963,\"GrandadPail\":40984},\"reclaimed\":{\"Quill:67,55\":29138,\"Cairn:73,70\":30217,\"Cairn:71,70\":30765,\"Cairn:73,71\":31289,\"Cairn:71,69\":31350,\"Quill:68,59\":31587,\"Quill:67,56\":31648,\"Quillwright:54,60\":32024,\"Fairscale:70,70\":40984}},\"house\":{\"hut\":[57,79],\"done\":9,\"tick\":26251}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 41014,
+    "you": {
+      "id": 10,
+      "name": "Strayling",
+      "x": 71,
+      "y": 71,
+      "energy": 100,
+      "inventory": {
+        "wood": 23,
+        "fiber": 7,
+        "stone": 3,
+        "berries": 15
+      },
+      "home": {
+        "x": 57,
+        "y": 79
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "lost-boy",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "experimenter",
+    "conjecturer",
+    "methodologist"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 57,
+      "building": 15,
+      "trade_goals": 3,
+      "talk": 6,
+      "factions": 0,
+      "movement": 33
+    },
+    "day": {
+      "all": 1406,
+      "building": 251,
+      "trade_goals": 96,
+      "talk": 187,
+      "factions": 2,
+      "movement": 870
+    },
+    "peers_active": 1
+  },
+  "wake_mode": "act",
+  "mood": "curious",
+  "approach": "reclaim",
+  "reasons": [
+    "[neutral] MotherPail is near: a word by name, neutral",
+    "Fairscale gone 2.2 days: 2 hit(s) on their storehouse at (70, 70) (hp 20); the quarter it drops is ours to take"
+  ],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 11,
+  "activity_energy": {
+    "social": 1.0,
+    "build": 10.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "curious",
+    "glow": 50,
+    "wakes": 434,
+    "rests": 15,
+    "bursts": 0,
+    "distractions": 16,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
