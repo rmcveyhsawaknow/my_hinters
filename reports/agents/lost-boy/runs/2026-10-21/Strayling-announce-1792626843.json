@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792626843",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 41758,
+  "created_utc": "2026-10-21T23:54:03.419199+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes at (68, 71) and not one thing built, which is odd, a reclaim, reclaim, reclaim, the same tile circling like a moth; wait, is that a shadow or a node, anyway it moved. Card filed. Moving on."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1700,
+    "output_tokens": 89,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "reclaim",
+      "reclaim",
+      "reclaim",
+      "reclaim",
+      "reclaim"
+    ],
+    "mood": "curious",
+    "where": [
+      68,
+      71
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
