@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792561297",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 35203,
+  "created_utc": "2026-10-21T05:41:37.874279+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Fifteen wood deposited, five gathered, four steps moved, one rest taken, and the factory is still mostly a sign! Gentle reminder: wafer is wood, and the wafer is delighted. Fine print: the sign is also true."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1829,
+    "output_tokens": 86,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 4,
+    "deposited": {
+      "wood": 15
+    },
+    "approaches": [
+      "deposit_trip",
+      "deposit",
+      "harvest",
+      "deposit_trip",
+      "rest"
+    ],
+    "mood": "manic",
+    "where": [
+      84,
+      93
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}

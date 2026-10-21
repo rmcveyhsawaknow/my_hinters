@@ -1,0 +1,131 @@
+{
+  "run_id": "3ae72e8e-c75c-4a14-b488-de55ac914ad7",
+  "agent": "Fudgewright",
+  "role": "navigator+builder+broker",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-21T05:36:30.329074+00:00",
+  "tick": 35172,
+  "summary": "Fudgewright (manic): work shift: carrying a full pack to the storehouse",
+  "actions": [
+    {
+      "action": "move",
+      "x": 84,
+      "y": 93
+    },
+    {
+      "action": "eat",
+      "qty": 1
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"manic\",\"since_tick\":28232,\"glow\":50,\"inputs\":{\"inspiration\":{\"value\":71.4,\"tick\":35069,\"explanation\":\"hope from mrs-bucket 71\"},\"suspicion\":{\"value\":0.0,\"tick\":35069,\"explanation\":\"bluster from grandpa-joe 0\"},\"discernment\":{\"value\":0.0,\"tick\":35069,\"explanation\":\"bluster from grandpa-joe 0\"},\"hope\":{\"value\":71.4,\"tick\":35069,\"explanation\":\"Hope 71: contribution 140, uplift 48, resilience 0 (decayed over a day).\"},\"bluster\":{\"value\":0.0,\"tick\":35069,\"explanation\":\"Bluster 0: 0 claim(s) against own work 25, 0% of the team's logged work claimed.\"}},\"wakes\":328,\"rests\":30,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":35172,\"visited\":[\"87,102\",\"87,95\",\"82,91\",\"87,97\",\"80,102\",\"85,106\",\"89,99\",\"86,105\",\"84,97\",\"92,98\",\"81,87\",\"86,104\",\"76,92\",\"77,90\",\"81,93\",\"70,86\",\"81,96\",\"71,84\",\"79,93\",\"65,78\",\"73,90\",\"85,102\",\"85,84\",\"87,96\",\"88,85\",\"88,97\",\"86,84\",\"80,94\",\"86,85\",\"92,83\",\"90,77\",\"84,75\",\"83,81\",\"67,70\",\"63,69\",\"55,61\",\"53,59\",\"61,71\",\"70,81\",\"74,91\",\"86,97\",\"84,93\",\"83,94\",\"85,91\",\"83,95\",\"86,100\",\"81,95\",\"92,94\",\"86,93\",\"84,95\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":35170,\"pace\":\"steady\",\"day\":{\"all\":1980,\"building\":434,\"trade_goals\":111,\"talk\":333,\"factions\":0,\"movement\":1102},\"hour\":{\"all\":72},\"peers\":0},\"engaged\":{\"whispered\":{\"Clarion\":25742,\"Tinkerglow\":34416,\"Stoutheart\":34476,\"Fairscale\":25863,\"Strayling\":29542,\"Lagalong\":31967,\"LandBroker\":32256},\"replied\":{\"Clarion\":26912,\"Tinkerglow\":30852,\"Stoutheart\":28292,\"Strayling\":32195,\"Lagalong\":32226},\"gifted\":{\"Tinkerglow\":26972,\"Clarion\":28625},\"reclaimed\":{\"Quillwright:53,59\":32226}},\"house\":{\"hut\":[65,71],\"done\":10,\"tick\":31967}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 35172,
+    "you": {
+      "id": 3,
+      "name": "Fudgewright",
+      "x": 83,
+      "y": 94,
+      "energy": 100,
+      "inventory": {
+        "wood": 10,
+        "fiber": 8,
+        "berries": 29
+      },
+      "home": {
+        "x": 65,
+        "y": 71
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "wonka",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "navigator",
+    "builder",
+    "broker"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 72,
+      "building": 13,
+      "trade_goals": 5,
+      "talk": 13,
+      "factions": 0,
+      "movement": 41
+    },
+    "day": {
+      "all": 1980,
+      "building": 434,
+      "trade_goals": 111,
+      "talk": 333,
+      "factions": 0,
+      "movement": 1102
+    },
+    "peers_active": 0
+  },
+  "wake_mode": "act",
+  "mood": "manic",
+  "approach": "deposit_trip",
+  "reasons": [
+    "pack 47/50: walk toward MotherPail's storehouse at (85, 92) to unload",
+    "pack 47/50 with 29 berries: one berry after the walk, when the meal is not refused"
+  ],
+  "energy_before": 100,
+  "berries_before": 29,
+  "energy_spent": 1,
+  "activity_energy": {
+    "explore": 1.0,
+    "gather": 0.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "manic",
+    "glow": 50,
+    "wakes": 328,
+    "rests": 30,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
