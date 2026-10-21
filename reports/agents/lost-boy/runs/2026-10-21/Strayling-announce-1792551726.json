@@ -1,0 +1,59 @@
+{
+  "run_id": "announce-1792551726",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 34246,
+  "created_utc": "2026-10-21T03:02:06.846323+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Laid two road bits at (71,56) and (67,56), stone five, wood five, and now the road wants to know where it's going. Is that a node or a shadow? Anyway the shadow moved. Card filed, chasing east."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1730,
+    "output_tokens": 80,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (71,56)",
+      "road at (67,56)"
+    ],
+    "gathered": {
+      "stone": 5,
+      "wood": 5
+    },
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "gather_trip",
+      "deposit_trip",
+      "deposit_trip",
+      "build",
+      "build"
+    ],
+    "mood": "curious",
+    "where": [
+      62,
+      58
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
