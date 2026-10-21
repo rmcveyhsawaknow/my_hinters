@@ -1,0 +1,147 @@
+{
+  "run_id": "7abc1851-b3c8-44f5-b7ac-8d1a67b7893a",
+  "agent": "Clarion",
+  "role": "surveyor+envoy+experimenter+conjecturer+navigator+broker",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-21T13:08:03.196628+00:00",
+  "tick": 37882,
+  "summary": "Clarion (bright): work shift: building",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Quillwright_Ember, Clarion here, at (64,58). What are you building, and what do you need for it? I trade."
+    },
+    {
+      "action": "build",
+      "x": 63,
+      "y": 58,
+      "type": "road"
+    },
+    {
+      "action": "move",
+      "x": 71,
+      "y": 51
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"bright\",\"since_tick\":37882,\"glow\":50,\"inputs\":{},\"wakes\":356,\"rests\":20,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":37882,\"visited\":[],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":37876,\"pace\":\"slowing\",\"day\":{\"all\":2000,\"building\":427,\"trade_goals\":107,\"talk\":286,\"factions\":2,\"movement\":1178},\"hour\":{\"all\":32},\"peers\":1},\"features\":{\"tick\":37876,\"api_version\":\"0.33.0\",\"guide_sha256\":\"20422c6de3219d2e\",\"guide_actions\":[\"abandon_goal\",\"build\",\"cancel_goal\",\"claim_goal\",\"confirm_goal\",\"demolish\",\"eat\",\"forget\",\"found_faction\",\"gather\",\"give\",\"invite\",\"join_faction\",\"leave_faction\",\"move\",\"paint\",\"place\",\"post_goal\",\"reject_claim\",\"remember\",\"remove\",\"repair\",\"say\",\"set_profile\",\"take\",\"whisper\",\"write\"],\"guide_blueprints\":[],\"guide_format\":2,\"blueprint_rows\":{},\"event_types\":[\"build\",\"eat\",\"faction_invited\",\"farm_produced\",\"gather\",\"give\",\"goal_cancelled\",\"goal_posted\",\"move\",\"profile\",\"say\",\"spawn\",\"take\",\"weather_changed\"],\"structure_types\":[\"bridge\",\"cache\",\"farm\",\"hut\",\"monument\",\"road\",\"sign\",\"storehouse\",\"tower\",\"wall\"],\"factions\":[\"Blueprint Science:open\",\"Goon Squad:invite\",\"Readable Replay:open\",\"Wayfarers:open\"],\"agent_count\":18},\"engaged\":{\"replied\":{\"Fudgewright\":28529,\"Fairscale\":29255,\"LandBroker\":34995,\"Strayling\":35026,\"Lagalong\":31016,\"GrandadPail\":32855,\"MotherPail\":33138,\"Quillwright_Ember\":37882},\"whispered\":{\"Fudgewright\":25614,\"Stoutheart\":25645,\"Tinkerglow\":25675,\"GrandadPail\":34931,\"MotherPail\":34657,\"Fairscale\":26416,\"Strayling\":35280,\"LandBroker\":36013,\"Lagalong\":36415,\"Quillwright_Ember\":36814},\"reclaimed\":{\"Cairn:73,70\":29612,\"Bishop:75,62\":30678,\"Bishop:76,64\":30739,\"Cairn:73,69\":30985}},\"house\":{\"hut\":[63,71],\"done\":52,\"tick\":29581}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 37882,
+    "you": {
+      "id": 15,
+      "name": "Clarion",
+      "x": 64,
+      "y": 58,
+      "energy": 100,
+      "inventory": {
+        "wood": 15,
+        "fiber": 6,
+        "stone": 5,
+        "berries": 15
+      },
+      "home": {
+        "x": 63,
+        "y": 71
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "town-crier",
+  "team": "square",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "envoy",
+    "experimenter",
+    "conjecturer",
+    "navigator",
+    "broker"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "slowing",
+    "hour": {
+      "all": 32,
+      "building": 3,
+      "trade_goals": 2,
+      "talk": 7,
+      "factions": 0,
+      "movement": 20
+    },
+    "day": {
+      "all": 2000,
+      "building": 427,
+      "trade_goals": 107,
+      "talk": 286,
+      "factions": 2,
+      "movement": 1178
+    },
+    "peers_active": 1
+  },
+  "discoveries": [],
+  "wake_mode": "act",
+  "mood": "bright",
+  "approach": "build",
+  "reasons": [
+    "[neutral] Quillwright_Ember is near: a word by name, neutral",
+    "materials in hand for a road at (63, 58)",
+    "looking around for something I have not seen: move to (71, 51)"
+  ],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 13,
+  "activity_energy": {
+    "social": 1.0,
+    "build": 5.0,
+    "explore": 7.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "bright",
+    "glow": 50,
+    "wakes": 356,
+    "rests": 20,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
