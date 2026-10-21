@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792551663",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 34240,
+  "created_utc": "2026-10-21T03:01:03.979857+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Jealous light! Lagalong's gone again. East six, past the water. Bridge soon."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1718,
+    "output_tokens": 38,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "explore",
+      "harvest",
+      "explore",
+      "explore"
+    ],
+    "mood": "jealousy",
+    "where": [
+      78,
+      102
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
