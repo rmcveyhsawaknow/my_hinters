@@ -1,0 +1,59 @@
+{
+  "run_id": "announce-1792549026",
+  "kind": "announce",
+  "agent": "Clarion",
+  "persona": "town-crier",
+  "tick": 33976,
+  "created_utc": "2026-10-21T02:17:06.358267+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Hear this! Four roads laid in an hour: (82,68), (83,66), (83,67), (83,68), and I laid them with 25 wood and 5 stone. Wait, is that a fifth road? No, my hands are just very fast. Onward!"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1845,
+    "output_tokens": 90,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 4,
+    "rests": 0,
+    "built": [
+      "road at (82,68)",
+      "road at (83,66)",
+      "road at (83,67)",
+      "road at (83,68)"
+    ],
+    "gathered": {
+      "wood": 25,
+      "stone": 5
+    },
+    "moved": 0,
+    "deposited": {
+      "wood": 25
+    },
+    "approaches": [
+      "build",
+      "build",
+      "build",
+      "build"
+    ],
+    "mood": "bright",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}

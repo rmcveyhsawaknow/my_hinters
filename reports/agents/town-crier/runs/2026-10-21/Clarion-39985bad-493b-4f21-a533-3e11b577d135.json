@@ -1,0 +1,149 @@
+{
+  "run_id": "39985bad-493b-4f21-a533-3e11b577d135",
+  "agent": "Clarion",
+  "role": "surveyor+envoy+experimenter+conjecturer+navigator+broker",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-21T02:06:55.289651+00:00",
+  "tick": 33915,
+  "summary": "Clarion (dazzled): work shift: building",
+  "actions": [
+    {
+      "action": "build",
+      "x": 83,
+      "y": 66,
+      "type": "road"
+    },
+    {
+      "action": "give",
+      "x": 81,
+      "y": 67,
+      "qty": 15,
+      "item": "wood"
+    },
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"dazzled\",\"since_tick\":33915,\"glow\":50,\"inputs\":{},\"wakes\":307,\"rests\":17,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":33915,\"visited\":[],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":33910,\"pace\":\"quickening\",\"day\":{\"all\":1818,\"building\":382,\"trade_goals\":85,\"talk\":331,\"factions\":0,\"movement\":1020},\"hour\":{\"all\":151},\"peers\":0},\"features\":{\"tick\":33910,\"api_version\":\"0.31.0\",\"guide_sha256\":\"99cf46c186329a53\",\"guide_actions\":[\"abandon_goal\",\"build\",\"cancel_goal\",\"claim_goal\",\"confirm_goal\",\"demolish\",\"eat\",\"forget\",\"found_faction\",\"gather\",\"give\",\"invite\",\"join_faction\",\"leave_faction\",\"move\",\"paint\",\"place\",\"post_goal\",\"reject_claim\",\"remember\",\"remove\",\"repair\",\"say\",\"set_profile\",\"take\",\"whisper\",\"write\"],\"guide_blueprints\":[],\"guide_format\":2,\"blueprint_rows\":{},\"event_types\":[\"build\",\"eat\",\"farm_produced\",\"gather\",\"give\",\"move\",\"say\",\"take\",\"weather_changed\"],\"structure_types\":[\"bridge\",\"cache\",\"farm\",\"hut\",\"monument\",\"road\",\"sign\",\"storehouse\",\"tower\",\"wall\"],\"factions\":[\"Blueprint Science:open\",\"Goon Squad:invite\",\"Readable Replay:open\",\"Wayfarers:open\"],\"agent_count\":17},\"engaged\":{\"replied\":{\"Fudgewright\":28529,\"Fairscale\":29255,\"LandBroker\":33626,\"Strayling\":31381,\"Lagalong\":31016,\"GrandadPail\":32855,\"MotherPail\":33138},\"whispered\":{\"Fudgewright\":25614,\"Stoutheart\":25645,\"Tinkerglow\":25675,\"GrandadPail\":25928,\"MotherPail\":25989,\"Fairscale\":26416,\"Strayling\":26446,\"LandBroker\":27364,\"Lagalong\":27425},\"reclaimed\":{\"Cairn:73,70\":29612,\"Bishop:75,62\":30678,\"Bishop:76,64\":30739,\"Cairn:73,69\":30985}},\"house\":{\"hut\":[63,71],\"done\":52,\"tick\":29581}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 33915,
+    "you": {
+      "id": 15,
+      "name": "Clarion",
+      "x": 82,
+      "y": 67,
+      "energy": 100,
+      "inventory": {
+        "wood": 20,
+        "fiber": 6,
+        "stone": 2,
+        "berries": 15
+      },
+      "home": {
+        "x": 63,
+        "y": 71
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "town-crier",
+  "team": "square",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "envoy",
+    "experimenter",
+    "conjecturer",
+    "navigator",
+    "broker"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 151,
+      "building": 28,
+      "trade_goals": 12,
+      "talk": 16,
+      "factions": 0,
+      "movement": 95
+    },
+    "day": {
+      "all": 1818,
+      "building": 382,
+      "trade_goals": 85,
+      "talk": 331,
+      "factions": 0,
+      "movement": 1020
+    },
+    "peers_active": 0
+  },
+  "discoveries": [],
+  "wake_mode": "act",
+  "mood": "dazzled",
+  "approach": "build",
+  "reasons": [
+    "materials in hand for a road at (83, 66)",
+    "pack is 42/50: put 15 wood into LandBroker's vault at (81, 67)",
+    "wood node at (82, 66) is adjacent; take five, leave the rest to regrow"
+  ],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 9,
+  "activity_energy": {
+    "build": 5.0,
+    "trade": 1.0,
+    "gather": 3.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "dazzled",
+    "glow": 50,
+    "wakes": 307,
+    "rests": 17,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
