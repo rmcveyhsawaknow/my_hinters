@@ -1,0 +1,56 @@
+{
+  "run_id": "announce-1792588821",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 37955,
+  "created_utc": "2026-10-21T13:20:21.228123+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Two road tiles at (87,66) and (82,65), and I keep wondering if the next one is sand, but also the deposit trips, three of them, went somewhere I forgot to note. Filing that. Chasing the road."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1718,
+    "output_tokens": 78,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (87,66)",
+      "road at (82,65)"
+    ],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "build",
+      "deposit_trip",
+      "deposit_trip",
+      "deposit_trip"
+    ],
+    "mood": "curious",
+    "where": [
+      80,
+      68
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
