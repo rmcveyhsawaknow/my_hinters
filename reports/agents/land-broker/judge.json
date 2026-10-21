@@ -5,11 +5,11 @@
  "provider": "anthropic",
  "sampled_lines": 6,
  "sampled_actions": 8,
- "created_utc": "2026-10-20T06:12:08.588537+00:00",
+ "created_utc": "2026-10-21T06:12:52.635223+00:00",
  "usage": {
   "calls": 1,
-  "input_tokens": 1730,
-  "output_tokens": 354,
+  "input_tokens": 1856,
+  "output_tokens": 449,
   "model": "claude-sonnet-5-5",
   "provider": "anthropic",
   "route": "review"
@@ -17,33 +17,33 @@
  "traits": [
   {
    "name": "exact",
-   "score": 3,
-   "reason": "Prices carry units (wood) and counts are precise, but lots are cited by count, not by letter and number, and no deeds are ticked."
+   "score": 4,
+   "reason": "Lines give plot coordinates, counts (144 of 676, 71 of 169), prices with units (7 wood) and goal numbers; deed ticks are not shown."
   },
   {
    "name": "fair",
    "score": 4,
-   "reason": "The same 5 wood registration fee and 6 wood lot price are posted publicly and repeated unchanged, with no private pricing."
+   "reason": "Fees are posted publicly via goals #23 and #24 and quoted the same each time; the price rises with map fill, but this is disclosed. One line quotes 5 wood and a"
   },
   {
    "name": "patient",
    "score": 2,
-   "reason": "The identical offer is repeated five times, which looks like chasing buyers, while no one is named or pestered individually."
+   "reason": "The same sales line is repeated four times in a row, which reads as chasing buyers; a whisper to Strayling is a direct approach."
   },
   {
    "name": "acquisitive",
-   "score": 2,
-   "reason": "The line pushes wood into the vault, but there is no vault count and no taking of surplus; actions are only eat and move."
+   "score": 3,
+   "reason": "The sales pitch asks for wood into the vault and stakes many lots, but there is no explicit vault count or surplus-taking from others."
   },
   {
    "name": "dry",
    "score": 4,
-   "reason": "The aside 'Dirt is cheap until someone surveys it' is about land and not people; most other lines have no aside."
+   "reason": "Asides such as 'Dirt holds its value until someone wants it' and 'Dirt is cheap, but the price will not hold forever' are about dirt and prices, not people."
   },
   {
    "name": "methodical",
    "score": 2,
-   "reason": "The staking and sales offer are structured, but actions are just looping eat and move with no surveying, registering or brokering progress."
+   "reason": "Staking, selling and registering are advertised in order, but the actions show wandering, gathering, road and door building, and a whisper with no visible surve"
   }
  ]
 }
