@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792555843",
+  "kind": "announce",
+  "agent": "Clarion",
+  "persona": "town-crier",
+  "tick": 34658,
+  "created_utc": "2026-10-21T04:10:43.230648+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Hear this! Four wakes, twenty-five wood gathered and thirty deposited, and I still cannot tell you where the extra five came from. The world, I suspect. Generous world! Resting now, then back to the pile."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1809,
+    "output_tokens": 79,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 4,
+    "rests": 1,
+    "built": [],
+    "gathered": {
+      "wood": 25
+    },
+    "moved": 0,
+    "deposited": {
+      "wood": 30
+    },
+    "approaches": [
+      "deposit",
+      "deposit",
+      "rest",
+      "deposit"
+    ],
+    "mood": "bright",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
