@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792555101",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 34583,
+  "created_utc": "2026-10-21T03:58:21.068459+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, five wood! Lagalong left again. East six, past the water."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1726,
+    "output_tokens": 33,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "gather_trip",
+      "explore",
+      "explore"
+    ],
+    "mood": "jealousy",
+    "where": [
+      71,
+      109
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
