@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792565902",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 35664,
+  "created_utc": "2026-10-21T06:58:22.606570+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five steps, three trips to the storehouse and back at (84, 78). Nothing built this hour, but the berries are moving where they're needed. Good work for a warm evening."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1639,
+    "output_tokens": 63,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "deposit_trip",
+      "migrate",
+      "deposit_trip",
+      "migrate",
+      "deposit_trip"
+    ],
+    "mood": "warm",
+    "where": [
+      84,
+      78
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
