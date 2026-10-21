@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792579302",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 37004,
+  "created_utc": "2026-10-21T10:41:42.420186+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Deposited seventy snozzberries at the factory site, which is to say, I received seventy snozzberries and then felt them leave my hands. Twenty-five wafer gathered. The factory remains a sign. Deadpan, as ever."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1828,
+    "output_tokens": 84,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 25
+    },
+    "moved": 5,
+    "deposited": {
+      "berries": 70
+    },
+    "approaches": [
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit"
+    ],
+    "mood": "deadpan",
+    "where": [
+      83,
+      95
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
