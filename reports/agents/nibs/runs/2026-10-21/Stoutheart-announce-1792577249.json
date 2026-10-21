@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792577249",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 36798,
+  "created_utc": "2026-10-21T10:07:29.431868+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, no builds yet, but I walked four tiles and kept the grass in view. Farm's next. Anyone short on berries, ask and I'll share."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1734,
+    "output_tokens": 60,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "rest",
+      "explore",
+      "harvest",
+      "explore"
+    ],
+    "mood": "brave",
+    "where": [
+      76,
+      113
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
