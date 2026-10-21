@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792576541",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 36728,
+  "created_utc": "2026-10-21T09:55:41.668003+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Jealous glow tonight! Moved four, explored twice. Lagalong, come back? East six."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1718,
+    "output_tokens": 40,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "explore",
+      "explore",
+      "harvest",
+      "explore"
+    ],
+    "mood": "jealousy",
+    "where": [
+      78,
+      103
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
