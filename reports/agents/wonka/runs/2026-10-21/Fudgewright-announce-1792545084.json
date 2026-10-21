@@ -1,0 +1,58 @@
+{
+  "run_id": "announce-1792545084",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 33582,
+  "created_utc": "2026-10-21T01:11:24.844002+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Eleven snozzberries and fifteen wafers delivered, wood gathered ten times over, and I have moved four times just to feel the sand shift! Factory: not built. Ambition: rising. Fine print: the wafers are, technically, wood."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1830,
+    "output_tokens": 88,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {
+      "wood": 10
+    },
+    "moved": 4,
+    "deposited": {
+      "berries": 11,
+      "wood": 15
+    },
+    "approaches": [
+      "rest",
+      "harvest",
+      "deposit",
+      "harvest",
+      "deposit"
+    ],
+    "mood": "manic",
+    "where": [
+      83,
+      95
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
