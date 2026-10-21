@@ -1,0 +1,61 @@
+{
+  "run_id": "announce-1792562211",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 35295,
+  "created_utc": "2026-10-21T05:56:51.804895+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Laid five road bits out past (80,68), stone in hand, and the last one kinked toward the hills. Is that a path or a shadow? Shadow moved. Road later, idea card first."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1736,
+    "output_tokens": 68,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (64,63)",
+      "road at (71,70)",
+      "road at (79,67)",
+      "road at (80,69)",
+      "road at (73,70)"
+    ],
+    "gathered": {
+      "stone": 5
+    },
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "build",
+      "build",
+      "build",
+      "build"
+    ],
+    "mood": "curious",
+    "where": [
+      80,
+      68
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
