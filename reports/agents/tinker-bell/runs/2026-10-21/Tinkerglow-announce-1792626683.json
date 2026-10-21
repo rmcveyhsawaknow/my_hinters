@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792626683",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 41742,
+  "created_utc": "2026-10-21T23:51:23.836299+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Jealous of the Escape, I explore instead. North five, past the water!"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1717,
+    "output_tokens": 32,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "jealousy",
+    "where": [
+      67,
+      110
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
