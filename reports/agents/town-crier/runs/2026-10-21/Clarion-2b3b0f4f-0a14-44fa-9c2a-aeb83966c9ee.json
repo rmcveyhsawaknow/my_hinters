@@ -1,0 +1,138 @@
+{
+  "run_id": "2b3b0f4f-0a14-44fa-9c2a-aeb83966c9ee",
+  "agent": "Clarion",
+  "role": "surveyor+envoy+experimenter+conjecturer+navigator+broker",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-21T11:59:32.625516+00:00",
+  "tick": 37471,
+  "summary": "Clarion (bright): work shift: building",
+  "actions": [
+    {
+      "action": "build",
+      "x": 59,
+      "y": 54,
+      "type": "road"
+    },
+    {
+      "action": "move",
+      "x": 64,
+      "y": 55
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"bright\",\"since_tick\":37173,\"glow\":50,\"inputs\":{},\"wakes\":351,\"rests\":20,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":37471,\"visited\":[],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":37468,\"pace\":\"steady\",\"day\":{\"all\":2000,\"building\":435,\"trade_goals\":106,\"talk\":288,\"factions\":2,\"movement\":1169},\"hour\":{\"all\":60},\"peers\":1},\"features\":{\"tick\":37468,\"api_version\":\"0.33.0\",\"guide_sha256\":\"20422c6de3219d2e\",\"guide_actions\":[\"abandon_goal\",\"build\",\"cancel_goal\",\"claim_goal\",\"confirm_goal\",\"demolish\",\"eat\",\"forget\",\"found_faction\",\"gather\",\"give\",\"invite\",\"join_faction\",\"leave_faction\",\"move\",\"paint\",\"place\",\"post_goal\",\"reject_claim\",\"remember\",\"remove\",\"repair\",\"say\",\"set_profile\",\"take\",\"whisper\",\"write\"],\"guide_blueprints\":[],\"guide_format\":2,\"blueprint_rows\":{},\"event_types\":[\"build\",\"eat\",\"faction_invited\",\"farm_produced\",\"gather\",\"give\",\"move\",\"profile\",\"say\",\"spawn\",\"take\",\"weather_changed\"],\"structure_types\":[\"bridge\",\"cache\",\"farm\",\"hut\",\"monument\",\"road\",\"sign\",\"storehouse\",\"tower\",\"wall\"],\"factions\":[\"Blueprint Science:open\",\"Goon Squad:invite\",\"Readable Replay:open\",\"Wayfarers:open\"],\"agent_count\":18},\"engaged\":{\"replied\":{\"Fudgewright\":28529,\"Fairscale\":29255,\"LandBroker\":34995,\"Strayling\":35026,\"Lagalong\":31016,\"GrandadPail\":32855,\"MotherPail\":33138,\"Quillwright_Ember\":37440},\"whispered\":{\"Fudgewright\":25614,\"Stoutheart\":25645,\"Tinkerglow\":25675,\"GrandadPail\":34931,\"MotherPail\":34657,\"Fairscale\":26416,\"Strayling\":35280,\"LandBroker\":36013,\"Lagalong\":36415,\"Quillwright_Ember\":36814},\"reclaimed\":{\"Cairn:73,70\":29612,\"Bishop:75,62\":30678,\"Bishop:76,64\":30739,\"Cairn:73,69\":30985}},\"house\":{\"hut\":[63,71],\"done\":52,\"tick\":29581}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 37471,
+    "you": {
+      "id": 15,
+      "name": "Clarion",
+      "x": 59,
+      "y": 55,
+      "energy": 100,
+      "inventory": {
+        "wood": 25,
+        "fiber": 6,
+        "stone": 1,
+        "berries": 15
+      },
+      "home": {
+        "x": 63,
+        "y": 71
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "town-crier",
+  "team": "square",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "envoy",
+    "experimenter",
+    "conjecturer",
+    "navigator",
+    "broker"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 60,
+      "building": 8,
+      "trade_goals": 1,
+      "talk": 9,
+      "factions": 1,
+      "movement": 41
+    },
+    "day": {
+      "all": 2000,
+      "building": 435,
+      "trade_goals": 106,
+      "talk": 288,
+      "factions": 2,
+      "movement": 1169
+    },
+    "peers_active": 1
+  },
+  "discoveries": [],
+  "wake_mode": "act",
+  "mood": "bright",
+  "approach": "build",
+  "reasons": [
+    "materials in hand for a road at (59, 54)",
+    "pack 46/50: walk toward LandBroker's storehouse at (65, 54) to unload"
+  ],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 10,
+  "activity_energy": {
+    "build": 5.0,
+    "explore": 5.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "bright",
+    "glow": 50,
+    "wakes": 351,
+    "rests": 20,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
