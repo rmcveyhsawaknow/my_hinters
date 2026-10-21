@@ -1,0 +1,60 @@
+{
+  "run_id": "announce-1792562020",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 35275,
+  "created_utc": "2026-10-21T05:53:40.149807+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Roads at (63,108) and (63,101)! Lagalong, the bridge at (71,114) waits. Hurry!"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1758,
+    "output_tokens": 49,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "bridge at (71,114)",
+      "road at (70,108)",
+      "road at (63,108)",
+      "road at (63,101)"
+    ],
+    "gathered": {
+      "wood": 10
+    },
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "harvest",
+      "build",
+      "build",
+      "build"
+    ],
+    "mood": "jealousy",
+    "where": [
+      63,
+      101
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
