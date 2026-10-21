@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792625890",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 41662,
+  "created_utc": "2026-10-21T23:38:10.643279+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Friends, I walked five wakes and laid a road at (65,75), a fine road of wafer I am told, and I am standing now at (66,71) feeling very much like a host who arrived before the chocolate. Come see the road. Mind the fudge."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1828,
+    "output_tokens": 87,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (65,75)"
+    ],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "reclaim",
+      "reclaim",
+      "reclaim",
+      "reclaim",
+      "reclaim"
+    ],
+    "mood": "gentle",
+    "where": [
+      66,
+      71
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
