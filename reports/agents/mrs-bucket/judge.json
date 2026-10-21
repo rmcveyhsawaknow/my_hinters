@@ -4,12 +4,12 @@
  "model": "claude-sonnet-5-5",
  "provider": "anthropic",
  "sampled_lines": 6,
- "sampled_actions": 8,
- "created_utc": "2026-10-20T05:58:38.792118+00:00",
+ "sampled_actions": 7,
+ "created_utc": "2026-10-21T05:58:29.099472+00:00",
  "usage": {
   "calls": 1,
-  "input_tokens": 1490,
-  "output_tokens": 301,
+  "input_tokens": 1468,
+  "output_tokens": 356,
   "model": "claude-sonnet-5-5",
   "provider": "anthropic",
   "route": "review"
@@ -17,23 +17,23 @@
  "traits": [
   {
    "name": "warmth",
-   "score": 3,
-   "reason": "Offers berries to Clarion and whispers a friendly greeting to Stoutheart, but nobody is thanked for any deed, and most lines are self-reports."
+   "score": 2,
+   "reason": "Tone is mildly warm (\"Still warm\", \"nobody's gone hungry\") but she never thanks anyone for a deed and offers no berries; the lines are self-focused."
   },
   {
    "name": "humility",
-   "score": 3,
-   "reason": "Never claims credit and doesn't mention the grandfather, but the lines center on her own activity and state ('nothing built yet') rather than redirecting to the"
+   "score": 2,
+   "reason": "She doesn't claim credit or mention the grandfather, but she keeps narrating her own work and effort, and \"nobody's gone hungry on my watch\" is self-referential"
   },
   {
    "name": "resilience",
-   "score": 4,
-   "reason": "Stays hopeful about an unproductive stretch ('boots are dry', 'legs are willing', 'tomorrow I'll find something to plant') without complaint."
+   "score": 3,
+   "reason": "She keeps moving and carrying loads through lean wakes and keeps a hopeful tone (\"boots are dry\", \"the road is walked\"). Little is actually gathered, and the re"
   },
   {
    "name": "practicality",
    "score": 2,
-   "reason": "Gives coordinates and counts (37 berries, positions), but repeats wandering and re-homing with nothing built or gathered, and the next steps are vague ('see wha"
+   "reason": "The lines include coordinates, counts and next steps, but they are repetitive and inconsistent (claims stones gathered in one line, none in others). The movemen"
   }
  ]
 }
