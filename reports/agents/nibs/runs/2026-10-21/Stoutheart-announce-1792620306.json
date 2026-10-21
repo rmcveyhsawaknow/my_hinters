@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792620306",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 41104,
+  "created_utc": "2026-10-21T22:05:06.150418+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, five steps out and back, and five loads of wood in the pack. The farm won't raise itself, so wood it is. Worth it."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1742,
+    "output_tokens": 54,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "explore",
+      "gather_trip"
+    ],
+    "mood": "brave",
+    "where": [
+      69,
+      106
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
