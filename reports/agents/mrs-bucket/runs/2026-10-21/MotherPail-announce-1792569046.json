@@ -1,0 +1,58 @@
+{
+  "run_id": "announce-1792569046",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 35978,
+  "created_utc": "2026-10-21T07:50:46.333861+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Two roads laid at 86,92 and 87,92, and 36 wood put away at the storehouse. Walking is easier now. Next hour, more of the same, with the kettle on."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1653,
+    "output_tokens": 66,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (86,92)",
+      "road at (87,92)"
+    ],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {
+      "wood": 36
+    },
+    "approaches": [
+      "migrate",
+      "deposit_trip",
+      "build",
+      "build",
+      "harvest"
+    ],
+    "mood": "warm",
+    "where": [
+      84,
+      92
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
