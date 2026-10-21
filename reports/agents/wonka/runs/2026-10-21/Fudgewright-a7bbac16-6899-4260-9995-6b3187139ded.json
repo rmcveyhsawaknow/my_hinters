@@ -1,0 +1,134 @@
+{
+  "run_id": "a7bbac16-6899-4260-9995-6b3187139ded",
+  "agent": "Fudgewright",
+  "role": "navigator+builder+broker",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-21T07:42:14.248575+00:00",
+  "tick": 35927,
+  "summary": "Fudgewright (manic): work shift: stocking the storehouse",
+  "actions": [
+    {
+      "action": "give",
+      "x": 85,
+      "y": 92,
+      "qty": 14,
+      "item": "berries"
+    },
+    {
+      "action": "move",
+      "x": 83,
+      "y": 95
+    },
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"manic\",\"since_tick\":28232,\"glow\":50,\"inputs\":{\"inspiration\":{\"value\":61.5,\"tick\":35833,\"explanation\":\"hope from mrs-bucket 62\"},\"suspicion\":{\"value\":0.0,\"tick\":35833,\"explanation\":\"bluster from grandpa-joe 0\"},\"discernment\":{\"value\":0.0,\"tick\":35833,\"explanation\":\"bluster from grandpa-joe 0\"},\"hope\":{\"value\":61.5,\"tick\":35833,\"explanation\":\"Hope 62: contribution 102, uplift 41, resilience 0 (decayed over a day).\"},\"bluster\":{\"value\":0.0,\"tick\":35833,\"explanation\":\"Bluster 0: 0 claim(s) against own work 11, 0% of the team's logged work claimed.\"}},\"wakes\":337,\"rests\":32,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":35927,\"visited\":[\"87,102\",\"87,95\",\"82,91\",\"87,97\",\"80,102\",\"85,106\",\"89,99\",\"86,105\",\"84,97\",\"92,98\",\"81,87\",\"86,104\",\"76,92\",\"77,90\",\"81,93\",\"70,86\",\"81,96\",\"71,84\",\"79,93\",\"65,78\",\"73,90\",\"85,102\",\"85,84\",\"87,96\",\"88,85\",\"88,97\",\"86,84\",\"80,94\",\"86,85\",\"92,83\",\"90,77\",\"84,75\",\"83,81\",\"67,70\",\"63,69\",\"55,61\",\"53,59\",\"61,71\",\"70,81\",\"74,91\",\"86,97\",\"84,93\",\"83,94\",\"85,91\",\"83,95\",\"86,100\",\"81,95\",\"92,94\",\"86,93\",\"84,95\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":35926,\"pace\":\"steady\",\"day\":{\"all\":2000,\"building\":439,\"trade_goals\":112,\"talk\":312,\"factions\":0,\"movement\":1137},\"hour\":{\"all\":97},\"peers\":0},\"engaged\":{\"whispered\":{\"Clarion\":25742,\"Tinkerglow\":34416,\"Stoutheart\":34476,\"Fairscale\":25863,\"Strayling\":29542,\"Lagalong\":31967,\"LandBroker\":32256},\"replied\":{\"Clarion\":26912,\"Tinkerglow\":30852,\"Stoutheart\":28292,\"Strayling\":32195,\"Lagalong\":32226},\"gifted\":{\"Tinkerglow\":26972,\"Clarion\":28625},\"reclaimed\":{\"Quillwright:53,59\":32226}},\"house\":{\"hut\":[65,71],\"done\":10,\"tick\":31967}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": false,
+      "error": "inventory_full"
+    }
+  ],
+  "failed_actions": 1,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 35927,
+    "you": {
+      "id": 3,
+      "name": "Fudgewright",
+      "x": 84,
+      "y": 93,
+      "energy": 100,
+      "inventory": {
+        "wood": 10,
+        "fiber": 8,
+        "berries": 29
+      },
+      "home": {
+        "x": 65,
+        "y": 71
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "wonka",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "navigator",
+    "builder",
+    "broker"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 97,
+      "building": 18,
+      "trade_goals": 11,
+      "talk": 11,
+      "factions": 0,
+      "movement": 57
+    },
+    "day": {
+      "all": 2000,
+      "building": 439,
+      "trade_goals": 112,
+      "talk": 312,
+      "factions": 0,
+      "movement": 1137
+    },
+    "peers_active": 0
+  },
+  "wake_mode": "act",
+  "mood": "manic",
+  "approach": "deposit",
+  "reasons": [
+    "pack is 47/50: put 14 berries into MotherPail's vault at (85, 92)",
+    "walk to (83, 95) beside the wood node at (84, 96), then gather"
+  ],
+  "energy_before": 100,
+  "berries_before": 29,
+  "energy_spent": 6,
+  "activity_energy": {
+    "trade": 1.0,
+    "explore": 2.0,
+    "gather": 3.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "manic",
+    "glow": 50,
+    "wakes": 337,
+    "rests": 32,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}

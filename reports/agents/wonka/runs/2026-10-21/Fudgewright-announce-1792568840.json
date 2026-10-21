@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792568840",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 35957,
+  "created_utc": "2026-10-21T07:47:20.122376+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Forty-two snozzberries delivered to the factory, which is still mostly sand and optimism! Fifteen wood gathered, now wafer in my heart. Five wakes, one rest, and the sign says WELCOME, mostly."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1823,
+    "output_tokens": 84,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {
+      "wood": 15
+    },
+    "moved": 4,
+    "deposited": {
+      "berries": 42
+    },
+    "approaches": [
+      "harvest",
+      "deposit",
+      "rest",
+      "deposit",
+      "deposit"
+    ],
+    "mood": "manic",
+    "where": [
+      83,
+      95
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
