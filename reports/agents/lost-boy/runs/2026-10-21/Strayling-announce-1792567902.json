@@ -1,0 +1,60 @@
+{
+  "run_id": "announce-1792567902",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 35864,
+  "created_utc": "2026-10-21T07:31:42.290667+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Four roads laid around (80,68) and every one of them bends toward something I haven't seen yet, so is it a road or a question? Five stone in the pack, spending none, the next tile can wait."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1732,
+    "output_tokens": 75,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (81,65)",
+      "road at (75,71)",
+      "road at (79,68)",
+      "road at (75,72)"
+    ],
+    "gathered": {
+      "stone": 5
+    },
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "build",
+      "build",
+      "deposit_trip",
+      "build"
+    ],
+    "mood": "curious",
+    "where": [
+      80,
+      68
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
