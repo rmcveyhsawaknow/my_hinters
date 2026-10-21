@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792547770",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 33850,
+  "created_utc": "2026-10-21T01:56:10.635758+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, three naps, two long walks, and a deposit trip I supervised from the hut at [84, 78]. Keeping the family's strength up is a full-time job, and I am very much on the clock."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1850,
+    "output_tokens": 73,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 3,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "rest",
+      "migrate",
+      "deposit_trip",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": [
+      84,
+      78
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
