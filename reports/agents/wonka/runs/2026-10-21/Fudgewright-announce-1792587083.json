@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792587083",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 37782,
+  "created_utc": "2026-10-21T12:51:23.120609+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Welcome, welcome, do come in past the wafer stacks I gathered, twenty-five of them, bless them. Sixty-five snozzberries are deposited already, and the factory is still mostly a promise. Bring a friend. (Gold is heavy.)"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1826,
+    "output_tokens": 93,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 25
+    },
+    "moved": 5,
+    "deposited": {
+      "berries": 65
+    },
+    "approaches": [
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit"
+    ],
+    "mood": "gentle",
+    "where": [
+      84,
+      95
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
