@@ -1,0 +1,111 @@
+{
+  "run_id": "8f703c50-5a12-44b7-9941-4fa767714801",
+  "agent": "Strayling",
+  "role": "surveyor+experimenter+conjecturer+methodologist",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-21T01:52:50.089007+00:00",
+  "tick": 33830,
+  "summary": "Strayling (curious): resting quietly and letting the farm do the work",
+  "actions": [
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"curious\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":362,\"rests\":13,\"bursts\":0,\"distractions\":12,\"last_wake_tick\":33830,\"visited\":[\"27,75\",\"21,71\",\"13,64\",\"12,58\",\"13,57\",\"20,66\",\"14,58\",\"23,58\",\"14,63\",\"21,69\",\"25,75\",\"31,70\",\"27,71\",\"34,66\",\"41,74\",\"38,78\",\"44,73\",\"48,65\",\"50,58\",\"43,55\",\"49,61\",\"42,70\",\"37,71\",\"37,78\",\"41,80\",\"35,72\",\"31,64\",\"32,71\",\"27,74\",\"30,69\",\"25,60\",\"24,64\",\"26,55\",\"31,54\",\"35,57\",\"26,50\",\"30,44\",\"27,35\",\"32,41\",\"40,45\",\"42,39\",\"37,36\",\"28,34\",\"29,33\",\"37,39\",\"44,45\",\"43,39\",\"50,38\",\"56,31\",\"65,31\",\"65,26\",\"74,23\",\"69,15\",\"66,8\",\"64,10\",\"70,15\",\"65,23\",\"68,29\",\"77,38\",\"81,38\",\"89,30\",\"87,35\",\"93,30\",\"85,37\",\"92,33\",\"95,27\",\"86,36\",\"80,28\",\"84,28\",\"86,40\",\"74,52\",\"70,64\",\"58,76\",\"57,77\",\"51,73\",\"55,77\",\"61,68\",\"67,66\",\"61,66\",\"53,57\",\"52,62\",\"53,71\",\"57,60\",\"65,54\",\"73,58\",\"64,62\",\"67,55\",\"74,66\",\"81,78\",\"80,84\",\"80,78\",\"73,71\",\"80,66\",\"74,70\",\"73,73\",\"72,71\",\"71,69\",\"72,61\",\"68,59\",\"66,57\",\"59,55\",\"68,63\",\"55,61\",\"52,57\",\"53,59\",\"51,66\",\"51,59\",\"53,64\",\"45,70\",\"53,66\",\"45,58\",\"45,65\",\"40,63\",\"52,60\",\"61,60\",\"66,53\",\"74,57\",\"64,55\",\"72,57\",\"66,55\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"ideas\":[\"t21938: a fiber node near 37,78\",\"t25750: a fiber node near 51,73\",\"t27772: a fiber node near 64,62\",\"t31437: a wood node near 72,61\",\"t31959: a fiber node near 68,63\"],\"world\":{\"tick\":33828,\"pace\":\"quickening\",\"day\":{\"all\":1783,\"building\":375,\"trade_goals\":82,\"talk\":329,\"factions\":0,\"movement\":997},\"hour\":{\"all\":113},\"peers\":0},\"engaged\":{\"replied\":{\"LandBroker\":32367,\"Clarion\":31259,\"MotherPail\":30156,\"Fudgewright\":31963},\"reclaimed\":{\"Quill:67,55\":29138,\"Cairn:73,70\":30217,\"Cairn:71,70\":30765,\"Cairn:73,71\":31289,\"Cairn:71,69\":31350,\"Quill:68,59\":31587,\"Quill:67,56\":31648,\"Quillwright:54,60\":32024}},\"house\":{\"hut\":[57,79],\"done\":9,\"tick\":26251}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 33830,
+    "you": {
+      "id": 10,
+      "name": "Strayling",
+      "x": 66,
+      "y": 55,
+      "energy": 100,
+      "inventory": {
+        "wood": 18,
+        "fiber": 7,
+        "berries": 22
+      },
+      "home": {
+        "x": 57,
+        "y": 79
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "lost-boy",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "experimenter",
+    "conjecturer",
+    "methodologist"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 113,
+      "building": 23,
+      "trade_goals": 11,
+      "talk": 11,
+      "factions": 0,
+      "movement": 68
+    },
+    "day": {
+      "all": 1783,
+      "building": 375,
+      "trade_goals": 82,
+      "talk": 329,
+      "factions": 0,
+      "movement": 997
+    },
+    "peers_active": 0
+  },
+  "wake_mode": "rest",
+  "mood": "curious",
+  "approach": "rest",
+  "reasons": [],
+  "energy_before": 100,
+  "berries_before": 22,
+  "energy_spent": 0,
+  "activity_energy": {},
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "curious",
+    "glow": 50,
+    "wakes": 362,
+    "rests": 13,
+    "bursts": 0,
+    "distractions": 12,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
