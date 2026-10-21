@@ -1,0 +1,130 @@
+{
+  "run_id": "461049a9-321c-41e3-b8fd-dd0ca894d11a",
+  "agent": "Stoutheart",
+  "role": "builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-21T04:10:00.442836+00:00",
+  "tick": 34653,
+  "summary": "Stoutheart (brave): work shift: looking for nodes",
+  "actions": [
+    {
+      "action": "move",
+      "x": 75,
+      "y": 103
+    },
+    {
+      "action": "eat",
+      "qty": 1
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brave\",\"since_tick\":0,\"glow\":50,\"inputs\":{\"resolve\":{\"value\":50.0,\"tick\":34531,\"explanation\":\"escape from tootles 100\"},\"escape\":{\"value\":100.0,\"tick\":34531,\"explanation\":\"Escape 100: 100% of moves outside, farthest 103 tiles from the centre.\"}},\"wakes\":359,\"rests\":40,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":34653,\"visited\":[\"68,103\",\"77,114\",\"81,108\",\"80,112\",\"77,104\",\"83,107\",\"78,114\",\"71,107\",\"73,102\",\"82,107\",\"75,110\",\"76,104\",\"81,107\",\"78,112\",\"78,106\",\"83,103\",\"75,106\",\"79,104\",\"75,105\",\"75,112\",\"79,113\",\"80,107\",\"77,111\",\"68,112\",\"81,109\",\"74,113\",\"66,107\",\"71,111\",\"70,107\",\"73,103\",\"80,103\",\"76,108\",\"82,109\",\"77,112\",\"84,107\",\"77,103\",\"81,111\",\"77,113\",\"79,109\",\"80,110\",\"81,102\",\"85,92\",\"88,99\",\"71,108\",\"83,100\",\"78,108\",\"81,96\",\"91,98\",\"88,97\",\"84,102\",\"83,101\",\"82,93\",\"87,98\",\"80,104\",\"71,104\",\"64,105\",\"66,109\",\"64,109\",\"68,111\",\"69,102\",\"74,102\",\"76,106\",\"83,109\",\"82,108\",\"77,107\",\"82,106\",\"75,113\",\"69,109\",\"72,105\",\"67,112\",\"64,103\",\"70,111\",\"67,106\",\"73,108\",\"64,110\",\"69,108\",\"65,109\",\"70,108\",\"70,104\",\"78,107\",\"67,110\",\"72,112\",\"68,106\",\"66,110\",\"68,104\",\"77,109\",\"82,103\",\"79,112\",\"74,112\",\"78,103\",\"72,109\",\"78,110\",\"73,107\",\"78,102\",\"83,110\",\"73,112\",\"80,108\",\"82,102\",\"75,109\",\"71,103\",\"70,112\",\"67,109\",\"76,103\",\"69,103\",\"77,105\",\"73,104\",\"65,103\",\"73,111\",\"79,102\",\"83,102\",\"74,103\",\"69,104\",\"70,110\",\"76,114\",\"75,108\",\"67,105\",\"67,111\",\"73,113\",\"68,110\",\"67,103\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":34648,\"pace\":\"steady\",\"day\":{\"all\":1915,\"building\":418,\"trade_goals\":100,\"talk\":328,\"factions\":0,\"movement\":1069},\"hour\":{\"all\":62},\"peers\":0},\"greeted\":{\"MotherPail\":21754,\"GrandadPail\":29232,\"Fudgewright\":28248},\"engaged\":{\"whispered\":{\"Fudgewright\":26237,\"GrandadPail\":26267,\"Clarion\":26298,\"MotherPail\":27034,\"LandBroker\":31680},\"replied\":{\"Fudgewright\":27790,\"MotherPail\":28248,\"GrandadPail\":29232},\"gifted\":{\"MotherPail\":27128,\"Fudgewright\":28743}},\"house\":{\"hut\":[69,107],\"done\":9,\"tick\":34653}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 34653,
+    "you": {
+      "id": 9,
+      "name": "Stoutheart",
+      "x": 67,
+      "y": 103,
+      "energy": 100,
+      "inventory": {
+        "wood": 14,
+        "fiber": 6,
+        "berries": 28
+      },
+      "home": {
+        "x": 69,
+        "y": 107
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "nibs",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 62,
+      "building": 11,
+      "trade_goals": 5,
+      "talk": 6,
+      "factions": 0,
+      "movement": 40
+    },
+    "day": {
+      "all": 1915,
+      "building": 418,
+      "trade_goals": 100,
+      "talk": 328,
+      "factions": 0,
+      "movement": 1069
+    },
+    "peers_active": 0
+  },
+  "wake_mode": "act",
+  "mood": "brave",
+  "approach": "explore",
+  "reasons": [
+    "looking around for something I have not seen: move to (75, 103)",
+    "pack 48/50 with 28 berries: one berry after the walk, when the meal is not refused"
+  ],
+  "energy_before": 100,
+  "berries_before": 28,
+  "energy_spent": 8,
+  "activity_energy": {
+    "explore": 8.0,
+    "gather": 0.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brave",
+    "glow": 50,
+    "wakes": 359,
+    "rests": 40,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:stay_inside",
+    "walls_inside_territory"
+  ]
+}
