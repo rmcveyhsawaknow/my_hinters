@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792572547",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 36328,
+  "created_utc": "2026-10-21T08:49:07.261767+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Gentle friends, I gathered twenty wood and fifty-six snozzberries, which is fifty-six more than my factory has ever held. Still no walls. Walls are a rumor here, and I believe in rumors. Come see at 83, 95."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1825,
+    "output_tokens": 88,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {
+      "wood": 20
+    },
+    "moved": 4,
+    "deposited": {
+      "berries": 56
+    },
+    "approaches": [
+      "deposit",
+      "deposit",
+      "rest",
+      "deposit",
+      "deposit"
+    ],
+    "mood": "gentle",
+    "where": [
+      83,
+      95
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
