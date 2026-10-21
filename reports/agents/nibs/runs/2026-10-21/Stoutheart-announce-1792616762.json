@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792616762",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 40750,
+  "created_utc": "2026-10-21T21:06:02.735600+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Bridge is up at (68,113), and I brought back 10 wood besides. Neverland keeps its crossings mended. Anyone needing a hand, just ask."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1753,
+    "output_tokens": 61,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "bridge at (68,113)"
+    ],
+    "gathered": {
+      "wood": 10
+    },
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "gather_trip",
+      "explore",
+      "explore",
+      "build",
+      "harvest"
+    ],
+    "mood": "brave",
+    "where": [
+      69,
+      108
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
