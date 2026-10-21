@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792558742",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 34948,
+  "created_utc": "2026-10-21T04:59:02.199660+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes of deposit trips at [72, 57] and I keep looking past the rim for the other thing, a shadow or a node, who knows, the shadow moved. Card filed. Trip again."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1710,
+    "output_tokens": 71,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "deposit_trip",
+      "deposit_trip",
+      "deposit_trip",
+      "deposit_trip",
+      "deposit_trip"
+    ],
+    "mood": "curious",
+    "where": [
+      72,
+      57
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
