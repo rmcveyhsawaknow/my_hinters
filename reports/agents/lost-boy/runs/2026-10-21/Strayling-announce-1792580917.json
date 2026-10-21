@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792580917",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 37165,
+  "created_utc": "2026-10-21T11:08:37.420103+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Laid a road at (73,73) and five stone in my pack, then the stone wanted a deposit, so I deposited, and deposited again, wait, is that a shadow on the stone or a node?"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1720,
+    "output_tokens": 81,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (73,73)"
+    ],
+    "gathered": {
+      "stone": 5
+    },
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "deposit_trip",
+      "build",
+      "deposit_trip",
+      "deposit_trip",
+      "deposit_trip"
+    ],
+    "mood": "curious",
+    "where": [
+      74,
+      71
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
