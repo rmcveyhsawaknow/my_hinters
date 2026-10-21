@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792622551",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 41329,
+  "created_utc": "2026-10-21T22:42:31.840069+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, one road laid at (70,70), and no rest yet. Feet are sore but the path is level now. Next hour I'll see what the storehouse needs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1644,
+    "output_tokens": 61,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (70,70)"
+    ],
+    "gathered": {},
+    "moved": 1,
+    "deposited": {},
+    "approaches": [
+      "reclaim",
+      "reclaim",
+      "reclaim",
+      "reclaim",
+      "reclaim"
+    ],
+    "mood": "warm",
+    "where": [
+      67,
+      82
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
