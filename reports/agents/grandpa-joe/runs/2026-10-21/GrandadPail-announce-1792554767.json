@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792554767",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 34550,
+  "created_utc": "2026-10-21T03:52:47.407583+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, three naps, and five stones gathered by my own hand at [81, 83]. Resting by the hut is a full-time job, friends, and I am very good at it. The stones were mostly carried by my spirit."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1855,
+    "output_tokens": 78,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 3,
+    "built": [],
+    "gathered": {
+      "stone": 5
+    },
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "rest",
+      "rest",
+      "gather_trip",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": [
+      81,
+      83
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
