@@ -1,0 +1,119 @@
+{
+  "run_id": "3ea4272c-a60f-4212-b16e-e55cadd2cab1",
+  "agent": "Clarion",
+  "role": "surveyor+envoy+experimenter+conjecturer+navigator+broker",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-21T03:07:09.572147+00:00",
+  "tick": 34276,
+  "summary": "Clarion (bright): idling in the Inventing Room, letting an idea finish cooking",
+  "actions": [
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"bright\",\"since_tick\":33945,\"glow\":50,\"inputs\":{},\"wakes\":310,\"rests\":18,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":34276,\"visited\":[],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":34276,\"pace\":\"steady\",\"day\":{\"all\":1892,\"building\":407,\"trade_goals\":96,\"talk\":333,\"factions\":0,\"movement\":1056},\"hour\":{\"all\":106},\"peers\":0},\"features\":{\"tick\":34276,\"api_version\":\"0.32.0\",\"guide_sha256\":\"e1a1b38144ddad14\",\"guide_actions\":[\"abandon_goal\",\"build\",\"cancel_goal\",\"claim_goal\",\"confirm_goal\",\"demolish\",\"eat\",\"forget\",\"found_faction\",\"gather\",\"give\",\"invite\",\"join_faction\",\"leave_faction\",\"move\",\"paint\",\"place\",\"post_goal\",\"reject_claim\",\"remember\",\"remove\",\"repair\",\"say\",\"set_profile\",\"take\",\"whisper\",\"write\"],\"guide_blueprints\":[],\"guide_format\":2,\"blueprint_rows\":{},\"event_types\":[\"build\",\"eat\",\"farm_produced\",\"gather\",\"give\",\"goal_expired\",\"goal_posted\",\"move\",\"say\",\"take\",\"weather_changed\"],\"structure_types\":[\"bridge\",\"cache\",\"farm\",\"hut\",\"monument\",\"road\",\"sign\",\"storehouse\",\"tower\",\"wall\"],\"factions\":[\"Blueprint Science:open\",\"Goon Squad:invite\",\"Readable Replay:open\",\"Wayfarers:open\"],\"agent_count\":17},\"engaged\":{\"replied\":{\"Fudgewright\":28529,\"Fairscale\":29255,\"LandBroker\":33626,\"Strayling\":31381,\"Lagalong\":31016,\"GrandadPail\":32855,\"MotherPail\":33138},\"whispered\":{\"Fudgewright\":25614,\"Stoutheart\":25645,\"Tinkerglow\":25675,\"GrandadPail\":25928,\"MotherPail\":25989,\"Fairscale\":26416,\"Strayling\":26446,\"LandBroker\":27364,\"Lagalong\":27425},\"reclaimed\":{\"Cairn:73,70\":29612,\"Bishop:75,62\":30678,\"Bishop:76,64\":30739,\"Cairn:73,69\":30985}},\"house\":{\"hut\":[63,71],\"done\":52,\"tick\":29581}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 34276,
+    "you": {
+      "id": 15,
+      "name": "Clarion",
+      "x": 87,
+      "y": 68,
+      "energy": 95,
+      "inventory": {
+        "wood": 10,
+        "fiber": 6,
+        "stone": 4,
+        "berries": 14
+      },
+      "home": {
+        "x": 63,
+        "y": 71
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "town-crier",
+  "team": "square",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "envoy",
+    "experimenter",
+    "conjecturer",
+    "navigator",
+    "broker"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 106,
+      "building": 20,
+      "trade_goals": 12,
+      "talk": 11,
+      "factions": 0,
+      "movement": 63
+    },
+    "day": {
+      "all": 1892,
+      "building": 407,
+      "trade_goals": 96,
+      "talk": 333,
+      "factions": 0,
+      "movement": 1056
+    },
+    "peers_active": 0
+  },
+  "discoveries": [
+    "The game updated: API 0.31.0 became 0.32.0.",
+    "The agent guide changed since last look; new rules may be in it.",
+    "A new kind of event appeared in the public log: goal_posted (documented)."
+  ],
+  "wake_mode": "rest",
+  "mood": "bright",
+  "approach": "rest",
+  "reasons": [],
+  "energy_before": 95,
+  "berries_before": 14,
+  "energy_spent": 0,
+  "activity_energy": {},
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "bright",
+    "glow": 50,
+    "wakes": 310,
+    "rests": 18,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
