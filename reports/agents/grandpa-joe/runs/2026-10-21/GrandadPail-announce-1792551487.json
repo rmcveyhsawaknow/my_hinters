@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792551487",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 34222,
+  "created_utc": "2026-10-21T02:58:07.543394+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, three of them spent resting by the hut at [84, 78], and I'd call that leadership. Moved twice and deposited a trip's worth of berries for the family's strength. Wake me for the glory."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1850,
+    "output_tokens": 76,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 3,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "rest",
+      "migrate",
+      "rest",
+      "deposit_trip"
+    ],
+    "mood": "in_bed",
+    "where": [
+      84,
+      78
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
