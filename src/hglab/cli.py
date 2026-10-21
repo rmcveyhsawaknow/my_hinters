@@ -24,6 +24,7 @@ from hglab.limits import action_limits
 from hglab.llm import structured_call
 from hglab.loop import build_prompt, run_wake
 from hglab.observatory import Observatory
+from hglab.outage import tolerate_outage
 from hglab.persona import persona_by_name, validate_personas
 from hglab.prove import prove_all, prove_claim
 from hglab.secrets import get_api_key, get_secret, set_github_secret, store_api_key, store_secret
@@ -165,6 +166,7 @@ def observe(agent: str = typer.Option(..., "--agent"), as_json: bool = typer.Opt
 
 
 @app.command()
+@tolerate_outage
 def tick(
     agent: str = typer.Option(..., "--agent", help="Persona slug, in-world name, or legacy identity"),
     role: str | None = typer.Option(None, "--role", help="Hat to wear (default: the persona's first role)"),
@@ -570,6 +572,7 @@ def lease_release(agent: str = typer.Option(..., "--agent")) -> None:
 
 
 @observatory_app.command("collect")
+@tolerate_outage
 def observatory_collect() -> None:
     paths = Observatory(HinterglassClient(), repo_root()).collect_all()
     typer.echo(f"Collected {len(paths)} public archive file(s).")

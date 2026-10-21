@@ -357,3 +357,22 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
   only fired above 25 berries. A pack too full to gather now sheds berries down to the keep, which
   frees Tinkerglow to fill her wood and fetch the stone the ring lacks (no stone node lies inside
   it, and Stoutheart never leaves it).
+
+## 2026-10-21: the outage, API 0.33.1, and spend
+
+- From 13:54 to about 20:40 UTC Hinterglass answered nothing within 18 seconds, public reads included,
+  and every scheduled keepalive, tick and work shift failed on its first request (155 failed runs that
+  day, all `ReadTimeout`); a failed keepalive also skipped that hour's tick. The world answered in one
+  or two seconds again from 20:44. Since PR #58 the client allows 30 s a read, retries reads after
+  timeouts and dropped connections, never repeats an action after a read timeout, waits as long as a
+  429's `Retry-After` asks, and names a lasting failure `WorldUnreachable`; the lease release never
+  raises; scheduled commands end with a warning annotation instead of a red run; and routes treat
+  tiles that blocks close (API 0.31+) as unwalkable.
+- API moved 0.30.0 to 0.33.1 (see docs/hinterglass-api.md).
+- GitHub Actions: 2,351 runs from 17 to 21 October, about 378 hours of wall clock including queue time
+  and tick jitter; the repository is public, so standard hosted-runner minutes are not billed. The
+  billing endpoint needs the `user` scope on the GitHub CLI token to confirm.
+- Model spend from the usage ledger (`hglab budget status`, priced from `config/budget.yaml`): $4.49
+  month to date over 767 calls against the $100 cap, mostly Clarion and LandBroker on Sonnet; the
+  authoritative figure is the Anthropic Console's usage and cost pages (or the Admin API, which needs an
+  admin key the repository does not hold).

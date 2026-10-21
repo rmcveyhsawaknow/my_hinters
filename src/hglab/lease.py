@@ -61,8 +61,15 @@ def acquire(client: NotebookClient, holder: str, now: datetime | None = None) ->
 
 
 def release(client: NotebookClient, lease: Lease) -> bool:
-    current = _current_lease(client.observe())
-    if not current or current.get("holder") != lease.holder or current.get("run_id") != lease.run_id:
+    """Forget the lease if it is still ours. Never raises: it runs in ``finally`` blocks, and a lease the
+    world could not be told about expires by itself after ``LEASE_TTL``."""
+    from hglab.client import HinterglassError
+
+    try:
+        current = _current_lease(client.observe())
+        if not current or current.get("holder") != lease.holder or current.get("run_id") != lease.run_id:
+            return False
+        result = client.act({"action": "forget", "key": LEASE_KEY})
+    except (ConnectionError, HinterglassError):
         return False
-    result = client.act({"action": "forget", "key": LEASE_KEY})
     return bool(result.get("ok", True))

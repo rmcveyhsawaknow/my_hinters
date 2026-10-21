@@ -419,3 +419,14 @@ def test_a_trip_follows_a_route_around_a_ridge_instead_of_bouncing():
     flat = WorldView(x0=0, y0=0, rows=rows, full_map=rows)
     assert _route_step((60, 60), (90, 60), flat) == (72, 60)  # twelve tiles along the straight route
     assert _step_toward((60, 60), {"x": 61, "y": 60}, flat) == (60, 60)  # beside already
+
+
+def test_tiles_that_blocks_close_are_not_walkable():
+    from hglab.planner import WorldView, reachable_tiles
+
+    rows = ["g" * 13] * 13
+    observe = {"view": {"x0": 54, "y0": 54, "rows": rows}, "blocks": [{"x": 61, "y": 60, "count": 29, "top": 3, "owner": "Cairn", "closed": True, "door": False}, {"x": 60, "y": 61, "count": 7, "top": 3, "owner": "Lagalong", "closed": False, "door": True}]}
+    view = WorldView.from_observe(observe)
+    assert (61, 60) in view.closed and not view.walkable(61, 60)
+    assert view.walkable(60, 61)  # a door one may use leaves the tile open
+    assert (61, 60) not in reachable_tiles(view, (60, 60))

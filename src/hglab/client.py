@@ -21,6 +21,29 @@ class HinterglassError(Exception):
         return f"{self.code}: {self.message}"
 
 
+class WorldUnreachable(ConnectionError):
+    """Hinterglass did not answer (timeouts, refused or dropped connections) after the retries.
+
+    A ``ConnectionError`` (so an ``OSError``): callers that already fall back on network trouble keep
+    doing so, and scheduled commands turn it into a warning instead of a failed run (``hglab.outage``).
+    """
+
+
+DEFAULT_TIMEOUT = httpx.Timeout(30.0, connect=10.0)
+RETRY_AFTER_CAP = 60.0
+
+
+def _retry_delay(response: httpx.Response, attempt: int) -> float:
+    """Seconds to wait before the next attempt: the world's ``Retry-After`` when it sends one, else a short backoff."""
+    header = response.headers.get("Retry-After")
+    if header is not None:
+        try:
+            return min(max(float(header), 1.0), RETRY_AFTER_CAP)
+        except ValueError:
+            pass
+    return float(min(2**attempt, 8))
+
+
 class TokenBucket:
     def __init__(self, rate_per_minute: int = 30) -> None:
         if rate_per_minute < 1:
@@ -54,17 +77,32 @@ class HinterglassClient:
     ) -> None:
         if retries < 0:
             raise ValueError("retries must not be negative")
-        self.http = http or httpx.Client(base_url=base_url, timeout=18)
+        self.http = http or httpx.Client(base_url=base_url, timeout=DEFAULT_TIMEOUT)
         self.bucket = TokenBucket(rate_per_minute)
         self.retries = retries
         self.headers = {"Authorization": "Bearer " + api_key} if api_key else {}
 
     def request(self, method: str, path: str, **kwargs: Any) -> Any:
+        """One request with retries.
+
+        Reads (GET) are retried after a timeout or a dropped connection. An action (POST) is retried only
+        when the connection was never made, since after a read timeout it may already have happened in
+        the world. A 429 waits for the world's ``Retry-After``; a 5xx backs off. After the last attempt a
+        network failure is ``WorldUnreachable``.
+        """
+        idempotent = method.upper() in {"GET", "HEAD"}
         for attempt in range(self.retries + 1):
             self.bucket.wait()
-            response = self.http.request(method, path, headers=self.headers, **kwargs)
+            try:
+                response = self.http.request(method, path, headers=self.headers, **kwargs)
+            except httpx.TransportError as exc:
+                unsent = isinstance(exc, (httpx.ConnectError, httpx.ConnectTimeout))
+                if attempt < self.retries and (idempotent or unsent):
+                    time.sleep(min(2 ** (attempt + 1), 20))
+                    continue
+                raise WorldUnreachable(f"{method} {path}: {type(exc).__name__} after {attempt + 1} attempt(s)") from exc
             if (response.status_code == 429 or response.status_code >= 500) and attempt < self.retries:
-                time.sleep(min(2**attempt, 8))
+                time.sleep(_retry_delay(response, attempt))
                 continue
             if not response.is_success:
                 try:
