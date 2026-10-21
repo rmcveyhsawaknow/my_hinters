@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792573787",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 36452,
+  "created_utc": "2026-10-21T09:09:47.543787+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, two of them spent in bed by the hut at [80, 84], which is exactly where a man of my standing does his finest work. Three moves made, zero builds, and the berries in my pack are keeping the family's strength up."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1851,
+    "output_tokens": 81,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [],
+    "gathered": {},
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "deposit_trip",
+      "rest",
+      "migrate",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": [
+      80,
+      84
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
