@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792562754",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 35349,
+  "created_utc": "2026-10-21T06:05:54.331543+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Gathered five wood this hour and walked a good stretch of Neverland's paths. Nothing built yet, but the storehouse will want those planks. Hello to whoever is near."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1743,
+    "output_tokens": 65,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "harvest",
+      "gather_trip",
+      "rest",
+      "explore",
+      "explore"
+    ],
+    "mood": "brave",
+    "where": [
+      78,
+      105
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
