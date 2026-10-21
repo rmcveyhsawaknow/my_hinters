@@ -1,0 +1,142 @@
+{
+  "run_id": "7ecc3d0b-1595-4228-a3f5-d03b36ae47cd",
+  "agent": "Fudgewright",
+  "role": "navigator+builder+broker",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-21T06:50:25.880971+00:00",
+  "tick": 35616,
+  "summary": "Fudgewright (manic): work shift: collecting the farm",
+  "actions": [
+    {
+      "action": "take",
+      "x": 82,
+      "y": 94,
+      "qty": 7,
+      "item": "berries"
+    },
+    {
+      "action": "move",
+      "x": 84,
+      "y": 93
+    },
+    {
+      "action": "eat",
+      "qty": 1
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"manic\",\"since_tick\":28232,\"glow\":50,\"inputs\":{\"inspiration\":{\"value\":65.8,\"tick\":35387,\"explanation\":\"hope from mrs-bucket 66\"},\"suspicion\":{\"value\":0.0,\"tick\":35387,\"explanation\":\"bluster from grandpa-joe 0\"},\"discernment\":{\"value\":0.0,\"tick\":35387,\"explanation\":\"bluster from grandpa-joe 0\"},\"hope\":{\"value\":65.8,\"tick\":35387,\"explanation\":\"Hope 66: contribution 118, uplift 43, resilience 0 (decayed over a day).\"},\"bluster\":{\"value\":0.0,\"tick\":35387,\"explanation\":\"Bluster 0: 0 claim(s) against own work 25, 0% of the team's logged work claimed.\"}},\"wakes\":333,\"rests\":31,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":35616,\"visited\":[\"87,102\",\"87,95\",\"82,91\",\"87,97\",\"80,102\",\"85,106\",\"89,99\",\"86,105\",\"84,97\",\"92,98\",\"81,87\",\"86,104\",\"76,92\",\"77,90\",\"81,93\",\"70,86\",\"81,96\",\"71,84\",\"79,93\",\"65,78\",\"73,90\",\"85,102\",\"85,84\",\"87,96\",\"88,85\",\"88,97\",\"86,84\",\"80,94\",\"86,85\",\"92,83\",\"90,77\",\"84,75\",\"83,81\",\"67,70\",\"63,69\",\"55,61\",\"53,59\",\"61,71\",\"70,81\",\"74,91\",\"86,97\",\"84,93\",\"83,94\",\"85,91\",\"83,95\",\"86,100\",\"81,95\",\"92,94\",\"86,93\",\"84,95\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":35614,\"pace\":\"slowing\",\"day\":{\"all\":2000,\"building\":447,\"trade_goals\":107,\"talk\":321,\"factions\":0,\"movement\":1125},\"hour\":{\"all\":38},\"peers\":0},\"engaged\":{\"whispered\":{\"Clarion\":25742,\"Tinkerglow\":34416,\"Stoutheart\":34476,\"Fairscale\":25863,\"Strayling\":29542,\"Lagalong\":31967,\"LandBroker\":32256},\"replied\":{\"Clarion\":26912,\"Tinkerglow\":30852,\"Stoutheart\":28292,\"Strayling\":32195,\"Lagalong\":32226},\"gifted\":{\"Tinkerglow\":26972,\"Clarion\":28625},\"reclaimed\":{\"Quillwright:53,59\":32226}},\"house\":{\"hut\":[65,71],\"done\":10,\"tick\":31967}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 35616,
+    "you": {
+      "id": 3,
+      "name": "Fudgewright",
+      "x": 83,
+      "y": 95,
+      "energy": 100,
+      "inventory": {
+        "wood": 20,
+        "fiber": 8,
+        "berries": 15
+      },
+      "home": {
+        "x": 65,
+        "y": 71
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "wonka",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "navigator",
+    "builder",
+    "broker"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "slowing",
+    "hour": {
+      "all": 38,
+      "building": 11,
+      "trade_goals": 0,
+      "talk": 6,
+      "factions": 0,
+      "movement": 21
+    },
+    "day": {
+      "all": 2000,
+      "building": 447,
+      "trade_goals": 107,
+      "talk": 321,
+      "factions": 0,
+      "movement": 1125
+    },
+    "peers_active": 0
+  },
+  "wake_mode": "act",
+  "mood": "manic",
+  "approach": "harvest",
+  "reasons": [
+    "my farm at (82, 94) holds 24 berries: take 7 so it keeps growing",
+    "pack 50/50: walk toward MotherPail's storehouse at (85, 92) to unload",
+    "pack 50/50 with 22 berries: one berry after the walk, when the meal is not refused"
+  ],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 3,
+  "activity_energy": {
+    "gather": 1.0,
+    "explore": 2.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "manic",
+    "glow": 50,
+    "wakes": 333,
+    "rests": 31,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
