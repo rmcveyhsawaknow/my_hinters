@@ -1,0 +1,60 @@
+{
+  "run_id": "announce-1792570497",
+  "kind": "announce",
+  "agent": "LandBroker",
+  "persona": "land-broker",
+  "tick": 36123,
+  "created_utc": "2026-10-21T08:14:57.910698+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Land office: 11 stone and 12 berries deposited to the vault this hour, one road laid at (68,67), 4 moves, 5 wakes. Dirt is still cheap, and the stone is not waiting for anyone."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1816,
+    "output_tokens": 81,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [
+      "road at (68,67)"
+    ],
+    "gathered": {
+      "stone": 10
+    },
+    "moved": 4,
+    "deposited": {
+      "berries": 12,
+      "stone": 11
+    },
+    "approaches": [
+      "deposit",
+      "harvest",
+      "build",
+      "deposit",
+      "rest"
+    ],
+    "mood": "brisk",
+    "where": [
+      72,
+      72
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
