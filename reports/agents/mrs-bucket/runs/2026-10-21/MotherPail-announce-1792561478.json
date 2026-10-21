@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792561478",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 35221,
+  "created_utc": "2026-10-21T05:44:38.095919+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes on the road, no rest yet. Migrate, drop the load at the storehouse, then migrate again. Feet are tired, but the boots are dry."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1636,
+    "output_tokens": 60,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "deposit_trip",
+      "migrate",
+      "deposit_trip",
+      "migrate"
+    ],
+    "mood": "warm",
+    "where": [
+      80,
+      84
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
