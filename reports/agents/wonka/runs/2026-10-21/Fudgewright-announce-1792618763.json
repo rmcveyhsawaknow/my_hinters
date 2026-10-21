@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792618763",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 40950,
+  "created_utc": "2026-10-21T21:39:23.635933+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Welcome, welcome to the road at (68,83), which I built with my own two hands and one tired afternoon. We gathered five fudge stones along the way. Five! Mostly I walked, and the walking was the wonderful part."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1829,
+    "output_tokens": 80,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [
+      "road at (68,83)"
+    ],
+    "gathered": {
+      "stone": 5
+    },
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "reclaim",
+      "rest",
+      "reclaim",
+      "build",
+      "reclaim"
+    ],
+    "mood": "gentle",
+    "where": [
+      67,
+      82
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
