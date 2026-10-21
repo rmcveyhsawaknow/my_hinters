@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792548890",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 33962,
+  "created_utc": "2026-10-21T02:14:50.999813+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes out on the grass, no walls raised, no berries gathered yet. Still moving, still brave. Neverland's edges are next, and the store is waiting."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1734,
+    "output_tokens": 61,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "harvest",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "brave",
+    "where": [
+      76,
+      114
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
