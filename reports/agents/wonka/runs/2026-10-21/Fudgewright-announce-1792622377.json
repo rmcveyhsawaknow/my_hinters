@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792622377",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 41311,
+  "created_utc": "2026-10-21T22:39:37.125917+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Behold! A road at (66,70), laid in a single manic hour, leading nowhere yet but toward the factory of my dreams! Fine print: the road is made of wafer, and wafer is wafer. Mind the crumbs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1824,
+    "output_tokens": 82,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [
+      "road at (66,70)"
+    ],
+    "gathered": {},
+    "moved": 1,
+    "deposited": {},
+    "approaches": [
+      "reclaim",
+      "rest",
+      "reclaim",
+      "reclaim",
+      "reclaim"
+    ],
+    "mood": "manic",
+    "where": [
+      67,
+      71
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
