@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792573934",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 36467,
+  "created_utc": "2026-10-21T09:12:14.830272+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, five steps out at [73, 114], nothing built yet but the map's getting honest. Stores hold steady; I'll mend the south water next hour. Ask if you need a hand."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1734,
+    "output_tokens": 70,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "harvest",
+      "explore",
+      "explore"
+    ],
+    "mood": "brave",
+    "where": [
+      73,
+      114
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
