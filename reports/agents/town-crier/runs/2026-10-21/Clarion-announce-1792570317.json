@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792570317",
+  "kind": "announce",
+  "agent": "Clarion",
+  "persona": "town-crier",
+  "tick": 36105,
+  "created_utc": "2026-10-21T08:11:57.516807+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Hear this! Four wakes, thirty-five wood gathered and every last piece deposited, and I keep staring at the pile like it might sprout a tower. Wood! Thirty-five! Who knew the world was so generous with trees?"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1814,
+    "output_tokens": 84,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 4,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 35
+    },
+    "moved": 0,
+    "deposited": {
+      "wood": 35
+    },
+    "approaches": [
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit"
+    ],
+    "mood": "dazzled",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
