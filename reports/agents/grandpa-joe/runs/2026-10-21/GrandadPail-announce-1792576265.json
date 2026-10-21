@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792576265",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 36700,
+  "created_utc": "2026-10-21T09:51:05.952145+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes this hour, and three of them were spent in bed by the hut, resting my eyes on the family's stone pile. Gathered five stone myself, mostly by standing near it. Mother Pail did the carrying."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1855,
+    "output_tokens": 78,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 3,
+    "built": [],
+    "gathered": {
+      "stone": 5
+    },
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "gather_trip",
+      "migrate",
+      "rest",
+      "rest",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": [
+      80,
+      84
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
