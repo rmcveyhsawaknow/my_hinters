@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792548104",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 33884,
+  "created_utc": "2026-10-21T02:01:44.793087+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wood gathered, east six! Lagalong, you're missing it. Bridge soon."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1726,
+    "output_tokens": 38,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "gather_trip",
+      "explore",
+      "explore",
+      "explore",
+      "rest"
+    ],
+    "mood": "jealousy",
+    "where": [
+      73,
+      109
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
