@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792580743",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 37148,
+  "created_utc": "2026-10-21T11:05:43.613683+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, four moves, no bridge yet, but I'm out on the grass at [73, 109] with an eye on the storehouse. Worth the walk. Ask if you need a hand."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1734,
+    "output_tokens": 69,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "harvest",
+      "explore",
+      "rest"
+    ],
+    "mood": "brave",
+    "where": [
+      73,
+      109
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
