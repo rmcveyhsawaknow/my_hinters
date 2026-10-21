@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792559329",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 35006,
+  "created_utc": "2026-10-21T05:08:49.895643+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Bridge is up at (76,115), and I brought back ten wood with it. Worth every trip. Neverland keeps its own roads mended, so nobody needs to wander far."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1752,
+    "output_tokens": 64,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "bridge at (76,115)"
+    ],
+    "gathered": {
+      "wood": 10
+    },
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "gather_trip",
+      "explore",
+      "build"
+    ],
+    "mood": "brave",
+    "where": [
+      78,
+      110
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
