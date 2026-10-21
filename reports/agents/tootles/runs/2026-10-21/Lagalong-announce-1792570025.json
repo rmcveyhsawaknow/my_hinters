@@ -1,0 +1,46 @@
+{
+  "run_id": "announce-1792570025",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 36076,
+  "created_utc": "2026-10-21T08:07:05.702547+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five walks out and one rest, I think, and still no bigger thing in sight. The glass keeps its edge far off, so I will keep walking toward it, if that is all right."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1649,
+    "output_tokens": 62,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 0,
+    "deposited": {},
+    "approaches": [
+      "rest"
+    ],
+    "mood": "wistful",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
