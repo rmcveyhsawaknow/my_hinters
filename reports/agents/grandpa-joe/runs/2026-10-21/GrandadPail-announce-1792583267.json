@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792583267",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 37400,
+  "created_utc": "2026-10-21T11:47:47.458344+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, two of them spent in bed at [84, 78], and I'd call that the family's strength being kept up. Mother Pail moved three times, I supervised from the blanket, and my berries are safe in the pack."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1854,
+    "output_tokens": 78,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [],
+    "gathered": {},
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "deposit_trip",
+      "rest",
+      "migrate",
+      "deposit_trip",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": [
+      84,
+      78
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
