@@ -4,29 +4,29 @@
  "team": "neverland",
  "headline": "always just behind the adventure",
  "metric_version": 1,
- "tick": 26416,
- "day": 73,
- "date": "2026-10-20",
+ "tick": 35081,
+ "day": 97,
+ "date": "2026-10-21",
  "window_ticks": 60480,
  "events_considered": 2000,
- "runs_considered": 307,
+ "runs_considered": 457,
  "alive": {
   "score": 70,
-  "detail": "307/297 wakes, never lapsed, 55 failed",
+  "detail": "457/424 wakes, never lapsed, 74 failed",
   "parts": {
-   "completed": 307,
-   "scheduled": 297,
+   "completed": 457,
+   "scheduled": 424,
    "lapsed": 0,
    "banned": false,
    "rate_limited": 0,
-   "failed_actions": 55,
+   "failed_actions": 74,
    "energy_zero": 0,
    "spam_blocked": 0
   }
  },
  "on_mission": {
-  "score": 47,
-  "detail": "100% outside · 0/40 saved · 0 landmarks · humility 5/5",
+  "score": 76,
+  "detail": "100% outside · 112/40 saved · 0 landmarks · humility 5/5",
   "rows": [
    {
     "id": "escape_progress",
@@ -41,11 +41,11 @@
    {
     "id": "big_thing",
     "label": "stone and ore saved toward the Big Thing",
-    "value": 0.0,
+    "value": 112.0,
     "target": 40,
     "weight": 0.25,
-    "progress": 0.0,
-    "shown": "0/40 saved",
+    "progress": 1.0,
+    "shown": "112/40 saved",
     "measure": "events.items_saved"
    },
    {
@@ -81,8 +81,8 @@
   ]
  },
  "in_character": {
-  "score": 70,
-  "detail": "humble 5 · persistent 5 · gentle 4 · wistful 4",
+  "score": 82,
+  "detail": "humble 5 · persistent 4 · gentle 4 · wistful 5",
   "signatures": [
    {
     "id": "max_distance",
@@ -98,18 +98,18 @@
    {
     "id": "explore_share",
     "label": "share of energy exploring",
-    "value": 0.866,
+    "value": 0.665,
     "range": [
      0.35,
      0.7
     ],
-    "inside": false,
+    "inside": true,
     "measure": "runs.action_energy_share"
    },
    {
     "id": "rest_share",
     "label": "share of wakes resting",
-    "value": 0.117,
+    "value": 0.123,
     "range": [
      0.05,
      0.3
@@ -120,7 +120,7 @@
    {
     "id": "energy_mix",
     "label": "intended vs actual energy mix",
-    "value": 0.61,
+    "value": 0.765,
     "range": [
      0.5,
      1.0
@@ -133,22 +133,22 @@
    {
     "name": "humble",
     "score": 5,
-    "reason": "Lines are full of hedges like \"I think\" and \"if that is all right\", and he reports his progress (nothing built yet) without boasting."
+    "reason": "Lines are full of hedges like \"I think\" and \"if that is all right\", report modest progress, and never boast. The whisper to LandBroker is also polite and open."
    },
    {
     "name": "persistent",
-    "score": 5,
-    "reason": "He keeps walking and gathering across five wakes with no rest, moves farther out, and keeps looking for the big thing despite having built nothing."
+    "score": 4,
+    "reason": "He keeps walking outward across many wakes and rests despite nothing being built or gathered, and still heads for the far hut and the far edge. Output is thin, "
    },
    {
     "name": "gentle",
     "score": 4,
-    "reason": "His greetings are soft and offer to share berries and wood, and he uses no sharp words. He does name peers in greetings, but there is no mockery."
+    "reason": "The tone is soft and courteous throughout, with no sharp words and a polite whisper. Thanks to unnamed builders are absent, which keeps it from a 5."
    },
    {
     "name": "wistful",
-    "score": 4,
-    "reason": "He says the big thing is probably still ahead and that it is good at waiting, and he notes nothing is built yet, all without complaint."
+    "score": 5,
+    "reason": "He speaks of the big thing as somewhere he has not been, says he is still behind, and calls it \"good at waiting\", all without complaint."
    }
   ],
   "judge_meta": {
@@ -157,12 +157,12 @@
    "model": "claude-sonnet-5-5",
    "provider": "anthropic",
    "sampled_lines": 6,
-   "sampled_actions": 6,
-   "created_utc": "2026-10-20T05:20:38.114983+00:00",
+   "sampled_actions": 3,
+   "created_utc": "2026-10-21T05:21:34.641973+00:00",
    "usage": {
     "calls": 1,
-    "input_tokens": 1539,
-    "output_tokens": 263,
+    "input_tokens": 1343,
+    "output_tokens": 292,
     "model": "claude-sonnet-5-5",
     "provider": "anthropic",
     "route": "review"
@@ -170,7 +170,7 @@
   }
  },
  "team_pull": {
-  "detail": "Escape 96 → Tinkerglow, Stoutheart · Belief 0 → Tinkerglow",
+  "detail": "Escape 100 → Tinkerglow, Stoutheart · Belief 0 → Tinkerglow",
   "sent": [
    {
     "from": "tootles",
@@ -180,10 +180,10 @@
     "plain_english": "Time and distance Lagalong spends outside Neverland dim Tinkerglow's Glow; she feels abandoned.",
     "weight": -0.4,
     "half_life_hours": 24.0,
-    "value": 96.0,
-    "decayed_value": 96.0,
+    "value": 100.0,
+    "decayed_value": 100.0,
     "age_ticks": 0,
-    "explanation": "Escape 96: 100% of moves outside, farthest 92 tiles from the centre."
+    "explanation": "Escape 100: 100% of moves outside, farthest 103 tiles from the centre."
    },
    {
     "from": "tootles",
@@ -193,10 +193,10 @@
     "plain_english": "The more Lagalong leaves, the more firmly Stoutheart stays and stocks the stores.",
     "weight": 0.5,
     "half_life_hours": 48.0,
-    "value": 96.0,
-    "decayed_value": 96.0,
+    "value": 100.0,
+    "decayed_value": 100.0,
     "age_ticks": 0,
-    "explanation": "Escape 96: 100% of moves outside, farthest 92 tiles from the centre."
+    "explanation": "Escape 100: 100% of moves outside, farthest 103 tiles from the centre."
    },
    {
     "from": "tootles",
@@ -217,10 +217,10 @@
  },
  "community": {
   "goals_completed_for_peers": 0,
-  "public_goods_built": 0,
+  "public_goods_built": 31,
   "norms_kept": true,
   "norm_breaches": [],
-  "replies_received": 2
+  "replies_received": 24
  },
  "approaches": {
   "rows": [
@@ -240,8 +240,8 @@
     "label": "saving materials in a far hut",
     "wakes": 0,
     "energy": 0,
-    "outcome": 0.0,
-    "per_energy": null,
+    "outcome": 112.0,
+    "per_energy": 112.0,
     "hypothesis": "H-20261017-tootles-big-thing",
     "bet_status": "proposed",
     "bet_title": "Saving in a far hut reaches a tower's materials within 14 real days"
@@ -252,9 +252,9 @@
   "next_bet": "try ranging ever farther at least once this week; it has a bet but no wakes"
  },
  "trend": {
-  "alive": "▆▅▆",
-  "on_mission": "▆▅▄",
-  "in_character": "▆▆▆"
+  "alive": "▆▅▆▆",
+  "on_mission": "▆▅▄▆",
+  "in_character": "▆▆▆▇"
  },
  "history": [
   {
@@ -274,23 +274,31 @@
    "tick": 17797
   },
   {
+   "alive": 70,
    "date": "2026-10-20",
+   "in_character": 70,
+   "metric_version": 1,
+   "on_mission": 47,
+   "tick": 26416
+  },
+  {
+   "date": "2026-10-21",
    "metric_version": 1,
    "alive": 70,
-   "on_mission": 47,
-   "in_character": 70,
-   "tick": 26416
+   "on_mission": 76,
+   "in_character": 82,
+   "tick": 35081
   }
  ],
  "signals": {
   "escape": {
-   "value": 96.0,
-   "explanation": "Escape 96: 100% of moves outside, farthest 92 tiles from the centre.",
+   "value": 100.0,
+   "explanation": "Escape 100: 100% of moves outside, farthest 103 tiles from the centre.",
    "parts": {
     "share_outside": 1.0,
-    "farthest": 92.0
+    "farthest": 103.0
    },
-   "tick": 26416
+   "tick": 35081
   },
   "belief": {
    "value": 0.0,
@@ -300,7 +308,7 @@
     "bridge_crossings": 0,
     "staying": 0.0
    },
-   "tick": 26416
+   "tick": 35081
   }
  }
 }
