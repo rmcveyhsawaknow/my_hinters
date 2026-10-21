@@ -1,0 +1,58 @@
+{
+  "run_id": "announce-1792550985",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 34172,
+  "created_utc": "2026-10-21T02:49:45.234500+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Fifteen wood, twenty-five snozzberries, five wakes, and not one room finished! Still, the wafer walls are rising in my heart, and the factory is open to anyone who can carry gold. Heavy gold. Bring a friend."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1831,
+    "output_tokens": 87,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 15
+    },
+    "moved": 5,
+    "deposited": {
+      "wood": 15,
+      "berries": 25
+    },
+    "approaches": [
+      "deposit",
+      "harvest",
+      "deposit",
+      "harvest",
+      "deposit"
+    ],
+    "mood": "manic",
+    "where": [
+      83,
+      95
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
