@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792575819",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 36655,
+  "created_utc": "2026-10-21T09:43:39.490465+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Welcome, friends, to the factory that is mostly sand and good intentions. This hour I gathered 20 wood, which is wafer, and received 56 snozzberries at the counter. Tea is poured."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1825,
+    "output_tokens": 104,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {
+      "wood": 20
+    },
+    "moved": 4,
+    "deposited": {
+      "berries": 56
+    },
+    "approaches": [
+      "rest",
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit"
+    ],
+    "mood": "gentle",
+    "where": [
+      83,
+      95
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
