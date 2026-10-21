@@ -1,0 +1,61 @@
+{
+  "run_id": "announce-1792555187",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 34592,
+  "created_utc": "2026-10-21T03:59:47.586516+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five roads laid at (62,62), (63,54), (72,56), (72,55), (74,56) and I still can't tell if they're going anywhere or just leaving breadcrumbs, and the stone in my pack is whispering about sand..."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1736,
+    "output_tokens": 98,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (62,62)",
+      "road at (63,54)",
+      "road at (72,56)",
+      "road at (72,55)",
+      "road at (74,56)"
+    ],
+    "gathered": {
+      "stone": 5
+    },
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "build",
+      "build",
+      "build",
+      "build"
+    ],
+    "mood": "curious",
+    "where": [
+      66,
+      55
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
