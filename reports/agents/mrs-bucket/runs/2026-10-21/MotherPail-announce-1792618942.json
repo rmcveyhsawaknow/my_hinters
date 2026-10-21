@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792618942",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 40968,
+  "created_utc": "2026-10-21T21:42:22.947526+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, three steps, no berries gathered this hour. Everything I touched was reclaim work at (69, 71). Slow going, but the ground is still ours to mend."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1635,
+    "output_tokens": 64,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "reclaim",
+      "reclaim",
+      "reclaim",
+      "reclaim",
+      "reclaim"
+    ],
+    "mood": "warm",
+    "where": [
+      69,
+      71
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
