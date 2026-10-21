@@ -52,3 +52,43 @@ def test_token_bucket_waits_after_capacity_is_consumed(monkeypatch):
     bucket.wait()
     bucket.wait()
     assert slept == [60.0]
+
+
+@respx.mock
+def test_a_read_timeout_on_a_read_is_retried(monkeypatch):
+    monkeypatch.setattr("hglab.client.time.sleep", lambda _: None)
+    route = respx.get("https://hinterglass.com/api/v1/me/observe").mock(
+        side_effect=[httpx.ReadTimeout("slow"), httpx.Response(200, json={"tick": 7})]
+    )
+    assert HinterglassClient(api_key="fake-test-key", retries=2).observe() == {"tick": 7}
+    assert route.call_count == 2
+
+
+@respx.mock
+def test_an_action_is_not_repeated_after_a_read_timeout_but_is_after_a_refused_connection(monkeypatch):
+    from hglab.client import WorldUnreachable
+
+    monkeypatch.setattr("hglab.client.time.sleep", lambda _: None)
+    act = respx.post("https://hinterglass.com/api/v1/me/act").mock(side_effect=[httpx.ReadTimeout("slow"), httpx.Response(200, json={"ok": True})])
+    with pytest.raises(WorldUnreachable, match="ReadTimeout"):
+        HinterglassClient(api_key="fake-test-key", retries=3).act({"action": "say", "text": "hello"})
+    assert act.call_count == 1  # it may have happened in the world: never twice
+    respx.post("https://hinterglass.com/api/v1/me/act").mock(side_effect=[httpx.ConnectError("refused"), httpx.Response(200, json={"ok": True})])
+    assert HinterglassClient(api_key="fake-test-key", retries=3).act({"action": "say", "text": "hello"}) == {"ok": True}
+
+
+@respx.mock
+def test_retry_after_is_honoured_and_an_outage_is_named(monkeypatch):
+    from hglab.client import WorldUnreachable
+
+    slept = []
+    monkeypatch.setattr("hglab.client.time.sleep", slept.append)
+    respx.get("https://hinterglass.com/api/v1/world/agents").mock(
+        side_effect=[httpx.Response(429, headers={"Retry-After": "7"}), httpx.Response(200, json={"agents": []})]
+    )
+    assert HinterglassClient(retries=1).public_agents() == {"agents": []}
+    assert slept == [7.0]
+    respx.get("https://hinterglass.com/api/v1/world/factions").mock(side_effect=httpx.ReadTimeout("slow"))
+    with pytest.raises(WorldUnreachable) as caught:
+        HinterglassClient(retries=2).public_factions()
+    assert isinstance(caught.value, OSError)  # existing network fallbacks (except OSError) keep working

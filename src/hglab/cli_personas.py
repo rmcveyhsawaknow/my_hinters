@@ -31,6 +31,7 @@ from hglab.kb import make_id
 from hglab.lease import acquire, release
 from hglab.limits import action_limits
 from hglab.measures import MEASURES, load_kb_items
+from hglab.outage import tolerate_outage
 from hglab.persona import (
     Persona,
     Team,
@@ -768,6 +769,7 @@ def land_board_command(fixtures: bool = typer.Option(False, "--fixtures", help="
 
 
 @land_app.command("round")
+@tolerate_outage
 def land_round_command(
     agent: str = typer.Option(..., "--agent"),
     dry_run: bool = typer.Option(False, "--dry-run"),
@@ -998,6 +1000,7 @@ def crier_board_command(fixtures: bool = typer.Option(False, "--fixtures", help=
 
 
 @crier_app.command("round")
+@tolerate_outage
 def crier_round_command(
     agent: str = typer.Option(..., "--agent"),
     dry_run: bool = typer.Option(False, "--dry-run"),
@@ -1851,9 +1854,9 @@ def register_persona_commands(app: typer.Typer) -> None:
     app.add_typer(land_app, name="land")
     app.add_typer(world_app, name="world")
     app.command("pulse")(pulse_command)
-    app.command("shift")(shift_command)
+    app.command("shift")(tolerate_outage(shift_command))
     app.command("retro")(retro_command)
-    app.command("keepalive")(keepalive_command)
+    app.command("keepalive")(tolerate_outage(keepalive_command))
 
 
 __all__ = ["MEASURES", "persona_tick", "register_persona_commands", "run_pulse", "scaffold_agent"]

@@ -84,6 +84,7 @@ class WorldView:
     season: str = ""  # spring, summer, autumn, winter: wild berries do not regrow in winter
     liveness: dict[str, int] = field(default_factory=dict)  # resident name -> last_seen_tick (public snapshot)
     world_resources: list[dict[str, Any]] = field(default_factory=list)  # every node in the world (public snapshot)
+    closed: set[tuple[int, int]] = field(default_factory=set)  # tiles in view that blocks close to this agent (observe.blocks[].closed)
 
     @classmethod
     def from_observe(
@@ -115,6 +116,10 @@ class WorldView:
             world_structures=[s for s in (world_structures or []) if isinstance(s, dict)],
             liveness=liveness,
             world_resources=[r for r in (public_resources or []) if isinstance(r, dict)],
+            closed={
+                (int(b["x"]), int(b["y"]))
+                for b in (observe.get("blocks") or []) if isinstance(b, dict) and b.get("closed") and b.get("x") is not None and b.get("y") is not None
+            },
         )
 
     def terrain(self, x: int, y: int) -> str | None:
@@ -137,8 +142,8 @@ class WorldView:
         return None
 
     def walkable(self, x: int, y: int) -> bool:
-        if not (0 <= x < 128 and 0 <= y < 128):
-            return False
+        if not (0 <= x < 128 and 0 <= y < 128) or (x, y) in self.closed:
+            return False  # blocks below level 6 close a tile even to their owner, unless it holds a door one may use
         code = self.terrain(x, y)
         structure = self.structure_at(x, y)
         if structure and structure.get("type") == "bridge":

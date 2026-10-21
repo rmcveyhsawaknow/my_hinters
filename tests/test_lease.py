@@ -42,3 +42,19 @@ def test_lease_contender_and_write_race_are_rejected():
     client.notebook.clear()
     client.overwrite_after_write = True
     assert acquire(client, "agent", datetime(2026, 10, 17, 12, tzinfo=UTC)) is None
+
+
+def test_a_release_that_cannot_reach_the_world_does_not_raise():
+    from datetime import UTC, datetime
+
+    from hglab.client import WorldUnreachable
+    from hglab.lease import Lease, release
+
+    class Down:
+        def observe(self):
+            raise WorldUnreachable("GET /api/v1/me/observe: ReadTimeout after 4 attempt(s)")
+
+        def act(self, action):  # pragma: no cover - never reached
+            raise AssertionError
+
+    assert release(Down(), Lease("Clarion", "run-1", datetime.now(UTC))) is False
