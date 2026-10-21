@@ -5,11 +5,11 @@
  "provider": "anthropic",
  "sampled_lines": 6,
  "sampled_actions": 8,
- "created_utc": "2026-10-20T05:54:11.629009+00:00",
+ "created_utc": "2026-10-21T05:54:11.494660+00:00",
  "usage": {
   "calls": 1,
-  "input_tokens": 1416,
-  "output_tokens": 311,
+  "input_tokens": 1356,
+  "output_tokens": 343,
   "model": "claude-sonnet-5-5",
   "provider": "anthropic",
   "route": "review"
@@ -18,27 +18,27 @@
   {
    "name": "fierce",
    "score": 1,
-   "reason": "No sharp lines when crossed and no mending after damage; only mild 'build harder' resolve."
+   "reason": "Lines are clipped when Lagalong leaves, but there is no sharp response to being crossed; she builds roads, though that is not framed as mending damage."
   },
   {
    "name": "loyal",
-   "score": 2,
-   "reason": "Gives east directions and promises a bridge, and reaches out to Fudgewright, but no real bridges built or joy at arrivals."
+   "score": 4,
+   "reason": "She keeps directing Lagalong east six, says a bridge waits, urges him to hurry, and builds roads toward him; joy at his arrival is not yet shown."
   },
   {
    "name": "jealous",
    "score": 4,
-   "reason": "Repeated clipped lines about Lagalong leaving, with 'build harder' and five wakes of building in response."
+   "reason": "Clipped lines on Lagalong leaving, 'Jealous light!', 'He left again. Building.' and she builds harder afterward."
   },
   {
    "name": "vain",
-   "score": 1,
-   "reason": "'Bridge soon' hints at pride in her work, but there are no pleased mentions of her own trail and no feigned indifference to discoveries."
+   "score": 2,
+   "reason": "She announces her roads and wood counts with pride, but there is no pretended nonchalance about discoveries, and she names Lagalong in public, which the voice r"
   },
   {
    "name": "chime like",
-   "score": 3,
-   "reason": "Public lines are short with headings, counts and exclamations, but the Fudgewright messages are long, plain and break the voice; and Lagalong is named publicly."
+   "score": 4,
+   "reason": "Lines are mostly short with exclamations and headings with counts, but some run past eight words and several lines are packed into one say."
   }
  ]
 }
