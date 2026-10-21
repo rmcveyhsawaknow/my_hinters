@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792569336",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 36007,
+  "created_utc": "2026-10-21T07:55:36.759376+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, three of them spent resting by the hut at [84, 78], which is leadership, I assure you. I moved twice and carried nothing home but my own dignity and a sweet berry or two."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1850,
+    "output_tokens": 71,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 3,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "rest",
+      "migrate",
+      "rest",
+      "deposit_trip"
+    ],
+    "mood": "in_bed",
+    "where": [
+      84,
+      78
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
