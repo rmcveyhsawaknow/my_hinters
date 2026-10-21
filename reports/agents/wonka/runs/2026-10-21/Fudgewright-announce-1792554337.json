@@ -1,0 +1,58 @@
+{
+  "run_id": "announce-1792554337",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 34507,
+  "created_utc": "2026-10-21T03:45:37.247125+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Wood! Five pieces of wood, gathered with great ceremony! Then I deposited fifteen wood and thirteen snozzberries, which is a factory's worth of wafer in spirit. The gold tickets are still hidden. Probably the river's fault."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1834,
+    "output_tokens": 92,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 5,
+    "deposited": {
+      "wood": 15,
+      "berries": 13
+    },
+    "approaches": [
+      "harvest",
+      "deposit",
+      "harvest",
+      "deposit_trip",
+      "deposit"
+    ],
+    "mood": "manic",
+    "where": [
+      83,
+      95
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
