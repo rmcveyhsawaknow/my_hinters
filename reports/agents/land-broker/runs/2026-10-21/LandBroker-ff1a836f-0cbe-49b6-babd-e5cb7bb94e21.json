@@ -1,0 +1,135 @@
+{
+  "run_id": "ff1a836f-0cbe-49b6-babd-e5cb7bb94e21",
+  "agent": "LandBroker",
+  "role": "surveyor+broker+navigator+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-21T13:15:01.491310+00:00",
+  "tick": 37923,
+  "summary": "LandBroker (brisk): work shift: building",
+  "actions": [
+    {
+      "action": "build",
+      "x": 32,
+      "y": 101,
+      "type": "road"
+    },
+    {
+      "action": "move",
+      "x": 45,
+      "y": 101
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brisk\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":424,\"rests\":18,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":37923,\"visited\":[\"51,43\",\"48,41\",\"51,38\",\"71,41\",\"76,43\",\"71,38\",\"68,36\",\"71,33\",\"68,31\",\"66,28\",\"66,23\",\"71,26\",\"62,50\",\"56,38\",\"64,43\",\"56,33\",\"53,31\",\"56,28\",\"53,26\",\"56,23\",\"48,31\",\"46,28\",\"38,36\",\"33,41\",\"36,34\",\"38,28\",\"46,36\",\"46,46\",\"55,56\",\"43,56\",\"38,61\",\"41,61\",\"41,66\",\"38,66\",\"33,61\",\"28,61\",\"26,66\",\"23,66\",\"26,71\",\"23,71\",\"26,76\",\"31,71\",\"31,68\",\"31,76\",\"26,81\",\"31,86\",\"31,81\",\"26,86\",\"26,91\",\"31,96\",\"36,96\",\"36,93\",\"41,91\",\"41,88\",\"38,86\",\"36,83\",\"41,73\",\"34,67\",\"46,71\",\"46,68\",\"51,66\",\"48,63\",\"46,58\",\"53,61\",\"53,68\",\"62,66\",\"69,67\",\"81,76\",\"81,81\",\"77,75\",\"81,63\",\"86,58\",\"83,56\",\"86,53\",\"83,51\",\"78,56\",\"84,60\",\"86,66\",\"86,71\",\"91,71\",\"91,68\",\"96,71\",\"96,68\",\"101,71\",\"101,68\",\"96,63\",\"93,61\",\"90,59\",\"90,51\",\"73,64\",\"70,63\",\"69,65\",\"72,71\",\"64,67\",\"72,72\",\"67,79\",\"66,86\",\"63,86\",\"58,91\",\"51,84\",\"56,88\",\"53,91\",\"51,88\",\"48,86\",\"46,91\",\"50,84\",\"61,91\",\"66,96\",\"66,93\",\"63,96\",\"58,101\",\"56,98\",\"53,101\",\"51,98\",\"48,96\",\"43,96\",\"45,101\",\"46,101\",\"38,101\",\"33,101\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":37918,\"pace\":\"slowing\",\"day\":{\"all\":1993,\"building\":427,\"trade_goals\":107,\"talk\":285,\"factions\":2,\"movement\":1172},\"hour\":{\"all\":15},\"peers\":1},\"engaged\":{\"whispered\":{\"Strayling\":34232,\"Lagalong\":25609,\"Fairscale\":25639,\"Clarion\":35736,\"Stoutheart\":30613,\"Tinkerglow\":30643,\"Fudgewright\":32032,\"GrandadPail\":32714,\"MotherPail\":32727,\"Quillwright_Ember\":36829},\"replied\":{\"Lagalong\":28866,\"Strayling\":36389,\"Fudgewright\":32126,\"GrandadPail\":32758,\"MotherPail\":32788,\"Clarion\":33655},\"gifted\":{\"Strayling\":27788}},\"house\":{\"hut\":[71,65],\"done\":10,\"tick\":36092}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 37923,
+    "you": {
+      "id": 16,
+      "name": "LandBroker",
+      "x": 33,
+      "y": 101,
+      "energy": 100,
+      "inventory": {
+        "wood": 6,
+        "fiber": 10,
+        "stone": 13,
+        "berries": 16
+      },
+      "home": {
+        "x": 71,
+        "y": 65
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "land-broker",
+  "team": "exchange",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "broker",
+    "navigator",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "slowing",
+    "hour": {
+      "all": 15,
+      "building": 0,
+      "trade_goals": 0,
+      "talk": 4,
+      "factions": 0,
+      "movement": 11
+    },
+    "day": {
+      "all": 1993,
+      "building": 427,
+      "trade_goals": 107,
+      "talk": 285,
+      "factions": 2,
+      "movement": 1172
+    },
+    "peers_active": 1
+  },
+  "wake_mode": "act",
+  "mood": "brisk",
+  "approach": "build",
+  "reasons": [
+    "materials in hand for a road at (32, 101)",
+    "no wood in view; the nearest node stands at (46, 102): walk toward it"
+  ],
+  "energy_before": 100,
+  "berries_before": 16,
+  "energy_spent": 17,
+  "activity_energy": {
+    "build": 5.0,
+    "explore": 12.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brisk",
+    "glow": 50,
+    "wakes": 424,
+    "rests": 18,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
