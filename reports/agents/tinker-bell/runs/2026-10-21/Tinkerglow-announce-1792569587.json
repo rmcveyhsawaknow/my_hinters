@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792569587",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 36032,
+  "created_utc": "2026-10-21T07:59:47.134804+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Jealous Lagalong left again! Built a bridge at 81,113, wood ten. Bridge soon!"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1737,
+    "output_tokens": 45,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "bridge at (81,113)"
+    ],
+    "gathered": {
+      "wood": 10
+    },
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "gather_trip",
+      "build",
+      "salvage",
+      "explore"
+    ],
+    "mood": "jealousy",
+    "where": [
+      72,
+      103
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
