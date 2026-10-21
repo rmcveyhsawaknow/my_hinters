@@ -1,0 +1,131 @@
+{
+  "run_id": "84c67fa1-6df6-4475-927f-ba888374a93a",
+  "agent": "Tinkerglow",
+  "role": "navigator+surveyor+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-21T11:43:10.154986+00:00",
+  "tick": 37372,
+  "summary": "Tinkerglow (jealousy): work shift: looking for nodes",
+  "actions": [
+    {
+      "action": "move",
+      "x": 78,
+      "y": 103
+    },
+    {
+      "action": "eat",
+      "qty": 1
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"jealousy\",\"since_tick\":26168,\"glow\":73,\"inputs\":{\"glow\":{\"value\":73.3,\"tick\":37279,\"explanation\":\"courage from nibs 78; escape from tootles 100; belief from nibs 100; belief from tootles 0; belief from lost-boy 0\"},\"adventure_options\":{\"value\":93.2,\"tick\":37279,\"explanation\":\"discoveries from lost-boy 93\"},\"courage\":{\"value\":77.7,\"tick\":37279,\"explanation\":\"Courage 78: 4 hard job(s) inside, 0 greeting(s), structures standing 100%.\"},\"escape\":{\"value\":100.0,\"tick\":37279,\"explanation\":\"Escape 100: 100% of moves outside, farthest 103 tiles from the centre.\"},\"belief\":{\"value\":0.0,\"tick\":37279,\"explanation\":\"Belief 0: 0 arrival(s) inside, 0 bridge crossing(s), not currently inside.\"},\"discoveries\":{\"value\":93.2,\"tick\":37279,\"explanation\":\"Discoveries 93: 79 tiles, 7 action types, 2 idea card(s), 0 adopted.\"}},\"wakes\":397,\"rests\":53,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":37372,\"heading\":\"E\",\"visited\":[\"71,98\",\"73,110\",\"80,110\",\"87,98\",\"75,110\",\"87,105\",\"75,113\",\"77,101\",\"81,100\",\"64,102\",\"58,90\",\"65,102\",\"64,105\",\"69,102\",\"62,90\",\"55,90\",\"65,95\",\"76,107\",\"83,107\",\"83,110\",\"82,109\",\"75,109\",\"75,102\",\"82,102\",\"75,114\",\"71,102\",\"78,102\",\"73,97\",\"72,109\",\"67,109\",\"64,109\",\"63,101\",\"70,101\",\"74,115\",\"74,108\",\"81,108\",\"72,103\",\"78,103\",\"71,110\",\"71,103\",\"78,110\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":37372,\"pace\":\"steady\",\"day\":{\"all\":2000,\"building\":435,\"trade_goals\":109,\"talk\":293,\"factions\":2,\"movement\":1161},\"hour\":{\"all\":70},\"peers\":1},\"engaged\":{\"gifted\":{\"MotherPail\":26992,\"GrandadPail\":27727},\"replied\":{\"MotherPail\":30882,\"Fudgewright\":29118,\"GrandadPail\":29239}},\"house\":{\"hut\":[80,104],\"done\":10,\"tick\":37312}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 37372,
+    "you": {
+      "id": 6,
+      "name": "Tinkerglow",
+      "x": 71,
+      "y": 103,
+      "energy": 100,
+      "inventory": {
+        "wood": 19,
+        "fiber": 7,
+        "berries": 20
+      },
+      "home": {
+        "x": 80,
+        "y": 104
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "tinker-bell",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "navigator",
+    "surveyor",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 70,
+      "building": 11,
+      "trade_goals": 2,
+      "talk": 11,
+      "factions": 1,
+      "movement": 45
+    },
+    "day": {
+      "all": 2000,
+      "building": 435,
+      "trade_goals": 109,
+      "talk": 293,
+      "factions": 2,
+      "movement": 1161
+    },
+    "peers_active": 1
+  },
+  "wake_mode": "act",
+  "mood": "jealousy",
+  "approach": "explore",
+  "reasons": [
+    "second star to the right: heading E: move to (78, 103)",
+    "pack 46/50 with 20 berries: one berry after the walk, when the meal is not refused"
+  ],
+  "energy_before": 100,
+  "berries_before": 20,
+  "energy_spent": 7,
+  "activity_energy": {
+    "explore": 7.0,
+    "gather": 0.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "jealousy",
+    "glow": 73,
+    "wakes": 397,
+    "rests": 53,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": "E"
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792583601",
+  "kind": "announce",
+  "agent": "Tinkerglow",
+  "persona": "tinker-bell",
+  "tick": 37433,
+  "created_utc": "2026-10-21T11:53:21.021518+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Jealous, yes! Five wakes of wandering, wood in hand. East six, Neverland waits."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1726,
+    "output_tokens": 42,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "gather_trip",
+      "explore"
+    ],
+    "mood": "jealousy",
+    "where": [
+      71,
+      110
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
