@@ -1,0 +1,110 @@
+{
+  "run_id": "87771e80-9e15-4017-b3b1-77ddc4684527",
+  "agent": "Tinkerglow",
+  "role": "navigator+surveyor+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-22T18:59:56.750882+00:00",
+  "tick": 48633,
+  "summary": "Tinkerglow (jealousy): resting between flights",
+  "actions": [
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"jealousy\",\"since_tick\":26168,\"glow\":81,\"inputs\":{\"glow\":{\"value\":81.7,\"tick\":48512,\"explanation\":\"courage from nibs 83; escape from tootles 98; belief from nibs 100; belief from tootles 15; belief from lost-boy 0\"},\"adventure_options\":{\"value\":82.6,\"tick\":48512,\"explanation\":\"discoveries from lost-boy 83\"},\"courage\":{\"value\":83.0,\"tick\":48512,\"explanation\":\"Courage 83: 5 hard job(s) inside, 0 greeting(s), structures standing 100%.\"},\"escape\":{\"value\":98.1,\"tick\":48512,\"explanation\":\"Escape 98: 96% of moves outside, farthest 103 tiles from the centre.\"},\"belief\":{\"value\":0.0,\"tick\":48512,\"explanation\":\"Belief 0: 0 arrival(s) inside, 0 bridge crossing(s), not currently inside.\"},\"discoveries\":{\"value\":82.6,\"tick\":48512,\"explanation\":\"Discoveries 83: 35 tiles, 5 action types, 2 idea card(s), 0 adopted.\"}},\"wakes\":527,\"rests\":75,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":48633,\"heading\":\"E\",\"visited\":[\"71,98\",\"73,110\",\"80,110\",\"87,98\",\"75,110\",\"87,105\",\"75,113\",\"77,101\",\"81,100\",\"64,102\",\"58,90\",\"65,102\",\"64,105\",\"69,102\",\"62,90\",\"55,90\",\"65,95\",\"76,107\",\"83,107\",\"83,110\",\"82,109\",\"75,109\",\"75,102\",\"82,102\",\"75,114\",\"71,102\",\"78,102\",\"73,97\",\"72,109\",\"67,109\",\"64,109\",\"63,101\",\"70,101\",\"74,115\",\"74,108\",\"81,108\",\"72,103\",\"78,103\",\"71,110\",\"71,103\",\"78,110\",\"74,103\",\"74,110\",\"67,110\",\"67,103\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":48630,\"pace\":\"slowing\",\"day\":{\"all\":1644,\"building\":251,\"trade_goals\":67,\"talk\":290,\"factions\":2,\"movement\":1034},\"hour\":{\"all\":24},\"peers\":1},\"engaged\":{\"gifted\":{\"MotherPail\":26992,\"GrandadPail\":27727},\"replied\":{\"MotherPail\":30882,\"Fudgewright\":48165,\"GrandadPail\":29239}},\"house\":{\"hut\":[80,104],\"done\":10,\"tick\":48543}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 48633,
+    "you": {
+      "id": 6,
+      "name": "Tinkerglow",
+      "x": 74,
+      "y": 103,
+      "energy": 100,
+      "inventory": {
+        "wood": 24,
+        "fiber": 7,
+        "berries": 15
+      },
+      "home": {
+        "x": 80,
+        "y": 104
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "tinker-bell",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "navigator",
+    "surveyor",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "slowing",
+    "hour": {
+      "all": 24,
+      "building": 3,
+      "trade_goals": 0,
+      "talk": 6,
+      "factions": 0,
+      "movement": 15
+    },
+    "day": {
+      "all": 1644,
+      "building": 251,
+      "trade_goals": 67,
+      "talk": 290,
+      "factions": 2,
+      "movement": 1034
+    },
+    "peers_active": 1
+  },
+  "wake_mode": "rest",
+  "mood": "jealousy",
+  "approach": "rest",
+  "reasons": [],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 0,
+  "activity_energy": {},
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "jealousy",
+    "glow": 81,
+    "wakes": 527,
+    "rests": 75,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": "E"
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
