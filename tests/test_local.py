@@ -288,3 +288,35 @@ def test_the_status_page_renders_agents_and_configuration(tmp_path):
         and "runtime: <strong>actions</strong>" in html
         and "no memory graph yet" in html
     )
+
+
+def test_tasks_reach_the_wake_inbox_and_settle_after_a_live_wake(tmp_path):
+    from hglab.local.tasks import deliver, graph_path, settle
+
+    g = Graph(graph_path(tmp_path))
+    task = TaskStore(g).create("Clarion", "Warden", "Announce the factory survey at the square.")
+    g.close()
+    assert deliver("Clarion", tmp_path, 100) == [
+        {
+            "from": "Warden (operator)",
+            "text": "Announce the factory survey at the square.",
+            "tick": 100,
+            "task": task["id"],
+        }
+    ]
+    g = Graph(graph_path(tmp_path))
+    assert (
+        TaskStore(g).get(task["id"])["status"]["state"] == "submitted"
+    )  # a dry wake changes nothing
+    g.close()
+    assert settle("Clarion", tmp_path, "r1") == 0
+    assert deliver("Clarion", tmp_path, 101, dry_run=False)[0]["task"] == task["id"]
+    g = Graph(graph_path(tmp_path))
+    assert TaskStore(g).get(task["id"])["status"]["state"] == "working"
+    g.close()
+    assert settle("Clarion", tmp_path, "r1", dry_run=False) == 1
+    assert (
+        deliver("Clarion", tmp_path, 102, dry_run=False) == []
+        and deliver("Fudgewright", tmp_path, 102) == []
+    )
+    assert deliver("Clarion", tmp_path / "nowhere", 1) == []  # no graph, no tasks

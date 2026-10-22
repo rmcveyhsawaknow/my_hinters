@@ -21,6 +21,10 @@ memory_app = typer.Typer(
     help="The shared memory graph on SQLite: ingest, query, snapshot, restore."
 )
 local_app.add_typer(memory_app, name="memory")
+tasks_app = typer.Typer(
+    help="A2A tasks: messages a persona reads at its next wake.", no_args_is_help=True
+)
+local_app.add_typer(tasks_app, name="tasks")
 
 
 def _root() -> Path:
@@ -265,3 +269,63 @@ def memory_restore(name: str = typer.Argument(...)) -> None:
 
 
 __all__ = ["local_app"]
+
+
+def _persona_name(root: Path, agent: str) -> str:
+    personas = load_personas(root)
+    if agent in personas:
+        return personas[agent].name
+    for p in personas.values():
+        if p.name.casefold() == agent.casefold():
+            return p.name
+    raise typer.BadParameter(f"no persona {agent}")
+
+
+@tasks_app.command("send")
+def tasks_send(
+    agent: str = typer.Option(..., "--agent", help="Persona slug or in-world name"),
+    text: str = typer.Option(..., "--text"),
+    sender: str = typer.Option("operator", "--sender"),
+) -> None:
+    """Leave a message a persona reads at its next wake (a submitted A2A task)."""
+    from hglab.local.a2a import TaskStore
+
+    root = _root()
+    name = _persona_name(root, agent)
+    graph = _graph(root)
+    try:
+        task = TaskStore(graph).create(name, sender, text)
+    finally:
+        graph.close()
+    typer.echo(json.dumps({"id": task["id"], "agent": name, "state": task["status"]["state"]}))
+
+
+@tasks_app.command("list")
+def tasks_list(
+    agent: str | None = typer.Option(None, "--agent"),
+    everything: bool = typer.Option(False, "--all", help="Completed and canceled tasks too"),
+) -> None:
+    """The tasks on the board, open ones by default."""
+    root = _root()
+    name = _persona_name(root, agent) if agent else None
+    graph = _graph(root)
+    try:
+        rows = []
+        for node in graph.nodes("task"):
+            if name and node.get("agent") != name:
+                continue
+            if not everything and node.get("state") not in {"submitted", "working"}:
+                continue
+            rows.append(
+                {
+                    "id": node["id"][5:],
+                    "agent": node.get("agent"),
+                    "sender": node.get("sender"),
+                    "state": node.get("state"),
+                    "text": str(node.get("text", ""))[:120],
+                    "updated_utc": node.get("updated_utc"),
+                }
+            )
+    finally:
+        graph.close()
+    typer.echo(json.dumps(rows, ensure_ascii=False, indent=2))
