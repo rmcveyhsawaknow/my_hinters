@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792655256",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 44599,
+  "created_utc": "2026-10-22T07:47:36.707553+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Dear neighbors, I have deposited seventy wood into my factory, which is now a wafer reserve. Come see it, the walls are very nearly as tall as my ambitions, and the sand is warm and welcoming."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1820,
+    "output_tokens": 78,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {
+      "wood": 70
+    },
+    "approaches": [
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit"
+    ],
+    "mood": "gentle",
+    "where": [
+      95,
+      94
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
