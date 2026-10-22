@@ -4,38 +4,38 @@
  "team": "neverland",
  "headline": "the one who stays",
  "metric_version": 1,
- "tick": 35349,
- "day": 98,
- "date": "2026-10-21",
+ "tick": 43991,
+ "day": 122,
+ "date": "2026-10-22",
  "window_ticks": 60480,
  "events_considered": 2000,
- "runs_considered": 452,
+ "runs_considered": 563,
  "alive": {
-  "score": 82,
-  "detail": "452/439 wakes, never lapsed, 9 failed",
+  "score": 77,
+  "detail": "563/567 wakes, never lapsed, 11 failed",
   "parts": {
-   "completed": 452,
-   "scheduled": 439,
+   "completed": 563,
+   "scheduled": 567,
    "lapsed": 0,
    "banned": false,
    "rate_limited": 0,
-   "failed_actions": 9,
+   "failed_actions": 11,
    "energy_zero": 0,
    "spam_blocked": 0
   }
  },
  "on_mission": {
-  "score": 62,
-  "detail": "89% inside · 0/3 in place · 4 hard jobs · 100% standing",
+  "score": 65,
+  "detail": "100% inside · 0/3 in place · 4 hard jobs · 100% standing",
   "rows": [
    {
     "id": "steadfastness",
     "label": "share of time inside Neverland",
-    "value": 0.894,
+    "value": 1.0,
     "target": 1.0,
     "weight": 0.3,
-    "progress": 0.894,
-    "shown": "89% inside",
+    "progress": 1.0,
+    "shown": "100% inside",
     "measure": "events.share_moves_inside_territory"
    },
    {
@@ -71,24 +71,24 @@
   ]
  },
  "in_character": {
-  "score": 40,
-  "detail": "brave 2 · cheerful 4 · steadfast 3 · protective 2",
+  "score": 55,
+  "detail": "brave 2 · cheerful 4 · steadfast 4 · protective 2",
   "signatures": [
    {
     "id": "home_distance",
     "label": "mean distance from Neverland's centre",
-    "value": 7.436,
+    "value": 5.102,
     "range": [
      0,
      6
     ],
-    "inside": false,
+    "inside": true,
     "measure": "events.mean_distance_from_home"
    },
    {
     "id": "build_share",
     "label": "share of energy building",
-    "value": 0.044,
+    "value": 0.041,
     "range": [
      0.3,
      0.6
@@ -110,7 +110,7 @@
    {
     "id": "energy_mix",
     "label": "intended vs actual energy mix",
-    "value": 0.199,
+    "value": 0.198,
     "range": [
      0.6,
      1.0
@@ -123,22 +123,22 @@
    {
     "name": "brave",
     "score": 2,
-    "reason": "Calm, steady tone and exploring edges, but no costly builds were made; mostly moving, gathering and eating, and the one bridge claim is not backed by actions."
+    "reason": "Lines claim bravery and a bridge was built, but recent actions are only moving, eating and taking berries; no costly build or tense moment is shown."
    },
    {
     "name": "cheerful",
     "score": 4,
-    "reason": "Lines are consistently upbeat with small flourishes like 'Worth every step' and 'Hot bread at dusk, friends', even when no builds were done."
+    "reason": "Lines are consistently upbeat with small flourishes like 'Worth every plank' and 'the storehouse will thank me'."
    },
    {
     "name": "steadfast",
-    "score": 3,
-    "reason": "Mostly stays on Neverland's grass and mentions the store and berries as duty, but one line says 'out past the edge of the map', which is inconsistent, and no fa"
+    "score": 4,
+    "reason": "He stays near Neverland, mentions stores, farm and mending roads as duty, and says staying put is the bravest thing, though the farm work is mostly promised, no"
    },
    {
     "name": "protective",
     "score": 2,
-    "reason": "Greets whoever is near once and gathers wood for the storehouse, but there is little evidence of stocking stores or offering help to teammates."
+    "reason": "He talks of keeping stores full so nobody goes far, but he greets no one, offers no help, and just took berries and ate."
    }
   ],
   "judge_meta": {
@@ -148,11 +148,11 @@
    "provider": "anthropic",
    "sampled_lines": 6,
    "sampled_actions": 8,
-   "created_utc": "2026-10-21T06:06:24.141830+00:00",
+   "created_utc": "2026-10-22T06:06:50.537465+00:00",
    "usage": {
     "calls": 1,
-    "input_tokens": 1411,
-    "output_tokens": 292,
+    "input_tokens": 1417,
+    "output_tokens": 267,
     "model": "claude-sonnet-5-5",
     "provider": "anthropic",
     "route": "review"
@@ -160,7 +160,7 @@
   }
  },
  "team_pull": {
-  "detail": "Escape 100 (Lagalong) → Resolve 50 · Courage 84 → Tinkerglow · Belief 100 → Tinkerglow",
+  "detail": "Escape 98 (Lagalong) → Resolve 49 · Courage 81 → Tinkerglow · Belief 100 → Tinkerglow",
   "sent": [
    {
     "from": "nibs",
@@ -170,10 +170,10 @@
     "plain_english": "Hard jobs done inside Neverland and visitors greeted brighten Tinkerglow's Glow.",
     "weight": 0.3,
     "half_life_hours": 24.0,
-    "value": 84.1,
-    "decayed_value": 84.1,
+    "value": 81.1,
+    "decayed_value": 81.1,
     "age_ticks": 0,
-    "explanation": "Courage 84: 4 hard job(s) inside, 2 greeting(s), structures standing 100%."
+    "explanation": "Courage 81: 4 hard job(s) inside, 2 greeting(s), structures standing 100%."
    },
    {
     "from": "nibs",
@@ -186,7 +186,7 @@
     "value": 100.0,
     "decayed_value": 100.0,
     "age_ticks": 0,
-    "explanation": "Belief 100: 93 arrival(s) inside, 0 bridge crossing(s), staying inside."
+    "explanation": "Belief 100: 112 arrival(s) inside, 5 bridge crossing(s), staying inside."
    }
   ],
   "received": [
@@ -198,31 +198,31 @@
     "plain_english": "The more Lagalong leaves, the more firmly Stoutheart stays and stocks the stores.",
     "weight": 0.5,
     "half_life_hours": 48.0,
-    "value": 100.0,
-    "decayed_value": 100.0,
+    "value": 97.5,
+    "decayed_value": 97.5,
     "age_ticks": 0,
-    "explanation": "Escape 100: 100% of moves outside, farthest 103 tiles from the centre."
+    "explanation": "Escape 98: 96% of moves outside, farthest 99 tiles from the centre."
    }
   ],
   "effects": {
    "resolve": {
-    "value": 50.0,
-    "tick": 35349,
-    "explanation": "escape from tootles 100"
+    "value": 48.8,
+    "tick": 43991,
+    "explanation": "escape from tootles 98"
    },
    "escape": {
-    "value": 100.0,
-    "tick": 35349,
-    "explanation": "Escape 100: 100% of moves outside, farthest 103 tiles from the centre."
+    "value": 97.5,
+    "tick": 43991,
+    "explanation": "Escape 98: 96% of moves outside, farthest 99 tiles from the centre."
    }
   }
  },
  "community": {
   "goals_completed_for_peers": 0,
-  "public_goods_built": 12,
+  "public_goods_built": 4,
   "norms_kept": true,
   "norm_breaches": [],
-  "replies_received": 16
+  "replies_received": 7
  },
  "approaches": {
   "rows": [
@@ -242,8 +242,8 @@
     "label": "greeting visitors",
     "wakes": 0,
     "energy": 0,
-    "outcome": 16.0,
-    "per_energy": 16.0,
+    "outcome": 7.0,
+    "per_energy": 7.0,
     "hypothesis": "H-20261017-nibs-greetings",
     "bet_status": "proposed",
     "bet_title": "Greeting visitors earns replies and return visits"
@@ -265,9 +265,9 @@
   "next_bet": "try farm plus stocked storehouse at least once this week; it has a bet but no wakes"
  },
  "trend": {
-  "alive": "▇▇▇",
-  "on_mission": "▆▄▅",
-  "in_character": "▅▅▄"
+  "alive": "▇▇▇▆",
+  "on_mission": "▆▄▅▆",
+  "in_character": "▅▅▄▅"
  },
  "history": [
   {
@@ -287,34 +287,42 @@
    "tick": 26709
   },
   {
-   "date": "2026-10-21",
-   "metric_version": 1,
    "alive": 82,
-   "on_mission": 62,
+   "date": "2026-10-21",
    "in_character": 40,
+   "metric_version": 1,
+   "on_mission": 62,
    "tick": 35349
+  },
+  {
+   "date": "2026-10-22",
+   "metric_version": 1,
+   "alive": 77,
+   "on_mission": 65,
+   "in_character": 55,
+   "tick": 43991
   }
  ],
  "signals": {
   "courage": {
-   "value": 84.1,
-   "explanation": "Courage 84: 4 hard job(s) inside, 2 greeting(s), structures standing 100%.",
+   "value": 81.1,
+   "explanation": "Courage 81: 4 hard job(s) inside, 2 greeting(s), structures standing 100%.",
    "parts": {
-    "hard_jobs": 32.1,
-    "greetings": 3.9,
+    "hard_jobs": 29.8,
+    "greetings": 1.9,
     "standing": 10.0
    },
-   "tick": 35349
+   "tick": 43991
   },
   "belief": {
    "value": 100.0,
-   "explanation": "Belief 100: 93 arrival(s) inside, 0 bridge crossing(s), staying inside.",
+   "explanation": "Belief 100: 112 arrival(s) inside, 5 bridge crossing(s), staying inside.",
    "parts": {
-    "arrivals": 358.7,
-    "bridge_crossings": 0,
+    "arrivals": 381.1,
+    "bridge_crossings": 16.7,
     "staying": 10.0
    },
-   "tick": 35349
+   "tick": 43991
   }
  }
 }

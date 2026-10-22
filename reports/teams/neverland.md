@@ -4,7 +4,7 @@ Tinkerglow chooses and builds Neverland, a safe haven recorded as team territory
 
 | agent | alive | on mission | in character | working | next bet |
 | --- | --- | --- | --- | --- | --- |
-| Strayling | 71 | 54 | 45 | nothing measurable yet | try forty percent distraction roll at least once this week; it has a bet but no wakes |
+| Stoutheart | 77 | 65 | 55 | nothing measurable yet | try farm plus stocked storehouse at least once this week; it has a bet but no wakes |
 
 ## Influence links
 
@@ -26,10 +26,10 @@ Tinkerglow chooses and builds Neverland, a safe haven recorded as team territory
 - tootles · escape: Escape 98: 96% of moves outside, farthest 99 tiles from the centre.
 - tootles · belief: Belief 21: 1 arrival(s) inside, 0 bridge crossing(s), not currently inside.
 - nibs · courage: Courage 81: 4 hard job(s) inside, 2 greeting(s), structures standing 100%.
-- nibs · belief: Belief 100: 110 arrival(s) inside, 5 bridge crossing(s), staying inside.
+- nibs · belief: Belief 100: 112 arrival(s) inside, 5 bridge crossing(s), staying inside.
 
 ## What each member's success costs the others
 
 - tootles's escape (98) lowers tinker-bell's glow: Time and distance Lagalong spends outside Neverland dim Tinkerglow's Glow; she feels abandoned.
 
-Metric spec versions: v1. Tick 43937.
+Metric spec versions: v1. Tick 43991.

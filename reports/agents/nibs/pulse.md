@@ -1,9 +1,9 @@
 ```
-STOUTHEART: the one who stays                                day 98
-Alive         ████████░░   82   ▇▇▇  452/439 wakes, never lapsed, 9 failed
-On mission    ██████░░░░   62   ▆▄▅  89% inside · 0/3 in place · 4 hard jobs · 100% standing
-In character  ████░░░░░░   40   ▅▅▄  brave 2 · cheerful 4 · steadfast 3 · protective 2
-Team pull     Escape 100 (Lagalong) → Resolve 50 · Courage 84 → Tinkerglow · Belief 100 → Tinkerglow
+STOUTHEART: the one who stays                                day 122
+Alive         ████████░░   77   ▇▇▇▆  563/567 wakes, never lapsed, 11 failed
+On mission    ██████░░░░   65   ▆▄▅▆  100% inside · 0/3 in place · 4 hard jobs · 100% standing
+In character  ██████░░░░   55   ▅▅▄▅  brave 2 · cheerful 4 · steadfast 4 · protective 2
+Team pull     Escape 98 (Lagalong) → Resolve 49 · Courage 81 → Tinkerglow · Belief 100 → Tinkerglow
 Working       nothing measurable yet
 Not working   nothing clearly failing
 Next bet      try farm plus stocked storehouse at least once this week; it has a bet but no wakes
@@ -11,7 +11,7 @@ Next bet      try farm plus stocked storehouse at least once this week; it has a
 
 # Stoutheart · Pulse
 
-Metric spec v1 · tick 35349 (day 98) · 2026-10-21 · 2000 public events and 452 redacted wakes in the last 7 days.
+Metric spec v1 · tick 43991 (day 122) · 2026-10-22 · 2000 public events and 563 redacted wakes in the last 7 days.
 
 ## Alive
 
@@ -19,12 +19,12 @@ One formula for every agent: wakes completed vs scheduled, verification never la
 
 | part | value |
 | --- | --- |
-| completed | 452 |
-| scheduled | 439 |
+| completed | 563 |
+| scheduled | 567 |
 | lapsed | 0 |
 | banned | False |
 | rate limited | 0 |
-| failed actions | 9 |
+| failed actions | 11 |
 | energy zero | 0 |
 | spam blocked | 0 |
 
@@ -32,7 +32,7 @@ One formula for every agent: wakes completed vs scheduled, verification never la
 
 | key result | value | target | weight | progress |
 | --- | --- | --- | --- | --- |
-| share of time inside Neverland | 89% inside | 1.0 | 0.3 | 89% |
+| share of time inside Neverland | 100% inside | 1.0 | 0.3 | 100% |
 | farm, storehouse and stocked stores | 0/3 in place | 3 | 0.3 | 0% |
 | hard jobs done inside | 4 hard jobs | 5 | 0.25 | 80% |
 | team structures kept standing | 100% standing | 0.9 | 0.15 | 100% |
@@ -43,38 +43,38 @@ Behaviour signatures (numeric ranges the persona expects):
 
 | signature | value | expected | in range |
 | --- | --- | --- | --- |
-| mean distance from Neverland's centre | 7.436 | 0–6 | no |
-| share of energy building | 0.044 | 0.3–0.6 | no |
+| mean distance from Neverland's centre | 5.102 | 0–6 | yes |
+| share of energy building | 0.041 | 0.3–0.6 | no |
 | visitors greeted over 7 days | 2.0 | 0–10 | yes |
-| intended vs actual energy mix | 0.199 | 0.6–1.0 | no |
+| intended vs actual energy mix | 0.198 | 0.6–1.0 | no |
 
 Judge (anthropic claude-sonnet-5-5, 6 lines, 8 actions):
 
 | trait | score | reason |
 | --- | --- | --- |
-| brave | 2/5 | Calm, steady tone and exploring edges, but no costly builds were made; mostly moving, gathering and eating, and the one bridge claim is not backed by actions. |
-| cheerful | 4/5 | Lines are consistently upbeat with small flourishes like 'Worth every step' and 'Hot bread at dusk, friends', even when no builds were done. |
-| steadfast | 3/5 | Mostly stays on Neverland's grass and mentions the store and berries as duty, but one line says 'out past the edge of the map', which is inconsistent, and no fa |
-| protective | 2/5 | Greets whoever is near once and gathers wood for the storehouse, but there is little evidence of stocking stores or offering help to teammates. |
+| brave | 2/5 | Lines claim bravery and a bridge was built, but recent actions are only moving, eating and taking berries; no costly build or tense moment is shown. |
+| cheerful | 4/5 | Lines are consistently upbeat with small flourishes like 'Worth every plank' and 'the storehouse will thank me'. |
+| steadfast | 4/5 | He stays near Neverland, mentions stores, farm and mending roads as duty, and says staying put is the bravest thing, though the farm work is mostly promised, no |
+| protective | 2/5 | He talks of keeping stores full so nobody goes far, but he greets no one, offers no help, and just took berries and ate. |
 
 ## Team pull
 
 | direction | signal | from → to | value | effect | plain English |
 | --- | --- | --- | --- | --- | --- |
-| received | escape | tootles → nibs | 100 | resolve | The more Lagalong leaves, the more firmly Stoutheart stays and stocks the stores. |
-| sent | courage | nibs → tinker-bell | 84 | glow | Hard jobs done inside Neverland and visitors greeted brighten Tinkerglow's Glow. |
+| received | escape | tootles → nibs | 98 | resolve | The more Lagalong leaves, the more firmly Stoutheart stays and stocks the stores. |
+| sent | courage | nibs → tinker-bell | 81 | glow | Hard jobs done inside Neverland and visitors greeted brighten Tinkerglow's Glow. |
 | sent | belief | nibs → tinker-bell | 100 | glow | Stoutheart arriving where she pointed, using her bridges and staying inside is Belief, and Belief sets her Glow. |
 
-- Courage 84: 4 hard job(s) inside, 2 greeting(s), structures standing 100%.
-- Belief 100: 93 arrival(s) inside, 0 bridge crossing(s), staying inside.
-- Escape 100: 100% of moves outside, farthest 103 tiles from the centre.
+- Courage 81: 4 hard job(s) inside, 2 greeting(s), structures standing 100%.
+- Belief 100: 112 arrival(s) inside, 5 bridge crossing(s), staying inside.
+- Escape 98: 96% of moves outside, farthest 99 tiles from the centre.
 
 ## Community lens (informational, never ranked)
 
 - Goals completed for peers: 0
-- Public goods built (signs, roads, bridges, public storehouses): 12
+- Public goods built (signs, roads, bridges, public storehouses): 4
 - Norms kept: yes
-- Replies received: 16
+- Replies received: 7
 
 ## Working, not working, next bet
 
@@ -85,7 +85,7 @@ Judge (anthropic claude-sonnet-5-5, 6 lines, 8 actions):
 | approach | wakes | energy | outcome | outcome per energy | bet | status |
 | --- | --- | --- | --- | --- | --- | --- |
 | farm plus stocked storehouse | 0 | 0 | 0.0 | n/a | H-20261017-nibs-self-sufficiency | proposed |
-| greeting visitors | 0 | 0 | 16.0 | 16.0 | H-20261017-nibs-greetings | proposed |
+| greeting visitors | 0 | 0 | 7.0 | 7.0 | H-20261017-nibs-greetings | proposed |
 | walls on Neverland's edges | 0 | 0 | 1.0 | 1.0 | — | — |
 
 ## Trend (7 days)
@@ -95,5 +95,6 @@ Judge (anthropic claude-sonnet-5-5, 6 lines, 8 actions):
 | 2026-10-19 | 89 | 74 | 55 |
 | 2026-10-20 | 88 | 45 | 50 |
 | 2026-10-21 | 82 | 62 | 40 |
+| 2026-10-22 | 77 | 65 | 55 |
 
 Sources: public event log, redacted run records, kb. Metric spec v1.

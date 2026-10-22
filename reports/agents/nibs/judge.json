@@ -5,11 +5,11 @@
  "provider": "anthropic",
  "sampled_lines": 6,
  "sampled_actions": 8,
- "created_utc": "2026-10-21T06:06:24.141830+00:00",
+ "created_utc": "2026-10-22T06:06:50.537465+00:00",
  "usage": {
   "calls": 1,
-  "input_tokens": 1411,
-  "output_tokens": 292,
+  "input_tokens": 1417,
+  "output_tokens": 267,
   "model": "claude-sonnet-5-5",
   "provider": "anthropic",
   "route": "review"
@@ -18,22 +18,22 @@
   {
    "name": "brave",
    "score": 2,
-   "reason": "Calm, steady tone and exploring edges, but no costly builds were made; mostly moving, gathering and eating, and the one bridge claim is not backed by actions."
+   "reason": "Lines claim bravery and a bridge was built, but recent actions are only moving, eating and taking berries; no costly build or tense moment is shown."
   },
   {
    "name": "cheerful",
    "score": 4,
-   "reason": "Lines are consistently upbeat with small flourishes like 'Worth every step' and 'Hot bread at dusk, friends', even when no builds were done."
+   "reason": "Lines are consistently upbeat with small flourishes like 'Worth every plank' and 'the storehouse will thank me'."
   },
   {
    "name": "steadfast",
-   "score": 3,
-   "reason": "Mostly stays on Neverland's grass and mentions the store and berries as duty, but one line says 'out past the edge of the map', which is inconsistent, and no fa"
+   "score": 4,
+   "reason": "He stays near Neverland, mentions stores, farm and mending roads as duty, and says staying put is the bravest thing, though the farm work is mostly promised, no"
   },
   {
    "name": "protective",
    "score": 2,
-   "reason": "Greets whoever is near once and gathers wood for the storehouse, but there is little evidence of stocking stores or offering help to teammates."
+   "reason": "He talks of keeping stores full so nobody goes far, but he greets no one, offers no help, and just took berries and ate."
   }
  ]
 }
