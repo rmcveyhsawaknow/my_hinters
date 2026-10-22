@@ -1,0 +1,61 @@
+{
+  "run_id": "announce-1792673690",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 46442,
+  "created_utc": "2026-10-22T12:54:50.897563+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Built the road at (85,97) and hauled five wood to the storehouse. Five stone came along too. The path is shorter for everyone now, and the boots stay dry."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1665,
+    "output_tokens": 61,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (85,97)"
+    ],
+    "gathered": {
+      "wood": 5,
+      "stone": 5
+    },
+    "moved": 5,
+    "deposited": {
+      "wood": 5
+    },
+    "approaches": [
+      "deposit",
+      "deposit_trip",
+      "homing",
+      "migrate",
+      "build"
+    ],
+    "mood": "warm",
+    "where": [
+      83,
+      94
+    ],
+    "discoveries": []
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
