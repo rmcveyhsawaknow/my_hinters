@@ -1,0 +1,54 @@
+{
+  "run_id": "announce-1792670721",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 46145,
+  "created_utc": "2026-10-22T12:05:21.402254+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, four steps out and no bridges yet; I'm at (70, 105) and still keeping the farm in mind. Next hour I build, and the store gets the pack."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1741,
+    "output_tokens": 64,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "harvest",
+      "rest",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "brave",
+    "where": [
+      70,
+      105
+    ],
+    "discoveries": []
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
