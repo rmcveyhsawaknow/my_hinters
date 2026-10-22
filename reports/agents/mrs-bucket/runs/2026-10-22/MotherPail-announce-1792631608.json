@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792631608",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 42234,
+  "created_utc": "2026-10-22T01:13:28.738522+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Built the road at (85,95) this hour, and it already saves a walk. Five wakes on the move, no rest yet. Kettle's on when the next stretch is laid."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1637,
+    "output_tokens": 62,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (85,95)"
+    ],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "migrate",
+      "migrate",
+      "migrate",
+      "migrate",
+      "build"
+    ],
+    "mood": "warm",
+    "where": [
+      84,
+      93
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}

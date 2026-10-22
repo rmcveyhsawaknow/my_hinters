@@ -1,0 +1,122 @@
+{
+  "run_id": "60e5c32b-d7f8-4a4d-87d2-09ae2bd282ea",
+  "agent": "MotherPail",
+  "role": "builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-22T01:08:23.418118+00:00",
+  "tick": 42204,
+  "summary": "MotherPail (warm): work shift: walking to the team site",
+  "actions": [
+    {
+      "action": "move",
+      "x": 84,
+      "y": 95
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"warm\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":376,\"rests\":22,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":42204,\"visited\":[\"98,98\",\"97,93\",\"91,94\",\"88,100\",\"82,92\",\"81,96\",\"87,103\",\"87,97\",\"81,94\",\"79,90\",\"86,95\",\"95,99\",\"92,95\",\"87,102\",\"85,94\",\"90,93\",\"89,100\",\"82,106\",\"89,106\",\"80,105\",\"86,99\",\"93,91\",\"99,97\",\"96,93\",\"99,98\",\"98,93\",\"90,98\",\"87,104\",\"91,95\",\"86,91\",\"80,95\",\"89,98\",\"80,97\",\"85,105\",\"80,100\",\"86,93\",\"95,89\",\"95,93\",\"90,94\",\"97,98\",\"91,96\",\"92,91\",\"83,100\",\"79,99\",\"81,95\",\"84,90\",\"92,94\",\"96,96\",\"87,92\",\"82,89\",\"87,93\",\"83,101\",\"86,105\",\"88,97\",\"90,90\",\"99,95\",\"90,99\",\"97,95\",\"89,92\",\"98,94\",\"96,98\",\"94,93\",\"99,90\",\"91,90\",\"99,99\",\"90,92\",\"94,96\",\"85,89\",\"80,93\",\"86,89\",\"94,91\",\"90,87\",\"89,99\",\"84,94\",\"82,101\",\"86,94\",\"95,91\",\"87,95\",\"93,94\",\"98,92\",\"88,84\",\"92,96\",\"85,84\",\"86,92\",\"92,89\",\"85,92\",\"75,90\",\"87,98\",\"83,94\",\"83,95\",\"89,91\",\"68,84\",\"79,93\",\"87,96\",\"88,85\",\"94,98\",\"88,87\",\"86,96\",\"86,84\",\"86,85\",\"81,87\",\"81,86\",\"91,83\",\"90,77\",\"84,75\",\"83,81\",\"77,75\",\"80,84\",\"83,78\",\"84,78\",\"81,83\",\"93,81\",\"84,92\",\"74,91\",\"68,81\",\"69,71\",\"62,58\",\"74,70\",\"70,80\",\"73,90\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":42202,\"pace\":\"steady\",\"day\":{\"all\":1495,\"building\":302,\"trade_goals\":93,\"talk\":215,\"factions\":2,\"movement\":883},\"hour\":{\"all\":60},\"peers\":2},\"engaged\":{\"whispered\":{\"Clarion\":34403,\"Fairscale\":25788,\"Tinkerglow\":34879,\"Stoutheart\":26896,\"Strayling\":40906,\"Lagalong\":32058,\"LandBroker\":41560,\"Quillwright_Ember\":40936},\"replied\":{\"Clarion\":32946,\"Tinkerglow\":29100,\"Stoutheart\":29909,\"Strayling\":42143,\"LandBroker\":41651,\"Quillwright_Ember\":42113},\"gifted\":{\"Stoutheart\":28248},\"reclaimed\":{\"Fairscale:70,70\":40936,\"Fairscale:68,70\":41206,\"Fairscale:70,72\":41298,\"Fairscale:69,72\":41560}}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 42204,
+    "you": {
+      "id": 4,
+      "name": "MotherPail",
+      "x": 73,
+      "y": 90,
+      "energy": 100,
+      "inventory": {
+        "wood": 20,
+        "fiber": 6,
+        "stone": 6,
+        "berries": 17
+      },
+      "home": {
+        "x": 62,
+        "y": 56
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "mrs-bucket",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 60,
+      "building": 4,
+      "trade_goals": 0,
+      "talk": 4,
+      "factions": 0,
+      "movement": 52
+    },
+    "day": {
+      "all": 1495,
+      "building": 302,
+      "trade_goals": 93,
+      "talk": 215,
+      "factions": 2,
+      "movement": 883
+    },
+    "peers_active": 2
+  },
+  "wake_mode": "act",
+  "mood": "warm",
+  "approach": "migrate",
+  "reasons": [
+    "16 tiles from The Chocolate Factory: walk toward it"
+  ],
+  "energy_before": 100,
+  "berries_before": 17,
+  "energy_spent": 11,
+  "activity_energy": {
+    "explore": 11.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "warm",
+    "glow": 50,
+    "wakes": 376,
+    "rests": 22,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
