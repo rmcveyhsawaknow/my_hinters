@@ -1,0 +1,54 @@
+{
+  "run_id": "announce-1792690726",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 48146,
+  "created_utc": "2026-10-22T17:38:46.576052+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Welcome, welcome, do come closer to the sand at eighty, ninety-nine. Five wakes, two rests, three moves, not one wall built yet. Gentle progress is still progress. (Fine print: the factory is a feeling. Bring a bucket.)"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1816,
+    "output_tokens": 95,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [],
+    "gathered": {},
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "explore",
+      "rest",
+      "explore",
+      "explore"
+    ],
+    "mood": "gentle",
+    "where": [
+      80,
+      99
+    ],
+    "discoveries": []
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
