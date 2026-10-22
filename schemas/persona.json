@@ -95,7 +95,10 @@
         "size": {"type": "integer", "enum": [1, 3]},
         "color": {"enum": ["natural", "white", "grey", "black", "brown", "red", "orange", "yellow", "lime", "green", "teal", "cyan", "blue", "indigo", "purple", "pink", "tan"]},
         "style": {"enum": ["house", "factory"]},
-        "site": {"type": "object", "required": ["x", "y"], "properties": {"x": {"type": "integer", "minimum": 0, "maximum": 127}, "y": {"type": "integer", "minimum": 0, "maximum": 127}}, "additionalProperties": false}
+        "site": {"type": "object", "required": ["x", "y"], "properties": {"x": {"type": "integer", "minimum": 0, "maximum": 127}, "y": {"type": "integer", "minimum": 0, "maximum": 127}}, "additionalProperties": false},
+        "site_from": {"enum": ["land_office"]},
+        "request": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$"},
+        "brief": {"type": "string", "minLength": 20, "maxLength": 400}
       },
       "additionalProperties": false
     },

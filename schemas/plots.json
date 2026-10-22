@@ -10,6 +10,25 @@
     "fee": {"type": "object", "minProperties": 1, "maxProperties": 1, "additionalProperties": {"type": "integer", "minimum": 1, "maximum": 50}},
     "fee_reward": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "integer", "minimum": 1}},
     "registration_title": {"type": "string", "minLength": 3, "maxLength": 80},
+    "site_requests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "client"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$"},
+          "client": {"type": "string", "minLength": 3, "maxLength": 24},
+          "size": {"type": "integer", "enum": [5]},
+          "expandable": {"type": "integer", "minimum": 0, "maximum": 4},
+          "min_buildable": {"type": "integer", "minimum": 1, "maximum": 25},
+          "wants": {"type": "array", "items": {"enum": ["wood", "stone", "ore", "fiber", "berries"]}},
+          "near": {"type": "array", "items": {"type": "object", "required": ["x", "y"], "additionalProperties": false, "properties": {"label": {"type": "string", "maxLength": 40}, "x": {"type": "integer"}, "y": {"type": "integer"}, "weight": {"type": "number", "minimum": 0, "maximum": 10}, "max": {"type": "integer", "minimum": 1, "maximum": 128}}}},
+          "prefer": {"type": "object", "additionalProperties": false, "properties": {"y_min": {"type": "integer"}, "y_max": {"type": "integer"}}},
+          "note": {"type": "string", "maxLength": 300}
+        }
+      }
+    },
     "lots": {
       "type": "object",
       "required": ["size", "currency", "base_price", "price_cap", "sale_title", "sale_reward"],

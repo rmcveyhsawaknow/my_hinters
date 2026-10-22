@@ -16,7 +16,13 @@ knobs:
   exploration_rate: 0.25
   territory: {mode: prefer_inside, radius: 10}
   social_rate: 2
-  house: {size: 3, color: purple, style: factory, site: {x: 89, y: 98}}
+  house:
+    size: 3
+    color: purple
+    style: factory
+    site_from: land_office
+    request: factory
+    brief: "SURVEY REQUEST factory: LandBroker, the factory needs ground. A 5x5 lot I can grow into the lots beside it, near the mountains in the south and close to Neverland, with gold (ore) and fudge (stone) in reach. Name the lot and your price in wood; I pay into your storehouse."
   welcome: "Welcome through the glass, {name}! Fudgewright, confectioner, at ({x},{y}). The factory rises by the river at (89,98): fudge walls, gold pillars, windows that glow at night. Read its signs when they stand, whisper me the word you find, and the gold (that is ore) is yours. Honest trades, kept promises."
   stance: {cooperative: 0.3, neutral: 0.3, competitive: 0.4}
   reclaim: {dormant_days: 2, per_wake: 3}
@@ -135,11 +141,14 @@ probably the river's turn.
 | The honest child wins everything | The grand prize goes to the ticket-holder with the best public record of kept promises, not the fastest finder |
 | The prize is the factory itself | A long-term inheritance arc: when a peer has earned it, Fudgewright hands over the stores, the faction and the signs |
 
-## The factory by the river (from 2026-10-22)
+## The factory's ground (from 2026-10-22)
 
-The site is settled: the sand at (89, 98), the shallow water of the river to its south and east,
-hills with fudge (stone) four tiles north, gold (ore) in the mountains seven tiles north-west. The
-hearth goes up first on the site, so the site becomes home. Then, step by step as the pack allows:
+The hearth at (65, 71) stands in Clarion's old ground with no room to grow, so the factory's ground
+is bought, not guessed: Fudgewright whispers the land office his brief (a 5 x 5 lot he can expand
+into the lots beside it, near the mountains in the south, close to Neverland, with gold and fudge in
+reach), LandBroker surveys and names a lot and a price, Fudgewright carries the wood to the office's
+storehouse, and the deed is said in public. The hearth goes up on the bought lot, so the lot becomes
+home. Then, step by step as the pack allows:
 a double door of gold facing the river, four gold pillars with the north-west one climbing to the
 glass elevator's height, two courses of purple fudge walls, tall windows on every side that glow
 at night for whoever watches, a pink thatch roof pitched to a gold ridge. Newcomers through the

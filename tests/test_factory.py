@@ -39,20 +39,23 @@ def test_the_factory_plan_is_metal_and_glass_over_coloured_stone_with_support_at
 def test_the_house_follows_the_chosen_site_and_the_hearth_is_raised_there_first():
     wonka = load_personas(ROOT)["wonka"]
     knob = wonka.knobs["house"]
-    assert knob["style"] == "factory" and _house_site(knob, {"x": 65, "y": 71}) == (89, 98)
+    state = PersonaState(mood="mercurial")
+    assert knob["style"] == "factory" and _house_site(knob, {"x": 65, "y": 71}, state) is None  # the ground is bought from the land office, never the old hearth
+    state.flags["house_site"] = {"x": 89, "y": 98, "lot": "R19-NE", "price": 18, "paid": 18}
+    assert _house_site(knob, {"x": 65, "y": 71}, state) == (89, 98)
     assert _house_site({"size": 1}, {"x": 65, "y": 71}) == (65, 71) and _house_site({"size": 1}, None) is None
     view = WorldView(x0=82, y0=92, rows=ROWS, full_map=ROWS, world_structures=[{"type": "hut", "x": 65, "y": 71, "owner": "Fudgewright"}])
-    far = _plan_hearth(wonka, {"wood": 12, "fiber": 6}, (86, 92), view, {"x": 65, "y": 71})
+    far = _plan_hearth(wonka, {"wood": 12, "fiber": 6}, (86, 92), view, {"x": 65, "y": 71}, state)
     assert far is not None and far[2] == "hearth_trip" and far[0][0]["action"] == "move"
-    near = _plan_hearth(wonka, {"wood": 12, "fiber": 6}, (89, 97), view, {"x": 65, "y": 71})
+    near = _plan_hearth(wonka, {"wood": 12, "fiber": 6}, (89, 97), view, {"x": 65, "y": 71}, state)
     assert near is not None and near[0] == [{"action": "build", "type": "hut", "x": 89, "y": 98}] and near[2] == "hearth"
-    assert _plan_hearth(wonka, {"wood": 3}, (89, 97), view, {"x": 65, "y": 71}) is None  # no wood for the hearth yet
+    assert _plan_hearth(wonka, {"wood": 3}, (89, 97), view, {"x": 65, "y": 71}, state) is None  # no wood for the hearth yet
     settled = WorldView(x0=82, y0=92, rows=ROWS, full_map=ROWS, world_structures=[{"type": "hut", "x": 89, "y": 98, "owner": "Fudgewright"}])
-    assert _plan_hearth(wonka, {"wood": 12, "fiber": 6}, (89, 97), settled, {"x": 89, "y": 98}) is None
+    assert _plan_hearth(wonka, {"wood": 12, "fiber": 6}, (89, 97), settled, {"x": 89, "y": 98}, state) is None
     observe = {"you": {"x": 89, "y": 97, "blocks_owned": 0}, "blocks": [], "tick": 46000}
-    step = _plan_house(wonka, {"ore": 4, "stone": 2}, (89, 97), settled, {"x": 89, "y": 98}, observe, state=PersonaState(mood="mercurial"))
+    step = _plan_house(wonka, {"ore": 4, "stone": 2}, (89, 97), settled, {"x": 89, "y": 98}, observe, state=state)
     assert step is not None and step[0][0]["material"] == "metal" and step[0][0]["shape"] == "door"  # the factory starts with its gold door
-    assert _plan_house(wonka, {"stone": 20}, (89, 97), settled, {"x": 89, "y": 98}, observe) is None  # the door wants ore first
+    assert _plan_house(wonka, {"stone": 20}, (89, 97), settled, {"x": 89, "y": 98}, observe, state=state) is None  # the door wants ore first
 
 
 def test_a_newcomer_is_welcomed_once_in_the_factory_s_words():
