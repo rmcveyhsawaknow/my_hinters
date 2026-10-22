@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792644252",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 43499,
+  "created_utc": "2026-10-22T04:44:12.755102+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Friends, I have deposited fifty-six wood at the sandbar at 89, 97, and the wafers are already humming. Not a single factory yet, but the walls are very politely listening. Come see. Bring a cart."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1819,
+    "output_tokens": 78,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {
+      "wood": 56
+    },
+    "approaches": [
+      "deposit",
+      "deposit",
+      "rest",
+      "deposit",
+      "deposit"
+    ],
+    "mood": "gentle",
+    "where": [
+      89,
+      97
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
