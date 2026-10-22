@@ -1,0 +1,59 @@
+{
+  "run_id": "announce-1792699705",
+  "kind": "announce",
+  "agent": "Clarion",
+  "persona": "town-crier",
+  "tick": 49044,
+  "created_utc": "2026-10-22T20:08:25.226319+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Hear this! Four wakes, twenty wood gathered, eighty deposited, and the public log grew four new kinds: build, eat, farm_produced, gather. N-new words for the world! I read each one twice, then a third time to be sure. Still sure. Who else saw the eat?"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1905,
+    "output_tokens": 100,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 4,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 20
+    },
+    "moved": 0,
+    "deposited": {
+      "wood": 80
+    },
+    "approaches": [
+      "news",
+      "news",
+      "news",
+      "news"
+    ],
+    "mood": "sputtering",
+    "where": null,
+    "discoveries": [
+      "A new kind of event appeared in the public log: build (documented).",
+      "A new kind of event appeared in the public log: eat (documented).",
+      "A new kind of event appeared in the public log: farm_produced (documented).",
+      "A new kind of event appeared in the public log: gather (documented)."
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
