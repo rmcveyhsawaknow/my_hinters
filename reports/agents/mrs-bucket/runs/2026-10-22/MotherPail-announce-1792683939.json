@@ -1,0 +1,56 @@
+{
+  "run_id": "announce-1792683939",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 47467,
+  "created_utc": "2026-10-22T15:45:39.855641+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Laid a road at (82,97) this hour and walked five wakes along it. Warm feet, dry boots, and the next stretch is already mapped."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1642,
+    "output_tokens": 55,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (82,97)"
+    ],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "homing",
+      "migrate",
+      "explore",
+      "build",
+      "migrate"
+    ],
+    "mood": "warm",
+    "where": [
+      86,
+      97
+    ],
+    "discoveries": []
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
