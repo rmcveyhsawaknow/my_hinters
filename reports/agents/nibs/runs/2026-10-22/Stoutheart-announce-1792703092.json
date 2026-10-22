@@ -1,0 +1,54 @@
+{
+  "run_id": "announce-1792703092",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 49383,
+  "created_utc": "2026-10-22T21:04:52.124107+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, three moves, no bridge yet, but the stores are being counted and the south water still needs mending. Worth the walk."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1741,
+    "output_tokens": 50,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [],
+    "gathered": {},
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "harvest",
+      "rest",
+      "explore",
+      "rest",
+      "explore"
+    ],
+    "mood": "brave",
+    "where": [
+      73,
+      113
+    ],
+    "discoveries": []
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
