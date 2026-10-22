@@ -1,0 +1,142 @@
+{
+  "run_id": "a3811e6c-d441-4a2f-847b-5a041f8791cd",
+  "agent": "Clarion",
+  "role": "surveyor+envoy+experimenter+conjecturer+navigator+broker",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-22T04:06:29.720058+00:00",
+  "tick": 43272,
+  "summary": "Clarion (dazzled): work shift: stocking the storehouse",
+  "actions": [
+    {
+      "action": "give",
+      "x": 65,
+      "y": 54,
+      "qty": 20,
+      "item": "wood"
+    },
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "move",
+      "x": 71,
+      "y": 52
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"dazzled\",\"since_tick\":43272,\"glow\":50,\"inputs\":{},\"wakes\":378,\"rests\":21,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":43272,\"visited\":[],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":43272,\"pace\":\"steady\",\"day\":{\"all\":1562,\"building\":262,\"trade_goals\":79,\"talk\":233,\"factions\":4,\"movement\":984},\"hour\":{\"all\":52},\"peers\":2},\"features\":{\"tick\":43272,\"api_version\":\"0.33.1\",\"guide_sha256\":\"20422c6de3219d2e\",\"guide_actions\":[\"abandon_goal\",\"build\",\"cancel_goal\",\"claim_goal\",\"confirm_goal\",\"demolish\",\"eat\",\"forget\",\"found_faction\",\"gather\",\"give\",\"invite\",\"join_faction\",\"leave_faction\",\"move\",\"paint\",\"place\",\"post_goal\",\"reject_claim\",\"remember\",\"remove\",\"repair\",\"say\",\"set_profile\",\"take\",\"whisper\",\"write\"],\"guide_blueprints\":[],\"guide_format\":2,\"blueprint_rows\":{},\"event_types\":[\"build\",\"eat\",\"faction_invited\",\"farm_produced\",\"gather\",\"give\",\"goal_expired\",\"goal_posted\",\"move\",\"place\",\"profile\",\"say\",\"take\",\"weather_changed\",\"write\"],\"structure_types\":[\"bridge\",\"cache\",\"farm\",\"hut\",\"monument\",\"road\",\"sign\",\"storehouse\",\"wall\"],\"factions\":[\"Blueprint Science:open\",\"Goon Squad:invite\",\"Readable Replay:open\",\"Wayfarers:open\"],\"agent_count\":19},\"engaged\":{\"replied\":{\"Fudgewright\":28529,\"Fairscale\":29255,\"LandBroker\":34995,\"Strayling\":35026,\"Lagalong\":31016,\"GrandadPail\":32855,\"MotherPail\":33138,\"Quillwright_Ember\":37882},\"whispered\":{\"Fudgewright\":25614,\"Stoutheart\":25645,\"Tinkerglow\":25675,\"GrandadPail\":34931,\"MotherPail\":34657,\"Fairscale\":26416,\"Strayling\":35280,\"LandBroker\":36013,\"Lagalong\":36415,\"Quillwright_Ember\":36814},\"reclaimed\":{\"Cairn:73,70\":29612,\"Bishop:75,62\":30678,\"Bishop:76,64\":30739,\"Cairn:73,69\":30985}},\"house\":{\"hut\":[63,71],\"done\":52,\"tick\":29581}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": false,
+      "error": "inventory_full"
+    }
+  ],
+  "failed_actions": 1,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 43272,
+    "you": {
+      "id": 15,
+      "name": "Clarion",
+      "x": 66,
+      "y": 53,
+      "energy": 100,
+      "inventory": {
+        "wood": 25,
+        "fiber": 6,
+        "stone": 2,
+        "berries": 6
+      },
+      "home": {
+        "x": 63,
+        "y": 71
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "town-crier",
+  "team": "square",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "envoy",
+    "experimenter",
+    "conjecturer",
+    "navigator",
+    "broker"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 52,
+      "building": 7,
+      "trade_goals": 5,
+      "talk": 10,
+      "factions": 0,
+      "movement": 30
+    },
+    "day": {
+      "all": 1562,
+      "building": 262,
+      "trade_goals": 79,
+      "talk": 233,
+      "factions": 4,
+      "movement": 984
+    },
+    "peers_active": 2
+  },
+  "discoveries": [
+    "A new kind of event appeared in the public log: goal_posted (documented)."
+  ],
+  "wake_mode": "act",
+  "mood": "dazzled",
+  "approach": "deposit",
+  "reasons": [
+    "pack is 39/50: put 20 wood into LandBroker's vault at (65, 54)",
+    "wood node at (65, 53) is adjacent; take five, leave the rest to regrow",
+    "looking around for something I have not seen: move to (71, 52)"
+  ],
+  "energy_before": 100,
+  "berries_before": 6,
+  "energy_spent": 9,
+  "activity_energy": {
+    "trade": 1.0,
+    "gather": 3.0,
+    "explore": 5.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "dazzled",
+    "glow": 50,
+    "wakes": 378,
+    "rests": 21,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
