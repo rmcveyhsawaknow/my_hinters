@@ -175,3 +175,39 @@ block (stdio, command `hglab`, args `local mcp`) and the personas through the A2
 - OpenClaw architecture write-ups: https://www.betterclaw.io/blog/how-does-openclaw-work and https://www.stack-junkie.com/blog/openclaw-workspace-architecture
 - A2A specification 1.0: https://a2a-protocol.org/latest/specification/ and https://atlan.com/know/mcp/a2a-protocol-implementation-guide/
 - Kùzu archived, LadybugDB fork: https://github.com/LadybugDB/ladybug and https://www.helix-db.com/content/alternatives/kuzu-alternatives-in-2026-embedded-graph-databases
+
+## 7. NemoClaw on this machine: status on 2026-10-22
+
+Installed keyless and unattended in WSL2 Ubuntu (Docker Desktop with WSL integration, Node 22.19 from
+a user-local tarball, zstd unpacked from the Ubuntu package into the home directory because sudo has
+no password in the shell that runs installs):
+
+```text
+NEMOCLAW_NON_INTERACTIVE=1 NEMOCLAW_ACCEPT_THIRD_PARTY_SOFTWARE=1 NEMOCLAW_AGENT=openclaw
+NEMOCLAW_PROVIDER=install-ollama NEMOCLAW_MODEL=qwen3.5:9b NEMOCLAW_OLLAMA_INSTALL_MODE=user
+NEMOCLAW_SANDBOX_GPU=0 NEMOCLAW_SANDBOX_NAME=hinters NEMOCLAW_POLICY_MODE=suggested
+```
+
+Result: NemoClaw v0.0.137, OpenShell 0.0.116 gateway as a user service, Ollama in user-local mode
+serving qwen3.5:9b on 127.0.0.1:11434 behind the token proxy on 11435, sandbox `hinters` Ready with
+OpenClaw v2026.9.2 running, policies npm, pypi, huggingface, brew-balanced and openclaw-pricing.
+`NEMOCLAW_DEFER_ONBOARDING` is refused for the OpenClaw agent, so onboarding had to run.
+
+Onboarding stops at the policies step. The in-sandbox inference proof posts to
+`http://host.openshell.internal:11435/v1/chat/completions`; the L7 rule allows it and the SSRF
+guard then denies it, because the alias resolves to an IPv6 unique-local address
+(`fdc4:f303:9324::254`, beside `192.168.65.254`) and the generated provider policy pins only
+`10.0.0.0/8`, `172.16.0.0/12` and `192.168.0.0/16`. The pins come from
+`src/lib/inference/native-local/profile.ts` in NemoClaw (installed copy under
+`~/.nemoclaw/source/dist/lib/inference/native-local/profile.js`). Two ways forward, both the
+owner's decision: add `fc00::/7` to that list and run `nemoclaw onboard --resume --non-interactive`,
+or report it upstream and wait. The session did not change the policy.
+
+After onboarding completes: `nemoclaw hinters dashboard-url` for the OpenClaw UI, then an
+`mcp.servers` entry for `hglab local mcp` and a policy endpoint for 127.0.0.1 ports 8765 and 8766 so
+the operator agent can reach the collective's cards and status page.
+
+Clarion locally: a dry `hglab local once --agent town-crier --job tick` observes the live world (the
+key resolves locally), so the first live confirmation is
+`hglab local once --agent town-crier --job tick --live`, run by the owner; the lease makes the local
+run and the Actions run take turns.
