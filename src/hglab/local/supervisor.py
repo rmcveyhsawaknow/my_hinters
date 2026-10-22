@@ -15,6 +15,7 @@ import json
 import os
 import subprocess
 import sys
+import threading
 import time
 from datetime import UTC, datetime
 from pathlib import Path
@@ -110,6 +111,9 @@ class Supervisor:
         self.status_path = root / STATUS_FILE
         self.log_path = root / LOG_FILE
         self.status: dict[str, Any] = self._load_status()
+        self._lock = threading.RLock()
+        self._busy: set[str] = set()
+        self._threads: list[threading.Thread] = []
 
     def _load_status(self) -> dict[str, Any]:
         if self.status_path.is_file():
@@ -126,16 +130,18 @@ class Supervisor:
         }
 
     def _save_status(self) -> None:
-        self.status_path.parent.mkdir(parents=True, exist_ok=True)
-        self.status["updated_utc"] = datetime.now(UTC).isoformat()
-        self.status_path.write_text(
-            json.dumps(self.status, ensure_ascii=False, indent=2), encoding="utf-8"
-        )
+        with self._lock:
+            self.status_path.parent.mkdir(parents=True, exist_ok=True)
+            self.status["updated_utc"] = datetime.now(UTC).isoformat()
+            self.status_path.write_text(
+                json.dumps(self.status, ensure_ascii=False, indent=2), encoding="utf-8"
+            )
 
     def _log(self, line: str) -> None:
-        self.log_path.parent.mkdir(parents=True, exist_ok=True)
-        with self.log_path.open("a", encoding="utf-8") as handle:
-            handle.write(f"{datetime.now(UTC).isoformat()} {line}\n")
+        with self._lock:
+            self.log_path.parent.mkdir(parents=True, exist_ok=True)
+            with self.log_path.open("a", encoding="utf-8") as handle:
+                handle.write(f"{datetime.now(UTC).isoformat()} {line}\n")
 
     def _run_subprocess(self, command: list[str]) -> tuple[int, str]:
         env = {**os.environ, "PYTHONUTF8": "1", "HGLAB_RUNTIME": "local"}
@@ -177,29 +183,57 @@ class Supervisor:
         }
         if code != 0:
             record["tail"] = [line[:200] for line in output.strip().splitlines()[-12:]]
-        agent = self.status.setdefault("agents", {}).setdefault(slug, {"history": []})
-        agent["last"] = record
-        agent.setdefault("history", []).append(record)
-        agent["history"] = agent["history"][-30:]
-        self._save_status()
+        with self._lock:
+            agent = self.status.setdefault("agents", {}).setdefault(slug, {"history": []})
+            agent["last"] = record
+            agent.setdefault("history", []).append(record)
+            agent["history"] = agent["history"][-30:]
+            self._save_status()
         self._log(f"{slug} {job} exit {code} in {record['seconds']}s: {summary}")
         for line in record.get("tail") or []:
             self._log(f"  | {line}")
         return record
 
-    def tick(self, personas: dict[str, Any], when: datetime | None = None) -> list[tuple[str, str]]:
-        """One minute of the schedule: run every due job for every enabled agent."""
+    def tick(
+        self, personas: dict[str, Any], when: datetime | None = None, wait: bool = False
+    ) -> list[tuple[str, str]]:
+        """One minute of the schedule: start every due job for every enabled agent, each in its own thread.
+
+        A persona never runs two jobs at once (a shift takes twenty minutes; its tick waits for the
+        next minute it is due), and one persona's long job never delays another's. ``wait`` joins the
+        threads, for the CLI and the tests; the loop does not wait.
+        """
         when = when or datetime.now(UTC)
-        ran: list[tuple[str, str]] = []
+        started: list[tuple[str, str]] = []
+        self._threads = [t for t in self._threads if t.is_alive()]
         for entry in self.entries():
             slug = str(entry.get("slug"))
             persona = personas.get(slug)
             if persona is None:
                 continue
             for job in due_jobs(persona, when, entry):
-                self.run_once(slug, job, entry.get("dry_run", None))
-                ran.append((slug, job))
-        return ran
+                with self._lock:
+                    if slug in self._busy:
+                        self._log(f"{slug} {job} skipped: a job is still running")
+                        continue
+                    self._busy.add(slug)
+                thread = threading.Thread(
+                    target=self._run_job, args=(slug, job, entry.get("dry_run", None)), daemon=True
+                )
+                thread.start()
+                self._threads.append(thread)
+                started.append((slug, job))
+        if wait:
+            for thread in self._threads:
+                thread.join()
+        return started
+
+    def _run_job(self, slug: str, job: str, dry_run: bool | None) -> None:
+        try:
+            self.run_once(slug, job, dry_run)
+        finally:
+            with self._lock:
+                self._busy.discard(slug)
 
     def backup(self, personas: dict[str, Any]) -> dict[str, Any]:
         """Write the capability cards and push a backup to the configured target; never raises."""
@@ -247,7 +281,7 @@ class Supervisor:
                         last_backup is None or (now - last_backup).total_seconds() >= every * 60
                     ):
                         last_backup = now
-                        self.backup(personas)
+                        threading.Thread(target=self.backup, args=(personas,), daemon=True).start()
                 time.sleep(5)
         finally:
             self.status["running"] = False
