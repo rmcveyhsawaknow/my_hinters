@@ -253,7 +253,8 @@ def persona_wake(
                 previous = state.flags.get("features") if isinstance(state.flags.get("features"), dict) else None
                 discoveries = compare_features(previous, env["features_now"])
                 env["discoveries"] = [d["text"] for d in discoveries][:6]
-                state.flags["features"] = compact_features(env["features_now"])
+                env["discovery_kinds"] = [d["kind"] for d in discoveries][:6]
+                state.flags["features"] = compact_features(env["features_now"], previous)
                 extras["discoveries"] = env["discoveries"]
                 env.pop("features_now", None)
         rng = wake_rng(persona, tick) if seed is None else random.Random(f"{persona.slug}:{seed}")
@@ -270,6 +271,7 @@ def persona_wake(
             teammates=mates, terrain_rows=terrain_rows, allowed=allowed, team_names=names, work=work,
             owned_counts=owned_counts, registrar_name=registrar_name, public_structures=public_structures,
             collective_names={p.name for p in personas.values()}, public_agents=public_agents, public_resources=public_resources,
+            environment=env,
         )
         used = "heuristic"
         patrol_loop: tuple[tuple[int, int], ...] = ()
@@ -283,7 +285,8 @@ def persona_wake(
             from hglab.engage import render_board as render_engagement
             from hglab.engage import stance_of
 
-            engagement = render_engagement(engagement_board(persona, observe, {p.name for p in personas.values()}, {personas[m].name for m in names.values()}))
+            fresh = [str(a["name"]) for a in (public_agents or []) if isinstance(a, dict) and a.get("name") and a.get("created_tick") is not None and tick - int(a["created_tick"]) <= 2 * 8640]
+            engagement = render_engagement(engagement_board(persona, observe, {p.name for p in personas.values()}, {personas[m].name for m in names.values()}, newcomers=fresh))
             extras["engagement"] = engagement[:600]
             patrol_text = None
             if patrol_loop:
@@ -580,6 +583,11 @@ def persona_prompt(
         " mocking, never a collective member's goal. Cooperative means sharing, helping, thanking and building"
         " beside others. Neutral means trading, asking and informing. Neverland's border is a ring of riddle"
         " signs; its gatekeeper Tinkerglow whispers the opening to whoever she finds near the ring."
+        " ONLOOKERS: people watch the site and see every block, colour, glowing window and sign you make, and"
+        " your profile page and Atom feed carry your words beyond the glass; newcomers (registered within two"
+        " days, listed in engagement) are the visitors, claimants and trading partners the collective has lacked:"
+        " welcome each once by whisper, point them to what you build and to goals they could claim, and never"
+        " strike or contest anyone seen within two days."
         " Propose 0-3 in-character actions within the knobs; the notebook state"
         " update is added for you. Include exactly one public say each wake that tells your story or your plan"
         " in character (the collective reads the Talk feed to see you are alive); the validator enforces the"

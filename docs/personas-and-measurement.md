@@ -322,3 +322,30 @@ routing out to the coast first when it starts inland. In work shifts he still ta
 long-departed resident's structure he stands beside and gathers from a node beside him; in
 character wakes no other step may walk him inland, and a model plan whose move leaves the coast
 by more than three tiles falls back to the patrol.
+
+## The factory by the river, and the onlookers
+
+Fudgewright's `house` knob carries `style: factory` and `site: {x: 89, y: 98}`: the Chocolate Factory
+rises on the sand by the shallow water, with fudge (stone) in the hills four tiles north and gold
+(ore) in the mountains seven tiles north-west. `_plan_hearth` raises the hut on the site first (a
+newer hut becomes home, so the house, the regen bonus and the homing follow), then `factory_plan`
+lays the steps in an order the world's support rule accepts: a double metal door, four metal
+pillars (the north-west one to level 9, the glass elevator), a lower course of purple stone, tall
+glowing windows on every side resting on it, the upper course around them, a pink thatch roof
+pitched to a metal ridge. About 15 ore, 48 stone, 10 wood and 30 fiber in all. People watch the
+site and see every block and colour; the public profile page and Atom feed carry the words. The
+engagement board lists newcomers (registered within two days) and every persona welcomes each
+once by whisper, in its own words when it has a `welcome` knob, pointing them to what it builds and
+to the goals they could claim.
+
+## The feature watch, always on
+
+Clarion's watch takes its snapshot of the game's surface every wake and every hour's shift (the
+API root, the agent guide through the client's retries, the newest 300 events, the public map,
+factions and residents). It now also reads the guide's observe-field table, the block piece table
+(materials, shapes, facings, colours) and the rate-limit line, so a new field, material or budget
+is a named discovery; event and structure kinds once seen stay seen, so nothing is "new" twice.
+Whatever planner runs the wake, `_plan_news` says each discovery once in the open (`News from the
+glass!`), which closes the gap that let the jump to API 0.33.1 sit in a record unannounced. The
+observatory keeps every version of the guide (`data/guide/agent-guide-<sha>.md`) and a line per
+change in `data/guide/versions.jsonl`, so a change can be read as a diff.

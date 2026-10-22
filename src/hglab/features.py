@@ -68,18 +68,52 @@ def action_rows(guide_text: str) -> dict[str, str]:
     return rows
 
 
+def guide_source(client: Any) -> str:
+    """The live agent guide as text, through the client's retries; empty when it cannot be read."""
+    try:
+        response = client.http.get("/agent-guide.md")
+        return response.text if response.is_success else ""
+    except Exception:  # noqa: BLE001 - the guide is optional for the watch
+        return ""
+
+
+def observe_fields(guide_text: str) -> list[str]:
+    """The field names of the guide's observe table (section 5): a new field is a new capability."""
+    out: list[str] = []
+    for tbl in _tables(guide_text):
+        if not tbl or "field" not in tbl[0].casefold():
+            continue
+        for row in tbl[1:]:
+            cells = [c.strip() for c in row.strip().strip("|").split("|")]
+            if cells and cells[0].startswith("`"):
+                out.extend(n.strip("` ") for n in cells[0].split(",") if n.strip("` "))
+    return sorted(set(out))
+
+
+def block_pieces(guide_text: str) -> dict[str, list[str]]:
+    """Block materials, shapes, facings and colours from the guide's piece table (section 6)."""
+    pieces: dict[str, list[str]] = {}
+    for tbl in _tables(guide_text):
+        if not tbl or "piece" not in tbl[0].casefold():
+            continue
+        for row in tbl[1:]:
+            cells = [c.strip() for c in row.strip().strip("|").split("|")]
+            if len(cells) >= 2 and cells[0].startswith("`"):
+                name = cells[0].strip("` ")
+                pieces[name] = sorted(set(re.findall(r"`([a-z_]+)`", cells[1])))
+    return pieces
+
+
+def limits_line(guide_text: str) -> str:
+    """The guide's rate-limit sentence, so a changed budget is noticed."""
+    match = re.search(r"Rate limit:[^\n]*", guide_text)
+    return match.group(0)[:300] if match else ""
+
+
 def snapshot(client: Any, *, pages: int = 3) -> dict[str, Any]:
     """Current public state of the game's surface. No key, a handful of GETs."""
     api = client.request("GET", "/api/v1")
-    guide_text = ""
-    try:
-        import httpx
-
-        response = httpx.get("https://hinterglass.com/agent-guide.md", timeout=18)
-        if response.is_success:
-            guide_text = response.text
-    except Exception:  # noqa: BLE001 - the guide is optional for the watch
-        guide_text = ""
+    guide_text = guide_source(client)
     rows_text = action_rows(guide_text)
     actions = sorted(rows_text)
     blueprint_rows = blueprint_catalogue(guide_text)
@@ -123,6 +157,9 @@ def snapshot(client: Any, *, pages: int = 3) -> dict[str, Any]:
         "action_row_text": {name: text[:400] for name, text in rows_text.items()},
         "event_types": event_types,
         "structure_types": sorted(set(structure_types) | set(structure_types_built)),
+        "observe_fields": observe_fields(guide_text),
+        "block_pieces": block_pieces(guide_text),
+        "limits": limits_line(guide_text),
         "factions": sorted(f"{f.get('name')}:{f.get('membership', '')}" for f in factions if isinstance(f, dict)),
         "agents": sorted(str(a.get("name")) for a in agents if isinstance(a, dict)),
         "agent_count": len(agents),
@@ -155,8 +192,8 @@ def compare(previous: dict[str, Any] | None, current: dict[str, Any]) -> list[di
         out.append({"kind": "first_look", "text": f"First look: API {current['api_version']}, {current['agent_count']} agents, {len(current['event_types'])} event types seen, {len(current['structure_types'])} structure types standing."})
         if rows:
             out.append({"kind": "blueprint_catalogue", "text": catalogue_line(rows)})
-        undocumented = sorted(set(current["event_types"]) - _documented_events(current))
-        if undocumented:
+        undocumented = sorted(set(current["event_types"]) - _documented_events(current)) if current.get("guide_sha256") else []
+        if undocumented:  # only when the guide was actually read: an unread guide documents nothing
             out.append({"kind": "unpublished_event_type", "text": "Event types in the log that the guide does not describe: " + ", ".join(undocumented) + "."})
         return out
     previous_rows = previous.get("blueprint_rows") or {}
@@ -182,13 +219,25 @@ def compare(previous: dict[str, Any] | None, current: dict[str, Any]) -> list[di
         if new:
             detail = ", ".join(f"`{n}`" + (f" ({rows[n]['cost']})" if n in rows else "") for n in new)
             out.append({"kind": f"new_{label}", "text": f"New {label}{'s' if len(new) > 1 else ''} in the guide: {detail}."})
-    new_events = sorted(set(current["event_types"]) - set(previous.get("event_types", [])))
+    for field_name in sorted(set(current.get("observe_fields") or []) - set(previous.get("observe_fields") or [])):
+        if previous.get("observe_fields"):
+            out.append({"kind": "new_observe_field", "text": f"A new field in the observe payload: `{field_name}`. Read what it carries before planning around it."})
+    for piece, values in (current.get("block_pieces") or {}).items():
+        before = set((previous.get("block_pieces") or {}).get(piece, []))
+        if before:
+            added = sorted(set(values) - before)
+            if added:
+                out.append({"kind": "new_block_piece", "text": f"New block {piece}{'s' if len(added) > 1 else ''} to build with: {', '.join(added)}."})
+    if current.get("limits") and previous.get("limits") and current["limits"] != previous["limits"]:
+        out.append({"kind": "limits_changed", "text": f"The rate limits changed: {current['limits'][:200]}"})
+    seen_events = set(previous.get("event_types", [])) | set(previous.get("event_types_seen", []))
+    new_events = sorted(set(current["event_types"]) - seen_events)
     if new_events:
         documented = _documented_events(current)
         for kind in new_events:
             where = "documented" if kind in documented else "not in the guide yet"
             out.append({"kind": "new_event_type", "text": f"A new kind of event appeared in the public log: {kind} ({where})."})
-    new_structures = sorted(set(current["structure_types"]) - set(previous.get("structure_types", [])))
+    new_structures = sorted(set(current["structure_types"]) - set(previous.get("structure_types", [])) - set(previous.get("structure_types_seen", [])))
     if new_structures:
         out.append({"kind": "new_structure_type", "text": "Something was built that nobody had built before: " + ", ".join(new_structures) + "."})
     new_factions = sorted(set(current["factions"]) - set(previous.get("factions", [])))
@@ -213,10 +262,21 @@ def _documented_events(current: dict[str, Any]) -> set[str]:
     }
 
 
-def compact(current: dict[str, Any]) -> dict[str, Any]:
-    """What a persona keeps in its notebook (bounded)."""
+def compact(current: dict[str, Any], previous: dict[str, Any] | None = None) -> dict[str, Any]:
+    """What a persona keeps in its notebook (bounded).
+
+    Event and structure types ever seen accumulate in ``*_seen`` (the current window alone forgets
+    kinds that fall out of the newest 300 events, which made them "new" again every hour).
+    """
+    prev = previous or {}
+    events_seen = sorted(set(prev.get("event_types_seen") or []) | set(prev.get("event_types") or []) | set(current["event_types"]))[:60]
+    structures_seen = sorted(set(prev.get("structure_types_seen") or []) | set(prev.get("structure_types") or []) | set(current["structure_types"]))[:24]
     return {
         "tick": current["tick"], "api_version": current["api_version"], "guide_sha256": current["guide_sha256"][:16],
+        "event_types_seen": events_seen, "structure_types_seen": structures_seen,
+        "observe_fields": (current.get("observe_fields") or [])[:40],
+        "block_pieces": {k: v[:24] for k, v in (current.get("block_pieces") or {}).items()},
+        "limits": str(current.get("limits") or "")[:200],
         "guide_actions": current["guide_actions"][:80], "guide_blueprints": current["guide_blueprints"][:20],
         "guide_format": int(current.get("guide_format", 1) or 1),
         "blueprint_rows": {k: {"cost": v.get("cost", "")} for k, v in (current.get("blueprint_rows") or {}).items()},

@@ -10,6 +10,7 @@ line (a greeting, a credit claim), and it never claims goals blindly.
 
 from __future__ import annotations
 
+import hashlib
 import random
 import re
 from dataclasses import dataclass, field
@@ -52,6 +53,8 @@ WORK_SUMMARIES = {
     "repair": "mending what is damaged", "harvest": "collecting the farm", "salvage": "taking salvage from a ruin",
     "stake": "staking open lots for the land office",
     "house": "raising the house around the hut",
+    "hearth": "raising the hearth on the house's site",
+    "hearth_trip": "carrying the hearth to the house's site",
     "homing": "carrying materials home for the house",
     "engage": "a word, a gift or a deal with a neighbour",
     "deliver": "delivering on a claimed goal",
@@ -59,6 +62,7 @@ WORK_SUMMARIES = {
     "deposit_trip": "carrying a full pack to the storehouse",
     "border": "raising the border signs",
     "patrol": "walking the outermost edge of the world, behind the glass",
+    "news": "announcing a change in the game",
     "reclaim": "reclaiming what the departed left standing",
     "forage": "walking toward a node the map knows",
     "reclaim_trip": "walking to what the departed left standing",
@@ -83,6 +87,7 @@ class WorldView:
     world_structures: list[dict[str, Any]] = field(default_factory=list)  # every structure in the world (public snapshot)
     season: str = ""  # spring, summer, autumn, winter: wild berries do not regrow in winter
     liveness: dict[str, int] = field(default_factory=dict)  # resident name -> last_seen_tick (public snapshot)
+    arrivals: dict[str, int] = field(default_factory=dict)  # resident name -> created_tick (public snapshot)
     world_resources: list[dict[str, Any]] = field(default_factory=list)  # every node in the world (public snapshot)
     closed: set[tuple[int, int]] = field(default_factory=set)  # tiles in view that blocks close to this agent (observe.blocks[].closed)
 
@@ -101,6 +106,10 @@ class WorldView:
             str(a["name"]): int(a.get("last_seen_tick") or 0)
             for a in (public_agents or []) if isinstance(a, dict) and a.get("name") and a.get("last_seen_tick") is not None
         }
+        arrivals = {
+            str(a["name"]): int(a.get("created_tick") or 0)
+            for a in (public_agents or []) if isinstance(a, dict) and a.get("name") and a.get("created_tick") is not None
+        }
         rows = view.get("rows") or []
         return cls(
             x0=int(view.get("x0", 0)),
@@ -115,6 +124,7 @@ class WorldView:
             season=str(observe.get("season") or ""),
             world_structures=[s for s in (world_structures or []) if isinstance(s, dict)],
             liveness=liveness,
+            arrivals=arrivals,
             world_resources=[r for r in (public_resources or []) if isinstance(r, dict)],
             closed={
                 (int(b["x"]), int(b["y"]))
@@ -235,6 +245,7 @@ def plan_wake(
     collective_names: set[str] | None = None,
     public_agents: list[dict[str, Any]] | None = None,
     public_resources: list[dict[str, Any]] | None = None,
+    environment: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Return ``{summary, actions, reasons, approach, remember}`` for one wake.
 
@@ -311,7 +322,7 @@ def plan_wake(
     if work:
         return _plan_work(
             persona, team, state, observe, rng, view, position, energy, inventory, home, reserve, cap, teammates, allowed, mood, reasons, remember,
-            registrar_name=registrar_name, collective_names=collective_names, names=names,
+            registrar_name=registrar_name, collective_names=collective_names, names=names, environment=environment,
         )
     budget = cap if mood != "sulk" else 1
     spendable = energy + 15 * sum(min(int(a.get("qty") or 0), inventory.get("berries", 0)) for a in actions if a.get("action") == "eat") - reserve
@@ -320,10 +331,13 @@ def plan_wake(
     activities = ["lighten", "engage", *_activity_order(persona, state, rng)]
     if patrolling:
         activities = ["lighten", "engage", "patrol", *[a for a in activities[2:] if a != "explore"]]
+    activities = ["news", *activities]
     for activity in activities:
         if len(actions) >= budget:
             break
-        if activity == "lighten":
+        if activity == "news":
+            step = _plan_news(persona, state, observe, environment)
+        elif activity == "lighten":
             step = _plan_lighten(inventory, energy)
         elif activity == "patrol":
             step = _plan_patrol(persona, state, here, view, room=budget - len(actions), energy_room=spendable)
@@ -335,6 +349,7 @@ def plan_wake(
                 _plan_repair(persona, team, inventory, here, view, teammates)
                 or _plan_harvest(persona, team, inventory, here, view, teammates)
                 or _plan_stake(persona, inventory, here, view)
+                or (_plan_hearth(persona, inventory, here, view, home) if here == position else None)
                 or _plan_house(persona, inventory, here, view, home, observe, state=state)
                 or (_plan_build(persona, team, inventory, here, view, home) if here == position else None)
                 or (_plan_border_sign(persona, team, inventory, here, view, teammates, names) if here == position else None)
@@ -412,6 +427,7 @@ def _plan_work(
     registrar_name: str | None = None,
     collective_names: set[str] | None = None,
     names: dict[str, str] | None = None,
+    environment: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """A work shift wake: build first, then gather the shortfall, deposit surplus, migrate.
 
@@ -472,6 +488,9 @@ def _plan_work(
         approach = approach or "harvest"
     if fits(_plan_salvage(inventory, here, view)):
         approach = approach or "salvage"
+    # 0.2 the town crier's news: a changed game is said in the open before anything else
+    if fits(_plan_news(persona, state, observe, environment)):
+        approach = approach or "news"
     # 0.3 a pack heavy with berries makes room for materials
     if fits(_plan_lighten(inventory, energy)):
         approach = approach or "lighten"
@@ -528,6 +547,9 @@ def _plan_work(
     # 3. any build whose materials are in hand (hut, farm, storehouse, bridge, wall...)
     if here == position and fits(_plan_build(persona, team, inventory, position, view, home)):
         approach = approach or "build"
+    # 3.4 the hearth on the house's chosen site, when the site is not yet home
+    if not moved() and fits(_plan_hearth(persona, inventory, here, view, home)):
+        approach = approach or "hearth"
     # 3.5 the house around the hut, one step per wake, when its material is in the pack
     if fits(_plan_house(persona, inventory, here, view, home, observe, state=state)):
         approach = approach or "house"
@@ -645,9 +667,10 @@ def _house_shortfall(persona: Persona, inventory: dict[str, int], view: WorldVie
 
     knob = persona.knobs.get("house")
     home = next((s for s in view.structures if s.get("type") == "hut" and _own(persona, s)), None)
-    if not knob or home is None:
+    site = _house_site(knob, home)
+    if not knob or site is None:
         return []
-    plan = house_plan(int(home["x"]), int(home["y"]), int(knob.get("size", 1)), str(knob.get("color", "natural")))
+    plan = house_plan(site[0], site[1], int(knob.get("size", 1)), str(knob.get("color", "natural")), style=str(knob.get("style", "house")))
     for step in plan:
         if inventory.get(step["item"], 0) < step["items"]:
             return [step["item"]]
@@ -655,10 +678,58 @@ def _house_shortfall(persona: Persona, inventory: dict[str, int], view: WorldVie
 
 
 HOUSE_VIEW = 6  # the hut's footprint is in the 13x13 view when the observed position is this close
+
+
+def _house_site(knob: dict[str, Any] | None, home: dict[str, Any] | None) -> tuple[int, int] | None:
+    """Where the house stands: the knob's ``site`` when set (the factory's chosen ground), else the hearth."""
+    if not knob:
+        return None
+    site = knob.get("site")
+    if isinstance(site, dict) and all(isinstance(site.get(k), int) for k in ("x", "y")):
+        return int(site["x"]), int(site["y"])
+    if home and all(isinstance(home.get(k), int) for k in ("x", "y")):
+        return int(home["x"]), int(home["y"])
+    return None
+
+
+def _plan_hearth(
+    persona: Persona,
+    inventory: dict[str, int],
+    position: tuple[int, int],
+    view: WorldView,
+    home: dict[str, Any] | None,
+) -> tuple[list[dict[str, Any]], str, str] | None:
+    """Raise the hearth on the house's chosen site when no hut of ours stands there: the site becomes home.
+
+    A hut costs 10 wood and 4 fiber; a newer hut becomes the agent's home, so the house, the faster regen
+    and the homing all move to the site with it.
+    """
+    knob = persona.knobs.get("house")
+    site = knob.get("site") if knob else None
+    if not isinstance(site, dict) or not all(isinstance(site.get(k), int) for k in ("x", "y")):
+        return None
+    where = (int(site["x"]), int(site["y"]))
+    if home and (int(home.get("x", -1)), int(home.get("y", -1))) == where:
+        return None
+    structures = view.world_structures or view.structures
+    if any(s.get("type") == "hut" and _own(persona, s) and (int(s.get("x", -1)), int(s.get("y", -1))) == where for s in structures):
+        return None
+    if not materials_ok(inventory, "hut"):
+        return None
+    if chebyshev(position, where) <= 1:
+        if view.structure_at(*where) is not None or not view.walkable(*where):
+            return None
+        return [{"action": "build", "type": "hut", "x": where[0], "y": where[1]}], f"the hearth of the house at {where}: raise the hut there, and the site becomes home", "hearth"
+    target = _step_toward(position, {"x": where[0], "y": where[1]}, view)
+    if target is None or target == position:
+        return None
+    return [{"action": "move", "x": target[0], "y": target[1]}], f"carrying the hearth's wood and fiber to the house site at {where}", "hearth_trip"
 BERRY_KEEP = 15  # berries worth carrying: food for the reserve and small change for gifts and rewards
 PACK_TIGHT = 40  # at this load the pack stops taking berries and starts shedding them
 FORAGE_RANGE = 40  # how far a trip toward a node seen only in the public snapshot may begin
 RECLAIM_VALUE = {"storehouse": 5, "tower": 4, "monument": 4, "farm": 3, "hut": 3, "bridge": 1, "wall": 1}  # what a fallen structure drops a quarter of
+NEWCOMER_TICKS = 2 * 8640  # registered within two real days: a newcomer, welcomed once
+WELCOME_SPACING = 7 * 8640
 
 
 def _dormant_days(view: WorldView, name: str, tick: int) -> float | None:
@@ -875,6 +946,44 @@ def _meal_after_move(actions: list[dict[str, Any]], inventory: dict[str, int], e
     return {"action": "eat", "qty": 1}
 
 
+NEWS_KINDS = {"api_version", "guide_changed", "rule_changed", "new_action", "new_blueprint", "blueprint_cost_changed", "new_observe_field", "new_block_piece", "limits_changed", "new_structure_type", "unpublished_event_type"}
+
+
+def _plan_news(persona: Persona, state: PersonaState, observe: dict[str, Any], environment: dict[str, Any] | None) -> tuple[list[dict[str, Any]], str, str] | None:
+    """The feature watch's news, said in the open once per discovery, whichever planner is at the helm.
+
+    The model-backed wake used to be the only path to an announcement; when it fell back (or the
+    hour's shift ran), a new API version stayed in the record and never reached the feed.
+    """
+    from hglab.engage import _flags, _mark, _recent
+    from hglab.limits import action_limits
+
+    if persona.quirk.get("type") != "feature_watch" or not environment:
+        return None
+    texts = environment.get("discoveries") or []
+    kinds = environment.get("discovery_kinds") or []
+    if not texts:
+        return None
+    recent_says, _, _ = action_limits(observe)
+    if recent_says >= persona.social_rate:
+        return None
+    tick = int(observe.get("tick", 0) or 0)
+    flags = _flags(state)
+    news = []
+    for text, kind in zip(texts, kinds or [""] * len(texts), strict=False):
+        key = hashlib.sha256(str(text).encode("utf-8")).hexdigest()[:12]
+        if (kind and kind not in NEWS_KINDS and not kind.startswith("new_")) or _recent(flags, "news", key, tick, 3 * 8640):
+            continue
+        news.append((key, str(text)))
+    if not news:
+        return None
+    line = "News from the glass! " + " ".join(t for _, t in news)
+    line = line[:270].rsplit(". ", 1)[0] + "." if len(line) > 270 else line
+    for key, _ in news:
+        _mark(flags, "news", key, tick)
+    return [{"action": "say", "text": line}], f"the feature watch found {len(news)} change(s) in the game's surface: announce them once", "news"
+
+
 def _plan_lighten(inventory: dict[str, int], energy: int) -> tuple[list[dict[str, Any]], str, str] | None:
     """Eat into a berry hoard when the pack is tight and the energy has room: every berry is 15 energy.
 
@@ -1008,14 +1117,14 @@ def _plan_house(
     from hglab.blocks import house_plan, next_step
 
     knob = persona.knobs.get("house")
-    if not knob or not home or not all(isinstance(home.get(k), int) for k in ("x", "y")):
+    hut = _house_site(knob, home)
+    if not knob or hut is None:
         return None
     you = observe.get("you") or {}
     if int(you.get("blocks_owned", 0) or 0) >= 3900:
         return None
-    hut = (int(home["x"]), int(home["y"]))
     size = int(knob.get("size", 1))
-    plan = house_plan(hut[0], hut[1], size, str(knob.get("color", "natural")))
+    plan = house_plan(hut[0], hut[1], size, str(knob.get("color", "natural")), style=str(knob.get("style", "house")))
     done = _house_progress(persona, observe, hut, size, state)
     step = next_step(plan, done)
     if step is None:
@@ -1045,13 +1154,13 @@ def _plan_homing(
     from hglab.blocks import house_plan, next_step
 
     knob = persona.knobs.get("house")
-    if not knob or not home or not all(isinstance(home.get(k), int) for k in ("x", "y")):
+    hut = _house_site(knob, home)
+    if not knob or hut is None:
         return None
-    hut = (int(home["x"]), int(home["y"]))
     if chebyshev(position, hut) <= MOVE_STEP_CAP + 2:
         return None  # within one move: _plan_house walks the last stretch itself
     size = int(knob.get("size", 1))
-    plan = house_plan(hut[0], hut[1], size, str(knob.get("color", "natural")))
+    plan = house_plan(hut[0], hut[1], size, str(knob.get("color", "natural")), style=str(knob.get("style", "house")))
     step = next_step(plan, _house_progress(persona, observe, hut, size, state))
     if step is None or inventory.get(step["item"], 0) < step["items"]:
         return None
@@ -1696,7 +1805,8 @@ def _plan_engage(
 
     collective = {n.casefold() for n in (collective_names or ())} | {persona.name.casefold()}
     mates = {n.casefold() for n in (names or {})} | {persona.name.casefold()}
-    b = board(persona, observe, set(collective_names or ()), set(names or ()), here=position)
+    newcomers = [n for n, created in view.arrivals.items() if int(observe.get("tick", 0) or 0) - created <= NEWCOMER_TICKS and n.casefold() not in mates and n.casefold() not in collective]
+    b = board(persona, observe, set(collective_names or ()), set(names or ()), here=position, newcomers=newcomers)
     tick = int(observe.get("tick", 0) or 0)
     flags = _flags(state)
     stance = pick_stance(persona, rng)
@@ -1776,6 +1886,18 @@ def _plan_engage(
             if chebyshev(where, center) <= radius and not _recent(flags, "contested", key, tick, CONTEST_SPACING):
                 candidates.append(("competitive", ([{"action": "say", "text": contest_line(persona, owner, team_label, str(s.get("type")), where)[:280]}], f"{owner}'s {s.get('type')} at {where} stands inside {team_label}'s ground: say so, firmly and fairly", "contest"), f"contested:{key}"))
                 break
+    # newcomers are welcomed once, by whisper, in the persona's own words when it has them
+    for name in b["newcomers"]:
+        if _recent(flags, "welcomed", name, tick, WELCOME_SPACING) or dormant(name, 2):
+            continue
+        text = str(persona.knobs.get("welcome") or f"Welcome through the glass, {name}. {persona.name} of {team_label} here, at ({position[0]},{position[1]}). Ask me for wood, stone or directions; we trade and we keep our word.")
+        text = text.replace("{name}", name).replace("{x}", str(position[0])).replace("{y}", str(position[1]))
+        if name not in text:
+            text = f"{name}, {text}"
+        step = ([{"action": "whisper", "to": name, "text": text[:500]}], f"{name} stepped through the glass within two days: a welcome, once", "welcome")
+        for mode in ("cooperative", "neutral", "competitive"):
+            candidates.insert(0, (mode, step, f"welcomed:{name}"))
+        break
     # the gatekeeper tells a visitor found near the ring where the opening is, once a day per name
     gate = persona.knobs.get("gatekeeper")
     if gate and isinstance(gate.get("entrance"), dict):

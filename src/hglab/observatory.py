@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import hashlib
 import json
 from datetime import UTC, datetime
@@ -60,9 +61,51 @@ class Observatory:
                 output.write(json.dumps(event, ensure_ascii=False, sort_keys=True) + "\n")
         return destination
 
+    def collect_guide(self) -> list[Path]:
+        """Archive the API version and the agent guide whenever either changes (public, keyless).
+
+        ``data/guide/versions.jsonl`` gets one line per change (utc, tick, api version, guide sha);
+        ``data/guide/agent-guide-<sha16>.md`` is the guide text itself, kept so a change can be read
+        as a diff rather than guessed from a hash.
+        """
+        import hashlib
+
+        api = self.client.request("GET", "/api/v1")
+        try:
+            response = self.client.http.get("/agent-guide.md")
+            guide = response.text if response.is_success else ""
+        except Exception:  # noqa: BLE001 - the guide is optional for the archive
+            guide = ""
+        directory = self.root / "data/guide"
+        directory.mkdir(parents=True, exist_ok=True)
+        sha = hashlib.sha256(guide.encode("utf-8")).hexdigest()[:16] if guide else ""
+        versions = directory / "versions.jsonl"
+        last: dict[str, Any] = {}
+        if versions.is_file():
+            lines = [line for line in versions.read_text(encoding="utf-8").splitlines() if line.strip()]
+            if lines:
+                try:
+                    last = json.loads(lines[-1])
+                except json.JSONDecodeError:
+                    last = {}
+        current = {"utc": datetime.now(UTC).isoformat(), "tick": api.get("tick"), "api_version": str(api.get("version", "")), "guide_sha16": sha}
+        written: list[Path] = []
+        if last.get("api_version") != current["api_version"] or last.get("guide_sha16") != sha:
+            with versions.open("a", encoding="utf-8") as output:
+                output.write(json.dumps(current, sort_keys=True) + "\n")
+            written.append(versions)
+        if guide and sha:
+            copy = directory / f"agent-guide-{sha}.md"
+            if not copy.is_file():
+                copy.write_text(guide, encoding="utf-8", newline="\n")
+                written.append(copy)
+        return written
+
     def collect_all(self) -> list[Path]:
         today = datetime.now(UTC).date().isoformat()
         collected = [self.collect_events()]
+        with contextlib.suppress(Exception):  # the archive must not stop the snapshots
+            collected.extend(self.collect_guide())
         endpoints = {
             "world": "/live/world.json",
             "agents": "/live/agents.json",

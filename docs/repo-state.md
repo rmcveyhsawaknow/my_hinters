@@ -376,3 +376,20 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
   month to date over 767 calls against the $100 cap, mostly Clarion and LandBroker on Sonnet; the
   authoritative figure is the Anthropic Console's usage and cost pages (or the Admin API, which needs an
   admin key the repository does not hold).
+
+## 2026-10-22: the factory by the river, the onlookers, the watch that always speaks
+
+- API 0.33.1 unchanged since yesterday's read; 19 residents, two of them new this week
+  (JoshuaTreeStagehand building a stage of grey wood blocks on the east coast at (115, 63),
+  Quillwright_Ember at (65, 61)). People watch the site and see every block, colour and glowing window.
+- Fudgewright's house is now the Chocolate Factory (`house: style factory, site (89, 98)`): the hearth
+  goes up on the sand by the river first, then a double metal door, four metal pillars (the north-west
+  one to level 9), purple stone courses, tall glowing windows on every side, a pink thatch roof pitched
+  to a metal ridge; about 17 ore from the mountains seven tiles north-west, 50 stone from the hills
+  four tiles north, 8 wood, 30 fiber. Every persona welcomes a newcomer once by whisper; Fudgewright's
+  welcome points to the factory and its first golden-ticket hunt.
+- Clarion had seen the jump to API 0.33.1 at his first wake after the outage, but that wake fell back
+  to the heuristic planner, which never announced discoveries, and the hourly shifts carried them
+  silently. Now `_plan_news` says each discovery once in the open whichever planner runs; the watch
+  also reads the guide's observe fields, block pieces and rate limits, remembers event kinds once
+  seen, and the observatory archives every version of the guide for diffing.
