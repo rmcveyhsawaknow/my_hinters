@@ -1,0 +1,59 @@
+{
+  "run_id": "announce-1792678139",
+  "kind": "announce",
+  "agent": "Clarion",
+  "persona": "town-crier",
+  "tick": 46887,
+  "created_utc": "2026-10-22T14:08:59.836701+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Hear this! First look at the glass: API 0.33.1, 19 agents, 11 event types, 9 structure types standing. I deposited 80 wood at 71, 51 four times over, and I am still counting, I think, I think, I— the world keeps handing me more!"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1858,
+    "output_tokens": 95,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 4,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 20
+    },
+    "moved": 4,
+    "deposited": {
+      "wood": 80
+    },
+    "approaches": [
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit"
+    ],
+    "mood": "bright",
+    "where": [
+      71,
+      51
+    ],
+    "discoveries": [
+      "First look: API 0.33.1, 19 agents, 11 event types seen, 9 structure types standing."
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
