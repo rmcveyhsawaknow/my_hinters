@@ -54,6 +54,7 @@ WORK_SUMMARIES = {
     "stake": "staking open lots for the land office",
     "house": "raising the house around the hut",
     "hearth": "raising the hearth on the house's site",
+    "site_trade": "trading with the land office for the house's ground",
     "hearth_trip": "carrying the hearth to the house's site",
     "homing": "carrying materials home for the house",
     "engage": "a word, a gift or a deal with a neighbour",
@@ -88,6 +89,8 @@ class WorldView:
     season: str = ""  # spring, summer, autumn, winter: wild berries do not regrow in winter
     liveness: dict[str, int] = field(default_factory=dict)  # resident name -> last_seen_tick (public snapshot)
     arrivals: dict[str, int] = field(default_factory=dict)  # resident name -> created_tick (public snapshot)
+    residents: list[dict[str, Any]] = field(default_factory=list)  # public agents: name, x, y, last_seen_tick
+    tick: int = 0
     world_resources: list[dict[str, Any]] = field(default_factory=list)  # every node in the world (public snapshot)
     closed: set[tuple[int, int]] = field(default_factory=set)  # tiles in view that blocks close to this agent (observe.blocks[].closed)
 
@@ -125,6 +128,8 @@ class WorldView:
             world_structures=[s for s in (world_structures or []) if isinstance(s, dict)],
             liveness=liveness,
             arrivals=arrivals,
+            residents=[a for a in (public_agents or []) if isinstance(a, dict) and a.get("name")],
+            tick=int(observe.get("tick", 0) or 0),
             world_resources=[r for r in (public_resources or []) if isinstance(r, dict)],
             closed={
                 (int(b["x"]), int(b["y"]))
@@ -349,7 +354,8 @@ def plan_wake(
                 _plan_repair(persona, team, inventory, here, view, teammates)
                 or _plan_harvest(persona, team, inventory, here, view, teammates)
                 or _plan_stake(persona, inventory, here, view)
-                or (_plan_hearth(persona, inventory, here, view, home) if here == position else None)
+                or (_plan_site_trade(persona, state, inventory, here, view, observe, registrar_name) if here == position else None)
+                or (_plan_hearth(persona, inventory, here, view, home, state) if here == position else None)
                 or _plan_house(persona, inventory, here, view, home, observe, state=state)
                 or (_plan_build(persona, team, inventory, here, view, home) if here == position else None)
                 or (_plan_border_sign(persona, team, inventory, here, view, teammates, names) if here == position else None)
@@ -496,6 +502,9 @@ def _plan_work(
         approach = approach or "lighten"
     # 0.5 one engagement with a neighbour when there is one: a word, a gift, a deal, a contest (one action, before the build spends the cap)
     engaged = fits(_plan_engage(persona, team, state, inventory, here, view, observe, teammates, names, rng, collective_names, allowed))
+    # 0.6 the trade for the house's ground: the brief to the land office, its answer, the payment
+    if not moved() and fits(_plan_site_trade(persona, state, inventory, here, view, observe, registrar_name)):
+        approach = approach or "site_trade"
     # 0.7 the patrol: the outermost edge of the world is this persona's whole road
     if persona.knobs.get("patrol"):
         beside = _plan_reclaim(persona, team, state, inventory, here, view, observe, teammates, collective_names, room=cap - len(actions))
@@ -548,7 +557,7 @@ def _plan_work(
     if here == position and fits(_plan_build(persona, team, inventory, position, view, home)):
         approach = approach or "build"
     # 3.4 the hearth on the house's chosen site, when the site is not yet home
-    if not moved() and fits(_plan_hearth(persona, inventory, here, view, home)):
+    if not moved() and fits(_plan_hearth(persona, inventory, here, view, home, state)):
         approach = approach or "hearth"
     # 3.5 the house around the hut, one step per wake, when its material is in the pack
     if fits(_plan_house(persona, inventory, here, view, home, observe, state=state)):
@@ -636,7 +645,15 @@ def _plan_stake(
     A lot is free when no structure stands in it anywhere in the world (the public snapshot), and
     the office leaves a ring of lots around every other agent's hut. The tag carries the lot id.
     """
-    from hglab.lots import free_lots, homestead_ring, lot_anchor, stake_text
+    from hglab.lots import (
+        free_lots,
+        homestead_ring,
+        lot_anchor,
+        lot_price,
+        lot_value,
+        stake_text,
+        total_lots,
+    )
 
     knob = persona.knobs.get("stake_lots")
     if not knob or inventory.get("wood", 0) < 1:
@@ -652,7 +669,9 @@ def _plan_stake(
             break
         if not view.free_tile(*anchor) or any(s.get("x") == anchor[0] and s.get("y") == anchor[1] for s in structures):
             continue
-        build = {"action": "build", "type": "sign", "x": anchor[0], "y": anchor[1], "text": stake_text(lid, persona.name)}
+        value = lot_value(lid, view.terrain, view.world_resources, structures, view.residents, int(view.tick or 0), exclude_owner=persona.name)
+        price = lot_price(len(candidates | set(exclude or ())) / total_lots(), int(knob.get("base_price", 5)), int(knob.get("price_cap", 50)), value["score"])
+        build = {"action": "build", "type": "sign", "x": anchor[0], "y": anchor[1], "text": stake_text(lid, persona.name, price, value["tags"])}
         if chebyshev(position, anchor) <= 1:
             return [build], f"stake lot {lid}: a claim sign at {anchor}", f"stake:{lid}"
         stand = next((t for t in sorted([anchor, *neighbours(*anchor)], key=lambda t: chebyshev(position, t)) if t in reach), None)
@@ -661,13 +680,13 @@ def _plan_stake(
     return None
 
 
-def _house_shortfall(persona: Persona, inventory: dict[str, int], view: WorldView) -> list[str]:
+def _house_shortfall(persona: Persona, inventory: dict[str, int], view: WorldView, state: PersonaState | None = None) -> list[str]:
     """The item the next house step still needs, so gathering trips fetch it before anything else."""
     from hglab.blocks import house_plan
 
     knob = persona.knobs.get("house")
     home = next((s for s in view.structures if s.get("type") == "hut" and _own(persona, s)), None)
-    site = _house_site(knob, home)
+    site = _house_site(knob, home, state)
     if not knob or site is None:
         return []
     plan = house_plan(site[0], site[1], int(knob.get("size", 1)), str(knob.get("color", "natural")), style=str(knob.get("style", "house")))
@@ -680,16 +699,90 @@ def _house_shortfall(persona: Persona, inventory: dict[str, int], view: WorldVie
 HOUSE_VIEW = 6  # the hut's footprint is in the 13x13 view when the observed position is this close
 
 
-def _house_site(knob: dict[str, Any] | None, home: dict[str, Any] | None) -> tuple[int, int] | None:
-    """Where the house stands: the knob's ``site`` when set (the factory's chosen ground), else the hearth."""
+SITE_WHISPER = re.compile(r"SITE for (?P<id>[\w-]+): lot (?P<lot>[A-Z][0-9]{2}-(?:NW|NE|SW|SE)), anchor \((?P<x>\d+),\s*(?P<y>\d+)\).*?price (?P<price>\d+) (?P<currency>\w+)", re.IGNORECASE | re.DOTALL)
+
+
+def _house_site(knob: dict[str, Any] | None, home: dict[str, Any] | None, state: PersonaState | None = None) -> tuple[int, int] | None:
+    """Where the house stands: the knob's ``site`` when set, the lot bought from the land office when the
+    knob says ``site_from: land_office`` (nothing until the deed is agreed), else the hearth."""
     if not knob:
         return None
     site = knob.get("site")
     if isinstance(site, dict) and all(isinstance(site.get(k), int) for k in ("x", "y")):
         return int(site["x"]), int(site["y"])
+    if knob.get("site_from") == "land_office":
+        bought = state.flags.get("house_site") if state is not None and isinstance(state.flags.get("house_site"), dict) else None
+        if bought and all(isinstance(bought.get(k), int) for k in ("x", "y")):
+            return int(bought["x"]), int(bought["y"])
+        return None
     if home and all(isinstance(home.get(k), int) for k in ("x", "y")):
         return int(home["x"]), int(home["y"])
     return None
+
+
+def _plan_site_trade(
+    persona: Persona,
+    state: PersonaState,
+    inventory: dict[str, int],
+    position: tuple[int, int],
+    view: WorldView,
+    observe: dict[str, Any],
+    registrar_name: str | None,
+) -> tuple[list[dict[str, Any]], str, str] | None:
+    """The trade for the house's ground with the land office, in three movements.
+
+    First the brief, whispered to the registrar once a day until an answer comes. Then the answer: the
+    office's ``SITE for <request>`` whisper in the inbox names the lot, its anchor and its price, and the
+    anchor becomes the house's site in the persona state. Then the payment: the price in the office's
+    currency carried to the nearest office storehouse and given in, which the office reads in public and
+    answers with the deed. The inbox is private: it is read here and never copied into a record.
+    """
+    knob = persona.knobs.get("house") or {}
+    if knob.get("site_from") != "land_office" or not registrar_name:
+        return None
+    tick = int(observe.get("tick", 0) or 0)
+    request = str(knob.get("request", "site"))
+    bought = state.flags.get("house_site") if isinstance(state.flags.get("house_site"), dict) else None
+    if not bought:
+        for whisper in observe.get("inbox") or []:
+            if not isinstance(whisper, dict) or str(whisper.get("from", "")).casefold() != registrar_name.casefold():
+                continue
+            match = SITE_WHISPER.search(str(whisper.get("text") or ""))
+            if match and match.group("id").casefold() == request.casefold():
+                bought = {"x": int(match.group("x")), "y": int(match.group("y")), "lot": match.group("lot").upper(), "price": int(match.group("price")), "currency": match.group("currency").casefold(), "paid": 0, "tick": tick}
+                state.flags["house_site"] = bought
+                break
+    if not bought:
+        asked = int(state.flags.get("site_asked", -10**9) or -10**9)
+        brief = str(knob.get("brief") or f"SURVEY REQUEST {request}: a 5x5 lot I can grow into the lots beside it. I pay the office's price in wood.")
+        if tick - asked >= 8640:
+            state.flags["site_asked"] = tick
+            return [{"action": "whisper", "to": registrar_name, "text": f"SURVEY REQUEST {request}: {brief}"[:500] if not brief.upper().startswith("SURVEY REQUEST") else brief[:500]}], f"the house wants ground: the brief goes to {registrar_name}, the land office", "site_request"
+        return None
+    owed = int(bought.get("price", 0) or 0) - int(bought.get("paid", 0) or 0)
+    if owed <= 0:
+        return None
+    currency = str(bought.get("currency", "wood"))
+    carried = inventory.get(currency, 0)
+    if carried < min(owed, 10):
+        return None  # the gathering steps fetch the currency first
+    structures = view.world_structures or view.structures
+    vaults = sorted(
+        ((int(s["x"]), int(s["y"])) for s in structures if s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() == registrar_name.casefold()),
+        key=lambda t: chebyshev(position, t),
+    )
+    if not vaults:
+        return None
+    vault = vaults[0]
+    if chebyshev(position, vault) <= 1:
+        qty = min(owed, carried)
+        bought["paid"] = int(bought.get("paid", 0) or 0) + qty
+        state.flags["house_site"] = bought
+        return [{"action": "give", "x": vault[0], "y": vault[1], "item": currency, "qty": qty}], f"the deed for lot {bought.get('lot')}: {qty} {currency} into the land office's storehouse at {vault} ({owed - qty} still owed)", "deed_payment"
+    target = _step_toward(position, {"x": vault[0], "y": vault[1]}, view)
+    if target is None or target == position:
+        return None
+    return [{"action": "move", "x": target[0], "y": target[1]}], f"carrying {carried} {currency} toward the land office's storehouse at {vault} to pay for lot {bought.get('lot')}", "deed_trip"
 
 
 def _plan_hearth(
@@ -698,6 +791,7 @@ def _plan_hearth(
     position: tuple[int, int],
     view: WorldView,
     home: dict[str, Any] | None,
+    state: PersonaState | None = None,
 ) -> tuple[list[dict[str, Any]], str, str] | None:
     """Raise the hearth on the house's chosen site when no hut of ours stands there: the site becomes home.
 
@@ -705,10 +799,10 @@ def _plan_hearth(
     and the homing all move to the site with it.
     """
     knob = persona.knobs.get("house")
-    site = knob.get("site") if knob else None
-    if not isinstance(site, dict) or not all(isinstance(site.get(k), int) for k in ("x", "y")):
+    site = _house_site(knob, None, state) if knob and (knob.get("site") or knob.get("site_from")) else None
+    if site is None:
         return None
-    where = (int(site["x"]), int(site["y"]))
+    where = site
     if home and (int(home.get("x", -1)), int(home.get("y", -1))) == where:
         return None
     structures = view.world_structures or view.structures
@@ -1070,6 +1164,9 @@ def _wanted(persona: Persona, inventory: dict[str, int], view: WorldView) -> lis
     """Materials the next house step and the build priority still need, in order; building materials fill the pack."""
     priority = list(persona.knobs.get("build_priority") or DEFAULT_BUILD_PRIORITY)
     wanted: list[str] = list(_house_shortfall(persona, inventory, view))
+    knob = persona.knobs.get("house") or {}
+    if knob.get("site_from") == "land_office" and knob.get("style") == "factory":
+        wanted = ["wood", "ore", "stone", *wanted]  # the deed is paid in wood; the factory's door and pillars want ore
     for blueprint in priority:
         if blueprint in BLUEPRINTS:
             wanted.extend(shortfall(inventory, blueprint))
@@ -1117,7 +1214,7 @@ def _plan_house(
     from hglab.blocks import house_plan, next_step
 
     knob = persona.knobs.get("house")
-    hut = _house_site(knob, home)
+    hut = _house_site(knob, home, state)
     if not knob or hut is None:
         return None
     you = observe.get("you") or {}
@@ -1154,7 +1251,7 @@ def _plan_homing(
     from hglab.blocks import house_plan, next_step
 
     knob = persona.knobs.get("house")
-    hut = _house_site(knob, home)
+    hut = _house_site(knob, home, state)
     if not knob or hut is None:
         return None
     if chebyshev(position, hut) <= MOVE_STEP_CAP + 2:

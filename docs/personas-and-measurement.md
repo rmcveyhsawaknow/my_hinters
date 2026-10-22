@@ -349,3 +349,15 @@ Whatever planner runs the wake, `_plan_news` says each discovery once in the ope
 glass!`), which closes the gap that let the jump to API 0.33.1 sit in a record unannounced. The
 observatory keeps every version of the guide (`data/guide/agent-guide-<sha>.md`) and a line per
 change in `data/guide/versions.jsonl`, so a change can be read as a diff.
+
+## The factory's ground is bought, not guessed
+
+Fudgewright's hearth at (65, 71) has no room to grow, so his `house` knob now reads
+`site_from: land_office, request: factory` with a brief: a 5 x 5 lot he can expand into the lots
+beside it, near the mountains in the south, close to Neverland, with ore and stone in reach.
+`_plan_site_trade` whispers the brief to LandBroker once a day, reads the office's `SITE for factory`
+answer from the inbox into the persona state, carries the price in wood to the nearest office
+storehouse, and `_house_site` then points the hearth and the factory plan at the bought lot. The land
+office (`config/plots.yaml: site_requests`) surveys with `site_search`, prices by `lot_value`, and
+deeds the lot in public once the gives are seen. Every staked lot's claim sign now carries its worth
+and price, so ore-rich land, river and mountain views and busy neighbourhoods cost more than sand.

@@ -23,7 +23,16 @@ import yaml
 from jsonschema import Draft202012Validator
 
 from hglab.actions import allowed_for
-from hglab.lots import free_lots, lot_anchor, lot_price, staked_lots, total_lots
+from hglab.lots import (
+    free_lots,
+    lot_anchor,
+    lot_price,
+    lot_value,
+    site_search,
+    staked_lots,
+    terrain_lookup,
+    total_lots,
+)
 from hglab.persona import Persona
 
 LOT_ID = re.compile(r"\b([A-M][0-9]{2}-(?:NW|NE|SW|SE))\b", re.IGNORECASE)
@@ -137,17 +146,43 @@ def registry_text(entries: list[dict[str, Any]], ledger: dict[str, Any], b: dict
     return text[:PROFILE_LIMIT]
 
 
-def lot_market(ledger: dict[str, Any], structures: list[dict[str, Any]], registrar_name: str, sold: set[str]) -> dict[str, Any]:
-    """Free lots in the world, the office's staked lots, how many are for sale, and today's price."""
+def lot_market(
+    ledger: dict[str, Any],
+    structures: list[dict[str, Any]],
+    registrar_name: str,
+    sold: set[str],
+    *,
+    world: dict[str, Any] | None = None,
+    agents: list[dict[str, Any]] | None = None,
+    tick: int = 0,
+) -> dict[str, Any]:
+    """Free lots in the world, the office's staked lots, how many are for sale, and today's prices.
+
+    With the public map at hand every unsold lot is priced by its worth (``lot_value``) at today's
+    scarcity; the standing sale goal asks the median, and a buyer names a lot whose price they covered.
+    """
     cfg = ledger.get("lots") or {}
     free = free_lots(structures)
     total = total_lots()
     staked = staked_lots(structures, registrar_name)
     unsold = [lid for lid in staked if lid not in sold]
-    price = lot_price(len(free) / total, int(cfg.get("base_price", 5)), int(cfg.get("price_cap", 50)))
+    base, cap = int(cfg.get("base_price", 5)), int(cfg.get("price_cap", 50))
+    share = len(free) / total
+    flat = lot_price(share, base, cap)
+    prices: dict[str, int] = {}
+    tags: dict[str, list[str]] = {}
+    if world and unsold:
+        terrain = terrain_lookup(world)
+        resources = [r for r in world.get("resources", []) if isinstance(r, dict)]
+        for lid in unsold:
+            value = lot_value(lid, terrain, resources, structures, list(agents or []), tick, exclude_owner=registrar_name)
+            prices[lid] = lot_price(share, base, cap, value["score"])
+            tags[lid] = value["tags"]
+    price = sorted(prices.values())[len(prices) // 2] if prices else flat
     return {
-        "total": total, "free": len(free), "free_share": round(len(free) / total, 3), "staked": len(staked), "for_sale": len(unsold),
-        "unsold": sorted(unsold), "sold": len(sold), "price": price, "currency": str(cfg.get("currency", "wood")),
+        "total": total, "free": len(free), "free_share": round(share, 3), "staked": len(staked), "for_sale": len(unsold),
+        "unsold": sorted(unsold), "sold": len(sold), "price": price, "base_price": flat, "prices": prices, "tags": tags,
+        "currency": str(cfg.get("currency", "wood")),
     }
 
 
@@ -170,6 +205,9 @@ def board(
     public_goals: list[dict[str, Any]],
     registrar_name: str,
     state: dict[str, Any] | None = None,
+    *,
+    world: dict[str, Any] | None = None,
+    tick: int = 0,
 ) -> dict[str, Any]:
     """The office's public standing: survey counts, the vault, the registry, the lot market, the posted goals."""
     grid = int(ledger.get("grid", 10))
@@ -189,7 +227,7 @@ def board(
         goal = next((g for g in mine if g.get("title") == title and g.get("status") in {"open", "claimed"}), None)
         offers.append({"id": offer["id"], "title": title, "status": offer.get("status", "open"), "goal_id": goal.get("id") if goal else None, "goal_status": goal.get("status") if goal else None})
     registered = registry_entries(state or {}, ledger)
-    lots = lot_market(ledger, structures, registrar_name, sold_lots(registered))
+    lots = lot_market(ledger, structures, registrar_name, sold_lots(registered), world=world, agents=agents, tick=tick)
     top = sorted(surveyed.items(), key=lambda kv: -kv[1]["structures"])[:5]
     sale_condition = sale.get("condition") if sale and isinstance(sale.get("condition"), dict) else {}
     return {
@@ -197,6 +235,7 @@ def board(
         "registration_goal": {"id": registration.get("id"), "status": registration.get("status")} if registration else None,
         "sale_goal": {"id": sale.get("id"), "status": sale.get("status"), "qty": sale_condition.get("qty")} if sale else None,
         "offers": offers, "registered": registered, "lots": lots,
+        "surveys": dict((state or {}).get("surveys") or {}),
         "busiest": [{"plot": pid, "structures": e["structures"], "holder": e["holder"]} for pid, e in top],
         "agents": [{"name": a.get("name"), "plot": plot_id(a["x"], a["y"], grid)} for a in agents if isinstance(a, dict) and isinstance(a.get("x"), int) and isinstance(a.get("y"), int)],
     }
@@ -357,6 +396,69 @@ def sales_due(
     return out
 
 
+PAID_INTO = re.compile(r"put (\d+) (\w+) into the storehouse at \((\d+),\s*(\d+)\)", re.IGNORECASE)
+
+
+def surveys_due(ledger: dict[str, Any], registrar_name: str, state: dict[str, Any], world: dict[str, Any] | None, structures: list[dict[str, Any]], agents: list[dict[str, Any]], tick: int) -> list[dict[str, Any]]:
+    """Site requests in the ledger that the office has not yet surveyed: the best lot for each brief, priced."""
+    requests = [r for r in (ledger.get("site_requests") or []) if isinstance(r, dict)]
+    if not requests or not world:
+        return []
+    done = state.get("surveys") if isinstance(state.get("surveys"), dict) else {}
+    cfg = ledger.get("lots") or {}
+    share = len(free_lots(structures)) / total_lots()
+    terrain = terrain_lookup(world)
+    resources = [r for r in world.get("resources", []) if isinstance(r, dict)]
+    out: list[dict[str, Any]] = []
+    for request in requests:
+        rid = str(request.get("id"))
+        if rid in done:
+            continue
+        found = site_search(request, terrain, resources, structures, agents, tick, registrar=registrar_name, limit=1)
+        if not found:
+            continue
+        best = found[0]
+        price = lot_price(share, int(cfg.get("base_price", 5)), int(cfg.get("price_cap", 50)), best["score"])
+        out.append({"id": rid, "client": str(request.get("client", "")), "lot": best["lot"], "anchor": best["centre"], "expandable": best["expandable"], "reasons": best["reasons"], "price": price, "tick": tick})
+    return out
+
+
+def survey_whisper(survey: dict[str, Any], vault: dict[str, Any] | None, currency: str) -> str:
+    where = f" Put the {currency} into my storehouse at ({vault['x']},{vault['y']}); the deed follows." if vault else ""
+    reasons = "; ".join(str(r) for r in survey["reasons"][:4])
+    return (
+        f"SITE for {survey['id']}: lot {survey['lot']}, anchor ({survey['anchor'][0]},{survey['anchor'][1]}), {len(survey['expandable'])} free lots beside it to grow into;"
+        f" {reasons}; price {survey['price']} {currency}.{where}"
+    )[:500]
+
+
+def survey_line(survey: dict[str, Any], currency: str, limit: int) -> str:
+    reasons = ", ".join(str(r) for r in survey["reasons"][:3])
+    return f"Survey for {survey['client']}: lot {survey['lot']} at ({survey['anchor'][0]},{survey['anchor'][1]}), {len(survey['expandable'])} free lots beside it; {reasons}. The office asks {survey['price']} {currency}."[:limit]
+
+
+def paid_deeds(state: dict[str, Any], public_events: list[dict[str, Any]], structures: list[dict[str, Any]], registrar_name: str) -> list[dict[str, Any]]:
+    """Surveys whose client has put the price into the office's storehouses since the survey: their deeds."""
+    surveys = state.get("surveys") if isinstance(state.get("surveys"), dict) else {}
+    vaults = {(int(s["x"]), int(s["y"])) for s in structures if isinstance(s, dict) and s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() == registrar_name.casefold()}
+    out: list[dict[str, Any]] = []
+    for rid, survey in surveys.items():
+        if not isinstance(survey, dict) or survey.get("deeded") or not survey.get("client"):
+            continue
+        paid = 0
+        for event in public_events:
+            if not isinstance(event, dict) or event.get("type") != "give" or str(event.get("actor", "")).casefold() != str(survey["client"]).casefold():
+                continue
+            if int(event.get("tick", 0) or 0) < int(survey.get("tick", 0) or 0):
+                continue
+            match = PAID_INTO.search(str(event.get("text") or ""))
+            if match and (int(match.group(3)), int(match.group(4))) in vaults and match.group(2).casefold() == str(survey.get("currency", "wood")).casefold():
+                paid += int(match.group(1))
+        if paid >= int(survey.get("price", 0) or 0):
+            out.append({"id": rid, "plot": survey["lot"], "holder": survey["client"], "paid": paid, "anchor": survey.get("anchor")})
+    return out
+
+
 def sale_line(sales: list[dict[str, Any]], b: dict[str, Any], limit: int) -> str:
     lots = b.get("lots") or {}
     first = sales[0]
@@ -378,6 +480,7 @@ def plan_round(
     agents: list[dict[str, Any]],
     state: dict[str, Any],
     collective_names: set[str],
+    world: dict[str, Any] | None = None,
 ) -> tuple[list[dict[str, Any]], list[str], dict[str, Any]]:
     """Deterministic office actions for one round; the caller validates and adds the notebook note.
 
@@ -431,6 +534,33 @@ def plan_round(
     vault = b["vault"]
     lots = b.get("lots") or {}
     cfg = ledger.get("lots") or {}
+    # a client's site: survey once (a whisper with the lot and its price, a public line), then the deed once the price is in the vault
+    currency = str(cfg.get("currency", "wood"))
+    deeds = paid_deeds(state, public_events, structures, persona.name)
+    if deeds and len(actions) < 3:
+        surveys_state = dict(state.get("surveys") or {})
+        for deed in deeds:
+            surveys_state[deed["id"]] = {**surveys_state.get(deed["id"], {}), "deeded": tick}
+        update["surveys"] = surveys_state
+        rows = list(update.get("registered", state.get("registered", []))) + [f"{d['plot']}:{d['holder']}:{tick}" for d in deeds]
+        update["registered"] = rows[-80:]
+        if not said:
+            d = deeds[0]
+            actions.append({"action": "say", "text": f"Deed: lot {d['plot']} is {d['holder']}'s, {d['paid']} {currency} paid into the land office. Build well; the record is public."[:limit]})
+            said = True
+        reasons.append("deeds for surveyed sites paid in full: " + ", ".join(f"{d['plot']} to {d['holder']}" for d in deeds))
+    for survey in surveys_due(ledger, persona.name, state, world, structures, agents, tick):
+        if len(actions) >= 2 or energy - 2 < reserve:
+            break
+        actions.append({"action": "whisper", "to": survey["client"], "text": survey_whisper(survey, vault, currency)})
+        if not said:
+            actions.append({"action": "say", "text": survey_line(survey, currency, limit)})
+            said = True
+        surveys_state = dict(update.get("surveys", state.get("surveys") or {}))
+        surveys_state[survey["id"]] = {"client": survey["client"], "lot": survey["lot"], "anchor": list(survey["anchor"]), "price": survey["price"], "currency": currency, "tick": tick}
+        update["surveys"] = surveys_state
+        reasons.append(f"survey for {survey['client']}: lot {survey['lot']} ({', '.join(survey['reasons'][:3])}) at {survey['price']} {currency}")
+        energy -= 2
     sale_goal = b.get("sale_goal")
     if vault and lots.get("for_sale", 0) > 0 and len(actions) < 3:
         price = int(lots["price"])
@@ -452,8 +582,9 @@ def plan_round(
             actions.append({
                 "action": "post_goal", "title": sale_title(ledger),
                 "description": (
-                    f"Land office sale. {lots['for_sale']} lots of 5x5 tiles are for sale at {price} {currency} each today; the price rises as"
-                    f" free lots run out ({lots['free']} of {lots['total']} free). Claim this goal, then give {price} {currency} into my storehouse"
+                    f"Land office sale. {lots['for_sale']} lots of 5x5 tiles are for sale from {lots.get('base_price', price)} {currency}; a lot's price is on its"
+                    f" claim sign (ore, stone, water views and neighbours raise it) and all rise as free lots run out ({lots['free']} of {lots['total']} free)."
+                    f" This listing asks the median, {price} {currency}. Claim this goal, then give {price} {currency} into my storehouse"
                     f" at ({vault['x']},{vault['y']}) in one give; it pays out at once. Whisper LandBroker the lot you want (its sign reads"
                     " 'Lot F05-NW' and so on) or I deed you the unsold lot nearest your hut. A 10x10 plot is four lots. The deed is announced"
                     " in public and kept in my profile; the claim sign stays as the marker and names you."
@@ -529,6 +660,7 @@ __all__ = [
     "lot_market",
     "offer_title",
     "office_line",
+    "paid_deeds",
     "plan_round",
     "plot_bounds",
     "plot_centre",
@@ -542,5 +674,8 @@ __all__ = [
     "sales_due",
     "sold_lots",
     "survey",
+    "survey_line",
+    "survey_whisper",
+    "surveys_due",
     "total_plots",
 ]

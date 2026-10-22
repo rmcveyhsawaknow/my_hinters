@@ -22,3 +22,19 @@ price with a deliver condition into the vault; when the price moves, the round c
 it. A `goal_done` on the sale goal deeds the buyer the lot they named by whisper, or the unsold lot
 nearest their hut; the deed is announced, the profile registry updated, and the claim sign rewritten
 with the buyer's name when the office passes. A 10x10 plot is four lots.
+
+## Worth, price and a client's site (2026-10-22)
+
+A lot's price is its worth at today's scarcity: `lot_value` scores resources within two tiles (ore 3,
+stone 1.5, wood 1, fiber and berries 0.5, capped at 6), vista (water along the edge: river view 1,
+coast 2; mountains within three: 1; hills inside: 0.5), venues (others' structures within ten tiles,
+0.3 each, cap 2) and demand (residents seen within two days within fifteen tiles, 0.5 each, cap 1.5);
+`lot_price` multiplies the scarcity price by one plus half the score, so ore-rich land with a river
+view costs several times what plain sand does, never above the fifty one give can carry. Claim signs
+carry each lot's tags and price; the standing sale goal asks the median. A `site_requests` entry in
+`config/plots.yaml` is a client's brief: `surveys_due` finds the best buildable lot that can grow into
+the free lots beside it, near the brief's marks and with the resources it wants; the office whispers
+the client `SITE for <id>: lot, anchor, price` and says so in public; `paid_deeds` reads the client's
+gives into office storehouses from the public log and announces the deed. The client's `house` knob
+with `site_from: land_office` asks once a day, reads the answer from its inbox (never copied into a
+record), carries the wood to the vault, and builds on the bought lot.

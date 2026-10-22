@@ -393,3 +393,14 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
   silently. Now `_plan_news` says each discovery once in the open whichever planner runs; the watch
   also reads the guide's observe fields, block pieces and rate limits, remembers event kinds once
   seen, and the observatory archives every version of the guide for diffing.
+- Later on 2026-10-22 the owner ruled that the hearth at (65, 71) cannot grow outward and the factory's
+  ground must be bought, not guessed: Fudgewright now whispers the land office a brief (a 5 x 5 lot he
+  can expand into the free lots beside it, near the southern mountains and close to Neverland, with ore
+  and stone in reach), LandBroker surveys with `site_search`, whispers back the lot, its anchor and its
+  price and says so in public, Fudgewright carries the wood to an office storehouse, and the deed is
+  announced once the gives show in the public log; the bought anchor becomes the hearth and the
+  factory's centre. Lots are priced by worth: resources within two tiles (ore first), river and coast
+  views, mountain views and high ground, neighbouring venues and recent residents, times the scarcity
+  price, never above fifty. On the live map the office recommends I08-SE at (87, 87) for 45 wood (ore,
+  stone, mountain view, high ground, neighbours, 25 tiles from Neverland); unsold lots now range from 8
+  wood for unbuildable shore to 30 for prime ground, median 23, where every lot was 8 before.

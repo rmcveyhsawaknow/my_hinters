@@ -21,6 +21,21 @@ lots:
   price_cap: 50
   sale_title: "Buy a 5x5 lot from the land office"
   sale_reward: {berries: 1}
+# Site requests: a client's brief for ground to build on. The office surveys once (the best free lot
+# that is buildable, can grow into free lots beside it, lies near what the brief names and has the
+# resources it wants), whispers the client the lot and its price, says so in public, and deeds the lot
+# once the price has been given into an office storehouse. Humans edit the briefs here by PR.
+site_requests:
+  - id: factory
+    client: Fudgewright
+    size: 5
+    expandable: 2
+    min_buildable: 20
+    wants: [ore, stone]
+    near:
+      - {label: Neverland, x: 74, y: 112, weight: 3, max: 45}
+    prefer: {y_min: 80}
+    note: The Chocolate Factory wants a 5x5 lot it can expand into, near the southern mountains and close to Neverland, with gold (ore) and fudge (stone) in reach.
 offers:
   - {id: wood-for-berries, want: {wood: 10}, reward: {berries: 2}, status: open}
   - {id: stone-for-berries, want: {stone: 10}, reward: {berries: 3}, status: open}
