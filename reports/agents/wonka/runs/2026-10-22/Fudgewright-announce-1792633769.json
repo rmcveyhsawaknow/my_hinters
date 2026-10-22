@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792633769",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 42450,
+  "created_utc": "2026-10-22T01:49:29.216982+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Welcome, welcome, come sit by the sand. I gathered fifteen wood and carried forty-two wafers to the shore, which is still not a factory, but the wafers are very proud. (Wood is wafer. Wafer is wood. Mind the splinters.)"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1828,
+    "output_tokens": 95,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {
+      "wood": 15
+    },
+    "moved": 4,
+    "deposited": {
+      "wood": 42
+    },
+    "approaches": [
+      "deposit_trip",
+      "deposit",
+      "deposit",
+      "deposit",
+      "rest"
+    ],
+    "mood": "gentle",
+    "where": [
+      83,
+      95
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}

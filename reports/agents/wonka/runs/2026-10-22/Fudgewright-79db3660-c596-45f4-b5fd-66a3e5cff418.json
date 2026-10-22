@@ -1,0 +1,134 @@
+{
+  "run_id": "79db3660-c596-45f4-b5fd-66a3e5cff418",
+  "agent": "Fudgewright",
+  "role": "navigator+builder+broker",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-22T01:39:20.257810+00:00",
+  "tick": 42389,
+  "summary": "Fudgewright (gentle): work shift: stocking the storehouse",
+  "actions": [
+    {
+      "action": "give",
+      "x": 85,
+      "y": 92,
+      "qty": 14,
+      "item": "wood"
+    },
+    {
+      "action": "move",
+      "x": 83,
+      "y": 95
+    },
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"gentle\",\"since_tick\":41404,\"glow\":50,\"inputs\":{\"inspiration\":{\"value\":38.1,\"tick\":42328,\"explanation\":\"hope from mrs-bucket 38\"},\"suspicion\":{\"value\":0.0,\"tick\":42328,\"explanation\":\"bluster from grandpa-joe 0\"},\"discernment\":{\"value\":0.0,\"tick\":42328,\"explanation\":\"bluster from grandpa-joe 0\"},\"hope\":{\"value\":38.1,\"tick\":42328,\"explanation\":\"Hope 38: contribution 21, uplift 51, resilience 0 (decayed over a day).\"},\"bluster\":{\"value\":0.0,\"tick\":42328,\"explanation\":\"Bluster 0: 0 claim(s) against own work 0, 0% of the team's logged work claimed.\"}},\"wakes\":363,\"rests\":38,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":42389,\"visited\":[\"87,102\",\"87,95\",\"82,91\",\"87,97\",\"80,102\",\"85,106\",\"89,99\",\"86,105\",\"84,97\",\"92,98\",\"81,87\",\"86,104\",\"76,92\",\"77,90\",\"81,93\",\"70,86\",\"81,96\",\"71,84\",\"79,93\",\"65,78\",\"73,90\",\"85,102\",\"85,84\",\"87,96\",\"88,85\",\"88,97\",\"86,84\",\"80,94\",\"86,85\",\"92,83\",\"90,77\",\"84,75\",\"83,81\",\"67,70\",\"63,69\",\"55,61\",\"53,59\",\"61,71\",\"70,81\",\"74,91\",\"86,97\",\"84,93\",\"83,94\",\"85,91\",\"83,95\",\"86,100\",\"81,95\",\"92,94\",\"86,93\",\"84,95\",\"68,84\",\"75,90\",\"67,82\",\"67,71\",\"68,78\",\"66,74\",\"71,86\",\"66,71\",\"79,89\",\"84,92\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":42388,\"pace\":\"quickening\",\"day\":{\"all\":1573,\"building\":291,\"trade_goals\":90,\"talk\":221,\"factions\":3,\"movement\":968},\"hour\":{\"all\":217},\"peers\":2},\"engaged\":{\"whispered\":{\"Clarion\":25742,\"Tinkerglow\":34416,\"Stoutheart\":34476,\"Fairscale\":25863,\"Strayling\":41189,\"Lagalong\":31967,\"LandBroker\":40918},\"replied\":{\"Clarion\":26912,\"Tinkerglow\":30852,\"Stoutheart\":28292,\"Strayling\":42126,\"Lagalong\":32226,\"LandBroker\":41280},\"gifted\":{\"Tinkerglow\":26972,\"Clarion\":28625},\"reclaimed\":{\"Quillwright:53,59\":32226,\"Fairscale:68,70\":41250,\"Fairscale:68,72\":41280,\"Fairscale:66,73\":41572}},\"house\":{\"hut\":[65,71],\"done\":10,\"tick\":41662}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": false,
+      "error": "inventory_full"
+    }
+  ],
+  "failed_actions": 1,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 42389,
+    "you": {
+      "id": 3,
+      "name": "Fudgewright",
+      "x": 84,
+      "y": 92,
+      "energy": 100,
+      "inventory": {
+        "wood": 19,
+        "fiber": 10,
+        "berries": 20
+      },
+      "home": {
+        "x": 65,
+        "y": 71
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "wonka",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "navigator",
+    "builder",
+    "broker"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 217,
+      "building": 10,
+      "trade_goals": 4,
+      "talk": 19,
+      "factions": 1,
+      "movement": 183
+    },
+    "day": {
+      "all": 1573,
+      "building": 291,
+      "trade_goals": 90,
+      "talk": 221,
+      "factions": 3,
+      "movement": 968
+    },
+    "peers_active": 2
+  },
+  "wake_mode": "act",
+  "mood": "gentle",
+  "approach": "deposit",
+  "reasons": [
+    "pack is 49/50: put 14 wood into MotherPail's vault at (85, 92)",
+    "walk to (83, 95) beside the wood node at (84, 96), then gather"
+  ],
+  "energy_before": 100,
+  "berries_before": 20,
+  "energy_spent": 7,
+  "activity_energy": {
+    "trade": 1.0,
+    "explore": 3.0,
+    "gather": 3.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "gentle",
+    "glow": 50,
+    "wakes": 363,
+    "rests": 38,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
