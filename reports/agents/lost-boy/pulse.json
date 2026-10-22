@@ -4,18 +4,18 @@
  "team": "neverland",
  "headline": "finding what nobody was looking for",
  "metric_version": 1,
- "tick": 35295,
- "day": 98,
- "date": "2026-10-21",
+ "tick": 43937,
+ "day": 122,
+ "date": "2026-10-22",
  "window_ticks": 60480,
  "events_considered": 2000,
- "runs_considered": 469,
+ "runs_considered": 579,
  "alive": {
-  "score": 72,
-  "detail": "469/451 wakes, never lapsed, 14 failed",
+  "score": 71,
+  "detail": "579/583 wakes, never lapsed, 14 failed",
   "parts": {
-   "completed": 469,
-   "scheduled": 451,
+   "completed": 579,
+   "scheduled": 583,
    "lapsed": 0,
    "banned": false,
    "rate_limited": 0,
@@ -26,7 +26,7 @@
  },
  "on_mission": {
   "score": 54,
-  "detail": "novelty 100 · 2 filed · 0 adopted · ledger 162 · 3% distracted",
+  "detail": "novelty 100 · 2 filed · 0 adopted · ledger 177 · 3% distracted",
   "rows": [
    {
     "id": "novelty",
@@ -61,33 +61,33 @@
    {
     "id": "risk_ledger",
     "label": "bold moves net (won minus lost)",
-    "value": 162.0,
+    "value": 177.0,
     "target": 2,
     "weight": 0.15,
     "progress": 1.0,
-    "shown": "ledger 162",
+    "shown": "ledger 177",
     "measure": "runs.risk_ledger_net"
    },
    {
     "id": "distraction_band",
     "label": "distraction rate inside its band",
-    "value": 0.03,
+    "value": 0.031,
     "target": 0.4,
     "weight": 0.1,
-    "progress": 0.07500000000000007,
+    "progress": 0.07750000000000001,
     "shown": "3% distracted",
     "measure": "runs.distraction_share"
    }
   ]
  },
  "in_character": {
-  "score": 58,
-  "detail": "curious 4 · distractible 4 · bold 2 · creative 3",
+  "score": 45,
+  "detail": "curious 2 · distractible 3 · bold 1 · creative 2",
   "signatures": [
    {
     "id": "distraction_share",
     "label": "share of wakes distracted",
-    "value": 0.03,
+    "value": 0.031,
     "range": [
      0.25,
      0.55
@@ -98,7 +98,7 @@
    {
     "id": "explore_share",
     "label": "share of energy exploring",
-    "value": 0.798,
+    "value": 0.778,
     "range": [
      0.35,
      0.7
@@ -109,7 +109,7 @@
    {
     "id": "novel_tiles",
     "label": "distinct tiles visited over 7 days",
-    "value": 69.0,
+    "value": 62.0,
     "range": [
      20,
      200
@@ -120,7 +120,7 @@
    {
     "id": "energy_mix",
     "label": "intended vs actual energy mix",
-    "value": 0.702,
+    "value": 0.722,
     "range": [
      0.5,
      1.0
@@ -132,23 +132,23 @@
   "judge": [
    {
     "name": "curious",
-    "score": 4,
-    "reason": "Nearly every line names concrete coordinates, stone, fiber, wood piles, a notch in the hills, and a shifting shadow or node."
+    "score": 2,
+    "reason": "A few concrete notes (shadow on the ridge, the road, drop rate), but the greeting lines name no tile, node or shape, so it falls short of every line."
    },
    {
     "name": "distractible",
-    "score": 4,
-    "reason": "Lines swerve mid-thought (road to shadow, stone to sand, fiber to hills) and cards are filed, though some lines also loop on the same deposit trips."
+    "score": 3,
+    "reason": "Several lines swerve mid-thought (road to card, shadow to chasing to deposits), but the actions are repetitive back-and-forth moves between two spots and no pla"
    },
    {
     "name": "bold",
-    "score": 2,
-    "reason": "Roads were pushed out past (80,68) toward the hills, but the builds are small and repetitive, and one line reports nothing built or gathered, with no sign of bi"
+    "score": 1,
+    "reason": "Only short repeated moves between (74,71) and (80,68); no long trips or big builds, and no sign of energy-floor risk-taking."
    },
    {
     "name": "creative",
-    "score": 3,
-    "reason": "Roads that wander and kink toward oddities and the idea cards show some imagination, but there are no unusual builds or combinations, and the cards are not fram"
+    "score": 2,
+    "reason": "Mentions filing cards on the road and drop rate, but no unusual builds or combinations and the cards are not framed as testable ideas; the greetings are generic"
    }
   ],
   "judge_meta": {
@@ -158,11 +158,11 @@
    "provider": "anthropic",
    "sampled_lines": 6,
    "sampled_actions": 8,
-   "created_utc": "2026-10-21T05:57:24.016086+00:00",
+   "created_utc": "2026-10-22T05:57:27.483656+00:00",
    "usage": {
     "calls": 1,
-    "input_tokens": 1527,
-    "output_tokens": 294,
+    "input_tokens": 1466,
+    "output_tokens": 297,
     "model": "claude-sonnet-5-5",
     "provider": "anthropic",
     "route": "review"
@@ -170,7 +170,7 @@
   }
  },
  "team_pull": {
-  "detail": "Belief 0 → Tinkerglow · Discoveries 92 → Tinkerglow",
+  "detail": "Belief 0 → Tinkerglow · Discoveries 90 → Tinkerglow",
   "sent": [
    {
     "from": "lost-boy",
@@ -193,10 +193,10 @@
     "plain_english": "Every discovery Strayling files becomes an adventure Tinkerglow can lead.",
     "weight": 1.0,
     "half_life_hours": 72.0,
-    "value": 91.9,
-    "decayed_value": 91.9,
+    "value": 90.0,
+    "decayed_value": 90.0,
     "age_ticks": 0,
-    "explanation": "Discoveries 92: 69 tiles, 7 action types, 2 idea card(s), 0 adopted."
+    "explanation": "Discoveries 90: 62 tiles, 6 action types, 2 idea card(s), 0 adopted."
    }
   ],
   "received": [],
@@ -204,10 +204,10 @@
  },
  "community": {
   "goals_completed_for_peers": 0,
-  "public_goods_built": 13,
+  "public_goods_built": 25,
   "norms_kept": true,
   "norm_breaches": [],
-  "replies_received": 27
+  "replies_received": 41
  },
  "approaches": {
   "rows": [
@@ -227,8 +227,8 @@
     "label": "bold long trips",
     "wakes": 0,
     "energy": 0,
-    "outcome": 162.0,
-    "per_energy": 162.0,
+    "outcome": 177.0,
+    "per_energy": 177.0,
     "hypothesis": "H-20261017-lostboy-risk-ledger",
     "bet_status": "proposed",
     "bet_title": "Bold long trips net positive items per energy"
@@ -250,9 +250,9 @@
   "next_bet": "try forty percent distraction roll at least once this week; it has a bet but no wakes"
  },
  "trend": {
-  "alive": "█▆▆▆",
-  "on_mission": "▅▅▅▅",
-  "in_character": "▅▅▅▅"
+  "alive": "█▆▆▆▆",
+  "on_mission": "▅▅▅▅▅",
+  "in_character": "▅▅▅▅▄"
  },
  "history": [
   {
@@ -280,25 +280,33 @@
    "tick": 26655
   },
   {
-   "date": "2026-10-21",
-   "metric_version": 1,
    "alive": 72,
-   "on_mission": 54,
+   "date": "2026-10-21",
    "in_character": 58,
+   "metric_version": 1,
+   "on_mission": 54,
    "tick": 35295
+  },
+  {
+   "date": "2026-10-22",
+   "metric_version": 1,
+   "alive": 71,
+   "on_mission": 54,
+   "in_character": 45,
+   "tick": 43937
   }
  ],
  "signals": {
   "discoveries": {
-   "value": 91.9,
-   "explanation": "Discoveries 92: 69 tiles, 7 action types, 2 idea card(s), 0 adopted.",
+   "value": 90.0,
+   "explanation": "Discoveries 90: 62 tiles, 6 action types, 2 idea card(s), 0 adopted.",
    "parts": {
-    "new_tiles": 69.0,
-    "action_types": 7.0,
+    "new_tiles": 62.0,
+    "action_types": 6.0,
     "ideas_filed": 2.0,
     "adopted": 0.0
    },
-   "tick": 35295
+   "tick": 43937
   },
   "belief": {
    "value": 0.0,
@@ -308,7 +316,7 @@
     "bridge_crossings": 0,
     "staying": 0.0
    },
-   "tick": 35295
+   "tick": 43937
   }
  }
 }
