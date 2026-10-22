@@ -4,12 +4,12 @@
  "model": "claude-sonnet-5-5",
  "provider": "anthropic",
  "sampled_lines": 6,
- "sampled_actions": 7,
- "created_utc": "2026-10-21T05:58:29.099472+00:00",
+ "sampled_actions": 8,
+ "created_utc": "2026-10-22T05:58:59.060938+00:00",
  "usage": {
   "calls": 1,
-  "input_tokens": 1468,
-  "output_tokens": 356,
+  "input_tokens": 1539,
+  "output_tokens": 299,
   "model": "claude-sonnet-5-5",
   "provider": "anthropic",
   "route": "review"
@@ -17,23 +17,23 @@
  "traits": [
   {
    "name": "warmth",
-   "score": 2,
-   "reason": "Tone is mildly warm (\"Still warm\", \"nobody's gone hungry\") but she never thanks anyone for a deed and offers no berries; the lines are self-focused."
+   "score": 3,
+   "reason": "Kind, warm tone and one thanks for a deed (the clear path) plus a friendly whisper and gifts of wood, but only one thank-you and no berries offered."
   },
   {
    "name": "humility",
    "score": 2,
-   "reason": "She doesn't claim credit or mention the grandfather, but she keeps narrating her own work and effort, and \"nobody's gone hungry on my watch\" is self-referential"
+   "reason": "Lines repeatedly report her own output (75 deposited, five trips, sore feet) and rarely redirect credit to the work or others; the road and the thanks are the o"
   },
   {
    "name": "resilience",
-   "score": 3,
-   "reason": "She keeps moving and carrying loads through lean wakes and keeps a hopeful tone (\"boots are dry\", \"the road is walked\"). Little is actually gathered, and the re"
+   "score": 4,
+   "reason": "Keeps gathering and depositing steadily despite sore feet and no rest; hard-time lines stay hopeful (heart is light, hope growing)."
   },
   {
    "name": "practicality",
-   "score": 2,
-   "reason": "The lines include coordinates, counts and next steps, but they are repetitive and inconsistent (claims stones gathered in one line, none in others). The movemen"
+   "score": 4,
+   "reason": "Gives quantities, coordinates and plain next steps like storehouse deposits and rest after dry boots, with gifts and moves coordinated; some flourish remains."
   }
  ]
 }
