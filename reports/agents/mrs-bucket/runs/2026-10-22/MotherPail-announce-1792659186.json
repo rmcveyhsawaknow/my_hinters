@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792659186",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 44992,
+  "created_utc": "2026-10-22T08:53:06.021436+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Fifteen wood gathered and seventy-five deposited this hour at the storehouse near 74, 91. Five trips, no rest. The boots are dry and the pile is moving."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1642,
+    "output_tokens": 66,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 15
+    },
+    "moved": 5,
+    "deposited": {
+      "wood": 75
+    },
+    "approaches": [
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit"
+    ],
+    "mood": "warm",
+    "where": [
+      74,
+      91
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
