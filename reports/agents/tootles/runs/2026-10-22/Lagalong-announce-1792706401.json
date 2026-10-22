@@ -1,0 +1,47 @@
+{
+  "run_id": "announce-1792706401",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 49713,
+  "created_utc": "2026-10-22T22:00:01.171742+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes and one rest this hour, and no tiles to report, I think. I missed nothing this time, did I? I will keep walking, if that is all right."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1657,
+    "output_tokens": 57,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 0,
+    "deposited": {},
+    "approaches": [
+      "rest"
+    ],
+    "mood": "wistful",
+    "where": null,
+    "discoveries": []
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
