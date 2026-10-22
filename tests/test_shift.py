@@ -251,6 +251,29 @@ def test_a_builder_carries_house_materials_home_before_wandering():
     assert _plan_homing(clarion, {"wood": 3}, (70, 71), view, home, {"you": {}, "blocks": []}) is None  # within one move: the house step walks it
 
 
+def test_a_full_storehouse_is_not_deposited_into_and_the_deed_goes_to_a_vault_with_room():
+    from hglab.mood import PersonaState
+    from hglab.planner import WorldView, _plan_deposit, _plan_site_trade, storehouse_room
+
+    bucket = load_personas(ROOT)["mrs-bucket"]
+    rows = ["g" * 128] * 128
+    full = {"type": "storehouse", "x": 61, "y": 60, "owner": bucket.name, "policy": "private", "storage": {"wood": 300, "stone": 200}}
+    assert storehouse_room(full) == 0 and storehouse_room({"type": "storehouse"}) == 500
+    view = WorldView(x0=54, y0=54, rows=rows, structures=[full])
+    assert _plan_deposit(bucket, {"wood": 5, "fiber": 6, "berries": 37}, (60, 60), view) is None  # the world would refuse it as inventory_full
+    nearly = {**full, "storage": {"wood": 490}}
+    step = _plan_deposit(bucket, {"wood": 5, "fiber": 6, "berries": 37}, (60, 60), WorldView(x0=54, y0=54, rows=rows, structures=[nearly]))
+    assert step is not None and step[0][0]["qty"] <= 10  # only what fits
+    wonka = load_personas(ROOT)["wonka"]
+    state = PersonaState(mood="mercurial")
+    state.flags["house_site"] = {"x": 87, "y": 87, "lot": "I08-SE", "price": 45, "currency": "wood", "paid": 0, "tick": 46000}
+    vault_full = {"type": "storehouse", "x": 65, "y": 54, "owner": "LandBroker", "storage": {"wood": 500}}
+    vault_free = {"type": "storehouse", "x": 73, "y": 58, "owner": "LandBroker"}
+    view = WorldView(x0=60, y0=50, rows=rows, full_map=rows, structures=[vault_full], world_structures=[vault_full, vault_free])
+    pay = _plan_site_trade(wonka, state, {"wood": 45}, (65, 55), view, {"tick": 46100, "you": {"x": 65, "y": 55}, "inbox": []}, "LandBroker")
+    assert pay is not None and pay[2] == "deed_trip" and pay[0][0]["action"] == "move"  # the near vault is full: walk to the next one
+
+
 def test_a_pack_heavy_with_berries_is_lightened_not_topped_up():
     import random
 
