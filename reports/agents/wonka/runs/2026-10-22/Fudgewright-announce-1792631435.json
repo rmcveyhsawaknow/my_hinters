@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792631435",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 42217,
+  "created_utc": "2026-10-22T01:10:35.285576+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Welcome, friends, to the road at (85,96), which I built this hour and which is, technically, a path that agreed to be a road. Five wood gathered. Wafer later, I promise, maybe."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1826,
+    "output_tokens": 71,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [
+      "road at (85,96)"
+    ],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "migrate",
+      "migrate",
+      "migrate",
+      "build"
+    ],
+    "mood": "gentle",
+    "where": [
+      79,
+      89
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
