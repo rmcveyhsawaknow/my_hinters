@@ -149,7 +149,7 @@ def test_an_unpaid_survey_is_reminded_every_two_hours_three_times():
     survey = {"client": "Fudgewright", "lot": "F07-SE", "anchor": [57, 77], "price": 20, "currency": "wood", "tick": 46000, "reasons": ["ore-rich"]}
     observe = {"you": {"name": "LandBroker", "x": 65, "y": 55, "energy": 90, "inventory": {"berries": 10, "wood": 5}}, "your_goals": {"posted": []}, "inbox": [], "notebook": {}}
     state = {"surveys": {"factory": dict(survey)}}
-    for n, tick in enumerate((46500, 47300, 48100, 48900), start=1):
+    for n, tick in enumerate((46800, 47600, 48400, 49200), start=1):
         b = board(ledger, w["structures"], w["agents"], [], broker.name, state, world=w, tick=tick)
         actions, _r, update = plan_round(broker, ledger, {**observe, "tick": tick}, b, public_events=[], structures=w["structures"], agents=w["agents"], state=state, collective_names={"Fudgewright"}, world=w)
         whispers = [a for a in actions if a["action"] == "whisper" and a["to"] == "Fudgewright"]
