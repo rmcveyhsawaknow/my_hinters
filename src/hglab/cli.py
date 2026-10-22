@@ -146,7 +146,7 @@ def doctor() -> None:
         "Model keys configured: "
         f"Anthropic {'yes' if get_secret('ANTHROPIC_API_KEY', root) else 'no'}, "
         f"OpenAI {'yes' if get_secret('OPENAI_API_KEY', root) else 'no'}, "
-        f"GCP service account {'yes' if get_secret('GCP_SERVICE_ACCOUNT_KEY', root) else 'no'}"
+        f"GCP service account {'key' if get_secret('GCP_SERVICE_ACCOUNT_KEY', root) else 'hmac' if get_secret('GCP_HMAC_ACCESS_ID', root) and get_secret('GCP_HMAC_SECRET', root) else 'no'}"
     )
     typer.echo(f"Missing local files: {', '.join(missing) if missing else 'none'}")
     persona_errors = validate_personas(root)
@@ -619,7 +619,7 @@ def guide(refresh: bool = typer.Option(False, "--refresh")) -> None:
     typer.echo(f"Saved vendor guide to {destination}.")
 
 
-KEY_NAMES = {"ANTHROPIC_API_KEY", "OPENAI_API_KEY", "GCP_SERVICE_ACCOUNT_KEY"}
+KEY_NAMES = {"ANTHROPIC_API_KEY", "OPENAI_API_KEY", "GCP_SERVICE_ACCOUNT_KEY", "GCP_HMAC_ACCESS_ID", "GCP_HMAC_SECRET"}
 
 
 @key_app.command("store")

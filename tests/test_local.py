@@ -483,6 +483,10 @@ def test_the_logon_service_renders_for_both_platforms(tmp_path):
         and "-m hglab local up" in script
         and "up.log" in script
     )
+    with_auth = service.render_windows_startup_script(
+        tmp_path, "C:/venv/Scripts/python.exe", "gcloud"
+    )
+    assert "-m hglab local up --auth gcloud >>" in with_auth and "--auth" not in script
     unit = service.render_systemd_unit(tmp_path, "/opt/hinters/.venv/bin/python")
     assert (
         "ExecStart=/opt/hinters/.venv/bin/python -m hglab local up" in unit
@@ -595,7 +599,8 @@ def test_capability_cards_carry_roles_tools_performance_and_backups(tmp_path):
     )
 
 
-def test_a_backup_round_trips_through_a_local_target(tmp_path):
+def test_a_backup_round_trips_through_a_local_target(tmp_path, monkeypatch):
+    monkeypatch.setenv("HGLAB_GCP_AUTH", "gcloud")  # this part exercises the gcloud session path
     from hglab.local.backup import list_backups, make_backup, push, restore
 
     (tmp_path / "config").mkdir()
@@ -723,7 +728,7 @@ def test_backups_use_the_service_account_client_by_default_and_gcloud_on_request
         "gs://bucket/eco/hosts/host-a/backups/"
     )
     missing = bk.push(tmp_path, config, client_factory=lambda cfg: None)
-    assert missing["ok"] is False and "GCP_SERVICE_ACCOUNT_KEY" in missing["detail"]
+    assert missing["ok"] is False and "GCP_HMAC_ACCESS_ID" in missing["detail"]
     calls = []
     monkeypatch.setenv(bk.AUTH_ENV, "gcloud")
     assert bk.auth_mode(config) == "gcloud"
@@ -770,4 +775,73 @@ def test_large_secrets_are_chunked_through_the_keyring(monkeypatch):
     assert (
         vault[("hglab", "OPENAI_API_KEY")] == "short"
         and secrets.get_secret("OPENAI_API_KEY", Path("nowhere")) == "short"
+    )
+
+
+def test_hmac_requests_are_signed_the_goog4_way():
+    from datetime import datetime
+
+    from hglab.local.gcs import ALGORITHM, HmacStorage, client_from_keyring, sign
+
+    when = datetime(2026, 10, 22, 20, 0, 0, tzinfo=UTC)
+    url, headers = sign(
+        "GOOGACCESS",
+        "secret",
+        "PUT",
+        "my-bucket",
+        "hosts/host-a/backups/x.tar.gz",
+        None,
+        b"payload",
+        when,
+    )
+    assert url == "https://storage.googleapis.com/my-bucket/hosts/host-a/backups/x.tar.gz"
+    assert (
+        headers["x-goog-date"] == "20261022T200000Z"
+        and headers["x-goog-content-sha256"] == __import__("hashlib").sha256(b"payload").hexdigest()
+    )
+    auth = headers["authorization"]
+    assert (
+        auth.startswith(
+            f"{ALGORITHM} Credential=GOOGACCESS/20261022/auto/storage/goog4_request, SignedHeaders=host;x-goog-content-sha256;x-goog-date, Signature="
+        )
+        and len(auth.rsplit("=", 1)[1]) == 64
+    )
+    _same_url, same_headers = sign(
+        "GOOGACCESS",
+        "secret",
+        "PUT",
+        "my-bucket",
+        "hosts/host-a/backups/x.tar.gz",
+        None,
+        b"payload",
+        when,
+    )
+    assert same_headers == headers  # deterministic for a fixed time
+    _, other = sign(
+        "GOOGACCESS",
+        "other",
+        "PUT",
+        "my-bucket",
+        "hosts/host-a/backups/x.tar.gz",
+        None,
+        b"payload",
+        when,
+    )
+    assert other["authorization"] != auth
+    listing_url, _ = sign(
+        "GOOGACCESS",
+        "secret",
+        "GET",
+        "my-bucket",
+        "",
+        {"prefix": "hosts/host a/", "list-type": "2"},
+        b"",
+        when,
+    )
+    assert (
+        listing_url
+        == "https://storage.googleapis.com/my-bucket?list-type=2&prefix=hosts%2Fhost%20a%2F"
+    )
+    assert client_from_keyring(lambda name: None) is None and isinstance(
+        client_from_keyring(lambda name: "x"), HmacStorage
     )

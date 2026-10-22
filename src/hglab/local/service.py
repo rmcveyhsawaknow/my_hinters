@@ -26,20 +26,24 @@ def startup_folder() -> Path:
     return Path(base) / "Microsoft" / "Windows" / "Start Menu" / "Programs" / "Startup"
 
 
-def render_windows_startup_script(root: Path, python: str | None = None) -> str:
+def render_windows_startup_script(
+    root: Path, python: str | None = None, auth: str | None = None
+) -> str:
     python = python or sys.executable
+    flag = f" --auth {auth}" if auth else ""
     log = root / "runs" / "local" / "up.log"
     return (
         "@echo off\r\n"
         "rem The collective's local agents environment, written by `hglab local service install`.\r\n"
         "rem Waits a minute for Docker Desktop, then runs `hglab local up` in a minimised window.\r\n"
         "timeout /t 60 /nobreak >nul\r\n"
-        f'start "hinters-local" /min cmd /c "cd /d "{root}" && "{python}" -m hglab local up >> "{log}" 2>&1"\r\n'
+        f'start "hinters-local" /min cmd /c "cd /d "{root}" && "{python}" -m hglab local up{flag} >> "{log}" 2>&1"\r\n'
     )
 
 
-def render_systemd_unit(root: Path, python: str | None = None) -> str:
+def render_systemd_unit(root: Path, python: str | None = None, auth: str | None = None) -> str:
     python = python or sys.executable
+    flag = f" --auth {auth}" if auth else ""
     return (
         "[Unit]\n"
         "Description=the collective's local agents environment (hglab local up)\n"
@@ -48,7 +52,7 @@ def render_systemd_unit(root: Path, python: str | None = None) -> str:
         "[Service]\n"
         "Type=simple\n"
         f"WorkingDirectory={root}\n"
-        f"ExecStart={python} -m hglab local up\n"
+        f"ExecStart={python} -m hglab local up{flag}\n"
         "Restart=on-failure\n"
         "RestartSec=30\n"
         "Environment=PYTHONUTF8=1\n\n"
@@ -87,13 +91,13 @@ def _last_run(root: Path) -> dict[str, Any]:
     return out
 
 
-def install(root: Path, python: str | None = None) -> dict[str, Any]:
+def install(root: Path, python: str | None = None, auth: str | None = None) -> dict[str, Any]:
     (root / "runs" / "local").mkdir(parents=True, exist_ok=True)
     if platform.system() == "Windows":
         folder = startup_folder()
         folder.mkdir(parents=True, exist_ok=True)
         path = folder / SCRIPT_NAME
-        path.write_text(render_windows_startup_script(root, python), encoding="utf-8")
+        path.write_text(render_windows_startup_script(root, python, auth), encoding="utf-8")
         return {
             "kind": "windows-startup",
             "name": SCRIPT_NAME,
@@ -103,7 +107,7 @@ def install(root: Path, python: str | None = None) -> dict[str, Any]:
     unit_dir = Path.home() / ".config" / "systemd" / "user"
     unit_dir.mkdir(parents=True, exist_ok=True)
     unit_path = unit_dir / UNIT_NAME
-    unit_path.write_text(render_systemd_unit(root, python), encoding="utf-8")
+    unit_path.write_text(render_systemd_unit(root, python, auth), encoding="utf-8")
     code, out = _run(["systemctl", "--user", "daemon-reload"])
     code2, out2 = _run(["systemctl", "--user", "enable", "--now", UNIT_NAME])
     return {

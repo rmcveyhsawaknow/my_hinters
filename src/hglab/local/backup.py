@@ -52,12 +52,14 @@ def auth_mode(config: dict[str, Any]) -> str:
 
 
 def gcs_client(config: dict[str, Any]) -> Any | None:
-    """A Storage client from the GCP_SERVICE_ACCOUNT_KEY in the keyring, or None when there is no key."""
+    """A Storage client from the keyring: the JSON key GCP_SERVICE_ACCOUNT_KEY, else the HMAC pair GCP_HMAC_ACCESS_ID and GCP_HMAC_SECRET, else None."""
     from hglab.secrets import get_secret
 
     raw = get_secret("GCP_SERVICE_ACCOUNT_KEY")
     if not raw:
-        return None
+        from hglab.local.gcs import client_from_keyring
+
+        return client_from_keyring(get_secret)
     from google.cloud import storage
     from google.oauth2 import service_account
 
@@ -142,7 +144,7 @@ def push(
                     "target": destination,
                     "ok": False,
                     "auth": mode,
-                    "detail": "no GCP_SERVICE_ACCOUNT_KEY in the keyring: store one with `hglab key store GCP_SERVICE_ACCOUNT_KEY --from-file <key.json>` or run with --auth gcloud",
+                    "detail": "no service account credential in the keyring: store GCP_HMAC_ACCESS_ID and GCP_HMAC_SECRET (or GCP_SERVICE_ACCOUNT_KEY --from-file) with `hglab key store`, or run with --auth gcloud",
                 }
             bucket, prefix = _split_gs(target)
             path = f"{prefix}/hosts/{host}/backups/{archive.name}".strip("/")

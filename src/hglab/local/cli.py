@@ -192,11 +192,16 @@ local_app.add_typer(service_app, name="service")
 
 
 @service_app.command("install")
-def service_install() -> None:
+def service_install(
+    auth: str | None = typer.Option(
+        None, "--auth", help="Bake `--auth gcloud` (or service_account) into the logon start"
+    ),
+) -> None:
     """Register the logon start (runs `hglab local up` from this checkout, a minute after logon)."""
     from hglab.local.service import install
 
-    typer.echo(json.dumps(install(_root()), ensure_ascii=False, indent=2))
+    _set_auth(auth)
+    typer.echo(json.dumps(install(_root(), auth=auth), ensure_ascii=False, indent=2))
 
 
 @service_app.command("remove")
