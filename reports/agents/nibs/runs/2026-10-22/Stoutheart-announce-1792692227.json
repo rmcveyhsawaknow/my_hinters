@@ -1,0 +1,58 @@
+{
+  "run_id": "announce-1792692227",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 48296,
+  "created_utc": "2026-10-22T18:03:47.367818+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Bridge is up at (82,112), five wood gathered and the pack held. Neverland keeps its crossings mended, so nobody needs to leave. Worth it."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1757,
+    "output_tokens": 61,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [
+      "bridge at (82,112)"
+    ],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "harvest",
+      "explore",
+      "explore",
+      "rest",
+      "build"
+    ],
+    "mood": "brave",
+    "where": [
+      80,
+      109
+    ],
+    "discoveries": []
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
