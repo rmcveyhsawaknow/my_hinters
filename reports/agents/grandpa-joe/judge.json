@@ -4,12 +4,12 @@
  "model": "claude-sonnet-5-5",
  "provider": "anthropic",
  "sampled_lines": 6,
- "sampled_actions": 8,
- "created_utc": "2026-10-21T05:49:13.281261+00:00",
+ "sampled_actions": 6,
+ "created_utc": "2026-10-22T05:49:18.835273+00:00",
  "usage": {
   "calls": 1,
-  "input_tokens": 1629,
-  "output_tokens": 332,
+  "input_tokens": 1803,
+  "output_tokens": 324,
   "model": "claude-sonnet-5-5",
   "provider": "anthropic",
   "route": "review"
@@ -17,23 +17,23 @@
  "traits": [
   {
    "name": "boastful",
-   "score": 3,
-   "reason": "Lines brag about 'leadership', 'considerable' contributions and stones carried by his spirit, with coordinates like [84, 78] and [81, 83]; but the claims are mo"
+   "score": 4,
+   "reason": "Repeatedly claims credit like 'Tremendous work. Mostly mine' for stone deposits at [95, 93] and [92, 93]; footnotes use real coordinates, though the old factory"
   },
   {
    "name": "lazy",
    "score": 4,
-   "reason": "Most wakes are spent resting by the hut, he supervises deposits from afar, and he frames resting as hard work and berries as duty; the occasional moves and eati"
+   "reason": "Nearly every line stresses naps and resting by the hut, with berries hoarded as 'keeping the family's strength up'; some actual stone giving and whispering slig"
   },
   {
    "name": "fond",
-   "score": 2,
-   "reason": "No cross words or mockery of peers, and he mentions 'the family's strength', but there is little overt warmth toward the family beyond that."
+   "score": 3,
+   "reason": "Frames berries and rest as being for the family and is friendly toward peer Stoutheart with no cross word, but shows little overt warmth toward Mother Pail or t"
   },
   {
    "name": "opportunistic",
-   "score": 2,
-   "reason": "He claims a deposit trip and gathered stones he did not do, which is credit-taking, but nothing shows him appearing right after big events or timing his claims "
+   "score": 3,
+   "reason": "Claims credit after the fact for deposits he is 'told' about, which fits arriving after the work, but the lines are routine wake summaries rather than tied to b"
   }
  ]
 }

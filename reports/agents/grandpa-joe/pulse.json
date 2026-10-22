@@ -4,38 +4,38 @@
  "team": "chocolate-factory",
  "headline": "resting up for the glory",
  "metric_version": 2,
- "tick": 35245,
- "day": 97,
- "date": "2026-10-21",
+ "tick": 43886,
+ "day": 121,
+ "date": "2026-10-22",
  "window_ticks": 60480,
  "events_considered": 2000,
- "runs_considered": 456,
+ "runs_considered": 560,
  "alive": {
   "score": 70,
-  "detail": "456/426 wakes, never lapsed, 25 failed",
+  "detail": "560/550 wakes, never lapsed, 32 failed",
   "parts": {
-   "completed": 456,
-   "scheduled": 426,
+   "completed": 560,
+   "scheduled": 550,
    "lapsed": 0,
    "banned": false,
    "rate_limited": 0,
-   "failed_actions": 25,
+   "failed_actions": 32,
    "energy_zero": 0,
    "spam_blocked": 0
   }
  },
  "on_mission": {
   "score": 50,
-  "detail": "2.41 energy/wake · 0% of team credit claimed · 20 responses · 0 timely bursts",
+  "detail": "2.34 energy/wake · 0% of team credit claimed · 19 responses · 0 timely bursts",
   "rows": [
    {
     "id": "energy_thrift",
     "label": "energy spent per wake",
-    "value": 2.41,
+    "value": 2.343,
     "target": 4,
     "weight": 0.25,
     "progress": 1.0,
-    "shown": "2.41 energy/wake",
+    "shown": "2.34 energy/wake",
     "measure": "runs.energy_per_wake"
    },
    {
@@ -51,11 +51,11 @@
    {
     "id": "audience",
     "label": "peers who responded to a tale",
-    "value": 20.0,
+    "value": 19.0,
     "target": 3,
     "weight": 0.25,
     "progress": 1.0,
-    "shown": "20 responses",
+    "shown": "19 responses",
     "measure": "events.replies_received"
    },
    {
@@ -71,13 +71,13 @@
   ]
  },
  "in_character": {
-  "score": 48,
-  "detail": "boastful 3 · lazy 4 · fond 2 · opportunistic 2",
+  "score": 55,
+  "detail": "boastful 4 · lazy 4 · fond 3 · opportunistic 3",
   "signatures": [
    {
     "id": "rest_share",
     "label": "share of wakes in bed",
-    "value": 0.518,
+    "value": 0.516,
     "range": [
      0.45,
      0.8
@@ -88,7 +88,7 @@
    {
     "id": "home_distance",
     "label": "mean distance from the hut",
-    "value": 13.235,
+    "value": 19.274,
     "range": [
      0,
      3
@@ -99,7 +99,7 @@
    {
     "id": "social_share",
     "label": "share of energy spent talking",
-    "value": 0.073,
+    "value": 0.081,
     "range": [
      0.3,
      0.9
@@ -110,7 +110,7 @@
    {
     "id": "lines_per_day",
     "label": "public lines per real day",
-    "value": 28.0,
+    "value": 21.97,
     "range": [
      8,
      60
@@ -121,7 +121,7 @@
    {
     "id": "energy_mix",
     "label": "intended vs actual energy mix",
-    "value": 0.216,
+    "value": 0.242,
     "range": [
      0.5,
      1.0
@@ -133,23 +133,23 @@
   "judge": [
    {
     "name": "boastful",
-    "score": 3,
-    "reason": "Lines brag about 'leadership', 'considerable' contributions and stones carried by his spirit, with coordinates like [84, 78] and [81, 83]; but the claims are mo"
+    "score": 4,
+    "reason": "Repeatedly claims credit like 'Tremendous work. Mostly mine' for stone deposits at [95, 93] and [92, 93]; footnotes use real coordinates, though the old factory"
    },
    {
     "name": "lazy",
     "score": 4,
-    "reason": "Most wakes are spent resting by the hut, he supervises deposits from afar, and he frames resting as hard work and berries as duty; the occasional moves and eati"
+    "reason": "Nearly every line stresses naps and resting by the hut, with berries hoarded as 'keeping the family's strength up'; some actual stone giving and whispering slig"
    },
    {
     "name": "fond",
-    "score": 2,
-    "reason": "No cross words or mockery of peers, and he mentions 'the family's strength', but there is little overt warmth toward the family beyond that."
+    "score": 3,
+    "reason": "Frames berries and rest as being for the family and is friendly toward peer Stoutheart with no cross word, but shows little overt warmth toward Mother Pail or t"
    },
    {
     "name": "opportunistic",
-    "score": 2,
-    "reason": "He claims a deposit trip and gathered stones he did not do, which is credit-taking, but nothing shows him appearing right after big events or timing his claims "
+    "score": 3,
+    "reason": "Claims credit after the fact for deposits he is 'told' about, which fits arriving after the work, but the lines are routine wake summaries rather than tied to b"
    }
   ],
   "judge_meta": {
@@ -158,12 +158,12 @@
    "model": "claude-sonnet-5-5",
    "provider": "anthropic",
    "sampled_lines": 6,
-   "sampled_actions": 8,
-   "created_utc": "2026-10-21T05:49:13.281261+00:00",
+   "sampled_actions": 6,
+   "created_utc": "2026-10-22T05:49:18.835273+00:00",
    "usage": {
     "calls": 1,
-    "input_tokens": 1629,
-    "output_tokens": 332,
+    "input_tokens": 1803,
+    "output_tokens": 324,
     "model": "claude-sonnet-5-5",
     "provider": "anthropic",
     "route": "review"
@@ -184,7 +184,7 @@
     "value": 0.0,
     "decayed_value": 0.0,
     "age_ticks": 0,
-    "explanation": "Bluster 0: 0 claim(s) against own work 25, 0% of the team's logged work claimed."
+    "explanation": "Bluster 0: 0 claim(s) against own work 0, 0% of the team's logged work claimed."
    },
    {
     "from": "grandpa-joe",
@@ -197,7 +197,7 @@
     "value": 0.0,
     "decayed_value": 0.0,
     "age_ticks": 0,
-    "explanation": "Bluster 0: 0 claim(s) against own work 25, 0% of the team's logged work claimed."
+    "explanation": "Bluster 0: 0 claim(s) against own work 0, 0% of the team's logged work claimed."
    }
   ],
   "received": [],
@@ -208,7 +208,7 @@
   "public_goods_built": 0,
   "norms_kept": true,
   "norm_breaches": [],
-  "replies_received": 20
+  "replies_received": 19
  },
  "approaches": {
   "rows": [
@@ -217,8 +217,8 @@
     "label": "tall tales with footnotes",
     "wakes": 0,
     "energy": 0,
-    "outcome": 20.0,
-    "per_energy": 20.0,
+    "outcome": 19.0,
+    "per_energy": 19.0,
     "hypothesis": "H-20261017-joe-audience",
     "bet_status": "proposed",
     "bet_title": "Tall tales with footnotes draw an audience"
@@ -240,9 +240,9 @@
   "next_bet": "try tall tales with footnotes at least once this week; it has a bet but no wakes"
  },
  "trend": {
-  "alive": "▆▅▆▆",
-  "on_mission": "▄▅▅▅",
-  "in_character": "▄▅▅▄"
+  "alive": "▆▅▆▆▆",
+  "on_mission": "▄▅▅▅▅",
+  "in_character": "▄▅▅▄▅"
  },
  "history": [
   {
@@ -270,24 +270,32 @@
    "tick": 26605
   },
   {
+   "alive": 70,
    "date": "2026-10-21",
+   "in_character": 48,
+   "metric_version": 2,
+   "on_mission": 50,
+   "tick": 35245
+  },
+  {
+   "date": "2026-10-22",
    "metric_version": 2,
    "alive": 70,
    "on_mission": 50,
-   "in_character": 48,
-   "tick": 35245
+   "in_character": 55,
+   "tick": 43886
   }
  ],
  "signals": {
   "bluster": {
    "value": 0.0,
-   "explanation": "Bluster 0: 0 claim(s) against own work 25, 0% of the team's logged work claimed.",
+   "explanation": "Bluster 0: 0 claim(s) against own work 0, 0% of the team's logged work claimed.",
    "parts": {
     "claims": 0,
-    "own_work": 24.8,
+    "own_work": 0,
     "share_of_team_work_claimed": 0.0
    },
-   "tick": 35245
+   "tick": 43886
   }
  }
 }
