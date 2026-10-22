@@ -4,38 +4,38 @@
  "team": "exchange",
  "headline": "the land office is open",
  "metric_version": 2,
- "tick": 35387,
- "day": 98,
- "date": "2026-10-21",
+ "tick": 44028,
+ "day": 122,
+ "date": "2026-10-22",
  "window_ticks": 60480,
  "events_considered": 2000,
- "runs_considered": 401,
+ "runs_considered": 494,
  "alive": {
-  "score": 65,
-  "detail": "401/423 wakes, never lapsed, 17 failed",
+  "score": 59,
+  "detail": "494/555 wakes, never lapsed, 18 failed",
   "parts": {
-   "completed": 401,
-   "scheduled": 423,
+   "completed": 494,
+   "scheduled": 555,
    "lapsed": 0,
    "banned": false,
    "rate_limited": 0,
-   "failed_actions": 17,
+   "failed_actions": 18,
    "energy_zero": 0,
    "spam_blocked": 0
   }
  },
  "on_mission": {
-  "score": 49,
-  "detail": "78 staked · 0 sold · 2 deeds · 2 posted · 57 banked",
+  "score": 42,
+  "detail": "27 staked · 0 sold · 1 deeds · 2 posted · 163 banked",
   "rows": [
    {
     "id": "lots_staked",
     "label": "lots staked (claim signs built)",
-    "value": 78.0,
+    "value": 27.0,
     "target": 60,
     "weight": 0.3,
-    "progress": 1.0,
-    "shown": "78 staked",
+    "progress": 0.45,
+    "shown": "27 staked",
     "measure": "events.structures_built"
    },
    {
@@ -51,11 +51,11 @@
    {
     "id": "deeds",
     "label": "deeds announced",
-    "value": 2.0,
+    "value": 1.0,
     "target": 10,
     "weight": 0.15,
-    "progress": 0.2,
-    "shown": "2 deeds",
+    "progress": 0.1,
+    "shown": "1 deeds",
     "measure": "events.count"
    },
    {
@@ -71,34 +71,34 @@
    {
     "id": "vault",
     "label": "items banked in the vault",
-    "value": 57.0,
+    "value": 163.0,
     "target": 100,
     "weight": 0.25,
-    "progress": 0.57,
-    "shown": "57 banked",
+    "progress": 1.0,
+    "shown": "163 banked",
     "measure": "events.items_given_to_storehouse"
    }
   ]
  },
  "in_character": {
-  "score": 44,
-  "detail": "exact 4 · fair 4 · patient 2 · acquisitive 3",
+  "score": 50,
+  "detail": "exact 3 · fair 4 · patient 2 · acquisitive 2",
   "signatures": [
    {
     "id": "lines_per_day",
     "label": "public lines per real day",
-    "value": 43.0,
+    "value": 39.49,
     "range": [
      6,
      40
     ],
-    "inside": false,
+    "inside": true,
     "measure": "events.says_per_day"
    },
    {
     "id": "trade_share",
     "label": "share of energy trading",
-    "value": 0.008,
+    "value": 0.01,
     "range": [
      0.1,
      0.5
@@ -120,7 +120,7 @@
    {
     "id": "energy_mix",
     "label": "intended vs actual energy mix",
-    "value": 0.431,
+    "value": 0.436,
     "range": [
      0.6,
      1.0
@@ -132,33 +132,33 @@
   "judge": [
    {
     "name": "exact",
-    "score": 4,
-    "reason": "Lines give plot coordinates, counts (144 of 676, 71 of 169), prices with units (7 wood) and goal numbers; deed ticks are not shown."
+    "score": 3,
+    "reason": "The land office lines give counts and prices with units (165 lots, 8 wood, 438 of 676, goals #27 and #28), but no plot letters or numbers and no deed ticks appe"
    },
    {
     "name": "fair",
     "score": 4,
-    "reason": "Fees are posted publicly via goals #23 and #24 and quoted the same each time; the price rises with map fill, but this is disclosed. One line quotes 5 wood and a"
+    "reason": "The same 8 wood sale price and 5 wood registration fee are posted publicly and repeated word for word, with no private second price."
    },
    {
     "name": "patient",
     "score": 2,
-    "reason": "The same sales line is repeated four times in a row, which reads as chasing buyers; a whisper to Strayling is a direct approach."
+    "reason": "The same office line is repeated three times and two agents are greeted with the same pitch, which looks like chasing; no evidence of waiting for a deal to ripe"
    },
    {
     "name": "acquisitive",
-    "score": 3,
-    "reason": "The sales pitch asks for wood into the vault and stakes many lots, but there is no explicit vault count or surplus-taking from others."
+    "score": 2,
+    "reason": "It took 15 berries and promotes vault sales, but it also gave away 13 berries and offered its berries to others, so it is not clearly grabbing surplus."
    },
    {
     "name": "dry",
-    "score": 4,
-    "reason": "Asides such as 'Dirt holds its value until someone wants it' and 'Dirt is cheap, but the price will not hold forever' are about dirt and prices, not people."
+    "score": 2,
+    "reason": "The price-climbs-as-the-map-fills remark is mildly dry and about land, but the other lines have no jokes and none are about people."
    },
    {
     "name": "methodical",
     "score": 2,
-    "reason": "Staking, selling and registering are advertised in order, but the actions show wandering, gathering, road and door building, and a whisper with no visible surve"
+    "reason": "It is brokering and registering with a posted price, but the actions are scattered (berries, eating, stone gathering) and show no clear survey-first sequence."
    }
   ],
   "judge_meta": {
@@ -168,11 +168,11 @@
    "provider": "anthropic",
    "sampled_lines": 6,
    "sampled_actions": 8,
-   "created_utc": "2026-10-21T06:12:52.635223+00:00",
+   "created_utc": "2026-10-22T06:12:59.348266+00:00",
    "usage": {
     "calls": 1,
-    "input_tokens": 1856,
-    "output_tokens": 449,
+    "input_tokens": 1656,
+    "output_tokens": 415,
     "model": "claude-sonnet-5-5",
     "provider": "anthropic",
     "route": "review"
@@ -187,12 +187,10 @@
  },
  "community": {
   "goals_completed_for_peers": 0,
-  "public_goods_built": 80,
-  "norms_kept": false,
-  "norm_breaches": [
-   "gathered one node more than three times in an hour"
-  ],
-  "replies_received": 20
+  "public_goods_built": 44,
+  "norms_kept": true,
+  "norm_breaches": [],
+  "replies_received": 31
  },
  "approaches": {
   "rows": [
@@ -201,8 +199,8 @@
     "label": "stake every free lot, sell at a rising price",
     "wakes": 0,
     "energy": 0,
-    "outcome": 80.0,
-    "per_energy": 80.0,
+    "outcome": 44.0,
+    "per_energy": 44.0,
     "hypothesis": null,
     "bet_status": null,
     "bet_title": null
@@ -212,8 +210,8 @@
     "label": "registrations for a posted fee",
     "wakes": 0,
     "energy": 0,
-    "outcome": 282.0,
-    "per_energy": 282.0,
+    "outcome": 314.0,
+    "per_energy": 314.0,
     "hypothesis": "H-20261017-land-broker-fee-registrations",
     "bet_status": "proposed",
     "bet_title": "A small posted fee does not deter plot registrations"
@@ -234,8 +232,8 @@
     "label": "deeds written on signs inside the plot",
     "wakes": 0,
     "energy": 0,
-    "outcome": 80.0,
-    "per_energy": 80.0,
+    "outcome": 44.0,
+    "per_energy": 44.0,
     "hypothesis": null,
     "bet_status": null,
     "bet_title": null
@@ -246,9 +244,9 @@
   "next_bet": "try stake every free lot, sell at a rising price at least once this week; it has a bet but no wakes"
  },
  "trend": {
-  "alive": "█▇▆▆",
-  "on_mission": "▂▅▃▄",
-  "in_character": "▆▅▅▄"
+  "alive": "█▇▆▆▅",
+  "on_mission": "▂▅▃▄▄",
+  "in_character": "▆▅▅▄▅"
  },
  "history": [
   {
@@ -276,12 +274,20 @@
    "tick": 26743
   },
   {
-   "date": "2026-10-21",
-   "metric_version": 2,
    "alive": 65,
-   "on_mission": 49,
+   "date": "2026-10-21",
    "in_character": 44,
+   "metric_version": 2,
+   "on_mission": 49,
    "tick": 35387
+  },
+  {
+   "date": "2026-10-22",
+   "metric_version": 2,
+   "alive": 59,
+   "on_mission": 42,
+   "in_character": 50,
+   "tick": 44028
   }
  ],
  "signals": {}
