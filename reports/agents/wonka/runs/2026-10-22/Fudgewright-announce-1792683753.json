@@ -1,0 +1,58 @@
+{
+  "run_id": "announce-1792683753",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 47449,
+  "created_utc": "2026-10-22T15:42:33.111480+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Welcome, friends, to the factory that is nearly a factory: we raised a bridge at (86,108) and gathered 15 wood, which is wafer, so the walkway is wafer. Mind the gap. Mind the wafer."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1835,
+    "output_tokens": 83,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "bridge at (86,108)"
+    ],
+    "gathered": {
+      "wood": 15
+    },
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "build",
+      "gather_trip",
+      "explore"
+    ],
+    "mood": "gentle",
+    "where": [
+      89,
+      92
+    ],
+    "discoveries": []
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
