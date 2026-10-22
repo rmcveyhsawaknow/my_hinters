@@ -22,6 +22,7 @@ dependencies = [
 [project.optional-dependencies]
 science = ["numpy", "pandas", "scipy", "matplotlib", "networkx"]
 dev = ["pytest", "respx", "ruff"]
+local = ["mcp>=2"]
 
 [project.scripts]
 hglab = "hglab.cli:app"

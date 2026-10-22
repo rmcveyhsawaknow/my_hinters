@@ -13,8 +13,7 @@ CONFIG_SCHEMAS = {
     "agents": "agents",
     "collective": "collective",
     "models": "models",
-    "budget": "budget",
-}
+    "budget": "budget", "local": "local"}
 
 
 def validate_config(root: Path) -> list[str]:

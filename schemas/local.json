@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Local agents framework configuration",
+  "type": "object",
+  "required": ["agents"],
+  "additionalProperties": false,
+  "properties": {
+    "dry_run": {"type": "boolean"},
+    "a2a_port": {"type": "integer", "minimum": 1024, "maximum": 65535},
+    "ui_port": {"type": "integer", "minimum": 1024, "maximum": 65535},
+    "agents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["slug"],
+        "additionalProperties": false,
+        "properties": {
+          "slug": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$"},
+          "enabled": {"type": "boolean"},
+          "dry_run": {"type": "boolean"},
+          "jobs": {"type": "array", "items": {"enum": ["tick", "shift", "keepalive", "crier", "land"]}, "uniqueItems": true}
+        }
+      }
+    }
+  }
+}
