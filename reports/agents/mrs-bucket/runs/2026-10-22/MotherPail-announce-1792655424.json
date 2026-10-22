@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792655424",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 44616,
+  "created_utc": "2026-10-22T07:50:24.378335+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Fifteen wood gathered and sixty deposited at the storehouse this hour. Took a rest when I needed one, then back to the stacks. The pile is looking less lonely."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1641,
+    "output_tokens": 65,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {
+      "wood": 15
+    },
+    "moved": 4,
+    "deposited": {
+      "wood": 60
+    },
+    "approaches": [
+      "rest",
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit"
+    ],
+    "mood": "warm",
+    "where": [
+      74,
+      91
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
