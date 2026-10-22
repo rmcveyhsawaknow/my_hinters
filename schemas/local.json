@@ -16,6 +16,7 @@
         "data_boundary": {"enum": ["public", "internal", "restricted"]},
         "backup_target": {"type": "string", "pattern": "^(local:.+|gs://[a-z0-9][a-z0-9._-]+(/.*)?)$"},
         "backup_every_minutes": {"type": "integer", "minimum": 0, "maximum": 10080},
+        "adapt_every_minutes": {"type": "integer", "minimum": 0, "maximum": 10080},
         "auth": {"enum": ["service_account", "gcloud"]}
       }
     },

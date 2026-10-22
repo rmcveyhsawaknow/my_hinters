@@ -260,6 +260,35 @@ class Supervisor:
         )
         return result
 
+    def adapt(self, personas: dict[str, Any]) -> dict[str, Any]:
+        """Recompute every persona's assignment from the local evidence and brief the ones that changed; never raises."""
+        from hglab.local.goals import adapt, brief
+        from hglab.local.memory import Graph
+        from hglab.persona import load_teams
+
+        graph_path = self.root / "runs/local/memory.sqlite"
+        try:
+            graph = Graph(graph_path)
+            try:
+                plan = adapt(self.root, graph, personas, load_teams(self.root))
+                briefed = brief(self.root, graph, plan)
+            finally:
+                graph.close()
+            result = {
+                "ok": True,
+                "assigned": sum(1 for a in plan["agents"].values() if a.get("assignment")),
+                "briefed": briefed,
+            }
+        except Exception as exc:  # noqa: BLE001 - adaptation must never stop the supervisor
+            result = {"ok": False, "detail": str(exc)[:300]}
+        with self._lock:
+            self.status["last_adapt"] = {"utc": datetime.now(UTC).isoformat(), **result}
+            self._save_status()
+        self._log(
+            f"adapt {'ok' if result.get('ok') else 'FAILED'}: {result.get('assigned', result.get('detail', ''))} assignment(s), briefed {', '.join(result.get('briefed') or []) or 'nobody'}"
+        )
+        return result
+
     def loop(self, personas: dict[str, Any], minutes: int | None = None) -> None:
         self._log(
             f"supervisor up: {', '.join(e.get('slug', '?') for e in self.entries())} (dry_run={self.config.get('dry_run', True)})"
@@ -270,6 +299,8 @@ class Supervisor:
         count = 0
         last_backup: datetime | None = None
         every = int((self.config.get("ecosystem") or {}).get("backup_every_minutes", 0) or 0)
+        adapt_every = int((self.config.get("ecosystem") or {}).get("adapt_every_minutes", 0) or 0)
+        last_adapt: datetime | None = None
         try:
             while minutes is None or count < minutes:
                 now = datetime.now(UTC).replace(second=0, microsecond=0)
@@ -282,6 +313,11 @@ class Supervisor:
                     ):
                         last_backup = now
                         threading.Thread(target=self.backup, args=(personas,), daemon=True).start()
+                    if adapt_every and (
+                        last_adapt is None or (now - last_adapt).total_seconds() >= adapt_every * 60
+                    ):
+                        last_adapt = now
+                        threading.Thread(target=self.adapt, args=(personas,), daemon=True).start()
                 time.sleep(5)
         finally:
             self.status["running"] = False

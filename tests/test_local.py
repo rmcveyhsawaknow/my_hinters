@@ -284,9 +284,10 @@ def test_the_status_page_renders_agents_and_configuration(tmp_path):
     html = render(tmp_path, load_personas(ROOT), load_teams(ROOT))
     assert (
         "Clarion" in html
-        and "runtime: <strong>local</strong>" in html
-        and "runtime: <strong>actions</strong>" in html
+        and 'class="pill dry"' in html
+        and 'class="pill actions"' in html
         and "no memory graph yet" in html
+        and "Current goal" in html
     )
 
 
@@ -887,3 +888,131 @@ def test_a_long_job_never_blocks_another_persona_or_doubles_up(tmp_path):
     gate.set()
     sup.tick(personas, when, wait=True)
     assert calls.count("land-broker") == 1 and sup._busy == set()
+
+
+def test_goals_read_the_newest_record_pick_the_largest_gap_and_brief_once(tmp_path):
+    from hglab.local.goals import (
+        activity,
+        adapt,
+        brief,
+        key_results,
+        latest_record,
+        works_and_avoid,
+    )
+
+    personas, teams = load_personas(ROOT), load_teams(ROOT)
+    day = tmp_path / "runs" / "2026-10-22"
+    day.mkdir(parents=True)
+    older = {
+        "agent": "Clarion",
+        "created_utc": "2026-10-22T10:00:00+00:00",
+        "summary": "Clarion (bright): resting",
+        "approach": "rest",
+        "mood": "bright",
+        "wake_mode": "rest",
+        "results": [{"ok": True}],
+        "observe": {"you": {"energy": 100, "inventory": {}}},
+        "reasons": [],
+    }
+    newer = {
+        "agent": "Clarion",
+        "created_utc": "2026-10-22T12:00:00+00:00",
+        "summary": "Clarion (bright): work shift: building the stall",
+        "approach": "build",
+        "mood": "bright",
+        "wake_mode": "act",
+        "results": [{"ok": True}, {"ok": False}],
+        "observe": {"you": {"energy": 80, "inventory": {"wood": 20, "stone": 5}}},
+        "reasons": ["the square needs a stall"],
+        "dry_run": False,
+    }
+    (day / "Clarion-a.json").write_text(json.dumps(older), encoding="utf-8")
+    (day / "Clarion-b.json").write_text(json.dumps(newer), encoding="utf-8")
+    record = latest_record(tmp_path, "Clarion", "town-crier")
+    act = activity(record, "Clarion")
+    assert (
+        act["summary"] == "work shift: building the stall"
+        and act["approach"] == "build"
+        and act["ok"] == "1/2"
+        and act["pack"] == 25
+        and act["energy"] == 80
+    )
+    for slug in personas:
+        (tmp_path / "agents" / slug).mkdir(parents=True, exist_ok=True)
+        (tmp_path / "agents" / slug / "metrics.yaml").write_text(
+            (ROOT / "agents" / slug / "metrics.yaml").read_text(encoding="utf-8"), encoding="utf-8"
+        )
+    krs = key_results(tmp_path, "town-crier")
+    assert any(k["id"] == "announced" and k["weight"] == 0.3 for k in krs)
+    pulse_dir = tmp_path / "reports" / "agents" / "town-crier"
+    pulse_dir.mkdir(parents=True)
+    pulse_dir.joinpath("pulse.json").write_text(
+        json.dumps(
+            {
+                "tick": 1,
+                "on_mission": {
+                    "rows": [
+                        {"id": "announced", "progress": 0.9, "value": 18, "target": 20},
+                        {"id": "features_found", "progress": 0.1, "value": 1, "target": 6},
+                    ]
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    g = Graph(tmp_path / "runs/local/memory.sqlite")
+    for n, failed in ((1, 0), (2, 0), (3, 0)):
+        ingest_record(
+            g,
+            {
+                "run_id": f"e{n}",
+                "agent": "Clarion",
+                "tick": 100 + n,
+                "approach": "explore",
+                "actions": [{"action": "move"}] * 5,
+                "failed_actions": [],
+                "usage": {},
+                "reasons": [],
+            },
+        )
+    for n in range(3):
+        ingest_record(
+            g,
+            {
+                "run_id": f"d{n}",
+                "agent": "Clarion",
+                "tick": 200 + n,
+                "approach": "deposit",
+                "actions": [{"action": "give"}] * 5,
+                "failed_actions": [{"action": "give"}] * 2,
+                "usage": {},
+                "reasons": [],
+            },
+        )
+    works, avoid = works_and_avoid(
+        [
+            {"approach": "explore", "wakes": 3, "actions": 15, "failed": 0, "success": 1.0},
+            {"approach": "deposit", "wakes": 3, "actions": 15, "failed": 6, "success": 0.6},
+            {"approach": "build", "wakes": 1, "actions": 2, "failed": 0, "success": 1.0},
+        ]
+    )
+    assert works == ["explore"] and avoid == ["deposit"]
+    plan = adapt(tmp_path, g, personas, teams)
+    clarion = plan["agents"]["town-crier"]["assignment"]
+    assert (
+        clarion["id"] == "features_found"
+        and clarion["works"] == ["explore"]
+        and clarion["avoid"] == ["deposit"]
+        and any("largest weighted gap" in b for b in clarion["because"])
+    )
+    assert g.edges("Clarion", kind="pursues")[0]["dst"] == "objective:town-crier:features_found"
+    assert plan["teams"]["square"]["members"]["town-crier"]["activity"]["approach"] == "build"
+    first = brief(tmp_path, g, plan)
+    assert "town-crier" in first and brief(tmp_path, g, plan) == []  # once a day
+    from hglab.local.a2a import TaskStore
+
+    pending = TaskStore(g).pending_for("Clarion")
+    assert pending and "features found" in pending[0]["history"][0]["parts"][0]["text"]
+    neverland = plan["teams"]["neverland"]["suggestions"]
+    assert any(s["kind"] == "faction" for s in neverland)
+    g.close()

@@ -232,3 +232,33 @@ Clarion locally: a dry `hglab local once --agent town-crier --job tick` observes
 key resolves locally), so the first live confirmation is
 `hglab local once --agent town-crier --job tick --live`, run by the owner; the lease makes the local
 run and the Actions run take turns.
+
+## 8. Adaptive goals, in-world goals and factions
+
+The status page sorts personas by last activity and shows, for each, what it is doing now (the newest
+wake record: summary, approach, mood, energy, pack, results) and the goal it pursues. The goal comes
+from the adaptive layer (`hglab local goals`, `src/hglab/local/goals.py`), which works only from local
+evidence:
+
+1. **Key results** in `agents/<slug>/metrics.yaml` are the candidate goals (label, target, weight).
+2. **Progress** per key result comes from the last published Pulse (`reports/agents/<slug>/pulse.json`).
+3. **What works** comes from the memory graph: actions taken and failed per approach for that persona;
+   an approach with at least twelve actions and 90 percent success is one to lean on, under 80 percent
+   one to avoid until its cause is fixed (Fudgewright's `migrate` fails 30 percent of the time today).
+4. **Teammates** halve the score of a measure a teammate already pursues, so a team spreads out.
+
+`hglab local goals --adapt` picks, per persona, the key result with the largest weighted gap, records
+it in the graph (`objective` nodes, `pursues` edges with the reasons) and, with `--brief`, leaves the
+assignment as an operator message that the persona's next wake reads (at most once a day). The
+supervisor does this every `ecosystem.adapt_every_minutes`. The MCP tools `goals` and `adapt_goals`
+expose the same to Claude Code, and `/goals.json` on the status page to anything else.
+
+Team suggestions come from the same evidence and name the two in-world instruments the collective
+should use more: **goals** and **factions**. The rule that no collective member claims another member's
+goal stands, so in-world goals are for work across collectives: when a team's logistics approach keeps
+failing, the suggestion is to post a goal with a reward that an outsider can claim. When a team of two
+or more has no faction recorded, the suggestion is to found one named for the team and invite the
+members, then record it as `faction:` in `teams/<slug>.yaml` so the Pulse can count it. The next step
+is to let the planner act on an assignment directly (an objective knob on the heuristic planner, the
+brief for the LLM planner already works) and to keep the world's open goal board in the records so
+claimable goals can be matched to capability cards the way the ecosystem routing does.
