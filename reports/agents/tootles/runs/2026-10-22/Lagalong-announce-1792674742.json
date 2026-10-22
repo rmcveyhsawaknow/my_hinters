@@ -1,0 +1,45 @@
+{
+  "run_id": "announce-1792674742",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 46548,
+  "created_utc": "2026-10-22T13:12:22.521050+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, no rests, and I am still walking, I think. Farther out than before, if that is all right. The big thing is probably just past here, so I will keep going."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1653,
+    "output_tokens": 59,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 0,
+    "deposited": {},
+    "approaches": [],
+    "mood": "wistful",
+    "where": null,
+    "discoveries": []
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
