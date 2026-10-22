@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792642199",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 43293,
+  "created_utc": "2026-10-22T04:09:59.323081+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, four steps out and back, no bridge raised this hour. Next hour the farm gets my hands. Staying put is the bravest thing I know."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1734,
+    "output_tokens": 58,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "rest",
+      "explore",
+      "explore",
+      "harvest"
+    ],
+    "mood": "brave",
+    "where": [
+      75,
+      110
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
