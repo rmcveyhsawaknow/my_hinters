@@ -50,6 +50,13 @@ GCP resources (one project, one region):
 | Cloud Logging sink | OCSF audit lines from each sandbox, shipped by the host | optional in phase 2 |
 | Secret Manager | monitor's signing verification keys, host public keys | hosts never read it |
 
+`scripts/gcp-bootstrap.sh` creates all of this idempotently once a billing account is linked to the
+project: it enables the APIs, creates the monthly budget with alerts at 50, 90 and 100 percent scoped
+to the project, creates the bucket with uniform access, no public access, versioning and a lifecycle
+(host backups to Nearline after 30 days, old versions deleted after 180), and with `--host <id>` a
+prefix-scoped service account for one host. State on 2026-10-22: project `my-hinters` exists with
+storage, BigQuery and logging enabled; the paid APIs, the budget and the bucket wait for billing.
+
 Bucket layout:
 
 ```text
