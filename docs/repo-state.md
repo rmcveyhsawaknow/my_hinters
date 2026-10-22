@@ -404,3 +404,10 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
   price, never above fifty. On the live map the office recommends I08-SE at (87, 87) for 45 wood (ore,
   stone, mountain view, high ground, neighbours, 25 tiles from Neverland); unsold lots now range from 8
   wood for unbuildable shore to 30 for prime ground, median 23, where every lot was 8 before.
+- The same afternoon the records showed gives refused as inventory_full: the land office's vault at
+  (65, 54) and MotherPail's storehouse at (85, 92) are full, and a deposit was the first action of
+  the batch, so the hits and words after it were lost; deposits and deed payments now read the
+  storage in view and skip a full storehouse or size the give to its room. The collector's and the
+  land office's notebook notes were `json.dumps(...)[:2000]`, which stopped parsing once a state
+  outgrew the limit and made Clarion forget every invitation and repeat it; `notes.fit_note` trims
+  the lists from their oldest end and never cuts the JSON.

@@ -771,11 +771,12 @@ def _plan_site_trade(
         ((int(s["x"]), int(s["y"])) for s in structures if s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() == registrar_name.casefold()),
         key=lambda t: chebyshev(position, t),
     )
+    vaults = [v for v in vaults if storehouse_room(view.structure_at(*v) or {}) >= min(owed, 5)]  # a full vault takes nothing
     if not vaults:
         return None
     vault = vaults[0]
     if chebyshev(position, vault) <= 1:
-        qty = min(owed, carried)
+        qty = min(owed, carried, storehouse_room(view.structure_at(*vault) or {}))
         bought["paid"] = int(bought.get("paid", 0) or 0) + qty
         state.flags["house_site"] = bought
         return [{"action": "give", "x": vault[0], "y": vault[1], "item": currency, "qty": qty}], f"the deed for lot {bought.get('lot')}: {qty} {currency} into the land office's storehouse at {vault} ({owed - qty} still owed)", "deed_payment"
@@ -1363,6 +1364,18 @@ def _plan_salvage(inventory: dict[str, int], position: tuple[int, int], view: Wo
     return None
 
 
+STOREHOUSE_CAPACITY = 500
+
+
+def storehouse_room(structure: dict[str, Any]) -> int:
+    """Items a storehouse in view can still take; the capacity when its storage is not known."""
+    storage = structure.get("storage") if isinstance(structure.get("storage"), dict) else None
+    if storage is None:
+        return STOREHOUSE_CAPACITY
+    held = sum(int(v or 0) for v in storage.values())
+    return max(0, STOREHOUSE_CAPACITY - held)
+
+
 def _plan_deposit(
     persona: Persona,
     inventory: dict[str, int],
@@ -1390,16 +1403,22 @@ def _plan_deposit(
         where = (int(structure["x"]), int(structure["y"]))
         if chebyshev(position, where) > 1:
             continue
+        room = storehouse_room(structure)
+        if room < 5:
+            continue  # the world refuses a give into a full storehouse (inventory_full), and the batch stops there
         for item in ("berries", "stone", "ore", "wood", "fiber"):
             qty = inventory.get(item, 0)
             if item == "berries" and qty <= BERRY_KEEP + 10:
                 continue
             if qty >= 10:
                 keep = BERRY_KEEP if item == "berries" else 5 if item in {"wood", "fiber"} else 0
+                give = min(qty - keep, room)  # only what the storehouse can still take
+                if give < 1:
+                    continue
                 whose = "the storehouse" if str(structure.get("owner", "")).casefold() == persona.name.casefold() else f"{structure.get('owner')}'s vault"
                 return (
-                    [{"action": "give", "x": where[0], "y": where[1], "item": item, "qty": qty - keep}],
-                    f"pack is {total}/50: put {qty - keep} {item} into {whose} at {where}",
+                    [{"action": "give", "x": where[0], "y": where[1], "item": item, "qty": give}],
+                    f"pack is {total}/50: put {give} {item} into {whose} at {where}",
                     "deposit",
                 )
     return None

@@ -31,6 +31,7 @@ from hglab.kb import make_id
 from hglab.lease import acquire, release
 from hglab.limits import action_limits
 from hglab.measures import MEASURES, load_kb_items
+from hglab.notes import fit_note
 from hglab.outage import tolerate_outage
 from hglab.persona import (
     Persona,
@@ -696,7 +697,7 @@ def land_round(root: Path, persona: Persona, *, dry_run: bool, fixture: Path | N
         recent = [e for e in events if isinstance(e, dict) and tick - int(e.get("tick", 0) or 0) <= 8640]
         actions, reasons, update = plan_round(persona, ledger, observe, b, public_events=recent, structures=structures, agents=agents, state=state, collective_names=collective_names, world=world)
         if update:
-            actions.append({"action": "remember", "key": STATE_KEY, "text": json.dumps({**state, **update}, separators=(",", ":"))[:2000]})
+            actions.append({"action": "remember", "key": STATE_KEY, "text": fit_note({**state, **update})})
         worn = "+".join(persona.roles)
         recent_say_count, open_goal_count, prior_text = action_limits(observe)
         member_names = {personas[m].name for m in (team.members if team else ()) if m in personas}
@@ -908,7 +909,7 @@ def crier_round(root: Path, persona: Persona, *, dry_run: bool, fixture: Path | 
             persona, ledger, observe, b, active_names=_active_names(agents, tick), state=state, public_events=events, factions_of=factions_of,
         )
         if update:
-            actions.append({"action": "remember", "key": STATE_KEY, "text": json.dumps({**state, **update}, separators=(",", ":"))[:2000]})
+            actions.append({"action": "remember", "key": STATE_KEY, "text": fit_note({**state, **update})})
         worn = "+".join(persona.roles)
         recent_say_count, open_goal_count, prior_text = action_limits(observe)
         member_names = {personas[m].name for m in (team.members if team else ()) if m in personas}
@@ -937,7 +938,7 @@ def crier_round(root: Path, persona: Persona, *, dry_run: bool, fixture: Path | 
                     if refused_invites:  # a refused invitation means the agent already holds one: never ask again
                         merged = {**state, **(update or {})}
                         merged["invited"] = (list(merged.get("invited", [])) + refused_invites)[-80:]
-                        payload["text"] = json.dumps(merged, separators=(",", ":"))[:2000]
+                        payload["text"] = fit_note(merged)
                 try:
                     result = client.act(payload)
                 except Exception as exc:  # noqa: BLE001 - a world refusal is a failed result, not a crash
@@ -952,7 +953,7 @@ def crier_round(root: Path, persona: Persona, *, dry_run: bool, fixture: Path | 
                 merged = {**state, **(update or {})}
                 merged["invited"] = (list(merged.get("invited", [])) + refused_invites)[-80:]
                 try:
-                    results.append(redact_result(client.act({"action": "remember", "key": STATE_KEY, "text": json.dumps(merged, separators=(",", ":"))[:2000]})))
+                    results.append(redact_result(client.act({"action": "remember", "key": STATE_KEY, "text": fit_note(merged)})))
                 except Exception as exc:  # noqa: BLE001 - the note is best effort
                     results.append({"ok": False, "error": str(getattr(exc, "code", None) or type(exc).__name__)[:40]})
         record.update({
