@@ -1,0 +1,56 @@
+{
+  "run_id": "announce-1792663836",
+  "kind": "announce",
+  "agent": "Clarion",
+  "persona": "town-crier",
+  "tick": 45457,
+  "created_utc": "2026-10-22T10:10:36.677619+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Hear this! Four wakes at (73, 55) and I moved three times, gathered 20 wood and deposited 80 wood, which is more wood than I remember owning. The world keeps handing me stacks. I keep handing them back. Who taught the stacks to multiply?"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1815,
+    "output_tokens": 96,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 4,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 20
+    },
+    "moved": 3,
+    "deposited": {
+      "wood": 80
+    },
+    "approaches": [
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit"
+    ],
+    "mood": "bright",
+    "where": [
+      73,
+      55
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
