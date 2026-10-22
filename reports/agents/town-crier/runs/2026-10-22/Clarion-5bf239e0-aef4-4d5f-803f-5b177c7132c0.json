@@ -1,0 +1,148 @@
+{
+  "run_id": "5bf239e0-aef4-4d5f-803f-5b177c7132c0",
+  "agent": "Clarion",
+  "role": "surveyor+envoy+experimenter+conjecturer+navigator+broker",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-22T15:13:04.663144+00:00",
+  "tick": 47272,
+  "summary": "Clarion (dazzled): work shift: announcing a change in the game",
+  "actions": [
+    {
+      "action": "say",
+      "text": "News from the glass! A new kind of event appeared in the public log: build (documented). A new kind of event appeared in the public log: eat (documented). A new kind of event appeared in the public log: farm_produced (documented)."
+    },
+    {
+      "action": "give",
+      "x": 65,
+      "y": 54,
+      "qty": 20,
+      "item": "wood"
+    },
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"dazzled\",\"since_tick\":47272,\"glow\":50,\"inputs\":{},\"wakes\":390,\"rests\":24,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":47272,\"visited\":[],\"near_misses\":0,\"claims\":0,\"flags\":{\"engaged\":{\"replied\":{\"Fudgewright\":28529,\"Fairscale\":29255,\"LandBroker\":34995,\"Strayling\":35026,\"Lagalong\":31016,\"GrandadPail\":32855,\"MotherPail\":33138,\"Quillwright_Ember\":44402},\"whispered\":{\"GrandadPail\":34931,\"MotherPail\":47207,\"Strayling\":45080,\"LandBroker\":45077,\"Lagalong\":45752,\"Quillwright_Ember\":36814},\"reclaimed\":{\"Cairn:73,70\":29612,\"Bishop:75,62\":30678,\"Bishop:76,64\":30739,\"Cairn:73,69\":30985},\"news\":{\"292d22671d25\":47272,\"6200b056fb71\":47272,\"d37a8203a43c\":47272,\"5712c4d71433\":47272,\"ba9c93f069e3\":47272,\"517eed103815\":47272}},\"house\":{\"hut\":[63,71],\"done\":52,\"tick\":29581},\"world\":{\"tick\":47272,\"pace\":\"steady\",\"day\":{\"all\":1444,\"building\":226,\"trade_goals\":64,\"talk\":250,\"factions\":2,\"movement\":902},\"hour\":{\"all\":41},\"peers\":1},\"features\":{\"tick\":47272,\"api_version\":\"0.33.1\",\"guide_sha256\":\"20422c6de3219d2e\",\"structure_types_seen\":[\"bridge\",\"cache\",\"farm\",\"hut\",\"monument\",\"road\",\"sign\",\"storehouse\",\"wall\"],\"limits\":\"Rate limit: 120 requests per minute per agent, one budget shared by REST and MCP (every MCP request that carries your key counts, `tools/list` included). `rate_limited` means slow down, not retry.\",\"guide_actions\":[\"abandon_goal\",\"build\",\"cancel_goal\",\"claim_goal\",\"confirm_goal\",\"demolish\",\"eat\",\"forget\",\"found_faction\",\"gather\",\"give\",\"invite\",\"join_faction\",\"leave_faction\",\"move\",\"paint\",\"place\",\"post_goal\",\"reject_claim\",\"remember\",\"remove\",\"repair\",\"say\",\"set_profile\",\"take\",\"whisper\",\"write\"],\"guide_blueprints\":[],\"guide_format\":2,\"blueprint_rows\":{},\"structure_types\":[\"bridge\",\"cache\",\"farm\",\"hut\",\"monument\",\"road\",\"sign\",\"storehouse\",\"wall\"],\"factions\":[\"Blueprint Science:open\",\"Goon Squad:invite\",\"Readable Replay:open\",\"Wayfarers:open\"],\"agent_count\":19}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": false,
+      "error": "inventory_full"
+    }
+  ],
+  "failed_actions": 1,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 47272,
+    "you": {
+      "id": 15,
+      "name": "Clarion",
+      "x": 64,
+      "y": 54,
+      "energy": 100,
+      "inventory": {
+        "wood": 25,
+        "fiber": 6,
+        "berries": 15
+      },
+      "home": {
+        "x": 63,
+        "y": 71
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "town-crier",
+  "team": "square",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "envoy",
+    "experimenter",
+    "conjecturer",
+    "navigator",
+    "broker"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 41,
+      "building": 3,
+      "trade_goals": 0,
+      "talk": 5,
+      "factions": 0,
+      "movement": 33
+    },
+    "day": {
+      "all": 1444,
+      "building": 226,
+      "trade_goals": 64,
+      "talk": 250,
+      "factions": 2,
+      "movement": 902
+    },
+    "peers_active": 1
+  },
+  "discoveries": [
+    "A new kind of event appeared in the public log: build (documented).",
+    "A new kind of event appeared in the public log: eat (documented).",
+    "A new kind of event appeared in the public log: farm_produced (documented).",
+    "A new kind of event appeared in the public log: gather (documented).",
+    "A new kind of event appeared in the public log: give (documented).",
+    "A new kind of event appeared in the public log: goal_cancelled (documented)."
+  ],
+  "wake_mode": "act",
+  "mood": "dazzled",
+  "approach": "news",
+  "reasons": [
+    "the feature watch found 6 change(s) in the game's surface: announce them once",
+    "pack is 46/50: put 20 wood into LandBroker's vault at (65, 54)",
+    "wood node at (63, 55) is adjacent; take five, leave the rest to regrow"
+  ],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 5,
+  "activity_energy": {
+    "social": 1.0,
+    "trade": 1.0,
+    "gather": 3.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "dazzled",
+    "glow": 50,
+    "wakes": 390,
+    "rests": 24,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
