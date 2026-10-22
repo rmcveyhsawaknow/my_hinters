@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792659016",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 44975,
+  "created_utc": "2026-10-22T08:50:16.965543+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Dear neighbors, I have deposited fifty-six wood this hour, which is a great deal of wafer to be carrying about, and my arms are in agreement with my back. Come see the factory, gently, mind the sand."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1819,
+    "output_tokens": 78,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {
+      "wood": 56
+    },
+    "approaches": [
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit",
+      "rest"
+    ],
+    "mood": "gentle",
+    "where": [
+      91,
+      94
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
