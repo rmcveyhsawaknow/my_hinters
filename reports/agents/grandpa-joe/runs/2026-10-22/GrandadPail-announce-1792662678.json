@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792662678",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 45341,
+  "created_utc": "2026-10-22T09:51:18.025988+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, two of them spent in bed at [94, 91], and I did not once lift a finger. The stone we deposited, seventy-five of it, was the family's doing, but I'll be taking the bow anyway."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1854,
+    "output_tokens": 77,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {
+      "stone": 75
+    },
+    "approaches": [
+      "rest",
+      "rest",
+      "deposit",
+      "deposit",
+      "deposit"
+    ],
+    "mood": "in_bed",
+    "where": [
+      94,
+      91
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
