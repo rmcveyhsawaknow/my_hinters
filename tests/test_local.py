@@ -75,7 +75,7 @@ def test_records_and_public_events_become_edges(tmp_path):
         "reasons": ["survey for Fudgewright: lot I08-SE (ore-rich) at 45 wood"],
     }
     assert (
-        ingest_record(g, record) == 2 and ingest_record(g, record) == 0
+        ingest_record(g, record) == 4 and ingest_record(g, record) == 0
     )  # whisper and promise; never twice
     assert (
         g.promises("LandBroker")[0]["about"] == "lot:I08-SE"
@@ -90,7 +90,7 @@ def test_records_and_public_events_become_edges(tmp_path):
         "reasons": ["deeds for surveyed sites paid in full: I08-SE to Fudgewright"],
     }
     assert (
-        ingest_record(g, deed) == 2
+        ingest_record(g, deed) == 4
         and g.promises("LandBroker") == []
         and g.node("lot:I08-SE")["holder"] == "Fudgewright"
     )
@@ -320,3 +320,104 @@ def test_tasks_reach_the_wake_inbox_and_settle_after_a_live_wake(tmp_path):
         and deliver("Fudgewright", tmp_path, 102) == []
     )
     assert deliver("Clarion", tmp_path / "nowhere", 1) == []  # no graph, no tasks
+
+
+def test_wakes_carry_the_model_and_its_cost_and_performance_sums_them(tmp_path):
+    from hglab.local.memory import ingest_status, wake_attributes
+
+    g = Graph(tmp_path / "memory.sqlite")
+    llm = {
+        "run_id": "w1",
+        "agent": "Clarion",
+        "tick": 47000,
+        "wake_mode": "act",
+        "planner": "llm",
+        "author_runtime": "actions-anthropic",
+        "dry_run": False,
+        "energy_spent": 6,
+        "usage": {
+            "calls": 1,
+            "input_tokens": 900,
+            "output_tokens": 120,
+            "model": "claude-sonnet-5-5",
+            "provider": "anthropic",
+            "route": "tick",
+        },
+        "actions": [{"action": "say", "text": "Hear this!"}, {"action": "move", "x": 1, "y": 2}],
+        "failed_actions": [{"action": "move"}],
+        "reasons": [],
+    }
+    plain = {
+        "run_id": "w2",
+        "agent": "Clarion",
+        "tick": 47100,
+        "wake_mode": "rest",
+        "author_runtime": "local",
+        "dry_run": True,
+        "usage": {"calls": 0, "input_tokens": 0, "output_tokens": 0},
+        "actions": [{"action": "remember", "text": "x"}],
+        "reasons": [],
+    }
+    assert (
+        wake_attributes(llm)["model"] == "claude-sonnet-5-5"
+        and wake_attributes(plain)["model"] == "heuristic"
+    )
+    assert ingest_record(g, llm) == 2 and ingest_record(g, plain) == 2
+    wake = g.node("wake:w1")
+    assert (
+        wake["model"] == "claude-sonnet-5-5"
+        and wake["actions"] == 2
+        and wake["failed"] == 1
+        and wake["input_tokens"] == 900
+    )
+    assert (
+        g.node("model:claude-sonnet-5-5")["provider"] == "anthropic"
+        and g.edges("Clarion", kind="performed")[0]["model"] == "heuristic"
+    )
+    status = {
+        "agents": {
+            "town-crier": {
+                "history": [
+                    {
+                        "job": "tick",
+                        "exit": 0,
+                        "seconds": 22.3,
+                        "dry_run": True,
+                        "started_utc": "2026-10-22T15:00:00+00:00",
+                        "summary": "dry run",
+                    },
+                    {
+                        "job": "tick",
+                        "exit": 1,
+                        "seconds": 3.0,
+                        "dry_run": True,
+                        "started_utc": "2026-10-22T16:00:00+00:00",
+                        "summary": "boom",
+                    },
+                ]
+            }
+        }
+    }
+    assert (
+        ingest_status(g, status, {"town-crier": "Clarion"}) == 2
+        and ingest_status(g, status, {"town-crier": "Clarion"}) == 0
+    )
+    perf = g.performance("Clarion")
+    by_model = {row["model"]: row for row in perf["wakes"]}
+    assert (
+        by_model["claude-sonnet-5-5"]["wakes"] == 1
+        and by_model["claude-sonnet-5-5"]["output_tokens"] == 120
+        and by_model["heuristic"]["actions"] == 1
+    )
+    assert perf["jobs"] == [
+        {
+            "agent": "Clarion",
+            "job": "tick",
+            "runs": 2,
+            "failures": 1,
+            "seconds_per_run": 12.7,
+            "last_utc": "2026-10-22T16:00:00+00:00",
+        }
+    ]
+    assert g.performance("Nobody") == {"wakes": [], "jobs": []}
+    g.close()

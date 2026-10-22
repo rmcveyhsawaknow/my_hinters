@@ -177,6 +177,15 @@ def build_server(root: Path) -> Any:
         finally:
             g.close()
 
+    @mcp.tool()
+    def performance(agent: str | None = None) -> dict[str, Any]:
+        """Per persona and model: wakes, actions, failures, LLM calls and tokens, energy per wake; plus local job runs, failures and seconds."""
+        g = Graph(graph_path)
+        try:
+            return g.performance(agent)
+        finally:
+            g.close()
+
     return mcp
 
 

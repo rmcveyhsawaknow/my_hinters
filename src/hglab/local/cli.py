@@ -10,7 +10,13 @@ from pathlib import Path
 
 import typer
 
-from hglab.local.memory import Graph, ingest_personas, ingest_public_events, ingest_record
+from hglab.local.memory import (
+    Graph,
+    ingest_personas,
+    ingest_public_events,
+    ingest_record,
+    ingest_status,
+)
 from hglab.local.supervisor import JOBS, STATUS_FILE, Supervisor, due_jobs, load_local_config
 from hglab.persona import load_personas, load_teams
 
@@ -188,6 +194,14 @@ def memory_ingest(
                     added += ingest_record(graph, data)
                     seen += 1
             typer.echo(f"records: {seen} read, {added} edge(s) added")
+            status_path = root / STATUS_FILE
+            if status_path.is_file():
+                try:
+                    status = json.loads(status_path.read_text(encoding="utf-8"))
+                except json.JSONDecodeError:
+                    status = {}
+                jobs = ingest_status(graph, status, {slug: p.name for slug, p in personas.items()})
+                typer.echo(f"local jobs: {jobs} run(s) added")
         if events:
             from hglab.client import HinterglassClient
 
@@ -216,6 +230,20 @@ def memory_ingest(
             )
             typer.echo(f"public events: {len(collected)} read, {n} edge(s) added")
         typer.echo(json.dumps(graph.counts(), ensure_ascii=False))
+    finally:
+        graph.close()
+
+
+@memory_app.command("performance")
+def memory_performance(
+    agent: str | None = typer.Option(None, "--agent", help="Persona slug or in-world name"),
+) -> None:
+    """Wakes, actions, failures and tokens per persona and model, plus local job timings."""
+    root = _root()
+    name = _persona_name(root, agent) if agent else None
+    graph = _graph(root)
+    try:
+        typer.echo(json.dumps(graph.performance(name), ensure_ascii=False, indent=2))
     finally:
         graph.close()
 

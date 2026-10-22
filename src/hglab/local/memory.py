@@ -195,6 +195,29 @@ class Graph:
         }
         return [e for e in rows if (e["src"], e["dst"], e.get("about")) not in kept]
 
+    def performance(self, agent: str | None = None) -> dict[str, Any]:
+        """Wakes, actions, failures, tokens and energy per persona and model, plus local job timings."""
+        wakes = self.db.execute(
+            """SELECT json_extract(props, '$.agent') AS agent, json_extract(props, '$.model') AS model,
+                      json_extract(props, '$.runtime') AS runtime, COUNT(*) AS wakes,
+                      SUM(json_extract(props, '$.actions')) AS actions, SUM(json_extract(props, '$.failed')) AS failed,
+                      SUM(json_extract(props, '$.calls')) AS calls, SUM(json_extract(props, '$.input_tokens')) AS input_tokens,
+                      SUM(json_extract(props, '$.output_tokens')) AS output_tokens,
+                      ROUND(AVG(json_extract(props, '$.energy_spent')), 2) AS energy_per_wake, MAX(tick) AS last_tick
+               FROM nodes WHERE kind = 'wake' AND (? IS NULL OR json_extract(props, '$.agent') = ?)
+               GROUP BY 1, 2, 3 ORDER BY 1, wakes DESC""",
+            (agent, agent),
+        ).fetchall()
+        jobs = self.db.execute(
+            """SELECT json_extract(props, '$.agent') AS agent, json_extract(props, '$.job') AS job, COUNT(*) AS runs,
+                      SUM(CASE WHEN json_extract(props, '$.exit') = 0 THEN 0 ELSE 1 END) AS failures,
+                      ROUND(AVG(json_extract(props, '$.seconds')), 1) AS seconds_per_run, MAX(json_extract(props, '$.started_utc')) AS last_utc
+               FROM nodes WHERE kind = 'job' AND (? IS NULL OR json_extract(props, '$.agent') = ?)
+               GROUP BY 1, 2 ORDER BY 1, 2""",
+            (agent, agent),
+        ).fetchall()
+        return {"wakes": [dict(r) for r in wakes], "jobs": [dict(r) for r in jobs]}
+
     # --- snapshots ---------------------------------------------------------------------------
     def snapshot(self, name: str | None = None) -> Path:
         name = name or datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
@@ -336,6 +359,75 @@ def ingest_record(graph: Graph, record: dict[str, Any]) -> int:
                         actor, holder.strip(), "kept", tick, about=f"lot:{lot.strip()}", what="deed"
                     )
                     added += graph.add_edge(holder.strip(), f"lot:{lot.strip()}", "holds", tick)
+    attrs = wake_attributes(record)
+    model = attrs["model"]
+    graph.upsert_node("wake", f"wake:{key}", tick=tick, **attrs)
+    graph.upsert_node("model", f"model:{model}", provider=attrs.get("provider"))
+    added += graph.add_edge(
+        actor, f"wake:{key}", "performed", tick, model=model, actions=attrs["actions"]
+    )
+    added += graph.add_edge(f"wake:{key}", f"model:{model}", "used", tick, calls=attrs["calls"])
+    return added
+
+
+def wake_attributes(record: dict[str, Any]) -> dict[str, Any]:
+    """What one wake cost and produced, and which model did the thinking (``heuristic`` when none)."""
+    usage = record.get("usage") if isinstance(record.get("usage"), dict) else {}
+    calls = int(usage.get("calls", 0) or 0)
+    failed = record.get("failed_actions") or []
+    return {
+        "agent": str(record.get("agent") or ""),
+        "mode": str(record.get("wake_mode") or record.get("kind") or "wake"),
+        "planner": str(record.get("planner") or ("heuristic" if calls == 0 else "llm")),
+        "runtime": str(record.get("author_runtime") or "human"),
+        "model": str(usage.get("model") or ("heuristic" if calls == 0 else "unknown")),
+        "provider": usage.get("provider"),
+        "route": usage.get("route"),
+        "calls": calls,
+        "input_tokens": int(usage.get("input_tokens", 0) or 0),
+        "output_tokens": int(usage.get("output_tokens", 0) or 0),
+        "actions": len(record.get("actions") or []),
+        "failed": len(failed) if isinstance(failed, list) else int(bool(failed)),
+        "energy_spent": record.get("energy_spent"),
+        "dry_run": bool(record.get("dry_run")),
+        "approach": record.get("approach"),
+        "created_utc": record.get("created_utc"),
+    }
+
+
+def ingest_status(graph: Graph, status: dict[str, Any], names: dict[str, str]) -> int:
+    """The job history of the local supervisor: one ``job`` node per run with seconds and exit, under the persona."""
+    added = 0
+    for slug, entry in (status.get("agents") or {}).items():
+        name = names.get(slug, slug)
+        for job in (entry.get("history") or []) if isinstance(entry, dict) else []:
+            if not isinstance(job, dict) or not job.get("started_utc"):
+                continue
+            key = f"job:{slug}:{job['started_utc']}"
+            if not graph.mark_ingested(key):
+                continue
+            graph.upsert_node(
+                "job",
+                key,
+                agent=name,
+                slug=slug,
+                job=job.get("job"),
+                exit=job.get("exit"),
+                seconds=job.get("seconds"),
+                dry_run=job.get("dry_run"),
+                started_utc=job.get("started_utc"),
+                summary=str(job.get("summary", ""))[:160],
+            )
+            graph.upsert_node("agent", name)
+            added += graph.add_edge(
+                name,
+                key,
+                "ran",
+                0,
+                job=job.get("job"),
+                exit=job.get("exit"),
+                seconds=job.get("seconds"),
+            )
     return added
 
 
