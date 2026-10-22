@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792652292",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 44303,
+  "created_utc": "2026-10-22T06:58:12.705825+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, five loads of wood carried and deposited, seventy-five in all. The storehouse at seventy-four, ninety-one is a little warmer for it. Tea on, then back to the trees."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1642,
+    "output_tokens": 73,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 5,
+    "deposited": {
+      "wood": 75
+    },
+    "approaches": [
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit"
+    ],
+    "mood": "warm",
+    "where": [
+      74,
+      91
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
