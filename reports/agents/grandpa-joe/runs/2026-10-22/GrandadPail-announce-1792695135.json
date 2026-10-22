@@ -1,0 +1,54 @@
+{
+  "run_id": "announce-1792695135",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 48587,
+  "created_utc": "2026-10-22T18:52:15.845984+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, two of them spent resting by the hut at [85, 94], and I moved three times just to keep the family's strength up. Grandad's hard work is a sacred art, my friends."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1852,
+    "output_tokens": 68,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [],
+    "gathered": {},
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "rest",
+      "explore",
+      "rest",
+      "explore"
+    ],
+    "mood": "in_bed",
+    "where": [
+      85,
+      94
+    ],
+    "discoveries": []
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
