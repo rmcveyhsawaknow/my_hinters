@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792644680",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 43541,
+  "created_utc": "2026-10-22T04:51:20.147508+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, three of them spent resting by the hut, and I am told I deposited fifty stone at [95, 93]. Tremendous work. Mostly mine. The family's berries are safe in my pack for strength."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1853,
+    "output_tokens": 77,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 3,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {
+      "stone": 50
+    },
+    "approaches": [
+      "deposit",
+      "rest",
+      "deposit",
+      "rest",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": [
+      95,
+      93
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
