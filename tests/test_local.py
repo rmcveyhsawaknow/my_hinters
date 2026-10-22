@@ -189,7 +189,7 @@ def test_the_supervisor_records_each_job_and_runs_what_is_due(tmp_path):
     assert record["exit"] == 0 and record["dry_run"] is True and "work shift" in record["summary"]
     personas = load_personas(ROOT)
     minute = int(personas["town-crier"].knobs["work"]["cron"].split()[0])
-    ran = sup.tick(personas, datetime(2026, 10, 22, 11, minute, tzinfo=UTC))
+    ran = sup.tick(personas, datetime(2026, 10, 22, 11, minute, tzinfo=UTC), wait=True)
     assert ran == [("town-crier", "shift")] and len(calls) == 2
     status = json.loads((tmp_path / "runs/local/status.json").read_text(encoding="utf-8"))
     assert (
@@ -845,3 +845,45 @@ def test_hmac_requests_are_signed_the_goog4_way():
     assert client_from_keyring(lambda name: None) is None and isinstance(
         client_from_keyring(lambda name: "x"), HmacStorage
     )
+
+
+def test_a_long_job_never_blocks_another_persona_or_doubles_up(tmp_path):
+    import threading
+    import time
+
+    gate = threading.Event()
+    calls = []
+
+    def runner(command):
+        calls.append(command[-3])  # the slug
+        if command[-3] == "land-broker":
+            gate.wait(5)
+        return 0, "done"
+
+    sup = Supervisor(
+        tmp_path,
+        {
+            "dry_run": True,
+            "agents": [
+                {"slug": "land-broker", "jobs": ["shift"]},
+                {"slug": "town-crier", "jobs": ["shift"]},
+            ],
+        },
+        runner,
+    )
+    personas = load_personas(ROOT)
+    minute = int(personas["land-broker"].knobs["work"]["cron"].split()[0])
+    when = datetime(2026, 10, 22, 10, minute, tzinfo=UTC)
+    started = sup.tick(personas, when)
+    assert ("land-broker", "shift") in started
+    time.sleep(0.2)
+    again = sup.tick(
+        personas, when
+    )  # the same minute again: LandBroker is busy, so it is skipped, not doubled
+    assert ("land-broker", "shift") not in again
+    assert "land-broker shift skipped: a job is still running" in (
+        tmp_path / "runs/local/supervisor.log"
+    ).read_text(encoding="utf-8")
+    gate.set()
+    sup.tick(personas, when, wait=True)
+    assert calls.count("land-broker") == 1 and sup._busy == set()
