@@ -38,8 +38,10 @@ def default_target(root: Path, config: dict[str, Any]) -> str:
 
 
 def _run(args: list[str]) -> tuple[int, str]:
+    """Run a tool by name; on Windows the Cloud SDK installs gcloud as a .cmd that needs resolving first."""
+    resolved = shutil.which(args[0]) or args[0]
     try:
-        proc = subprocess.run(args, capture_output=True, text=True, check=False)
+        proc = subprocess.run([resolved, *args[1:]], capture_output=True, text=True, check=False)
     except OSError as exc:
         return 1, str(exc)
     return proc.returncode, (proc.stdout + proc.stderr).strip()
