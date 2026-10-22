@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792635349",
+  "kind": "announce",
+  "agent": "Clarion",
+  "persona": "town-crier",
+  "tick": 42608,
+  "created_utc": "2026-10-22T02:15:49.800300+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Hear this! Four wakes, forty wood gathered and eighty deposited, so the stockpile now holds more than I ever carried, which I am choosing to believe is the world's doing. Next wake: more wood, and I shall finish this thought then!"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1810,
+    "output_tokens": 88,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 4,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 40
+    },
+    "moved": 0,
+    "deposited": {
+      "wood": 80
+    },
+    "approaches": [
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit"
+    ],
+    "mood": "bright",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
