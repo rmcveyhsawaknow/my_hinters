@@ -64,8 +64,8 @@ def _mark(flags: dict[str, dict[str, int]], kind: str, key: str, tick: int) -> N
         table = {}
         flags[kind] = table
     table[key] = tick
-    if len(table) > 12:
-        for old in sorted(table, key=lambda k: table[k])[: len(table) - 12]:
+    if len(table) > 6:
+        for old in sorted(table, key=lambda k: table[k])[: len(table) - 6]:
             table.pop(old, None)
 
 

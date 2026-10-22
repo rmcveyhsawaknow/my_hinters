@@ -418,3 +418,13 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
   redacted from every record), a wake reads the notebook's copies beside the live ones, and the land
   office answers a client's repeated brief with the stored survey once more. A storehouse seen full
   is remembered for a day, so no trip walks to it.
+
+## 2026-10-22, afternoon: the state that never kept its flags
+
+- The live records' persona state had no flags at all: ``dump_state`` dropped every flag once the
+  note passed 2000 characters, and the engagement spacing tables alone (six kinds, twelve names each)
+  passed it. So nothing a plan hung on survived a wake: whisper spacing (28 whispers to one name in
+  two days), house progress, the patrol's place, the bought site, the stores seen full. The
+  serializer now shrinks the bulky flags first (the world digest, the feature snapshot, the spacing
+  tables to four then two names) and keeps the small plan flags to the last; a spacing table holds
+  six names. This is the first of the coordination findings behind the local-runtime work.
