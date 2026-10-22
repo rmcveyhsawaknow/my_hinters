@@ -29,7 +29,7 @@ A lot's price is its worth at today's scarcity: `lot_value` scores resources wit
 stone 1.5, wood 1, fiber and berries 0.5, capped at 6), vista (water along the edge: river view 1,
 coast 2; mountains within three: 1; hills inside: 0.5), venues (others' structures within ten tiles,
 0.3 each, cap 2) and demand (residents seen within two days within fifteen tiles, 0.5 each, cap 1.5);
-`lot_price` multiplies the scarcity price by one plus half the score, so ore-rich land with a river
+`lot_price` multiplies the scarcity price by one plus a third of the score, so ore-rich land with a river
 view costs several times what plain sand does, never above the fifty one give can carry. Claim signs
 carry each lot's tags and price; the standing sale goal asks the median. A `site_requests` entry in
 `config/plots.yaml` is a client's brief: `surveys_due` finds the best buildable lot that can grow into
