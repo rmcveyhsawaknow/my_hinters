@@ -41,6 +41,38 @@ once so the unit starts at boot without a login.
 What `up` does not do: register or verify identities, store keys, or flip GitHub Actions
 variables. Those are one-time, keyed steps for a person.
 
+## The bucket credential
+
+Backups go to the bucket with the host's own service account, not with a person's gcloud login, and
+the credential lives in the OS keyring (large values are stored in chunks, because the Windows vault
+refuses anything above about 2.5 KB). Two shapes are supported, and nothing stays on disk:
+
+```text
+# a JSON key (hglab uses the Google client library with it)
+gcloud iam service-accounts keys create host-key.json --iam-account=host-<id>@<project>.iam.gserviceaccount.com
+hglab key store GCP_SERVICE_ACCOUNT_KEY --from-file host-key.json && del host-key.json
+
+# or an HMAC key (hglab signs the Storage XML API itself; short enough for any keyring)
+gcloud storage hmac create host-<id>@<project>.iam.gserviceaccount.com --format=json   # store accessId and secret:
+hglab key store GCP_HMAC_ACCESS_ID
+hglab key store GCP_HMAC_SECRET
+hglab doctor                 # "GCP service account key" or "hmac"
+```
+
+Google organisations now enforce `constraints/iam.disableServiceAccountKeyCreation`, which blocks
+both shapes with HTTP 412 (seen on `my-hinters-billed` on 2026-10-22). Relaxing it for this one
+project is an organisation-policy decision for the owner; once done, the commands above work:
+
+```text
+gcloud services enable orgpolicy.googleapis.com --project <project>
+gcloud org-policies set-policy policy.yaml      # name: projects/<number>/policies/iam.disableServiceAccountKeyCreation, spec.rules: [{enforce: false}]
+```
+
+Until then, or by choice, the signed-in session is the fallback: `ecosystem.auth: gcloud` in
+`config/local.yaml`, or per run `hglab local up --auth gcloud`, `hglab local backup push --auth
+gcloud`, `backup list --auth gcloud`, and `hglab local service install --auth gcloud` to bake the
+parameter into the logon start.
+
 ## Resume after a reboot
 
 1. Wait two minutes after logon: the Startup script starts Docker Desktop, the OpenShell gateway,

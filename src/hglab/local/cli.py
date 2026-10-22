@@ -135,8 +135,14 @@ def local_up(
     ),
     ui: bool = typer.Option(True, "--ui/--no-ui"),
     a2a: bool = typer.Option(True, "--a2a/--no-a2a"),
+    auth: str | None = typer.Option(
+        None,
+        "--auth",
+        help="GCP auth for backups this run: service_account (the key in the keyring, default) or gcloud (the signed-in session)",
+    ),
 ) -> None:
     """Bring the whole local environment up in one process: the NemoClaw stack, the status page, the A2A endpoint and the supervisor loop. This is what runs after a reboot."""
+    _set_auth(auth)
     root = _root()
     config = load_local_config(root)
     personas, teams = load_personas(root), load_teams(root)
@@ -186,11 +192,16 @@ local_app.add_typer(service_app, name="service")
 
 
 @service_app.command("install")
-def service_install() -> None:
+def service_install(
+    auth: str | None = typer.Option(
+        None, "--auth", help="Bake `--auth gcloud` (or service_account) into the logon start"
+    ),
+) -> None:
     """Register the logon start (runs `hglab local up` from this checkout, a minute after logon)."""
     from hglab.local.service import install
 
-    typer.echo(json.dumps(install(_root()), ensure_ascii=False, indent=2))
+    _set_auth(auth)
+    typer.echo(json.dumps(install(_root(), auth=auth), ensure_ascii=False, indent=2))
 
 
 @service_app.command("remove")
@@ -240,6 +251,18 @@ backup_app = typer.Typer(
 local_app.add_typer(backup_app, name="backup")
 
 
+def _set_auth(auth: str | None) -> None:
+    import os
+
+    from hglab.local.backup import AUTH_ENV, AUTH_MODES
+
+    if auth is None:
+        return
+    if auth not in AUTH_MODES:
+        raise typer.BadParameter(f"--auth must be one of {', '.join(AUTH_MODES)}")
+    os.environ[AUTH_ENV] = auth
+
+
 @backup_app.command("push")
 def backup_push(
     target: str | None = typer.Option(
@@ -247,10 +270,12 @@ def backup_push(
         "--target",
         help="local:<dir> or gs://bucket/prefix (default from config ecosystem.backup_target)",
     ),
+    auth: str | None = typer.Option(None, "--auth", help="service_account (default) or gcloud"),
 ) -> None:
     """Make a backup and copy it to the target."""
     from hglab.local.backup import push
 
+    _set_auth(auth)
     root = _root()
     typer.echo(
         json.dumps(push(root, load_local_config(root), target), ensure_ascii=False, indent=2)
@@ -258,10 +283,14 @@ def backup_push(
 
 
 @backup_app.command("list")
-def backup_list(target: str | None = typer.Option(None, "--target")) -> None:
+def backup_list(
+    target: str | None = typer.Option(None, "--target"),
+    auth: str | None = typer.Option(None, "--auth", help="service_account (default) or gcloud"),
+) -> None:
     """The backups at the target, newest first."""
     from hglab.local.backup import list_backups
 
+    _set_auth(auth)
     root = _root()
     typer.echo(
         json.dumps(

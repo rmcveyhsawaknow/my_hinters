@@ -145,7 +145,8 @@ def doctor() -> None:
     typer.echo(
         "Model keys configured: "
         f"Anthropic {'yes' if get_secret('ANTHROPIC_API_KEY', root) else 'no'}, "
-        f"OpenAI {'yes' if get_secret('OPENAI_API_KEY', root) else 'no'}"
+        f"OpenAI {'yes' if get_secret('OPENAI_API_KEY', root) else 'no'}, "
+        f"GCP service account {'key' if get_secret('GCP_SERVICE_ACCOUNT_KEY', root) else 'hmac' if get_secret('GCP_HMAC_ACCESS_ID', root) and get_secret('GCP_HMAC_SECRET', root) else 'no'}"
     )
     typer.echo(f"Missing local files: {', '.join(missing) if missing else 'none'}")
     persona_errors = validate_personas(root)
@@ -618,14 +619,28 @@ def guide(refresh: bool = typer.Option(False, "--refresh")) -> None:
     typer.echo(f"Saved vendor guide to {destination}.")
 
 
+KEY_NAMES = {"ANTHROPIC_API_KEY", "OPENAI_API_KEY", "GCP_SERVICE_ACCOUNT_KEY", "GCP_HMAC_ACCESS_ID", "GCP_HMAC_SECRET"}
+
+
 @key_app.command("store")
-def key_store(name: str = typer.Argument(...)) -> None:
-    """Prompt for an allowed model key and store it in the OS keyring."""
-    if name not in {"ANTHROPIC_API_KEY", "OPENAI_API_KEY"}:
-        raise typer.BadParameter("supported names are ANTHROPIC_API_KEY and OPENAI_API_KEY")
-    value = getpass.getpass(f"Enter {name}: ")
+def key_store(
+    name: str = typer.Argument(...),
+    from_file: Path | None = typer.Option(None, "--from-file", help="Read the value from this file (a service account JSON key)"),  # noqa: B008
+) -> None:
+    """Store an allowed key in the OS keyring: a model key by prompt, or the GCP service account key from its JSON file."""
+    if name not in KEY_NAMES:
+        raise typer.BadParameter(f"supported names are {', '.join(sorted(KEY_NAMES))}")
+    if from_file is not None:
+        value = from_file.read_text(encoding="utf-8").strip()
+        if name == "GCP_SERVICE_ACCOUNT_KEY":
+            data = json.loads(value)
+            if data.get("type") != "service_account" or not data.get("client_email"):
+                raise typer.BadParameter("that file is not a service account key")
+            value = json.dumps(data, separators=(",", ":"))
+    else:
+        value = getpass.getpass(f"Enter {name}: ")
     store_secret(name, value)
-    typer.echo(f"Stored {name} securely.")
+    typer.echo(f"Stored {name} securely ({len(value)} characters).")
 
 
 from hglab.cli_personas import register_persona_commands

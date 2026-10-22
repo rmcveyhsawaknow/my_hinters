@@ -22,7 +22,7 @@ dependencies = [
 [project.optional-dependencies]
 science = ["numpy", "pandas", "scipy", "matplotlib", "networkx"]
 dev = ["pytest", "respx", "ruff"]
-local = ["mcp>=2"]
+local = ["mcp>=2", "google-cloud-storage>=2.10"]
 
 [project.scripts]
 hglab = "hglab.cli:app"
