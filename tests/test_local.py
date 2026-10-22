@@ -633,3 +633,44 @@ def test_a_backup_round_trips_through_a_local_target(tmp_path):
     again = restore(fresh, Path(result["archive"]))
     assert again["restored"] == [] and "config/local.yaml" in again["skipped"]
     assert make_backup(tmp_path, config).is_file()
+
+
+def test_the_supervisor_backs_up_on_its_own_schedule(tmp_path):
+    (tmp_path / "config").mkdir()
+    (tmp_path / "config/local.yaml").write_text("dry_run: true\nagents: []\n", encoding="utf-8")
+    pushes = []
+    sup = Supervisor(
+        tmp_path,
+        {
+            "dry_run": True,
+            "agents": [],
+            "ecosystem": {"host_id": "host-a", "backup_every_minutes": 1},
+        },
+        lambda command: (0, ""),
+    )
+    sup.backup_runner = lambda root, config: (
+        pushes.append(config["ecosystem"]["host_id"])
+        or {"ok": True, "target": "gs://bucket/hosts/host-a/backups/x.tar.gz"}
+    )
+    personas = load_personas(ROOT)
+    result = sup.backup(personas)
+    assert (
+        result["ok"]
+        and pushes == ["host-a"]
+        and (tmp_path / "runs/local/cards/town-crier.json").is_file()
+    )
+    status = json.loads((tmp_path / "runs/local/status.json").read_text(encoding="utf-8"))
+    assert status["last_backup"]["ok"] is True and status["last_backup"]["target"].startswith(
+        "gs://"
+    )
+    assert "backup ok: gs://bucket" in (tmp_path / "runs/local/supervisor.log").read_text(
+        encoding="utf-8"
+    )
+    sup.backup_runner = lambda root, config: (_ for _ in ()).throw(RuntimeError("no network"))
+    assert (
+        sup.backup(personas)["ok"] is False
+        and json.loads((tmp_path / "runs/local/status.json").read_text(encoding="utf-8"))[
+            "last_backup"
+        ]["detail"]
+        == "no network"
+    )

@@ -2,24 +2,41 @@
 # machine runs, on the personas' own cadence and work knobs, and whether it acts in the world. The
 # world's notebook lease makes a local runtime and GitHub Actions take turns for one agent, so an
 # agent may be listed here while its Actions schedule still runs; once a local run has proved itself,
-# flip its HG_AGENT_<NAME> Actions variable off and leave it here. Humans edit this file by PR.
+# switch HG_ENABLED (all agents) or HG_AGENT_<NAME> off on Actions and leave it here. Humans edit this
+# file by PR. Cut-over for the 24-hour local test: set dry_run below to false and restart hglab local up.
 dry_run: true
 a2a_port: 8765
 ui_port: 8766
+agents:
+  - slug: town-crier
+    enabled: true
+  - slug: land-broker
+    enabled: true
+  - slug: wonka
+    enabled: true
+  - slug: grandpa-joe
+    enabled: true
+  - slug: mrs-bucket
+    enabled: true
+  - slug: tinker-bell
+    enabled: true
+  - slug: nibs
+    enabled: true
+  - slug: tootles
+    enabled: true
+  - slug: lost-boy
+    enabled: true
 # The NemoClaw side that `hglab local up` and `hglab local stack` manage: the sandbox name, the WSL
 # distribution that hosts it on Windows (ignored on Linux), and whether a user-local Ollama is started.
 nemoclaw:
   sandbox: hinters
   wsl_distro: Ubuntu
   ollama: true
-agents:
-  - slug: town-crier
-    enabled: true
-    dry_run: true
-    jobs: [tick, shift, keepalive, crier]
 # The ecosystem (docs/distributed-ecosystem-plan.md): this host's id in the shared record, the data boundary
-# its cards carry, and where `hglab local backup push` sends backups (local:<dir> or gs://bucket/prefix).
+# its cards carry, where `hglab local backup push` sends backups (local:<dir> or gs://bucket/prefix), and how
+# often the supervisor writes the cards and pushes a backup on its own (0 switches that off).
 ecosystem:
   host_id: desktop-okqpjmv
   data_boundary: internal
-  backup_target: local:runs/local/backups
+  backup_target: gs://my-hinters-billed-ecosystem
+  backup_every_minutes: 360

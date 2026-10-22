@@ -14,7 +14,8 @@
       "properties": {
         "host_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9.-]{0,62}$"},
         "data_boundary": {"enum": ["public", "internal", "restricted"]},
-        "backup_target": {"type": "string", "pattern": "^(local:.+|gs://[a-z0-9][a-z0-9._-]+(/.*)?)$"}
+        "backup_target": {"type": "string", "pattern": "^(local:.+|gs://[a-z0-9][a-z0-9._-]+(/.*)?)$"},
+        "backup_every_minutes": {"type": "integer", "minimum": 0, "maximum": 10080}
       }
     },
     "nemoclaw": {

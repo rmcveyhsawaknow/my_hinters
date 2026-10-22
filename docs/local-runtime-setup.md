@@ -41,7 +41,32 @@ once so the unit starts at boot without a login.
 What `up` does not do: register or verify identities, store keys, or flip GitHub Actions
 variables. Those are one-time, keyed steps for a person.
 
-## A new machine (Linux)
+## Resume after a reboot
+
+1. Wait two minutes after logon: the Startup script starts Docker Desktop, the OpenShell gateway,
+   Ollama, the sandbox, the status page, A2A and the supervisor, logging to `runs/local/up.log`.
+2. In a terminal at the repository: `hglab local status` (supervisor running, last jobs) and
+   `hglab local stack` (docker, gateway, ollama, sandbox Ready, OpenClaw running). If `up` did not
+   start, run `hglab local up` yourself and read `runs/local/up.log`.
+3. Open side by side: the status page `http://127.0.0.1:8766/`, the OpenClaw dashboard from
+   `wsl -d Ubuntu -- bash -lc "nemoclaw hinters dashboard-url"`, and `https://hinterglass.com`.
+4. Backups: `hglab local backup list` shows the bucket; the supervisor pushes one every
+   `ecosystem.backup_every_minutes` (six hours) and after the first minute of a run, and the status
+   page and `runs/local/status.json` carry `last_backup`.
+
+## Cut-over to local for a 24-hour test
+
+1. Switch Actions off for every agent in one move: `gh variable set HG_ENABLED --body false`
+   (the per-agent `HG_AGENT_<NAME>` variables stay `on`; `true` switches everything back).
+2. Set `dry_run: false` at the top of `config/local.yaml` and restart the supervisor
+   (`hglab local up`, or log off and on). All nine personas are listed and enabled already.
+3. Watch for a day: `hglab local status` shows exit codes per job; `hglab local memory ingest
+   --no-events` then `hglab local memory performance` sums wakes, actions, failures and tokens;
+   `hglab local tasks list` shows operator messages; the Pulse and the reports branch pause while
+   Actions is off, so judge the day by the status page, the world, and the graph.
+4. Back out at any time: `gh variable set HG_ENABLED --body true` and `dry_run: true`.
+
+
 
 The runtime is portable: a Linux box with Docker is the simplest host, since NemoClaw then runs
 natively and no WSL layer is involved. Base OS installed and networked, then:
