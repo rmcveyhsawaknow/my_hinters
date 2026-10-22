@@ -1,0 +1,54 @@
+{
+  "run_id": "announce-1792673516",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 46425,
+  "created_utc": "2026-10-22T12:51:56.832050+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, two rests, three steps moved, and not one wafer laid yet. Welcome to the factory that is mostly sand and optimism. Come see the empty rooms, they are very promising."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1822,
+    "output_tokens": 71,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [],
+    "gathered": {},
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "site_trade",
+      "rest",
+      "explore",
+      "rest",
+      "deposit_trip"
+    ],
+    "mood": "gentle",
+    "where": [
+      86,
+      93
+    ],
+    "discoveries": []
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
