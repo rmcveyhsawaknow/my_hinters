@@ -1,0 +1,54 @@
+{
+  "run_id": "announce-1792687702",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 47844,
+  "created_utc": "2026-10-22T16:48:22.088159+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, no rests, five steps at a time. Homing, then migrating, then homing again at [74, 91]. Slow going, but the legs are still under me."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1634,
+    "output_tokens": 60,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "homing",
+      "migrate",
+      "homing",
+      "migrate",
+      "homing"
+    ],
+    "mood": "warm",
+    "where": [
+      74,
+      91
+    ],
+    "discoveries": []
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
