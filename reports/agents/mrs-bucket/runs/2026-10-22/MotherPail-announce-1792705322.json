@@ -1,0 +1,59 @@
+{
+  "run_id": "announce-1792705322",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 49606,
+  "created_utc": "2026-10-22T21:42:02.031806+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Laid two roads at (78,91) and (78,94) and gathered five stone along the way. Five steps taken, no rest needed. The path is getting firmer under our feet."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1656,
+    "output_tokens": 63,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (78,91)",
+      "road at (78,94)"
+    ],
+    "gathered": {
+      "stone": 5
+    },
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "build",
+      "migrate",
+      "homing",
+      "migrate"
+    ],
+    "mood": "warm",
+    "where": [
+      86,
+      97
+    ],
+    "discoveries": []
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
