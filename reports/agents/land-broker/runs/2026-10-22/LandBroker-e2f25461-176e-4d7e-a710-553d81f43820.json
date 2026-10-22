@@ -1,0 +1,133 @@
+{
+  "run_id": "e2f25461-176e-4d7e-a710-553d81f43820",
+  "agent": "LandBroker",
+  "role": "surveyor+broker+navigator+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-22T20:05:00.226779+00:00",
+  "tick": 49023,
+  "summary": "LandBroker (brisk): work shift: carrying a full pack to the storehouse",
+  "actions": [
+    {
+      "action": "move",
+      "x": 72,
+      "y": 71
+    },
+    {
+      "action": "eat",
+      "qty": 1
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brisk\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":547,\"rests\":26,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":49023,\"visited\":[\"46,58\",\"53,61\",\"53,68\",\"62,66\",\"69,67\",\"81,76\",\"81,81\",\"77,75\",\"81,63\",\"86,58\",\"83,56\",\"86,53\",\"83,51\",\"78,56\",\"84,60\",\"86,66\",\"86,71\",\"91,71\",\"91,68\",\"96,71\",\"96,68\",\"101,71\",\"101,68\",\"96,63\",\"93,61\",\"90,59\",\"90,51\",\"73,64\",\"70,63\",\"69,65\",\"72,71\",\"64,67\",\"72,72\",\"67,79\",\"66,86\",\"63,86\",\"58,91\",\"51,84\",\"56,88\",\"53,91\",\"51,88\",\"48,86\",\"46,91\",\"50,84\",\"61,91\",\"66,96\",\"66,93\",\"63,96\",\"58,101\",\"56,98\",\"53,101\",\"51,98\",\"48,96\",\"43,96\",\"45,101\",\"46,101\",\"38,101\",\"33,101\",\"45,96\",\"57,85\",\"52,83\",\"64,74\",\"72,73\",\"70,70\",\"69,68\",\"68,71\",\"74,71\",\"70,67\",\"70,62\",\"72,65\",\"66,65\",\"64,76\",\"73,71\",\"65,63\",\"72,64\",\"70,66\",\"77,68\",\"83,65\",\"98,54\",\"97,53\",\"96,56\",\"93,53\",\"96,48\",\"93,46\",\"96,43\",\"93,41\",\"96,38\",\"93,36\",\"92,36\",\"91,33\",\"88,36\",\"86,33\",\"86,28\",\"91,23\",\"91,26\",\"96,21\",\"93,18\",\"101,26\",\"98,26\",\"101,31\",\"98,31\",\"101,36\",\"106,41\",\"106,38\",\"103,41\",\"101,46\",\"101,51\",\"101,56\",\"106,51\",\"106,48\",\"111,51\",\"111,48\",\"111,43\",\"111,38\",\"106,33\",\"103,30\",\"94,42\",\"82,54\",\"74,58\",\"70,60\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":49019,\"pace\":\"steady\",\"day\":{\"all\":1748,\"building\":266,\"trade_goals\":71,\"talk\":311,\"factions\":2,\"movement\":1098},\"hour\":{\"all\":66},\"peers\":1},\"engaged\":{\"whispered\":{\"Strayling\":42877,\"Lagalong\":46503,\"Fairscale\":25639,\"Clarion\":44377,\"Stoutheart\":30613,\"Tinkerglow\":40691,\"Fudgewright\":45471,\"GrandadPail\":42280,\"MotherPail\":41492,\"Quillwright_Ember\":36829,\"JoshuaTreeStagehand\":45703},\"replied\":{\"Strayling\":48963,\"Fudgewright\":41817,\"GrandadPail\":42246,\"MotherPail\":41461,\"Quillwright_Ember\":45092,\"JoshuaTreeStagehand\":42341},\"gifted\":{\"Strayling\":27788},\"reclaimed\":{\"Fairscale:65,75\":40721,\"Fairscale:71,72\":40781,\"Fairscale:69,70\":41431,\"Fairscale:69,69\":41461,\"Fairscale:67,72\":41847}},\"house\":{\"hut\":[71,65],\"done\":10,\"tick\":49023}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 49023,
+    "you": {
+      "id": 16,
+      "name": "LandBroker",
+      "x": 69,
+      "y": 67,
+      "energy": 100,
+      "inventory": {
+        "wood": 5,
+        "fiber": 5,
+        "stone": 13,
+        "berries": 27
+      },
+      "home": {
+        "x": 71,
+        "y": 65
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "land-broker",
+  "team": "exchange",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "broker",
+    "navigator",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 66,
+      "building": 10,
+      "trade_goals": 3,
+      "talk": 16,
+      "factions": 0,
+      "movement": 37
+    },
+    "day": {
+      "all": 1748,
+      "building": 266,
+      "trade_goals": 71,
+      "talk": 311,
+      "factions": 2,
+      "movement": 1098
+    },
+    "peers_active": 1
+  },
+  "wake_mode": "act",
+  "mood": "brisk",
+  "approach": "deposit_trip",
+  "reasons": [
+    "pack 50/50: walk toward LandBroker's storehouse at (73, 72) to unload",
+    "pack 50/50 with 27 berries: one berry after the walk, when the meal is not refused"
+  ],
+  "energy_before": 100,
+  "berries_before": 27,
+  "energy_spent": 4,
+  "activity_energy": {
+    "explore": 4.0,
+    "gather": 0.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brisk",
+    "glow": 50,
+    "wakes": 547,
+    "rests": 26,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
