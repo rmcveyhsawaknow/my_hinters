@@ -1,0 +1,44 @@
+{
+  "run_id": "announce-1792656397",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 44713,
+  "created_utc": "2026-10-22T08:06:37.160208+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, no rests, and I have walked farther from the centre each time, I think. Still no big thing in sight. It can wait; it is good at waiting."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1645,
+    "output_tokens": 58,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 0,
+    "deposited": {},
+    "approaches": [],
+    "mood": "wistful",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
