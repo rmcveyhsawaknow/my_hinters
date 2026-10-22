@@ -1,0 +1,140 @@
+{
+  "run_id": "3d2f9d4f-ec40-4fc6-9c42-7dccf82c4b4f",
+  "agent": "Stoutheart",
+  "role": "builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-22T21:53:25.574762+00:00",
+  "tick": 49674,
+  "summary": "Stoutheart (brave): work shift: collecting the farm",
+  "actions": [
+    {
+      "action": "move",
+      "x": 71,
+      "y": 108
+    },
+    {
+      "action": "take",
+      "x": 70,
+      "y": 109,
+      "qty": 5,
+      "item": "berries"
+    },
+    {
+      "action": "eat",
+      "qty": 1
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brave\",\"since_tick\":0,\"glow\":50,\"inputs\":{\"resolve\":{\"value\":49.0,\"tick\":49606,\"explanation\":\"escape from tootles 98\"},\"escape\":{\"value\":98.1,\"tick\":49606,\"explanation\":\"Escape 98: 96% of moves outside, farthest 103 tiles from the centre.\"}},\"wakes\":544,\"rests\":58,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":49674,\"visited\":[\"76,110\",\"72,106\",\"79,105\",\"72,114\",\"74,106\",\"73,114\",\"79,114\",\"74,114\",\"76,113\",\"67,107\",\"75,106\",\"66,108\",\"73,109\",\"68,109\",\"75,107\",\"83,108\",\"82,107\",\"76,109\",\"81,105\",\"76,111\",\"77,104\",\"64,104\",\"72,104\",\"67,108\",\"77,106\",\"73,105\",\"69,112\",\"64,111\",\"70,102\",\"66,106\",\"75,102\",\"69,106\",\"75,111\",\"79,113\",\"75,110\",\"81,107\",\"76,115\",\"71,114\",\"75,105\",\"80,111\",\"76,105\",\"81,103\",\"81,102\",\"73,103\",\"72,107\",\"80,109\",\"77,113\",\"76,107\",\"76,102\",\"80,107\",\"81,113\",\"79,110\",\"74,113\",\"80,113\",\"70,113\",\"66,109\",\"75,112\",\"83,109\",\"82,108\",\"77,102\",\"72,103\",\"80,106\",\"77,111\",\"75,114\",\"74,104\",\"69,108\",\"64,109\",\"78,113\",\"82,109\",\"77,108\",\"70,104\",\"71,102\",\"65,102\",\"68,108\",\"77,114\",\"70,107\",\"79,107\",\"80,112\",\"73,110\",\"71,108\",\"68,104\",\"67,112\",\"71,113\",\"72,109\",\"66,105\",\"70,105\",\"64,102\",\"68,107\",\"78,110\",\"71,105\",\"64,110\",\"69,111\",\"75,113\",\"66,111\",\"64,103\",\"72,102\",\"72,110\",\"73,104\",\"69,102\",\"71,107\",\"64,105\",\"71,104\",\"66,110\",\"70,110\",\"65,105\",\"74,111\",\"82,111\",\"78,106\",\"84,107\",\"76,108\",\"77,112\",\"84,104\",\"76,103\",\"82,106\",\"79,111\",\"75,115\",\"78,108\",\"73,113\",\"81,112\",\"75,108\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":49674,\"pace\":\"steady\",\"day\":{\"all\":1807,\"building\":257,\"trade_goals\":79,\"talk\":322,\"factions\":2,\"movement\":1147},\"hour\":{\"all\":72},\"peers\":1},\"greeted\":{\"MotherPail\":21754,\"GrandadPail\":29232,\"Fudgewright\":28248},\"engaged\":{\"whispered\":{\"Fudgewright\":45727,\"GrandadPail\":43612,\"Clarion\":26298,\"MotherPail\":44429,\"LandBroker\":40982},\"replied\":{\"Fudgewright\":48664,\"MotherPail\":28248,\"GrandadPail\":48928},\"gifted\":{\"MotherPail\":27128,\"Fudgewright\":28743}},\"house\":{\"hut\":[69,107],\"done\":9,\"tick\":49674}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 49674,
+    "you": {
+      "id": 9,
+      "name": "Stoutheart",
+      "x": 75,
+      "y": 108,
+      "energy": 100,
+      "inventory": {
+        "wood": 14,
+        "fiber": 6,
+        "berries": 25
+      },
+      "home": {
+        "x": 69,
+        "y": 107
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "nibs",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 72,
+      "building": 7,
+      "trade_goals": 5,
+      "talk": 13,
+      "factions": 0,
+      "movement": 47
+    },
+    "day": {
+      "all": 1807,
+      "building": 257,
+      "trade_goals": 79,
+      "talk": 322,
+      "factions": 2,
+      "movement": 1147
+    },
+    "peers_active": 1
+  },
+  "wake_mode": "act",
+  "mood": "brave",
+  "approach": "harvest",
+  "reasons": [
+    "walk to (71, 108): my farm at (70, 109) holds 30 berries, take 5",
+    "pack 50/50 with 30 berries: one berry after the walk, when the meal is not refused"
+  ],
+  "energy_before": 100,
+  "berries_before": 25,
+  "energy_spent": 5,
+  "activity_energy": {
+    "explore": 4.0,
+    "gather": 1.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brave",
+    "glow": 50,
+    "wakes": 544,
+    "rests": 58,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:stay_inside",
+    "walls_inside_territory"
+  ]
+}
