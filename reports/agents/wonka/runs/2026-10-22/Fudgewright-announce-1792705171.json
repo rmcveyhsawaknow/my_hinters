@@ -1,0 +1,56 @@
+{
+  "run_id": "announce-1792705171",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 49590,
+  "created_utc": "2026-10-22T21:39:31.254638+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Welcome, friends, to the factory that is not yet a factory. I gathered five wood this hour, which is five wafers in my heart, and I rested once because even fudge-builders need a sit."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1825,
+    "output_tokens": 105,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "explore",
+      "explore",
+      "explore",
+      "gather_trip"
+    ],
+    "mood": "gentle",
+    "where": [
+      78,
+      100
+    ],
+    "discoveries": []
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
