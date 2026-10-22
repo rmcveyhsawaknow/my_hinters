@@ -209,6 +209,81 @@ def service_status() -> None:
     typer.echo(json.dumps(status(_root()), ensure_ascii=False, indent=2))
 
 
+@local_app.command("cards")
+def local_cards(
+    write: bool = typer.Option(False, "--write", help="Write runs/local/cards/<slug>.json"),
+    agent: str | None = typer.Option(None, "--agent"),
+) -> None:
+    """Capability cards: the A2A card of each persona with roles, skills, tools, datasets, performance by model and backups."""
+    from hglab.local.cards import all_cards, write_cards
+
+    root = _root()
+    config = load_local_config(root)
+    personas, teams = load_personas(root), load_teams(root)
+    if write:
+        paths = write_cards(root, personas, teams, config)
+        typer.echo(
+            f"{len(paths)} card(s) written under {paths[0].parent}" if paths else "no personas"
+        )
+        return
+    cards = all_cards(root, personas, teams, config)
+    if agent:
+        name = _persona_name(root, agent)
+        cards = {s: c for s, c in cards.items() if c["name"] == name}
+    typer.echo(json.dumps(list(cards.values()), ensure_ascii=False, indent=2))
+
+
+backup_app = typer.Typer(
+    help="Host backups: configuration, supervisor state and a graph snapshot, pushed to a local directory or gs://bucket/prefix.",
+    no_args_is_help=True,
+)
+local_app.add_typer(backup_app, name="backup")
+
+
+@backup_app.command("push")
+def backup_push(
+    target: str | None = typer.Option(
+        None,
+        "--target",
+        help="local:<dir> or gs://bucket/prefix (default from config ecosystem.backup_target)",
+    ),
+) -> None:
+    """Make a backup and copy it to the target."""
+    from hglab.local.backup import push
+
+    root = _root()
+    typer.echo(
+        json.dumps(push(root, load_local_config(root), target), ensure_ascii=False, indent=2)
+    )
+
+
+@backup_app.command("list")
+def backup_list(target: str | None = typer.Option(None, "--target")) -> None:
+    """The backups at the target, newest first."""
+    from hglab.local.backup import list_backups
+
+    root = _root()
+    typer.echo(
+        json.dumps(
+            list_backups(root, load_local_config(root), target), ensure_ascii=False, indent=2
+        )
+    )
+
+
+ARCHIVE_ARGUMENT = typer.Argument(..., exists=True, dir_okay=False)
+
+
+@backup_app.command("restore")
+def backup_restore(
+    archive: Path = ARCHIVE_ARGUMENT,
+    force: bool = typer.Option(False, "--force", help="Overwrite state that already exists"),
+) -> None:
+    """Unpack a backup into this checkout (state files and the graph), skipping what already exists unless forced."""
+    from hglab.local.backup import restore
+
+    typer.echo(json.dumps(restore(_root(), archive, force), ensure_ascii=False, indent=2))
+
+
 @local_app.command("ui")
 def local_ui(
     port: int | None = typer.Option(None, "--port"),

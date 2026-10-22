@@ -13,6 +13,7 @@ from pathlib import Path
 from string import Template
 from typing import Any
 
+from hglab.local.cards import all_cards
 from hglab.local.memory import Graph
 from hglab.local.supervisor import STATUS_FILE, load_local_config
 
@@ -46,8 +47,12 @@ def render(root: Path, personas: dict[str, Any], teams: dict[str, Any]) -> str:
             status = {}
     config = load_local_config(root)
     enabled = {e.get("slug"): e for e in config.get("agents", []) if isinstance(e, dict)}
+    capability = all_cards(root, personas, teams, config)
     cards = []
     for slug, persona in sorted(personas.items(), key=lambda kv: (kv[1].team, kv[0])):
+        extra = (capability.get(slug) or {}).get("x-collective") or {}
+        perf = extra.get("performance") or []
+        backups = extra.get("backups") or {}
         entry = enabled.get(slug)
         last = ((status.get("agents") or {}).get(slug) or {}).get("last") or {}
         state = "local" if entry and entry.get("enabled", True) else "actions"
@@ -62,7 +67,21 @@ def render(root: Path, personas: dict[str, Any], teams: dict[str, Any]) -> str:
                 if last
                 else "<div class=muted>no local job yet</div>"
             )
-            + f"<div class=muted>cadence <code>{html.escape(str((persona.knobs.get('cadence') or {}).get('cron', '')))}</code> · work <code>{html.escape(str((persona.knobs.get('work') or {}).get('cron', '')))}</code></div></div>"
+            + f"<div class=muted>cadence <code>{html.escape(str((persona.knobs.get('cadence') or {}).get('cron', '')))}</code> · work <code>{html.escape(str((persona.knobs.get('work') or {}).get('cron', '')))}</code></div>"
+            + f"<div><strong>capabilities</strong> {html.escape(', '.join(r['name'] for r in extra.get('roles') or []))} · skills {len(extra.get('skills') or [])} · tools {len(extra.get('tools') or [])} · datasets {len(extra.get('datasets') or [])} · boundary {html.escape(str(extra.get('data_boundary', '')))}</div>"
+            + "<div><strong>performance</strong> "
+            + (
+                html.escape(
+                    "; ".join(
+                        f"{row['model']}: {row['wakes']} wakes, {row['actions'] or 0} actions, {row['failed'] or 0} failed, {row['input_tokens'] or 0} in / {row['output_tokens'] or 0} out tokens"
+                        for row in perf
+                    )
+                )
+                if perf
+                else "<span class=muted>no wakes in the graph yet</span>"
+            )
+            + "</div>"
+            + f"<div><strong>backups</strong> {backups.get('snapshots', 0)} snapshot(s), latest {html.escape(str(backups.get('latest_snapshot_utc') or 'none'))[:19]} · last backup {html.escape(str(backups.get('latest_backup_utc') or 'none'))}</div></div>"
         )
     graph_path = root / "runs/local/memory.sqlite"
     if graph_path.is_file():

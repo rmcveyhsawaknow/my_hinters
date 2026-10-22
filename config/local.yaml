@@ -17,3 +17,9 @@ agents:
     enabled: true
     dry_run: true
     jobs: [tick, shift, keepalive, crier]
+# The ecosystem (docs/distributed-ecosystem-plan.md): this host's id in the shared record, the data boundary
+# its cards carry, and where `hglab local backup push` sends backups (local:<dir> or gs://bucket/prefix).
+ecosystem:
+  host_id: desktop-okqpjmv
+  data_boundary: internal
+  backup_target: local:runs/local/backups
