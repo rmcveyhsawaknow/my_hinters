@@ -1,0 +1,54 @@
+{
+  "run_id": "announce-1792688356",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 47909,
+  "created_utc": "2026-10-22T16:59:16.692326+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes of walking toward the deposit at 74, 71, and the road keeps bending, which, fine, is the road's business. Was the deposit even the point? Idea card filed: maybe the path is."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1717,
+    "output_tokens": 73,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "deposit_trip",
+      "deposit_trip",
+      "deposit_trip",
+      "deposit_trip",
+      "deposit_trip"
+    ],
+    "mood": "curious",
+    "where": [
+      74,
+      71
+    ],
+    "discoveries": []
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
