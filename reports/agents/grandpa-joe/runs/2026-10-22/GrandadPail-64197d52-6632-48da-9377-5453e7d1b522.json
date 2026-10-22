@@ -1,0 +1,125 @@
+{
+  "run_id": "64197d52-6632-48da-9377-5453e7d1b522",
+  "agent": "GrandadPail",
+  "role": "envoy+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-22T03:37:22.454561+00:00",
+  "tick": 43098,
+  "summary": "GrandadPail (in_bed): work shift: stocking the storehouse",
+  "actions": [
+    {
+      "action": "give",
+      "x": 85,
+      "y": 92,
+      "qty": 25,
+      "item": "stone"
+    },
+    {
+      "action": "move",
+      "x": 84,
+      "y": 89
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"in_bed\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":433,\"rests\":284,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":43098,\"visited\":[\"65,61\",\"63,73\",\"71,84\",\"79,93\",\"78,94\",\"89,99\",\"89,97\",\"91,95\",\"96,95\",\"96,89\",\"89,94\",\"84,93\",\"92,90\",\"86,95\",\"87,91\",\"81,95\",\"88,90\",\"84,96\",\"81,89\",\"80,98\",\"86,99\",\"93,99\",\"87,102\",\"92,97\",\"88,92\",\"90,98\",\"81,106\",\"88,101\",\"80,107\",\"88,100\",\"87,93\",\"93,89\",\"99,94\",\"90,90\",\"90,97\",\"95,98\",\"94,90\",\"94,94\",\"96,98\",\"93,92\",\"84,92\",\"91,92\",\"94,98\",\"89,98\",\"80,91\",\"84,94\",\"90,96\",\"94,95\",\"90,95\",\"92,91\",\"96,94\",\"91,94\",\"97,100\",\"98,91\",\"93,90\",\"85,89\",\"79,97\",\"86,89\",\"85,96\",\"80,104\",\"88,106\",\"79,108\",\"84,100\",\"93,93\",\"99,98\",\"99,89\",\"97,95\",\"95,99\",\"99,91\",\"90,99\",\"85,92\",\"77,90\",\"88,98\",\"80,94\",\"85,84\",\"92,96\",\"88,86\",\"86,84\",\"86,96\",\"86,85\",\"92,83\",\"90,77\",\"84,75\",\"83,81\",\"80,84\",\"82,80\",\"81,80\",\"84,78\",\"81,83\",\"80,78\",\"71,71\",\"70,71\",\"68,71\",\"70,81\",\"74,91\",\"86,97\",\"86,93\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":43096,\"pace\":\"steady\",\"day\":{\"all\":1598,\"building\":271,\"trade_goals\":82,\"talk\":233,\"factions\":4,\"movement\":1008},\"hour\":{\"all\":76},\"peers\":2},\"engaged\":{\"whispered\":{\"Clarion\":34429,\"Stoutheart\":26258,\"Tinkerglow\":42934,\"Strayling\":40968,\"LandBroker\":41325,\"Quillwright_Ember\":42458,\"Lagalong\":42964},\"replied\":{\"Tinkerglow\":28664,\"Stoutheart\":29126,\"Strayling\":41647,\"LandBroker\":41708},\"reclaimed\":{\"Fairscale:70,72\":41356}}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": false,
+      "error": "inventory_full"
+    }
+  ],
+  "failed_actions": 1,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 43098,
+    "you": {
+      "id": 5,
+      "name": "GrandadPail",
+      "x": 86,
+      "y": 93,
+      "energy": 100,
+      "inventory": {
+        "wood": 10,
+        "stone": 25,
+        "berries": 15
+      },
+      "home": null
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "grandpa-joe",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "envoy",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 76,
+      "building": 11,
+      "trade_goals": 6,
+      "talk": 13,
+      "factions": 0,
+      "movement": 46
+    },
+    "day": {
+      "all": 1598,
+      "building": 271,
+      "trade_goals": 82,
+      "talk": 233,
+      "factions": 4,
+      "movement": 1008
+    },
+    "peers_active": 2
+  },
+  "wake_mode": "act",
+  "mood": "in_bed",
+  "approach": "deposit",
+  "reasons": [
+    "pack is 50/50: put 25 stone into MotherPail's vault at (85, 92)",
+    "looking around for something I have not seen: move to (84, 89)"
+  ],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 5,
+  "activity_energy": {
+    "trade": 1.0,
+    "explore": 4.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "in_bed",
+    "glow": 50,
+    "wakes": 433,
+    "rests": 284,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
