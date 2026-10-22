@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792656695",
+  "kind": "announce",
+  "agent": "Clarion",
+  "persona": "town-crier",
+  "tick": 44743,
+  "created_utc": "2026-10-22T08:11:35.168403+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Hear this! Four wakes, twenty wood gathered, and eighty deposited, which is more wood than I remember owning, and I do not own any. The stockpile is looking at me. I am looking back, dazzled, and my next wake is going to be a double-take."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1814,
+    "output_tokens": 91,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 4,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 20
+    },
+    "moved": 0,
+    "deposited": {
+      "wood": 80
+    },
+    "approaches": [
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit"
+    ],
+    "mood": "dazzled",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
