@@ -77,6 +77,9 @@ def load_state(persona: Persona, notebook: dict[str, Any] | None) -> PersonaStat
     return PersonaState(mood=persona.mood_model["initial"])
 
 
+KEEP_LAST_FLAGS = {"house_site", "house", "patrol", "site_asked"}  # the small flags a persona's plans hang on: dropped last of all
+
+
 def dump_state(state: PersonaState) -> str:
     """Serialize within the notebook value limit, trimming the least needed parts first.
 
@@ -96,13 +99,28 @@ def dump_state(state: PersonaState) -> str:
         payload["visited"] = payload["visited"][half:] if half else []
     flags = payload.setdefault("flags", {})
     features = flags.get("features") if isinstance(flags.get("features"), dict) else {}
+
+    def shrink_engaged(keep: int) -> None:
+        tables = flags.get("engaged") if isinstance(flags.get("engaged"), dict) else {}
+        for kind, table in list(tables.items()):
+            if isinstance(table, dict) and len(table) > keep:
+                tables[kind] = dict(sorted(table.items(), key=lambda kv: -int(kv[1] or 0))[:keep])
+
     trims = (
         lambda: payload.__setitem__("inputs", {}),
         lambda: features.pop("agents", None),
         lambda: features.pop("action_row_hashes", None),
         lambda: features.pop("event_types", None),
+        lambda: features.pop("event_types_seen", None),
+        lambda: features.pop("block_pieces", None),
+        lambda: features.pop("observe_fields", None),
         lambda: flags.pop("world", None),
+        lambda: shrink_engaged(4),
+        lambda: shrink_engaged(2),
         lambda: flags.pop("features", None),
+        lambda: flags.pop("engaged", None),
+        lambda: flags.pop("full_stores", None),
+        lambda: payload.__setitem__("flags", {k: v for k, v in flags.items() if k in KEEP_LAST_FLAGS}),
         lambda: payload.__setitem__("flags", {}),
     )
     for trim in trims:
