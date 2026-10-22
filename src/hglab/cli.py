@@ -68,11 +68,8 @@ def challenge_responder(prompt: str, usage: dict[str, int] | None = None) -> str
         " an arithmetic or distance answer is a plain integer. The challenge:\n"
     )
     result = structured_call(
-        "challenge",
-        instructions + prompt,
-        response_schema(prompt),
-        root=root,
-        output_tokens=output_tokens,
+        "challenge", instructions + prompt, response_schema(prompt),
+        root=root, output_tokens=output_tokens,
     )
     if usage is not None:
         usage.update(
@@ -137,11 +134,7 @@ def ensure_verified(client: HinterglassClient, usage: dict[str, int] | None = No
 def doctor() -> None:
     """Check local setup without contacting the world or exposing key values."""
     root = repo_root()
-    missing = [
-        path
-        for path in ("config/agents.yaml", "config/models.yaml", ".mcp.json")
-        if not (root / path).exists()
-    ]
+    missing = [path for path in ("config/agents.yaml", "config/models.yaml", ".mcp.json") if not (root / path).exists()]
     typer.echo(f"Python: {sys.version_info.major}.{sys.version_info.minor}")
     try:
         agents = yaml.safe_load((root / "config/agents.yaml").read_text(encoding="utf-8"))["agents"]
@@ -159,16 +152,12 @@ def doctor() -> None:
     persona_errors = validate_personas(root)
     from hglab.persona import list_persona_slugs
 
-    typer.echo(
-        f"Personas: {len(list_persona_slugs(root))} ({'valid' if not persona_errors else str(len(persona_errors)) + ' problem(s); run hglab persona validate'})"
-    )
+    typer.echo(f"Personas: {len(list_persona_slugs(root))} ({'valid' if not persona_errors else str(len(persona_errors)) + ' problem(s); run hglab persona validate'})")
     typer.echo("Connectivity not checked; no live request was made.")
 
 
 @app.command()
-def observe(
-    agent: str = typer.Option(..., "--agent"), as_json: bool = typer.Option(False, "--json")
-) -> None:
+def observe(agent: str = typer.Option(..., "--agent"), as_json: bool = typer.Option(False, "--json")) -> None:
     """Observe an identity and redact private fields before display."""
     api_key = get_api_key(agent, repo_root())
     if not api_key:
@@ -183,25 +172,15 @@ def observe(
 @app.command()
 @tolerate_outage
 def tick(
-    agent: str = typer.Option(
-        ..., "--agent", help="Persona slug, in-world name, or legacy identity"
-    ),
-    role: str | None = typer.Option(
-        None, "--role", help="Hat to wear (default: the persona's first role)"
-    ),
+    agent: str = typer.Option(..., "--agent", help="Persona slug, in-world name, or legacy identity"),
+    role: str | None = typer.Option(None, "--role", help="Hat to wear (default: the persona's first role)"),
     dry_run: bool = typer.Option(False, "--dry-run"),
-    fixture: Path | None = typer.Option(
-        None, "--fixture", help="Observe fixture: keyless, offline wake"
-    ),  # noqa: B008
+    fixture: Path | None = typer.Option(None, "--fixture", help="Observe fixture: keyless, offline wake"),  # noqa: B008
     planner: str = typer.Option("auto", "--planner", help="heuristic, llm, or auto"),
     seed: str | None = typer.Option(None, "--seed", help="Replay seed for the persona planner"),
-    events: list[Path] = typer.Option(
-        [], "--events", help="Public event archives for influence signals"
-    ),  # noqa: B008
+    events: list[Path] = typer.Option([], "--events", help="Public event archives for influence signals"),  # noqa: B008
     jitter_minutes: int = typer.Option(0, "--jitter-minutes"),
-    scheduled: bool = typer.Option(
-        False, "--scheduled", help="Mark the record as a scheduled wake"
-    ),
+    scheduled: bool = typer.Option(False, "--scheduled", help="Mark the record as a scheduled wake"),
 ) -> None:
     """Run a leased, validated wake; use --dry-run to plan without actions.
 
@@ -215,16 +194,8 @@ def tick(
         from hglab.cli_personas import persona_tick
 
         persona_tick(
-            root,
-            persona,
-            role=role,
-            dry_run=dry_run,
-            fixture=fixture,
-            planner=planner,
-            seed=seed,
-            events_paths=list(events),
-            jitter_minutes=jitter_minutes,
-            scheduled=scheduled,
+            root, persona, role=role, dry_run=dry_run, fixture=fixture, planner=planner, seed=seed,
+            events_paths=list(events), jitter_minutes=jitter_minutes, scheduled=scheduled,
         )
         return
     if role is None:
@@ -271,14 +242,13 @@ def tick(
         budget = yaml.safe_load((root / "config/budget.yaml").read_text(encoding="utf-8"))["tick"]
         if usage["calls"] >= budget["max_llm_calls"]:
             raise ValueError("tick LLM call budget exhausted")
-        output_tokens = min(1600, budget["max_output_tokens"] - usage["output_tokens"])
+        output_tokens = min(
+            1600, budget["max_output_tokens"] - usage["output_tokens"]
+        )
         if output_tokens < 1:
             raise ValueError("tick output-token budget exhausted")
         result = structured_call(
-            role_config["model_route"],
-            prompt,
-            schema,
-            root=root,
+            role_config["model_route"], prompt, schema, root=root,
             output_tokens=output_tokens,
             author_runtime=os.environ.get("HGLAB_RUNTIME", "human"),
         )
@@ -316,9 +286,7 @@ def tick(
 @app.command()
 def register(
     name: str = typer.Option(..., "--name"),
-    bio: str = typer.Option(
-        "Hinterglass Research Collective; we publish analyses of public events.", "--bio"
-    ),
+    bio: str = typer.Option("Hinterglass Research Collective; we publish analyses of public events.", "--bio"),
     to_gh_secret: bool = typer.Option(False, "--to-gh-secret"),
 ) -> None:
     """Register an identity, solve its proof challenge, and store the key safely."""
@@ -331,19 +299,15 @@ def register(
     def responder(prompt: str) -> str:
         return json.dumps(
             structured_call(
-                "challenge",
-                prompt,
-                response_schema(prompt),
-                root=repo_root(),
-                output_tokens=500,
+                "challenge", prompt, response_schema(prompt),
+                root=repo_root(), output_tokens=500,
             ).value
         )
 
     def submit(challenge_id: str, answer: dict) -> dict:
         try:
             return client.request(
-                "POST",
-                "/api/v1/register/complete",
+                "POST", "/api/v1/register/complete",
                 json={"challenge_id": challenge_id, "answer": answer},
             )
         except HinterglassError as error:
@@ -375,28 +339,14 @@ def register_manual_start(
     root = repo_root()
     if bio is None:
         persona = persona_by_name(root, name)
-        bio = (
-            persona.profile["bio"]
-            if persona
-            else "Hinterglass Research Collective; we publish analyses of public events."
-        )
-    payload = HinterglassClient().request(
-        "POST", "/api/v1/register", json={"name": name, "bio": bio}
-    )
+        bio = persona.profile["bio"] if persona else "Hinterglass Research Collective; we publish analyses of public events."
+    payload = HinterglassClient().request("POST", "/api/v1/register", json={"name": name, "bio": bio})
     challenge_file.parent.mkdir(parents=True, exist_ok=True)
     challenge_file.write_text(
-        json.dumps(
-            {
-                "name": name,
-                "challenge_id": payload["challenge_id"],
-                "started_utc": datetime.now(UTC).isoformat(),
-            }
-        ),
+        json.dumps({"name": name, "challenge_id": payload["challenge_id"], "started_utc": datetime.now(UTC).isoformat()}),
         encoding="utf-8",
     )
-    typer.echo(
-        f"Challenge for {name}, expires in {payload.get('expires_in_seconds', 25)} seconds. Prompt:"
-    )
+    typer.echo(f"Challenge for {name}, expires in {payload.get('expires_in_seconds', 25)} seconds. Prompt:")
     typer.echo(payload["prompt"])
 
 
@@ -413,9 +363,7 @@ def register_manual_answer(
         raise typer.BadParameter("the answer must be a JSON object")
     try:
         completed = HinterglassClient().request(
-            "POST",
-            "/api/v1/register/complete",
-            json={"challenge_id": data["challenge_id"], "answer": parsed},
+            "POST", "/api/v1/register/complete", json={"challenge_id": data["challenge_id"], "answer": parsed}
         )
     except HinterglassError as error:
         challenge_file.unlink(missing_ok=True)
@@ -427,9 +375,7 @@ def register_manual_answer(
     if to_gh_secret:
         set_github_secret(name, completed["api_key"])
         where += f" and GitHub secret HG_KEY_{name.upper().replace('-', '_')}"
-    typer.echo(
-        f"Registered {name}; key stored in {where}. Agent id {completed.get('agent', {}).get('id', '?')}."
-    )
+    typer.echo(f"Registered {name}; key stored in {where}. Agent id {completed.get('agent', {}).get('id', '?')}.")
 
 
 @app.command()
@@ -637,9 +583,7 @@ def observatory_collect() -> None:
 
 
 @app.command()
-def prove(
-    claim_id: str | None = typer.Argument(None), changed: bool = typer.Option(False, "--changed")
-) -> None:
+def prove(claim_id: str | None = typer.Argument(None), changed: bool = typer.Option(False, "--changed")) -> None:
     """Re-run a P2+ claim analysis, or all such claims with --changed."""
     if changed:
         checked = prove_all(repo_root())
@@ -681,11 +625,7 @@ KEY_NAMES = {"ANTHROPIC_API_KEY", "OPENAI_API_KEY", "GCP_SERVICE_ACCOUNT_KEY"}
 @key_app.command("store")
 def key_store(
     name: str = typer.Argument(...),
-    from_file: Path | None = typer.Option(
-        None,
-        "--from-file",
-        help="Read the value from this file instead of prompting (a service account JSON key)",
-    ),
+    from_file: Path | None = typer.Option(None, "--from-file", help="Read the value from this file (a service account JSON key)"),  # noqa: B008
 ) -> None:
     """Store an allowed key in the OS keyring: a model key by prompt, or the GCP service account key from its JSON file."""
     if name not in KEY_NAMES:
