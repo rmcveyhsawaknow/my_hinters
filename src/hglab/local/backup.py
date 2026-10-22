@@ -3,14 +3,17 @@
 A backup is ``<host_id>-<utc>.tar.gz`` under ``runs/local/backups/`` holding ``config/local.yaml``,
 ``runs/local/status.json``, ``runs/local/supervisor.log``, the capability cards and ``memory.sqlite``
 (a consistent SQLite backup), plus a ``manifest.json``. ``push`` copies it to a target: ``local:<dir>``
-needs nothing; ``gs://bucket/prefix`` uses the installed ``gcloud storage`` command and lands under
-``hosts/<host_id>/backups/``. ``restore`` unpacks one into a checkout that has no state yet (or with
-``force``). Nothing secret is in a backup: keys live in the keyring, never in these files.
+needs nothing; ``gs://bucket/prefix`` lands under ``hosts/<host_id>/backups/`` and authenticates with
+the host's service account key from the keyring (``GCP_SERVICE_ACCOUNT_KEY``, the default) or, when
+``ecosystem.auth`` or ``HGLAB_GCP_AUTH`` says ``gcloud``, with the signed-in ``gcloud storage`` session.
+``restore`` unpacks one into a checkout that has no state yet (or with ``force``). Nothing secret is in
+a backup: keys live in the keyring, never in these files.
 """
 
 from __future__ import annotations
 
 import json
+import os
 import shutil
 import socket
 import subprocess
@@ -24,7 +27,10 @@ from hglab.local.memory import Graph
 
 BACKUP_DIR = Path("runs/local/backups")
 STATE_FILES = ("config/local.yaml", "runs/local/status.json", "runs/local/supervisor.log")
+AUTH_ENV = "HGLAB_GCP_AUTH"
+AUTH_MODES = ("service_account", "gcloud")
 Runner = Callable[[list[str]], tuple[int, str]]
+ClientFactory = Callable[[dict[str, Any]], Any | None]
 
 
 def host_id(config: dict[str, Any]) -> str:
@@ -35,6 +41,36 @@ def host_id(config: dict[str, Any]) -> str:
 def default_target(root: Path, config: dict[str, Any]) -> str:
     eco = config.get("ecosystem") or {}
     return str(eco.get("backup_target") or f"local:{root / BACKUP_DIR}")
+
+
+def auth_mode(config: dict[str, Any]) -> str:
+    """``service_account`` (the key in the keyring, the default) or ``gcloud`` (the signed-in session); the environment wins."""
+    mode = os.environ.get(AUTH_ENV) or str(
+        (config.get("ecosystem") or {}).get("auth") or "service_account"
+    )
+    return mode if mode in AUTH_MODES else "service_account"
+
+
+def gcs_client(config: dict[str, Any]) -> Any | None:
+    """A Storage client from the GCP_SERVICE_ACCOUNT_KEY in the keyring, or None when there is no key."""
+    from hglab.secrets import get_secret
+
+    raw = get_secret("GCP_SERVICE_ACCOUNT_KEY")
+    if not raw:
+        return None
+    from google.cloud import storage
+    from google.oauth2 import service_account
+
+    info = json.loads(raw)
+    credentials = service_account.Credentials.from_service_account_info(
+        info, scopes=["https://www.googleapis.com/auth/devstorage.read_write"]
+    )
+    return storage.Client(project=info.get("project_id"), credentials=credentials)
+
+
+def _split_gs(target: str) -> tuple[str, str]:
+    bucket, _, prefix = target.removeprefix("gs://").strip("/").partition("/")
+    return bucket, prefix
 
 
 def _run(args: list[str]) -> tuple[int, str]:
@@ -85,20 +121,49 @@ def make_backup(root: Path, config: dict[str, Any], when: datetime | None = None
 
 
 def push(
-    root: Path, config: dict[str, Any], target: str | None = None, runner: Runner | None = None
+    root: Path,
+    config: dict[str, Any],
+    target: str | None = None,
+    runner: Runner | None = None,
+    client_factory: ClientFactory | None = None,
 ) -> dict[str, Any]:
     """Make a backup and copy it to the target; returns what was done."""
     target = target or default_target(root, config)
     archive = make_backup(root, config)
     host = host_id(config)
     if target.startswith("gs://"):
-        run = runner or _run
         destination = f"{target.rstrip('/')}/hosts/{host}/backups/{archive.name}"
+        mode = auth_mode(config)
+        if mode == "service_account":
+            client = (client_factory or gcs_client)(config)
+            if client is None:
+                return {
+                    "archive": str(archive),
+                    "target": destination,
+                    "ok": False,
+                    "auth": mode,
+                    "detail": "no GCP_SERVICE_ACCOUNT_KEY in the keyring: store one with `hglab key store GCP_SERVICE_ACCOUNT_KEY --from-file <key.json>` or run with --auth gcloud",
+                }
+            bucket, prefix = _split_gs(target)
+            path = f"{prefix}/hosts/{host}/backups/{archive.name}".strip("/")
+            try:
+                client.bucket(bucket).blob(path).upload_from_filename(str(archive))
+            except Exception as exc:  # noqa: BLE001 - a backup reports, it never raises
+                return {
+                    "archive": str(archive),
+                    "target": destination,
+                    "ok": False,
+                    "auth": mode,
+                    "detail": str(exc)[:400],
+                }
+            return {"archive": str(archive), "target": destination, "ok": True, "auth": mode}
+        run = runner or _run
         code, out = run(["gcloud", "storage", "cp", str(archive), destination])
         return {
             "archive": str(archive),
             "target": destination,
             "ok": code == 0,
+            "auth": mode,
             "detail": out[-400:],
         }
     folder = Path(target.removeprefix("local:"))
@@ -110,10 +175,33 @@ def push(
 
 
 def list_backups(
-    root: Path, config: dict[str, Any], target: str | None = None, runner: Runner | None = None
+    root: Path,
+    config: dict[str, Any],
+    target: str | None = None,
+    runner: Runner | None = None,
+    client_factory: ClientFactory | None = None,
 ) -> list[dict[str, Any]]:
     target = target or default_target(root, config)
     if target.startswith("gs://"):
+        folder = f"{_split_gs(target)[1]}/hosts/{host_id(config)}/backups/".strip("/") + "/"
+        if auth_mode(config) == "service_account":
+            client = (client_factory or gcs_client)(config)
+            if client is None:
+                return []
+            bucket = _split_gs(target)[0]
+            rows = []
+            for blob in client.list_blobs(bucket, prefix=folder):
+                if blob.name.endswith(".tar.gz"):
+                    updated = getattr(blob, "updated", None)
+                    rows.append(
+                        {
+                            "name": blob.name.rsplit("/", 1)[-1],
+                            "size": blob.size,
+                            "utc": updated.isoformat() if updated else None,
+                            "location": f"gs://{bucket}/{blob.name}",
+                        }
+                    )
+            return sorted(rows, key=lambda r: r["name"], reverse=True)
         run = runner or _run
         _code, out = run(
             [
@@ -137,9 +225,9 @@ def list_backups(
                     }
                 )
         return sorted(rows, key=lambda r: r["name"], reverse=True)
-    folder = Path(target.removeprefix("local:"))
+    folder_path = Path(target.removeprefix("local:"))
     rows = []
-    for path in sorted(folder.glob("*.tar.gz"), reverse=True) if folder.is_dir() else []:
+    for path in sorted(folder_path.glob("*.tar.gz"), reverse=True) if folder_path.is_dir() else []:
         stamp = path.stem.replace(".tar", "").rsplit("-", 1)[-1]
         rows.append(
             {"name": path.name, "size": path.stat().st_size, "utc": stamp, "location": str(path)}
@@ -179,8 +267,12 @@ def restore(root: Path, archive: Path, force: bool = False) -> dict[str, Any]:
 
 
 __all__ = [
+    "AUTH_ENV",
+    "AUTH_MODES",
     "BACKUP_DIR",
+    "auth_mode",
     "default_target",
+    "gcs_client",
     "host_id",
     "latest_backup_utc",
     "list_backups",

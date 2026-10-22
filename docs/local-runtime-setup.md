@@ -41,6 +41,23 @@ once so the unit starts at boot without a login.
 What `up` does not do: register or verify identities, store keys, or flip GitHub Actions
 variables. Those are one-time, keyed steps for a person.
 
+## The bucket credential
+
+Backups go to the bucket with the host's own service account, not with a person's gcloud login.
+The key is issued once and lives in the OS keyring (stored in chunks, because the Windows vault
+refuses values above about 2.5 KB); nothing stays on disk:
+
+```text
+gcloud iam service-accounts keys create host-key.json --iam-account=host-<id>@<project>.iam.gserviceaccount.com
+hglab key store GCP_SERVICE_ACCOUNT_KEY --from-file host-key.json
+del host-key.json            # rm on Linux
+hglab doctor                 # "GCP service account yes"
+```
+
+`ecosystem.auth` in `config/local.yaml` selects `service_account` (default) or `gcloud` (the
+signed-in session), and `hglab local up --auth gcloud`, `hglab local backup push --auth gcloud` and
+`backup list --auth gcloud` override it for one run.
+
 ## Resume after a reboot
 
 1. Wait two minutes after logon: the Startup script starts Docker Desktop, the OpenShell gateway,
