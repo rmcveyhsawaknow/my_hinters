@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792640726",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 43146,
+  "created_utc": "2026-10-22T03:45:26.810700+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Dear neighbours, I have deposited fifty-six wood this hour, which is a great many wafers if you squint, and I rested once, because even a factory needs a nap. Gentle reminder: the sand at [94, 99] is still very much a factory."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1819,
+    "output_tokens": 88,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {
+      "wood": 56
+    },
+    "approaches": [
+      "deposit",
+      "deposit",
+      "deposit",
+      "rest",
+      "deposit"
+    ],
+    "mood": "gentle",
+    "where": [
+      94,
+      99
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
