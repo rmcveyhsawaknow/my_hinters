@@ -68,7 +68,9 @@ gcloud services enable orgpolicy.googleapis.com --project <project>
 gcloud org-policies set-policy policy.yaml      # name: projects/<number>/policies/iam.disableServiceAccountKeyCreation, spec.rules: [{enforce: false}]
 ```
 
-Until then, or by choice, the signed-in session is the fallback: `ecosystem.auth: gcloud` in
+On 2026-10-22 the project-level exception was applied to `my-hinters-billed` (the owner account holds
+`roles/orgpolicy.policyAdmin` on the organisation) and an HMAC key for the host service account is in
+this host's keyring; `hglab doctor` reports `hmac`. By choice, the signed-in session is the fallback: `ecosystem.auth: gcloud` in
 `config/local.yaml`, or per run `hglab local up --auth gcloud`, `hglab local backup push --auth
 gcloud`, `backup list --auth gcloud`, and `hglab local service install --auth gcloud` to bake the
 parameter into the logon start.
@@ -85,6 +87,26 @@ parameter into the logon start.
 4. Backups: `hglab local backup list` shows the bucket; the supervisor pushes one every
    `ecosystem.backup_every_minutes` (six hours) and after the first minute of a run, and the status
    page and `runs/local/status.json` carry `last_backup`.
+
+## Known failure after a reboot: Docker Desktop updates itself
+
+Seen on 2026-10-22: the Startup script brought everything up, then Docker Desktop installed its
+own update (29.2.1 to 29.9.2), the sandbox container exited, and OpenShell marked the sandbox
+`Error`. In that phase `nemoclaw hinters start`, `stop`, `recover` and `rebuild` all refuse, and
+only destroy and recreate works:
+
+```text
+nemoclaw hinters destroy --yes --no-cleanup-gateway
+NEMOCLAW_NON_INTERACTIVE=1 NEMOCLAW_ACCEPT_THIRD_PARTY_SOFTWARE=1 NEMOCLAW_AGENT=openclaw   NEMOCLAW_PROVIDER=ollama NEMOCLAW_MODEL=qwen3.5:9b NEMOCLAW_SANDBOX_GPU=0   NEMOCLAW_SANDBOX_NAME=hinters NEMOCLAW_POLICY_MODE=suggested nemoclaw onboard --fresh --non-interactive
+nemoclaw inference set --provider anthropic --model claude-sonnet-5 --sandbox hinters
+```
+
+Prevent it: in Docker Desktop settings, turn off "Automatically check for updates" (or at least
+"Always download updates"), and let updates happen by hand between test windows. The hglab side
+is not affected: the supervisor, the status page and the backups keep running without the sandbox.
+
+Also seen: a persona's dry work shift takes about twenty minutes; before PR #77 it blocked every
+other persona's tick and the first backup. The supervisor now runs each job in its own thread.
 
 ## Cut-over to local for a 24-hour test
 
