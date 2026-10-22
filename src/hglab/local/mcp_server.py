@@ -134,6 +134,49 @@ def build_server(root: Path) -> Any:
         base = f"http://127.0.0.1:{int(config.get('a2a_port', 8765))}"
         return [agent_card(p, team_map.get(p.team), base) for _, p in sorted(personas.items())]
 
+    @mcp.tool()
+    def send_message(agent: str, text: str, sender: str = "operator") -> dict[str, Any]:
+        """Leave a message a persona (slug or in-world name) reads at its next wake: an A2A task, submitted."""
+        from hglab.local.a2a import TaskStore
+
+        personas = load_personas(root)
+        name = (
+            personas[agent].name
+            if agent in personas
+            else next(
+                (p.name for p in personas.values() if p.name.casefold() == agent.casefold()), None
+            )
+        )
+        if not name:
+            return {"error": f"no persona {agent}"}
+        g = Graph(graph_path)
+        try:
+            task = TaskStore(g).create(name, sender, text)
+        finally:
+            g.close()
+        return {"id": task["id"], "agent": name, "state": task["status"]["state"]}
+
+    @mcp.tool()
+    def tasks(agent: str | None = None, everything: bool = False) -> list[dict[str, Any]]:
+        """The A2A tasks on the board: open ones by default, all states with everything=true."""
+        g = Graph(graph_path)
+        try:
+            return [
+                {
+                    "id": n["id"][5:],
+                    "agent": n.get("agent"),
+                    "sender": n.get("sender"),
+                    "state": n.get("state"),
+                    "text": str(n.get("text", ""))[:200],
+                    "updated_utc": n.get("updated_utc"),
+                }
+                for n in g.nodes("task")
+                if (not agent or n.get("agent") == agent)
+                and (everything or n.get("state") in {"submitted", "working"})
+            ]
+        finally:
+            g.close()
+
     return mcp
 
 

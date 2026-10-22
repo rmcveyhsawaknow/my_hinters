@@ -19,6 +19,8 @@ from hglab.environment import compact_for_state
 from hglab.environment import render as render_digest
 from hglab.lease import Lease
 from hglab.limits import action_limits
+from hglab.local.tasks import deliver as deliver_tasks
+from hglab.local.tasks import settle as settle_tasks
 from hglab.loop import build_prompt, run_wake
 from hglab.measures import ACTIVITY_OF_ACTION
 from hglab.mood import (
@@ -236,6 +238,7 @@ def persona_wake(
 
         observe["inbox"] = merge_inbox(observe)  # whispers a keepalive or a round was handed, kept in the notebook
         tick = int(observe.get("tick", 0))
+        observe["inbox"] = [*observe["inbox"], *deliver_tasks(persona.name, root, tick, dry_run)]  # A2A tasks for this persona, as operator messages
         you = observe.get("you") or {}
         notebook = observe.get("notebook") or {}
         state = load_state(persona, notebook)
@@ -416,6 +419,7 @@ def persona_wake(
         record_extra=extras,
         compact=work,
     )
+    settle_tasks(persona.name, root, record.get("run_id") if isinstance(record, dict) else None, dry_run)
     return record
 
 
