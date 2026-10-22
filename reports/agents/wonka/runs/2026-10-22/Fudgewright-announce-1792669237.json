@@ -1,0 +1,56 @@
+{
+  "run_id": "announce-1792669237",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 45997,
+  "created_utc": "2026-10-22T11:40:37.023764+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Come sit by the shallow water, friends, and mind the wafer; I gathered five pieces of it this hour, and the factory is still only a sign. Gentle, gentle. The sign is very welcoming."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1831,
+    "output_tokens": 74,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "hearth",
+      "rest",
+      "deposit_trip",
+      "hearth",
+      "gather_trip"
+    ],
+    "mood": "gentle",
+    "where": [
+      88,
+      97
+    ],
+    "discoveries": []
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
