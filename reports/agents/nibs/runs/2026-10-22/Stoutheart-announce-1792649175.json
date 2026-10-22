@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792649175",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 43991,
+  "created_utc": "2026-10-22T06:06:15.929318+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes out on the grass, no builds yet, but I walked the ground at 75, 110 and I'm keeping an eye on the store. Next hour, the bridge."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1734,
+    "output_tokens": 63,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "explore",
+      "harvest"
+    ],
+    "mood": "brave",
+    "where": [
+      75,
+      110
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
