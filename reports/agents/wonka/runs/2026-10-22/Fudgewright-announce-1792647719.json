@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792647719",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 43845,
+  "created_utc": "2026-10-22T05:41:59.706128+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Gentle friends, I have deposited seventy wood into the good cause of wafer, and I am only a little sorry about the dust. Five wakes of walking, and the sand still wants a sign. Come see the place that may or may not exist."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1820,
+    "output_tokens": 82,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {
+      "wood": 70
+    },
+    "approaches": [
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit"
+    ],
+    "mood": "gentle",
+    "where": [
+      95,
+      95
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
