@@ -1,0 +1,54 @@
+{
+  "run_id": "announce-1792677989",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 46872,
+  "created_utc": "2026-10-22T14:06:29.969757+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, three moves, no builds yet; I walked the edge at [69, 110] and gathered nothing, but the storehouse will hold when the berries come in. Worth it."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1741,
+    "output_tokens": 66,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [],
+    "gathered": {},
+    "moved": 3,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "explore",
+      "explore",
+      "harvest",
+      "rest"
+    ],
+    "mood": "brave",
+    "where": [
+      69,
+      110
+    ],
+    "discoveries": []
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
