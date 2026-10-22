@@ -127,3 +127,16 @@ def test_the_client_asks_reads_the_answer_pays_and_builds_on_the_bought_lot():
     assert _house_shortfall(wonka, {}, view, state)[0] == "ore"  # now the factory's door wants gold
     team = load_team(ROOT, wonka.team)
     assert team.members and random.Random  # the module imports hold
+
+
+def test_a_client_who_asks_again_gets_the_answer_again():
+    w = _world()
+    ledger = load_ledger(ROOT)
+    broker = load_personas(ROOT)["land-broker"]
+    state = {"surveys": {"factory": {"client": "Fudgewright", "lot": "F07-SE", "anchor": [57, 77], "price": 20, "currency": "wood", "tick": 46000, "reasons": ["ore-rich"]}}}
+    observe = {"tick": 46400, "you": {"name": "LandBroker", "x": 65, "y": 55, "energy": 90, "inventory": {"berries": 10, "wood": 5}}, "your_goals": {"posted": []}, "inbox": [{"from": "Fudgewright", "text": "SURVEY REQUEST factory: LandBroker, the factory needs ground.", "tick": 46390}], "notebook": {}}
+    b = board(ledger, w["structures"], w["agents"], [], broker.name, state, world=w, tick=46400)
+    actions, _reasons, update = plan_round(broker, ledger, observe, b, public_events=[], structures=w["structures"], agents=w["agents"], state=state, collective_names={"Fudgewright", "LandBroker"}, world=w)
+    whispers = [a for a in actions if a["action"] == "whisper"]
+    assert whispers and whispers[0]["to"] == "Fudgewright" and whispers[0]["text"].startswith("SITE for factory: lot F07-SE, anchor (57,77)") and "price 20 wood" in whispers[0]["text"]
+    assert update["surveys"]["factory"]["answered"] == 46400 and len([a for a in actions if a["action"] == "whisper"]) == 1  # answered once more, not surveyed anew

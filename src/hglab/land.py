@@ -549,6 +549,20 @@ def plan_round(
             actions.append({"action": "say", "text": f"Deed: lot {d['plot']} is {d['holder']}'s, {d['paid']} {currency} paid into the land office. Build well; the record is public."[:limit]})
             said = True
         reasons.append("deeds for surveyed sites paid in full: " + ", ".join(f"{d['plot']} to {d['holder']}" for d in deeds))
+    # a client who asks again (their SURVEY REQUEST whisper is in the inbox) is answered again: the first answer may have been lost
+    asked_again = {str(w.get("from", "")).casefold(): str(w.get("text", "")) for w in (observe.get("inbox") or []) if isinstance(w, dict) and "SURVEY REQUEST" in str(w.get("text", "")).upper()}
+    for rid, survey in (state.get("surveys") or {}).items():
+        if not isinstance(survey, dict) or survey.get("deeded") or len(actions) >= 2 or energy - 1 < reserve:
+            continue
+        client = str(survey.get("client", ""))
+        if client.casefold() in asked_again and rid.casefold() in asked_again[client.casefold()].casefold() and tick - int(survey.get("answered", survey.get("tick", 0)) or 0) >= 300:
+            again = {"id": rid, "client": client, "lot": survey["lot"], "anchor": tuple(survey.get("anchor") or (0, 0)), "expandable": [], "reasons": [str(r) for r in survey.get("reasons", [])] or ["as surveyed"], "price": int(survey.get("price", 0) or 0)}
+            actions.append({"action": "whisper", "to": client, "text": survey_whisper(again, vault, str(survey.get("currency", currency)))})
+            surveys_state = dict(update.get("surveys", state.get("surveys") or {}))
+            surveys_state[rid] = {**survey, "answered": tick}
+            update["surveys"] = surveys_state
+            reasons.append(f"{client} asked again for {rid}: the answer goes out once more")
+            energy -= 1
     for survey in surveys_due(ledger, persona.name, state, world, structures, agents, tick):
         if len(actions) >= 2 or energy - 2 < reserve:
             break
@@ -557,7 +571,7 @@ def plan_round(
             actions.append({"action": "say", "text": survey_line(survey, currency, limit)})
             said = True
         surveys_state = dict(update.get("surveys", state.get("surveys") or {}))
-        surveys_state[survey["id"]] = {"client": survey["client"], "lot": survey["lot"], "anchor": list(survey["anchor"]), "price": survey["price"], "currency": currency, "tick": tick}
+        surveys_state[survey["id"]] = {"client": survey["client"], "lot": survey["lot"], "anchor": list(survey["anchor"]), "price": survey["price"], "currency": currency, "tick": tick, "reasons": [str(r) for r in survey["reasons"][:4]]}
         update["surveys"] = surveys_state
         reasons.append(f"survey for {survey['client']}: lot {survey['lot']} ({', '.join(survey['reasons'][:3])}) at {survey['price']} {currency}")
         energy -= 2

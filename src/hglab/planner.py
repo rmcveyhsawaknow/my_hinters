@@ -364,8 +364,8 @@ def plan_wake(
         elif activity == "gather":
             step = (
                 _plan_gather(persona, team, inventory, here, view, teammates, rng)
-                or _plan_deposit(persona, inventory, here, view, None, mates=set(collective_names or ()) | set(names or ()))
-                or _plan_deposit_trip(persona, team, inventory, here, view, teammates, {n.casefold() for n in set(collective_names or ()) | set(names or ())} | {persona.name.casefold()})
+                or _plan_deposit(persona, inventory, here, view, None, mates=set(collective_names or ()) | set(names or ()), state=state)
+                or _plan_deposit_trip(persona, team, inventory, here, view, teammates, {n.casefold() for n in set(collective_names or ()) | set(names or ())} | {persona.name.casefold()}, state=state)
                 or _plan_forage(persona, team, inventory, here, view, teammates)
             )
         elif activity == "explore":
@@ -567,10 +567,10 @@ def _plan_work(
         approach = approach or "border"
     # 4. deposit surplus into an adjacent storehouse of ours (so the monument can draw on it)
     ours = set(collective_names or ()) | set(names or ())
-    if fits(_plan_deposit(persona, inventory, here, view, registrar_name, mates=ours)):
+    if fits(_plan_deposit(persona, inventory, here, view, registrar_name, mates=ours, state=state)):
         approach = approach or "deposit"
     # 4.2 a full pack walks to the nearest storehouse of ours to unload (a word or a meal may precede the walk)
-    if not moved() and fits(_plan_deposit_trip(persona, team, inventory, position, view, teammates, {n.casefold() for n in ours} | {persona.name.casefold()})):
+    if not moved() and fits(_plan_deposit_trip(persona, team, inventory, position, view, teammates, {n.casefold() for n in ours} | {persona.name.casefold()}, state=state)):
         approach = approach or "deposit_trip"
     # 4. gather the shortfall for the next blueprint
     while len(actions) < cap and fits(_plan_gather(persona, team, inventory, here, view, teammates, rng)):
@@ -771,7 +771,8 @@ def _plan_site_trade(
         ((int(s["x"]), int(s["y"])) for s in structures if s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() == registrar_name.casefold()),
         key=lambda t: chebyshev(position, t),
     )
-    vaults = [v for v in vaults if storehouse_room(view.structure_at(*v) or {}) >= min(owed, 5)]  # a full vault takes nothing
+    full = _full_stores(state, tick)
+    vaults = [v for v in vaults if v not in full and storehouse_room(view.structure_at(*v) or {}) >= min(owed, 5)]  # a full vault takes nothing
     if not vaults:
         return None
     vault = vaults[0]
@@ -1103,13 +1104,15 @@ def _plan_deposit_trip(
     view: WorldView,
     teammates: dict[str, tuple[int, int]] | None,
     mates: set[str],
+    state: PersonaState | None = None,
 ) -> tuple[list[dict[str, Any]], str, str] | None:
     """Walk toward the nearest storehouse of ours (own, a teammate's or the collective's) when the pack is full."""
     total = sum(inventory.values())
     if total < 46 and not (total >= PACK_TIGHT and inventory.get("berries", 0) > BERRY_KEEP + 10):
         return None
+    full = _full_stores(state, int(view.tick or 0))
     stores = sorted(
-        (s for s in (view.world_structures or view.structures) if s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() in mates),
+        (s for s in (view.world_structures or view.structures) if s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() in mates and (int(s["x"]), int(s["y"])) not in full and storehouse_room(view.structure_at(int(s["x"]), int(s["y"])) or {}) >= 5),
         key=lambda s: (str(s.get("owner", "")).casefold() != persona.name.casefold(), chebyshev(position, (int(s["x"]), int(s["y"])))),
     )
     mode = persona.knobs["territory"]["mode"]
@@ -1376,6 +1379,22 @@ def storehouse_room(structure: dict[str, Any]) -> int:
     return max(0, STOREHOUSE_CAPACITY - held)
 
 
+FULL_STORE_TICKS = 8640  # a storehouse seen full is left alone for a day
+
+
+def _full_stores(state: PersonaState | None, tick: int) -> set[tuple[int, int]]:
+    flags = state.flags.get("full_stores") if state is not None and isinstance(state.flags.get("full_stores"), dict) else {}
+    return {tuple(int(v) for v in k.split(",")) for k, seen in flags.items() if tick - int(seen or 0) <= FULL_STORE_TICKS}
+
+
+def _mark_full(state: PersonaState | None, where: tuple[int, int], tick: int) -> None:
+    if state is None:
+        return
+    flags = state.flags.get("full_stores") if isinstance(state.flags.get("full_stores"), dict) else {}
+    flags[f"{where[0]},{where[1]}"] = tick
+    state.flags["full_stores"] = dict(sorted(flags.items(), key=lambda kv: -int(kv[1] or 0))[:8])
+
+
 def _plan_deposit(
     persona: Persona,
     inventory: dict[str, int],
@@ -1383,6 +1402,7 @@ def _plan_deposit(
     view: WorldView,
     registrar_name: str | None = None,
     mates: set[str] | None = None,
+    state: PersonaState | None = None,
 ) -> tuple[list[dict[str, Any]], str, str] | None:
     """Put surplus into an adjacent storehouse: our own first, else a teammate's or the collective's vault.
 
@@ -1405,6 +1425,7 @@ def _plan_deposit(
             continue
         room = storehouse_room(structure)
         if room < 5:
+            _mark_full(state, where, int(view.tick or 0))
             continue  # the world refuses a give into a full storehouse (inventory_full), and the batch stops there
         for item in ("berries", "stone", "ore", "wood", "fiber"):
             qty = inventory.get(item, 0)
