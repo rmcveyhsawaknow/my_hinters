@@ -1,0 +1,50 @@
+{
+  "run_id": "announce-1792652577",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 44331,
+  "created_utc": "2026-10-22T07:02:57.278702+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, five rests, not one of them wasted. Resting by the hut is how a grandfather keeps his strength up, and the family's berries are kept safe in my pack for later."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1840,
+    "output_tokens": 66,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 5,
+    "built": [],
+    "gathered": {},
+    "moved": 0,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "rest",
+      "rest",
+      "rest",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
