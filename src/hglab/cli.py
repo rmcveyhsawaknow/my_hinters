@@ -44,6 +44,9 @@ app.add_typer(config_app, name="config")
 app.add_typer(lease_app, name="lease")
 app.add_typer(observatory_app, name="observatory")
 app.add_typer(key_app, name="key")
+from hglab.local.cli import local_app
+
+app.add_typer(local_app, name="local")
 
 
 def repo_root() -> Path:

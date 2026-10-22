@@ -1,0 +1,13 @@
+# The local agents framework (docs/local-agents-framework.md). Which personas the supervisor on this
+# machine runs, on the personas' own cadence and work knobs, and whether it acts in the world. The
+# world's notebook lease makes a local runtime and GitHub Actions take turns for one agent, so an
+# agent may be listed here while its Actions schedule still runs; once a local run has proved itself,
+# flip its HG_AGENT_<NAME> Actions variable off and leave it here. Humans edit this file by PR.
+dry_run: true
+a2a_port: 8765
+ui_port: 8766
+agents:
+  - slug: town-crier
+    enabled: true
+    dry_run: true
+    jobs: [tick, shift, keepalive, crier]

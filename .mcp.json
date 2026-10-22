@@ -6,6 +6,14 @@
       "headers": {
         "Authorization": "Bearer ${HINTERGLASS_API_KEY}"
       }
+    },
+    "hinters": {
+      "type": "stdio",
+      "command": "hglab",
+      "args": [
+        "local",
+        "mcp"
+      ]
     }
   }
 }
