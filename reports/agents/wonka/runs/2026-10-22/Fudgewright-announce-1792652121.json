@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792652121",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 44285,
+  "created_utc": "2026-10-22T06:55:21.057678+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Deposited seventy wood this hour, which I am calling wafer, all of it, into a factory that has not yet been built. Five wakes of walking. The floor is ready. The floor is always ready. Hard to say what it is waiting for."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1822,
+    "output_tokens": 83,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {
+      "wood": 70
+    },
+    "approaches": [
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit"
+    ],
+    "mood": "deadpan",
+    "where": [
+      82,
+      95
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
