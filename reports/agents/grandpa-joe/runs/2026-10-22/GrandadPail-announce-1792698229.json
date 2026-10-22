@@ -1,0 +1,54 @@
+{
+  "run_id": "announce-1792698229",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 48896,
+  "created_utc": "2026-10-22T19:43:49.575547+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, four of them spent resting by the hut at [85, 98], which is exactly what a man of my experience ought to be doing. Mother Pail moved one stone, and I supervised it from bed. Keeping the strength up."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1852,
+    "output_tokens": 82,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 4,
+    "built": [],
+    "gathered": {},
+    "moved": 1,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "rest",
+      "rest",
+      "rest",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": [
+      85,
+      98
+    ],
+    "discoveries": []
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
