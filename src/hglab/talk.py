@@ -48,7 +48,12 @@ def summarise_shift(records: list[dict[str, Any]]) -> dict[str, Any]:
                 deposited[str(action.get("item"))] = deposited.get(str(action.get("item")), 0) + int(action.get("qty", 0) or 0)
     mood = records[-1].get("mood") if records else None
     rests = sum(1 for r in records if r.get("wake_mode") == "rest")
-    return {"wakes": len(records), "rests": rests, "built": built, "gathered": gathered, "moved": moved, "deposited": deposited, "approaches": approaches, "mood": mood, "where": where}
+    discoveries: list[str] = []
+    for record in records:
+        for text in record.get("discoveries") or []:
+            if text not in discoveries:
+                discoveries.append(str(text))
+    return {"wakes": len(records), "rests": rests, "built": built, "gathered": gathered, "moved": moved, "deposited": deposited, "approaches": approaches, "mood": mood, "where": where, "discoveries": discoveries[:4]}
 
 
 def templated_line(persona: Persona, summary: dict[str, Any], rng: random.Random) -> str:

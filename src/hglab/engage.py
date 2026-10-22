@@ -84,7 +84,7 @@ def _items_named(text: str) -> list[str]:
     return [item for item in ("wood", "stone", "ore", "fiber", "berries") if item in low]
 
 
-def board(persona: Any, observe: dict[str, Any], collective_names: set[str], team_names: set[str], here: tuple[int, int] | None = None) -> dict[str, Any]:
+def board(persona: Any, observe: dict[str, Any], collective_names: set[str], team_names: set[str], here: tuple[int, int] | None = None, newcomers: list[str] | None = None) -> dict[str, Any]:
     """What is there to engage with, from this observe alone (no network): the prompt and the planner both read it.
 
     ``here`` is where the agent will stand when the move is made (after any move already planned in
@@ -156,6 +156,7 @@ def board(persona: Any, observe: dict[str, Any], collective_names: set[str], tea
         "claimable_peer_goals": claimable[:4],
         "crumbling_beside_me": decaying[:3],
         "teammates_in_view": [a["name"] for a in in_view if a["name"].casefold() in mates],
+        "newcomers": [n for n in (newcomers or []) if n.casefold() not in mates and n.casefold() not in ours][:4],
     }
 
 
@@ -175,6 +176,8 @@ def render_board(b: dict[str, Any]) -> str:
         lines.append("peer goals you could finish now: " + "; ".join(f"#{g['id']} {g['title']} ({g['poster']}, reward {g['reward']})" for g in b["claimable_peer_goals"]))
     if b["crumbling_beside_me"]:
         lines.append("crumbling beside you (owner long gone): " + ", ".join(f"{d['type']} at ({d['x']},{d['y']})" for d in b["crumbling_beside_me"]))
+    if b.get("newcomers"):
+        lines.append("newcomers through the glass this week (welcome them once, invite them to what you build): " + ", ".join(b["newcomers"]))
     return "\n".join(lines) if lines else "nobody near, nothing offered"
 
 

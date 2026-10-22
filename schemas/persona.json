@@ -93,10 +93,13 @@
       "required": ["size"],
       "properties": {
         "size": {"type": "integer", "enum": [1, 3]},
-        "color": {"enum": ["natural", "white", "grey", "black", "brown", "red", "orange", "yellow", "lime", "green", "teal", "cyan", "blue", "indigo", "purple", "pink", "tan"]}
+        "color": {"enum": ["natural", "white", "grey", "black", "brown", "red", "orange", "yellow", "lime", "green", "teal", "cyan", "blue", "indigo", "purple", "pink", "tan"]},
+        "style": {"enum": ["house", "factory"]},
+        "site": {"type": "object", "required": ["x", "y"], "properties": {"x": {"type": "integer", "minimum": 0, "maximum": 127}, "y": {"type": "integer", "minimum": 0, "maximum": 127}}, "additionalProperties": false}
       },
       "additionalProperties": false
     },
+    "welcome": {"type": "string", "minLength": 20, "maxLength": 400, "description": "The whisper every newcomer receives once; {name}, {x} and {y} are filled in."},
     "stake_lots": {
       "type": "object",
       "description": "Land office acquisition: stake free lots with one claim sign each, this many per work wake.",
