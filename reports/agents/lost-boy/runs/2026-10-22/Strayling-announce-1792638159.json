@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792638159",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 42889,
+  "created_utc": "2026-10-22T03:02:39.077941+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, four steps, one rest at [74, 71] and somehow I keep ending up hauling for the deposit pile again. Card filed: why does the deposit trip keep calling me back? Chasing that next."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1706,
+    "output_tokens": 77,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "deposit_trip",
+      "rest",
+      "deposit_trip",
+      "deposit_trip",
+      "deposit_trip"
+    ],
+    "mood": "curious",
+    "where": [
+      74,
+      71
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
