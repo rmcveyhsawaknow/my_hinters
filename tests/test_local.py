@@ -489,3 +489,51 @@ def test_the_logon_service_renders_for_both_platforms(tmp_path):
         and f"WorkingDirectory={tmp_path}" in unit
         and "WantedBy=default.target" in unit
     )
+
+
+def test_a_failed_job_keeps_the_tail_of_its_output(tmp_path):
+    lines = [
+        "observing",
+        "Traceback (most recent call last):",
+        "  File x",
+        "ValueError: team square has used its public-speech budget (3/hour)",
+    ]
+
+    def runner(command):
+        return 1, chr(10).join(lines) + chr(10)
+
+    sup = Supervisor(
+        tmp_path, {"dry_run": True, "agents": [{"slug": "town-crier", "jobs": ["tick"]}]}, runner
+    )
+    record = sup.run_once("town-crier", "tick")
+    assert (
+        record["exit"] == 1
+        and record["tail"][-1].startswith("ValueError")
+        and len(record["tail"]) == 4
+    )
+    assert "  | ValueError" in (tmp_path / "runs/local/supervisor.log").read_text(encoding="utf-8")
+
+
+def test_a_wake_goes_quiet_instead_of_failing_when_the_team_budget_is_spent():
+    from hglab.wake import mute_over_budget
+
+    personas, teams = load_personas(ROOT), load_teams(ROOT)
+    crier, square = personas["town-crier"], teams["square"]
+    tick = 47000
+    events = [
+        {"type": "say", "actor": "Clarion", "tick": tick - 100 * n, "text": f"line {n}"}
+        for n in range(1, square.social_budget["says_per_hour"] + 1)
+    ]
+    observe = {"tick": tick, "you": {"name": "Clarion", "id": "x"}, "events": [], "notebook": {}}
+    actions = [{"action": "say", "text": "Hear this!"}, {"action": "move", "x": 1, "y": 2}]
+    kept, muted = mute_over_budget(actions, crier, square, personas, observe, events, tick)
+    assert (
+        kept == [{"action": "move", "x": 1, "y": 2}]
+        and muted["muted"] == 1
+        and "public-speech budget" in muted["why"]
+    )
+    kept, muted = mute_over_budget(actions, crier, square, personas, observe, [], tick)
+    assert kept == actions and muted is None
+    assert mute_over_budget(
+        [{"action": "move", "x": 1, "y": 2}], crier, square, personas, observe, events, tick
+    ) == ([{"action": "move", "x": 1, "y": 2}], None)
