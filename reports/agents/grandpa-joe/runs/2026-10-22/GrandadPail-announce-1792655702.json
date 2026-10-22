@@ -1,0 +1,55 @@
+{
+  "run_id": "announce-1792655702",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 44644,
+  "created_utc": "2026-10-22T07:55:02.544962+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, three of them spent in bed by the hut, which is resting, not napping. The stone deposit at [82, 93] was mostly my supervision, and the family's berries are still safe in my pack."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1853,
+    "output_tokens": 73,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 3,
+    "built": [],
+    "gathered": {},
+    "moved": 1,
+    "deposited": {
+      "stone": 50
+    },
+    "approaches": [
+      "rest",
+      "rest",
+      "deposit",
+      "rest",
+      "deposit"
+    ],
+    "mood": "in_bed",
+    "where": [
+      82,
+      93
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
