@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792637659",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 42839,
+  "created_utc": "2026-10-22T02:54:19.367716+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Gathered 25 wood and carried it to the storehouse five times, 75 deposited. Good hour. Feet are sore, heart is light, and the pile is growing."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1642,
+    "output_tokens": 62,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 25
+    },
+    "moved": 5,
+    "deposited": {
+      "wood": 75
+    },
+    "approaches": [
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit"
+    ],
+    "mood": "warm",
+    "where": [
+      83,
+      95
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
