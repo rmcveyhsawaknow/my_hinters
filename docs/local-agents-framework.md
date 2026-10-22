@@ -149,7 +149,7 @@ hglab local ui [--port 8766 --open]              # the status page and /status.j
 hglab local a2a [--port 8765 --token T]          # Agent Cards and the message endpoint
 hglab local mcp                                  # the management server over stdio
 hglab local memory ingest [--no-events]          # records and the public log into the graph
-hglab local memory query "select ..." | contacts NAME | snapshot [NAME] | restore NAME
+hglab local memory query "select ..." | contacts NAME | performance [--agent] | snapshot [NAME] | restore NAME
 ```
 
 `config/local.yaml` lists which personas the local runtime owns and whether each is dry; the
@@ -176,11 +176,11 @@ block (stdio, command `hglab`, args `local mcp`) and the personas through the A2
 - A2A specification 1.0: https://a2a-protocol.org/latest/specification/ and https://atlan.com/know/mcp/a2a-protocol-implementation-guide/
 - Kùzu archived, LadybugDB fork: https://github.com/LadybugDB/ladybug and https://www.helix-db.com/content/alternatives/kuzu-alternatives-in-2026-embedded-graph-databases
 
-## 7. NemoClaw on this machine: status on 2026-10-22
+## 7. NemoClaw on this machine: working since 2026-10-22
 
-Installed keyless and unattended in WSL2 Ubuntu (Docker Desktop with WSL integration, Node 22.19 from
-a user-local tarball, zstd unpacked from the Ubuntu package into the home directory because sudo has
-no password in the shell that runs installs):
+Installed keyless and unattended in WSL2 Ubuntu (Docker Desktop with WSL integration, Node 22.19
+from a user-local tarball, zstd unpacked from the Ubuntu package into the home directory because
+sudo has no password in the shell that runs installs):
 
 ```text
 NEMOCLAW_NON_INTERACTIVE=1 NEMOCLAW_ACCEPT_THIRD_PARTY_SOFTWARE=1 NEMOCLAW_AGENT=openclaw
@@ -190,22 +190,35 @@ NEMOCLAW_SANDBOX_GPU=0 NEMOCLAW_SANDBOX_NAME=hinters NEMOCLAW_POLICY_MODE=sugges
 
 Result: NemoClaw v0.0.137, OpenShell 0.0.116 gateway as a user service, Ollama in user-local mode
 serving qwen3.5:9b on 127.0.0.1:11434 behind the token proxy on 11435, sandbox `hinters` Ready with
-OpenClaw v2026.9.2 running, policies npm, pypi, huggingface, brew-balanced and openclaw-pricing.
-`NEMOCLAW_DEFER_ONBOARDING` is refused for the OpenClaw agent, so onboarding had to run.
+OpenClaw v2026.9.2, dashboard at http://127.0.0.1:18789 (`nemoclaw hinters dashboard-url`).
 
-Onboarding stops at the policies step. The in-sandbox inference proof posts to
-`http://host.openshell.internal:11435/v1/chat/completions`; the L7 rule allows it and the SSRF
-guard then denies it, because the alias resolves to an IPv6 unique-local address
-(`fdc4:f303:9324::254`, beside `192.168.65.254`) and the generated provider policy pins only
-`10.0.0.0/8`, `172.16.0.0/12` and `192.168.0.0/16`. The pins come from
-`src/lib/inference/native-local/profile.ts` in NemoClaw (installed copy under
-`~/.nemoclaw/source/dist/lib/inference/native-local/profile.js`). Two ways forward, both the
-owner's decision: add `fc00::/7` to that list and run `nemoclaw onboard --resume --non-interactive`,
-or report it upstream and wait. The session did not change the policy.
+**The IPv6 pin.** The sandbox resolves `host.openshell.internal` to an IPv6 unique-local address
+beside 192.168.65.254, and the generated provider policy pinned only IPv4 private ranges, so the
+SSRF guard denied the inference proof. With the owner's approval the installed
+`dist/lib/inference/native-local/profile.js` gained `fc00::/7` (backup `.bak-ula`), and the live
+OpenShell profile was updated in place: export it, add the pin, `openshell provider profile update
+--file profile.yaml <id>` (a resume alone refuses: the profile id already exists). After that the
+inference call is allowed by the L7 and OPA engines and the proof passes.
 
-After onboarding completes: `nemoclaw hinters dashboard-url` for the OpenClaw UI, then an
-`mcp.servers` entry for `hglab local mcp` and a policy endpoint for 127.0.0.1 ports 8765 and 8766 so
-the operator agent can reach the collective's cards and status page.
+**What onboarding still reports.** The smoke check also proves that a direct, proxy-less call to
+the host is denied, and accepts only an HTTP 403 denial or ECONNREFUSED. On this runtime the direct
+route is unreachable (ENETUNREACH), which is a stronger denial, so onboarding ends with "direct host
+inference deny could not be proven" although the sandbox is fully usable. Treat it as an upstream
+compatibility gap; the session did not change the check. The first `nemoclaw hinters agent` call
+also needed a one-time OpenClaw scope approval from the dashboard.
+
+**Tests.** Local model: `nemoclaw hinters agent --agent main -m "..."` answered
+"I am running on inference/qwen3.5:9b, and 7 times 8 is 56" in about 2.5 minutes on CPU.
+Anthropic platform: `nemoclaw inference set --provider anthropic --model claude-sonnet-5` with the
+key passed once through the environment from the hglab keyring; OpenShell keeps it in provider
+storage and the sandbox sees only an `openshell:` reference. The agent answered in six seconds.
+The id `claude-sonnet-5-5` is rejected by the OpenClaw 2026.9.2 adapter with a 400 (its catalogue
+does not list that model), while hglab itself uses it through the Anthropic SDK without trouble.
+
+**Stores, for the record.** Graph: the SQLite property graph under `runs/local/` (agents, teams,
+lots, structures, tasks, wakes with their model and cost, local jobs). Secrets: the OS keyring via
+`hglab key store` for model keys and the identity keys, and OpenShell provider storage for the
+sandbox route. Nothing secret lives in the graph or the sandbox.
 
 Clarion locally: a dry `hglab local once --agent town-crier --job tick` observes the live world (the
 key resolves locally), so the first live confirmation is
