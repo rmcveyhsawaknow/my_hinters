@@ -1,0 +1,58 @@
+{
+  "run_id": "announce-1792669392",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 46013,
+  "created_utc": "2026-10-22T11:43:12.086476+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Twenty wood gathered and seventy-five deposited this hour, five steps each time to the storehouse. Warm hands, steady feet. Next hour, more of the same, and a kettle on after."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1649,
+    "output_tokens": 71,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 20
+    },
+    "moved": 5,
+    "deposited": {
+      "wood": 75
+    },
+    "approaches": [
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit"
+    ],
+    "mood": "warm",
+    "where": [
+      83,
+      95
+    ],
+    "discoveries": []
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
