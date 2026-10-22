@@ -6,6 +6,12 @@
 dry_run: true
 a2a_port: 8765
 ui_port: 8766
+# The NemoClaw side that `hglab local up` and `hglab local stack` manage: the sandbox name, the WSL
+# distribution that hosts it on Windows (ignored on Linux), and whether a user-local Ollama is started.
+nemoclaw:
+  sandbox: hinters
+  wsl_distro: Ubuntu
+  ollama: true
 agents:
   - slug: town-crier
     enabled: true

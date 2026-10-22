@@ -421,3 +421,71 @@ def test_wakes_carry_the_model_and_its_cost_and_performance_sums_them(tmp_path):
     ]
     assert g.performance("Nobody") == {"wakes": [], "jobs": []}
     g.close()
+
+
+def test_the_stack_is_read_through_a_login_shell_and_started_in_reboot_order(tmp_path):
+    from hglab.local import stack
+
+    config = {"nemoclaw": {"sandbox": "hinters", "wsl_distro": "Ubuntu", "ollama": True}}
+    prefix = stack.host_shell(config)
+    assert prefix[-2:] == ["bash", "-lc"] and (prefix[0] == "wsl") == (
+        __import__("platform").system() == "Windows"
+    )
+    calls = []
+    answers = {
+        "docker info": (0, "29.2.1"),
+        "is-active": (0, "active"),
+        "api/tags": (0, "200"),
+        "hinters status": (
+            0,
+            "  Sandbox: hinters\n    Model:    claude-sonnet-5\n    Provider: anthropic-prod\n    OpenClaw: running\n  Phase: Ready\n",
+        ),
+        "hinters start": (0, "already running"),
+        "doctor --fix": (0, "  Summary: healthy with 1 warning(s)"),
+    }
+
+    def run(script, timeout=0):
+        calls.append(script)
+        for key, answer in answers.items():
+            if key in script:
+                return answer
+        return 1, ""
+
+    status = stack.stack_status(config, run)
+    assert (
+        status["ok"]
+        and status["model"] == "claude-sonnet-5"
+        and status["phase"] == "Ready"
+        and status["ollama"] is True
+    )
+    said = []
+    result = stack.stack_up(config, run, said.append)
+    assert (
+        result["ok"]
+        and any("hinters start" in c for c in calls)
+        and any("doctor --fix" in c for c in calls)
+    )
+    assert said[0].startswith("docker 29.2.1") and "doctor: healthy with 1 warning(s)" in said
+    assert stack.stack_status({}, run) == {"configured": False, "sandbox": None}
+    answers["api/tags"] = (0, "000")
+    said.clear()
+    stack.stack_up(config, run, said.append)
+    assert any("ollama serve" in c for c in calls) and "ollama not answering on 11434" in said
+
+
+def test_the_logon_service_renders_for_both_platforms(tmp_path):
+    from hglab.local import service
+
+    script = service.render_windows_startup_script(tmp_path, "C:/venv/Scripts/python.exe")
+    assert (
+        script.startswith("@echo off")
+        and "timeout /t 60" in script
+        and "-m hglab local up" in script
+        and "up.log" in script
+    )
+    unit = service.render_systemd_unit(tmp_path, "/opt/hinters/.venv/bin/python")
+    assert (
+        "ExecStart=/opt/hinters/.venv/bin/python -m hglab local up" in unit
+        and f"WorkingDirectory={tmp_path}" in unit
+        and "WantedBy=default.target" in unit
+    )

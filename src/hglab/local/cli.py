@@ -123,6 +123,92 @@ def local_run(
     Supervisor(root).loop(personas, minutes)
 
 
+@local_app.command("up")
+def local_up(
+    minutes: int | None = typer.Option(
+        None, "--minutes", help="Stop the supervisor after this many minutes"
+    ),
+    stack: bool = typer.Option(
+        True,
+        "--stack/--no-stack",
+        help="Bring the NemoClaw side up first (Docker, gateway, Ollama, sandbox)",
+    ),
+    ui: bool = typer.Option(True, "--ui/--no-ui"),
+    a2a: bool = typer.Option(True, "--a2a/--no-a2a"),
+) -> None:
+    """Bring the whole local environment up in one process: the NemoClaw stack, the status page, the A2A endpoint and the supervisor loop. This is what runs after a reboot."""
+    root = _root()
+    config = load_local_config(root)
+    personas, teams = load_personas(root), load_teams(root)
+    if stack and config.get("nemoclaw"):
+        from hglab.local.stack import stack_up
+
+        result = stack_up(config, say=lambda line: typer.echo(f"stack: {line}"))
+        typer.echo(
+            f"stack: {'ready' if result.get('ok') else 'not ready'}; {json.dumps({k: v for k, v in result.items() if k in ('docker', 'gateway', 'ollama', 'phase', 'openclaw', 'model', 'provider')})}"
+        )
+    if ui:
+        from hglab.local.ui import serve as serve_ui
+
+        port = int(config.get("ui_port", 8766))
+        threading.Thread(
+            target=serve_ui(root, personas, teams, port).serve_forever, daemon=True
+        ).start()
+        typer.echo(f"status page at http://127.0.0.1:{port}/")
+    if a2a:
+        from hglab.local.a2a import serve as serve_a2a
+
+        port = int(config.get("a2a_port", 8765))
+        threading.Thread(
+            target=serve_a2a(root, personas, teams, port, None).serve_forever, daemon=True
+        ).start()
+        typer.echo(f"A2A at http://127.0.0.1:{port}/agents")
+    Supervisor(root).loop(personas, minutes)
+
+
+@local_app.command("stack")
+def local_stack(
+    up: bool = typer.Option(False, "--up", help="Start what is down instead of only reporting"),
+) -> None:
+    """The NemoClaw side: Docker, the OpenShell gateway, Ollama and the sandbox (through WSL on Windows)."""
+    from hglab.local.stack import stack_status, stack_up
+
+    config = load_local_config(_root())
+    result = stack_up(config, say=typer.echo) if up else stack_status(config)
+    typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
+
+
+service_app = typer.Typer(
+    help="Start the environment at logon: a Scheduled Task on Windows, a systemd user unit on Linux.",
+    no_args_is_help=True,
+)
+local_app.add_typer(service_app, name="service")
+
+
+@service_app.command("install")
+def service_install() -> None:
+    """Register the logon start (runs `hglab local up` from this checkout, a minute after logon)."""
+    from hglab.local.service import install
+
+    typer.echo(json.dumps(install(_root()), ensure_ascii=False, indent=2))
+
+
+@service_app.command("remove")
+def service_remove() -> None:
+    """Unregister the logon start."""
+    from hglab.local.service import remove
+
+    typer.echo(json.dumps(remove(_root()), ensure_ascii=False, indent=2))
+
+
+@service_app.command("status")
+def service_status() -> None:
+    """Whether the logon start is registered and what it last did."""
+    from hglab.local.service import status
+
+    typer.echo(json.dumps(status(_root()), ensure_ascii=False, indent=2))
+
+
 @local_app.command("ui")
 def local_ui(
     port: int | None = typer.Option(None, "--port"),

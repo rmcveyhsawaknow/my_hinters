@@ -152,6 +152,10 @@ hglab local memory ingest [--no-events]          # records and the public log in
 hglab local memory query "select ..." | contacts NAME | performance [--agent] | snapshot [NAME] | restore NAME
 ```
 
+After a reboot, `hglab local up` brings both halves up in one process and `hglab local service
+install` makes that automatic; the portable setup for another machine is in
+[local-runtime-setup.md](local-runtime-setup.md).
+
 `config/local.yaml` lists which personas the local runtime owns and whether each is dry; the
 schema is `schemas/local.json` and `hglab config validate` checks it. State lives under `runs/local/`
 (ignored by git): `status.json`, `supervisor.log`, `memory.sqlite` and `memory.snapshots/`.
