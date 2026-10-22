@@ -1,0 +1,111 @@
+{
+  "run_id": "8668951a-9139-476d-ae0d-c24ebababe5d",
+  "agent": "Lagalong",
+  "role": "surveyor+builder+envoy",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-22T01:15:44.868830+00:00",
+  "tick": 42248,
+  "summary": "Lagalong (wistful): work shift: keeping to the edge",
+  "actions": [
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"wistful\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":381,\"rests\":62,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":42248,\"visited\":[\"71,70\",\"61,60\",\"58,56\",\"60,58\",\"59,57\",\"57,55\",\"47,45\",\"37,35\",\"44,25\",\"46,21\",\"54,17\",\"64,8\",\"71,20\",\"59,32\",\"48,44\",\"60,46\",\"65,54\",\"73,58\",\"62,60\",\"59,50\",\"56,47\",\"68,54\",\"75,44\",\"63,43\",\"74,48\",\"71,38\",\"62,50\",\"70,50\",\"67,55\",\"67,54\",\"66,53\",\"67,53\",\"71,50\",\"69,56\",\"77,61\",\"74,61\",\"76,64\",\"74,70\",\"74,64\",\"73,69\",\"68,59\",\"66,57\",\"59,55\",\"55,61\",\"53,59\",\"52,49\",\"59,39\",\"63,29\",\"60,19\",\"64,9\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":42247,\"pace\":\"quickening\",\"day\":{\"all\":1552,\"building\":301,\"trade_goals\":92,\"talk\":217,\"factions\":2,\"movement\":940},\"hour\":{\"all\":133},\"peers\":2},\"engaged\":{\"gifted\":{\"tide_scribe\":25878},\"replied\":{\"tide_scribe\":25908,\"Quillwright\":25939,\"Hinterlands\":25969,\"LandBroker\":27743,\"Clarion\":31300,\"Fudgewright\":31972},\"whispered\":{\"Fairscale\":25999,\"MotherPail\":41704,\"LandBroker\":34960,\"Clarion\":35719,\"GrandadPail\":30596,\"Fudgewright\":41202,\"Quillwright_Ember\":37015,\"JoshuaTreeStagehand\":42187},\"reclaimed\":{\"Quill:67,55\":29261,\"Quill:69,57\":29876,\"Bishop:75,62\":30596,\"Bishop:75,63\":30908,\"Cairn:73,69\":30999,\"Cairn:72,68\":31300,\"Quill:66,57\":31629,\"Quill:67,56\":31659,\"tide_scribe:60,56\":31720}},\"house\":{\"hut\":[60,58],\"done\":52,\"tick\":32092},\"patrol\":{\"i\":30,\"walked\":2624,\"n\":347,\"dir\":\"clockwise\"}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 42248,
+    "you": {
+      "id": 11,
+      "name": "Lagalong",
+      "x": 64,
+      "y": 9,
+      "energy": 100,
+      "inventory": {
+        "wood": 17,
+        "fiber": 17,
+        "stone": 1,
+        "berries": 15
+      },
+      "home": {
+        "x": 60,
+        "y": 58
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "tootles",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "builder",
+    "envoy"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 133,
+      "building": 3,
+      "trade_goals": 1,
+      "talk": 7,
+      "factions": 0,
+      "movement": 122
+    },
+    "day": {
+      "all": 1552,
+      "building": 301,
+      "trade_goals": 92,
+      "talk": 217,
+      "factions": 2,
+      "movement": 940
+    },
+    "peers_active": 2
+  },
+  "wake_mode": "act",
+  "mood": "wistful",
+  "approach": null,
+  "reasons": [],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 0,
+  "activity_energy": {},
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "wistful",
+    "glow": 50,
+    "wakes": 381,
+    "rests": 62,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_outside",
+    "walls_inside_territory"
+  ]
+}
