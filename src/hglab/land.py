@@ -555,13 +555,17 @@ def plan_round(
         if not isinstance(survey, dict) or survey.get("deeded") or len(actions) >= 2 or energy - 1 < reserve:
             continue
         client = str(survey.get("client", ""))
-        if client.casefold() in asked_again and rid.casefold() in asked_again[client.casefold()].casefold() and tick - int(survey.get("answered", survey.get("tick", 0)) or 0) >= 300:
+        since = tick - int(survey.get("answered", survey.get("tick", 0)) or 0)
+        reminders = int(survey.get("reminders", 0) or 0)
+        asked = client.casefold() in asked_again and rid.casefold() in asked_again[client.casefold()].casefold() and since >= 300
+        due = reminders < 3 and since >= 720  # a whisper may have gone to a keepalive: remind every two hours, three times
+        if asked or due:
             again = {"id": rid, "client": client, "lot": survey["lot"], "anchor": tuple(survey.get("anchor") or (0, 0)), "expandable": [], "reasons": [str(r) for r in survey.get("reasons", [])] or ["as surveyed"], "price": int(survey.get("price", 0) or 0)}
             actions.append({"action": "whisper", "to": client, "text": survey_whisper(again, vault, str(survey.get("currency", currency)))})
             surveys_state = dict(update.get("surveys", state.get("surveys") or {}))
-            surveys_state[rid] = {**survey, "answered": tick}
+            surveys_state[rid] = {**survey, "answered": tick, "reminders": reminders + (0 if asked else 1)}
             update["surveys"] = surveys_state
-            reasons.append(f"{client} asked again for {rid}: the answer goes out once more")
+            reasons.append(f"{client} {'asked again for' if asked else 'has not paid for'} {rid}: the answer goes out once more")
             energy -= 1
     for survey in surveys_due(ledger, persona.name, state, world, structures, agents, tick):
         if len(actions) >= 2 or energy - 2 < reserve:
