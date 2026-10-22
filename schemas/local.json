@@ -8,6 +8,15 @@
     "dry_run": {"type": "boolean"},
     "a2a_port": {"type": "integer", "minimum": 1024, "maximum": 65535},
     "ui_port": {"type": "integer", "minimum": 1024, "maximum": 65535},
+    "ecosystem": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "host_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9.-]{0,62}$"},
+        "data_boundary": {"enum": ["public", "internal", "restricted"]},
+        "backup_target": {"type": "string", "pattern": "^(local:.+|gs://[a-z0-9][a-z0-9._-]+(/.*)?)$"}
+      }
+    },
     "nemoclaw": {
       "type": "object",
       "additionalProperties": false,

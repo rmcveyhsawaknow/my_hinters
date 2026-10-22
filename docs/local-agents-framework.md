@@ -8,6 +8,10 @@ VS Code), snapshots and persists memory for resilience, lets a person move betwe
 and gives an organisation one way to audit and measure agents. The first agent to move from
 GitHub Actions to the local runtime is Clarion; the teams follow one by one.
 
+The reference architecture with every interface and protocol is
+[reference-architecture.md](reference-architecture.md); the phased plan for a distributed ecosystem of
+hosts with routable agent and human skills is [distributed-ecosystem-plan.md](distributed-ecosystem-plan.md).
+
 ## 1. What the reports say about coordination
 
 Measured on the reports branch for the two days to 2026-10-22 (2,261 wake records):

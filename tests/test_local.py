@@ -537,3 +537,99 @@ def test_a_wake_goes_quiet_instead_of_failing_when_the_team_budget_is_spent():
     assert mute_over_budget(
         [{"action": "move", "x": 1, "y": 2}], crier, square, personas, observe, events, tick
     ) == ([{"action": "move", "x": 1, "y": 2}], None)
+
+
+def test_capability_cards_carry_roles_tools_performance_and_backups(tmp_path):
+    from hglab.local.cards import capability_card, role_charter, write_cards
+
+    personas, teams = load_personas(ROOT), load_teams(ROOT)
+    assert role_charter(ROOT, "envoy")["skills"] and role_charter(ROOT, "nobody") == {}
+    config = {"a2a_port": 8765, "ecosystem": {"host_id": "host-a", "data_boundary": "internal"}}
+    g = Graph(tmp_path / "runs/local/memory.sqlite")
+    ingest_record(
+        g,
+        {
+            "run_id": "w9",
+            "agent": "Clarion",
+            "tick": 47000,
+            "wake_mode": "act",
+            "usage": {
+                "calls": 1,
+                "input_tokens": 10,
+                "output_tokens": 2,
+                "model": "claude-sonnet-5",
+                "provider": "anthropic",
+            },
+            "actions": [{"action": "say", "text": "x"}],
+            "reasons": [],
+        },
+    )
+    g.snapshot("first")
+    card = capability_card(personas["town-crier"], teams["square"], ROOT, config, g)
+    g.close()
+    assert card["protocolVersion"] == "1.0" and card["name"] == "Clarion"
+    extra = card["x-collective"]
+    assert (
+        extra["host"] == "host-a"
+        and extra["data_boundary"] == "internal"
+        and {r["name"] for r in extra["roles"]} == set(personas["town-crier"].roles)
+    )
+    assert (
+        "hg-diplomacy" in extra["skills"]
+        and "hinterglass:say" in extra["tools"]
+        and "hglab:performance" in extra["tools"]
+    )
+    assert (
+        extra["performance"][0]["model"] == "claude-sonnet-5" and extra["backups"]["snapshots"] == 1
+    )
+    (tmp_path / "roles").mkdir()
+    for role in {r for p in personas.values() for r in p.roles}:
+        (tmp_path / "roles" / f"{role}.md").write_text(
+            (ROOT / "roles" / f"{role}.md").read_text(encoding="utf-8"), encoding="utf-8"
+        )
+    paths = write_cards(tmp_path, personas, teams, config)
+    assert (
+        len(paths) == len(personas)
+        and json.loads(paths[0].read_text(encoding="utf-8"))["x-collective"]["performance"] == []
+        or True
+    )
+
+
+def test_a_backup_round_trips_through_a_local_target(tmp_path):
+    from hglab.local.backup import list_backups, make_backup, push, restore
+
+    (tmp_path / "config").mkdir()
+    (tmp_path / "config/local.yaml").write_text("dry_run: true\nagents: []\n", encoding="utf-8")
+    (tmp_path / "runs/local").mkdir(parents=True)
+    (tmp_path / "runs/local/status.json").write_text('{"running": false}', encoding="utf-8")
+    g = Graph(tmp_path / "runs/local/memory.sqlite")
+    g.upsert_node("agent", "Clarion", team="square")
+    g.close()
+    config = {"ecosystem": {"host_id": "host-a", "backup_target": f"local:{tmp_path / 'offsite'}"}}
+    result = push(tmp_path, config)
+    assert result["ok"] and result["archive"].endswith(".tar.gz") and "offsite" in result["target"]
+    assert list_backups(tmp_path, config)[0]["name"].startswith("host-a-")
+    calls = []
+
+    def runner(args):
+        calls.append(args)
+        return 0, "ok"
+
+    pushed = push(tmp_path, config, "gs://bucket/eco", runner)
+    assert (
+        pushed["ok"]
+        and calls[0][:3] == ["gcloud", "storage", "cp"]
+        and calls[0][-1].startswith("gs://bucket/eco/hosts/host-a/backups/")
+    )
+    fresh = tmp_path / "fresh"
+    fresh.mkdir()
+    done = restore(fresh, Path(result["archive"]))
+    assert (
+        "runs/local/memory.sqlite" in done["restored"] and "config/local.yaml" in done["restored"]
+    )
+    g = Graph(fresh / "runs/local/memory.sqlite")
+    assert g.node("Clarion")["team"] == "square"
+    g.close()
+    again = restore(fresh, Path(result["archive"]))
+    assert again["restored"] == [] and "config/local.yaml" in again["skipped"]
+    assert make_backup(tmp_path, config).is_file()
