@@ -4,7 +4,7 @@
 # agent may be listed here while its Actions schedule still runs; once a local run has proved itself,
 # switch HG_ENABLED (all agents) or HG_AGENT_<NAME> off on Actions and leave it here. Humans edit this
 # file by PR. Cut-over for the 24-hour local test: set dry_run below to false and restart hglab local up.
-dry_run: true
+dry_run: false
 a2a_port: 8765
 ui_port: 8766
 agents:
