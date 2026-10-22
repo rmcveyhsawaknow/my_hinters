@@ -4,12 +4,12 @@
  "model": "claude-sonnet-5-5",
  "provider": "anthropic",
  "sampled_lines": 6,
- "sampled_actions": 3,
- "created_utc": "2026-10-21T05:21:34.641973+00:00",
+ "sampled_actions": 8,
+ "created_utc": "2026-10-22T05:21:31.499495+00:00",
  "usage": {
   "calls": 1,
-  "input_tokens": 1343,
-  "output_tokens": 292,
+  "input_tokens": 1464,
+  "output_tokens": 278,
   "model": "claude-sonnet-5-5",
   "provider": "anthropic",
   "route": "review"
@@ -18,22 +18,22 @@
   {
    "name": "humble",
    "score": 5,
-   "reason": "Lines are full of hedges like \"I think\" and \"if that is all right\", report modest progress, and never boast. The whisper to LandBroker is also polite and open."
+   "reason": "Lines are full of hedges like \"I think\" and \"if that is all right\", he apologises for missing things (\"I missed the paving, did I not?\"), and he reports facts w"
   },
   {
    "name": "persistent",
-   "score": 4,
-   "reason": "He keeps walking outward across many wakes and rests despite nothing being built or gathered, and still heads for the far hut and the far edge. Output is thin, "
+   "score": 5,
+   "reason": "He keeps moving and counting across many wakes with a long chain of moves, and says \"I will keep going\" despite nothing built or gathered."
   },
   {
    "name": "gentle",
    "score": 4,
-   "reason": "The tone is soft and courteous throughout, with no sharp words and a polite whisper. Thanks to unnamed builders are absent, which keeps it from a 5."
+   "reason": "His tone is soft and he keeps his voice low. He greets a peer warmly and offers wood. There are no sharp words, though he thanks no builders explicitly."
   },
   {
    "name": "wistful",
-   "score": 5,
-   "reason": "He speaks of the big thing as somewhere he has not been, says he is still behind, and calls it \"good at waiting\", all without complaint."
+   "score": 4,
+   "reason": "He mentions the big thing still being somewhere he has not been and keeps noting what he missed, without complaining."
   }
  ]
 }
