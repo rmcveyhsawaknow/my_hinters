@@ -1,0 +1,52 @@
+{
+  "run_id": "announce-1792666105",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 45684,
+  "created_utc": "2026-10-22T10:48:25.019708+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Woke up long enough to notice someone else stored 75 stone; walked 1 leg."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [],
+    "gathered": {},
+    "moved": 1,
+    "deposited": {
+      "stone": 75
+    },
+    "approaches": [
+      "deposit",
+      "deposit",
+      "rest",
+      "deposit",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": [
+      82,
+      93
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
