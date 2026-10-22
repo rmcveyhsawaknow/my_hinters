@@ -7,6 +7,7 @@ import threading
 import webbrowser
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 
 import typer
 
@@ -218,6 +219,55 @@ def service_status() -> None:
     from hglab.local.service import status
 
     typer.echo(json.dumps(status(_root()), ensure_ascii=False, indent=2))
+
+
+@local_app.command("goals")
+def local_goals(
+    agent: str | None = typer.Option(None, "--agent", help="Persona slug or in-world name"),
+    adapt_now: bool = typer.Option(
+        False,
+        "--adapt",
+        help="Recompute assignments from the evidence and record them in the graph",
+    ),
+    brief_now: bool = typer.Option(
+        False,
+        "--brief",
+        help="With --adapt: leave each changed assignment as an operator message for the next wake",
+    ),
+) -> None:
+    """What each persona is doing now and the goal it pursues, with the evidence; --adapt recomputes, --brief delivers."""
+    from hglab.local.goals import adapt, brief, current
+
+    root = _root()
+    personas, teams = load_personas(root), load_teams(root)
+    graph = _graph(root)
+    try:
+        if adapt_now:
+            plan = adapt(root, graph, personas, teams)
+            briefed = brief(root, graph, plan) if brief_now else []
+            view = {
+                slug: {
+                    "name": d["name"],
+                    "team": d["team"],
+                    "assignment": d["assignment"],
+                    "activity": d["activity"],
+                }
+                for slug, d in plan["agents"].items()
+            }
+            out: dict[str, Any] = {
+                "utc": plan["utc"],
+                "agents": view,
+                "teams": plan["teams"],
+                "briefed": briefed,
+            }
+        else:
+            out = {"agents": current(root, personas, graph)}
+    finally:
+        graph.close()
+    if agent:
+        name = _persona_name(root, agent)
+        out["agents"] = {s: v for s, v in out["agents"].items() if personas[s].name == name}
+    typer.echo(json.dumps(out, ensure_ascii=False, indent=2, default=str))
 
 
 @local_app.command("cards")

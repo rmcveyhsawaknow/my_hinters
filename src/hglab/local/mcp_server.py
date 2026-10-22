@@ -186,6 +186,44 @@ def build_server(root: Path) -> Any:
         finally:
             g.close()
 
+    @mcp.tool()
+    def goals(agent: str | None = None) -> dict[str, Any]:
+        """What each persona is doing now (newest wake) and the goal it pursues with the evidence behind it."""
+        from hglab.local.goals import current
+
+        personas = load_personas(root)
+        g = Graph(graph_path) if graph_path.is_file() else None
+        try:
+            view = current(root, personas, g)
+        finally:
+            if g is not None:
+                g.close()
+        return {
+            s: v
+            for s, v in view.items()
+            if not agent or s == agent or personas[s].name.casefold() == agent.casefold()
+        }
+
+    @mcp.tool()
+    def adapt_goals(brief: bool = False) -> dict[str, Any]:
+        """Recompute every persona's assignment from key results, Pulse progress, approach outcomes and teammates; with brief=true leave each changed assignment as an operator message for its next wake."""
+        from hglab.local.goals import adapt
+        from hglab.local.goals import brief as brief_all
+
+        personas, teams = load_personas(root), load_teams(root)
+        g = Graph(graph_path)
+        try:
+            plan = adapt(root, g, personas, teams)
+            briefed = brief_all(root, g, plan) if brief else []
+        finally:
+            g.close()
+        return {
+            "utc": plan["utc"],
+            "assignments": {s: d["assignment"] for s, d in plan["agents"].items()},
+            "teams": plan["teams"],
+            "briefed": briefed,
+        }
+
     return mcp
 
 
