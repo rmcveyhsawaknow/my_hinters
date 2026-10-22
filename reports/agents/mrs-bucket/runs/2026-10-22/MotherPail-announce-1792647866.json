@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792647866",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 43860,
+  "created_utc": "2026-10-22T05:44:26.176271+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Gathered 20 wood and carried it to the storehouse in five trips, 75 deposited. Warm hands, dry boots, and the next load already waiting at the stack."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1642,
+    "output_tokens": 63,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "wood": 20
+    },
+    "moved": 5,
+    "deposited": {
+      "wood": 75
+    },
+    "approaches": [
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit"
+    ],
+    "mood": "warm",
+    "where": [
+      74,
+      91
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
