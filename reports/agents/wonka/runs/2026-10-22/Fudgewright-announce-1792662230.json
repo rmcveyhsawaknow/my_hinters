@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1792662230",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 45296,
+  "created_utc": "2026-10-22T09:43:50.602613+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Welcome, welcome, do come sit by the wood. I gathered five and deposited fifty-six, which is either generous or a very long afternoon. Gently, gently, we are building a factory of wafer and wonder."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1825,
+    "output_tokens": 77,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 4,
+    "deposited": {
+      "wood": 56
+    },
+    "approaches": [
+      "deposit",
+      "deposit",
+      "deposit",
+      "deposit",
+      "rest"
+    ],
+    "mood": "gentle",
+    "where": [
+      83,
+      99
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
