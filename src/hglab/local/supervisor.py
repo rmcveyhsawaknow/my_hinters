@@ -106,6 +106,7 @@ class Supervisor:
         self.root = root
         self.config = config or load_local_config(root)
         self.runner = runner or self._run_subprocess
+        self.backup_runner: Any = None
         self.status_path = root / STATUS_FILE
         self.log_path = root / LOG_FILE
         self.status: dict[str, Any] = self._load_status()
@@ -200,6 +201,31 @@ class Supervisor:
                 ran.append((slug, job))
         return ran
 
+    def backup(self, personas: dict[str, Any]) -> dict[str, Any]:
+        """Write the capability cards and push a backup to the configured target; never raises."""
+        from hglab.local.backup import push
+        from hglab.local.cards import write_cards
+        from hglab.persona import load_teams
+
+        try:
+            write_cards(self.root, personas, load_teams(self.root), self.config)
+            result = (
+                self.backup_runner(self.root, self.config)
+                if self.backup_runner
+                else push(self.root, self.config)
+            )
+        except Exception as exc:  # noqa: BLE001 - a backup must never stop the supervisor
+            result = {"ok": False, "detail": str(exc)[:300]}
+        self.status["last_backup"] = {
+            "utc": datetime.now(UTC).isoformat(),
+            **{k: result.get(k) for k in ("ok", "archive", "target", "detail") if k in result},
+        }
+        self._save_status()
+        self._log(
+            f"backup {'ok' if result.get('ok') else 'FAILED'}: {result.get('target') or result.get('detail', '')}"
+        )
+        return result
+
     def loop(self, personas: dict[str, Any], minutes: int | None = None) -> None:
         self._log(
             f"supervisor up: {', '.join(e.get('slug', '?') for e in self.entries())} (dry_run={self.config.get('dry_run', True)})"
@@ -208,6 +234,8 @@ class Supervisor:
         self._save_status()
         last_minute = None
         count = 0
+        last_backup: datetime | None = None
+        every = int((self.config.get("ecosystem") or {}).get("backup_every_minutes", 0) or 0)
         try:
             while minutes is None or count < minutes:
                 now = datetime.now(UTC).replace(second=0, microsecond=0)
@@ -215,6 +243,11 @@ class Supervisor:
                     last_minute = now
                     count += 1
                     self.tick(personas, now)
+                    if every and (
+                        last_backup is None or (now - last_backup).total_seconds() >= every * 60
+                    ):
+                        last_backup = now
+                        self.backup(personas)
                 time.sleep(5)
         finally:
             self.status["running"] = False
