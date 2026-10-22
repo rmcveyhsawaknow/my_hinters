@@ -1,0 +1,1026 @@
+{
+  "agent": "LandBroker",
+  "persona": "land-broker",
+  "kind": "land_round",
+  "recorded_utc": "2026-10-22T16:11:18.469773+00:00",
+  "dry_run": false,
+  "scheduled": true,
+  "tick": 47621,
+  "board": {
+    "total": 169,
+    "occupied": 88,
+    "free": 81,
+    "vault": {
+      "x": 73,
+      "y": 72
+    },
+    "registration_goal": {
+      "id": 28,
+      "status": "open"
+    },
+    "sale_goal": {
+      "id": 32,
+      "status": "open",
+      "qty": 25
+    },
+    "offers": [
+      {
+        "id": "wood-for-berries",
+        "title": "Offer: 2 berries for 10 wood into the land office vault",
+        "status": "open",
+        "goal_id": null,
+        "goal_status": null
+      },
+      {
+        "id": "stone-for-berries",
+        "title": "Offer: 3 berries for 10 stone into the land office vault",
+        "status": "open",
+        "goal_id": null,
+        "goal_status": null
+      }
+    ],
+    "registered": [
+      {
+        "plot": "G07",
+        "holder": "Fairscale",
+        "tick": 13455
+      },
+      {
+        "plot": "G07",
+        "holder": "Clarion",
+        "tick": 31477
+      }
+    ],
+    "lots": {
+      "total": 676,
+      "free": 409,
+      "free_share": 0.605,
+      "staked": 193,
+      "for_sale": 193,
+      "unsold": [
+        "B04-SE",
+        "B05-NE",
+        "B05-SE",
+        "B05-SW",
+        "B06-NE",
+        "B06-NW",
+        "B06-SE",
+        "B06-SW",
+        "C03-SE",
+        "C04-NE",
+        "C04-NW",
+        "C04-SE",
+        "C04-SW",
+        "C05-NE",
+        "C05-NW",
+        "C05-SE",
+        "C05-SW",
+        "C06-NE",
+        "C06-NW",
+        "C06-SE",
+        "C06-SW",
+        "C07-NE",
+        "C07-NW",
+        "C07-SE",
+        "C08-NE",
+        "C08-SE",
+        "C09-NE",
+        "D02-SE",
+        "D03-NE",
+        "D03-NW",
+        "D03-SE",
+        "D03-SW",
+        "D04-NE",
+        "D04-NW",
+        "D04-SE",
+        "D04-SW",
+        "D05-NE",
+        "D05-NW",
+        "D05-SE",
+        "D05-SW",
+        "D06-NE",
+        "D06-NW",
+        "D06-SE",
+        "D06-SW",
+        "D07-NW",
+        "D07-SE",
+        "D07-SW",
+        "D08-NE",
+        "D08-NW",
+        "D08-SE",
+        "D08-SW",
+        "D09-NE",
+        "D09-SE",
+        "D09-SW",
+        "D10-NE",
+        "D10-NW",
+        "E02-NE",
+        "E02-SE",
+        "E02-SW",
+        "E03-NE",
+        "E03-NW",
+        "E03-SE",
+        "E03-SW",
+        "E04-NE",
+        "E04-NW",
+        "E04-SE",
+        "E05-NW",
+        "E05-SE",
+        "E05-SW",
+        "E06-NE",
+        "E06-NW",
+        "E06-SE",
+        "E06-SW",
+        "E07-NE",
+        "E07-NW",
+        "E07-SE",
+        "E07-SW",
+        "E08-NE",
+        "E08-NW",
+        "E08-SE",
+        "E08-SW",
+        "E09-NE",
+        "E09-NW",
+        "E09-SE",
+        "E09-SW",
+        "E10-NE",
+        "F01-NE",
+        "F01-SE",
+        "F02-NE",
+        "F02-NW",
+        "F02-SE",
+        "F02-SW",
+        "F03-NE",
+        "F03-NW",
+        "F03-SE",
+        "F03-SW",
+        "F04-NE",
+        "F04-NW",
+        "F04-SE",
+        "F04-SW",
+        "F06-SW",
+        "F08-SE",
+        "F08-SW",
+        "F09-NE",
+        "F09-NW",
+        "F09-SE",
+        "F09-SW",
+        "F10-NE",
+        "F10-NW",
+        "G01-NE",
+        "G01-SE",
+        "G02-NE",
+        "G02-SE",
+        "G03-NE",
+        "G03-SE",
+        "G08-SE",
+        "G08-SW",
+        "G09-NE",
+        "G09-NW",
+        "G09-SE",
+        "G09-SW",
+        "H01-SE",
+        "H01-SW",
+        "H02-NE",
+        "H02-NW",
+        "H02-SE",
+        "H02-SW",
+        "H03-NE",
+        "H03-NW",
+        "H03-SE",
+        "H03-SW",
+        "H04-NE",
+        "H04-NW",
+        "H04-SE",
+        "H05-NE",
+        "H05-SE",
+        "I01-SE",
+        "I01-SW",
+        "I02-NE",
+        "I02-NW",
+        "I02-SE",
+        "I02-SW",
+        "I03-NE",
+        "I03-NW",
+        "I03-SE",
+        "I03-SW",
+        "I04-NE",
+        "I04-NW",
+        "I04-SE",
+        "I04-SW",
+        "I05-NE",
+        "I05-NW",
+        "I05-SE",
+        "I05-SW",
+        "I06-NE",
+        "I06-NW",
+        "I06-SE",
+        "I07-NE",
+        "I07-SW",
+        "I08-NW",
+        "J01-SW",
+        "J02-NE",
+        "J02-NW",
+        "J02-SE",
+        "J02-SW",
+        "J03-NE",
+        "J03-NW",
+        "J03-SE",
+        "J03-SW",
+        "J04-NE",
+        "J04-NW",
+        "J04-SE",
+        "J04-SW",
+        "J05-NE",
+        "J05-NW",
+        "J05-SE",
+        "J05-SW",
+        "J06-NE",
+        "J06-NW",
+        "J06-SE",
+        "J06-SW",
+        "J07-NE",
+        "J07-NW",
+        "K02-SW",
+        "K03-NW",
+        "K03-SE",
+        "K03-SW",
+        "K04-NE",
+        "K04-NW",
+        "K04-SW",
+        "K05-NW",
+        "K06-SW",
+        "K07-NW"
+      ],
+      "sold": 0,
+      "price": 25,
+      "base_price": 8,
+      "prices": {
+        "H05-NE": 29,
+        "H04-SE": 29,
+        "I04-SE": 25,
+        "I04-SW": 25,
+        "I04-NE": 25,
+        "I04-NW": 25,
+        "I03-SW": 25,
+        "H03-SE": 25,
+        "I03-NW": 22,
+        "H03-NE": 22,
+        "I02-SW": 25,
+        "H02-SE": 25,
+        "I02-NW": 21,
+        "I01-SE": 21,
+        "I02-NE": 25,
+        "I01-SW": 8,
+        "H01-SE": 23,
+        "H02-NW": 25,
+        "H02-NE": 25,
+        "H01-SW": 26,
+        "G01-NE": 20,
+        "G01-SE": 27,
+        "F01-NE": 19,
+        "F01-SE": 26,
+        "F02-NW": 29,
+        "E02-NE": 21,
+        "E02-SW": 15,
+        "D03-NE": 26,
+        "E03-NW": 14,
+        "D02-SE": 8,
+        "D03-NW": 26,
+        "D03-SW": 26,
+        "C03-SE": 24,
+        "C04-NW": 24,
+        "C04-NE": 26,
+        "C04-SE": 25,
+        "C04-SW": 26,
+        "C05-NW": 26,
+        "B04-SE": 25,
+        "B05-NE": 26,
+        "B05-SE": 26,
+        "B05-SW": 32,
+        "B06-NE": 26,
+        "B06-NW": 28,
+        "B06-SW": 15,
+        "B06-SE": 21,
+        "C06-NW": 26,
+        "C05-SW": 26,
+        "C05-SE": 25,
+        "C05-NE": 25,
+        "D04-SW": 25,
+        "D05-SW": 25,
+        "D05-NW": 25,
+        "D05-SE": 25,
+        "D05-NE": 21,
+        "E05-NW": 14,
+        "D04-SE": 25,
+        "E04-NW": 23,
+        "D04-NE": 26,
+        "E03-SW": 22,
+        "F04-SE": 28,
+        "E08-NE": 26,
+        "E07-SE": 26,
+        "E08-NW": 25,
+        "E07-SW": 25,
+        "D07-SE": 25,
+        "F04-NE": 23,
+        "F04-SW": 27,
+        "F04-NW": 22,
+        "E04-NE": 12,
+        "F03-SW": 18,
+        "H04-NW": 26,
+        "H04-NE": 26,
+        "H03-SW": 25,
+        "G03-SE": 25,
+        "H03-NW": 25,
+        "G03-NE": 25,
+        "G02-SE": 26,
+        "G02-NE": 26,
+        "H02-SW": 25,
+        "F03-SE": 23,
+        "F03-NE": 25,
+        "F03-NW": 21,
+        "F02-SE": 26,
+        "F02-SW": 26,
+        "F02-NE": 26,
+        "E03-NE": 12,
+        "E02-SE": 21,
+        "D03-SE": 26,
+        "D04-NW": 26,
+        "E03-SE": 10,
+        "E04-SE": 17,
+        "E05-SW": 19,
+        "D06-NE": 25,
+        "E06-NW": 25,
+        "E06-SW": 25,
+        "D06-SE": 25,
+        "D06-NW": 25,
+        "C06-NE": 25,
+        "C06-SE": 25,
+        "C06-SW": 25,
+        "C07-NE": 25,
+        "C07-NW": 28,
+        "C07-SE": 22,
+        "D07-NW": 25,
+        "D06-SW": 25,
+        "D07-SW": 25,
+        "C08-NE": 19,
+        "D08-SW": 19,
+        "D08-NW": 25,
+        "C08-SE": 19,
+        "C09-NE": 14,
+        "D09-SW": 11,
+        "D09-SE": 8,
+        "D09-NE": 15,
+        "E09-NW": 25,
+        "E08-SW": 23,
+        "D08-SE": 21,
+        "D08-NE": 25,
+        "E07-NW": 25,
+        "E07-NE": 26,
+        "E06-SE": 25,
+        "F06-SW": 29,
+        "E06-NE": 25,
+        "E05-SE": 18,
+        "I07-SW": 32,
+        "I08-NW": 8,
+        "I06-NW": 26,
+        "I05-SE": 26,
+        "I05-SW": 26,
+        "I05-NE": 25,
+        "I05-NW": 25,
+        "H05-SE": 30,
+        "I06-NE": 28,
+        "I06-SE": 28,
+        "I07-NE": 30,
+        "J07-NW": 30,
+        "J06-SW": 28,
+        "J07-NE": 26,
+        "J06-SE": 25,
+        "K07-NW": 26,
+        "K06-SW": 26,
+        "J06-NE": 26,
+        "J06-NW": 28,
+        "G08-SE": 31,
+        "G08-SW": 27,
+        "F09-NE": 26,
+        "F08-SE": 26,
+        "F09-NW": 25,
+        "F08-SW": 26,
+        "E08-SE": 26,
+        "E09-NE": 25,
+        "G09-NW": 29,
+        "G09-SE": 30,
+        "G09-NE": 33,
+        "G09-SW": 28,
+        "F10-NE": 30,
+        "F09-SE": 26,
+        "F10-NW": 19,
+        "F09-SW": 25,
+        "E09-SE": 25,
+        "E09-SW": 23,
+        "E10-NE": 18,
+        "D10-NE": 14,
+        "D10-NW": 14,
+        "J05-SW": 26,
+        "J05-NE": 25,
+        "J05-SE": 25,
+        "J05-NW": 25,
+        "J04-SE": 25,
+        "J04-SW": 25,
+        "J04-NE": 25,
+        "J04-NW": 25,
+        "J03-SE": 25,
+        "J03-SW": 25,
+        "J03-NW": 25,
+        "I03-SE": 25,
+        "I03-NE": 25,
+        "I02-SE": 25,
+        "J02-NW": 25,
+        "J02-SW": 25,
+        "J02-NE": 28,
+        "J01-SW": 22,
+        "K02-SW": 28,
+        "J02-SE": 25,
+        "K03-NW": 25,
+        "J03-NE": 25,
+        "K03-SW": 25,
+        "K04-NE": 25,
+        "K03-SE": 25,
+        "K04-NW": 25,
+        "K04-SW": 25,
+        "K05-NW": 26
+      },
+      "tags": {
+        "H05-NE": [
+          "stone near",
+          "timber",
+          "high ground",
+          "in demand"
+        ],
+        "H04-SE": [
+          "stone near",
+          "timber",
+          "high ground",
+          "in demand"
+        ],
+        "I04-SE": [
+          "timber"
+        ],
+        "I04-SW": [
+          "stone near",
+          "timber"
+        ],
+        "I04-NE": [
+          "timber"
+        ],
+        "I04-NW": [
+          "timber"
+        ],
+        "I03-SW": [
+          "timber"
+        ],
+        "H03-SE": [
+          "timber"
+        ],
+        "I03-NW": [
+          "timber"
+        ],
+        "H03-NE": [
+          "timber"
+        ],
+        "I02-SW": [],
+        "H02-SE": [],
+        "I02-NW": [],
+        "I01-SE": [
+          "timber",
+          "coast"
+        ],
+        "I02-NE": [
+          "timber"
+        ],
+        "I01-SW": [
+          "unbuildable"
+        ],
+        "H01-SE": [
+          "river view"
+        ],
+        "H02-NW": [],
+        "H02-NE": [],
+        "H01-SW": [],
+        "G01-NE": [
+          "timber"
+        ],
+        "G01-SE": [
+          "timber"
+        ],
+        "F01-NE": [
+          "timber",
+          "river view"
+        ],
+        "F01-SE": [
+          "timber"
+        ],
+        "F02-NW": [
+          "river view"
+        ],
+        "E02-NE": [
+          "coast"
+        ],
+        "E02-SW": [
+          "coast"
+        ],
+        "D03-NE": [
+          "timber"
+        ],
+        "E03-NW": [],
+        "D02-SE": [
+          "unbuildable"
+        ],
+        "D03-NW": [
+          "timber"
+        ],
+        "D03-SW": [
+          "timber"
+        ],
+        "C03-SE": [
+          "timber",
+          "river view"
+        ],
+        "C04-NW": [
+          "timber",
+          "river view"
+        ],
+        "C04-NE": [
+          "timber"
+        ],
+        "C04-SE": [
+          "timber"
+        ],
+        "C04-SW": [
+          "timber"
+        ],
+        "C05-NW": [
+          "timber"
+        ],
+        "B04-SE": [
+          "coast"
+        ],
+        "B05-NE": [
+          "timber"
+        ],
+        "B05-SE": [
+          "timber"
+        ],
+        "B05-SW": [
+          "timber",
+          "coast"
+        ],
+        "B06-NE": [
+          "timber"
+        ],
+        "B06-NW": [
+          "timber",
+          "coast"
+        ],
+        "B06-SW": [
+          "coast"
+        ],
+        "B06-SE": [
+          "timber"
+        ],
+        "C06-NW": [
+          "timber"
+        ],
+        "C05-SW": [
+          "timber"
+        ],
+        "C05-SE": [
+          "timber"
+        ],
+        "C05-NE": [
+          "timber"
+        ],
+        "D04-SW": [
+          "timber"
+        ],
+        "D05-SW": [
+          "timber"
+        ],
+        "D05-NW": [
+          "timber"
+        ],
+        "D05-SE": [],
+        "D05-NE": [
+          "timber"
+        ],
+        "E05-NW": [
+          "river view"
+        ],
+        "D04-SE": [
+          "timber"
+        ],
+        "E04-NW": [],
+        "D04-NE": [
+          "timber"
+        ],
+        "E03-SW": [],
+        "F04-SE": [
+          "timber",
+          "near venues",
+          "in demand"
+        ],
+        "E08-NE": [
+          "timber"
+        ],
+        "E07-SE": [],
+        "E08-NW": [],
+        "E07-SW": [],
+        "D07-SE": [],
+        "F04-NE": [],
+        "F04-SW": [
+          "river view",
+          "near venues",
+          "in demand"
+        ],
+        "F04-NW": [],
+        "E04-NE": [],
+        "F03-SW": [],
+        "H04-NW": [
+          "timber"
+        ],
+        "H04-NE": [
+          "timber"
+        ],
+        "H03-SW": [
+          "timber"
+        ],
+        "G03-SE": [
+          "timber"
+        ],
+        "H03-NW": [
+          "timber"
+        ],
+        "G03-NE": [
+          "timber"
+        ],
+        "G02-SE": [],
+        "G02-NE": [],
+        "H02-SW": [],
+        "F03-SE": [],
+        "F03-NE": [],
+        "F03-NW": [],
+        "F02-SE": [],
+        "F02-SW": [],
+        "F02-NE": [
+          "timber"
+        ],
+        "E03-NE": [],
+        "E02-SE": [],
+        "D03-SE": [
+          "timber"
+        ],
+        "D04-NW": [
+          "timber"
+        ],
+        "E03-SE": [],
+        "E04-SE": [
+          "coast"
+        ],
+        "E05-SW": [],
+        "D06-NE": [],
+        "E06-NW": [],
+        "E06-SW": [],
+        "D06-SE": [
+          "timber"
+        ],
+        "D06-NW": [],
+        "C06-NE": [],
+        "C06-SE": [
+          "timber"
+        ],
+        "C06-SW": [
+          "timber"
+        ],
+        "C07-NE": [
+          "timber"
+        ],
+        "C07-NW": [
+          "timber",
+          "coast"
+        ],
+        "C07-SE": [
+          "timber"
+        ],
+        "D07-NW": [
+          "timber"
+        ],
+        "D06-SW": [
+          "timber"
+        ],
+        "D07-SW": [
+          "timber"
+        ],
+        "C08-NE": [
+          "river view"
+        ],
+        "D08-SW": [
+          "river view"
+        ],
+        "D08-NW": [],
+        "C08-SE": [
+          "coast"
+        ],
+        "C09-NE": [
+          "coast"
+        ],
+        "D09-SW": [
+          "river view"
+        ],
+        "D09-SE": [],
+        "D09-NE": [
+          "river view"
+        ],
+        "E09-NW": [],
+        "E08-SW": [],
+        "D08-SE": [],
+        "D08-NE": [],
+        "E07-NW": [],
+        "E07-NE": [],
+        "E06-SE": [],
+        "F06-SW": [
+          "timber",
+          "in demand"
+        ],
+        "E06-NE": [],
+        "E05-SE": [],
+        "I07-SW": [
+          "ore-rich",
+          "stone near",
+          "mountain view",
+          "high ground",
+          "in demand"
+        ],
+        "I08-NW": [
+          "unbuildable"
+        ],
+        "I06-NW": [
+          "stone near",
+          "timber"
+        ],
+        "I05-SE": [],
+        "I05-SW": [
+          "stone near"
+        ],
+        "I05-NE": [
+          "timber"
+        ],
+        "I05-NW": [
+          "stone near",
+          "timber"
+        ],
+        "H05-SE": [
+          "stone near",
+          "high ground",
+          "in demand"
+        ],
+        "I06-NE": [
+          "stone near",
+          "high ground"
+        ],
+        "I06-SE": [
+          "stone near",
+          "high ground"
+        ],
+        "I07-NE": [
+          "stone near",
+          "mountain view",
+          "high ground"
+        ],
+        "J07-NW": [
+          "stone near",
+          "mountain view",
+          "high ground"
+        ],
+        "J06-SW": [
+          "stone near",
+          "high ground"
+        ],
+        "J07-NE": [
+          "stone near",
+          "timber",
+          "high ground"
+        ],
+        "J06-SE": [
+          "stone near"
+        ],
+        "K07-NW": [
+          "timber"
+        ],
+        "K06-SW": [
+          "timber"
+        ],
+        "J06-NE": [
+          "stone near",
+          "high ground"
+        ],
+        "J06-NW": [
+          "stone near",
+          "high ground"
+        ],
+        "G08-SE": [
+          "stone near",
+          "mountain view",
+          "high ground",
+          "near venues"
+        ],
+        "G08-SW": [
+          "near venues"
+        ],
+        "F09-NE": [],
+        "F08-SE": [],
+        "F09-NW": [],
+        "F08-SW": [
+          "timber"
+        ],
+        "E08-SE": [
+          "timber"
+        ],
+        "E09-NE": [],
+        "G09-NW": [
+          "in demand"
+        ],
+        "G09-SE": [
+          "stone near",
+          "timber",
+          "high ground",
+          "in demand"
+        ],
+        "G09-NE": [
+          "stone near",
+          "mountain view",
+          "high ground",
+          "in demand"
+        ],
+        "G09-SW": [
+          "timber",
+          "in demand"
+        ],
+        "F10-NE": [
+          "timber",
+          "river view"
+        ],
+        "F09-SE": [
+          "timber"
+        ],
+        "F10-NW": [
+          "timber",
+          "river view"
+        ],
+        "F09-SW": [
+          "timber"
+        ],
+        "E09-SE": [],
+        "E09-SW": [],
+        "E10-NE": [
+          "timber",
+          "river view"
+        ],
+        "D10-NE": [
+          "coast"
+        ],
+        "D10-NW": [
+          "coast"
+        ],
+        "J05-SW": [
+          "stone near"
+        ],
+        "J05-NE": [
+          "timber"
+        ],
+        "J05-SE": [
+          "stone near"
+        ],
+        "J05-NW": [
+          "timber"
+        ],
+        "J04-SE": [
+          "timber"
+        ],
+        "J04-SW": [
+          "timber"
+        ],
+        "J04-NE": [
+          "timber"
+        ],
+        "J04-NW": [
+          "timber"
+        ],
+        "J03-SE": [
+          "timber"
+        ],
+        "J03-SW": [
+          "timber"
+        ],
+        "J03-NW": [
+          "timber"
+        ],
+        "I03-SE": [
+          "timber"
+        ],
+        "I03-NE": [
+          "timber"
+        ],
+        "I02-SE": [],
+        "J02-NW": [
+          "timber"
+        ],
+        "J02-SW": [
+          "timber"
+        ],
+        "J02-NE": [
+          "timber",
+          "river view"
+        ],
+        "J01-SW": [
+          "timber",
+          "coast"
+        ],
+        "K02-SW": [
+          "timber",
+          "river view"
+        ],
+        "J02-SE": [
+          "timber"
+        ],
+        "K03-NW": [
+          "timber"
+        ],
+        "J03-NE": [
+          "timber"
+        ],
+        "K03-SW": [
+          "timber"
+        ],
+        "K04-NE": [],
+        "K03-SE": [],
+        "K04-NW": [
+          "timber"
+        ],
+        "K04-SW": [
+          "timber"
+        ],
+        "K05-NW": [
+          "timber"
+        ]
+      },
+      "currency": "wood"
+    },
+    "surveys": {
+      "factory": {
+        "client": "Fudgewright",
+        "lot": "I08-SE",
+        "anchor": [
+          87,
+          87
+        ],
+        "price": 45,
+        "currency": "wood",
+        "tick": 46182,
+        "answered": 46904,
+        "reminders": 1
+      }
+    },
+    "busiest": [
+      {
+        "plot": "G05",
+        "structures": 57,
+        "holder": "Clarion"
+      },
+      {
+        "plot": "I09",
+        "structures": 54,
+        "holder": "MotherPail"
+      },
+      {
+        "plot": "H06",
+        "structures": 45,
+        "holder": "LandBroker"
+      },
+      {
+        "plot": "H07",
+        "structures": 34,
+        "holder": "Cairn"
+      },
+      {
+        "plot": "G07",
+        "structures": 31,
+        "holder": "Fudgewright"
+      }
+    ]
+  },
+  "actions": [],
+  "reasons": [],
+  "dropped": [],
+  "results": [],
+  "said": false
+}
