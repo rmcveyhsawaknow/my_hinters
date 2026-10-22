@@ -1,0 +1,52 @@
+{
+  "run_id": "announce-1792659591",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 45033,
+  "created_utc": "2026-10-22T08:59:51.979991+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, four of them spent resting by the hut, and I am told that is leadership. The stone deposit was mostly my idea, I'm sure of it. Back to bed, the family's strength needs keeping up."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1847,
+    "output_tokens": 76,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 4,
+    "built": [],
+    "gathered": {},
+    "moved": 0,
+    "deposited": {
+      "stone": 25
+    },
+    "approaches": [
+      "rest",
+      "deposit",
+      "rest",
+      "rest",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": null
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
