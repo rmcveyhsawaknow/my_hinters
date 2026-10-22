@@ -174,12 +174,16 @@ class Supervisor:
             "exit": code,
             "summary": summary,
         }
+        if code != 0:
+            record["tail"] = [line[:200] for line in output.strip().splitlines()[-12:]]
         agent = self.status.setdefault("agents", {}).setdefault(slug, {"history": []})
         agent["last"] = record
         agent.setdefault("history", []).append(record)
         agent["history"] = agent["history"][-30:]
         self._save_status()
         self._log(f"{slug} {job} exit {code} in {record['seconds']}s: {summary}")
+        for line in record.get("tail") or []:
+            self._log(f"  | {line}")
         return record
 
     def tick(self, personas: dict[str, Any], when: datetime | None = None) -> list[tuple[str, str]]:
