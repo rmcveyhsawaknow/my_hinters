@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792642053",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 43279,
+  "created_utc": "2026-10-22T04:07:33.673560+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes and one rest, I think, and eight tiles farther out at [21, 72]. Nothing built, nothing gathered yet. The big thing is probably still somewhere I have not been."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1674,
+    "output_tokens": 83,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 8,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "patrol",
+      "patrol",
+      "patrol",
+      "patrol"
+    ],
+    "mood": "wistful",
+    "where": [
+      21,
+      72
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
