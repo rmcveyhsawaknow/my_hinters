@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792634155",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 42489,
+  "created_utc": "2026-10-22T01:55:55.918869+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes, four of them spent resting by the hut at [70, 81], which is what the family's strength requires. I moved once, purely to test the blanket situation. Still hogged."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1846,
+    "output_tokens": 65,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 4,
+    "built": [],
+    "gathered": {},
+    "moved": 1,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "rest",
+      "rest",
+      "migrate",
+      "rest"
+    ],
+    "mood": "in_bed",
+    "where": [
+      70,
+      81
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
