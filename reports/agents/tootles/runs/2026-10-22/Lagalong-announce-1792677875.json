@@ -1,0 +1,45 @@
+{
+  "run_id": "announce-1792677875",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 46861,
+  "created_utc": "2026-10-22T14:04:35.751658+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes and no rest, I think, so I have walked on without stopping. I missed the last thing again, did I not. Still walking, if that is all right."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1653,
+    "output_tokens": 56,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 0,
+    "deposited": {},
+    "approaches": [],
+    "mood": "wistful",
+    "where": null,
+    "discoveries": []
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
