@@ -1,0 +1,123 @@
+{
+  "run_id": "53e34356-88fa-4a0f-b021-8f86bc4abaff",
+  "agent": "Strayling",
+  "role": "surveyor+experimenter+conjecturer+methodologist",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-22T07:55:37.765624+00:00",
+  "tick": 44647,
+  "summary": "Strayling (curious): work shift: carrying a full pack to the storehouse",
+  "actions": [
+    {
+      "action": "move",
+      "x": 80,
+      "y": 68
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"curious\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":489,\"rests\":16,\"bursts\":0,\"distractions\":18,\"last_wake_tick\":44647,\"visited\":[\"41,80\",\"35,72\",\"31,64\",\"32,71\",\"27,74\",\"30,69\",\"25,60\",\"24,64\",\"26,55\",\"31,54\",\"35,57\",\"26,50\",\"30,44\",\"27,35\",\"32,41\",\"40,45\",\"42,39\",\"37,36\",\"28,34\",\"29,33\",\"37,39\",\"44,45\",\"43,39\",\"50,38\",\"56,31\",\"65,31\",\"65,26\",\"74,23\",\"69,15\",\"66,8\",\"64,10\",\"70,15\",\"65,23\",\"68,29\",\"77,38\",\"81,38\",\"89,30\",\"87,35\",\"93,30\",\"85,37\",\"92,33\",\"95,27\",\"86,36\",\"80,28\",\"84,28\",\"86,40\",\"74,52\",\"70,64\",\"58,76\",\"57,77\",\"51,73\",\"55,77\",\"61,68\",\"67,66\",\"61,66\",\"53,57\",\"52,62\",\"53,71\",\"57,60\",\"65,54\",\"73,58\",\"64,62\",\"67,55\",\"74,66\",\"81,78\",\"80,84\",\"80,78\",\"73,71\",\"80,66\",\"74,70\",\"73,73\",\"72,71\",\"71,69\",\"72,61\",\"68,59\",\"66,57\",\"59,55\",\"68,63\",\"55,61\",\"52,57\",\"53,59\",\"51,66\",\"51,59\",\"53,64\",\"45,70\",\"53,66\",\"45,58\",\"45,65\",\"40,63\",\"52,60\",\"61,60\",\"66,53\",\"74,57\",\"64,55\",\"72,57\",\"66,55\",\"67,54\",\"62,58\",\"61,63\",\"73,56\",\"73,57\",\"65,64\",\"80,68\",\"81,68\",\"74,71\",\"82,66\",\"70,76\",\"72,73\",\"78,74\",\"74,72\",\"69,71\",\"88,67\",\"71,71\",\"79,68\",\"70,70\",\"69,68\",\"68,71\",\"69,73\",\"66,71\",\"82,75\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"ideas\":[\"t35068: a fiber node near 65,64\",\"t36362: a stone node near 70,76\",\"t37830: a stone node near 88,67\",\"t42953: someone's road near 69,73\",\"t43529: a fiber node near 66,71\"],\"world\":{\"tick\":44647,\"pace\":\"steady\",\"day\":{\"all\":1460,\"building\":227,\"trade_goals\":67,\"talk\":238,\"factions\":4,\"movement\":924},\"hour\":{\"all\":66},\"peers\":2},\"engaged\":{\"replied\":{\"LandBroker\":44366,\"Clarion\":31259,\"MotherPail\":41382,\"Fudgewright\":41636,\"GrandadPail\":42233,\"JoshuaTreeStagehand\":42358},\"reclaimed\":{\"Cairn:71,69\":31350,\"Quill:68,59\":31587,\"Quill:67,56\":31648,\"Quillwright:54,60\":32024,\"Fairscale:70,70\":40984,\"Fairscale:71,72\":41044,\"Fairscale:70,72\":41382,\"Fairscale:69,70\":41444,\"Fairscale:69,69\":41474,\"Fairscale:69,68\":41666,\"Fairscale:68,69\":41697,\"Fairscale:67,72\":41757}},\"house\":{\"hut\":[57,79],\"done\":9,\"tick\":26251}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 44647,
+    "you": {
+      "id": 10,
+      "name": "Strayling",
+      "x": 74,
+      "y": 71,
+      "energy": 100,
+      "inventory": {
+        "wood": 28,
+        "fiber": 7,
+        "berries": 15
+      },
+      "home": {
+        "x": 57,
+        "y": 79
+      }
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "lost-boy",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "experimenter",
+    "conjecturer",
+    "methodologist"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "steady",
+    "hour": {
+      "all": 66,
+      "building": 13,
+      "trade_goals": 5,
+      "talk": 12,
+      "factions": 0,
+      "movement": 36
+    },
+    "day": {
+      "all": 1460,
+      "building": 227,
+      "trade_goals": 67,
+      "talk": 238,
+      "factions": 4,
+      "movement": 924
+    },
+    "peers_active": 2
+  },
+  "wake_mode": "act",
+  "mood": "curious",
+  "approach": "deposit_trip",
+  "reasons": [
+    "pack 50/50: walk toward LandBroker's storehouse at (81, 67) to unload"
+  ],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 6,
+  "activity_energy": {
+    "explore": 6.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "curious",
+    "glow": 50,
+    "wakes": 489,
+    "rests": 16,
+    "bursts": 0,
+    "distractions": 18,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
