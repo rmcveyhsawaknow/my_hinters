@@ -140,3 +140,25 @@ def test_a_client_who_asks_again_gets_the_answer_again():
     whispers = [a for a in actions if a["action"] == "whisper"]
     assert whispers and whispers[0]["to"] == "Fudgewright" and whispers[0]["text"].startswith("SITE for factory: lot F07-SE, anchor (57,77)") and "price 20 wood" in whispers[0]["text"]
     assert update["surveys"]["factory"]["answered"] == 46400 and len([a for a in actions if a["action"] == "whisper"]) == 1  # answered once more, not surveyed anew
+
+
+def test_an_unpaid_survey_is_reminded_every_two_hours_three_times():
+    w = _world()
+    ledger = load_ledger(ROOT)
+    broker = load_personas(ROOT)["land-broker"]
+    survey = {"client": "Fudgewright", "lot": "F07-SE", "anchor": [57, 77], "price": 20, "currency": "wood", "tick": 46000, "reasons": ["ore-rich"]}
+    observe = {"you": {"name": "LandBroker", "x": 65, "y": 55, "energy": 90, "inventory": {"berries": 10, "wood": 5}}, "your_goals": {"posted": []}, "inbox": [], "notebook": {}}
+    state = {"surveys": {"factory": dict(survey)}}
+    for n, tick in enumerate((46800, 47600, 48400, 49200), start=1):
+        b = board(ledger, w["structures"], w["agents"], [], broker.name, state, world=w, tick=tick)
+        actions, _r, update = plan_round(broker, ledger, {**observe, "tick": tick}, b, public_events=[], structures=w["structures"], agents=w["agents"], state=state, collective_names={"Fudgewright"}, world=w)
+        whispers = [a for a in actions if a["action"] == "whisper" and a["to"] == "Fudgewright"]
+        if n <= 3:
+            assert whispers and whispers[0]["text"].startswith("SITE for factory"), (n, actions)
+            state = {"surveys": update["surveys"]}
+            assert state["surveys"]["factory"]["reminders"] == n
+        else:
+            assert not whispers  # three reminders, then the office waits for the client
+    early = board(ledger, w["structures"], w["agents"], [], broker.name, {"surveys": {"factory": {**survey, "answered": 46400}}}, world=w, tick=46500)
+    actions, _r, _u = plan_round(broker, ledger, {**observe, "tick": 46500}, early, public_events=[], structures=w["structures"], agents=w["agents"], state={"surveys": {"factory": {**survey, "answered": 46400}}}, collective_names={"Fudgewright"}, world=w)
+    assert not [a for a in actions if a["action"] == "whisper"]  # answered a hundred ticks ago: not yet
