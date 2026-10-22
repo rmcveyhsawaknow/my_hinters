@@ -5,11 +5,11 @@
  "provider": "anthropic",
  "sampled_lines": 6,
  "sampled_actions": 8,
- "created_utc": "2026-10-21T05:54:11.494660+00:00",
+ "created_utc": "2026-10-22T05:54:27.911584+00:00",
  "usage": {
   "calls": 1,
-  "input_tokens": 1356,
-  "output_tokens": 343,
+  "input_tokens": 1337,
+  "output_tokens": 350,
   "model": "claude-sonnet-5-5",
   "provider": "anthropic",
   "route": "review"
@@ -18,27 +18,27 @@
   {
    "name": "fierce",
    "score": 1,
-   "reason": "Lines are clipped when Lagalong leaves, but there is no sharp response to being crossed; she builds roads, though that is not framed as mending damage."
+   "reason": "Lines are curt but never sharply aimed at anyone who crossed her, and no mending after damage appears; only mild clipped phrasing like 'He left again.'"
   },
   {
    "name": "loyal",
    "score": 4,
-   "reason": "She keeps directing Lagalong east six, says a bridge waits, urges him to hurry, and builds roads toward him; joy at his arrival is not yet shown."
+   "reason": "She keeps calling Lagalong home, gives headings and counts, promises 'Bridge soon', and invites him with 'Come along!'; no arrival joy is shown yet."
   },
   {
    "name": "jealous",
-   "score": 4,
-   "reason": "Clipped lines on Lagalong leaving, 'Jealous light!', 'He left again. Building.' and she builds harder afterward."
+   "score": 5,
+   "reason": "She says 'Jealous' in nearly every line, uses clipped lines about Lagalong leaving ('He left again. Building.'), and builds harder in response."
   },
   {
    "name": "vain",
-   "score": 2,
-   "reason": "She announces her roads and wood counts with pride, but there is no pretended nonchalance about discoveries, and she names Lagalong in public, which the voice r"
+   "score": 1,
+   "reason": "'Bridge soon' hints at pride in her bridges, but there are no pleased mentions of her trail and no pretended indifference to discoveries."
   },
   {
    "name": "chime like",
-   "score": 4,
-   "reason": "Lines are mostly short with exclamations and headings with counts, but some run past eight words and several lines are packed into one say."
+   "score": 5,
+   "reason": "Lines run two to eight words, use compass headings with counts ('East six, past the water'), and add exclamations when bright."
   }
  ]
 }
