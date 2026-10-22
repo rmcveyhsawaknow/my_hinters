@@ -1,0 +1,58 @@
+{
+  "run_id": "announce-1792676886",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 46762,
+  "created_utc": "2026-10-22T13:48:06.996358+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Three roads laid this hour, at (86,91), (85,98) and (86,98). Each one saves someone a long walk. Next, I'll see what the storehouse needs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1658,
+    "output_tokens": 63,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "road at (86,91)",
+      "road at (85,98)",
+      "road at (86,98)"
+    ],
+    "gathered": {},
+    "moved": 5,
+    "deposited": {},
+    "approaches": [
+      "build",
+      "migrate",
+      "build",
+      "migrate",
+      "build"
+    ],
+    "mood": "warm",
+    "where": [
+      74,
+      91
+    ],
+    "discoveries": []
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
