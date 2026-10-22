@@ -1,0 +1,52 @@
+{
+  "run_id": "announce-1792645579",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 43631,
+  "created_utc": "2026-10-22T05:06:19.993645+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes and only one rest, I think, and I have walked six tiles since. Still at [53, 16]. Nothing built, nothing gathered. If that is all right, I will keep going."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1669,
+    "output_tokens": 68,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {},
+    "moved": 6,
+    "deposited": {},
+    "approaches": [
+      "patrol",
+      "patrol",
+      "patrol",
+      "rest"
+    ],
+    "mood": "wistful",
+    "where": [
+      53,
+      16
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
