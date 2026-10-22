@@ -232,6 +232,9 @@ def persona_wake(
     context: dict[str, Any] = {}
 
     def planner(observe: dict[str, Any]) -> dict[str, Any]:
+        from hglab.inbox import merge_inbox
+
+        observe["inbox"] = merge_inbox(observe)  # whispers a keepalive or a round was handed, kept in the notebook
         tick = int(observe.get("tick", 0))
         you = observe.get("you") or {}
         notebook = observe.get("notebook") or {}

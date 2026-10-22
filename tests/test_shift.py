@@ -274,6 +274,21 @@ def test_a_full_storehouse_is_not_deposited_into_and_the_deed_goes_to_a_vault_wi
     assert pay is not None and pay[2] == "deed_trip" and pay[0][0]["action"] == "move"  # the near vault is full: walk to the next one
 
 
+def test_a_storehouse_seen_full_is_remembered_and_no_trip_walks_to_it():
+    from hglab.mood import PersonaState
+    from hglab.planner import WorldView, _full_stores, _plan_deposit, _plan_deposit_trip
+
+    bucket = load_personas(ROOT)["mrs-bucket"]
+    rows = ["g" * 128] * 128
+    full = {"type": "storehouse", "x": 61, "y": 60, "owner": bucket.name, "storage": {"wood": 500}}
+    view = WorldView(x0=54, y0=54, rows=rows, structures=[full], world_structures=[full, {"type": "storehouse", "x": 80, "y": 60, "owner": "Fudgewright"}], tick=46000)
+    state = PersonaState(mood="warm")
+    assert _plan_deposit(bucket, {"wood": 5, "fiber": 6, "berries": 37}, (60, 60), view, state=state) is None
+    assert (61, 60) in _full_stores(state, 46000) and (61, 60) not in _full_stores(state, 46000 + 9000)
+    trip = _plan_deposit_trip(bucket, None, {"wood": 5, "fiber": 6, "berries": 37}, (60, 60), view, None, {"motherpail", "fudgewright"}, state=state)
+    assert trip is not None and "Fudgewright" in trip[1]  # the full store beside us is passed over for the one with room
+
+
 def test_a_pack_heavy_with_berries_is_lightened_not_topped_up():
     import random
 

@@ -25,6 +25,7 @@ import yaml
 from hglab.client import HinterglassClient, HinterglassError
 from hglab.data import latest_tick, load_events, load_history, load_runs
 from hglab.fixtures import FixtureClient, load_fixture, load_terrain_rows
+from hglab.inbox import merge_inbox, preserve
 from hglab.influence import SIGNALS, compute_team, incoming_effects
 from hglab.judge import judge_available, run_judge
 from hglab.kb import make_id
@@ -684,6 +685,9 @@ def land_round(root: Path, persona: Persona, *, dry_run: bool, fixture: Path | N
 
             answer_daily_challenge(client, observe, {"calls": 0, "input_tokens": 0, "output_tokens": 0})
         tick = int(observe.get("tick", 0) or 0)
+        if fixture is None:
+            preserve(client, observe)
+        observe["inbox"] = merge_inbox(observe)
         # the registrar's own view beats the snapshot for its storehouse (the snapshot may lag)
         structures = structures + [s for s in observe.get("structures", []) if isinstance(s, dict) and s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() == persona.name.casefold()]
         raw_state = (observe.get("notebook") or {}).get(STATE_KEY)
@@ -893,6 +897,8 @@ def crier_round(root: Path, persona: Persona, *, dry_run: bool, fixture: Path | 
 
             answer_daily_challenge(client, observe, {"calls": 0, "input_tokens": 0, "output_tokens": 0})
         tick = int(observe.get("tick", 0) or 0)
+        if fixture is None:
+            preserve(client, observe)
         says = [e for e in events if isinstance(e, dict) and e.get("type") == "say" and tick - int(e.get("tick", 0) or 0) <= 8640]
         b = board(ledger, goals, factions, collector_name, says)
         raw_state = (observe.get("notebook") or {}).get(STATE_KEY)
@@ -1539,6 +1545,8 @@ def keepalive_command(
         raise typer.BadParameter(f"identity {name} already has an active lease")
     try:
         observe = client.observe()
+        if fixture is None and preserve(client, observe):
+            typer.echo(f"{name}: whispers kept in the notebook for the next wake")
         if observe.get("challenge"):
             if fixture is not None and not _model_key(root):
                 status = "challenge_pending"

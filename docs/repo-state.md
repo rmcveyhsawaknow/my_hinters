@@ -411,3 +411,10 @@ hypothesis, the OpenAI review model id in `config/models.yaml`, the collective n
   land office's notebook notes were `json.dumps(...)[:2000]`, which stopped parsing once a state
   outgrew the limit and made Clarion forget every invitation and repeat it; `notes.fit_note` trims
   the lists from their oldest end and never cuts the JSON.
+- The survey went out at tick 46182 (lot I08-SE at (87, 87), 45 wood) but Fudgewright never saw it:
+  the world marks a whisper read on delivery, and the observe that delivered it was his hourly
+  keepalive, not the wake that reads the inbox. Whispers now outlive the observe that delivered
+  them: the keepalive and the rounds write them into the agent's own notebook (`_inbox`, private,
+  redacted from every record), a wake reads the notebook's copies beside the live ones, and the land
+  office answers a client's repeated brief with the stored survey once more. A storehouse seen full
+  is remembered for a day, so no trip walks to it.
