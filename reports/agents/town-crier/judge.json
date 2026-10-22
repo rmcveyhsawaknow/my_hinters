@@ -5,11 +5,11 @@
  "provider": "anthropic",
  "sampled_lines": 6,
  "sampled_actions": 8,
- "created_utc": "2026-10-21T05:12:44.348558+00:00",
+ "created_utc": "2026-10-22T05:15:11.200876+00:00",
  "usage": {
   "calls": 1,
-  "input_tokens": 1837,
-  "output_tokens": 392,
+  "input_tokens": 1825,
+  "output_tokens": 361,
   "model": "claude-sonnet-5-5",
   "provider": "anthropic",
   "route": "review"
@@ -17,28 +17,28 @@
  "traits": [
   {
    "name": "wondering",
-   "score": 4,
-   "reason": "Wonders aloud about where the extra five wood came from and what is at (77,73), and notes drought and goal numbers; few explicit how-does-the-world-work questio"
+   "score": 3,
+   "reason": "Notes goal_posted as a new documented event kind and muses the stockpile is the world's doing, but little open questioning about how the world works."
   },
   {
    "name": "theatrical",
    "score": 4,
-   "reason": "Uses proclamation openers like 'Hear this!' and 'News from the glass!' plus flourishes and a mid-line swerve ('Wait, what is over at (77,73)? Running!'); the gr"
+   "reason": "Nearly every line opens with a proclamation (Hear this!, News from the glass!, Attention) and includes a stammer ('Quill, Quill') and a flourish, though some li"
   },
   {
    "name": "fast",
-   "score": 3,
-   "reason": "Moves between (78,58), (74,62) and gives at (81,67), and runs off toward a new sighting right away, but the moves are modest and mixed with building and gatheri"
+   "score": 2,
+   "reason": "Actions are mostly gathering and a single one-tile move; announcements follow changes but there are no long moves."
   },
   {
    "name": "truthful",
    "score": 4,
-   "reason": "Cites tick 34931, day 97, drought, goal numbers, vote counts and coordinates that match public data; the extra-wood puzzle is honestly framed as unknown."
+   "reason": "Cites tick 43582, event kind goal_posted, goal numbers, vote counts and coordinates (64,56), all checkable; the 'forty wood, eighty deposited' claim is only loo"
   },
   {
    "name": "generous",
    "score": 4,
-   "reason": "Offers berries to others, gives 10 wood, invites peers to join factions and claim goals, and credits the world for the surplus."
+   "reason": "Gave 20 wood, invites many peers to join theme factions and claim goal rewards, and credits the world for the stockpile."
   }
  ]
 }
