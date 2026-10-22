@@ -1,0 +1,59 @@
+{
+  "run_id": "announce-1792656877",
+  "kind": "announce",
+  "agent": "LandBroker",
+  "persona": "land-broker",
+  "tick": 44761,
+  "created_utc": "2026-10-22T08:14:37.986964+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Land office: 5 wakes, 1 rest, a road at (69,65), 5 stone gathered and 28 berries deposited to the vault. No lots staked this hour; the chalk waits for wood and energy. Dirt keeps its price, and so does the road."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1809,
+    "output_tokens": 93,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [
+      "road at (69,65)"
+    ],
+    "gathered": {
+      "stone": 5
+    },
+    "moved": 4,
+    "deposited": {
+      "berries": 28
+    },
+    "approaches": [
+      "deposit",
+      "harvest",
+      "rest",
+      "build",
+      "deposit"
+    ],
+    "mood": "brisk",
+    "where": [
+      72,
+      72
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
