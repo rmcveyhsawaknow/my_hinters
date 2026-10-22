@@ -1,0 +1,53 @@
+{
+  "run_id": "announce-1792638504",
+  "kind": "announce",
+  "agent": "Lagalong",
+  "persona": "tootles",
+  "tick": 42924,
+  "created_utc": "2026-10-22T03:08:24.750335+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Five wakes and no rests, I think, and ten tiles moved, all of them away. I saw patrols at every turn, so I kept my voice low. I missed the rest, did I not?"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 1,
+    "input_tokens": 1675,
+    "output_tokens": 67,
+    "model": "claude-haiku-5-5",
+    "provider": "anthropic",
+    "route": "talk"
+  },
+  "source": "model",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 10,
+    "deposited": {},
+    "approaches": [
+      "patrol",
+      "patrol",
+      "patrol",
+      "patrol",
+      "patrol"
+    ],
+    "mood": "wistful",
+    "where": [
+      94,
+      99
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce"
+}
