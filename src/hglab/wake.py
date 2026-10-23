@@ -613,12 +613,18 @@ def persona_wake(
         state_now = context.get("state")
         if state_now is None:
             return None
+        tick_now = int((context.get("observe") or {}).get("tick", 0) or 0)
         if action.get("action") == "give" and result.get("error") == "inventory_full" and action.get("x") is not None and action.get("y") is not None:
             from hglab.planner import _mark_full
 
-            tick_now = int((context.get("observe") or {}).get("tick", 0) or 0)
             _mark_full(state_now, (int(action["x"]), int(action["y"])), tick_now)
             extras.setdefault("learned", []).append(f"the storehouse at ({action['x']},{action['y']}) is full: left alone for a day")
+            return {PERSONA_STATE_KEY: dump_state(state_now)}
+        if action.get("action") == "move" and result.get("error") in {"not_walkable", "too_far"} and action.get("x") is not None and action.get("y") is not None:
+            from hglab.planner import mark_closed
+
+            mark_closed(state_now, (int(action["x"]), int(action["y"])), tick_now)
+            extras.setdefault("learned", []).append(f"the tile ({action['x']},{action['y']}) is {result.get('error')}: routed around for a day")
             return {PERSONA_STATE_KEY: dump_state(state_now)}
         return None
 
