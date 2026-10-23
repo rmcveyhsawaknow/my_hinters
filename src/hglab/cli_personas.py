@@ -735,9 +735,10 @@ def land_round(root: Path, persona: Persona, *, dry_run: bool, fixture: Path | N
             state = {}
         if not isinstance(state, dict):
             state = {}
-        b = board(ledger, structures, agents, goals, persona.name, state, world=world, tick=tick)
+        claims = ((team.extra or {}).get("pipeline") or {}).get("claims") if team is not None else None
+        b = board(ledger, structures, agents, goals, persona.name, state, world=world, tick=tick, claims=claims)
         recent = [e for e in events if isinstance(e, dict) and tick - int(e.get("tick", 0) or 0) <= 8640]
-        actions, reasons, update = plan_round(persona, ledger, observe, b, public_events=recent, structures=structures, agents=agents, state=state, collective_names=collective_names, world=world)
+        actions, reasons, update = plan_round(persona, ledger, observe, b, public_events=recent, structures=structures, agents=agents, state=state, collective_names=collective_names, world=world, claims=claims)
         if update:
             actions.append({"action": "remember", "key": STATE_KEY, "text": fit_note({**state, **update})})
         worn = "+".join(persona.roles)

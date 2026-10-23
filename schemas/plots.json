@@ -42,6 +42,21 @@
         "sale_reward": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "integer", "minimum": 1}}
       }
     },
+    "sales": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "sell", "price"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+          "sell": {"type": "object", "minProperties": 1, "maxProperties": 1, "additionalProperties": {"type": "integer", "minimum": 1, "maximum": 50}},
+          "price": {"type": "object", "minProperties": 1, "maxProperties": 1, "additionalProperties": {"type": "integer", "minimum": 1, "maximum": 50}},
+          "min_stock": {"type": "integer", "minimum": 0, "maximum": 500},
+          "status": {"enum": ["open", "parked"]}
+        }
+      }
+    },
     "offers": {
       "type": "array",
       "items": {
