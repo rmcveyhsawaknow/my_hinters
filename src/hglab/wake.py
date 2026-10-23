@@ -557,6 +557,7 @@ def persona_wake(
         observe.pop("_factions", None)
         context["observe"] = observe
         context["mates"] = mates
+        context["state"] = state
         return {"summary": plan.get("summary", ""), "actions": actions}
 
     def _check(
@@ -607,6 +608,20 @@ def persona_wake(
     def knob_validator(raw_actions: list[dict[str, Any]], observe: dict[str, Any]) -> None:
         extras["knob_checks"] = _knobs(raw_actions, observe, context.get("mates", {}))
 
+    def on_refusal(action: dict[str, Any], result: dict[str, Any]) -> dict[str, str] | None:
+        """What a refusal teaches: a storehouse that answers inventory_full is full for a day."""
+        state_now = context.get("state")
+        if state_now is None:
+            return None
+        if action.get("action") == "give" and result.get("error") == "inventory_full" and action.get("x") is not None and action.get("y") is not None:
+            from hglab.planner import _mark_full
+
+            tick_now = int((context.get("observe") or {}).get("tick", 0) or 0)
+            _mark_full(state_now, (int(action["x"]), int(action["y"])), tick_now)
+            extras.setdefault("learned", []).append(f"the storehouse at ({action['x']},{action['y']}) is full: left alone for a day")
+            return {PERSONA_STATE_KEY: dump_state(state_now)}
+        return None
+
     record = run_wake(
         agent=persona.name,
         role=worn,
@@ -621,6 +636,7 @@ def persona_wake(
         validators=[knob_validator],
         record_extra=extras,
         compact=work,
+        on_refusal=on_refusal,
     )
     if os.environ.get("HGLAB_RUNTIME") == "local":
         settle_tasks(
