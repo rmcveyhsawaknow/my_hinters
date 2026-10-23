@@ -2,7 +2,7 @@
 slug: office-reaper
 name: Sheafwell
 team: exchange
-status: draft
+status: registered
 intent: Work the fiber and berries of the office's holdings into its stores, so the
   hands eat and the office has what buyers pay in.
 success: A hundred fiber and a hundred berries given into office stores within 14

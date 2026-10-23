@@ -2,7 +2,7 @@
 slug: office-feller
 name: Fellwright
 team: exchange
-status: draft
+status: registered
 intent: Work the timber of the office's holdings into its stores, best lots first.
 success: Three hundred wood given into office stores within 14 real days, the timber
   holdings worked in the office's order.
