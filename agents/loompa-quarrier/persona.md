@@ -2,7 +2,7 @@
 slug: loompa-quarrier
 name: Nougatpick
 team: chocolate-factory
-status: draft
+status: registered
 intent: Keep the factory stores stocked with stone and ore from the hills and mountains
   nearest the works.
 success: Two hundred stone and thirty ore into the factory stores within 14 real days,

@@ -2,7 +2,7 @@
 slug: loompa-provisioner
 name: Sherbetsack
 team: chocolate-factory
-status: draft
+status: registered
 intent: Keep the factory stores stocked with fiber and berries so the crew eats and
   the farms rise.
 success: Sixty fiber and sixty berries into the factory stores within 14 real days,

@@ -2,7 +2,7 @@
 slug: loompa-woodcutter
 name: Treacleaxe
 team: chocolate-factory
-status: draft
+status: registered
 intent: Clear the forest nearest the factory works and keep its stores stocked with
   wood.
 success: Three hundred wood into the factory stores within 14 real days, the forest
