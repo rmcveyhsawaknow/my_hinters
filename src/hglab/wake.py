@@ -463,6 +463,7 @@ def persona_wake(
                     candidate["actions"], observe, terrain_rows, extras
                 )
                 candidate["actions"] = _keep_writes(candidate["actions"], observe, persona.name, extras)
+                candidate["actions"] = _fill_quantities(candidate["actions"], observe, extras)
                 try:
                     _check(candidate.get("actions", []), observe, mates)
                     if patrol_loop:
@@ -698,6 +699,71 @@ def _public_factions(client: Any) -> list[dict[str, Any]] | None:
         return None
     factions = data.get("factions", data) if isinstance(data, dict) else data
     return [f for f in factions if isinstance(f, dict)] if isinstance(factions, list) else None
+
+
+def _fill_quantities(
+    actions: list[dict[str, Any]],
+    observe: dict[str, Any],
+    extras: dict[str, Any],
+) -> list[dict[str, Any]]:
+    """A ``give``, ``take`` or ``eat`` the model left without a quantity gets a sensible one.
+
+    Models write "give wood into the store" and leave ``qty`` out more often than not (eight of ten
+    MotherPail fallbacks, every Tinkerglow one); the validator would then drop the whole plan. A give
+    into a storehouse is the pack's whole stock of the item (berries keep the reserve), a gift to an
+    agent is five or what the pack holds, a take is ten or what the store holds, a meal is one berry.
+    An action that would end at nothing is dropped and recorded.
+    """
+    from hglab.planner import BERRY_KEEP
+
+    you = observe.get("you") or {}
+    inventory = {str(k): int(v or 0) for k, v in (you.get("inventory") or {}).items()} if isinstance(you.get("inventory"), dict) else {}
+    pack = sum(inventory.values())
+    stores = {
+        (int(s["x"]), int(s["y"])): (s.get("storage") if isinstance(s.get("storage"), dict) else {})
+        for s in (observe.get("structures") or [])
+        if isinstance(s, dict) and s.get("type") in {"storehouse", "farm", "cache"} and s.get("x") is not None and s.get("y") is not None
+    }
+    kept: list[dict[str, Any]] = []
+    for action in actions:
+        kind = action.get("action")
+        if kind not in {"give", "take", "eat"}:
+            kept.append(action)
+            continue
+        qty = action.get("qty")
+        try:
+            qty = int(qty) if qty is not None else 0
+        except (TypeError, ValueError):
+            qty = 0
+        if qty >= 1:
+            kept.append(action)
+            continue
+        if kind == "eat":
+            kept.append({**action, "qty": 1})
+            continue
+        item = str(action.get("item") or "")
+        if kind == "give":
+            have = inventory.get(item, 0)
+            if action.get("to"):
+                qty = min(have, 5)
+            else:
+                qty = have - (BERRY_KEEP if item == "berries" else 0)
+            if qty < 1:
+                extras.setdefault("dropped", []).append(f"give {item}: nothing to give (pack holds {have})")
+                continue
+            inventory[item] = have - qty
+            pack -= qty
+            kept.append({**action, "qty": qty})
+        else:
+            where = (action.get("x"), action.get("y"))
+            held = int((stores.get((int(where[0]), int(where[1])), {}) if all(isinstance(v, int) for v in where) else {}).get(item, 0) or 0)
+            qty = min(10, held, 50 - pack) if held else min(10, 50 - pack)
+            if qty < 1 or not item:
+                extras.setdefault("dropped", []).append(f"take {item or '?'}: nothing to take or no room in the pack")
+                continue
+            pack += qty
+            kept.append({**action, "qty": qty})
+    return kept
 
 
 def _keep_writes(
