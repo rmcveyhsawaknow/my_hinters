@@ -1,0 +1,140 @@
+{
+ "agent": "office-reaper",
+ "name": "Sheafwell",
+ "team": "exchange",
+ "headline": "Work the fiber and berries of the office's holdings into its",
+ "metric_version": 1,
+ "tick": 65760,
+ "day": 182,
+ "date": "2026-10-17",
+ "window_ticks": 60480,
+ "events_considered": 401,
+ "runs_considered": 0,
+ "alive": {
+  "score": 0,
+  "detail": "no wakes recorded yet; the first scheduled wake is pending",
+  "parts": {
+   "completed": 0,
+   "scheduled": 0,
+   "lapsed": 0,
+   "banned": false,
+   "rate_limited": 0,
+   "failed_actions": 0,
+   "energy_zero": 0,
+   "spam_blocked": 0
+  }
+ },
+ "on_mission": {
+  "score": 0,
+  "detail": "0 fiber and berries stored · 0 gathers · 0 replies",
+  "rows": [
+   {
+    "id": "food_stored",
+    "label": "fiber and berries given into office stores",
+    "value": 0.0,
+    "target": 200,
+    "weight": 0.5,
+    "progress": 0.0,
+    "shown": "0 fiber and berries stored",
+    "measure": "events.items_given_to_storehouse"
+   },
+   {
+    "id": "gathers",
+    "label": "fiber and berry gathers",
+    "value": 0.0,
+    "target": 60,
+    "weight": 0.3,
+    "progress": 0.0,
+    "shown": "0 gathers",
+    "measure": "events.count"
+   },
+   {
+    "id": "replies",
+    "label": "replies from hands and visitors",
+    "value": 0.0,
+    "target": 5,
+    "weight": 0.2,
+    "progress": 0.0,
+    "shown": "0 replies",
+    "measure": "events.replies_received"
+   }
+  ]
+ },
+ "in_character": {
+  "score": 0,
+  "detail": "0/0 signatures in range; not judged (no model key)",
+  "signatures": [
+   {
+    "id": "rest_share",
+    "label": "share of wakes resting",
+    "value": null,
+    "range": [
+     0.0,
+     0.3
+    ],
+    "inside": null,
+    "measure": "runs.rest_share"
+   },
+   {
+    "id": "energy_mix",
+    "label": "intended vs actual energy mix",
+    "value": null,
+    "range": [
+     0.6,
+     1.0
+    ],
+    "inside": null,
+    "measure": "runs.energy_mix_match"
+   }
+  ],
+  "judge": [],
+  "judge_meta": {}
+ },
+ "team_pull": {
+  "detail": "no links yet",
+  "sent": [],
+  "received": [],
+  "effects": {}
+ },
+ "community": {
+  "goals_completed_for_peers": 0,
+  "public_goods_built": 0,
+  "norms_kept": true,
+  "norm_breaches": [],
+  "replies_received": 0
+ },
+ "approaches": {
+  "rows": [
+   {
+    "id": "crew",
+    "label": "the office pipeline step",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 0.0,
+    "per_energy": null,
+    "hypothesis": "H-20261023-office-reaper-berries-keep-hands-working",
+    "bet_status": "proposed",
+    "bet_title": "A stocked berry store keeps the hands working"
+   }
+  ],
+  "working": "nothing measurable yet",
+  "not_working": "nothing clearly failing",
+  "next_bet": "try the office pipeline step at least once this week; it has a bet but no wakes"
+ },
+ "trend": {
+  "alive": "▁",
+  "on_mission": "▁",
+  "in_character": "▁"
+ },
+ "history": [
+  {
+   "date": "2026-10-17",
+   "metric_version": 1,
+   "alive": 0,
+   "on_mission": 0,
+   "in_character": 0,
+   "tick": 65760
+  }
+ ],
+ "signals": {}
+}

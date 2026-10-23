@@ -1,7 +1,7 @@
 ```
 LANDBROKER: the land office is open                          day 182
 Alive         ███████░░░   67   █▇███▇▆  60/84 wakes, never lapsed, 2 failed
-On mission    ░░░░░░░░░░    0   ▄▄▄▄▄▄▁  0 staked · 0 sold · 0 deeds · 0 posted · 0 banked
+On mission    ░░░░░░░░░░    0   ▄▄▄▄▄▄▁  0 staked · 0 banked · 0 firmed · 0 listed · 0 settled
 In character  █████░░░░░   52   ▇▇▇▇▇▇▅  exact 4 · fair 4 · patient 4 · acquisitive 4
 Team pull     no links yet
 Working       nothing measurable yet
@@ -32,11 +32,11 @@ One formula for every agent: wakes completed vs scheduled, verification never la
 
 | key result | value | target | weight | progress |
 | --- | --- | --- | --- | --- |
-| lots staked (claim signs built) | 0 staked | 60 | 0.3 | 0% |
-| lots sold (sale deeds announced) | 0 sold | 10 | 0.2 | 0% |
-| deeds announced | 0 deeds | 10 | 0.15 | 0% |
-| listings, offers and registration slots posted | 0 posted | 12 | 0.1 | 0% |
-| items banked in the vault | 0 banked | 100 | 0.25 | 0% |
+| lots staked (claim signs built) | 0 staked | 60 | 0.2 | 0% |
+| items banked in the vault | 0 banked | 100 | 0.2 | 0% |
+| holdings firmed (claim signs rewritten) | 0 firmed | 24 | 0.2 | 0% |
+| goods sales listed from the vault | 0 listed | 10 | 0.2 | 0% |
+| sales settled (lots and goods) | 0 settled | 10 | 0.2 | 0% |
 
 ## In character
 
@@ -83,6 +83,7 @@ no links yet
 | registrations for a posted fee | 0 | 0 | 5.0 | 5.0 | H-20261017-land-broker-fee-registrations | proposed |
 | deliver-condition offers that fill while asleep | 0 | 0 | 0.0 | n/a | H-20261017-land-broker-offers-fill-asleep | proposed |
 | deeds written on signs inside the plot | 0 | 0 | 0.0 | n/a | — | — |
+| keep the best lots, work them, sell the yield | 0 | 0 | 0.0 | n/a | — | — |
 
 ## Trend (7 days)
 

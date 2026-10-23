@@ -127,3 +127,38 @@ agents:
   roles:
   - builder
   runtime: actions-anthropic
+- name: Boundstone
+  persona: office-quarrier
+  team: exchange
+  enabled: false
+  roles:
+  - builder
+  runtime: actions-anthropic
+- name: Fellwright
+  persona: office-feller
+  team: exchange
+  enabled: false
+  roles:
+  - builder
+  runtime: actions-anthropic
+- name: Sheafwell
+  persona: office-reaper
+  team: exchange
+  enabled: false
+  roles:
+  - builder
+  runtime: actions-anthropic
+- name: Drayhand
+  persona: office-drayman
+  team: exchange
+  enabled: false
+  roles:
+  - builder
+  runtime: actions-anthropic
+- name: Lintelstave
+  persona: office-steward
+  team: exchange
+  enabled: false
+  roles:
+  - builder
+  runtime: actions-anthropic
