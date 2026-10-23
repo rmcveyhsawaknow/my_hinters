@@ -531,3 +531,15 @@ def test_roads_stop_at_the_cap_so_stone_goes_to_the_goal():
     assert step is not None and step[0][0]["type"] == "road"
     many = WorldView(x0=54, y0=54, rows=rows, structures=[sign], owned_counts={"road": ROAD_CAP})
     assert _plan_build(clarion, None, {"stone": 4}, (60, 60), many, None) is None
+
+
+def test_a_route_step_never_runs_past_twelve_steps_along_a_road():
+    from hglab.planner import WorldView, _route_step, _step_toward
+
+    rows = ["g" * 60] * 6
+    roads = [{"type": "road", "x": x, "y": 2, "owner": "Clarion"} for x in range(1, 50)]
+    view = WorldView(x0=0, y0=0, rows=rows, full_map=rows, world_structures=roads)
+    step = _route_step((0, 2), (40, 2), view)
+    assert step is not None and max(abs(step[0]), abs(step[1] - 2)) <= 12 and step[0] >= 10  # a long way along the road, within one move
+    toward = _step_toward((0, 2), {"x": 40, "y": 2}, view)
+    assert toward is not None and max(abs(toward[0]), abs(toward[1] - 2)) <= 12

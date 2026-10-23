@@ -2579,9 +2579,9 @@ def _route_step(position: tuple[int, int], target: tuple[int, int], view: WorldV
         path.append(prev[path[-1]])
     path.reverse()
     step = position
-    for tile in path[1:]:
-        if best[tile][0] <= MOVE_STEP_CAP:
-            step = tile
+    for index, tile in enumerate(path[1:], start=1):
+        if index <= MOVE_STEP_CAP:
+            step = tile  # the world walks at most twelve steps in one move, whatever the roads cost
         else:
             break
     return step if step != position else None
