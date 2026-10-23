@@ -278,6 +278,66 @@ def site_search(
     return out[:limit]
 
 
+WORLD_CENTRE = (64, 64)  # newcomers start near here; the guide asks that the spawn area is never stripped
+HOLDING_TEXT = "Lot {lot}: land office holding ({tags}). Not for sale: its nodes are the office's stock, sold from the vault. A public record, not a wall."
+
+
+def holdings(
+    cfg: dict[str, Any] | None,
+    structures: list[dict[str, Any]],
+    terrain: Callable[[int, int], str | None],
+    resources: list[dict[str, Any]],
+    residents: list[dict[str, Any]],
+    tick: int,
+    registrar: str,
+    sold: set[str] | frozenset[str] = frozenset(),
+) -> list[dict[str, Any]]:
+    """The office's holdings: its ``keep`` most valuable staked, unsold lots, plus (``always_ore``) every staked lot with ore within two tiles.
+
+    Ranked by worth, then ore, then id; each row carries the lot, its score and tags, the anchor, the
+    claim sign standing there, the ore count and a rank from one.
+    """
+    if not cfg:
+        return []
+    keep = int(cfg.get("keep", 0) or 0)
+    staked = staked_lots(structures, registrar)
+    rows: list[dict[str, Any]] = []
+    for lid, sign in staked.items():
+        if lid in sold:
+            continue
+        value = lot_value(lid, terrain, resources, structures, list(residents or []), tick, exclude_owner=registrar)
+        rows.append({
+            "lot": lid, "score": value["score"], "tags": list(value["tags"]), "anchor": lot_anchor(lid),
+            "sign": sign, "ore": int((value.get("resources") or {}).get("ore", 0) or 0), "resources": dict(value.get("resources") or {}),
+        })
+    rows.sort(key=lambda r: (-r["score"], -r["ore"], r["lot"]))
+    chosen = rows[:keep]
+    if cfg.get("always_ore", True):
+        seen = {r["lot"] for r in chosen}
+        chosen.extend(r for r in rows[keep:] if r["ore"] > 0 and r["lot"] not in seen)
+    for index, row in enumerate(chosen, start=1):
+        row["rank"] = index
+    return chosen
+
+
+def holding_text(cfg: dict[str, Any] | None, entry: dict[str, Any], registrar: str) -> str:
+    """What a holding's claim sign says once the claim is firm."""
+    template = str((cfg or {}).get("text") or HOLDING_TEXT)
+    tags = ", ".join(str(t) for t in (entry.get("tags") or [])[:3]) or "surveyed"
+    return template.format(lot=entry["lot"], tags=tags, registrar=registrar)[:200]
+
+
+def node_floor(cfg: dict[str, Any] | None, node: tuple[int, int], structures: list[dict[str, Any]], registrar: str, default: int = 5) -> int:
+    """How low a node may be worked: the claims floor, except near the spawn and in other residents' homestead rings."""
+    cfg = cfg or {}
+    floor = int(cfg.get("floor", default) if cfg.get("floor") is not None else default)
+    if _chebyshev(node, WORLD_CENTRE) <= int(cfg.get("protect_spawn", 12) or 0):
+        return default
+    if cfg.get("protect_homesteads", True) and lot_id(*node) in homestead_ring(structures, registrar):
+        return default
+    return floor
+
+
 def staked_lots(structures: list[dict[str, Any]], registrar: str) -> dict[str, dict[str, Any]]:
     """Lot id -> the office's claim sign standing on it (a sign owned by the registrar whose text starts with 'Lot ')."""
     out: dict[str, dict[str, Any]] = {}
@@ -302,6 +362,8 @@ __all__ = [
     "adjacent_lots",
     "all_lots",
     "free_lots",
+    "holding_text",
+    "holdings",
     "homestead_ring",
     "lot_anchor",
     "lot_bounds",
@@ -312,6 +374,7 @@ __all__ = [
     "lot_price",
     "lot_tiles",
     "lot_value",
+    "node_floor",
     "occupied_lots",
     "site_search",
     "stake_text",

@@ -32,3 +32,29 @@ def test_the_lot_price_rises_as_free_lots_run_out():
     assert lot_price(0.01) == 50 and lot_price(0.0) == 50
     prices = [lot_price(s / 100) for s in range(100, 0, -5)]
     assert prices == sorted(prices)
+
+
+def test_holdings_are_the_best_staked_lots_plus_every_ore_lot_and_the_floor_protects_spawn_and_homesteads():
+    from hglab.lots import holding_text, holdings, lot_anchor, node_floor, stake_text
+
+    rows = ["g" * 128] * 128
+    terrain = lambda x, y: rows[y][x] if 0 <= x < 128 and 0 <= y < 128 else None
+    lots = ["B02-NW", "B02-NE", "C02-NW", "C02-NE", "D02-NW"]
+    signs = [{"type": "sign", "x": lot_anchor(lid)[0], "y": lot_anchor(lid)[1], "owner": "LandBroker", "text": stake_text(lid, "LandBroker")} for lid in lots]
+    ore = {"kind": "ore", "x": lot_anchor("D02-NW")[0] + 1, "y": lot_anchor("D02-NW")[1], "amount": 9}
+    stones = [{"kind": "stone", "x": lot_anchor("B02-NW")[0] + dx, "y": lot_anchor("B02-NW")[1], "amount": 20} for dx in (-1, 0, 1)]
+    woods = [{"kind": "wood", "x": lot_anchor("C02-NE")[0], "y": lot_anchor("C02-NE")[1] + 1, "amount": 30}]
+    hut = {"type": "hut", "x": lot_anchor("C02-NW")[0], "y": lot_anchor("C02-NW")[1], "owner": "Quill"}
+    cfg = {"keep": 2, "always_ore": True, "floor": 0, "protect_spawn": 12, "protect_homesteads": True}
+    held = holdings(cfg, [*signs, hut], terrain, [ore, *stones, *woods], [], 1000, "LandBroker")
+    assert [h["lot"] for h in held] == ["B02-NW", "D02-NW"]  # stone three times, then the ore: the two most valuable; timber is third
+    one = holdings({**cfg, "keep": 1}, [*signs, hut], terrain, [ore, *stones, *woods], [], 1000, "LandBroker")
+    assert [h["lot"] for h in one] == ["B02-NW", "D02-NW"] and one[-1]["ore"] == 1 and one[-1]["rank"] == 2  # the ore lot is kept whatever its rank
+    assert [h["lot"] for h in holdings({**cfg, "keep": 1, "always_ore": False}, [*signs, hut], terrain, [ore, *stones, *woods], [], 1000, "LandBroker")] == ["B02-NW"]
+    assert holdings(None, signs, terrain, [], [], 1000, "LandBroker") == []
+    text = holding_text(cfg, held[0], "LandBroker")
+    assert text.startswith("Lot B02-NW: land office holding (stone near") and "Not for sale" in text and len(text) <= 200
+    assert node_floor(cfg, (ore["x"], ore["y"]), [*signs, hut], "LandBroker") == 0  # worked to the floor
+    assert node_floor(cfg, (66, 66), [*signs, hut], "LandBroker") == 5  # the spawn area keeps the collective floor
+    assert node_floor(cfg, (hut["x"] + 2, hut["y"]), [*signs, hut], "LandBroker") == 5  # so does another resident's homestead ring
+    assert node_floor({**cfg, "protect_homesteads": False}, (hut["x"] + 2, hut["y"]), [*signs, hut], "LandBroker") == 0

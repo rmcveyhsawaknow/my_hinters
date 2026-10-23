@@ -36,6 +36,15 @@ site_requests:
       - {label: Neverland, x: 74, y: 112, weight: 3, max: 45}
     prefer: {y_min: 80}
     note: The Chocolate Factory wants a 5x5 lot it can expand into, near the southern mountains and close to Neverland, with gold (ore) and fudge (stone) in reach.
+# The sales desk (the owner's instruction of 2026-10-23): the office keeps its best staked lots as holdings
+# (teams/exchange.yaml: pipeline.claims), its hands work their nodes into the vault, and the vault's goods
+# are sold through self-confirming goals: the buyer gives the price into the vault and the goods pay out at
+# once. A sale is listed when the pack holds the goods; the office takes them from the vault when it holds
+# at least min_stock. Nobody in the collective may claim these; they are for the other residents.
+sales:
+  - {id: ore-for-wood, sell: {ore: 10}, price: {wood: 30}, min_stock: 20, status: open}
+  - {id: stone-for-berries, sell: {stone: 20}, price: {berries: 10}, min_stock: 60, status: open}
+  - {id: wood-for-berries, sell: {wood: 20}, price: {berries: 8}, min_stock: 80, status: open}
 offers:
   - {id: wood-for-berries, want: {wood: 10}, reward: {berries: 2}, status: open}
   - {id: stone-for-berries, want: {stone: 10}, reward: {berries: 3}, status: open}
