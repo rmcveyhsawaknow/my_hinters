@@ -276,3 +276,33 @@ def test_the_assignment_s_preferred_steps_come_before_the_default_order(tmp_path
     record = record[0] if isinstance(record, tuple) else record
     first = next(a for a in record["actions"] if a["action"] != "remember")
     assert first["action"] in {"move", "gather"}  # the tick wake, too, runs the gather activity before the build
+
+
+def test_the_founder_skips_mates_the_world_does_not_know_and_those_the_roster_shows_inside(tmp_path):
+    from hglab.mood import PersonaState
+    from hglab.planner import WorldView, _plan_team_faction, _roster
+
+    personas = load_personas(ROOT)
+    wonka = personas["wonka"]
+    team = load_team(ROOT, "chocolate-factory")
+    names = {p.name: s for s, p in personas.items()}
+    observe = {"you": {"name": "Fudgewright", "faction": {"id": 5, "name": "Chocolate Factory"}}, "tick": 55600, "agents": [],
+               "_factions": [{"id": 5, "name": "Chocolate Factory", "members": 3, "membership": "invite"}]}
+    residents = [
+        {"name": "Fudgewright", "faction": {"id": 5, "name": "Chocolate Factory"}},
+        {"name": "MotherPail", "faction": {"id": 5, "name": "Chocolate Factory"}},
+        {"name": "GrandadPail", "faction": {"id": 5, "name": "Chocolate Factory"}},
+        {"name": "Treacleaxe", "faction": None},
+        {"name": "Nougatpick", "faction": None},
+        {"name": "Sherbetsack", "faction": None},
+    ]  # Caramelcart and Toffeetrowel are not registered yet
+    roster = _roster(WorldView(x0=0, y0=0, rows=["g" * 128] * 128, residents=residents))
+    state = PersonaState(mood="gentle")
+    state.flags["faction_invited"] = ["Caramelcart", "GrandadPail", "MotherPail"]  # a wake before the roster was consulted
+    step = _plan_team_faction(wonka, team, state, observe, 100, 25, {p.name for p in personas.values()}, names, room=3, roster=roster)
+    assert step is not None and sorted(a["name"] for a in step[0]) == ["Nougatpick", "Sherbetsack", "Treacleaxe"]
+    assert "Caramelcart" not in state.flags["faction_invited"]  # dropped: the world never knew the name, so it was never invited
+    later = dict(roster, Caramelcart=None)
+    again = _plan_team_faction(wonka, team, state, observe, 100, 25, {p.name for p in personas.values()}, names, room=3, roster=later)
+    assert again is not None and [a["name"] for a in again[0]] == ["Caramelcart"]  # registered since: invited now, once
+    assert _plan_team_faction(wonka, team, state, observe, 100, 25, {p.name for p in personas.values()}, names, room=3, roster=later) is None
