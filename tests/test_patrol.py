@@ -96,3 +96,18 @@ def test_the_models_inland_moves_are_refused():
     with pytest.raises(ValueError, match="outermost edge"):
         _keep_to_edge("Lagalong", [{"action": "move", "x": 45, "y": 30}], observe, loop)
     _keep_to_edge("Lagalong", [{"action": "move", "x": 50, "y": 45}], {"you": {"x": 55, "y": 55}}, loop)  # inland and heading out: allowed
+
+
+def test_a_coast_road_never_stretches_a_patrol_hop_past_the_move_cap():
+    rows = _island()
+    roads = [{"type": "road", "x": x, "y": 20, "owner": "Clarion"} for x in range(20, 70)]  # a road along the north coast
+    view = WorldView(x0=0, y0=0, rows=rows, full_map=rows, structures=roads, world_structures=roads)
+    persona = load_personas(ROOT)["tootles"]
+    state = PersonaState(mood="wistful")
+    step = _plan_patrol(persona, state, (20, 20), view, room=2, energy_room=60)
+    assert step is not None and step[2] == "patrol"
+    here = (20, 20)
+    for action in step[0]:
+        assert action["action"] == "move" and max(abs(action["x"] - here[0]), abs(action["y"] - here[1])) <= 12
+        here = (action["x"], action["y"])
+    assert here[0] > 20  # it did walk the coast, within the world's twelve steps per move

@@ -1024,3 +1024,13 @@ def test_goals_read_the_newest_record_pick_the_largest_gap_and_brief_once(tmp_pa
         and len(g.edges("Clarion", kind="pursues", limit=10)) == 1
     )
     g.close()
+
+
+def test_the_job_runner_survives_output_the_console_code_page_cannot_decode(tmp_path):
+    import sys
+
+    sup = Supervisor(tmp_path, {"dry_run": True, "agents": []})
+    code, output = sup._run_subprocess(
+        [sys.executable, "-c", "import sys; sys.stdout.buffer.write(b'\\x90 ok \\xe2\\x9c\\x93'); sys.stderr.write('warn')"]
+    )
+    assert code == 0 and "ok" in output and "warn" in output
