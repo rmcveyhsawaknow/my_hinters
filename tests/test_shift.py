@@ -543,3 +543,33 @@ def test_a_route_step_never_runs_past_twelve_steps_along_a_road():
     assert step is not None and max(abs(step[0]), abs(step[1] - 2)) <= 12 and step[0] >= 10  # a long way along the road, within one move
     toward = _step_toward((0, 2), {"x": 40, "y": 2}, view)
     assert toward is not None and max(abs(toward[0]), abs(toward[1] - 2)) <= 12
+
+
+def test_a_storehouse_that_refuses_a_give_as_full_is_remembered_full(tmp_path):
+    from hglab.client import HinterglassError
+    from hglab.persona import PERSONA_STATE_KEY
+
+    observe = load_fixture(FIX / "observe/plumbline.json")  # no border duty, no road stone: the deposit is the first step
+    observe["you"]["inventory"] = {"wood": 45, "fiber": 3}  # no stone for a road, no fiber for a hut: the deposit is the step
+    observe["you"]["home"] = None
+    store = {"id": 77, "type": "storehouse", "x": observe["you"]["x"] + 1, "y": observe["you"]["y"], "owner": "LandBroker", "policy": "private", "faction": None, "hp": 80, "storage": {}}
+    observe["structures"] = [store]
+    personas = load_personas(ROOT)
+    persona = personas["plumbline"]
+    client = FixtureClient(observe)
+    original_act = client.act
+
+    def refusing_act(action):
+        if action.get("action") == "give":
+            raise HinterglassError(400, "inventory_full", "the storehouse is full")
+        return original_act(action)
+
+    client.act = refusing_act
+    lease = acquire(client, persona.name)
+    result = persona_wake(persona=persona, team=load_team(ROOT, persona.team), personas=personas, client=client, lease=lease, root=ROOT, output_dir=tmp_path, dry_run=False, work=True, seed="full")
+    record = result[0] if isinstance(result, tuple) else result
+    at = next(i for i, a in enumerate(record["actions"]) if a["action"] == "give")
+    assert record["results"][at]["error"] == "inventory_full" and record["results"][at + 1]["error"] == "skipped" and record["results"][-1]["ok"]  # the walk is skipped, the note runs
+    assert any("is full" in line for line in record.get("learned", []))
+    note = json.loads(client.observe()["notebook"][PERSONA_STATE_KEY])
+    assert f"{store['x']},{store['y']}" in note["flags"]["full_stores"]  # the next wake walks past this store
