@@ -78,6 +78,8 @@ def test_lagalong_keeps_to_the_edge_in_shifts_and_wakes(work):
         "world": {"nearest_agents": []}, "notebook": {},
     }
     names = {personas[m].name.casefold(): m for m in team.members if m in personas}
+    observe["you"]["faction"] = {"id": 7, "name": "Neverland"}  # the team faction stands and is full: no founding, no invitations
+    observe["_factions"] = [{"id": 7, "name": "Neverland", "members": 4, "membership": "invite"}]
     plan = plan_wake(persona, team, PersonaState(mood="wistful"), observe, "act", random.Random("p"), teammates=None, terrain_rows=rows, allowed=None, team_names=names, work=work, collective_names=OURS)
     moves = [a for a in plan["actions"] if a["action"] == "move"]
     assert moves and all(a["y"] == 20 and a["x"] > 40 for a in moves), plan  # east along the north coast, never inland

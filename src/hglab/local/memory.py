@@ -99,6 +99,12 @@ class Graph:
         self.db.commit()
         return cur.rowcount == 1
 
+    def remove_edges(self, src: str, kind: str) -> int:
+        """Drop every edge of one kind leaving a node (an assignment is replaced, not accumulated)."""
+        cur = self.db.execute("DELETE FROM edges WHERE src = ? AND kind = ?", (src, kind))
+        self.db.commit()
+        return cur.rowcount
+
     def mark_ingested(self, key: str) -> bool:
         cur = self.db.execute(
             "INSERT OR IGNORE INTO ingested(key, utc) VALUES (?, ?)",

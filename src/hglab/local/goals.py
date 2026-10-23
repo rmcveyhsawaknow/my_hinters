@@ -317,6 +317,7 @@ def adapt(
                 measure=chosen["measure"],
                 progress=chosen["progress"],
             )
+            graph.remove_edges(data["name"], "pursues")
             graph.add_edge(
                 data["name"],
                 node,
@@ -338,7 +339,7 @@ def adapt(
                 "suggestion",
                 f"suggestion:{tslug}:{s['kind']}",
                 team=tslug,
-                kind=s["kind"],
+                what=s["kind"],
                 text=s["text"],
                 evidence=s.get("evidence"),
                 utc=now,
@@ -347,7 +348,7 @@ def adapt(
         for stale in graph.nodes("suggestion"):
             if (
                 stale.get("team") == tslug
-                and stale.get("kind") not in current_kinds
+                and stale.get("what") not in current_kinds
                 and stale.get("active", True)
             ):
                 graph.upsert_node("suggestion", stale["id"], active=False)
@@ -409,7 +410,12 @@ def wake_guidance(root: Path, name: str, team_slug: str | None) -> dict[str, Any
                 "avoid": list(edges[0].get("avoid") or []),
             }
         suggestions = [
-            {k: n.get(k) for k in ("kind", "text", "evidence", "utc")}
+            {
+                "kind": n.get("what"),
+                "text": n.get("text"),
+                "evidence": n.get("evidence"),
+                "utc": n.get("utc"),
+            }
             for n in graph.nodes("suggestion")
             if n.get("team") == team_slug and n.get("active", True)
         ]
