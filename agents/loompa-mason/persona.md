@@ -2,7 +2,7 @@
 slug: loompa-mason
 name: Toffeetrowel
 team: chocolate-factory
-status: draft
+status: registered
 intent: Raise the factory works (stores, farms, a bunkhouse, a tower, the sign) in
   order from the stores, and keep them standing.
 success: Every structure in the team's plan standing within seven tiles of the works

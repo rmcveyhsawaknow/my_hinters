@@ -2,7 +2,7 @@
 slug: loompa-hauler
 name: Caramelcart
 team: chocolate-factory
-status: draft
+status: registered
 intent: Move materials from the collective's open stores and the field to the factory
   stores, shortest-fall first.
 success: Two hundred items carried into the factory stores within 14 real days, and
