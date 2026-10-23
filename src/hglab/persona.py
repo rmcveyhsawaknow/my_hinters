@@ -216,7 +216,11 @@ def parse_team(path: Path, schema: dict[str, Any] | None = None) -> Team:
         story=data.get("story", ""),
         path=path,
         border=data.get("border"),
+        extra={k: v for k, v in data.items() if k not in TEAM_KEYS},
     )
+
+
+TEAM_KEYS = {"slug", "name", "aim", "members", "home", "territory", "social_budget", "links", "story", "border"}
 
 
 def load_team(root: Path, slug: str) -> Team:

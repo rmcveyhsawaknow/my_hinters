@@ -1014,5 +1014,13 @@ def test_goals_read_the_newest_record_pick_the_largest_gap_and_brief_once(tmp_pa
     pending = TaskStore(g).pending_for("Clarion")
     assert pending and "features found" in pending[0]["history"][0]["parts"][0]["text"]
     neverland = plan["teams"]["neverland"]["suggestions"]
-    assert any(s["kind"] == "faction" for s in neverland)
+    assert not any(
+        s["kind"] == "faction" for s in neverland
+    )  # Neverland names its faction in teams/neverland.yaml
+    # a second adapt replaces the assignment edge instead of piling up a new one
+    assert (
+        adapt(tmp_path, g, personas, teams)["agents"]["town-crier"]["assignment"]["id"]
+        == "features_found"
+        and len(g.edges("Clarion", kind="pursues", limit=10)) == 1
+    )
     g.close()

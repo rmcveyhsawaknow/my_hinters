@@ -7,6 +7,17 @@
     "slug": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$"},
     "name": {"type": "string", "minLength": 3, "maxLength": 60},
     "aim": {"type": "string", "minLength": 10, "maxLength": 400},
+    "faction": {
+      "type": "object",
+      "required": ["name"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {"type": "string", "minLength": 3, "maxLength": 32, "pattern": "^[A-Za-z0-9 _-]+$"},
+        "motto": {"type": "string", "maxLength": 120},
+        "membership": {"enum": ["invite", "open"]},
+        "founder": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$"}
+      }
+    },
     "story": {"type": "string", "maxLength": 1200},
     "members": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$"}, "uniqueItems": true},
     "home": {

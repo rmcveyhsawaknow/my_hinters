@@ -341,6 +341,18 @@ def persona_wake(
         mates = dict(teammates or {})
         for slug_, pos_ in teammate_positions(observe, team, personas).items():
             mates[slug_] = pos_  # what is in view beats a stale roster
+        guidance = observe.get("_guidance")
+        if guidance is None:
+            from hglab.local.goals import wake_guidance
+
+            guidance = wake_guidance(root, persona.name, persona.team)
+            observe["_guidance"] = guidance
+        if "_factions" not in observe:
+            observe["_factions"] = _public_factions(client)
+        assignment = guidance.get("assignment") or {}
+        avoid = frozenset(str(a) for a in (assignment.get("avoid") or []))
+        if assignment:
+            extras["assignment"] = {"label": assignment.get("label"), "avoid": sorted(avoid), "works": list(assignment.get("works") or [])}
         plan = plan_wake(
             persona,
             team,
@@ -348,6 +360,7 @@ def persona_wake(
             observe,
             mode,
             rng,
+            skip=avoid,
             teammates=mates,
             terrain_rows=terrain_rows,
             allowed=allowed,
@@ -527,6 +540,8 @@ def persona_wake(
         )
         if muted:
             extras["speech_budget"] = muted
+        observe.pop("_guidance", None)
+        observe.pop("_factions", None)
         context["observe"] = observe
         context["mates"] = mates
         return {"summary": plan.get("summary", ""), "actions": actions}
@@ -634,6 +649,19 @@ def mute_over_budget(
     drop = set(says[allowed:])
     kept = [a for i, a in enumerate(actions) if i not in drop]
     return kept, {"muted": len(drop), "why": why}
+
+
+def _public_factions(client: Any) -> list[dict[str, Any]]:
+    """The world's factions (keyless), for the team faction step; empty when the client has none or the call fails."""
+    getter = getattr(client, "public_factions", None)
+    if getter is None:
+        return []
+    try:
+        data = getter()
+    except Exception:  # noqa: BLE001 - optional context
+        return []
+    factions = data.get("factions", data) if isinstance(data, dict) else data
+    return [f for f in factions if isinstance(f, dict)] if isinstance(factions, list) else []
 
 
 def _place_builds(

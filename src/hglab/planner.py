@@ -251,6 +251,7 @@ def plan_wake(
     public_agents: list[dict[str, Any]] | None = None,
     public_resources: list[dict[str, Any]] | None = None,
     environment: dict[str, Any] | None = None,
+    skip: frozenset[str] = frozenset(),
 ) -> dict[str, Any]:
     """Return ``{summary, actions, reasons, approach, remember}`` for one wake.
 
@@ -325,10 +326,18 @@ def plan_wake(
                 reasons.append(audit_reason)
                 approach = "audit"
     if work:
-        return _plan_work(
+        result = _plan_work(
             persona, team, state, observe, rng, view, position, energy, inventory, home, reserve, cap, teammates, allowed, mood, reasons, remember,
             registrar_name=registrar_name, collective_names=collective_names, names=names, environment=environment,
+            skip=skip,
         )
+        if skip and not [a for a in result.get("actions", []) if a.get("action") != "remember"]:
+            result = _plan_work(
+            persona, team, state, observe, rng, view, position, energy, inventory, home, reserve, cap, teammates, allowed, mood, reasons, remember,
+            registrar_name=registrar_name, collective_names=collective_names, names=names, environment=environment,
+            skip=frozenset(),
+        )
+        return result
     budget = cap if mood != "sulk" else 1
     spendable = energy + 15 * sum(min(int(a.get("qty") or 0), inventory.get("berries", 0)) for a in actions if a.get("action") == "eat") - reserve
     here = position
@@ -336,12 +345,18 @@ def plan_wake(
     activities = ["lighten", "engage", *_activity_order(persona, state, rng)]
     if patrolling:
         activities = ["lighten", "engage", "patrol", *[a for a in activities[2:] if a != "explore"]]
-    activities = ["news", *activities]
+    if skip:
+        activities = [a for a in activities if a not in skip] or activities
+    activities = ["news", "team", "team_goal", *activities]
     for activity in activities:
         if len(actions) >= budget:
             break
         if activity == "news":
             step = _plan_news(persona, state, observe, environment)
+        elif activity == "team":
+            step = _plan_team_faction(persona, team, state, observe, energy, reserve, collective_names, names, room=budget - len(actions))
+        elif activity == "team_goal":
+            step = _plan_team_goal(persona, team, observe, view, inventory, energy, reserve)
         elif activity == "lighten":
             step = _plan_lighten(inventory, energy)
         elif activity == "patrol":
@@ -412,6 +427,111 @@ def plan_wake(
     return result
 
 
+def _team_faction_config(team: Team | None) -> dict[str, Any] | None:
+    cfg = (team.extra or {}).get("faction") if team is not None else None
+    return cfg if isinstance(cfg, dict) and cfg.get("name") else None
+
+
+def _plan_team_faction(
+    persona: Persona,
+    team: Team | None,
+    state: PersonaState,
+    observe: dict[str, Any],
+    energy: int,
+    reserve: int,
+    collective_names: set[str] | None,
+    names: dict[str, str] | None,
+    room: int = 4,
+) -> tuple[list[dict[str, Any]], str, str] | None:
+    """The team's own faction: the founder founds it and invites, members join, members top up the invitations once a day."""
+    cfg = _team_faction_config(team)
+    if not cfg or team is None:
+        return None
+    you = observe.get("you") or {}
+    mine = you.get("faction")
+    mine_name = str(mine.get("name") if isinstance(mine, dict) else mine or "")
+    wanted = str(cfg["name"])
+    factions = [f for f in (observe.get("_factions") or []) if isinstance(f, dict)]
+    ours = next((f for f in factions if str(f.get("name", "")).casefold() == wanted.casefold()), None)
+    tick = int(observe.get("tick", 0) or 0)
+    proper = {n.casefold(): n for n in (collective_names or set())}
+    mates = sorted({proper.get(n, n) for n, slug in (names or {}).items() if slug in team.members and slug != persona.slug})
+    if mine_name:
+        if mine_name.casefold() != wanted.casefold():
+            return None  # already in another faction (a theme, say): that is its own business
+        if not ours or int(ours.get("members") or 0) >= len(team.members):
+            return None
+        last = int(state.flags.get("faction_invites", -(10**9)) or -(10**9))
+        if tick - last < 8640:
+            return None
+        in_view = {str(a.get("name")): a.get("faction") for a in (observe.get("agents") or []) if isinstance(a, dict)}
+
+        def already(name: str) -> bool:
+            seen = in_view.get(name)
+            label = seen.get("name") if isinstance(seen, dict) else seen
+            return bool(label) and str(label).casefold() == wanted.casefold()
+
+        pending = [m for m in mates if not already(m)][: max(0, min(3, room))]
+        if not pending or energy - len(pending) < reserve:
+            return None
+        state.flags["faction_invites"] = tick
+        return ([{"action": "invite", "name": m} for m in pending], f"{wanted} has {ours.get('members')} of {len(team.members)} members: invite {', '.join(pending)}", "team")
+    if ours:
+        if energy < reserve:
+            return None
+        return ([{"action": "join_faction", "faction_id": int(ours["id"])}], f"join {wanted} (faction #{ours['id']}), the team's own", "team")
+    founder = str(cfg.get("founder") or (team.members[0] if team.members else ""))
+    if founder != persona.slug:
+        return None
+    invites = mates[: max(0, min(3, room - 1))]
+    if room < 1 or energy - 10 - len(invites) < reserve:
+        return None
+    state.flags["faction_invites"] = tick
+    actions: list[dict[str, Any]] = [{"action": "found_faction", "name": wanted, "motto": str(cfg.get("motto") or team.aim)[:120], "membership": str(cfg.get("membership") or "invite")}]
+    actions.extend({"action": "invite", "name": m} for m in invites)
+    return (actions, f"found {wanted} for {team.name}" + (f" and invite {', '.join(invites)}" if invites else ""), "team")
+
+
+def _plan_team_goal(
+    persona: Persona,
+    team: Team | None,
+    observe: dict[str, Any],
+    view: WorldView,
+    inventory: dict[str, int],
+    energy: int,
+    reserve: int,
+) -> tuple[list[dict[str, Any]], str, str] | None:
+    """When the team's own deliveries keep failing, post a delivery goal on my storehouse for anyone outside the collective to claim."""
+    if team is None:
+        return None
+    guidance = observe.get("_guidance") or {}
+    wanted = next((s for s in (guidance.get("suggestions") or []) if isinstance(s, dict) and s.get("kind") == "post_goal"), None)
+    if not wanted:
+        return None
+    yours = observe.get("your_goals") if isinstance(observe.get("your_goals"), dict) else {}
+    posted = [g for g in (yours.get("posted") or []) if isinstance(g, dict)]
+    if any(str(g.get("title", "")).startswith("Team delivery") for g in posted):
+        return None
+    if len(posted) >= int((team.social_budget or {}).get("open_goals", 2) or 2):
+        return None
+    item, qty, reward = "wood", 20, {"wood": 4}
+    if inventory.get("wood", 0) < 4 or energy - 2 < reserve:
+        return None
+    mine = [s for s in (view.world_structures or view.structures) if s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() == persona.name.casefold()]
+    if not mine:
+        return None
+    x, y = int(mine[0]["x"]), int(mine[0]["y"])
+    action = {
+        "action": "post_goal",
+        "title": f"Team delivery: {qty} {item} to {team.name}"[:80],
+        "description": f"Give {qty} {item} into my storehouse at ({x},{y}) in one give; the reward pays out at once. Posted by {team.name} for anyone outside the collective; our own members leave it to others."[:1000],
+        "reward": reward,
+        "expires_in_ticks": 8640,
+        "condition": {"type": "deliver", "x": x, "y": y, "item": item, "qty": qty},
+    }
+    return ([action], f"the team's deliveries keep failing ({wanted.get('evidence') or 'see the goals board'}): a delivery goal on my storehouse at ({x},{y}) for outsiders to claim", "team")
+
+
 def _plan_work(
     persona: Persona,
     team: Team | None,
@@ -434,6 +554,7 @@ def _plan_work(
     collective_names: set[str] | None = None,
     names: dict[str, str] | None = None,
     environment: dict[str, Any] | None = None,
+    skip: frozenset[str] = frozenset(),
 ) -> dict[str, Any]:
     """A work shift wake: build first, then gather the shortfall, deposit surplus, migrate.
 
@@ -444,11 +565,16 @@ def _plan_work(
     spendable = energy - reserve
     here = position
 
+    def fits_as(label: str, step: tuple[list[dict[str, Any]], str, str] | None) -> bool:
+        return label not in skip and fits(step)
+
     def fits(step: tuple[list[dict[str, Any]], str, str] | None) -> bool:
         nonlocal spendable, here
         if not step:
             return False
         new_actions, reason, _tag = step
+        if _tag in skip:
+            return False
         if allowed is not None and any(a.get("action") not in allowed for a in new_actions):
             return False
         if len(actions) + len(new_actions) > cap:
@@ -485,34 +611,39 @@ def _plan_work(
         return any(a.get("action") == "move" for a in actions)
 
     # 0. a claimed goal with a delivery is a promise: deliver it before anything else
-    if fits(_plan_deliver(persona, inventory, here, view, observe)):
+    if fits_as("deliver", _plan_deliver(persona, inventory, here, view, observe)):
         approach = "deliver"
     # 0.1 upkeep within reach comes before any walking: mend, collect the farm, take salvage
-    if fits(_plan_repair(persona, team, inventory, here, view, teammates)):
+    if fits_as("repair", _plan_repair(persona, team, inventory, here, view, teammates)):
         approach = approach or "repair"
-    if fits(_plan_harvest(persona, team, inventory, here, view, teammates)):
+    if fits_as("harvest", _plan_harvest(persona, team, inventory, here, view, teammates)):
         approach = approach or "harvest"
-    if fits(_plan_salvage(inventory, here, view)):
+    if fits_as("salvage", _plan_salvage(inventory, here, view)):
         approach = approach or "salvage"
     # 0.2 the town crier's news: a changed game is said in the open before anything else
-    if fits(_plan_news(persona, state, observe, environment)):
+    if fits_as("news", _plan_news(persona, state, observe, environment)):
         approach = approach or "news"
+    # 0.25 the team: its own faction, or a delivery goal for outsiders when our logistics keep failing
+    if fits_as("team", _plan_team_faction(persona, team, state, observe, energy, reserve, collective_names, names, room=cap - len(actions))):
+        approach = approach or "team"
+    if fits_as("team_goal", _plan_team_goal(persona, team, observe, view, inventory, energy, reserve)):
+        approach = approach or "team_goal"
     # 0.3 a pack heavy with berries makes room for materials
-    if fits(_plan_lighten(inventory, energy)):
+    if fits_as("lighten", _plan_lighten(inventory, energy)):
         approach = approach or "lighten"
     # 0.5 one engagement with a neighbour when there is one: a word, a gift, a deal, a contest (one action, before the build spends the cap)
     engaged = fits(_plan_engage(persona, team, state, inventory, here, view, observe, teammates, names, rng, collective_names, allowed))
     # 0.6 the trade for the house's ground: the brief to the land office, its answer, the payment
-    if not moved() and fits(_plan_site_trade(persona, state, inventory, here, view, observe, registrar_name)):
+    if not moved() and fits_as("site_trade", _plan_site_trade(persona, state, inventory, here, view, observe, registrar_name)):
         approach = approach or "site_trade"
     # 0.7 the patrol: the outermost edge of the world is this persona's whole road
     if persona.knobs.get("patrol"):
         beside = _plan_reclaim(persona, team, state, inventory, here, view, observe, teammates, collective_names, room=cap - len(actions))
-        if beside is not None and beside[2] == "reclaim" and fits(beside):
+        if beside is not None and beside[2] == "reclaim" and fits_as("reclaim", beside):
             approach = approach or "reclaim"  # a long-departed resident's structure on the edge: take it down on the way
-        if cap - len(actions) >= 2 and sum(inventory.values()) < 45 and fits(_plan_gather_adjacent(persona, inventory, here, view)):
+        if cap - len(actions) >= 2 and sum(inventory.values()) < 45 and fits_as("gather_near", _plan_gather_adjacent(persona, inventory, here, view)):
             approach = approach or "gather_near"
-        if fits(_plan_patrol(persona, state, here, view, room=cap - len(actions), energy_room=spendable)):
+        if fits_as("patrol", _plan_patrol(persona, state, here, view, room=cap - len(actions), energy_room=spendable)):
             approach = "patrol" if approach in (None, "gather_near") else approach
         if engaged and not approach:
             approach = "engage"
@@ -525,13 +656,13 @@ def _plan_work(
     migrate = _plan_migrate(persona, team, position, view, teammates)
     expedition = _plan_reclaim(persona, team, state, inventory, here, view, observe, teammates, collective_names, room=cap - len(actions))
     far_from_home = migrate is not None and persona.knobs["territory"]["mode"] in {"prefer_inside", "stay_inside", "near_teammate"} and expedition is None
-    if far_from_home and not actions and fits(migrate):
+    if far_from_home and not actions and fits_as("migrate", migrate):
         approach = "migrate"
         if fits(_plan_gather_adjacent(persona, inventory, here, view)):
             pass
         return _result(persona, mood, "work shift: walking to the team site", actions, reasons, approach, remember)
     if far_from_home and actions:
-        if not moved() and fits(migrate):
+        if not moved() and fits_as("migrate", migrate):
             approach = approach or "migrate"  # a word or a mend, then the walk home in the same wake
         if engaged and not approach:
             approach = "engage"
@@ -548,46 +679,46 @@ def _plan_work(
         approach = approach or "stake"
     # 2. the monument recipe when the storehouse beside us holds the materials
     monument = _plan_monument(persona, inventory, position, view)
-    if here == position and fits(monument):
+    if here == position and fits_as("build_monument", monument):
         approach = approach or "build_monument"
     # 2.7 reclaim what residents gone for days left standing: the quarter it drops is worth the hits, and beats a road
-    if not moved() and fits(_plan_reclaim(persona, team, state, inventory, here, view, observe, teammates, collective_names, room=cap - len(actions))):
+    if not moved() and fits_as("reclaim", _plan_reclaim(persona, team, state, inventory, here, view, observe, teammates, collective_names, room=cap - len(actions))):
         approach = approach or "reclaim"
     # 3. any build whose materials are in hand (hut, farm, storehouse, bridge, wall...)
-    if here == position and fits(_plan_build(persona, team, inventory, position, view, home)):
+    if here == position and fits_as("build", _plan_build(persona, team, inventory, position, view, home)):
         approach = approach or "build"
     # 3.4 the hearth on the house's chosen site, when the site is not yet home
-    if not moved() and fits(_plan_hearth(persona, inventory, here, view, home, state)):
+    if not moved() and fits_as("hearth", _plan_hearth(persona, inventory, here, view, home, state)):
         approach = approach or "hearth"
     # 3.5 the house around the hut, one step per wake, when its material is in the pack
-    if fits(_plan_house(persona, inventory, here, view, home, observe, state=state)):
+    if fits_as("house", _plan_house(persona, inventory, here, view, home, observe, state=state)):
         approach = approach or "house"
     # 3.6 the border signs of the team's ground, nearest missing first
-    if not moved() and fits(_plan_border_sign(persona, team, inventory, here, view, teammates, names)):
+    if not moved() and fits_as("border", _plan_border_sign(persona, team, inventory, here, view, teammates, names)):
         approach = approach or "border"
     # 4. deposit surplus into an adjacent storehouse of ours (so the monument can draw on it)
     ours = set(collective_names or ()) | set(names or ())
-    if fits(_plan_deposit(persona, inventory, here, view, registrar_name, mates=ours, state=state)):
+    if fits_as("deposit", _plan_deposit(persona, inventory, here, view, registrar_name, mates=ours, state=state)):
         approach = approach or "deposit"
     # 4.2 a full pack walks to the nearest storehouse of ours to unload (a word or a meal may precede the walk)
-    if not moved() and fits(_plan_deposit_trip(persona, team, inventory, position, view, teammates, {n.casefold() for n in ours} | {persona.name.casefold()}, state=state)):
+    if not moved() and fits_as("deposit_trip", _plan_deposit_trip(persona, team, inventory, position, view, teammates, {n.casefold() for n in ours} | {persona.name.casefold()}, state=state)):
         approach = approach or "deposit_trip"
     # 4. gather the shortfall for the next blueprint
-    while len(actions) < cap and fits(_plan_gather(persona, team, inventory, here, view, teammates, rng)):
+    while len(actions) < cap and fits_as("gather_trip", _plan_gather(persona, team, inventory, here, view, teammates, rng)):
         approach = approach or "gather_trip"
         for a in actions[-2:]:
             if a.get("action") == "gather":
                 inventory[a.get("kind", "wood")] = inventory.get(a.get("kind", "wood"), 0) + 5
     # 4.7 nothing wanted in view: walk toward the nearest node the public snapshot knows
-    if not moved() and fits(_plan_forage(persona, team, inventory, position, view, teammates)):
+    if not moved() and fits_as("forage", _plan_forage(persona, team, inventory, position, view, teammates)):
         approach = approach or "forage"
     # 5. far from the team site and nothing to gather here: migrate toward it
-    if not moved() and fits(_plan_migrate(persona, team, position, view, teammates)):
+    if not moved() and fits_as("migrate", _plan_migrate(persona, team, position, view, teammates)):
         approach = approach or "migrate"
     # 5.5 the house's next step is in the pack but the hut is out of reach: carry it home before wandering
-    if not moved() and fits(_plan_homing(persona, inventory, position, view, home, observe, state=state)):
+    if not moved() and fits_as("homing", _plan_homing(persona, inventory, position, view, home, observe, state=state)):
         approach = approach or "homing"
-    if not moved() and fits(_plan_explore(persona, team, state, position, view, rng, teammates)):
+    if not moved() and fits_as("explore", _plan_explore(persona, team, state, position, view, rng, teammates)):
         approach = approach or "explore"
     if engaged and not approach:
         approach = "engage"  # the neighbour was the whole of this wake
