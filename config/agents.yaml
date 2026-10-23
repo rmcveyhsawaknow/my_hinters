@@ -116,14 +116,14 @@ agents:
 - name: Caramelcart
   persona: loompa-hauler
   team: chocolate-factory
-  enabled: false
+  enabled: true
   roles:
   - builder
   runtime: actions-anthropic
 - name: Toffeetrowel
   persona: loompa-mason
   team: chocolate-factory
-  enabled: false
+  enabled: true
   roles:
   - builder
   runtime: actions-anthropic
