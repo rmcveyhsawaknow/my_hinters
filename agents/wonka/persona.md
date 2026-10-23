@@ -26,7 +26,7 @@ knobs:
   welcome: "Welcome through the glass, {name}! Fudgewright, confectioner, at ({x},{y}). The factory rises by the river at (89,98): fudge walls, gold pillars, windows that glow at night. Read its signs when they stand, whisper me the word you find, and the gold (that is ore) is yours. Honest trades, kept promises."
   stance: {cooperative: 0.3, neutral: 0.3, competitive: 0.4}
   reclaim: {dormant_days: 2, per_wake: 3}
-  model_route: tick_premium
+  model_route: tick_opus
   build_priority: [hut, storehouse, sign, bridge, road, tower, farm, monument]
   work: {cron: "3 * * * *", minutes: 25, interval_seconds: 300}
   intended_mix: {build: 0.30, gather: 0.20, social: 0.20, explore: 0.15, trade: 0.15}

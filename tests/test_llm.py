@@ -37,3 +37,18 @@ def test_strict_schema_drops_constraints_and_closes_objects():
     assert strict["properties"]["s"] == {"type": "string"}
     assert strict["$defs"]["inner"]["additionalProperties"] is False
     assert loose["properties"]["n"]["minimum"] == 1  # the original is untouched
+
+
+def test_fudgewright_alone_runs_its_character_wakes_on_opus(monkeypatch):
+    import yaml
+
+    from hglab.persona import load_personas
+
+    _keys(monkeypatch, anthropic=True, openai=False)
+    selected = route_config("tick_opus", ROOT)
+    assert selected == {"provider": "anthropic", "model": "claude-opus-5-5", "effort": "medium"}
+    personas = load_personas(ROOT)
+    on_opus = sorted(s for s, p in personas.items() if p.knobs.get("model_route") == "tick_opus")
+    assert on_opus == ["wonka"]  # the riddle hunts and the honesty audits are the composition work; nobody else pays Opus prices
+    prices = yaml.safe_load((ROOT / "config/budget.yaml").read_text(encoding="utf-8"))["pricing_usd_per_mtok"]
+    assert prices["claude-opus-5-5"]["input"] == 4.0 and prices["claude-opus-5-5"]["output"] == 20.0  # the spend ledger prices Opus calls
