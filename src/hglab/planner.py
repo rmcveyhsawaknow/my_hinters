@@ -451,7 +451,10 @@ def _plan_team_faction(
     mine = you.get("faction")
     mine_name = str(mine.get("name") if isinstance(mine, dict) else mine or "")
     wanted = str(cfg["name"])
-    factions = [f for f in (observe.get("_factions") or []) if isinstance(f, dict)]
+    known = observe.get("_factions")
+    if not isinstance(known, list):
+        return None  # the world's faction list is unknown this wake: never found a duplicate on a guess
+    factions = [f for f in known if isinstance(f, dict)]
     ours = next((f for f in factions if str(f.get("name", "")).casefold() == wanted.casefold()), None)
     tick = int(observe.get("tick", 0) or 0)
     proper = {n.casefold(): n for n in (collective_names or set())}

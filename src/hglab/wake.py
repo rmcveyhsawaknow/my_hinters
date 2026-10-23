@@ -651,17 +651,17 @@ def mute_over_budget(
     return kept, {"muted": len(drop), "why": why}
 
 
-def _public_factions(client: Any) -> list[dict[str, Any]]:
-    """The world's factions (keyless), for the team faction step; empty when the client has none or the call fails."""
+def _public_factions(client: Any) -> list[dict[str, Any]] | None:
+    """The world's factions (keyless) for the team faction step; None when unknown, so nothing is founded on a guess."""
     getter = getattr(client, "public_factions", None)
     if getter is None:
-        return []
+        return None
     try:
         data = getter()
     except Exception:  # noqa: BLE001 - optional context
-        return []
+        return None
     factions = data.get("factions", data) if isinstance(data, dict) else data
-    return [f for f in factions if isinstance(f, dict)] if isinstance(factions, list) else []
+    return [f for f in factions if isinstance(f, dict)] if isinstance(factions, list) else None
 
 
 def _place_builds(
