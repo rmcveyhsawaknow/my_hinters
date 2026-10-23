@@ -156,3 +156,26 @@ def test_a_hand_s_shift_wake_runs_the_pipeline_before_anything_else(tmp_path):
         assert record["approach"] == "crew" and kinds, (slug, record["summary"], record["reasons"])
         assert kinds[0] in {"move", "gather", "give", "build", "take"}
         assert "inbox" not in json.dumps(record)
+
+
+def test_a_hand_s_character_wake_is_the_pipeline_too_and_never_wanders_back(tmp_path):
+    personas = load_personas(ROOT)
+    persona = personas["loompa-quarrier"]
+    observe = load_fixture(FIX / "observe/loompa-quarrier.json")
+    observe["you"].update({"x": 60, "y": 60, "energy": 90})  # far from the works: every slot walks toward them
+    observe["you"]["faction"] = {"id": 5, "name": "Chocolate Factory"}
+    observe["resources"] = [{"x": 59, "y": 61, "kind": "wood", "amount": 30}]
+    observe["view"]["x0"], observe["view"]["y0"] = 54, 54
+    client = FixtureClient(observe)
+    lease = acquire(client, persona.name)
+    record = persona_wake(
+        persona=persona, team=load_team(ROOT, persona.team), personas=personas, client=client, lease=lease, root=ROOT,
+        output_dir=tmp_path, dry_run=True, work=False, seed="crew",
+    )
+    record = record[0] if isinstance(record, tuple) else record
+    moves = [a for a in record["actions"] if a["action"] == "move"]
+    assert record["approach"] == "crew" and moves and all(a["action"] in {"move", "remember"} for a in record["actions"])
+    here = (60, 60)
+    for a in moves:
+        assert max(abs(a["x"] - 89), abs(a["y"] - 99)) < max(abs(here[0] - 89), abs(here[1] - 99))  # each step is closer to the works, none back to the wood node
+        here = (a["x"], a["y"])
