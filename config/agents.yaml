@@ -85,7 +85,7 @@ agents:
 - name: Plumbline
   persona: plumbline
   team: atelier
-  enabled: false
+  enabled: true
   roles:
   - experimenter
   - surveyor
