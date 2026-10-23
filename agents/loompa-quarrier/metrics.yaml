@@ -1,0 +1,64 @@
+version: 1
+agent: loompa-quarrier
+headline: 'Keep the factory stores stocked with stone and ore from the '
+key_results:
+- id: stone_stored
+  label: stone and ore given into the factory stores
+  measure: events.items_given_to_storehouse
+  params:
+    item:
+    - stone
+    - ore
+    inside_territory: true
+  target: 230
+  weight: 0.5
+  format: '{value} stone and ore stored'
+- id: stone_gathered
+  label: stone gathers
+  measure: events.count
+  params:
+    type: gather
+    data_match:
+      kind: stone
+  target: 60
+  weight: 0.3
+  format: '{value} gathers'
+- id: ore_gathered
+  label: ore gathers
+  measure: events.count
+  params:
+    type: gather
+    data_match:
+      kind: ore
+  target: 10
+  weight: 0.2
+  format: '{value} ore gathers'
+signatures:
+- id: rest_share
+  label: share of wakes resting
+  measure: runs.rest_share
+  range:
+  - 0.0
+  - 0.3
+- id: energy_mix
+  label: intended vs actual energy mix
+  measure: runs.energy_mix_match
+  range:
+  - 0.6
+  - 1.0
+traits:
+- name: steady
+  shows_up_as: One quarry node at a time, five a swing, until the pack is full.
+- name: patient
+  shows_up_as: Walks the long way to the mountain edge for ore when the stone is stocked.
+- name: exact
+  shows_up_as: Names the tile and the count of every load.
+- name: gruff
+  shows_up_as: Fewer words than the others; a grunt of a line when a store is stocked.
+- name: sparing
+  shows_up_as: Leaves five on every node.
+approaches:
+- id: crew
+  label: the crew pipeline step
+  hypothesis: H-20261023-loompa-quarrier-hills-before-mountains
+  outcome_measure: events.items_given_to_storehouse

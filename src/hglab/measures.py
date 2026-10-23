@@ -354,11 +354,23 @@ def replies_received(ctx: MeasureContext, params: dict[str, Any]) -> float | Non
 
 @measure("events.items_given_to_storehouse")
 def items_given_to_storehouse(ctx: MeasureContext, params: dict[str, Any]) -> float | None:
+    """Items given into storehouses; ``item`` (one or a list) and ``inside_territory`` narrow it to the works."""
+    wanted = params.get("item")
+    items = {str(wanted)} if isinstance(wanted, str) else {str(i) for i in (wanted or [])}
+    inside = params.get("inside_territory")
     total = 0
     for event in ctx.by_actor("self"):
         data = event.get("data") if isinstance(event.get("data"), dict) else {}
-        if event.get("type") == "give" and data.get("structure_type") == "storehouse":
-            total += int(data.get("qty", 0))
+        if event.get("type") != "give" or data.get("structure_type") != "storehouse":
+            continue
+        if items and str(data.get("item")) not in items:
+            continue
+        if inside is not None:
+            position = _destination(event)
+            verdict = ctx.inside(*position) if position else None
+            if verdict is None or verdict != bool(inside):
+                continue
+        total += int(data.get("qty", 0))
     return float(total)
 
 

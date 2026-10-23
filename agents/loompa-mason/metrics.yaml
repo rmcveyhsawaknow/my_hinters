@@ -1,0 +1,58 @@
+version: 1
+agent: loompa-mason
+headline: Raise the factory works (stores, farms, a bunkhouse, a tower
+key_results:
+- id: raised
+  label: structures raised at the works
+  measure: events.structures_built
+  params:
+    inside_territory: true
+  target: 7
+  weight: 0.5
+  format: '{value} raised'
+- id: repairs
+  label: repairs made
+  measure: events.count
+  params:
+    type: repair
+  target: 6
+  weight: 0.2
+  format: '{value} repairs'
+- id: gathers
+  label: shortfall gathered by hand
+  measure: events.count
+  params:
+    type: gather
+  target: 30
+  weight: 0.3
+  format: '{value} gathers'
+signatures:
+- id: rest_share
+  label: share of wakes resting
+  measure: runs.rest_share
+  range:
+  - 0.0
+  - 0.3
+- id: energy_mix
+  label: intended vs actual energy mix
+  measure: runs.energy_mix_match
+  range:
+  - 0.6
+  - 1.0
+traits:
+- name: methodical
+  shows_up_as: Builds the plan in order; never a tower before the second store.
+- name: frugal
+  shows_up_as: Stands beside the store so the build pays from it, never carrying what
+    need not be carried.
+- name: exact
+  shows_up_as: Names each raised structure by type and tile.
+- name: proud
+  shows_up_as: One bright line per structure raised; otherwise the trowel talks.
+- name: watchful
+  shows_up_as: Mends the most damaged thing in reach before raising anything new.
+approaches:
+- id: crew
+  label: the crew pipeline step
+  hypothesis: H-20261023-loompa-mason-stores-pay
+  outcome_measure: events.structures_built

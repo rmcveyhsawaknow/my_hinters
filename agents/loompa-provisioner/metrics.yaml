@@ -1,0 +1,59 @@
+version: 1
+agent: loompa-provisioner
+headline: Keep the factory stores stocked with fiber and berries so th
+key_results:
+- id: food_stored
+  label: fiber and berries given into the factory stores
+  measure: events.items_given_to_storehouse
+  params:
+    item:
+    - fiber
+    - berries
+    inside_territory: true
+  target: 120
+  weight: 0.5
+  format: '{value} fiber and berries stored'
+- id: gathers
+  label: fiber and berry gathers
+  measure: events.count
+  params:
+    type: gather
+  target: 60
+  weight: 0.3
+  format: '{value} gathers'
+- id: replies
+  label: replies from the crew and visitors
+  measure: events.replies_received
+  params: {}
+  target: 5
+  weight: 0.2
+  format: '{value} replies'
+signatures:
+- id: rest_share
+  label: share of wakes resting
+  measure: runs.rest_share
+  range:
+  - 0.0
+  - 0.3
+- id: energy_mix
+  label: intended vs actual energy mix
+  measure: runs.energy_mix_match
+  range:
+  - 0.6
+  - 1.0
+traits:
+- name: caring
+  shows_up_as: Berries go to the store before anything else when the store runs low.
+- name: quick
+  shows_up_as: Short trips to the nearest grass, many a shift.
+- name: exact
+  shows_up_as: Counts what the store holds when it stands in view.
+- name: chatty
+  shows_up_as: The one crew member who says a line most wakes, within the budget.
+- name: sparing
+  shows_up_as: Leaves five on every node, berries included.
+approaches:
+- id: crew
+  label: the crew pipeline step
+  hypothesis: H-20261023-loompa-provisioner-fed-crew-works-more
+  outcome_measure: events.items_given_to_storehouse

@@ -64,6 +64,7 @@ WORK_SUMMARIES = {
     "lighten": "eating into the berry hoard to make room",
     "deposit_trip": "carrying a full pack to the storehouse",
     "stash": "raising a storehouse for a full pack",
+    "crew": "working the factory pipeline",
     "border": "raising the border signs",
     "patrol": "walking the outermost edge of the world, behind the glass",
     "news": "announcing a change in the game",
@@ -79,7 +80,7 @@ LABEL_ACTIVITY = {  # a shift-planner step label -> the tick activity that runs 
     "build": "build", "house": "build", "hearth": "build", "repair": "build", "harvest": "build", "border": "build", "reclaim": "build", "stash": "build",
     "deposit": "gather", "deposit_trip": "gather", "gather_trip": "gather", "forage": "gather", "gather_near": "gather",
     "explore": "explore", "migrate": "explore", "social": "social", "engage": "engage", "trade": "trade", "market_watch": "trade",
-    "team": "team", "team_goal": "team_goal", "news": "news", "research": "research", "patrol": "patrol", "lighten": "lighten",
+    "team": "team", "team_goal": "team_goal", "news": "news", "research": "research", "patrol": "patrol", "lighten": "lighten", "crew": "crew",
 }
 
 
@@ -357,10 +358,10 @@ def plan_wake(
         activities = ["lighten", "engage", "patrol", *[a for a in activities[2:] if a != "explore"]]
     if skip:
         activities = [a for a in activities if a not in skip] or activities
-    activities = ["news", "team", "team_goal", "research", *activities]
+    activities = ["news", "team", "team_goal", "research", "crew", *activities]
     wanted = [LABEL_ACTIVITY[label] for label in prefer if label in LABEL_ACTIVITY]
     if wanted:
-        head, rest = activities[:4], activities[4:]
+        head, rest = activities[:5], activities[5:]
         first = [a for a in dict.fromkeys(wanted) if a in rest]
         activities = [*head, *first, *[a for a in rest if a not in first]]  # the assignment's activities before the mood's roll
     for activity in activities:
@@ -374,6 +375,8 @@ def plan_wake(
             step = _plan_team_goal(persona, team, observe, view, inventory, energy, reserve)
         elif activity == "research":
             step = _plan_research(persona, state, observe, inventory, here, view, action_limits(observe)[0] < persona.social_rate)
+        elif activity == "crew":
+            step = _plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, budget - len(actions), collective_names, names, teammates)
         elif activity == "lighten":
             step = _plan_lighten(inventory, energy)
         elif activity == "patrol":
@@ -539,6 +542,29 @@ def _plan_team_faction(
     return (actions, f"found {wanted} for {team.name}" + (f" and invite {', '.join(invites)}" if invites else ""), "team")
 
 
+def _plan_crew(
+    persona: Persona,
+    team: Team | None,
+    state: PersonaState,
+    observe: dict[str, Any],
+    view: WorldView,
+    inventory: dict[str, int],
+    here: tuple[int, int],
+    energy: int,
+    reserve: int,
+    room: int,
+    collective_names: set[str] | None,
+    names: dict[str, str] | None,
+    teammates: dict[str, tuple[int, int]] | None,
+) -> tuple[list[dict[str, Any]], str, str] | None:
+    """The team pipeline's step for a persona with a ``crew`` knob (``hglab.crew``); None for everyone else."""
+    if not isinstance(persona.knobs.get("crew"), dict):
+        return None
+    from hglab.crew import plan_crew
+
+    return plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, room, collective_names, names, teammates)
+
+
 def _invited_to(observe: dict[str, Any], name: str, faction: str) -> bool:
     """Whether observe's events carry an invitation of ``name`` into ``faction`` (``faction_invited``, data name and invitee)."""
     for event in observe.get("events") or []:
@@ -626,6 +652,8 @@ def _plan_work(
     spendable = energy - reserve
     here = position
     used: set[str] = set()  # labels the preferred pass already took this wake
+    if persona.knobs.get("crew"):
+        used.update({"build", "hearth", "house", "border", "stash"})  # a hand builds through the team's plan only
     ours = set(collective_names or ()) | set(names or ())
 
     def fits_as(label: str, step: tuple[list[dict[str, Any]], str, str] | None) -> bool:
@@ -696,6 +724,15 @@ def _plan_work(
     recent_says_now, _, _ = action_limits(observe)
     if fits_as("research", _plan_research(persona, state, observe, inventory, here, view, recent_says_now < persona.social_rate)):
         approach = approach or "research"
+    # 0.27 the factory crew: the pipeline step fills the wake (walk to the works, unload, raise, gather, carry)
+    while persona.knobs.get("crew") and "crew" not in skip and len(actions) < cap:
+        step = _plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, cap - len(actions), collective_names, names, teammates)
+        if not fits(step):
+            break
+        approach = approach or "crew"
+        for a in actions[-2:]:
+            if a.get("action") == "gather":
+                inventory[a.get("kind", "wood")] = inventory.get(a.get("kind", "wood"), 0) + 5
     # 0.3 a pack heavy with berries makes room for materials
     if fits_as("lighten", _plan_lighten(inventory, energy)):
         approach = approach or "lighten"

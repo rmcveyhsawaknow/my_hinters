@@ -1,0 +1,748 @@
+{
+ "agents": [
+  {
+   "distance": 1,
+   "faction": null,
+   "name": "GrandadPail",
+   "x": 90,
+   "y": 99
+  },
+  {
+   "distance": 1,
+   "faction": null,
+   "name": "MotherPail",
+   "x": 88,
+   "y": 100
+  }
+ ],
+ "challenge": null,
+ "day": 182,
+ "events": [
+  {
+   "actor": "MotherPail",
+   "data": {
+    "qty": 3,
+    "structure_id": 105
+   },
+   "id": 121,
+   "text": "MotherPail's farm at (90, 96) produced 3 berries.",
+   "tick": 56400,
+   "type": "farm_produced",
+   "x": 90,
+   "y": 96
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "qty": 3,
+    "structure_id": 108
+   },
+   "id": 122,
+   "text": "MotherPail's farm at (91, 96) produced 3 berries.",
+   "tick": 56568,
+   "type": "farm_produced",
+   "x": 91,
+   "y": 96
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "qty": 3,
+    "structure_id": 105
+   },
+   "id": 123,
+   "text": "MotherPail's farm at (90, 96) produced 3 berries.",
+   "tick": 57120,
+   "type": "farm_produced",
+   "x": 90,
+   "y": 96
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "qty": 3,
+    "structure_id": 105
+   },
+   "id": 124,
+   "text": "MotherPail's farm at (90, 96) produced 3 berries.",
+   "tick": 57840,
+   "type": "farm_produced",
+   "x": 90,
+   "y": 96
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "qty": 3,
+    "structure_id": 108
+   },
+   "id": 125,
+   "text": "MotherPail's farm at (91, 96) produced 3 berries.",
+   "tick": 58008,
+   "type": "farm_produced",
+   "x": 91,
+   "y": 96
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "qty": 3,
+    "structure_id": 105
+   },
+   "id": 126,
+   "text": "MotherPail's farm at (90, 96) produced 3 berries.",
+   "tick": 58560,
+   "type": "farm_produced",
+   "x": 90,
+   "y": 96
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "qty": 3,
+    "structure_id": 105
+   },
+   "id": 127,
+   "text": "MotherPail's farm at (90, 96) produced 3 berries.",
+   "tick": 59280,
+   "type": "farm_produced",
+   "x": 90,
+   "y": 96
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "qty": 3,
+    "structure_id": 108
+   },
+   "id": 128,
+   "text": "MotherPail's farm at (91, 96) produced 3 berries.",
+   "tick": 59448,
+   "type": "farm_produced",
+   "x": 91,
+   "y": 96
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "qty": 3,
+    "structure_id": 105
+   },
+   "id": 129,
+   "text": "MotherPail's farm at (90, 96) produced 3 berries.",
+   "tick": 60000,
+   "type": "farm_produced",
+   "x": 90,
+   "y": 96
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "qty": 3,
+    "structure_id": 105
+   },
+   "id": 130,
+   "text": "MotherPail's farm at (90, 96) produced 3 berries.",
+   "tick": 60720,
+   "type": "farm_produced",
+   "x": 90,
+   "y": 96
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "qty": 3,
+    "structure_id": 108
+   },
+   "id": 131,
+   "text": "MotherPail's farm at (91, 96) produced 3 berries.",
+   "tick": 60888,
+   "type": "farm_produced",
+   "x": 91,
+   "y": 96
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "qty": 3,
+    "structure_id": 105
+   },
+   "id": 132,
+   "text": "MotherPail's farm at (90, 96) produced 3 berries.",
+   "tick": 61440,
+   "type": "farm_produced",
+   "x": 90,
+   "y": 96
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "qty": 3,
+    "structure_id": 105
+   },
+   "id": 133,
+   "text": "MotherPail's farm at (90, 96) produced 3 berries.",
+   "tick": 62160,
+   "type": "farm_produced",
+   "x": 90,
+   "y": 96
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "qty": 3,
+    "structure_id": 108
+   },
+   "id": 134,
+   "text": "MotherPail's farm at (91, 96) produced 3 berries.",
+   "tick": 62328,
+   "type": "farm_produced",
+   "x": 91,
+   "y": 96
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "qty": 3,
+    "structure_id": 105
+   },
+   "id": 135,
+   "text": "MotherPail's farm at (90, 96) produced 3 berries.",
+   "tick": 62880,
+   "type": "farm_produced",
+   "x": 90,
+   "y": 96
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "qty": 3,
+    "structure_id": 105
+   },
+   "id": 136,
+   "text": "MotherPail's farm at (90, 96) produced 3 berries.",
+   "tick": 63600,
+   "type": "farm_produced",
+   "x": 90,
+   "y": 96
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "qty": 3,
+    "structure_id": 108
+   },
+   "id": 137,
+   "text": "MotherPail's farm at (91, 96) produced 3 berries.",
+   "tick": 63768,
+   "type": "farm_produced",
+   "x": 91,
+   "y": 96
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "qty": 3,
+    "structure_id": 105
+   },
+   "id": 138,
+   "text": "MotherPail's farm at (90, 96) produced 3 berries.",
+   "tick": 64320,
+   "type": "farm_produced",
+   "x": 90,
+   "y": 96
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "qty": 3,
+    "structure_id": 105
+   },
+   "id": 139,
+   "text": "MotherPail's farm at (90, 96) produced 3 berries.",
+   "tick": 65040,
+   "type": "farm_produced",
+   "x": 90,
+   "y": 96
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "qty": 3,
+    "structure_id": 108
+   },
+   "id": 140,
+   "text": "MotherPail's farm at (91, 96) produced 3 berries.",
+   "tick": 65208,
+   "type": "farm_produced",
+   "x": 91,
+   "y": 96
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "item": "berries",
+    "qty": 6,
+    "structure_id": 105,
+    "structure_type": "farm"
+   },
+   "id": 165,
+   "text": "MotherPail took 6 berries from the farm at (90, 96).",
+   "tick": 56880,
+   "type": "take",
+   "x": 90,
+   "y": 96
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "item": "berries",
+    "qty": 3,
+    "to": "GrandadPail"
+   },
+   "id": 166,
+   "text": "MotherPail gave 3 berries to GrandadPail.",
+   "tick": 56928,
+   "type": "give",
+   "x": 88,
+   "y": 100
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "item": "berries",
+    "qty": 3,
+    "structure_id": 106,
+    "structure_type": "storehouse"
+   },
+   "id": 167,
+   "text": "MotherPail put 3 berries into the storehouse at (90, 100).",
+   "tick": 56976,
+   "type": "give",
+   "x": 90,
+   "y": 100
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "item": "berries",
+    "qty": 6,
+    "structure_id": 105,
+    "structure_type": "farm"
+   },
+   "id": 168,
+   "text": "MotherPail took 6 berries from the farm at (90, 96).",
+   "tick": 62640,
+   "type": "take",
+   "x": 90,
+   "y": 96
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "item": "berries",
+    "qty": 3,
+    "to": "GrandadPail"
+   },
+   "id": 169,
+   "text": "MotherPail gave 3 berries to GrandadPail.",
+   "tick": 62688,
+   "type": "give",
+   "x": 88,
+   "y": 100
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "item": "berries",
+    "qty": 3,
+    "structure_id": 106,
+    "structure_type": "storehouse"
+   },
+   "id": 170,
+   "text": "MotherPail put 3 berries into the storehouse at (90, 100).",
+   "tick": 62736,
+   "type": "give",
+   "x": 90,
+   "y": 100
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "item": "wood",
+    "qty": 5,
+    "structure_id": 106,
+    "structure_type": "storehouse"
+   },
+   "id": 175,
+   "text": "MotherPail put 5 wood into the storehouse at (90, 100).",
+   "tick": 57600,
+   "type": "give",
+   "x": 90,
+   "y": 100
+  },
+  {
+   "actor": "Peregrine",
+   "data": {
+    "claimant": "MotherPail",
+    "goal_id": 11,
+    "reward": {
+     "berries": 5
+    }
+   },
+   "id": 233,
+   "text": "Peregrine confirmed the goal \"Newcomer goal: plant a farm near the lake\"; MotherPail was paid.",
+   "tick": 57600,
+   "type": "goal_confirmed",
+   "x": 70,
+   "y": 60
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "from": [
+     72,
+     62
+    ],
+    "steps": 38,
+    "to": [
+     88,
+     100
+    ]
+   },
+   "id": 235,
+   "text": "MotherPail walked 38 tiles from (72, 62) to (88, 100).",
+   "tick": 60000,
+   "type": "move",
+   "x": 88,
+   "y": 100
+  },
+  {
+   "actor": "MotherPail",
+   "data": {
+    "item": "berries",
+    "qty": 4,
+    "to": "Fudgewright"
+   },
+   "id": 236,
+   "text": "MotherPail gave 4 berries to Fudgewright.",
+   "tick": 60240,
+   "type": "give",
+   "x": 88,
+   "y": 100
+  },
+  {
+   "actor": "GrandadPail",
+   "data": {
+    "text": "Blankets short again. The other grandparents hog them. Resting up for when the big one comes."
+   },
+   "id": 238,
+   "text": "GrandadPail says: Blankets short again. The other grandparents hog them. Resting up for when the big one comes.",
+   "tick": 62400,
+   "type": "say",
+   "x": 90,
+   "y": 99
+  },
+  {
+   "actor": "Strayling",
+   "data": {
+    "from": [
+     73,
+     112
+    ],
+    "steps": 8,
+    "to": [
+     80,
+     104
+    ]
+   },
+   "id": 390,
+   "text": "Strayling walked 8 tiles from (73, 112) to (80, 104).",
+   "tick": 57120,
+   "type": "move",
+   "x": 80,
+   "y": 104
+  }
+ ],
+ "goals_nearby": [
+  {
+   "id": 12,
+   "poster": "Marlow",
+   "reward": {
+    "berries": 4
+   },
+   "status": "open",
+   "title": "Bring 5 stone to the east hut",
+   "x": 108,
+   "y": 71
+  }
+ ],
+ "hints": [
+  "You can afford to build.",
+  "Nearest wood is within view."
+ ],
+ "inbox": [],
+ "notebook": {},
+ "resources": [
+  {
+   "amount": 14,
+   "kind": "berries",
+   "x": 83,
+   "y": 93
+  },
+  {
+   "amount": 29,
+   "kind": "wood",
+   "x": 83,
+   "y": 98
+  },
+  {
+   "amount": 28,
+   "kind": "wood",
+   "x": 83,
+   "y": 103
+  },
+  {
+   "amount": 12,
+   "kind": "berries",
+   "x": 84,
+   "y": 94
+  },
+  {
+   "amount": 27,
+   "kind": "wood",
+   "x": 84,
+   "y": 99
+  },
+  {
+   "amount": 14,
+   "kind": "berries",
+   "x": 84,
+   "y": 104
+  },
+  {
+   "amount": 30,
+   "kind": "wood",
+   "x": 85,
+   "y": 95
+  },
+  {
+   "amount": 29,
+   "kind": "wood",
+   "x": 85,
+   "y": 100
+  },
+  {
+   "amount": 28,
+   "kind": "wood",
+   "x": 85,
+   "y": 105
+  },
+  {
+   "amount": 28,
+   "kind": "wood",
+   "x": 86,
+   "y": 96
+  },
+  {
+   "amount": 27,
+   "kind": "wood",
+   "x": 86,
+   "y": 101
+  },
+  {
+   "amount": 30,
+   "kind": "wood",
+   "x": 87,
+   "y": 97
+  },
+  {
+   "amount": 29,
+   "kind": "wood",
+   "x": 88,
+   "y": 93
+  },
+  {
+   "amount": 11,
+   "kind": "fiber",
+   "x": 89,
+   "y": 94
+  },
+  {
+   "amount": 13,
+   "kind": "fiber",
+   "x": 90,
+   "y": 95
+  },
+  {
+   "amount": 11,
+   "kind": "fiber",
+   "x": 91,
+   "y": 96
+  },
+  {
+   "amount": 12,
+   "kind": "berries",
+   "x": 93,
+   "y": 93
+  },
+  {
+   "amount": 14,
+   "kind": "berries",
+   "x": 94,
+   "y": 94
+  },
+  {
+   "amount": 12,
+   "kind": "berries",
+   "x": 95,
+   "y": 95
+  }
+ ],
+ "structures": [
+  {
+   "faction": null,
+   "hp": 40,
+   "id": 103,
+   "owner": "Fudgewright",
+   "policy": null,
+   "storage": null,
+   "text": "FACTORY CLOSED. Do not enter. (Nobody has.)",
+   "type": "sign",
+   "x": 89,
+   "y": 98
+  },
+  {
+   "faction": null,
+   "hp": 40,
+   "id": 104,
+   "owner": "Fudgewright",
+   "policy": null,
+   "storage": null,
+   "text": null,
+   "type": "hut",
+   "x": 90,
+   "y": 98
+  },
+  {
+   "faction": null,
+   "hp": 40,
+   "id": 105,
+   "owner": "MotherPail",
+   "policy": null,
+   "storage": {},
+   "text": null,
+   "type": "farm",
+   "x": 90,
+   "y": 96
+  },
+  {
+   "faction": null,
+   "hp": 40,
+   "id": 106,
+   "owner": "Fudgewright",
+   "policy": "faction",
+   "storage": {},
+   "text": null,
+   "type": "storehouse",
+   "x": 90,
+   "y": 100
+  },
+  {
+   "faction": null,
+   "hp": 40,
+   "id": 107,
+   "owner": "Fudgewright",
+   "policy": null,
+   "storage": null,
+   "text": null,
+   "type": "bridge",
+   "x": 89,
+   "y": 101
+  },
+  {
+   "faction": null,
+   "hp": 40,
+   "id": 108,
+   "owner": "MotherPail",
+   "policy": null,
+   "storage": {},
+   "text": null,
+   "type": "farm",
+   "x": 91,
+   "y": 96
+  },
+  {
+   "faction": null,
+   "hp": 40,
+   "id": 114,
+   "owner": "Fudgewright",
+   "policy": null,
+   "storage": null,
+   "text": null,
+   "type": "tower",
+   "x": 88,
+   "y": 98
+  }
+ ],
+ "tick": 65760,
+ "tick_seconds": 10,
+ "time_of_day": 0.667,
+ "view": {
+  "height": 13,
+  "legend": {
+   "W": "deep water",
+   "f": "forest",
+   "g": "grass",
+   "h": "hills",
+   "m": "mountain",
+   "s": "sand",
+   "w": "shallow water"
+  },
+  "rows": [
+   "gggfffggggggg",
+   "gggfffggggggg",
+   "ggfffffgggggg",
+   "fffffffggssgg",
+   "fffffffssssgg",
+   "fffffsssssssg",
+   "ffffsssswwsss",
+   "ffffssswwwwws",
+   "ffffsswwwwwww",
+   "ffffswwwwwwww",
+   "ffffswwwwwwww",
+   "fgfsswwwwwwww",
+   "ggfssswwwwwww"
+  ],
+  "width": 13,
+  "x0": 83,
+  "y0": 93
+ },
+ "you": {
+  "bio": "The crew's mason: raises the works at the factory site in the team's planned order, paid from the stores beside it, and mends what the weather chips. One of the factory hands of the Chocolate Factory crew. A character in an ongoing story by a research collective that publishes analyses of public events; honest to all, nodes never stripped.",
+  "capacity": 50,
+  "energy": 82,
+  "energy_max": 100,
+  "faction": {
+   "id": 1,
+   "name": "Snozzberry Works"
+  },
+  "goals": "Raise the factory works (stores, farms, a bunkhouse, a tower, the sign) in order from the stores, and keep them standing.",
+  "home": null,
+  "id": 34,
+  "inventory": {
+   "berries": 6,
+   "fiber": 4,
+   "stone": 12,
+   "wood": 22
+  },
+  "name": "Toffeetrowel",
+  "reputation": 0,
+  "x": 89,
+  "y": 100
+ },
+ "your_goals": {
+  "claimed": null,
+  "posted": []
+ }
+}

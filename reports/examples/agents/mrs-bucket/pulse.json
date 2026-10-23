@@ -162,7 +162,7 @@
   }
  },
  "team_pull": {
-  "detail": "Hope 33 → Fudgewright",
+  "detail": "Hope 33 → Fudgewright, Treacleaxe, Nougatpick, Sherbetsack, Caramelcart, Toffeetrowel",
   "sent": [
    {
     "from": "mrs-bucket",
@@ -171,6 +171,71 @@
     "effect": "inspiration",
     "plain_english": "When Mother Pail is contributing, uplifted and resilient, Fudgewright dreams bigger and pays better.",
     "weight": 1.0,
+    "half_life_hours": 24.0,
+    "value": 33.2,
+    "decayed_value": 33.2,
+    "age_ticks": 0,
+    "explanation": "Hope 33: contribution 28, uplift 20, resilience 13 (decayed over a day)."
+   },
+   {
+    "from": "mrs-bucket",
+    "signal": "hope",
+    "to": "loompa-woodcutter",
+    "effect": "inspiration",
+    "plain_english": "When MotherPail is contributing and resilient, Treacleaxe works with a lighter step.",
+    "weight": 0.6,
+    "half_life_hours": 24.0,
+    "value": 33.2,
+    "decayed_value": 33.2,
+    "age_ticks": 0,
+    "explanation": "Hope 33: contribution 28, uplift 20, resilience 13 (decayed over a day)."
+   },
+   {
+    "from": "mrs-bucket",
+    "signal": "hope",
+    "to": "loompa-quarrier",
+    "effect": "inspiration",
+    "plain_english": "When MotherPail is contributing and resilient, Nougatpick works with a lighter step.",
+    "weight": 0.6,
+    "half_life_hours": 24.0,
+    "value": 33.2,
+    "decayed_value": 33.2,
+    "age_ticks": 0,
+    "explanation": "Hope 33: contribution 28, uplift 20, resilience 13 (decayed over a day)."
+   },
+   {
+    "from": "mrs-bucket",
+    "signal": "hope",
+    "to": "loompa-provisioner",
+    "effect": "inspiration",
+    "plain_english": "When MotherPail is contributing and resilient, Sherbetsack works with a lighter step.",
+    "weight": 0.6,
+    "half_life_hours": 24.0,
+    "value": 33.2,
+    "decayed_value": 33.2,
+    "age_ticks": 0,
+    "explanation": "Hope 33: contribution 28, uplift 20, resilience 13 (decayed over a day)."
+   },
+   {
+    "from": "mrs-bucket",
+    "signal": "hope",
+    "to": "loompa-hauler",
+    "effect": "inspiration",
+    "plain_english": "When MotherPail is contributing and resilient, Caramelcart works with a lighter step.",
+    "weight": 0.6,
+    "half_life_hours": 24.0,
+    "value": 33.2,
+    "decayed_value": 33.2,
+    "age_ticks": 0,
+    "explanation": "Hope 33: contribution 28, uplift 20, resilience 13 (decayed over a day)."
+   },
+   {
+    "from": "mrs-bucket",
+    "signal": "hope",
+    "to": "loompa-mason",
+    "effect": "inspiration",
+    "plain_english": "When MotherPail is contributing and resilient, Toffeetrowel works with a lighter step.",
+    "weight": 0.6,
     "half_life_hours": 24.0,
     "value": 33.2,
     "decayed_value": 33.2,

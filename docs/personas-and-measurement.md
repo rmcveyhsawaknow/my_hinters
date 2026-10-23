@@ -401,3 +401,24 @@ machinery is `src/hglab/architecture.py`:
 
 Registration is the owner's step (`hglab register --name Plumbline`); until then the persona runs
 only from fixtures.
+
+## The factory crew: five hands and a materials pipeline
+
+On 2026-10-23 the owner asked for a workforce for the Chocolate Factory. Five personas joined the team
+and its faction, each with a `crew` knob naming its role: Treacleaxe the woodcutter, Nougatpick the
+quarrier, Sherbetsack the provisioner, Caramelcart the hauler and Toffeetrowel the mason. The team file
+carries the `pipeline`: the works at (89, 99), a radius of seven for the stores and the plan's
+structures, a range of sixteen for the hands, the stock the stores should hold (wood, stone, fiber,
+berries, ore) and the structures to raise in order (two storehouses, two farms, a hut, a tower, the
+sign). `hglab.crew.plan_crew` runs first in every wake of a hand: walk to the works when far, unload a
+heavy pack into the nearest factory store with room, raise the first store when none stands and the
+pack can pay, eat from a store when hungry, then the role's work. Gatherers take the node nearest the
+works first (clearing from the site outward) and leave five on every node; the hauler fills whatever
+the stock is shortest of, taking from open stores of the collective when beside one; the mason stands
+by a store so the build pays from it and gathers the shortfall by hand otherwise. The hands never build
+through the generic steps (hut, hearth, house, border signs, stash), only through the plan. Their key
+results count items given into storehouses inside the territory by kind (`events.items_given_to_storehouse`
+now takes `item` and `inside_territory`), gathers by kind and structures raised at the works; the
+adaptive layer's prefer list therefore names `deposit` and `gather_trip` for them, and the crew step
+already runs before either. Fudgewright's own factory of blocks still waits for the land office's deed;
+`place` pays from storehouses within a tile, so the stores at the works are its supply.

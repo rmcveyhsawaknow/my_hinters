@@ -1,0 +1,165 @@
+{
+ "agent": "loompa-provisioner",
+ "name": "Sherbetsack",
+ "team": "chocolate-factory",
+ "headline": "Keep the factory stores stocked with fiber and berries so th",
+ "metric_version": 1,
+ "tick": 65760,
+ "day": 182,
+ "date": "2026-10-17",
+ "window_ticks": 60480,
+ "events_considered": 401,
+ "runs_considered": 0,
+ "alive": {
+  "score": 0,
+  "detail": "no wakes recorded yet; the first scheduled wake is pending",
+  "parts": {
+   "completed": 0,
+   "scheduled": 0,
+   "lapsed": 0,
+   "banned": false,
+   "rate_limited": 0,
+   "failed_actions": 0,
+   "energy_zero": 0,
+   "spam_blocked": 0
+  }
+ },
+ "on_mission": {
+  "score": 0,
+  "detail": "0 fiber and berries stored · 0 gathers · 0 replies",
+  "rows": [
+   {
+    "id": "food_stored",
+    "label": "fiber and berries given into the factory stores",
+    "value": 0.0,
+    "target": 120,
+    "weight": 0.5,
+    "progress": 0.0,
+    "shown": "0 fiber and berries stored",
+    "measure": "events.items_given_to_storehouse"
+   },
+   {
+    "id": "gathers",
+    "label": "fiber and berry gathers",
+    "value": 0.0,
+    "target": 60,
+    "weight": 0.3,
+    "progress": 0.0,
+    "shown": "0 gathers",
+    "measure": "events.count"
+   },
+   {
+    "id": "replies",
+    "label": "replies from the crew and visitors",
+    "value": 0.0,
+    "target": 5,
+    "weight": 0.2,
+    "progress": 0.0,
+    "shown": "0 replies",
+    "measure": "events.replies_received"
+   }
+  ]
+ },
+ "in_character": {
+  "score": 0,
+  "detail": "0/0 signatures in range; not judged (no model key)",
+  "signatures": [
+   {
+    "id": "rest_share",
+    "label": "share of wakes resting",
+    "value": null,
+    "range": [
+     0.0,
+     0.3
+    ],
+    "inside": null,
+    "measure": "runs.rest_share"
+   },
+   {
+    "id": "energy_mix",
+    "label": "intended vs actual energy mix",
+    "value": null,
+    "range": [
+     0.6,
+     1.0
+    ],
+    "inside": null,
+    "measure": "runs.energy_mix_match"
+   }
+  ],
+  "judge": [],
+  "judge_meta": {}
+ },
+ "team_pull": {
+  "detail": "Hope 33 (MotherPail) → Inspiration 20",
+  "sent": [],
+  "received": [
+   {
+    "from": "mrs-bucket",
+    "signal": "hope",
+    "to": "loompa-provisioner",
+    "effect": "inspiration",
+    "plain_english": "When MotherPail is contributing and resilient, Sherbetsack works with a lighter step.",
+    "weight": 0.6,
+    "half_life_hours": 24.0,
+    "value": 33.2,
+    "decayed_value": 33.2,
+    "age_ticks": 0,
+    "explanation": "Hope 33: contribution 28, uplift 20, resilience 13 (decayed over a day)."
+   }
+  ],
+  "effects": {
+   "inspiration": {
+    "value": 19.9,
+    "tick": 65760,
+    "explanation": "hope from mrs-bucket 33"
+   },
+   "hope": {
+    "value": 33.2,
+    "tick": 65760,
+    "explanation": "Hope 33: contribution 28, uplift 20, resilience 13 (decayed over a day)."
+   }
+  }
+ },
+ "community": {
+  "goals_completed_for_peers": 0,
+  "public_goods_built": 0,
+  "norms_kept": true,
+  "norm_breaches": [],
+  "replies_received": 0
+ },
+ "approaches": {
+  "rows": [
+   {
+    "id": "crew",
+    "label": "the crew pipeline step",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 0.0,
+    "per_energy": null,
+    "hypothesis": "H-20261023-loompa-provisioner-fed-crew-works-more",
+    "bet_status": "proposed",
+    "bet_title": "A stocked berry store keeps the crew working"
+   }
+  ],
+  "working": "nothing measurable yet",
+  "not_working": "nothing clearly failing",
+  "next_bet": "try the crew pipeline step at least once this week; it has a bet but no wakes"
+ },
+ "trend": {
+  "alive": "▁",
+  "on_mission": "▁",
+  "in_character": "▁"
+ },
+ "history": [
+  {
+   "date": "2026-10-17",
+   "metric_version": 1,
+   "alive": 0,
+   "on_mission": 0,
+   "in_character": 0,
+   "tick": 65760
+  }
+ ],
+ "signals": {}
+}
