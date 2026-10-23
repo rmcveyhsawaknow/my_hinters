@@ -275,6 +275,7 @@ def plan_wake(
     inventory = {k: int(v) for k, v in (you.get("inventory") or {}).items()}
     home = you.get("home") if isinstance(you.get("home"), dict) else None
     view = WorldView.from_observe(observe, terrain_rows, owned_counts, public_structures, public_agents, public_resources)
+    view.closed.update(closed_tiles(state, int(observe.get("tick", 0) or 0)))  # tiles the world refused lately: routed around
     cap = persona.actions_per_wake
     reserve = persona.energy_reserve
     names = dict(team_names or {})
@@ -519,11 +520,14 @@ def _plan_team_faction(
         expected = len([m for m in team.members if m not in exempt])
         if ours is None or persona.slug != founder or int(ours.get("members") or 0) >= expected:
             return None  # inside already, or full; only the founder invites, each member once
-        invited = {str(n) for n in (state.flags.get("faction_invited") or []) if roster is None or str(n) in roster}  # a name the world never knew was never invited
-        pending = [m for m in mates if m not in invited and not inside(m)][: max(0, min(3, room))]
+        invited_at = _invited_at(state, roster)
+        if invited_at != (state.flags.get("faction_invited") or {}):
+            state.flags["faction_invited"] = invited_at  # names the world never knew are dropped for good, not just this wake
+        stale = {n for n, at in invited_at.items() if tick - at > FACTION_REINVITE_TICKS}
+        pending = [m for m in mates if (m not in invited_at or m in stale) and not inside(m)][: max(0, min(3, room))]
         if not pending or energy - len(pending) < reserve:
             return None
-        state.flags["faction_invited"] = sorted(invited | set(pending))[-24:]
+        state.flags["faction_invited"] = dict(sorted({**invited_at, **{m: tick for m in pending}}.items())[-24:])
         return (
             [{"action": "invite", "name": m} for m in pending],
             f"{wanted} has {ours.get('members')} member(s): invite {', '.join(pending)}",
@@ -543,7 +547,7 @@ def _plan_team_faction(
     invites = mates[: max(0, min(3, room - 1))]
     if room < 1 or energy - 10 - len(invites) < reserve:
         return None
-    state.flags["faction_invited"] = sorted(invites)
+    state.flags["faction_invited"] = {m: tick for m in invites}
     actions: list[dict[str, Any]] = [{"action": "found_faction", "name": wanted, "motto": str(cfg.get("motto") or team.aim)[:120], "membership": str(cfg.get("membership") or "invite")}]
     actions.extend({"action": "invite", "name": m} for m in invites)
     return (actions, f"found {wanted} for {team.name}" + (f" and invite {', '.join(invites)}" if invites else ""), "team")
@@ -570,6 +574,18 @@ def _plan_crew(
     from hglab.crew import plan_crew
 
     return plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, room, collective_names, names, teammates)
+
+
+def _invited_at(state: PersonaState, roster: dict[str, str | None] | None) -> dict[str, int]:
+    """Whom the founder invited and when (a legacy list counts as long ago); names the roster does not know are dropped."""
+    raw = state.flags.get("faction_invited") or {}
+    if isinstance(raw, dict):
+        out = {str(k): int(v or 0) for k, v in raw.items()}
+    else:
+        out = {str(n): 0 for n in raw}
+    if roster is not None:
+        out = {n: at for n, at in out.items() if n in roster}
+    return out
 
 
 def _roster(view: WorldView) -> dict[str, str | None] | None:
@@ -983,6 +999,7 @@ def _house_shortfall(persona: Persona, inventory: dict[str, int], view: WorldVie
 
 FACTION_SWITCH_TICKS = 2160  # a member in the wrong faction tries the switch to the team's every six hours
 FACTION_JOIN_TICKS = 720  # a join with no invitation in view is tried every two hours
+FACTION_REINVITE_TICKS = 2160  # a mate still outside six hours after its invitation is asked again (a duplicate is refused harmlessly)
 HOUSE_VIEW = 6  # the hut's footprint is in the 13x13 view when the observed position is this close
 HOUSE_RETRY_TICKS = 360  # a house step placed on a remembered count is not placed again for an hour unless the footprint is in view
 
@@ -1752,6 +1769,24 @@ def storehouse_room(structure: dict[str, Any]) -> int:
 
 
 FULL_STORE_TICKS = 8640  # a storehouse seen full is left alone for a day
+
+
+CLOSED_TILE_TICKS = 8640  # a tile the world refused (not_walkable, too_far) is routed around for a day
+
+
+def closed_tiles(state: PersonaState | None, tick: int) -> set[tuple[int, int]]:
+    """Tiles a move was refused for lately, from the persona state."""
+    flags = state.flags.get("closed_tiles") if state is not None and isinstance(state.flags.get("closed_tiles"), dict) else {}
+    return {tuple(int(v) for v in k.split(",")) for k, seen in flags.items() if tick - int(seen or 0) <= CLOSED_TILE_TICKS}
+
+
+def mark_closed(state: PersonaState | None, where: tuple[int, int], tick: int) -> None:
+    """Remember a refused move target so the next wakes route around it."""
+    if state is None:
+        return
+    flags = state.flags.get("closed_tiles") if isinstance(state.flags.get("closed_tiles"), dict) else {}
+    flags[f"{where[0]},{where[1]}"] = tick
+    state.flags["closed_tiles"] = dict(sorted(flags.items(), key=lambda kv: -int(kv[1] or 0))[:12])
 
 
 def _full_stores(state: PersonaState | None, tick: int) -> set[tuple[int, int]]:

@@ -106,10 +106,10 @@ def test_only_the_founder_invites_and_each_member_only_once(tmp_path):
     assert invited == ["Strayling"]  # Tinkerglow is seen inside already and Lagalong is exempt
     remembered = json.loads(json.dumps(observe))
     remembered["notebook"] = {
-        "persona_state": json.dumps({"mood": load_personas(ROOT)["nibs"].mood_model["initial"], "flags": {"faction_invited": ["Strayling"]}})
+        "persona_state": json.dumps({"mood": load_personas(ROOT)["nibs"].mood_model["initial"], "flags": {"faction_invited": {"Strayling": observe["tick"] - 100}}})
     }
     again = _wake("nibs", remembered, tmp_path)
-    assert not any(a["action"] == "invite" for a in again["actions"])  # invitations never expire: nobody is asked twice
+    assert not any(a["action"] == "invite" for a in again["actions"])  # invited lately: nobody is asked twice within six hours
     member = json.loads(json.dumps(observe))
     member["you"]["faction"] = {"id": 7, "name": "Neverland"}
     assert not any(a["action"] == "invite" for a in _wake("tinker-bell", member, tmp_path)["actions"])  # a member inside never tops up
@@ -306,3 +306,13 @@ def test_the_founder_skips_mates_the_world_does_not_know_and_those_the_roster_sh
     again = _plan_team_faction(wonka, team, state, observe, 100, 25, {p.name for p in personas.values()}, names, room=3, roster=later)
     assert again is not None and [a["name"] for a in again[0]] == ["Caramelcart"]  # registered since: invited now, once
     assert _plan_team_faction(wonka, team, state, observe, 100, 25, {p.name for p in personas.values()}, names, room=3, roster=later) is None
+    assert state.flags["faction_invited"]["Caramelcart"] == 55600  # the memory carries the tick of the invitation
+    quiet = dict(observe, agents=[])
+    pruned = PersonaState(mood="gentle")
+    pruned.flags["faction_invited"] = {"Caramelcart": 1, "Treacleaxe": 55500, "Nougatpick": 55500, "Sherbetsack": 55500}
+    assert _plan_team_faction(wonka, team, pruned, quiet, 100, 25, {p.name for p in personas.values()}, names, room=3, roster=roster) is None  # nobody known is pending
+    assert "Caramelcart" not in pruned.flags["faction_invited"]  # the pruning is written back even when nobody is pending
+    old_invite = PersonaState(mood="gentle")
+    old_invite.flags["faction_invited"] = {"Treacleaxe": 50000, "Nougatpick": 55500, "Sherbetsack": 55500}
+    retry = _plan_team_faction(wonka, team, old_invite, quiet, 100, 25, {p.name for p in personas.values()}, names, room=3, roster=roster)
+    assert retry is not None and [a["name"] for a in retry[0]] == ["Treacleaxe"]  # still outside six hours on: asked again

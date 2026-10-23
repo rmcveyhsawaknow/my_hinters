@@ -573,3 +573,39 @@ def test_a_storehouse_that_refuses_a_give_as_full_is_remembered_full(tmp_path):
     assert any("is full" in line for line in record.get("learned", []))
     note = json.loads(client.observe()["notebook"][PERSONA_STATE_KEY])
     assert f"{store['x']},{store['y']}" in note["flags"]["full_stores"]  # the next wake walks past this store
+
+
+def test_a_tile_the_world_refuses_is_routed_around_for_a_day(tmp_path):
+    from hglab.client import HinterglassError
+    from hglab.mood import PersonaState
+    from hglab.persona import PERSONA_STATE_KEY
+    from hglab.planner import WorldView, closed_tiles, mark_closed
+
+    state = PersonaState(mood="busy")
+    mark_closed(state, (65, 75), 1000)
+    assert closed_tiles(state, 1500) == {(65, 75)} and closed_tiles(state, 1000 + 8640 + 1) == set()
+    view = WorldView(x0=60, y0=70, rows=["g" * 128] * 128)
+    view.closed.update(closed_tiles(state, 1500))
+    assert not view.walkable(65, 75) and view.walkable(66, 75)
+    observe = load_fixture(FIX / "observe/loompa-provisioner.json")
+    observe["you"].update({"x": 62, "y": 63, "energy": 100})
+    observe["you"]["faction"] = {"id": 5, "name": "Chocolate Factory"}
+    observe["view"]["x0"], observe["view"]["y0"] = 56, 57
+    personas = load_personas(ROOT)
+    persona = personas["loompa-provisioner"]
+    client = FixtureClient(observe)
+    original_act = client.act
+
+    def refusing_act(action):
+        if action.get("action") == "move":
+            raise HinterglassError(400, "not_walkable", "a tile blocks close to you")
+        return original_act(action)
+
+    client.act = refusing_act
+    lease = acquire(client, persona.name)
+    result = persona_wake(persona=persona, team=load_team(ROOT, persona.team), personas=personas, client=client, lease=lease, root=ROOT, output_dir=tmp_path, dry_run=False, work=True, seed="closed")
+    record = result[0] if isinstance(result, tuple) else result
+    first = next(a for a in record["actions"] if a["action"] == "move")
+    assert any("routed around" in line for line in record.get("learned", []))
+    note = json.loads(client.observe()["notebook"][PERSONA_STATE_KEY])
+    assert f"{first['x']},{first['y']}" in note["flags"]["closed_tiles"]  # the next wake plans around this tile
