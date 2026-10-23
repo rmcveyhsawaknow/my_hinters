@@ -325,10 +325,32 @@ def adapt(
                 score=chosen["score"],
                 why=" | ".join(because)[:400],
                 utc=now,
+                works=works,
+                avoid=avoid,
             )
     boards = {}
     for tslug, team in teams.items():
         members = {s: d for s, d in per_slug.items() if d["team"] == tslug}
+        suggestions = team_suggestions(team, members)
+        current_kinds = {s["kind"] for s in suggestions}
+        for s in suggestions:
+            graph.upsert_node(
+                "suggestion",
+                f"suggestion:{tslug}:{s['kind']}",
+                team=tslug,
+                kind=s["kind"],
+                text=s["text"],
+                evidence=s.get("evidence"),
+                utc=now,
+                active=True,
+            )
+        for stale in graph.nodes("suggestion"):
+            if (
+                stale.get("team") == tslug
+                and stale.get("kind") not in current_kinds
+                and stale.get("active", True)
+            ):
+                graph.upsert_node("suggestion", stale["id"], active=False)
         boards[tslug] = {
             "team": team.name,
             "aim": team.aim,
@@ -336,7 +358,7 @@ def adapt(
                 s: {"name": d["name"], "assignment": d["assignment"], "activity": d["activity"]}
                 for s, d in members.items()
             },
-            "suggestions": team_suggestions(team, members),
+            "suggestions": suggestions,
         }
     return {"utc": now, "agents": per_slug, "teams": boards}
 
@@ -368,6 +390,34 @@ def brief(root: Path, graph: Graph, plan: dict[str, Any], sender: str = "goals")
         )
         briefed.append(slug)
     return briefed
+
+
+def wake_guidance(root: Path, name: str, team_slug: str | None) -> dict[str, Any]:
+    """What a wake on this host may read from the graph: its assignment (label, works, avoid) and the team's live suggestions."""
+    path = root / "runs/local/memory.sqlite"
+    if not path.is_file():
+        return {}
+    graph = Graph(path)
+    try:
+        assignment = None
+        edges = graph.edges(name, kind="pursues", limit=1)
+        if edges:
+            node = graph.node(edges[0]["dst"]) or {}
+            assignment = {
+                "label": node.get("label"),
+                "works": list(edges[0].get("works") or []),
+                "avoid": list(edges[0].get("avoid") or []),
+            }
+        suggestions = [
+            {k: n.get(k) for k in ("kind", "text", "evidence", "utc")}
+            for n in graph.nodes("suggestion")
+            if n.get("team") == team_slug and n.get("active", True)
+        ]
+        return {"assignment": assignment, "suggestions": suggestions}
+    except Exception:  # noqa: BLE001 - guidance is optional; a wake never fails for lack of it
+        return {}
+    finally:
+        graph.close()
 
 
 def current(
@@ -404,5 +454,6 @@ __all__ = [
     "latest_record",
     "pulse_progress",
     "team_suggestions",
+    "wake_guidance",
     "works_and_avoid",
 ]

@@ -6,6 +6,11 @@ story: >-
   grandfather who narrates it. The factory is a secret everyone longs to see; the lock is
   a faction name whispered only to winners; the public log is the audit nobody can argue
   with. Characters in an ongoing story by the collective; honest to every peer.
+faction:
+  name: Chocolate Factory
+  motto: Sweet work, honest ledgers, and a gate that opens for those who deliver.
+  membership: invite
+  founder: wonka
 members: [wonka, mrs-bucket, grandpa-joe]
 home:
   x: 89

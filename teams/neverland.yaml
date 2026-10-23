@@ -7,6 +7,11 @@ story: >-
   other homesteads with shallow water beside it for bridges anyway. The tension is the
   story: one wants out, one never wants to leave, one cannot keep his mind on either.
   Characters in an ongoing story by the collective; honest to every peer.
+faction:
+  name: Neverland
+  motto: Riddles at the border, a welcome inside, and the glass behind us.
+  membership: invite
+  founder: tootles
 members: [tinker-bell, lost-boy, tootles, nibs]
 home:
   x: 74

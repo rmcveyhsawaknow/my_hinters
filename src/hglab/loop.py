@@ -46,9 +46,24 @@ def build_prompt(
 def _compact_observe(observe: dict[str, Any]) -> dict[str, Any]:
     """Enough of a redacted observe for measures: tick and the public parts of ``you``."""
     you = observe.get("you") if isinstance(observe.get("you"), dict) else {}
+    nearby = observe.get("goals_nearby") if isinstance(observe.get("goals_nearby"), list) else []
+    yours = observe.get("your_goals") if isinstance(observe.get("your_goals"), dict) else {}
+    claimed = yours.get("claimed") if isinstance(yours.get("claimed"), dict) else None
     return {
         "tick": observe.get("tick"),
-        "you": {k: you.get(k) for k in ("id", "name", "x", "y", "energy", "inventory", "home") if k in you},
+        "you": {k: you.get(k) for k in ("id", "name", "x", "y", "energy", "inventory", "home", "faction") if k in you},
+        "goals_nearby": [
+            {
+                **{k: g.get(k) for k in ("id", "title", "poster", "reward", "status", "x", "y") if k in g},
+                "condition": (g.get("condition") or {}).get("type") if isinstance(g.get("condition"), dict) else None,
+            }
+            for g in nearby[:12]
+            if isinstance(g, dict)
+        ],
+        "your_goals": {
+            "claimed": {k: claimed.get(k) for k in ("id", "title", "poster", "status") if k in claimed} if claimed else None,
+            "posted": [{k: g.get(k) for k in ("id", "title", "status") if k in g} for g in (yours.get("posted") or []) if isinstance(g, dict)][:6],
+        },
     }
 
 

@@ -258,7 +258,20 @@ should use more: **goals** and **factions**. The rule that no collective member 
 goal stands, so in-world goals are for work across collectives: when a team's logistics approach keeps
 failing, the suggestion is to post a goal with a reward that an outsider can claim. When a team of two
 or more has no faction recorded, the suggestion is to found one named for the team and invite the
-members, then record it as `faction:` in `teams/<slug>.yaml` so the Pulse can count it. The next step
-is to let the planner act on an assignment directly (an objective knob on the heuristic planner, the
-brief for the LLM planner already works) and to keep the world's open goal board in the records so
-claimable goals can be matched to capability cards the way the ecosystem routing does.
+members, then record it as `faction:` in `teams/<slug>.yaml` so the Pulse can count it. Since 2026-10-22 the planner acts on all of this directly:
+
+- **The assignment steers the heuristic planner.** A wake on a host with the graph reads its assignment
+  (`wake_guidance`) and skips the approaches marked *avoid* in both wake kinds, falling back to the full
+  set when nothing else fits; the record carries `assignment`. The LLM planner reads the brief as before.
+- **Team factions.** `teams/<slug>.yaml` names the team's faction (`faction: name, motto, membership,
+  founder`). The founder founds it (10 energy) and invites the other members in the same wake; members
+  join when the faction exists; members inside top up invitations once a day for teammates not seen
+  inside. A persona already in another faction (a collector theme, say) is left alone. Neverland and the
+  Chocolate Factory have theirs; the one-person teams do not need one.
+- **Team delivery goals.** When the adaptive layer flags failing logistics for a team, the member who owns
+  a storehouse posts `Team delivery: 20 wood to <team>` with a `deliver` condition on that storehouse and
+  a small escrowed reward, once at a time and within the team's open-goal budget; whoever outside the
+  collective delivers is paid by the world at once. Members never claim it.
+- **Records keep the goal board.** Each wake record now carries `goals_nearby`, `your_goals` and the
+  persona's faction, so the adaptive layer and the ecosystem index can match claimable goals to
+  capability cards without a live observe.
