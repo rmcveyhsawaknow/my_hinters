@@ -18,3 +18,4 @@ reports/*
 !reports/examples/
 !reports/README.md
 data/events/
+data/guide/
