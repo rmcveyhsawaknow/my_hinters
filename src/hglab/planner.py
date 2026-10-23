@@ -451,15 +451,20 @@ def _plan_team_faction(
     mine = you.get("faction")
     mine_name = str(mine.get("name") if isinstance(mine, dict) else mine or "")
     wanted = str(cfg["name"])
-    factions = [f for f in (observe.get("_factions") or []) if isinstance(f, dict)]
+    known = observe.get("_factions")
+    if not isinstance(known, list):
+        return None  # the world's faction list is unknown this wake: never found a duplicate on a guess
+    factions = [f for f in known if isinstance(f, dict)]
     ours = next((f for f in factions if str(f.get("name", "")).casefold() == wanted.casefold()), None)
     tick = int(observe.get("tick", 0) or 0)
     proper = {n.casefold(): n for n in (collective_names or set())}
-    mates = sorted({proper.get(n, n) for n, slug in (names or {}).items() if slug in team.members and slug != persona.slug})
+    exempt = {str(e) for e in (cfg.get("exempt") or [])}
+    expected = len([m for m in team.members if m not in exempt])
+    mates = sorted({proper.get(n, n) for n, slug in (names or {}).items() if slug in team.members and slug != persona.slug and slug not in exempt})
     if mine_name:
         if mine_name.casefold() != wanted.casefold():
             return None  # already in another faction (a theme, say): that is its own business
-        if not ours or int(ours.get("members") or 0) >= len(team.members):
+        if not ours or int(ours.get("members") or 0) >= expected:
             return None
         last = int(state.flags.get("faction_invites", -(10**9)) or -(10**9))
         if tick - last < 8640:
@@ -475,7 +480,7 @@ def _plan_team_faction(
         if not pending or energy - len(pending) < reserve:
             return None
         state.flags["faction_invites"] = tick
-        return ([{"action": "invite", "name": m} for m in pending], f"{wanted} has {ours.get('members')} of {len(team.members)} members: invite {', '.join(pending)}", "team")
+        return ([{"action": "invite", "name": m} for m in pending], f"{wanted} has {ours.get('members')} of {expected} members: invite {', '.join(pending)}", "team")
     if ours:
         if energy < reserve:
             return None

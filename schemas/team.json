@@ -15,7 +15,8 @@
         "name": {"type": "string", "minLength": 3, "maxLength": 32, "pattern": "^[A-Za-z0-9 _-]+$"},
         "motto": {"type": "string", "maxLength": 120},
         "membership": {"enum": ["invite", "open"]},
-        "founder": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$"}
+        "founder": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$"},
+        "exempt": {"type": "array", "items": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$"}, "uniqueItems": true}
       }
     },
     "story": {"type": "string", "maxLength": 1200},

@@ -388,7 +388,7 @@ def persona_wake(
                 perimeter_loop(tuple(terrain_rows), bridges),
                 str(persona.knobs["patrol"].get("direction", "clockwise")),
             )
-        if planner_mode == "llm" and llm_call is not None and mode != "rest" and not work:
+        if planner_mode == "llm" and llm_call is not None and mode != "rest" and not work and plan.get("approach") not in ("team", "team_goal"):  # the team step is settled, not debated
             from hglab.engage import board as engagement_board
             from hglab.engage import render_board as render_engagement
             from hglab.engage import stance_of
@@ -651,17 +651,17 @@ def mute_over_budget(
     return kept, {"muted": len(drop), "why": why}
 
 
-def _public_factions(client: Any) -> list[dict[str, Any]]:
-    """The world's factions (keyless), for the team faction step; empty when the client has none or the call fails."""
+def _public_factions(client: Any) -> list[dict[str, Any]] | None:
+    """The world's factions (keyless) for the team faction step; None when unknown, so nothing is founded on a guess."""
     getter = getattr(client, "public_factions", None)
     if getter is None:
-        return []
+        return None
     try:
         data = getter()
     except Exception:  # noqa: BLE001 - optional context
-        return []
+        return None
     factions = data.get("factions", data) if isinstance(data, dict) else data
-    return [f for f in factions if isinstance(f, dict)] if isinstance(factions, list) else []
+    return [f for f in factions if isinstance(f, dict)] if isinstance(factions, list) else None
 
 
 def _place_builds(

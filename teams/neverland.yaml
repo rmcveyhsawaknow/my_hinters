@@ -11,7 +11,8 @@ faction:
   name: Neverland
   motto: Riddles at the border, a welcome inside, and the glass behind us.
   membership: invite
-  founder: tootles
+  founder: nibs
+  exempt: [tootles]  # Lagalong founded the Readable Replay theme faction for the collector programme
 members: [tinker-bell, lost-boy, tootles, nibs]
 home:
   x: 74
