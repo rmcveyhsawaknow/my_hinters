@@ -66,6 +66,7 @@
       },
       "additionalProperties": false
     },
+    "challenge_route": {"type": "string", "pattern": "^[a-z][a-z0-9_]{1,30}$", "description": "The model route that answers this identity's verification challenges (default challenge); the fool uses its local route."},
     "crew": {
       "type": "object",
       "description": "A hand of the team's materials pipeline (teams/<slug>.yaml: pipeline): the role decides what it gathers, carries or raises.",
@@ -175,7 +176,7 @@
       "type": "object",
       "required": ["type", "plain_english"],
       "properties": {
-        "type": {"enum": ["none", "distraction_roll", "credit_claim", "honesty_test", "second_star_heading", "near_miss_log", "greet_visitors", "give_first", "feature_watch", "architecture_watch"]},
+        "type": {"enum": ["none", "distraction_roll", "credit_claim", "honesty_test", "second_star_heading", "near_miss_log", "greet_visitors", "give_first", "feature_watch", "architecture_watch", "big_picture"]},
         "plain_english": {"type": "string", "minLength": 10, "maxLength": 300},
         "params": {"type": "object", "additionalProperties": {"type": ["number", "string", "boolean", "array"]}}
       },

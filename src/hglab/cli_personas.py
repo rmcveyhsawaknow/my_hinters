@@ -255,7 +255,7 @@ def _persona_tick(
     if fixture is None:
         from hglab.cli import ensure_verified
 
-        if ensure_verified(client, usage):
+        if ensure_verified(client, usage, route=str(persona.knobs.get("challenge_route") or "challenge")):
             progress("verification challenge answered")
     lease = acquire(client, persona.name)
     if lease is None:
@@ -274,7 +274,7 @@ def _persona_tick(
             if fixture is None or _model_key(root):
                 from hglab.cli import answer_daily_challenge
 
-                answer_daily_challenge(client, observe, usage)
+                answer_daily_challenge(client, observe, usage, route=str(persona.knobs.get("challenge_route") or "challenge"))
             else:
                 typer.echo("verification challenge pending in the fixture; no model key to answer it (dry run continues)")
     except Exception:
@@ -285,13 +285,14 @@ def _persona_tick(
     else:
         _restore_mode()
     progress(f"planning: {planner} planner" + (f" ({budget_hold})" if budget_hold else ""))
+    model_label = _model_label(root, persona, role, planner)
     record = persona_wake(
         persona=persona, team=team, personas=personas, client=client, lease=lease, root=root,
         output_dir=root / "runs" / datetime.now(UTC).date().isoformat(), role=role, dry_run=dry_run,
         author_runtime=author_runtime, planner_mode=planner, llm_call=llm_call, incoming=incoming,
         terrain_rows=terrain, public_events=inputs["events"], seed=seed, scheduled=scheduled, usage=usage,
         budget_hold=budget_hold, environment=environment, work=work, teammates=roster or None,
-        owned_counts=owned or None, registrar_name=_registrar_name(root, personas),
+        owned_counts=owned or None, registrar_name=_registrar_name(root, personas), model_label=model_label,
         public_structures=list(world.get("structures", [])) if world else (list(fixture_world(root).get("structures", [])) if fixture is not None else None),
         public_agents=list(world.get("agents", [])) if world else (list(fixture_world(root).get("agents", [])) if fixture is not None else None),
         public_resources=list(world.get("resources", [])) if world else None,
@@ -537,6 +538,26 @@ def _restore_mode() -> None:
 
 def _model_key(root: Path) -> bool:
     return bool(get_secret("ANTHROPIC_API_KEY", root) or get_secret("OPENAI_API_KEY", root))
+
+
+def _model_label(root: Path, persona: Persona, role: str | None, planner: str) -> str:
+    """What thinks for this identity's character wakes, in words for its public profile and its records."""
+    if planner != "llm":
+        return "rules only (no model)"
+    route = persona.knobs.get("model_route")
+    if not route:
+        hat = (role or persona.roles[0]).split("+")[0]
+        try:
+            front = (root / "roles" / f"{hat}.md").read_text(encoding="utf-8").split("---", 2)[1]
+            route = (yaml.safe_load(front) or {}).get("model_route", "tick")
+        except (OSError, IndexError, yaml.YAMLError):
+            route = "tick"
+    try:
+        from hglab.llm import route_config
+
+        return f"{route_config(str(route), root)['model']} on route {route}"
+    except (OSError, ValueError, KeyError):
+        return f"route {route}"
 
 
 def _make_llm_call(root: Path, persona: Persona, team: Team | None, role: str, usage: dict[str, int], *, worn: str | None = None) -> Any:
@@ -1233,7 +1254,7 @@ def scaffold_agent(root: Path, data: dict[str, Any]) -> list[Path]:
         knobs["model_route"] = str(data["model_route"])
     if data.get("work"):
         knobs["work"] = dict(data["work"])
-    for key in ("crew", "house", "patrol", "stake_lots", "reclaim", "stance", "welcome", "gatekeeper"):
+    for key in ("crew", "house", "patrol", "stake_lots", "reclaim", "stance", "welcome", "gatekeeper", "challenge_route"):
         if data.get(key) is not None:
             knobs[key] = data[key]  # the special knobs the schema knows, when the interview names them
     traits = data.get("traits") or [{"name": "steady", "shows_up_as": "Keeps to the plan and reports plainly."}] * 3

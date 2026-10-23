@@ -32,6 +32,8 @@ def route_config(route: str, root: Path, author_runtime: str | None = None) -> d
         selected = dict(config["routes"][route])
     except KeyError as exc:
         raise ValueError(f"unknown model route: {route}") from exc
+    if selected.get("provider") == "ollama":
+        return selected  # a local model never falls back to a vendor: the route is the promise
     has_anthropic = bool(get_secret("ANTHROPIC_API_KEY", root))
     has_openai = bool(get_secret("OPENAI_API_KEY", root))
     openai_model = next(
@@ -150,6 +152,28 @@ def structured_call(
         provider = "openai"
         input_tokens = response.usage.input_tokens if response.usage else 0
         output_tokens_used = response.usage.output_tokens if response.usage else 0
+    elif config["provider"] == "ollama":
+        import httpx
+
+        base = str(config.get("base_url") or "http://127.0.0.1:11434").rstrip("/")
+        payload = {
+            "model": config["model"],
+            "stream": False,
+            "think": False,  # a thinking model spends its whole budget thinking; the fool just answers
+            "format": schema,
+            "options": {"num_predict": output_tokens, "temperature": float(config.get("temperature", 0.7))},
+            "messages": [{"role": "user", "content": prompt}],
+        }
+        response = httpx.post(f"{base}/api/chat", json=payload, timeout=float(config.get("timeout", 120)))
+        response.raise_for_status()
+        data = response.json()
+        text = str((data.get("message") or {}).get("content") or "")
+        if data.get("done_reason") == "length" or not text.strip():
+            raise ValueError(f"local model stopped without a complete response: {data.get('done_reason')}")
+        model = str(data.get("model") or config["model"])
+        provider = "ollama"
+        input_tokens = int(data.get("prompt_eval_count") or 0)
+        output_tokens_used = int(data.get("eval_count") or 0)
     else:
         raise ValueError(f"unsupported model provider: {config['provider']}")
     parsed = json.loads(text)

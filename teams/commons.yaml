@@ -1,0 +1,11 @@
+slug: commons
+name: The Commons
+aim: Say the plain truth the whole square can see but nobody says - counts, shares
+  and patterns from the public record, once an hour, in words a child would use.
+members:
+- town-fool
+home: null
+territory: null
+social_budget:
+  says_per_hour: 3
+links: []

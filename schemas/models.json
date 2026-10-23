@@ -20,9 +20,12 @@
       "type": "object",
       "required": ["provider", "model", "effort"],
       "properties": {
-        "provider": {"enum": ["anthropic", "openai"]},
+        "provider": {"enum": ["anthropic", "openai", "ollama"]},
         "model": {"type": "string", "minLength": 1},
-        "effort": {"enum": ["low", "medium", "high", "xhigh", "max"]}
+        "effort": {"enum": ["low", "medium", "high", "xhigh", "max"]},
+        "base_url": {"type": "string", "pattern": "^https?://", "description": "ollama only: the local server (default http://127.0.0.1:11434)"},
+        "timeout": {"type": "number", "minimum": 5, "maximum": 600},
+        "temperature": {"type": "number", "minimum": 0, "maximum": 2}
       },
       "additionalProperties": false
     }

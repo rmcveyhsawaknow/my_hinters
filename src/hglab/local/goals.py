@@ -169,6 +169,8 @@ def activity(record: dict[str, Any] | None, name: str) -> dict[str, Any]:
         "pack": sum(int(v or 0) for v in inventory.values()) if inventory else None,
         "reason": (str(record.get("reasons", [""])[0])[:140] if record.get("reasons") else None),
         "dry_run": bool(record.get("dry_run")),
+        "model": str((record.get("thinking") or {}).get("model") or (record.get("usage") or {}).get("model") or "heuristic"),
+        "planner": (record.get("thinking") or {}).get("planner") or record.get("planner"),
     }
 
 

@@ -264,6 +264,7 @@ def persona_wake(
     public_structures: list[dict[str, Any]] | None = None,
     public_agents: list[dict[str, Any]] | None = None,
     public_resources: list[dict[str, Any]] | None = None,
+    model_label: str | None = None,
 ) -> dict[str, Any]:
     if role is not None and role not in persona.roles:
         raise ValueError(f"{persona.slug} does not wear the {role} hat")
@@ -317,6 +318,15 @@ def persona_wake(
                 "day": env["day"],
                 "peers_active": len(env["peers_active"]),
             }
+            if persona.quirk.get("type") == "big_picture":
+                from hglab.fool import insights as big_picture
+
+                env["insights"] = big_picture(
+                    agents=public_agents or [], structures=public_structures or [], resources=public_resources or [],
+                    events=list(public_events or []), tick=tick, collective={p.name for p in personas.values()},
+                    season=str(observe.get("season") or ""), weather=str(observe.get("weather") or ""),
+                    goals_nearby=observe.get("goals_nearby") or [],
+                )
             if isinstance(env.get("features_now"), dict):
                 from hglab.features import (
                     SILENT_KINDS,
@@ -372,6 +382,8 @@ def persona_wake(
             observe["_guidance"] = guidance
         if "_factions" not in observe:
             observe["_factions"] = _public_factions(client)
+        if model_label:
+            observe["_model_label"] = model_label  # the planner's profile note reads it; never recorded
         assignment = guidance.get("assignment") or {}
         avoid = frozenset(str(a) for a in (assignment.get("avoid") or []))
         prefer = tuple(str(a) for a in (assignment.get("prefer") or []) if str(a) not in avoid)
@@ -419,7 +431,7 @@ def persona_wake(
                 perimeter_loop(tuple(terrain_rows), bridges),
                 str(persona.knobs["patrol"].get("direction", "clockwise")),
             )
-        if planner_mode == "llm" and llm_call is not None and mode != "rest" and not work and plan.get("approach") not in ("team", "team_goal"):  # the team step is settled, not debated
+        if planner_mode == "llm" and llm_call is not None and mode != "rest" and not work and plan.get("approach") not in ("team", "team_goal", "fool"):  # the team step is settled, not debated; the fool's fact is phrased, not planned
             from hglab.engage import board as engagement_board
             from hglab.engage import render_board as render_engagement
             from hglab.engage import stance_of
@@ -502,6 +514,19 @@ def persona_wake(
                 except ValueError as exc:
                     extras["fallback_reason"] = str(exc)[:200]
                     used = "llm_fallback"
+        if persona.quirk.get("type") == "big_picture" and plan.get("approach") == "fool" and planner_mode == "llm" and llm_call is not None:
+            from hglab.fool import rephrase
+
+            plan = rephrase(plan, persona, root, usage, extras)  # the local route puts the fact in the fool's words; the plain sentence stands otherwise
+            used = "llm" if extras.get("fool_line") == "model" else "heuristic"
+        calls_made = int((usage or {}).get("calls", 0) or 0)
+        extras["thinking"] = {
+            "planner": used,
+            "model": str((usage or {}).get("model") or "heuristic") if calls_made else "heuristic",
+            "provider": (usage or {}).get("provider") if calls_made else None,
+            "route": (usage or {}).get("route") if calls_made else None,
+            "label": model_label,
+        }  # which model and version thought for this run, in the record for everyone to read
         position = (you.get("x"), you.get("y"))
         record_wake(
             state, mode, tick, position if all(isinstance(v, int) for v in position) else None
@@ -575,6 +600,7 @@ def persona_wake(
             extras["speech_budget"] = muted
         observe.pop("_guidance", None)
         observe.pop("_factions", None)
+        observe.pop("_model_label", None)
         context["observe"] = observe
         context["mates"] = mates
         context["state"] = state
