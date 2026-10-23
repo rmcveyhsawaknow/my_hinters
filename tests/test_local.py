@@ -1219,3 +1219,36 @@ def test_the_status_page_marks_a_stalled_persona_and_names_what_to_try_first(tmp
     (tmp_path / "config/local.yaml").write_text("dry_run: true\nagents:\n  - slug: lost-boy\n    enabled: true\n", encoding="utf-8")
     page = render(tmp_path, personas, teams)
     assert 'class="pill stalled"' in page and "try first gather_trip, forage" in page and "avoid deposit_trip" in page
+
+
+def test_the_public_world_snapshot_is_cached_for_a_minute_and_survives_a_failed_fetch(tmp_path, monkeypatch):
+    import os
+
+    from hglab import cli_personas
+    from hglab.client import HinterglassError
+
+    calls = []
+
+    def fake_request(self, method, path, **kwargs):
+        calls.append(path)
+        if len(calls) >= 3:
+            raise HinterglassError(429, "rate_limited", "slow down")
+        return {"tick": 100 + len(calls), "agents": [{"name": "Clarion"}], "structures": [], "terrain": ["g" * 128] * 128}
+
+    monkeypatch.setattr(cli_personas.HinterglassClient, "request", fake_request)
+    cache = tmp_path / "runs/local/world.json"
+    first = cli_personas.fetch_public_world(cache)
+    second = cli_personas.fetch_public_world(cache)
+    assert first["tick"] == 101 and second["tick"] == 101 and calls == ["/live/world.json"]  # the second wake read the cache
+    old = cache.stat().st_mtime - 120
+    os.utime(cache, (old, old))
+    third = cli_personas.fetch_public_world(cache)
+    assert third["tick"] == 102 and len(calls) == 2  # stale: fetched again and rewritten
+    os.utime(cache, (old, old))
+    fourth = cli_personas.fetch_public_world(cache)
+    assert fourth["tick"] == 102 and len(calls) == 3  # the fetch failed: the stale copy serves the wake
+    assert cli_personas.fetch_public_world(None) == {}  # no cache, failed fetch: empty as before
+    monkeypatch.setenv("HGLAB_RUNTIME", "local")
+    assert cli_personas.world_cache_path(tmp_path) == tmp_path / "runs/local/world.json"
+    monkeypatch.delenv("HGLAB_RUNTIME")
+    assert cli_personas.world_cache_path(tmp_path) is None
