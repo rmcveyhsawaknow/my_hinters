@@ -52,6 +52,7 @@ def _compact_observe(observe: dict[str, Any]) -> dict[str, Any]:
     return {
         "tick": observe.get("tick"),
         "you": {k: you.get(k) for k in ("id", "name", "x", "y", "energy", "inventory", "home", "faction") if k in you},
+        "blocks": [{k: b.get(k) for k in ("x", "y", "count", "top", "owner", "door") if k in b} for b in (observe.get("blocks") or []) if isinstance(b, dict)][:20],
         "goals_nearby": [
             {
                 **{k: g.get(k) for k in ("id", "title", "poster", "reward", "status", "x", "y") if k in g},

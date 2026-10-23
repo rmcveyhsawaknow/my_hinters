@@ -30,7 +30,7 @@ def test_work_wake_builds_first_when_materials_are_in_hand(tmp_path):
     record, _ = _wake("nibs", observe, tmp_path)
     assert record["work"] is True and record["planner"] == "heuristic"
     assert record["actions"][0]["action"] == "build" and record["actions"][0]["type"] == "hut"
-    assert "inbox" not in json.dumps(record) and record["observe"].keys() == {"tick", "you", "goals_nearby", "your_goals"}
+    assert "inbox" not in json.dumps(record) and record["observe"].keys() == {"tick", "you", "goals_nearby", "your_goals", "blocks"}
 
 
 def test_work_wake_deposits_surplus_and_can_raise_a_monument(tmp_path):

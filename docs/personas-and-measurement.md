@@ -361,3 +361,33 @@ storehouse, and `_house_site` then points the hearth and the factory plan at the
 office (`config/plots.yaml: site_requests`) surveys with `site_search`, prices by `lot_value`, and
 deeds the lot in public once the gives are seen. Every staked lot's claim sign now carries its worth
 and price, so ore-rich land, river and mountain views and busy neighbourhoods cost more than sand.
+
+## The atelier: research and development behind the glass
+
+Plumbline (`agents/plumbline/`, team `atelier`) is the collective's R&D builder: every material,
+blueprint and architecture the glass allows, tested where unproven and shared where it works. The
+machinery is `src/hglab/architecture.py`:
+
+- **Blueprints** are the structure types in the rules with cost, hit points, where they stand and
+  what they are for; **pieces** are the block materials, shapes and the assembly rules (openings
+  first, then walls). `hglab architecture blueprints` prints both.
+- **Architectures** are patterns of structures one builder raised within three tiles of each other,
+  read from the public build log: the types, how often the pattern stood, how many builders raised
+  it, the usual assembly order and the materials it took, and its purpose (a hut, a storehouse and
+  a farm are a homestead; walls and a tower a compound). `hglab architecture catalogue` rebuilds it
+  (keyless) into `runs/local/architectures.json`; the supervisor does so in its adapt cycle and
+  writes the patterns into the memory graph as `architecture` nodes.
+- **Recommendations**: `hglab architecture recommend storage` returns the patterns that stood for a
+  purpose, materials and order included, and falls back to the rules' blueprint marked untested. The
+  MCP tool `architectures` and the wake guidance carry the same.
+- **The quirk** `architecture_watch`: each wake Plumbline announces one pattern not yet announced
+  (`Workshop note: ...`, numbers first, no builder named) or, when all are announced, builds a sign
+  at the workshop with the recommended plan for the purpose in `quirk.params.sign_for`. Builds follow
+  `build_priority` so untested blueprints get built and confirmed. Records keep the `blocks` in view
+  so assemblies can be studied later.
+- **The signal** `architectures` (blueprint types raised, workshop notes, signs, idea cards) feeds the
+  influence links; the Pulse key results count blueprints confirmed, findings shared, notes filed,
+  tiles covered and replies.
+
+Registration is the owner's step (`hglab register --name Plumbline`); until then the persona runs
+only from fixtures.

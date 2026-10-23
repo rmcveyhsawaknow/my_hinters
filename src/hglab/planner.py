@@ -16,6 +16,7 @@ import re
 from dataclasses import dataclass, field
 from typing import Any
 
+from hglab.limits import action_limits
 from hglab.mood import HEADING_VECTORS, PersonaState, next_heading, note_near_miss
 from hglab.persona import (
     MOVE_STEP_CAP,
@@ -347,7 +348,7 @@ def plan_wake(
         activities = ["lighten", "engage", "patrol", *[a for a in activities[2:] if a != "explore"]]
     if skip:
         activities = [a for a in activities if a not in skip] or activities
-    activities = ["news", "team", "team_goal", *activities]
+    activities = ["news", "team", "team_goal", "research", *activities]
     for activity in activities:
         if len(actions) >= budget:
             break
@@ -357,6 +358,8 @@ def plan_wake(
             step = _plan_team_faction(persona, team, state, observe, energy, reserve, collective_names, names, room=budget - len(actions))
         elif activity == "team_goal":
             step = _plan_team_goal(persona, team, observe, view, inventory, energy, reserve)
+        elif activity == "research":
+            step = _plan_research(persona, state, observe, inventory, here, view, action_limits(observe)[0] < persona.social_rate)
         elif activity == "lighten":
             step = _plan_lighten(inventory, energy)
         elif activity == "patrol":
@@ -633,6 +636,9 @@ def _plan_work(
         approach = approach or "team"
     if fits_as("team_goal", _plan_team_goal(persona, team, observe, view, inventory, energy, reserve)):
         approach = approach or "team_goal"
+    recent_says_now, _, _ = action_limits(observe)
+    if fits_as("research", _plan_research(persona, state, observe, inventory, here, view, recent_says_now < persona.social_rate)):
+        approach = approach or "research"
     # 0.3 a pack heavy with berries makes room for materials
     if fits_as("lighten", _plan_lighten(inventory, energy)):
         approach = approach or "lighten"
@@ -1179,6 +1185,50 @@ def _meal_after_move(actions: list[dict[str, Any]], inventory: dict[str, int], e
 
 
 NEWS_KINDS = {"api_version", "guide_changed", "rule_changed", "new_action", "new_blueprint", "blueprint_cost_changed", "new_observe_field", "new_block_piece", "limits_changed", "new_structure_type", "unpublished_event_type"}
+
+
+def _plan_research(
+    persona: Persona,
+    state: PersonaState,
+    observe: dict[str, Any],
+    inventory: dict[str, int],
+    here: tuple[int, int],
+    view: WorldView,
+    may_say: bool,
+) -> tuple[list[dict[str, Any]], str, str] | None:
+    """The architecture watch: announce one pattern not yet announced, or post the recommended plan on a sign at the workshop."""
+    if persona.quirk.get("type") != "architecture_watch":
+        return None
+    from hglab.architecture import finding_line, recommend, sign_text
+
+    guidance = observe.get("_guidance") or {}
+    cat = guidance.get("architectures") or {}
+    patterns = [p for p in (cat.get("patterns") or []) if isinstance(p, dict)]
+    if not patterns:
+        return None
+    announced = [str(x) for x in (state.flags.get("arch_announced") or [])]
+    fresh = [p for p in patterns if p.get("signature") not in announced]
+    if fresh and may_say:
+        pattern = fresh[0]
+        state.flags["arch_announced"] = (announced + [pattern["signature"]])[-40:]
+        return ([{"action": "say", "text": finding_line(pattern)}], f"a pattern the workshop has not announced yet: {pattern['signature']} ({pattern['purpose']}, seen {pattern['count']} time(s))", "research")
+    posted = str(state.flags.get("arch_sign") or "")
+    wanted = str((persona.quirk.get("params") or {}).get("sign_for") or "storage")
+    recommended = recommend({"patterns": patterns}, wanted, limit=1)
+    if not recommended or inventory.get("wood", 0) < 1:
+        return None
+    text = sign_text(recommended[0])
+    if text == posted:
+        return None
+    mine = [s for s in view.structures if s.get("type") == "sign" and str(s.get("owner", "")).casefold() == persona.name.casefold() and str(s.get("text") or "") == text]
+    if mine:
+        state.flags["arch_sign"] = text
+        return None
+    spot = next(((here[0] + dx, here[1] + dy) for dx in (0, 1, -1) for dy in (0, 1, -1) if not any(int(s.get("x", -99)) == here[0] + dx and int(s.get("y", -99)) == here[1] + dy for s in view.structures)), None)
+    if spot is None:
+        return None
+    state.flags["arch_sign"] = text
+    return ([{"action": "build", "type": "sign", "x": spot[0], "y": spot[1], "text": text}], f"the recommended {wanted} plan goes on a sign at ({spot[0]}, {spot[1]}) for every builder to read", "research")
 
 
 def _plan_news(persona: Persona, state: PersonaState, observe: dict[str, Any], environment: dict[str, Any] | None) -> tuple[list[dict[str, Any]], str, str] | None:

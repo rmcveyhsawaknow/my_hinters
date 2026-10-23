@@ -331,3 +331,23 @@ def incoming_effects(team_result: dict[str, Any], slug: str) -> dict[str, dict[s
 
 
 __all__ = ["SIGNALS", "SignalResult", "compute_team", "incoming_effects", "signal"]
+
+
+@signal("architectures")
+def architectures(ctx: MeasureContext) -> SignalResult:
+    """Blueprint types raised, workshop notes said in public, signs written, idea cards filed: the research output."""
+    mine = ctx.by_actor("self")
+    kinds = {str((e.get("data") or {}).get("type") or "") for e in mine if e.get("type") == "build"}
+    kinds.discard("")
+    notes = sum(1 for e in mine if e.get("type") == "say" and "workshop note" in str(e.get("text") or "").casefold())
+    signs = sum(1 for e in mine if e.get("type") == "build" and (e.get("data") or {}).get("type") == "sign")
+    ideas = len(ideas_by(ctx.kb_items, ctx.persona.slug))
+    parts = {"blueprint_types": float(len(kinds)), "notes": float(notes), "signs": float(signs), "ideas_filed": float(ideas)}
+    raw = 4 * len(kinds) + 3 * notes + 2 * signs + 10 * ideas
+    value = saturate(raw, 30)
+    return SignalResult(
+        "architectures", value,
+        f"Architectures {value:.0f}: {len(kinds)} blueprint type(s), {notes} note(s), {signs} sign(s), {ideas} idea card(s).",
+        parts,
+    )
+
