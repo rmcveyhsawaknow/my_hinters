@@ -358,6 +358,8 @@ def plan_wake(
         activities = ["lighten", "engage", "patrol", *[a for a in activities[2:] if a != "explore"]]
     if skip:
         activities = [a for a in activities if a not in skip] or activities
+    if persona.knobs.get("crew"):
+        activities = ["crew"] * budget + [a for a in activities if a not in {"explore", "gather", "build", "trade"}]  # a hand's wake is the pipeline, step after step
     activities = ["news", "team", "team_goal", "research", "crew", *activities]
     wanted = [LABEL_ACTIVITY[label] for label in prefer if label in LABEL_ACTIVITY]
     if wanted:
