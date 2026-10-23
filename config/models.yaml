@@ -39,3 +39,11 @@ routes:
     provider: anthropic
     model: claude-sonnet-5-5
     effort: medium
+  # The town fool: a local model on this host (Ollama, no key, no cost), never a vendor. The fool's facts are
+  # computed from public data; the model only puts them in its words, and the plain sentence stands when the
+  # model is away. An ollama route never falls back to a vendor.
+  fool:
+    provider: ollama
+    model: qwen3.5:9b
+    base_url: http://127.0.0.1:11434
+    effort: low

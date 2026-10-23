@@ -162,3 +162,11 @@ agents:
   roles:
   - builder
   runtime: actions-anthropic
+- name: Nodkin
+  persona: town-fool
+  team: commons
+  enabled: false
+  roles:
+  - envoy
+  - surveyor
+  runtime: actions-anthropic

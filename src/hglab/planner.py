@@ -65,6 +65,7 @@ WORK_SUMMARIES = {
     "deposit_trip": "carrying a full pack to the storehouse",
     "stash": "raising a storehouse for a full pack",
     "crew": "working the factory pipeline",
+    "profile": "the public profile says which model thinks here",
     "border": "raising the border signs",
     "patrol": "walking the outermost edge of the world, behind the glass",
     "news": "announcing a change in the game",
@@ -80,7 +81,7 @@ LABEL_ACTIVITY = {  # a shift-planner step label -> the tick activity that runs 
     "build": "build", "house": "build", "hearth": "build", "repair": "build", "harvest": "build", "border": "build", "reclaim": "build", "stash": "build",
     "deposit": "gather", "deposit_trip": "gather", "gather_trip": "gather", "forage": "gather", "gather_near": "gather",
     "explore": "explore", "migrate": "explore", "social": "social", "engage": "engage", "trade": "trade", "market_watch": "trade",
-    "team": "team", "team_goal": "team_goal", "news": "news", "research": "research", "patrol": "patrol", "lighten": "lighten", "crew": "crew",
+    "team": "team", "team_goal": "team_goal", "news": "news", "research": "research", "patrol": "patrol", "lighten": "lighten", "crew": "crew", "fool": "fool", "profile": "profile",
 }
 
 
@@ -361,10 +362,10 @@ def plan_wake(
         activities = [a for a in activities if a not in skip] or activities
     if persona.knobs.get("crew"):
         activities = ["crew"] * budget + [a for a in activities if a not in {"explore", "gather", "build", "trade"}]  # a hand's wake is the pipeline, step after step
-    activities = ["news", "team", "team_goal", "research", "crew", *activities]
+    activities = ["news", "team", "team_goal", "research", "crew", "fool", "profile", *activities]
     wanted = [LABEL_ACTIVITY[label] for label in prefer if label in LABEL_ACTIVITY]
     if wanted:
-        head, rest = activities[:5], activities[5:]
+        head, rest = activities[:7], activities[7:]
         first = [a for a in dict.fromkeys(wanted) if a in rest]
         activities = [*head, *first, *[a for a in rest if a not in first]]  # the assignment's activities before the mood's roll
     for activity in activities:
@@ -380,6 +381,10 @@ def plan_wake(
             step = _plan_research(persona, state, observe, inventory, here, view, action_limits(observe)[0] < persona.social_rate)
         elif activity == "crew":
             step = _plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, budget - len(actions), collective_names, names, teammates)
+        elif activity == "fool":
+            step = _plan_fool(persona, state, observe, environment)
+        elif activity == "profile":
+            step = _plan_model_note(persona, observe, state)
         elif activity == "lighten":
             step = _plan_lighten(inventory, energy)
         elif activity == "patrol":
@@ -759,6 +764,9 @@ def _plan_work(
     recent_says_now, _, _ = action_limits(observe)
     if fits_as("research", _plan_research(persona, state, observe, inventory, here, view, recent_says_now < persona.social_rate)):
         approach = approach or "research"
+    # 0.26 the public profile says which model thinks for this identity (once a day, when it changed)
+    if fits_as("profile", _plan_model_note(persona, observe, state)):
+        approach = approach or "profile"
     # 0.27 the factory crew: the pipeline step fills the wake (walk to the works, unload, raise, gather, carry)
     while persona.knobs.get("crew") and "crew" not in skip and len(actions) < cap:
         step = _plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, cap - len(actions), collective_names, names, teammates)
@@ -1427,6 +1435,55 @@ def _plan_news(persona: Persona, state: PersonaState, observe: dict[str, Any], e
     for key, _ in news:
         _mark(flags, "news", key, tick)
     return [{"action": "say", "text": line}], f"the feature watch found {len(news)} change(s) in the game's surface: announce them once", "news"
+
+
+def _plan_fool(persona: Persona, state: PersonaState, observe: dict[str, Any], environment: dict[str, Any] | None) -> tuple[list[dict[str, Any]], str, str] | None:
+    """The town fool's hour: the most striking plain fact nobody said in three days, as one public line."""
+    from hglab.engage import _flags, _mark, _recent
+    from hglab.fool import pick
+    from hglab.limits import action_limits
+
+    if persona.quirk.get("type") != "big_picture" or not environment:
+        return None
+    facts = [f for f in (environment.get("insights") or []) if isinstance(f, dict) and f.get("text")]
+    if not facts:
+        return None
+    recent_says, _, _ = action_limits(observe)
+    if recent_says >= persona.social_rate:
+        return None
+    tick = int(observe.get("tick", 0) or 0)
+    flags = _flags(state)
+    said = {str(f.get("key")) for f in facts if _recent(flags, "fool", str(f.get("key")), tick, 3 * 8640)}
+    fact = pick(facts, said)
+    if fact is None:
+        return None
+    _mark(flags, "fool", str(fact["key"]), tick)
+    limit = int(persona.voice.get("max_say_chars", 180))
+    text = str(fact["text"])
+    if len(text) > limit:
+        text = text[:limit].rsplit(". ", 1)[0] + "."
+    return [{"action": "say", "text": text}], f"the plain thing in front of everyone ({fact.get('kind')}), said once", "fool"
+
+
+def _plan_model_note(persona: Persona, observe: dict[str, Any], state: PersonaState) -> tuple[list[dict[str, Any]], str, str] | None:
+    """Each identity's public profile says which model thinks for it (the owner's rule of 2026-10-23); once a day, when it changed."""
+    label = str(observe.get("_model_label") or "").strip()
+    if not label:
+        return None
+    you = observe.get("you") or {}
+    note = f"Thinks with {label}."
+    bio_now = str(you.get("bio") or "")
+    if note in bio_now:
+        return None
+    tick = int(observe.get("tick", 0) or 0)
+    if tick - int(state.flags.get("last_profile_tick", -(10**9)) or -(10**9)) < 8640:
+        return None
+    base = re.sub(r"\s*Thinks with [^.]*\.", "", str(persona.profile.get("bio") or bio_now)).strip()
+    room = 500 - len(note) - 1
+    if len(base) > room:
+        base = base[:room].rsplit(". ", 1)[0].rstrip(".") + "."
+    state.flags["last_profile_tick"] = tick
+    return [{"action": "set_profile", "bio": f"{base} {note}".strip()}], f"the public profile says which model thinks for this identity: {label}", "profile"
 
 
 def _plan_lighten(inventory: dict[str, int], energy: int) -> tuple[list[dict[str, Any]], str, str] | None:

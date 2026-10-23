@@ -24,7 +24,9 @@ def test_generated_callers_are_current_and_guarded():
         assert set(job["secrets"]) == {"hg_key", "anthropic_api_key", "openai_api_key"}
         assert job["secrets"]["hg_key"].startswith("${{ secrets.HG_KEY_")
         assert data[True]["workflow_dispatch"]["inputs"]["dry_run"]["default"] is True  # YAML parses `on` as True
-        assert len(data[True]["schedule"]) == 5
+        slug = path.stem.removeprefix("agent-")
+        has_work = bool(load_persona(ROOT, slug).knobs.get("work"))
+        assert len(data[True]["schedule"]) == (5 if has_work else 4)  # the shift's schedule only for personas that work shifts (the fool has none)
 
 
 def test_wonka_caller_uses_the_persona_cron_and_secret():

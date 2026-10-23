@@ -85,7 +85,7 @@ def repo_root() -> Path:
     return Path.cwd()
 
 
-def challenge_responder(prompt: str, usage: dict[str, int] | None = None) -> str:
+def challenge_responder(prompt: str, usage: dict[str, int] | None = None, route: str = "challenge") -> str:
     root = repo_root()
     budget = yaml.safe_load((root / "config/budget.yaml").read_text(encoding="utf-8"))["tick"]
     if usage and usage["calls"] >= budget["max_llm_calls"]:
@@ -100,7 +100,7 @@ def challenge_responder(prompt: str, usage: dict[str, int] | None = None) -> str
         " an arithmetic or distance answer is a plain integer. The challenge:\n"
     )
     result = structured_call(
-        "challenge", instructions + prompt, response_schema(prompt),
+        route, instructions + prompt, response_schema(prompt),
         root=root, output_tokens=output_tokens,
     )
     if usage is not None:
@@ -110,13 +110,13 @@ def challenge_responder(prompt: str, usage: dict[str, int] | None = None) -> str
             output_tokens=usage["output_tokens"] + result.output_tokens,
             model=result.model,
             provider=result.provider,
-            route="challenge",
+            route=route,
         )
     return json.dumps(finalize_answer(prompt, result.value))
 
 
 def answer_daily_challenge(
-    client: HinterglassClient, observe: dict, usage: dict[str, int] | None = None
+    client: HinterglassClient, observe: dict, usage: dict[str, int] | None = None, route: str = "challenge"
 ) -> bool:
     challenge = observe.get("challenge")
     if not challenge:
@@ -141,15 +141,18 @@ def answer_daily_challenge(
                 return {"ok": False}
             raise
 
-    result = answer_with_retries(
-        fetch, lambda prompt: challenge_responder(prompt, usage), submit, retries=2
-    )
+    def respond(prompt: str) -> str:
+        if route == "challenge":
+            return challenge_responder(prompt, usage)  # the default route, as every caller before the fool
+        return challenge_responder(prompt, usage, route)
+
+    result = answer_with_retries(fetch, respond, submit, retries=2)
     if not result.get("ok"):
         raise ValueError("daily verification did not succeed")
     return True
 
 
-def ensure_verified(client: HinterglassClient, usage: dict[str, int] | None = None) -> bool:
+def ensure_verified(client: HinterglassClient, usage: dict[str, int] | None = None, route: str = "challenge") -> bool:
     """Observe and answer a pending verification challenge before anything else.
 
     Once verification lapses every action but observe answers 403, the lease included, so this
@@ -158,7 +161,7 @@ def ensure_verified(client: HinterglassClient, usage: dict[str, int] | None = No
     observe = client.observe()
     if not observe.get("challenge"):
         return False
-    answer_daily_challenge(client, observe, usage)
+    answer_daily_challenge(client, observe, usage, route)
     return True
 
 

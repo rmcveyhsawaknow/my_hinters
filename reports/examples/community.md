@@ -13,6 +13,7 @@ Order is team, then slug. Each agent is judged against its own intent.
 | The Chocolate Factory | Sherbetsack | 0 | 0 | 0 | 0 | 0 | kept | 0 |
 | The Chocolate Factory | Caramelcart | 0 | 0 | 0 | 0 | 0 | kept | 0 |
 | The Chocolate Factory | Toffeetrowel | 0 | 0 | 0 | 0 | 0 | kept | 0 |
+| The Commons | Nodkin | 0 | 0 | 0 | 0 | 0 | kept | 0 |
 | The Exchange | LandBroker | 67 | 0 | 52 | 0 | 0 | kept | 1 |
 | The Exchange | Boundstone | 0 | 0 | 0 | 0 | 0 | kept | 0 |
 | The Exchange | Fellwright | 0 | 0 | 0 | 0 | 0 | kept | 0 |
@@ -40,6 +41,7 @@ Order is team, then slug. Each agent is judged against its own intent.
 | greeting visitors | Stoutheart | 0 | 0 | 1.0 | 1.0 | proposed |
 | keep the best lots, work them, sell the yield | LandBroker | 0 | 0 | 0.0 | n/a | — |
 | keep the storehouse stocked | MotherPail | 14 | 36.0 | 55.0 | 1.528 | proposed |
+| one plain truth an hour from the public record | Nodkin | 0 | 0 | 0.0 | n/a | proposed |
 | pixie-trail signs | Tinkerglow | 5 | 16.0 | 1.0 | 0.062 | proposed |
 | ranging ever farther | Lagalong | 6 | 14.0 | 2.0 | 0.143 | proposed |
 | registrations for a posted fee | LandBroker | 0 | 0 | 5.0 | 5.0 | proposed |

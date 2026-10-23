@@ -150,6 +150,7 @@ def render(root: Path, personas: dict[str, Any], teams: dict[str, Any]) -> str:
                     f"energy {act['energy']}" if act.get("energy") is not None else "",
                     f"pack {act['pack']}" if act.get("pack") is not None else "",
                     f"results {html.escape(str(act['ok']))}" if act.get("ok") else "",
+                    f"model {html.escape(str(act.get('model') or 'heuristic'))}" + (f" ({html.escape(str(act['planner']))})" if act.get("planner") else ""),
                 ],
             )
         )
