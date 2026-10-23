@@ -154,6 +154,18 @@ def test_every_run_records_its_model_and_the_profile_says_it_once_a_day(tmp_path
     changed = {"tick": 5000 + 8641, "you": {"name": nibs.name, "bio": step[0][0]["bio"]}, "_model_label": "claude-opus-5-5 on route tick_opus"}
     renewed = _plan_model_note(nibs, changed, PersonaState(mood="cheerful"))
     assert renewed is not None and renewed[0][0]["bio"].count("Thinks with") == 1 and renewed[0][0]["bio"].endswith("Thinks with claude-opus-5-5 on route tick_opus.")
+    # A note that names something else is wrong in public: replaced after two hours, not a day
+    wrong = {"tick": 5000 + 800, "you": {"name": nibs.name, "bio": "A builder. Thinks with rules only (no model)."}, "_model_label": "claude-haiku-5-5 on routes tick and talk"}
+    soon = PersonaState(mood="cheerful")
+    soon.flags["last_profile_tick"] = 5000
+    fixed = _plan_model_note(nibs, wrong, soon)
+    assert fixed is not None and fixed[0][0]["bio"].endswith("Thinks with claude-haiku-5-5 on routes tick and talk.") and "rules only" not in fixed[0][0]["bio"]
+    soon.flags["last_profile_tick"] = 5000 + 700
+    assert _plan_model_note(nibs, wrong, soon) is None  # not within two hours of the last note
+    fool = personas["town-fool"]
+    dotted = {"tick": 90000, "you": {"name": fool.name, "bio": "Sits where the paths cross. Thinks with qwen3.5:9b on route fool."}, "_model_label": "qwen3.5:9b on route fool_b"}
+    again = _plan_model_note(fool, dotted, PersonaState(mood="wondering"))
+    assert again is not None and "5:9b on route fool." not in again[0][0]["bio"] and again[0][0]["bio"].count("Thinks with") == 1  # a dotted model id does not end the note early
     fixture = load_fixture(FIX / "observe/nibs.json")
     client = FixtureClient(fixture)
     lease = acquire(client, nibs.name)
@@ -163,6 +175,24 @@ def test_every_run_records_its_model_and_the_profile_says_it_once_a_day(tmp_path
     assert "_model_label" not in json.dumps(record["observe"])
     profile = next((a for a in record["actions"] if a["action"] == "set_profile"), None)
     assert profile is not None and profile["bio"].endswith("Thinks with rules only (no model).")
+
+
+def test_the_label_names_the_identitys_models_even_on_a_rules_only_shift(monkeypatch):
+    """A work shift plans by rules, but the identity still thinks on its route and speaks its shift lines on talk."""
+    from hglab import cli_personas
+
+    monkeypatch.setattr("hglab.llm.get_secret", lambda name, root=None: None)
+    monkeypatch.setattr(cli_personas, "_model_key", lambda root: True)
+    personas = load_personas(ROOT)
+    label = cli_personas._model_label
+    assert label(ROOT, personas["nibs"], None) == "claude-haiku-5-5 on routes tick and talk"
+    assert label(ROOT, personas["town-crier"], None) == "claude-sonnet-5-5 on route tick_premium and claude-haiku-5-5 on route talk for shift lines"
+    assert label(ROOT, personas["wonka"], None).startswith("claude-opus-5-5 on route tick_opus")
+    assert label(ROOT, personas["loompa-mason"], None) == "claude-haiku-5-5 on route tick"  # its hats cannot say, so no shift lines
+    assert label(ROOT, personas["town-fool"], None) == "qwen3.5:9b on route fool"
+    monkeypatch.setattr(cli_personas, "_model_key", lambda root: False)
+    assert label(ROOT, personas["nibs"], None) == "rules only (no model)"  # no vendor key: nothing thinks for it
+    assert label(ROOT, personas["town-fool"], None) == "qwen3.5:9b on route fool"  # the local model needs no key
 
 
 def test_the_fools_fixture_wake_says_one_plain_truth_and_nothing_else_costly(tmp_path):

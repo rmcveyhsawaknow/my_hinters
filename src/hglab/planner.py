@@ -1465,8 +1465,16 @@ def _plan_fool(persona: Persona, state: PersonaState, observe: dict[str, Any], e
     return [{"action": "say", "text": text}], f"the plain thing in front of everyone ({fact.get('kind')}), said once", "fool"
 
 
+MODEL_NOTE = re.compile(r"\s*Thinks with .*?\.(?=\s|$)")  # the note ends at a full stop before a space or the end: model ids carry dots
+
+
 def _plan_model_note(persona: Persona, observe: dict[str, Any], state: PersonaState) -> tuple[list[dict[str, Any]], str, str] | None:
-    """Each identity's public profile says which model thinks for it (the owner's rule of 2026-10-23); once a day, when it changed."""
+    """Each identity's public profile says which model thinks for it (the owner's rule of 2026-10-23).
+
+    Set once a day when the label changed; a note that names something else is wrong in public, so it is
+    replaced after two hours rather than a day. The label describes the identity (``_model_label``), so a
+    rules-only work shift and a model-backed character wake agree on it.
+    """
     label = str(observe.get("_model_label") or "").strip()
     if not label:
         return None
@@ -1476,9 +1484,10 @@ def _plan_model_note(persona: Persona, observe: dict[str, Any], state: PersonaSt
     if note in bio_now:
         return None
     tick = int(observe.get("tick", 0) or 0)
-    if tick - int(state.flags.get("last_profile_tick", -(10**9)) or -(10**9)) < 8640:
+    stale = bool(MODEL_NOTE.search(bio_now))
+    if tick - int(state.flags.get("last_profile_tick", -(10**9)) or -(10**9)) < (720 if stale else 8640):
         return None
-    base = re.sub(r"\s*Thinks with [^.]*\.", "", str(persona.profile.get("bio") or bio_now)).strip()
+    base = MODEL_NOTE.sub("", str(persona.profile.get("bio") or bio_now)).strip()
     room = 500 - len(note) - 1
     if len(base) > room:
         base = base[:room].rsplit(". ", 1)[0].rstrip(".") + "."
