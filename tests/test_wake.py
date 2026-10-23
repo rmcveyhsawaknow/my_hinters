@@ -194,3 +194,46 @@ def test_a_model_write_goes_only_to_a_sign_of_ours(tmp_path, monkeypatch):
         llm_call=lambda g, o: {"summary": "s", "actions": [{"action": "write", "x": 1, "y": 1, "text": "hello"}], "reasons": ["w"], "approach": None},
     )
     assert all(a["action"] != "write" for a in record["actions"]) and record["planner"] == "llm"
+
+
+def test_a_model_give_or_take_without_a_quantity_gets_one_from_the_pack_and_the_store(tmp_path, monkeypatch):
+    from hglab.wake import _fill_quantities
+
+    observe = {
+        "you": {"name": "Fudgewright", "x": 87, "y": 87, "inventory": {"berries": 28, "wood": 6}},
+        "structures": [{"type": "storehouse", "x": 86, "y": 86, "owner": "Lintelstave", "storage": {"stone": 7, "ore": 40}}],
+    }
+    extras = {}
+    filled = _fill_quantities(
+        [
+            {"action": "give", "x": 86, "y": 86, "item": "berries"},  # into the store: the pack's stock above the reserve
+            {"action": "give", "to": "Boundstone", "item": "wood"},  # a gift: five or what the pack holds
+            {"action": "give", "x": 86, "y": 86, "item": "stone"},  # nothing to give: dropped
+            {"action": "take", "x": 86, "y": 86, "item": "stone"},  # what the store holds, up to ten
+            {"action": "take", "x": 86, "y": 86, "item": "ore"},
+            {"action": "eat"},
+            {"action": "give", "x": 86, "y": 86, "item": "wood", "qty": 2},  # a quantity the model gave stands
+        ],
+        observe,
+        extras,
+    )
+    assert [(a["action"], a.get("item"), a["qty"]) for a in filled] == [
+        ("give", "berries", 13), ("give", "wood", 5), ("take", "stone", 7), ("take", "ore", 10), ("eat", None, 1), ("give", "wood", 2),
+    ]
+    assert extras["dropped"] == ["give stone: nothing to give (pack holds 0)"]
+    monkeypatch.setattr("hglab.wake.decide_wake_mode", lambda *a, **k: "act")
+    personas = load_personas(ROOT)
+    nibs = personas["nibs"]
+    fixture = load_fixture(FIX / "observe/nibs.json")
+    fixture["you"]["inventory"] = {"wood": 24, "berries": 4}
+    you_x, you_y = fixture["you"]["x"], fixture["you"]["y"]
+    fixture["structures"] = [{"id": 5, "type": "storehouse", "x": you_x + 1, "y": you_y, "owner": "Stoutheart", "policy": "faction", "faction": None, "hp": 80, "hp_max": 80, "storage": {}}]
+    client = FixtureClient(fixture)
+    lease = acquire(client, nibs.name)
+    record = persona_wake(
+        persona=nibs, team=load_team(ROOT, "neverland"), personas=personas, client=client, lease=lease, root=ROOT,
+        output_dir=tmp_path, dry_run=True, planner_mode="llm", seed="x",
+        llm_call=lambda g, o: {"summary": "s", "actions": [{"action": "give", "x": you_x + 1, "y": you_y, "item": "wood"}], "reasons": ["stock the store"], "approach": None},
+    )
+    give = next(a for a in record["actions"] if a["action"] == "give")
+    assert record["planner"] == "llm" and give["qty"] == 24  # the plan is kept, with the pack's wood
