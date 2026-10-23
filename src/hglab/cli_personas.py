@@ -285,7 +285,7 @@ def _persona_tick(
     else:
         _restore_mode()
     progress(f"planning: {planner} planner" + (f" ({budget_hold})" if budget_hold else ""))
-    model_label = _model_label(root, persona, role, planner)
+    model_label = _model_label(root, persona, role)
     record = persona_wake(
         persona=persona, team=team, personas=personas, client=client, lease=lease, root=root,
         output_dir=root / "runs" / datetime.now(UTC).date().isoformat(), role=role, dry_run=dry_run,
@@ -540,10 +540,17 @@ def _model_key(root: Path) -> bool:
     return bool(get_secret("ANTHROPIC_API_KEY", root) or get_secret("OPENAI_API_KEY", root))
 
 
-def _model_label(root: Path, persona: Persona, role: str | None, planner: str) -> str:
-    """What thinks for this identity's character wakes, in words for its public profile and its records."""
-    if planner != "llm":
-        return "rules only (no model)"
+def _model_label(root: Path, persona: Persona, role: str | None) -> str:
+    """What thinks for this identity, in words for its public profile and its records.
+
+    The label describes the identity, not the wake: a work shift plans by rules, but the same identity's
+    character wakes think on its route and its shift lines are composed on the ``talk`` route, so the
+    note names those models whenever one can answer (a vendor key, or a local provider, which needs
+    none). "rules only (no model)" is said only when no model can think for it at all.
+    """
+    from hglab.actions import allowed_for
+    from hglab.llm import route_config
+
     route = persona.knobs.get("model_route")
     if not route:
         hat = (role or persona.roles[0]).split("+")[0]
@@ -552,12 +559,25 @@ def _model_label(root: Path, persona: Persona, role: str | None, planner: str) -
             route = (yaml.safe_load(front) or {}).get("model_route", "tick")
         except (OSError, IndexError, yaml.YAMLError):
             route = "tick"
-    try:
-        from hglab.llm import route_config
+    route = str(route)
+    keyed = _model_key(root)
 
-        return f"{route_config(str(route), root)['model']} on route {route}"
-    except (OSError, ValueError, KeyError):
-        return f"route {route}"
+    def model_of(name: str) -> str | None:
+        try:
+            selected = route_config(name, root)
+        except (OSError, ValueError, KeyError):
+            return None
+        return str(selected["model"]) if selected.get("provider") == "ollama" or keyed else None
+
+    thinks = model_of(route)
+    if not thinks:
+        return "rules only (no model)"
+    speaks = model_of("talk") if persona.knobs.get("work") and "say" in allowed_for("+".join(persona.roles)) else None
+    if speaks == thinks:
+        return f"{thinks} on routes {route} and talk"
+    if speaks:
+        return f"{thinks} on route {route} and {speaks} on route talk for shift lines"
+    return f"{thinks} on route {route}"
 
 
 def _make_llm_call(root: Path, persona: Persona, team: Team | None, role: str, usage: dict[str, int], *, worn: str | None = None) -> Any:
@@ -1108,6 +1128,14 @@ def announce_shift(root: Path, persona: Persona, records: list[dict[str, Any]], 
     usage: dict[str, Any] = {"calls": 0, "input_tokens": 0, "output_tokens": 0}
     line, source = compose_line(persona, team, summary, root, usage=usage)
     worn = "+".join(persona.roles)
+    called = int(usage.get("calls", 0) or 0) > 0
+    thinking = {
+        "planner": "llm" if source == "model" else "heuristic",
+        "model": str(usage.get("model") or "heuristic") if called else "heuristic",
+        "provider": usage.get("provider") if called else None,
+        "route": usage.get("route") if called else None,
+        "label": _model_label(root, persona, None),
+    }  # which model wrote this line, in the record for everyone to read
     if "say" not in allowed_for(worn):
         typer.echo(f"  no announcement: {persona.name}'s hats cannot say")
         return
@@ -1144,6 +1172,7 @@ def announce_shift(root: Path, persona: Persona, records: list[dict[str, Any]], 
             "tick": observe.get("tick"), "created_utc": datetime.now(UTC).isoformat(), "author_runtime": os.environ.get("HGLAB_RUNTIME", "human"),
             "actions": [action] if result.get("ok") else [], "results": [{"ok": bool(result.get("ok"))}], "failed_actions": 0 if result.get("ok") else 1,
             "dry_run": dry_run, "usage": usage, "source": source, "shift_summary": summary, "work": True, "wake_mode": "announce",
+            "thinking": thinking,
         }
         folder = root / "runs" / datetime.now(UTC).date().isoformat()
         folder.mkdir(parents=True, exist_ok=True)

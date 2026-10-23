@@ -461,10 +461,15 @@ kind and gathers by kind.
 
 Two rules of 2026-10-23. First, every run says its model: a wake record carries `thinking` (planner,
 model id with its version, provider, route) and the status page shows it on the last planned wake;
-each identity's public profile ends with "Thinks with <model> on route <route>." (or "rules only (no
-model)"), set once a day when it changes by `_plan_model_note`, so anyone watching through the glass
-can read it. A line per run would break the three-says-an-hour rule and the character, so the profile
-carries it. Second, the town fool. `agents/town-fool` (team `commons`) is not smart by intention: it
+each identity's public profile ends with "Thinks with <model> on route <route>." (with "and <model>
+on route talk for shift lines" when it works shifts and its hats can say, or "rules only (no model)"
+when no model can think for it at all), set by `_plan_model_note` once a day when it changes and
+within two hours when the note it carries names something else. The label (`_model_label`) describes
+the identity, not the wake: work shifts plan by rules, but the same identity's character wakes think
+on its route and its shift lines are composed on the `talk` route, so a shift must not write "rules
+only" over it (the 2026-10-23 mistake: shifts run hourly, wrote the day's note first, and the daily
+gate locked it in). The shift announcement record carries `thinking` as well. A line per run would
+break the three-says-an-hour rule and the character, so the profile carries it. Second, the town fool. `agents/town-fool` (team `commons`) is not smart by intention: it
 wakes once an hour with no work shifts, computes the big-picture facts anyone could see in the public
 record (`hglab.fool.insights`: how many live here and moved, which kind of building outnumbers the
 rest, which node is rare, what everyone did all day, whether anyone claimed a goal, how the factions
