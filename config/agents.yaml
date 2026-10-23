@@ -165,7 +165,7 @@ agents:
 - name: Nodkin
   persona: town-fool
   team: commons
-  enabled: false
+  enabled: true
   roles:
   - envoy
   - surveyor
