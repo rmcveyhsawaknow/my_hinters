@@ -7,6 +7,11 @@ Build a walled factory far from other homesteads that everyone wants to visit, r
 | Fudgewright | 92 | 83 | 92 | whimsical fine print: 3 outcome for 1 energy over 3 wake(s) | move energy from whispered faction name as the lock (44 energy, nothing to show) toward whimsical fine print |
 | MotherPail | 94 | 72 | 72 | keep the storehouse stocked: 55 outcome for 36 energy over 14 wake(s) | keep testing keep the storehouse stocked; it has the best outcome per unit of energy |
 | GrandadPail | 94 | 26 | 75 | tall tales with footnotes: 0 outcome for 1 energy over 3 wake(s) | try springing to life for glory events at least once this week; it has a bet but no wakes |
+| Treacleaxe | 0 | 0 | 0 | nothing measurable yet | try the crew pipeline step at least once this week; it has a bet but no wakes |
+| Nougatpick | 0 | 0 | 0 | nothing measurable yet | try the crew pipeline step at least once this week; it has a bet but no wakes |
+| Sherbetsack | 0 | 0 | 0 | nothing measurable yet | try the crew pipeline step at least once this week; it has a bet but no wakes |
+| Caramelcart | 0 | 0 | 0 | nothing measurable yet | try the crew pipeline step at least once this week; it has a bet but no wakes |
+| Toffeetrowel | 0 | 0 | 0 | nothing measurable yet | try the crew pipeline step at least once this week; it has a bet but no wakes |
 
 ## Influence links
 
@@ -15,6 +20,11 @@ Build a walled factory far from other homesteads that everyone wants to visit, r
 | mrs-bucket | hope | 33 | wonka | inspiration | When Mother Pail is contributing, uplifted and resilient, Fudgewright dreams bigger and pays better. |
 | grandpa-joe | bluster | 21 | wonka | suspicion | The more credit Grandad Pail claims beyond what the log supports, the more honesty tests and fine print Fudgewright adds. |
 | grandpa-joe | bluster | 21 | wonka | discernment | Every tall tale Fudgewright's audit catches sharpens his eye for who really did the work. |
+| mrs-bucket | hope | 33 | loompa-woodcutter | inspiration | When MotherPail is contributing and resilient, Treacleaxe works with a lighter step. |
+| mrs-bucket | hope | 33 | loompa-quarrier | inspiration | When MotherPail is contributing and resilient, Nougatpick works with a lighter step. |
+| mrs-bucket | hope | 33 | loompa-provisioner | inspiration | When MotherPail is contributing and resilient, Sherbetsack works with a lighter step. |
+| mrs-bucket | hope | 33 | loompa-hauler | inspiration | When MotherPail is contributing and resilient, Caramelcart works with a lighter step. |
+| mrs-bucket | hope | 33 | loompa-mason | inspiration | When MotherPail is contributing and resilient, Toffeetrowel works with a lighter step. |
 
 ## Signals explained
 

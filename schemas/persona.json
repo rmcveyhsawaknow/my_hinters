@@ -66,6 +66,13 @@
       },
       "additionalProperties": false
     },
+    "crew": {
+      "type": "object",
+      "description": "A hand of the team's materials pipeline (teams/<slug>.yaml: pipeline): the role decides what it gathers, carries or raises.",
+      "required": ["role"],
+      "properties": {"role": {"enum": ["woodcutter", "quarrier", "provisioner", "hauler", "mason"]}},
+      "additionalProperties": false
+    },
     "patrol": {
       "type": "object",
       "description": "Walk a fixed route without end: the outermost edge of the world (the coast of the main landmass), one or two hops a wake.",

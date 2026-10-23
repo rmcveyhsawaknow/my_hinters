@@ -8,6 +8,11 @@ Order is team, then slug. Each agent is judged against its own intent.
 | The Chocolate Factory | Fudgewright | 92 | 83 | 92 | 0 | 7 | kept | 3 |
 | The Chocolate Factory | MotherPail | 94 | 72 | 72 | 1 | 0 | kept | 4 |
 | The Chocolate Factory | GrandadPail | 94 | 26 | 75 | 0 | 0 | kept | 0 |
+| The Chocolate Factory | Treacleaxe | 0 | 0 | 0 | 0 | 0 | kept | 0 |
+| The Chocolate Factory | Nougatpick | 0 | 0 | 0 | 0 | 0 | kept | 0 |
+| The Chocolate Factory | Sherbetsack | 0 | 0 | 0 | 0 | 0 | kept | 0 |
+| The Chocolate Factory | Caramelcart | 0 | 0 | 0 | 0 | 0 | kept | 0 |
+| The Chocolate Factory | Toffeetrowel | 0 | 0 | 0 | 0 | 0 | kept | 0 |
 | The Exchange | LandBroker | 67 | 0 | 52 | 0 | 0 | kept | 1 |
 | Neverland | Tinkerglow | 85 | 61 | 92 | 0 | 7 | kept | 0 |
 | Neverland | Strayling | 82 | 62 | 82 | 0 | 5 | kept | 0 |
@@ -42,6 +47,11 @@ Order is team, then slug. Each agent is judged against its own intent.
 | survey a new structure | Plumbline | 0 | 0 | 0.0 | n/a | — |
 | tall tales with footnotes | GrandadPail | 3 | 1.0 | 0.0 | 0.0 | proposed |
 | test an unproven blueprint | Plumbline | 0 | 0 | 0.0 | n/a | proposed |
+| the crew pipeline step | Caramelcart | 0 | 0 | 0.0 | n/a | proposed |
+| the crew pipeline step | Nougatpick | 0 | 0 | 0.0 | n/a | proposed |
+| the crew pipeline step | Sherbetsack | 0 | 0 | 0.0 | n/a | proposed |
+| the crew pipeline step | Toffeetrowel | 0 | 0 | 0.0 | n/a | proposed |
+| the crew pipeline step | Treacleaxe | 0 | 0 | 0.0 | n/a | proposed |
 | unusual builds | Strayling | 9 | 24.0 | 71.0 | 2.958 | — |
 | walls | Fudgewright | 0 | 0 | 4.0 | 4.0 | — |
 | walls on Neverland's edges | Stoutheart | 0 | 0 | 1.0 | 1.0 | — |

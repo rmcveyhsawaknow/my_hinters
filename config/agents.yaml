@@ -92,3 +92,38 @@ agents:
   - archivist
   - conjecturer
   runtime: actions-anthropic
+- name: Treacleaxe
+  persona: loompa-woodcutter
+  team: chocolate-factory
+  enabled: false
+  roles:
+  - builder
+  runtime: actions-anthropic
+- name: Nougatpick
+  persona: loompa-quarrier
+  team: chocolate-factory
+  enabled: false
+  roles:
+  - builder
+  runtime: actions-anthropic
+- name: Sherbetsack
+  persona: loompa-provisioner
+  team: chocolate-factory
+  enabled: false
+  roles:
+  - builder
+  runtime: actions-anthropic
+- name: Caramelcart
+  persona: loompa-hauler
+  team: chocolate-factory
+  enabled: false
+  roles:
+  - builder
+  runtime: actions-anthropic
+- name: Toffeetrowel
+  persona: loompa-mason
+  team: chocolate-factory
+  enabled: false
+  roles:
+  - builder
+  runtime: actions-anthropic

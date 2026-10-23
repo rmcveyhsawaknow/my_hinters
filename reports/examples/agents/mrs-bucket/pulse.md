@@ -3,7 +3,7 @@ MOTHERPAIL: the engine nobody sees                           day 182
 Alive         █████████░   94   ███████  82/84 wakes, never lapsed, 2 failed
 On mission    ███████░░░   72   ▅▅▅▅▆▆▆  134 contributed · 4 replies · 19 lean wakes · 1 goals for peers · Hope 33.2
 In character  ███████░░░   72   ▇█▇▇▇▇▆  warmth 5 · humility 5 · resilience 4 · practicality 5
-Team pull     Hope 33 → Fudgewright
+Team pull     Hope 33 → Fudgewright, Treacleaxe, Nougatpick, Sherbetsack, Caramelcart, Toffeetrowel
 Working       keep the storehouse stocked: 55 outcome for 36 energy over 14 wake(s)
 Not working   complete peers' newcomer goals honestly: 1 outcome for 13 energy over 12 wake(s)
 Next bet      keep testing keep the storehouse stocked; it has the best outcome per unit of energy
@@ -63,6 +63,11 @@ Judge (fixture fixture, 6 lines, 8 actions):
 | direction | signal | from → to | value | effect | plain English |
 | --- | --- | --- | --- | --- | --- |
 | sent | hope | mrs-bucket → wonka | 33 | inspiration | When Mother Pail is contributing, uplifted and resilient, Fudgewright dreams bigger and pays better. |
+| sent | hope | mrs-bucket → loompa-woodcutter | 33 | inspiration | When MotherPail is contributing and resilient, Treacleaxe works with a lighter step. |
+| sent | hope | mrs-bucket → loompa-quarrier | 33 | inspiration | When MotherPail is contributing and resilient, Nougatpick works with a lighter step. |
+| sent | hope | mrs-bucket → loompa-provisioner | 33 | inspiration | When MotherPail is contributing and resilient, Sherbetsack works with a lighter step. |
+| sent | hope | mrs-bucket → loompa-hauler | 33 | inspiration | When MotherPail is contributing and resilient, Caramelcart works with a lighter step. |
+| sent | hope | mrs-bucket → loompa-mason | 33 | inspiration | When MotherPail is contributing and resilient, Toffeetrowel works with a lighter step. |
 
 - Hope 33: contribution 28, uplift 20, resilience 13 (decayed over a day).
 

@@ -1,0 +1,62 @@
+version: 1
+agent: loompa-woodcutter
+headline: Clear the forest nearest the factory works and keep its stor
+key_results:
+- id: wood_stored
+  label: wood given into the factory stores
+  measure: events.items_given_to_storehouse
+  params:
+    item: wood
+    inside_territory: true
+  target: 300
+  weight: 0.5
+  format: '{value} wood stored'
+- id: wood_gathered
+  label: wood gathers
+  measure: events.count
+  params:
+    type: gather
+    data_match:
+      kind: wood
+  target: 80
+  weight: 0.3
+  format: '{value} gathers'
+- id: coverage
+  label: distinct tiles worked
+  measure: events.distinct_tiles
+  params: {}
+  target: 40
+  weight: 0.2
+  format: '{value} tiles'
+signatures:
+- id: rest_share
+  label: share of wakes resting
+  measure: runs.rest_share
+  range:
+  - 0.0
+  - 0.3
+- id: energy_mix
+  label: intended vs actual energy mix
+  measure: runs.energy_mix_match
+  range:
+  - 0.6
+  - 1.0
+traits:
+- name: tireless
+  shows_up_as: Gathers until the pack is full, walks it to the store, and goes straight
+    back.
+- name: orderly
+  shows_up_as: Takes the forest nearest the works first, so the ground around the
+    factory clears before the far trees fall.
+- name: exact
+  shows_up_as: 'Counts every load aloud: twenty wafer into the store at the given
+    tile.'
+- name: cheerful
+  shows_up_as: A short bright line when a store is stocked; silence while walking.
+- name: sparing
+  shows_up_as: Leaves five on every node so the forest grows back.
+approaches:
+- id: crew
+  label: the crew pipeline step
+  hypothesis: H-20261023-loompa-woodcutter-nearest-first
+  outcome_measure: events.items_given_to_storehouse

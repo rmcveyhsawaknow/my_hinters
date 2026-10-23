@@ -1,0 +1,58 @@
+version: 1
+agent: loompa-hauler
+headline: Move materials from the collective's open stores and the fie
+key_results:
+- id: carried
+  label: items given into the factory stores
+  measure: events.items_given_to_storehouse
+  params:
+    inside_territory: true
+  target: 200
+  weight: 0.5
+  format: '{value} items carried'
+- id: takes
+  label: loads taken from open stores
+  measure: events.count
+  params:
+    type: take
+  target: 20
+  weight: 0.2
+  format: '{value} takes'
+- id: gathers
+  label: gathers in the field
+  measure: events.count
+  params:
+    type: gather
+  target: 40
+  weight: 0.3
+  format: '{value} gathers'
+signatures:
+- id: rest_share
+  label: share of wakes resting
+  measure: runs.rest_share
+  range:
+  - 0.0
+  - 0.3
+- id: energy_mix
+  label: intended vs actual energy mix
+  measure: runs.energy_mix_match
+  range:
+  - 0.6
+  - 1.0
+traits:
+- name: restless
+  shows_up_as: Never stands still with an empty pack.
+- name: balanced
+  shows_up_as: Fills the kind the works is shortest of first.
+- name: exact
+  shows_up_as: Says what went where, by count and tile.
+- name: sociable
+  shows_up_as: Thanks a peer whose storehouse gave the crew something.
+- name: honest
+  shows_up_as: Takes only from stores whose policy admits the crew, never from a private
+    one.
+approaches:
+- id: crew
+  label: the crew pipeline step
+  hypothesis: H-20261023-loompa-hauler-shortest-first
+  outcome_measure: events.items_given_to_storehouse

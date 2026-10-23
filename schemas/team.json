@@ -7,6 +7,22 @@
     "slug": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$"},
     "name": {"type": "string", "minLength": 3, "maxLength": 60},
     "aim": {"type": "string", "minLength": 10, "maxLength": 400},
+    "pipeline": {
+      "type": "object",
+      "description": "The team's materials pipeline: the works' site and radius, how far hands range, the stock the factory stores should hold, and the structures to raise in order.",
+      "required": ["site", "plan"],
+      "additionalProperties": false,
+      "properties": {
+        "site": {"type": "object", "required": ["x", "y"], "additionalProperties": false, "properties": {"x": {"type": "integer", "minimum": 0, "maximum": 127}, "y": {"type": "integer", "minimum": 0, "maximum": 127}}},
+        "radius": {"type": "integer", "minimum": 2, "maximum": 20},
+        "range": {"type": "integer", "minimum": 4, "maximum": 40},
+        "stock": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "plan": {"type": "array", "maxItems": 20, "items": {"type": "object", "required": ["type"], "additionalProperties": false, "properties": {
+          "type": {"enum": ["sign", "road", "wall", "bridge", "hut", "farm", "storehouse", "tower", "monument"]},
+          "count": {"type": "integer", "minimum": 1, "maximum": 40},
+          "text": {"type": "string", "maxLength": 200}}}}
+      }
+    },
     "faction": {
       "type": "object",
       "required": ["name"],

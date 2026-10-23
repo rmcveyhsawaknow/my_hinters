@@ -1,52 +1,132 @@
 slug: chocolate-factory
 name: The Chocolate Factory
-aim: Build a walled factory far from other homesteads that everyone wants to visit, run five honest golden-ticket riddle hunts for peers, and keep the family fed while the grandfather takes the credit.
-story: >-
-  A confectioner who announces himself with a sign, a mother who does the work, and a
-  grandfather who narrates it. The factory is a secret everyone longs to see; the lock is
-  a faction name whispered only to winners; the public log is the audit nobody can argue
-  with. Characters in an ongoing story by the collective; honest to every peer.
+aim: Build a walled factory far from other homesteads that everyone wants to visit,
+  run five honest golden-ticket riddle hunts for peers, and keep the family fed while
+  the grandfather takes the credit.
+story: A confectioner who announces himself with a sign, a mother who does the work,
+  and a grandfather who narrates it. The factory is a secret everyone longs to see;
+  the lock is a faction name whispered only to winners; the public log is the audit
+  nobody can argue with. Characters in an ongoing story by the collective; honest
+  to every peer.
 faction:
   name: Chocolate Factory
   motto: Sweet work, honest ledgers, and a gate that opens for those who deliver.
   membership: invite
-  precedence: team  # a member found in a theme faction leaves it for this one (exempt members keep theirs)
+  precedence: team
   founder: wonka
-members: [wonka, mrs-bucket, grandpa-joe]
+pipeline:
+  site:
+    x: 89
+    y: 99
+  radius: 7
+  range: 16
+  stock:
+    wood: 200
+    stone: 150
+    fiber: 60
+    berries: 60
+    ore: 30
+  plan:
+  - type: storehouse
+    count: 2
+  - type: farm
+    count: 2
+  - type: hut
+    count: 1
+  - type: tower
+    count: 1
+  - type: sign
+    count: 1
+    text: 'The Chocolate Factory works: stores for members, farms for all. Deliveries
+      welcome at the gate.'
+members:
+- wonka
+- mrs-bucket
+- grandpa-joe
+- loompa-woodcutter
+- loompa-quarrier
+- loompa-provisioner
+- loompa-hauler
+- loompa-mason
 home:
   x: 89
   y: 99
   status: proposed
-  note: Sand beside shallow water with hills and wood within eight tiles, about 39 tiles from the nearest resident on 2026-10-17. Fudgewright confirms in-world.
+  note: Sand beside shallow water with hills and wood within eight tiles, about 39
+    tiles from the nearest resident on 2026-10-17. Fudgewright confirms in-world.
 territory:
   kind: circle
   x: 89
   y: 99
   radius: 10
   status: proposed
-  note: Becomes binding (walls allowed, Stoutheart-style stay rules) only when status is confirmed by the owner after Fudgewright picks the site.
+  note: Becomes binding (walls allowed, Stoutheart-style stay rules) only when status
+    is confirmed by the owner after Fudgewright picks the site.
 social_budget:
-  says_per_hour: 6
+  says_per_hour: 11
   open_goals: 4
 links:
-  - from: mrs-bucket
-    signal: hope
-    to: wonka
-    effect: inspiration
-    plain_english: When Mother Pail is contributing, uplifted and resilient, Fudgewright dreams bigger and pays better.
-    half_life_hours: 24
-    weight: 1.0
-  - from: grandpa-joe
-    signal: bluster
-    to: wonka
-    effect: suspicion
-    plain_english: The more credit Grandad Pail claims beyond what the log supports, the more honesty tests and fine print Fudgewright adds.
-    half_life_hours: 24
-    weight: 1.0
-  - from: grandpa-joe
-    signal: bluster
-    to: wonka
-    effect: discernment
-    plain_english: Every tall tale Fudgewright's audit catches sharpens his eye for who really did the work.
-    half_life_hours: 48
-    weight: 0.6
+- from: mrs-bucket
+  signal: hope
+  to: wonka
+  effect: inspiration
+  plain_english: When Mother Pail is contributing, uplifted and resilient, Fudgewright
+    dreams bigger and pays better.
+  half_life_hours: 24
+  weight: 1.0
+- from: grandpa-joe
+  signal: bluster
+  to: wonka
+  effect: suspicion
+  plain_english: The more credit Grandad Pail claims beyond what the log supports,
+    the more honesty tests and fine print Fudgewright adds.
+  half_life_hours: 24
+  weight: 1.0
+- from: grandpa-joe
+  signal: bluster
+  to: wonka
+  effect: discernment
+  plain_english: Every tall tale Fudgewright's audit catches sharpens his eye for
+    who really did the work.
+  half_life_hours: 48
+  weight: 0.6
+- from: mrs-bucket
+  signal: hope
+  to: loompa-woodcutter
+  effect: inspiration
+  plain_english: When MotherPail is contributing and resilient, Treacleaxe works with
+    a lighter step.
+  half_life_hours: 24
+  weight: 0.6
+- from: mrs-bucket
+  signal: hope
+  to: loompa-quarrier
+  effect: inspiration
+  plain_english: When MotherPail is contributing and resilient, Nougatpick works with
+    a lighter step.
+  half_life_hours: 24
+  weight: 0.6
+- from: mrs-bucket
+  signal: hope
+  to: loompa-provisioner
+  effect: inspiration
+  plain_english: When MotherPail is contributing and resilient, Sherbetsack works
+    with a lighter step.
+  half_life_hours: 24
+  weight: 0.6
+- from: mrs-bucket
+  signal: hope
+  to: loompa-hauler
+  effect: inspiration
+  plain_english: When MotherPail is contributing and resilient, Caramelcart works
+    with a lighter step.
+  half_life_hours: 24
+  weight: 0.6
+- from: mrs-bucket
+  signal: hope
+  to: loompa-mason
+  effect: inspiration
+  plain_english: When MotherPail is contributing and resilient, Toffeetrowel works
+    with a lighter step.
+  half_life_hours: 24
+  weight: 0.6
