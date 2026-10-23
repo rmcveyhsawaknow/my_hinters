@@ -454,6 +454,7 @@ def persona_wake(
                 candidate["actions"] = _place_builds(
                     candidate["actions"], observe, terrain_rows, extras
                 )
+                candidate["actions"] = _keep_writes(candidate["actions"], observe, persona.name, extras)
                 try:
                     _check(candidate.get("actions", []), observe, mates)
                     if patrol_loop:
@@ -667,6 +668,43 @@ def _public_factions(client: Any) -> list[dict[str, Any]] | None:
         return None
     factions = data.get("factions", data) if isinstance(data, dict) else data
     return [f for f in factions if isinstance(f, dict)] if isinstance(factions, list) else None
+
+
+def _keep_writes(
+    actions: list[dict[str, Any]],
+    observe: dict[str, Any],
+    name: str,
+    extras: dict[str, Any],
+) -> list[dict[str, Any]]:
+    """A ``write`` goes only to a sign or monument of ours (or one this batch builds): anything else is ``not_found``."""
+    you = observe.get("you") or {}
+    faction = you.get("faction")
+    faction_name = str(faction.get("name") if isinstance(faction, dict) else faction or "").casefold()
+    ours = {
+        (int(s["x"]), int(s["y"]))
+        for s in (observe.get("structures") or [])
+        if isinstance(s, dict)
+        and s.get("type") in {"sign", "monument"}
+        and s.get("x") is not None
+        and s.get("y") is not None
+        and (
+            str(s.get("owner", "")).casefold() == name.casefold()
+            or (faction_name and str(s.get("faction") or "").casefold() == faction_name)
+        )
+    }
+    kept: list[dict[str, Any]] = []
+    for action in actions:
+        if action.get("action") == "build" and action.get("type") in {"sign", "monument"} and action.get("x") is not None:
+            ours.add((int(action["x"]), int(action["y"])))
+        if action.get("action") != "write":
+            kept.append(action)
+            continue
+        target = (action.get("x"), action.get("y"))
+        if all(isinstance(v, int) for v in target) and (int(target[0]), int(target[1])) in ours:
+            kept.append(action)
+        else:
+            extras.setdefault("dropped", []).append(f"write at {target}: no sign or monument of ours there")
+    return kept
 
 
 def _place_builds(

@@ -87,6 +87,16 @@ gets the bible, the knobs, the mood and the deterministic suggestion as delimite
 and must pass exactly the same global and persona checks; if it fails, the deterministic
 plan is used and the run record says `llm_fallback` with the reason.
 
+Four rules keep the deterministic planner out of loops (2026-10-23): reach is counted in steps,
+as the world counts a move (twelve steps, whatever roads or hills cost), so a hop along a coast road
+is never proposed and then refused; surveyors and experimenters may `give` and `take`, so a full
+pack can always unload (Strayling walked between two full storehouses for fourteen hours because its
+hats could not give); a full pack with no storehouse of ours in reach raises one of its own
+(`stash`); a house step is placed only when the footprint is in view or has not been tried on the
+same remembered count within the hour (LandBroker placed the same window six times). Roads stop at
+thirty per agent, and a model plan's `write` must name a sign or monument of ours, else it is dropped
+and recorded.
+
 ## The Talk feed: one line per run
 
 Every run ends with one public line so the Talk filter on the site shows each agent alive and

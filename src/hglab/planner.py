@@ -42,6 +42,7 @@ BLUEPRINTS: dict[str, dict[str, int]] = {
     "monument": {"stone": 50, "ore": 10},
 }
 DEFAULT_BUILD_PRIORITY = ["hut", "farm", "storehouse", "road"]
+ROAD_CAP = 30  # roads an agent lays in all: beyond this the stone is for the goal, not the fallback
 REPAIR_MATERIAL = {
     "sign": "wood", "road": "stone", "wall": "stone", "bridge": "wood", "hut": "wood", "farm": "wood",
     "storehouse": "wood", "tower": "stone", "monument": "stone",
@@ -62,6 +63,7 @@ WORK_SUMMARIES = {
     "deliver": "delivering on a claimed goal",
     "lighten": "eating into the berry hoard to make room",
     "deposit_trip": "carrying a full pack to the storehouse",
+    "stash": "raising a storehouse for a full pack",
     "border": "raising the border signs",
     "patrol": "walking the outermost edge of the world, behind the glass",
     "news": "announcing a change in the game",
@@ -714,6 +716,9 @@ def _plan_work(
     # 4.2 a full pack walks to the nearest storehouse of ours to unload (a word or a meal may precede the walk)
     if not moved() and fits_as("deposit_trip", _plan_deposit_trip(persona, team, inventory, position, view, teammates, {n.casefold() for n in ours} | {persona.name.casefold()}, state=state)):
         approach = approach or "deposit_trip"
+    # 4.3 a full pack with no storehouse of ours in reach raises one of its own and unloads next wake
+    if not moved() and here == position and fits_as("stash", _plan_stash(persona, inventory, position, view, team)):
+        approach = approach or "stash"
     # 4. gather the shortfall for the next blueprint
     while len(actions) < cap and fits_as("gather_trip", _plan_gather(persona, team, inventory, here, view, teammates, rng)):
         approach = approach or "gather_trip"
@@ -839,6 +844,7 @@ def _house_shortfall(persona: Persona, inventory: dict[str, int], view: WorldVie
 
 
 HOUSE_VIEW = 6  # the hut's footprint is in the 13x13 view when the observed position is this close
+HOUSE_RETRY_TICKS = 360  # a house step placed on a remembered count is not placed again for an hour unless the footprint is in view
 
 
 SITE_WHISPER = re.compile(r"SITE for (?P<id>[\w-]+): lot (?P<lot>[A-Z][0-9]{2}-(?:NW|NE|SW|SE)), anchor \((?P<x>\d+),\s*(?P<y>\d+)\).*?price (?P<price>\d+) (?P<currency>\w+)", re.IGNORECASE | re.DOTALL)
@@ -1282,6 +1288,34 @@ def _plan_lighten(inventory: dict[str, int], energy: int) -> tuple[list[dict[str
     return [{"action": "eat", "qty": qty}], f"pack {total}/50 with {berries} berries: eat {qty} to make room for materials", "lighten"
 
 
+def _plan_stash(
+    persona: Persona,
+    inventory: dict[str, int],
+    position: tuple[int, int],
+    view: WorldView,
+    team: Team | None,
+) -> tuple[list[dict[str, Any]], str, str] | None:
+    """A full pack with no storehouse of ours in reach raises one of its own beside the builder.
+
+    The deposit and the trip come first; this is the exit from the loop where every store is full or
+    too far and the pack can neither gather nor unload. Faction policy, so teammates may draw on it.
+    """
+    total = sum(inventory.values())
+    if total < 46 or not materials_ok(inventory, "storehouse"):
+        return None
+    owned = any(s.get("type") == "storehouse" and _own(persona, s) for s in view.structures) or view.owned_counts.get("storehouse", 0) >= 1
+    if owned:
+        return None
+    tile = _build_tile("storehouse", position, view, team)
+    if tile is None:
+        return None
+    return (
+        [{"action": "build", "type": "storehouse", "x": tile[0], "y": tile[1], "policy": "faction"}],
+        f"pack {total}/50 and no storehouse of ours in reach: raise one at {tile} and unload into it next wake",
+        "stash",
+    )
+
+
 def _plan_deposit_trip(
     persona: Persona,
     team: Team | None,
@@ -1419,12 +1453,24 @@ def _plan_house(
     if inventory.get(step["item"], 0) < step["items"]:
         return None
     label = f"the {step['name']} of the house at {hut} ({step['cells']} blocks, {step['items']} {step['item']})"
+    you = observe.get("you") or {}
+    seen_from = (int(you.get("x", -999) or -999), int(you.get("y", -999) or -999))
+    counted = chebyshev(seen_from, hut) <= HOUSE_VIEW and isinstance(observe.get("blocks"), list)
+    tick = int(observe.get("tick", 0) or 0)
+    tried = state.flags.get("house_step") if state is not None and isinstance(state.flags.get("house_step"), dict) else {}
+    repeat = not counted and tried.get("cumulative") == step["cumulative"] and tick - int(tried.get("tick", -(10**9)) or 0) < HOUSE_RETRY_TICKS
+    if state is not None and not counted and not repeat:
+        state.flags["house_step"] = {"cumulative": step["cumulative"], "tick": tick}  # a blind placement, remembered so it is not repeated blind
     if chebyshev(position, hut) <= 2:
+        if repeat:
+            return None  # the same step on the same remembered count was placed already: see the footprint before placing again
         return [step["action"]], f"place {label}", "house"
     reach = reachable_tiles(view, position)
     stand = min((t for t in reach if chebyshev(t, hut) <= 2 and t != hut), key=lambda t: chebyshev(position, t), default=None)
     if stand is None:
         return None
+    if repeat:
+        return [{"action": "move", "x": stand[0], "y": stand[1]}], f"walk to {stand} and see the house before placing {label} again", "house"
     return [{"action": "move", "x": stand[0], "y": stand[1]}, step["action"]], f"walk to {stand} and place {label}", "house"
 
 
@@ -1768,6 +1814,8 @@ def _plan_build(
             continue  # only an agent's three oldest farms grow (API 0.22.0); a fourth would stand idle
         if blueprint == "wall" and in_territory(team, *position) is not True:
             continue
+        if blueprint == "road" and max(sum(s.get("type") == "road" for s in owned), view.owned_counts.get("road", 0)) >= ROAD_CAP:
+            continue  # thirty roads is a network; more is busy work that the goal layer cannot tell from building
         tile = _build_tile(blueprint, position, view, team)
         if tile is None:
             continue
@@ -1930,32 +1978,26 @@ def _plan_explore(
 
 
 def reachable_tiles(view: WorldView, position: tuple[int, int], steps: int = MOVE_STEP_CAP) -> set[tuple[int, int]]:
-    """Tiles one move can reach: the cheapest route costs at most ``steps``, as the world paths it.
+    """Tiles one move can reach: a walkable path of at most ``steps`` steps, as the world paths it.
 
-    Entering a tile costs 1, a hill 2, a road 0.5 (the world's rule: "hills 2, roads 0.5, rounded up;
-    cheapest route max 12 steps"). A tile twelve tiles away across hills or around water is
-    ``too_far``; this is the walk the world would actually find. Unknown terrain (off the view, no
-    map) counts as not walkable.
+    The world finds the cheapest route in energy among all walkable paths of at most twelve steps
+    (diagonals count as one), so reach is a matter of steps, not energy: a road never stretches a
+    move past twelve tiles and a hill never shortens it (hills cost energy, which the estimate
+    charges separately). Unknown terrain (off the view, no map) counts as not walkable.
     """
-    import heapq
-
-    roads = {(int(s["x"]), int(s["y"])) for s in (view.world_structures or view.structures) if s.get("type") == "road"}
-    best: dict[tuple[int, int], float] = {position: 0.0}
-    heap: list[tuple[float, int, int]] = [(0.0, position[0], position[1])]
-    while heap:
-        cost, x, y = heapq.heappop(heap)
-        if cost > best.get((x, y), float("inf")):
-            continue
-        for tile in neighbours(x, y):
-            if not view.walkable(*tile):
-                continue
-            code = view.terrain(*tile)
-            step_cost = 0.5 if tile in roads else 2.0 if code == "h" else 1.0
-            total = cost + step_cost
-            if total <= steps and total < best.get(tile, float("inf")):
-                best[tile] = total
-                heapq.heappush(heap, (total, tile[0], tile[1]))
-    return set(best)
+    seen = {position}
+    frontier = {position}
+    for _ in range(max(0, int(steps))):
+        nxt: set[tuple[int, int]] = set()
+        for x, y in frontier:
+            for tile in neighbours(x, y):
+                if tile not in seen and view.walkable(*tile):
+                    seen.add(tile)
+                    nxt.add(tile)
+        if not nxt:
+            break
+        frontier = nxt
+    return seen
 
 
 def _walkable_ring(position: tuple[int, int], view: WorldView, lo: int, hi: int) -> list[tuple[int, int]]:

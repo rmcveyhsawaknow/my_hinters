@@ -183,3 +183,12 @@ def test_block_actions_are_checked_for_size_and_reach():
     with pytest.raises(ValueError):
         validate_actions([{"action": "place", "bx": 264, "by": 244, "bz": 0}], "builder", observe=observe)  # no material
     assert validate_actions([{"action": "paint", "bx": 264, "by": 244, "bz": 3, "color": "purple"}], "surveyor", observe=observe)[0].color == "purple"
+
+
+def test_surveyors_and_experimenters_may_give_and_take_so_a_full_pack_can_unload():
+    from hglab.actions import allowed_for
+
+    for role in ("surveyor", "experimenter", "builder", "broker"):
+        assert {"give", "take"} <= allowed_for(role), role
+    validate_action({"action": "give", "x": 65, "y": 54, "item": "wood", "qty": 20}, "surveyor")
+    validate_action({"action": "take", "x": 65, "y": 54, "item": "berries", "qty": 5}, "experimenter")

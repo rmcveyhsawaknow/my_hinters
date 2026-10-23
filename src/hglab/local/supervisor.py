@@ -145,16 +145,23 @@ class Supervisor:
 
     def _run_subprocess(self, command: list[str]) -> tuple[int, str]:
         env = {**os.environ, "PYTHONUTF8": "1", "HGLAB_RUNTIME": "local"}
-        proc = subprocess.run(
-            command,
-            check=False,
-            cwd=str(self.root),
-            capture_output=True,
-            text=True,
-            env=env,
-            timeout=40 * 60,
-        )
-        return proc.returncode, (proc.stdout + proc.stderr)[-4000:]
+        try:
+            proc = subprocess.run(
+                command,
+                check=False,
+                cwd=str(self.root),
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",  # the child writes UTF-8; a console code page must never fail the job
+                env=env,
+                timeout=40 * 60,
+            )
+        except subprocess.TimeoutExpired as exc:
+            tail = (exc.stdout or b"") + (exc.stderr or b"")
+            text = tail.decode("utf-8", "replace") if isinstance(tail, bytes) else str(tail)
+            return 124, f"timed out after 40 minutes\n{text}"[-4000:]
+        return proc.returncode, ((proc.stdout or "") + (proc.stderr or ""))[-4000:]
 
     def entries(self) -> list[dict[str, Any]]:
         return [

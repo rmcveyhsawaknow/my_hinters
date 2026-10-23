@@ -26,7 +26,7 @@ ROLE_ACTIONS = {
         "move", "gather", "eat", "set_profile", "join_faction", "leave_faction",
     },
     "builder": {"move", "gather", "build", "demolish", "repair", "place", "remove", "paint", "write", "give", "take", "remember", "forget", "eat", "join_faction", "leave_faction"},
-    "surveyor": {"move", "gather", "repair", "paint", "write", "remember", "forget", "eat", "join_faction", "leave_faction"},
+    "surveyor": {"move", "gather", "repair", "paint", "write", "give", "take", "remember", "forget", "eat", "join_faction", "leave_faction"},
     "broker": {
         "move", "claim_goal", "confirm_goal", "reject_claim", "give", "take", "whisper", "write", "remember", "forget", "eat",
         "found_faction", "invite", "join_faction", "leave_faction",
@@ -35,7 +35,7 @@ ROLE_ACTIONS = {
         "say", "whisper", "found_faction", "join_faction", "leave_faction", "invite", "set_profile",
         "remember", "forget", "eat",
     },
-    "experimenter": {"move", "gather", "build", "demolish", "repair", "place", "paint", "say", "remember", "forget", "eat", "join_faction", "leave_faction"},
+    "experimenter": {"move", "gather", "build", "demolish", "repair", "place", "paint", "say", "give", "take", "remember", "forget", "eat", "join_faction", "leave_faction"},
     "observer": set(),
     "physicist": set(),
     "social-scientist": set(),

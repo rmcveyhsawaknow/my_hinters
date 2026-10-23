@@ -154,3 +154,43 @@ def test_a_model_plan_that_would_disclose_a_whisper_falls_back_instead_of_crashi
     )
     assert record["planner"] == "llm_fallback" and "disclose" in record["fallback_reason"]
     assert all(whisper not in str(a.get("text", "")) for a in record["actions"])
+
+
+def test_a_model_write_goes_only_to_a_sign_of_ours(tmp_path, monkeypatch):
+    from hglab.wake import _keep_writes
+
+    observe = {
+        "you": {"name": "Plumbline", "x": 69, "y": 56, "faction": None},
+        "structures": [
+            {"type": "sign", "x": 69, "y": 57, "owner": "Plumbline", "text": "old"},
+            {"type": "sign", "x": 70, "y": 56, "owner": "Peregrine", "text": "theirs"},
+        ],
+    }
+    extras = {}
+    kept = _keep_writes(
+        [
+            {"action": "write", "x": 70, "y": 56, "text": "no"},  # another agent\'s sign: not_allowed in the world
+            {"action": "write", "x": 71, "y": 55, "text": "no"},  # bare ground: not_found in the world
+            {"action": "write", "x": 69, "y": 57, "text": "yes"},
+            {"action": "build", "type": "sign", "x": 68, "y": 56, "text": "fresh"},
+            {"action": "write", "x": 68, "y": 56, "text": "yes, on the sign this batch builds"},
+            {"action": "say", "text": "unrelated"},
+        ],
+        observe,
+        "Plumbline",
+        extras,
+    )
+    assert [a.get("x") for a in kept if a["action"] == "write"] == [69, 68]
+    assert len(extras["dropped"]) == 2 and all("write at" in d for d in extras["dropped"])
+    monkeypatch.setattr("hglab.wake.decide_wake_mode", lambda *a, **k: "act")
+    personas = load_personas(ROOT)
+    nibs = personas["nibs"]
+    fixture = load_fixture(FIX / "observe/nibs.json")
+    client = FixtureClient(fixture)
+    lease = acquire(client, nibs.name)
+    record = persona_wake(
+        persona=nibs, team=load_team(ROOT, "neverland"), personas=personas, client=client, lease=lease, root=ROOT,
+        output_dir=tmp_path, dry_run=True, planner_mode="llm", seed="x",
+        llm_call=lambda g, o: {"summary": "s", "actions": [{"action": "write", "x": 1, "y": 1, "text": "hello"}], "reasons": ["w"], "approach": None},
+    )
+    assert all(a["action"] != "write" for a in record["actions"]) and record["planner"] == "llm"

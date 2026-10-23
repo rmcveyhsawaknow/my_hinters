@@ -369,9 +369,9 @@ def test_reachability_costs_hills_double_and_a_trip_stops_beside_a_structure():
     flat = WorldView(x0=0, y0=0, rows=rows, full_map=rows)
     hilly = WorldView(x0=0, y0=0, rows=hills, full_map=hills)
     assert (72, 64) in reachable_tiles(flat, (60, 64))  # twelve grass tiles cost twelve
-    assert (72, 64) not in reachable_tiles(hilly, (60, 64)) and (68, 64) in reachable_tiles(hilly, (60, 64))  # eight hill tiles cost sixteen; four cost eight
+    assert (72, 64) in reachable_tiles(hilly, (60, 64)) and (73, 64) not in reachable_tiles(hilly, (60, 64))  # hills cost energy, not steps: twelve steps either way (the guide)
     road = WorldView(x0=0, y0=0, rows=rows, full_map=rows, world_structures=[{"type": "road", "x": 60 + i, "y": 64, "owner": "Cairn"} for i in range(1, 25)])
-    assert (84, 64) in reachable_tiles(road, (60, 64))  # roads halve the cost
+    assert (72, 64) in reachable_tiles(road, (60, 64)) and (84, 64) not in reachable_tiles(road, (60, 64))  # roads halve the cost, never the thirteenth step
     store = WorldView(x0=0, y0=0, rows=rows, full_map=rows, world_structures=[{"type": "storehouse", "x": 70, "y": 64, "owner": "Cairn"}])  # known only from the public snapshot
     step = _step_toward((60, 64), {"x": 70, "y": 64}, store)
     assert step is not None and step != (70, 64) and max(abs(step[0] - 70), abs(step[1] - 64)) == 1  # beside the store, never on it
@@ -468,3 +468,66 @@ def test_tiles_that_blocks_close_are_not_walkable():
     assert (61, 60) in view.closed and not view.walkable(61, 60)
     assert view.walkable(60, 61)  # a door one may use leaves the tile open
     assert (61, 60) not in reachable_tiles(view, (60, 60))
+
+
+def test_reach_counts_steps_not_energy_so_roads_never_stretch_a_move_past_twelve_tiles():
+    from hglab.planner import WorldView, reachable_tiles
+
+    rows = ["g" * 40] * 5
+    roads = [{"type": "road", "x": x, "y": 2, "owner": "Clarion"} for x in range(1, 30)]
+    view = WorldView(x0=0, y0=0, rows=rows, structures=roads)
+    reach = reachable_tiles(view, (0, 2))
+    assert (12, 2) in reach and (13, 2) not in reach  # twelve steps along a road, never a thirteenth
+    hills = WorldView(x0=0, y0=0, rows=["h" * 40] * 5)
+    assert (12, 2) in reachable_tiles(hills, (0, 2))  # a hill costs energy, not steps
+    assert all(max(abs(x), abs(y - 2)) <= 12 for x, y in reach)
+
+
+def test_a_full_pack_with_no_store_in_reach_raises_a_storehouse_of_its_own():
+    from hglab.planner import WorldView, _plan_stash
+
+    strayling = load_personas(ROOT)["lost-boy"]
+    rows = ["g" * 128] * 128
+    view = WorldView(x0=54, y0=54, rows=rows, structures=[])
+    step = _plan_stash(strayling, {"wood": 30, "stone": 20}, (60, 60), view, None)
+    assert step is not None and step[2] == "stash" and step[0][0]["type"] == "storehouse" and step[0][0]["policy"] == "faction"
+    assert _plan_stash(strayling, {"wood": 30, "stone": 5}, (60, 60), view, None) is None  # no stone for it
+    assert _plan_stash(strayling, {"wood": 20, "stone": 10}, (60, 60), view, None) is None  # the pack is not full
+    owned = WorldView(x0=54, y0=54, rows=rows, structures=[], owned_counts={"storehouse": 1})
+    assert _plan_stash(strayling, {"wood": 30, "stone": 20}, (60, 60), owned, None) is None  # one of ours stands somewhere: the trip handles it
+
+
+def test_a_house_step_on_a_remembered_count_is_not_placed_twice_blind():
+    from hglab.mood import PersonaState
+    from hglab.planner import WorldView, _plan_house
+
+    clarion = load_personas(ROOT)["town-crier"]
+    rows = ["g" * 128] * 128
+    hut = {"type": "hut", "x": 63, "y": 71, "owner": clarion.name, "hp": 40, "hp_max": 40}
+    view = WorldView(x0=57, y0=65, rows=rows, structures=[hut])
+    home = {"x": 63, "y": 71}
+    state = PersonaState(mood="warm")
+    state.flags["house"] = {"hut": [63, 71], "done": 9, "tick": 100}
+    afar = {"you": {"x": 75, "y": 71, "blocks_owned": 9}, "tick": 160}  # the footprint is out of view
+    first = _plan_house(clarion, {"wood": 3, "stone": 9}, (70, 71), view, home, afar, state=state)
+    assert [a["action"] for a in first[0]] == ["move", "place"]
+    again = _plan_house(clarion, {"wood": 3, "stone": 9}, (70, 71), view, home, {**afar, "tick": 190}, state=state)
+    assert [a["action"] for a in again[0]] == ["move"] and "see the house" in again[1]  # the same step, still blind: walk first
+    assert _plan_house(clarion, {"wood": 3, "stone": 9}, (64, 71), view, home, {**afar, "tick": 200}, state=state) is None
+    seen = {"you": {"x": 64, "y": 71, "blocks_owned": 9}, "blocks": [{"x": 63, "y": 71, "count": 9, "owner": clarion.name}], "tick": 210}
+    assert _plan_house(clarion, {"wood": 3, "stone": 9}, (64, 71), view, home, seen, state=state)[0][0]["fill"] == "walls"  # in view: counted, placed
+    later = _plan_house(clarion, {"wood": 3, "stone": 9}, (70, 71), view, home, {**afar, "tick": 160 + 400}, state=state)
+    assert [a["action"] for a in later[0]] == ["move", "place"]  # an hour on, the memory is stale enough to try again
+
+
+def test_roads_stop_at_the_cap_so_stone_goes_to_the_goal():
+    from hglab.planner import ROAD_CAP, WorldView, _plan_build
+
+    clarion = load_personas(ROOT)["town-crier"]
+    rows = ["g" * 128] * 128
+    sign = {"type": "sign", "x": 61, "y": 60, "owner": clarion.name}
+    few = WorldView(x0=54, y0=54, rows=rows, structures=[sign], owned_counts={"road": 3})
+    step = _plan_build(clarion, None, {"stone": 4}, (60, 60), few, None)
+    assert step is not None and step[0][0]["type"] == "road"
+    many = WorldView(x0=54, y0=54, rows=rows, structures=[sign], owned_counts={"road": ROAD_CAP})
+    assert _plan_build(clarion, None, {"stone": 4}, (60, 60), many, None) is None
