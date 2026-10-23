@@ -162,6 +162,20 @@ def faction_name(value: Any) -> str | None:
     return str(value) if value else None
 
 
+def reserved_names(personas: dict[str, Any], teams: dict[str, Any]) -> set[str]:
+    """In-world names a theme faction never invites: members of a team with its own faction, unless exempt."""
+    out: set[str] = set()
+    for team in teams.values():
+        cfg = (getattr(team, "extra", None) or {}).get("faction")
+        if not isinstance(cfg, dict) or not cfg.get("name"):
+            continue
+        exempt = {str(e) for e in (cfg.get("exempt") or [])}
+        for slug in team.members:
+            if slug in personas and slug not in exempt:
+                out.add(personas[slug].name)
+    return out
+
+
 def plan_invites(
     persona: Persona,
     b: dict[str, Any],
@@ -170,8 +184,12 @@ def plan_invites(
     factions_of: dict[str, str | None],
     state: dict[str, Any],
     public_events: list[dict[str, Any]] | tuple[dict[str, Any], ...] = (),
+    reserved: set[str] | frozenset[str] = frozenset(),
 ) -> tuple[list[dict[str, Any]], list[str], list[str]]:
     """Invitations into the theme faction this persona belongs to, for residents in no faction, never twice.
+
+    ``reserved`` names are never asked: collective members whose team has a faction of its own (a
+    member of two things is a member of neither, so the team comes first).
 
     An invitation is 1 energy, reaches any distance, never expires, shows in the site's Factions feed and
     in the invitee's own events; an open faction needs none to join, so it is the visible nudge. A second
@@ -191,7 +209,7 @@ def plan_invites(
             name = match.group(1) if match else ""
         if name:
             invited.add(name)
-    names = [n for n in active_names if n != persona.name and n not in invited and not factions_of.get(n)][:INVITE_LIMIT]
+    names = [n for n in active_names if n != persona.name and n not in invited and n not in reserved and not factions_of.get(n)][:INVITE_LIMIT]
     actions = [{"action": "invite", "name": n} for n in names]
     reasons = [f"invitation to {n}: {theme['name']} shows in the Factions feed and in their events" for n in names]
     return actions, reasons, names
@@ -207,6 +225,7 @@ def plan_round(
     state: dict[str, Any],
     public_events: list[dict[str, Any]] | tuple[dict[str, Any], ...] = (),
     factions_of: dict[str, str | None] | None = None,
+    reserved: set[str] | frozenset[str] = frozenset(),
 ) -> tuple[list[dict[str, Any]], list[str], dict[str, Any]]:
     """Deterministic collector actions for one round; the caller validates and may add the state note.
 
@@ -224,7 +243,7 @@ def plan_round(
     reasons: list[str] = []
     my_faction = faction_name(you.get("faction"))
     my_theme = next((t for t in b["themes"] if my_faction and t["name"].casefold() == my_faction.casefold()), None)
-    invites, invite_reasons, invited_now = plan_invites(persona, b, my_theme, active_names, factions_of or {}, state, public_events=public_events)
+    invites, invite_reasons, invited_now = plan_invites(persona, b, my_theme, active_names, factions_of or {}, state, public_events=public_events, reserved=reserved)
     if "found" in mine and not you.get("faction"):
         for theme, entry in zip(ledger["themes"], b["themes"], strict=True):
             if theme["founder"] != persona.slug or entry["founded"]:

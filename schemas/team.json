@@ -14,7 +14,7 @@
       "properties": {
         "name": {"type": "string", "minLength": 3, "maxLength": 32, "pattern": "^[A-Za-z0-9 _-]+$"},
         "motto": {"type": "string", "maxLength": 120},
-        "membership": {"enum": ["invite", "open"]},
+        "membership": {"enum": ["invite", "open"]}, "precedence": {"enum": ["team", "theme"], "description": "team (default): a member found in another faction leaves it for this one; theme: members may keep a collector theme."},
         "founder": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$"},
         "exempt": {"type": "array", "items": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$"}, "uniqueItems": true}
       }

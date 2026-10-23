@@ -77,7 +77,7 @@ def load_state(persona: Persona, notebook: dict[str, Any] | None) -> PersonaStat
     return PersonaState(mood=persona.mood_model["initial"])
 
 
-KEEP_LAST_FLAGS = {"house_site", "house", "patrol", "site_asked"}  # the small flags a persona's plans hang on: dropped last of all
+KEEP_LAST_FLAGS = {"house_site", "house", "house_step", "patrol", "site_asked", "faction_invited", "faction_switch", "faction_join_try"}  # the small flags a persona's plans hang on: dropped last of all
 
 
 def dump_state(state: PersonaState) -> str:

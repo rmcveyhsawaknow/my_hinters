@@ -448,10 +448,19 @@ def _plan_team_faction(
     names: dict[str, str] | None,
     room: int = 4,
 ) -> tuple[list[dict[str, Any]], str, str] | None:
-    """The team's own faction: the founder founds it and invites, members join, members top up the invitations once a day."""
+    """The team's own faction, which comes first for its members.
+
+    The founder founds it and invites every member once (invitations never expire, so nobody tops
+    them up); members join when it exists, on a visible invitation or every two hours; a member found
+    in another faction leaves it for the team's unless the team file exempts it (a collector theme's
+    founder keeps its theme) or sets ``precedence: theme``.
+    """
     cfg = _team_faction_config(team)
     if not cfg or team is None:
         return None
+    exempt = {str(e) for e in (cfg.get("exempt") or [])}
+    if persona.slug in exempt:
+        return None  # an exempt member keeps whatever faction its other duty gave it
     you = observe.get("you") or {}
     mine = you.get("faction")
     mine_name = str(mine.get("name") if isinstance(mine, dict) else mine or "")
@@ -463,44 +472,73 @@ def _plan_team_faction(
     ours = next((f for f in factions if str(f.get("name", "")).casefold() == wanted.casefold()), None)
     tick = int(observe.get("tick", 0) or 0)
     proper = {n.casefold(): n for n in (collective_names or set())}
-    exempt = {str(e) for e in (cfg.get("exempt") or [])}
-    expected = len([m for m in team.members if m not in exempt])
     mates = sorted({proper.get(n, n) for n, slug in (names or {}).items() if slug in team.members and slug != persona.slug and slug not in exempt})
+    founder = str(cfg.get("founder") or (team.members[0] if team.members else ""))
+    in_view = {str(a.get("name")): a.get("faction") for a in (observe.get("agents") or []) if isinstance(a, dict)}
+
+    def inside(name: str) -> bool:
+        seen = in_view.get(name)
+        label = seen.get("name") if isinstance(seen, dict) else seen
+        return bool(label) and str(label).casefold() == wanted.casefold()
+
+    if mine_name and mine_name.casefold() != wanted.casefold():
+        if ours is None or str(cfg.get("precedence") or "team") != "team":
+            return None  # nothing to join yet, or the team lets its members keep a theme faction
+        last = int(state.flags.get("faction_switch", -(10**9)) or -(10**9))
+        if room < 2 or energy < reserve or tick - last < FACTION_SWITCH_TICKS:
+            return None
+        state.flags["faction_switch"] = tick
+        return (
+            [{"action": "leave_faction"}, {"action": "join_faction", "faction_id": int(ours["id"])}],
+            f"{mine_name} is not the team's faction: leave it and join {wanted} (#{ours['id']}); the team comes first",
+            "team",
+        )
     if mine_name:
-        if mine_name.casefold() != wanted.casefold():
-            return None  # already in another faction (a theme, say): that is its own business
-        if not ours or int(ours.get("members") or 0) >= expected:
-            return None
-        last = int(state.flags.get("faction_invites", -(10**9)) or -(10**9))
-        if tick - last < 8640:
-            return None
-        in_view = {str(a.get("name")): a.get("faction") for a in (observe.get("agents") or []) if isinstance(a, dict)}
-
-        def already(name: str) -> bool:
-            seen = in_view.get(name)
-            label = seen.get("name") if isinstance(seen, dict) else seen
-            return bool(label) and str(label).casefold() == wanted.casefold()
-
-        pending = [m for m in mates if not already(m)][: max(0, min(3, room))]
+        expected = len([m for m in team.members if m not in exempt])
+        if ours is None or persona.slug != founder or int(ours.get("members") or 0) >= expected:
+            return None  # inside already, or full; only the founder invites, each member once
+        invited = {str(n) for n in (state.flags.get("faction_invited") or [])}
+        pending = [m for m in mates if m not in invited and not inside(m)][: max(0, min(3, room))]
         if not pending or energy - len(pending) < reserve:
             return None
-        state.flags["faction_invites"] = tick
-        return ([{"action": "invite", "name": m} for m in pending], f"{wanted} has {ours.get('members')} of {expected} members: invite {', '.join(pending)}", "team")
-    if ours:
-        if energy < reserve:
+        state.flags["faction_invited"] = sorted(invited | set(pending))[-24:]
+        return (
+            [{"action": "invite", "name": m} for m in pending],
+            f"{wanted} has {ours.get('members')} member(s): invite {', '.join(pending)}",
+            "team",
+        )
+    if ours is not None:
+        if energy < reserve or room < 1:
             return None
+        open_door = str(ours.get("membership") or cfg.get("membership") or "invite") == "open"
+        last = state.flags.get("faction_join_try")
+        if not open_door and not _invited_to(observe, persona.name, wanted) and isinstance(last, int) and tick - last < FACTION_JOIN_TICKS:
+            return None  # no invitation in view: a join is tried every two hours at most (it costs nothing but a slot)
+        state.flags["faction_join_try"] = tick
         return ([{"action": "join_faction", "faction_id": int(ours["id"])}], f"join {wanted} (faction #{ours['id']}), the team's own", "team")
-    founder = str(cfg.get("founder") or (team.members[0] if team.members else ""))
     if founder != persona.slug:
         return None
     invites = mates[: max(0, min(3, room - 1))]
     if room < 1 or energy - 10 - len(invites) < reserve:
         return None
-    state.flags["faction_invites"] = tick
+    state.flags["faction_invited"] = sorted(invites)
     actions: list[dict[str, Any]] = [{"action": "found_faction", "name": wanted, "motto": str(cfg.get("motto") or team.aim)[:120], "membership": str(cfg.get("membership") or "invite")}]
     actions.extend({"action": "invite", "name": m} for m in invites)
     return (actions, f"found {wanted} for {team.name}" + (f" and invite {', '.join(invites)}" if invites else ""), "team")
 
+
+def _invited_to(observe: dict[str, Any], name: str, faction: str) -> bool:
+    """Whether observe's events carry an invitation of ``name`` into ``faction`` (``faction_invited``, data name and invitee)."""
+    for event in observe.get("events") or []:
+        if not isinstance(event, dict) or event.get("type") != "faction_invited":
+            continue
+        data = event.get("data") if isinstance(event.get("data"), dict) else {}
+        which = str(data.get("name") or "")
+        who = str(data.get("invitee") or "")
+        text = str(event.get("text") or "")
+        if which.casefold() == faction.casefold() and (who.casefold() == name.casefold() or f"invited {name} " in text):
+            return True
+    return False
 
 def _plan_team_goal(
     persona: Persona,
@@ -843,6 +881,8 @@ def _house_shortfall(persona: Persona, inventory: dict[str, int], view: WorldVie
     return []
 
 
+FACTION_SWITCH_TICKS = 2160  # a member in the wrong faction tries the switch to the team's every six hours
+FACTION_JOIN_TICKS = 720  # a join with no invitation in view is tried every two hours
 HOUSE_VIEW = 6  # the hut's footprint is in the 13x13 view when the observed position is this close
 HOUSE_RETRY_TICKS = 360  # a house step placed on a remembered count is not placed again for an hour unless the footprint is in view
 

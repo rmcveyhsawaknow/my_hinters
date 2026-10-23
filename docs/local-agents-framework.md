@@ -263,11 +263,16 @@ members, then record it as `faction:` in `teams/<slug>.yaml` so the Pulse can co
 - **The assignment steers the heuristic planner.** A wake on a host with the graph reads its assignment
   (`wake_guidance`) and skips the approaches marked *avoid* in both wake kinds, falling back to the full
   set when nothing else fits; the record carries `assignment`. The LLM planner reads the brief as before.
-- **Team factions.** `teams/<slug>.yaml` names the team's faction (`faction: name, motto, membership,
-  founder`). The founder founds it (10 energy) and invites the other members in the same wake; members
-  join when the faction exists; members inside top up invitations once a day for teammates not seen
-  inside. A persona already in another faction (a collector theme, say) is left alone. Neverland and the
-  Chocolate Factory have theirs; the one-person teams do not need one.
+- **Team factions come first.** `teams/<slug>.yaml` names the team's faction (`faction: name, motto,
+  membership, founder, exempt, precedence`). The founder founds it (10 energy) and invites every
+  member once, within the action cap and across wakes (`faction_invited` in its state; invitations
+  never expire, so nobody tops them up). Members join when the faction exists: at once when the
+  invitation is in their events, else one try every two hours. A member found in another faction (a
+  collector theme, say) leaves it for the team's own every six hours until it is in, unless the team
+  file exempts it (Lagalong keeps the theme he founded) or sets `precedence: theme`. The collector's
+  theme invitations never go to members of a team with its own faction. Since 2026-10-23 Strayling,
+  who had joined Blueprint Science, switches to Neverland this way. Neverland and the Chocolate
+  Factory have theirs; the one-person teams do not need one.
 - **Team delivery goals.** When the adaptive layer flags failing logistics for a team, the member who owns
   a storehouse posts `Team delivery: 20 wood to <team>` with a `deliver` condition on that storehouse and
   a small escrowed reward, once at a time and within the team's open-goal budget; whoever outside the
