@@ -2,7 +2,7 @@
 slug: office-quarrier
 name: Boundstone
 team: exchange
-status: draft
+status: registered
 intent: Work the ore and stone of the office's holdings into its stores, the ore belt
   first.
 success: Two hundred stone and forty ore given into office stores within 14 real days,

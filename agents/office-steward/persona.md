@@ -2,7 +2,7 @@
 slug: office-steward
 name: Lintelstave
 team: exchange
-status: draft
+status: registered
 intent: Raise a depot on each of the office's best holdings and the overflow vaults
   beside the central one, and keep them standing.
 success: Depots standing on the three best holdings and two overflow vaults beside

@@ -2,7 +2,7 @@
 slug: office-drayman
 name: Drayhand
 team: exchange
-status: draft
+status: registered
 intent: Move the holdings' yield from the depots to the vault, shortest stock first,
   so the sales desk never runs dry.
 success: Three hundred items carried into the vault within 14 real days, and every

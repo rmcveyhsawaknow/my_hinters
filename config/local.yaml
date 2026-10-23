@@ -38,6 +38,16 @@ agents:
     enabled: true
   - slug: loompa-mason
     enabled: true
+  - slug: office-quarrier
+    enabled: true
+  - slug: office-feller
+    enabled: true
+  - slug: office-reaper
+    enabled: true
+  - slug: office-drayman
+    enabled: true
+  - slug: office-steward
+    enabled: true
 # The NemoClaw side that `hglab local up` and `hglab local stack` manage: the sandbox name, the WSL
 # distribution that hosts it on Windows (ignored on Linux), and whether a user-local Ollama is started.
 nemoclaw:
