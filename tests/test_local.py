@@ -1034,3 +1034,188 @@ def test_the_job_runner_survives_output_the_console_code_page_cannot_decode(tmp_
         [sys.executable, "-c", "import sys; sys.stdout.buffer.write(b'\\x90 ok \\xe2\\x9c\\x93'); sys.stderr.write('warn')"]
     )
     assert code == 0 and "ok" in output and "warn" in output
+
+
+def test_wake_nodes_carry_the_kinds_of_action_the_world_accepted():
+    from hglab.local.memory import wake_attributes
+
+    record = {
+        "agent": "Clarion",
+        "actions": [{"action": "move"}, {"action": "give", "qty": 5}, {"action": "give", "qty": 3}, {"action": "remember"}],
+        "results": [{"ok": True}, {"ok": True}, {"ok": False, "error": "too_far"}, {"ok": True}],
+        "failed_actions": 1,
+        "usage": {},
+    }
+    assert wake_attributes(record)["kinds"] == {"move": 1, "give": 1}
+    dry = {"agent": "Clarion", "actions": [{"action": "build"}], "dry_run": True, "usage": {}}
+    assert wake_attributes(dry)["kinds"] == {"build": 1}  # no results yet: the plan counts
+
+
+def _wake_node(g, name, n, approach, kinds, actions=1, mode="act"):
+    ingest_record(
+        g,
+        {
+            "run_id": f"{name}-{approach}-{n}",
+            "agent": name,
+            "tick": 1000 + n,
+            "approach": approach,
+            "wake_mode": mode,
+            "actions": [{"action": k} for k, c in kinds.items() for _ in range(c)] + [{"action": "move"}] * max(0, actions - sum(kinds.values())),
+            "results": [{"ok": True}] * actions,
+            "failed_actions": 0,
+            "usage": {},
+            "reasons": [],
+        },
+    )
+
+
+def test_a_persona_that_only_walks_or_does_nothing_for_twenty_wakes_is_stalled(tmp_path):
+    from hglab.local.goals import stalled
+
+    g = Graph(tmp_path / "memory.sqlite")
+    for n in range(19):
+        _wake_node(g, "Strayling", n, "deposit_trip", {"move": 1})
+    assert stalled(g, "Strayling") is None  # nineteen wakes: not enough evidence
+    _wake_node(g, "Strayling", 19, "deposit_trip", {"move": 1})
+    verdict = stalled(g, "Strayling")
+    assert verdict and verdict["approach"] == "deposit_trip" and verdict["reason"] == "moves only, nothing changed" and verdict["wakes"] == 20
+    _wake_node(g, "Strayling", 20, "deposit", {"give": 1})
+    assert stalled(g, "Strayling") is None  # one give in the window: moving again
+    for n in range(20):
+        _wake_node(g, "Lagalong", n, None, {}, actions=0)
+    idle = stalled(g, "Lagalong")
+    assert idle and idle["approach"] is None and idle["reason"] == "no action at all"
+    for n in range(20):
+        ingest_record(g, {"run_id": f"old-{n}", "agent": "Clarion", "tick": 2000 + n, "approach": "explore", "actions": [{"action": "move"}], "usage": {}, "results": [{"ok": True}]})
+    g.db.execute("UPDATE nodes SET props = json_remove(props, '$.kinds') WHERE json_extract(props, '$.agent') = 'Clarion'")
+    assert stalled(g, "Clarion") is None  # records from before the kinds were kept: no verdict
+    g.close()
+
+
+def test_what_works_is_ranked_by_goal_relevant_actions_and_the_measure_names_what_to_try_first():
+    from hglab.local.goals import goal_types_for, prefer_for, works_and_avoid
+
+    assert goal_types_for("events.items_given_to_storehouse") == {"give"}
+    assert goal_types_for("events.count", {"type": "say", "text_contains": "Workshop note"}) == {"say"}
+    assert prefer_for("events.items_given_to_storehouse", {}, ["explore", "deposit"]) == ["deposit", "deposit_trip", "gather_trip", "forage", "explore"]
+    assert prefer_for("events.count", {"type": "say"}, [])[:2] == ["news", "research"]
+    outcomes = [
+        {"approach": "explore", "wakes": 30, "actions": 60, "failed": 0, "success": 1.0, "goal_actions": 0, "goal_rate": 0.0},
+        {"approach": "deposit_trip", "wakes": 20, "actions": 24, "failed": 2, "success": 0.917, "goal_actions": 4, "goal_rate": 0.2},
+        {"approach": "deposit", "wakes": 10, "actions": 15, "failed": 1, "success": 0.933, "goal_actions": 12, "goal_rate": 1.2},
+        {"approach": "migrate", "wakes": 10, "actions": 20, "failed": 8, "success": 0.6, "goal_actions": 0, "goal_rate": 0.0},
+    ]
+    works, avoid = works_and_avoid(outcomes)
+    assert works == ["deposit", "deposit_trip"] and avoid == ["migrate"]  # the goal decides, not the clean record of explore
+
+
+def test_adapt_flags_a_stalled_persona_sets_its_approach_aside_and_rebriefs_at_once(tmp_path):
+    from hglab.local.goals import adapt, brief, current, wake_guidance
+
+    personas, teams = load_personas(ROOT), load_teams(ROOT)
+    for slug in personas:
+        (tmp_path / "agents" / slug).mkdir(parents=True, exist_ok=True)
+        (tmp_path / "agents" / slug / "metrics.yaml").write_text(
+            (ROOT / "agents" / slug / "metrics.yaml").read_text(encoding="utf-8"), encoding="utf-8"
+        )
+    (tmp_path / "runs/local").mkdir(parents=True)
+    g = Graph(tmp_path / "runs/local/memory.sqlite")
+    for n in range(20):
+        _wake_node(g, "Strayling", n, "deposit_trip", {"move": 1})
+    plan = adapt(tmp_path, g, personas, teams)
+    strayling = plan["agents"]["lost-boy"]["assignment"]
+    assert strayling["stalled"] is True and "deposit_trip" in strayling["avoid"] and "deposit_trip" not in strayling["prefer"]
+    assert any(b.startswith("stalled: 20 wakes of deposit_trip") for b in strayling["because"])
+    first = brief(tmp_path, g, plan)
+    assert "lost-boy" in first
+    assert brief(tmp_path, g, plan) == []  # briefed a moment ago, still stalled: no second message
+    guidance = wake_guidance(tmp_path, "Strayling", "neverland")
+    assert guidance["assignment"]["stalled"] is True and guidance["assignment"]["avoid"] == strayling["avoid"] and guidance["assignment"]["prefer"] == strayling["prefer"]
+    assert current(tmp_path, personas, g)["lost-boy"]["assignment"]["stalled"] is True
+    g.close()
+
+
+def test_the_delivery_goal_waits_for_an_outsider_who_could_claim_it(tmp_path):
+    from hglab.local.goals import outsiders_recent, team_suggestions
+
+    teams = load_teams(ROOT)
+    members = {
+        "wonka": {"name": "Fudgewright", "outcomes": [{"approach": "migrate", "wakes": 30, "actions": 60, "failed": 20, "success": 0.667}], "assignment": None},
+        "mrs-bucket": {"name": "MotherPail", "outcomes": [], "assignment": None},
+    }
+    kinds = {s["kind"] for s in team_suggestions(teams["chocolate-factory"], members, outsiders=0)}
+    assert "internal" in kinds and "post_goal" not in kinds
+    kinds = {s["kind"] for s in team_suggestions(teams["chocolate-factory"], members, outsiders=2)}
+    assert "post_goal" in kinds and "internal" not in kinds
+    assert outsiders_recent(tmp_path, {"Clarion"}) is None  # no archive yet
+    archive = tmp_path / "data/events/public.jsonl"
+    archive.parent.mkdir(parents=True)
+    rows = [
+        {"id": 1, "tick": 100, "type": "say", "actor": "Clarion"},
+        {"id": 2, "tick": 120, "type": "build", "actor": "Quill"},
+        {"id": 3, "tick": 20000, "type": "move", "actor": "Clarion"},
+        {"id": 4, "tick": 20010, "type": "gather", "actor": "Marlow"},
+        {"id": 5, "tick": 20020, "type": "spawn", "actor": "system"},
+    ]
+    archive.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
+    assert outsiders_recent(tmp_path, {"Clarion"}) == 1  # Quill acted two days ago; Marlow in the last day
+
+
+def test_the_events_archive_merges_pages_dedupes_and_prunes_and_the_pulse_runs_from_it(tmp_path, monkeypatch):
+    from hglab.local import measure
+
+    class FakeClient:
+        def __init__(self, pages):
+            self.pages = pages
+            self.calls = 0
+
+        def public_events(self, **params):
+            page = self.pages[min(self.calls, len(self.pages) - 1)]
+            self.calls += 1
+            return page
+
+    first = FakeClient([
+        {"events": [{"id": 30, "tick": 300000, "type": "say", "actor": "Clarion"}, {"id": 29, "tick": 299990, "type": "move", "actor": "Clarion"}], "next_before": 29},
+        {"events": [{"id": 1, "tick": 100, "type": "build", "actor": "Quill"}], "next_before": None},
+    ])
+    out = measure.refresh_archive(tmp_path, first, pages=5)
+    assert out["added"] == 3 and out["total"] == 2 and out["newest_tick"] == 300000  # the two-week prune dropped the tick-100 event
+    again = FakeClient([{"events": [{"id": 31, "tick": 300010, "type": "give", "actor": "Clarion"}, {"id": 30, "tick": 300000, "type": "say", "actor": "Clarion"}], "next_before": None}])
+    out = measure.refresh_archive(tmp_path, again, pages=5)
+    assert out["added"] == 1 and out["total"] == 3
+    lines = measure.archive_path(tmp_path).read_text(encoding="utf-8").splitlines()
+    assert [json.loads(line)["id"] for line in lines] == [29, 30, 31]
+    seen = {}
+
+    def fake_run_pulse(root, slugs, **kwargs):
+        seen.update(root=root, slugs=slugs, **kwargs)
+        return {s: {"agent": s} for s in slugs}
+
+    monkeypatch.setattr("hglab.cli_personas.run_pulse", fake_run_pulse)
+    result = measure.refresh_pulse(tmp_path, ["town-crier", "wonka"])
+    assert result["agents"] == ["town-crier", "wonka"]
+    assert seen["fetch_public"] is False and seen["judge"] is False and seen["out"] == tmp_path / "reports" and seen["fixtures"] is False
+
+
+def test_the_page_shows_the_last_planned_wake_not_the_keepalive(tmp_path):
+    from hglab.local.goals import latest_record
+
+    day = tmp_path / "runs" / "2026-10-23"
+    day.mkdir(parents=True)
+    (day / "Clarion-a.json").write_text(json.dumps({"agent": "Clarion", "created_utc": "2026-10-23T10:00:00+00:00", "approach": "build", "summary": "Clarion (bright): work shift: building"}), encoding="utf-8")
+    (day / "Clarion-b.json").write_text(json.dumps({"agent": "Clarion", "created_utc": "2026-10-23T11:00:00+00:00", "kind": "keepalive"}), encoding="utf-8")
+    assert latest_record(tmp_path, "Clarion", "town-crier")["kind"] == "keepalive"
+    assert latest_record(tmp_path, "Clarion", "town-crier", planned=True)["approach"] == "build"
+
+
+def test_the_status_page_marks_a_stalled_persona_and_names_what_to_try_first(tmp_path):
+    personas, teams = load_personas(ROOT), load_teams(ROOT)
+    (tmp_path / "runs/local").mkdir(parents=True)
+    g = Graph(tmp_path / "runs/local/memory.sqlite")
+    g.upsert_node("objective", "objective:lost-boy:x", label="discoveries others adopted", target=2, progress=0.0, stalled=True)
+    g.add_edge("Strayling", "objective:lost-boy:x", "pursues", 1, works=[], avoid=["deposit_trip"], prefer=["gather_trip", "forage"], stalled=True, why="stalled")
+    g.close()
+    (tmp_path / "config").mkdir()
+    (tmp_path / "config/local.yaml").write_text("dry_run: true\nagents:\n  - slug: lost-boy\n    enabled: true\n", encoding="utf-8")
+    page = render(tmp_path, personas, teams)
+    assert 'class="pill stalled"' in page and "try first gather_trip, forage" in page and "avoid deposit_trip" in page

@@ -75,6 +75,12 @@ WORK_SUMMARIES = {
 REPAIR_WORTH = 10  # mend only when at least half a repair's 20 hp is missing; a scratch is not worth a unit of material
 NODE_FLOOR = 5  # never take a node below this many units: local norm, never strip nodes
 ACTIVITIES = ("build", "gather", "social", "explore", "trade")
+LABEL_ACTIVITY = {  # a shift-planner step label -> the tick activity that runs it
+    "build": "build", "house": "build", "hearth": "build", "repair": "build", "harvest": "build", "border": "build", "reclaim": "build", "stash": "build",
+    "deposit": "gather", "deposit_trip": "gather", "gather_trip": "gather", "forage": "gather", "gather_near": "gather",
+    "explore": "explore", "migrate": "explore", "social": "social", "engage": "engage", "trade": "trade", "market_watch": "trade",
+    "team": "team", "team_goal": "team_goal", "news": "news", "research": "research", "patrol": "patrol", "lighten": "lighten",
+}
 
 
 @dataclass
@@ -255,6 +261,7 @@ def plan_wake(
     public_resources: list[dict[str, Any]] | None = None,
     environment: dict[str, Any] | None = None,
     skip: frozenset[str] = frozenset(),
+    prefer: tuple[str, ...] = (),
 ) -> dict[str, Any]:
     """Return ``{summary, actions, reasons, approach, remember}`` for one wake.
 
@@ -332,13 +339,13 @@ def plan_wake(
         result = _plan_work(
             persona, team, state, observe, rng, view, position, energy, inventory, home, reserve, cap, teammates, allowed, mood, reasons, remember,
             registrar_name=registrar_name, collective_names=collective_names, names=names, environment=environment,
-            skip=skip,
+            skip=skip, prefer=prefer,
         )
         if skip and not [a for a in result.get("actions", []) if a.get("action") != "remember"]:
             result = _plan_work(
             persona, team, state, observe, rng, view, position, energy, inventory, home, reserve, cap, teammates, allowed, mood, reasons, remember,
             registrar_name=registrar_name, collective_names=collective_names, names=names, environment=environment,
-            skip=frozenset(),
+            skip=frozenset(), prefer=prefer,
         )
         return result
     budget = cap if mood != "sulk" else 1
@@ -351,6 +358,11 @@ def plan_wake(
     if skip:
         activities = [a for a in activities if a not in skip] or activities
     activities = ["news", "team", "team_goal", "research", *activities]
+    wanted = [LABEL_ACTIVITY[label] for label in prefer if label in LABEL_ACTIVITY]
+    if wanted:
+        head, rest = activities[:4], activities[4:]
+        first = [a for a in dict.fromkeys(wanted) if a in rest]
+        activities = [*head, *first, *[a for a in rest if a not in first]]  # the assignment's activities before the mood's roll
     for activity in activities:
         if len(actions) >= budget:
             break
@@ -603,8 +615,9 @@ def _plan_work(
     names: dict[str, str] | None = None,
     environment: dict[str, Any] | None = None,
     skip: frozenset[str] = frozenset(),
+    prefer: tuple[str, ...] = (),
 ) -> dict[str, Any]:
-    """A work shift wake: build first, then gather the shortfall, deposit surplus, migrate.
+    """A work shift wake: the assignment's preferred steps, then build, gather the shortfall, deposit surplus, migrate.
 
     No speech, no goals, no model. Builds as often as materials allow, stays above the
     reserve, never strips a node, and walks toward the team site when far from it.
@@ -612,9 +625,13 @@ def _plan_work(
     actions: list[dict[str, Any]] = []
     spendable = energy - reserve
     here = position
+    used: set[str] = set()  # labels the preferred pass already took this wake
+    ours = set(collective_names or ()) | set(names or ())
 
     def fits_as(label: str, step: tuple[list[dict[str, Any]], str, str] | None) -> bool:
-        return label not in skip and fits(step)
+        if label in skip or label in used:
+            return False
+        return fits(step)
 
     def fits(step: tuple[list[dict[str, Any]], str, str] | None) -> bool:
         nonlocal spendable, here
@@ -687,6 +704,34 @@ def _plan_work(
     # 0.6 the trade for the house's ground: the brief to the land office, its answer, the payment
     if not moved() and fits_as("site_trade", _plan_site_trade(persona, state, inventory, here, view, observe, registrar_name)):
         approach = approach or "site_trade"
+    # 0.65 the assignment's preferred steps: the measure's own approaches and what produced goal-relevant actions
+    if prefer and not persona.knobs.get("patrol"):
+        makers: dict[str, Any] = {
+            "build": lambda: _plan_build(persona, team, inventory, position, view, home) if here == position else None,
+            "house": lambda: _plan_house(persona, inventory, here, view, home, observe, state=state),
+            "hearth": lambda: _plan_hearth(persona, inventory, here, view, home, state) if not moved() else None,
+            "border": lambda: _plan_border_sign(persona, team, inventory, here, view, teammates, names) if not moved() else None,
+            "reclaim": lambda: _plan_reclaim(persona, team, state, inventory, here, view, observe, teammates, collective_names, room=cap - len(actions)) if not moved() else None,
+            "deposit": lambda: _plan_deposit(persona, inventory, here, view, registrar_name, mates=ours, state=state),
+            "deposit_trip": lambda: _plan_deposit_trip(persona, team, inventory, position, view, teammates, {n.casefold() for n in ours} | {persona.name.casefold()}, state=state) if not moved() else None,
+            "stash": lambda: _plan_stash(persona, inventory, position, view, team) if not moved() and here == position else None,
+            "gather_trip": lambda: _plan_gather(persona, team, inventory, here, view, teammates, rng),
+            "gather_near": lambda: _plan_gather_adjacent(persona, inventory, here, view),
+            "forage": lambda: _plan_forage(persona, team, inventory, position, view, teammates) if not moved() else None,
+            "migrate": lambda: _plan_migrate(persona, team, position, view, teammates) if not moved() else None,
+            "homing": lambda: _plan_homing(persona, inventory, position, view, home, observe, state=state) if not moved() else None,
+            "explore": lambda: _plan_explore(persona, team, state, position, view, rng, teammates) if not moved() else None,
+        }
+        for label in prefer:
+            maker = makers.get(label)
+            if maker is None or len(actions) >= cap:
+                continue
+            if fits_as(label, maker()):
+                used.add(label)
+                approach = approach or label
+                for a in actions[-2:]:
+                    if a.get("action") == "gather" and label in {"gather_trip", "gather_near"}:
+                        inventory[a.get("kind", "wood")] = inventory.get(a.get("kind", "wood"), 0) + 5
     # 0.7 the patrol: the outermost edge of the world is this persona's whole road
     if persona.knobs.get("patrol"):
         beside = _plan_reclaim(persona, team, state, inventory, here, view, observe, teammates, collective_names, room=cap - len(actions))
@@ -748,7 +793,6 @@ def _plan_work(
     if not moved() and fits_as("border", _plan_border_sign(persona, team, inventory, here, view, teammates, names)):
         approach = approach or "border"
     # 4. deposit surplus into an adjacent storehouse of ours (so the monument can draw on it)
-    ours = set(collective_names or ()) | set(names or ())
     if fits_as("deposit", _plan_deposit(persona, inventory, here, view, registrar_name, mates=ours, state=state)):
         approach = approach or "deposit"
     # 4.2 a full pack walks to the nearest storehouse of ours to unload (a word or a meal may precede the walk)

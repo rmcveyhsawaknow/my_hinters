@@ -261,8 +261,24 @@ or more has no faction recorded, the suggestion is to found one named for the te
 members, then record it as `faction:` in `teams/<slug>.yaml` so the Pulse can count it. Since 2026-10-22 the planner acts on all of this directly:
 
 - **The assignment steers the heuristic planner.** A wake on a host with the graph reads its assignment
-  (`wake_guidance`) and skips the approaches marked *avoid* in both wake kinds, falling back to the full
-  set when nothing else fits; the record carries `assignment`. The LLM planner reads the brief as before.
+  (`wake_guidance`): it tries the *prefer* list first (the measure's own approaches, such as `deposit`
+  and `gather_trip` for items given to a storehouse, then the approaches that produced goal-relevant
+  actions) in both wake kinds, and skips the approaches marked *avoid*, falling back to the full set
+  when nothing else fits; the record carries `assignment`. Work shifts are nine wakes in ten, so this
+  is where the assignment acts; the LLM planner reads the brief as before.
+- **What works is judged by the goal.** Wake nodes carry the kinds of action the world accepted
+  (`kinds`), so an approach is ranked by goal-relevant actions per wake, not by ok versus failed alone.
+- **Stalled personas are flagged.** Twenty planned live wakes with no action, or with moves only, mark
+  the assignment *stalled*: the repeated approach joins the avoid list, the brief is re-sent at once,
+  the status page shows a red pill and the supervisor log names them (Strayling's fourteen hours of
+  storehouse trips and Lagalong's idle shifts would have been caught in two hours).
+- **Measurement runs here.** The adapt cycle (every `adapt_every_minutes`, now two hours) first pulls
+  the newest public events into `data/events/public.jsonl` (two weeks, deduplicated, ignored by git)
+  and recomputes every persona's Pulse into `reports/` with `hglab local pulse`'s code, so the
+  assignments' progress is live again instead of frozen at the last Actions run.
+- **Team goals wait for claimants.** The delivery-goal suggestion is made only when an outsider has
+  acted in the archive's last day; otherwise the suggestion is to keep the delivery on the task board
+  and give directly, because no collective member may claim it and nobody else is there.
 - **Team factions come first.** `teams/<slug>.yaml` names the team's faction (`faction: name, motto,
   membership, founder, exempt, precedence`). The founder founds it (10 energy) and invites every
   member once, within the action cap and across wakes (`faction_invited` in its state; invitations

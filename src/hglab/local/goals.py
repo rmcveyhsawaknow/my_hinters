@@ -2,18 +2,23 @@
 
 Inputs, all local: the newest wake record (what the persona is doing and how it went), the persona's key
 results in ``agents/<slug>/metrics.yaml`` with the latest published Pulse progress when there is one,
-the outcomes of each approach in the memory graph (actions taken and failed per approach), and what
-teammates are pursuing. ``adapt`` picks for every persona the key result with the largest weighted gap
-that no teammate already covers, names the approaches that work and the ones to avoid, and records the
-assignment in the graph as ``objective`` nodes and ``pursues`` edges. ``brief`` turns a changed assignment
-into an operator message on the task board, so the next wake reads it. Team suggestions name where an
-in-world goal (for outsiders to claim) or a faction would move the team forward; the rule that no
-collective member claims another member's goal stands, so in-world goals are for work across collectives.
+the outcomes of each approach in the memory graph (actions taken, failed and goal-relevant per
+approach), what teammates are pursuing, and the public events archive this host keeps. ``adapt`` picks
+for every persona the key result with the largest weighted gap that no teammate already covers, names
+the approaches to prefer (the measure's own approaches first, then the ones that produced goal-relevant
+actions) and the ones to avoid (failing, or the one a stalled persona has been repeating), and records
+the assignment in the graph as ``objective`` nodes and ``pursues`` edges. ``brief`` turns a changed or
+stalled assignment into an operator message on the task board, so the next wake reads it. Team
+suggestions name where an in-world goal (for outsiders to claim, and only when an outsider has acted
+lately) or a faction would move the team forward; the rule that no collective member claims another
+member's goal stands, so in-world goals are for work across collectives.
 """
 
 from __future__ import annotations
 
 import json
+import re
+from collections import Counter
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
@@ -24,10 +29,93 @@ from hglab.local.memory import Graph
 
 MIN_ACTIONS = 12  # below this an approach has not been tried enough to judge
 BRIEF_EVERY_HOURS = 24
+STALL_WINDOW = 20  # live wakes without a goal-relevant action before a persona counts as stalled
+QUIET_MODES = {"keepalive", "announce"}  # records that are not planned wakes
+PROGRESS_ACTIONS = {
+    "build", "give", "gather", "take", "say", "whisper", "post_goal", "claim_goal", "confirm_goal",
+    "invite", "join_faction", "found_faction", "place", "repair", "write", "demolish",
+}  # an action that changes the world or the record; a wake of moves alone is not progress
+MEASURE_ACTIONS: dict[str, set[str]] = {
+    "events.structures_built": {"build"},
+    "events.items_given_to_storehouse": {"give"},
+    "events.items_given_to_team": {"give"},
+    "events.contribution": {"give", "build"},
+    "events.items_saved": {"gather"},
+    "events.goals_posted": {"post_goal"},
+    "events.goals_confirmed_for_peers": {"confirm_goal"},
+    "events.goals_completed_for_peers": {"claim_goal", "give"},
+    "events.visitors": {"say", "whisper", "build"},
+    "events.distinct_tiles": {"move"},
+    "events.landmarks_found": {"move"},
+    "events.max_distance_from_home": {"move"},
+    "events.mean_distance_from_home": {"move"},
+    "events.teammates_inside_territory": {"invite", "whisper", "say"},
+    "events.says_per_day": {"say"},
+    "events.replies_received": {"say", "whisper"},
+    "events.credit_share_claimed": {"say"},
+    "events.self_sufficiency": {"gather", "take"},
+    "events.farm_output": {"build", "take"},
+    "events.novelty_score": {"move", "say"},
+    "events.share_moves_inside_territory": {"move"},
+    "events.share_moves_outside_territory": {"move"},
+    "events.structures_standing_share": {"repair", "build"},
+}  # which actions a measure counts; events.count takes its own type
+MEASURE_APPROACHES: dict[str, list[str]] = {
+    "events.structures_built": ["build", "house", "hearth", "gather_trip", "forage"],
+    "events.items_given_to_storehouse": ["deposit", "deposit_trip", "gather_trip", "forage"],
+    "events.items_given_to_team": ["deposit", "deposit_trip", "gather_trip"],
+    "events.contribution": ["deposit", "build", "gather_trip"],
+    "events.items_saved": ["gather_trip", "forage", "gather_near", "deposit"],
+    "events.goals_posted": ["team_goal"],
+    "events.goals_confirmed_for_peers": ["team_goal"],
+    "events.visitors": ["team", "border", "social", "build"],
+    "events.distinct_tiles": ["explore", "patrol"],
+    "events.landmarks_found": ["explore", "patrol"],
+    "events.max_distance_from_home": ["explore", "patrol"],
+    "events.teammates_inside_territory": ["team", "migrate", "social"],
+    "events.says_per_day": ["news", "research", "social"],
+    "events.replies_received": ["social", "engage", "team"],
+    "events.credit_share_claimed": ["social"],
+    "events.self_sufficiency": ["harvest", "gather_trip", "build"],
+    "events.farm_output": ["harvest", "build"],
+    "events.structures_standing_share": ["repair", "build"],
+}  # the planner steps that move a measure, tried first in a wake
+COUNT_APPROACHES: dict[str, list[str]] = {
+    "say": ["news", "research", "social"],
+    "gather": ["gather_trip", "forage", "gather_near"],
+    "give": ["deposit", "deposit_trip"],
+    "build": ["build", "house"],
+    "take": ["harvest", "deposit"],
+}
 
 
-def latest_record(root: Path, name: str, slug: str) -> dict[str, Any] | None:
-    """The newest wake record of a persona: local runs first, then the pulled reports."""
+def goal_types_for(measure: Any, params: dict[str, Any] | None = None) -> set[str]:
+    """The action types a key result's measure counts."""
+    measure = str(measure or "")
+    if measure == "events.count":
+        kind = str((params or {}).get("type") or "")
+        return {kind} if kind else set()
+    return set(MEASURE_ACTIONS.get(measure, set()))
+
+
+def prefer_for(measure: Any, params: dict[str, Any] | None, works: list[str]) -> list[str]:
+    """The approaches to try first: the measure's own, then the ones that produced goal-relevant actions."""
+    measure = str(measure or "")
+    head = list(MEASURE_APPROACHES.get(measure, []))
+    if measure == "events.count":
+        head = list(COUNT_APPROACHES.get(str((params or {}).get("type") or ""), []))
+    out: list[str] = []
+    for label in [*head, *works]:
+        if label and label not in out:
+            out.append(str(label))
+    return out[:6]
+
+
+def latest_record(root: Path, name: str, slug: str, planned: bool = False) -> dict[str, Any] | None:
+    """The newest wake record of a persona: local runs first, then the pulled reports.
+
+    ``planned`` skips keepalives and announcements, so a page shows what the persona last decided to do.
+    """
     newest: tuple[str, dict[str, Any]] | None = None
     folders = [
         *sorted((root / "runs").glob("20*"), reverse=True)[:3],
@@ -38,6 +126,8 @@ def latest_record(root: Path, name: str, slug: str) -> dict[str, Any] | None:
             try:
                 record = json.loads(path.read_text(encoding="utf-8"))
             except (json.JSONDecodeError, OSError):
+                continue
+            if planned and str(record.get("kind") or "") in QUIET_MODES:
                 continue
             stamp = str(record.get("created_utc") or "")
             if newest is None or stamp > newest[0]:
@@ -100,6 +190,7 @@ def key_results(root: Path, slug: str) -> list[dict[str, Any]]:
                     "target": item["target"],
                     "weight": float(item.get("weight") or 0.0),
                     "measure": item.get("measure"),
+                    "params": dict(item.get("params") or {}),
                 }
             )
     return out
@@ -144,44 +235,103 @@ def pulse_progress(root: Path, slug: str) -> dict[str, dict[str, Any]]:
     return out
 
 
-def approach_outcomes(graph: Graph, name: str) -> list[dict[str, Any]]:
-    """Per approach: wakes, actions, failed actions and the success share, from the wake nodes."""
+def approach_outcomes(graph: Graph, name: str, goal_types: set[str] | frozenset[str] = frozenset()) -> list[dict[str, Any]]:
+    """Per approach: wakes, actions, failed actions, the success share and the goal-relevant actions, from the wake nodes."""
+    kinds = sorted(t for t in goal_types if re.fullmatch(r"[a-z_]+", str(t)))
+    goal_sql = " + ".join(f"COALESCE(json_extract(props, '$.kinds.{t}'), 0)" for t in kinds) or "0"
     rows = graph.db.execute(
         "SELECT json_extract(props, '$.approach') AS approach, COUNT(*) AS wakes, COALESCE(SUM(json_extract(props, '$.actions')), 0) AS actions,"
-        " COALESCE(SUM(json_extract(props, '$.failed')), 0) AS failed FROM nodes WHERE kind = 'wake' AND json_extract(props, '$.agent') = ?"
+        f" COALESCE(SUM(json_extract(props, '$.failed')), 0) AS failed, COALESCE(SUM({goal_sql}), 0) AS goal_actions"
+        " FROM nodes WHERE kind = 'wake' AND json_extract(props, '$.agent') = ?"
         " AND json_extract(props, '$.approach') IS NOT NULL GROUP BY 1 ORDER BY wakes DESC",
         (name,),
     ).fetchall()
     out = []
     for r in rows:
         actions, failed = int(r["actions"] or 0), int(r["failed"] or 0)
+        wakes = int(r["wakes"])
+        goal_actions = int(r["goal_actions"] or 0)
         out.append(
             {
                 "approach": r["approach"],
-                "wakes": int(r["wakes"]),
+                "wakes": wakes,
                 "actions": actions,
                 "failed": failed,
                 "success": round(1 - failed / actions, 3) if actions else None,
+                "goal_actions": goal_actions,
+                "goal_rate": round(goal_actions / wakes, 3) if wakes else 0.0,
             }
         )
     return out
 
 
 def works_and_avoid(outcomes: list[dict[str, Any]]) -> tuple[list[str], list[str]]:
+    """Approaches to lean on and to avoid.
+
+    Judged on at least twelve actions. When the outcomes carry goal-relevant counts, what works is
+    ranked by goal-relevant actions per wake among the approaches that mostly succeed; otherwise by
+    the success share alone. An approach that fails a fifth of the time is one to avoid until fixed.
+    """
     judged = [
         o
         for o in outcomes
         if o["actions"] >= MIN_ACTIONS and o["success"] is not None and o["approach"] != "rest"
     ]
-    works = [
-        o["approach"]
-        for o in sorted(judged, key=lambda o: (-o["success"], -o["actions"]))
-        if o["success"] >= 0.9
-    ][:3]
+    productive = [o for o in judged if int(o.get("goal_actions") or 0) > 0 and o["success"] >= 0.8]
+    if productive:
+        works = [
+            o["approach"]
+            for o in sorted(productive, key=lambda o: (-float(o.get("goal_rate") or 0.0), -o["success"], -o["actions"]))
+        ][:3]
+    else:
+        works = [
+            o["approach"]
+            for o in sorted(judged, key=lambda o: (-o["success"], -o["actions"]))
+            if o["success"] >= 0.9
+        ][:3]
     avoid = [
         o["approach"] for o in sorted(judged, key=lambda o: o["success"]) if o["success"] < 0.8
     ][:2]
     return works, avoid
+
+
+def stalled(graph: Graph, name: str, window: int = STALL_WINDOW) -> dict[str, Any] | None:
+    """A persona whose last ``window`` planned live wakes did nothing, or changed nothing, is stalled.
+
+    Needs ``window`` live wakes that all carry their action kinds (older records do not), so the verdict
+    rests on evidence, never on a gap in it.
+    """
+    rows = graph.db.execute(
+        "SELECT tick, props FROM nodes WHERE kind = 'wake' AND json_extract(props, '$.agent') = ?"
+        " AND COALESCE(json_extract(props, '$.dry_run'), 0) = 0"
+        " AND COALESCE(json_extract(props, '$.mode'), '') NOT IN ('keepalive', 'announce')"
+        " ORDER BY tick DESC LIMIT ?",
+        (name, int(window)),
+    ).fetchall()
+    if len(rows) < window:
+        return None
+    actions = 0
+    progress = 0
+    approaches: Counter[str] = Counter()
+    since = None
+    for r in rows:
+        props = json.loads(r["props"]) if isinstance(r["props"], str) else dict(r["props"] or {})
+        kinds = props.get("kinds")
+        if not isinstance(kinds, dict):
+            return None  # a record without its action kinds: not enough evidence
+        actions += int(props.get("actions") or 0)
+        progress += sum(int(v or 0) for k, v in kinds.items() if k in PROGRESS_ACTIONS)
+        approaches[str(props.get("approach") or "none")] += 1
+        since = int(r["tick"]) if since is None else min(since, int(r["tick"]))
+    if actions > 0 and progress > 0:
+        return None
+    approach = approaches.most_common(1)[0][0]
+    return {
+        "wakes": len(rows),
+        "approach": None if approach == "none" else approach,
+        "since_tick": since,
+        "reason": "no action at all" if actions == 0 else "moves only, nothing changed",
+    }
 
 
 def assignment_for(
@@ -204,6 +354,7 @@ def assignment_for(
             "target": kr["target"],
             "weight": kr["weight"],
             "measure": measure,
+            "params": dict(kr.get("params") or {}),
             "progress": done,
             "score": round(score, 3),
             "shared": measure in covered,
@@ -213,8 +364,37 @@ def assignment_for(
     return best
 
 
-def team_suggestions(team: Any, members: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
-    """Where an in-world goal or a faction would move the team: data-backed, never a claim on a member's goal."""
+def outsiders_recent(root: Path, collective: set[str], window_ticks: int = 8640) -> int | None:
+    """Distinct actors outside the collective in the archive's last day; None without an archive."""
+    from hglab.data import read_jsonl
+
+    path = root / "data" / "events" / "public.jsonl"
+    if not path.is_file():
+        return None
+    rows = [e for e in read_jsonl(path) if isinstance(e, dict)]
+    if not rows:
+        return 0
+    newest = max(int(e.get("tick", 0) or 0) for e in rows)
+    ours = {n.casefold() for n in collective}
+    actors = {
+        str(e.get("actor"))
+        for e in rows
+        if int(e.get("tick", 0) or 0) >= newest - window_ticks
+        and e.get("actor")
+        and str(e.get("actor")).casefold() not in ours
+        and str(e.get("actor")) != "system"
+    }
+    return len(actors)
+
+
+def team_suggestions(
+    team: Any, members: dict[str, dict[str, Any]], outsiders: int | None = None
+) -> list[dict[str, Any]]:
+    """Where an in-world goal or a faction would move the team: data-backed, never a claim on a member's goal.
+
+    A delivery goal is suggested only when an outsider has acted in the last day: nobody else may
+    claim it. Otherwise the delivery stays on the task board, with direct gives.
+    """
     out: list[dict[str, Any]] = []
     failing = [
         (slug, o)
@@ -227,18 +407,27 @@ def team_suggestions(team: Any, members: dict[str, dict[str, Any]]) -> list[dict
     ]
     if failing:
         slug, o = min(failing, key=lambda t: t[1]["success"])
-        out.append(
-            {
-                "kind": "post_goal",
-                "text": f"Logistics keep failing for {members[slug]['name']} ({o['approach']}: {int((1 - o['success']) * 100)}% of actions). Post an in-world goal for the delivery with a reward, so an outsider can claim it; teammates never claim it.",
-                "evidence": f"{o['approach']} {o['failed']}/{o['actions']} failed",
-            }
-        )
+        if outsiders is None or outsiders > 0:
+            out.append(
+                {
+                    "kind": "post_goal",
+                    "text": f"Logistics keep failing for {members[slug]['name']} ({o['approach']}: {int((1 - o['success']) * 100)}% of actions). Post an in-world goal for the delivery with a reward, so an outsider can claim it; teammates never claim it.",
+                    "evidence": f"{o['approach']} {o['failed']}/{o['actions']} failed; outsiders active in the last day: {'unknown' if outsiders is None else outsiders}",
+                }
+            )
+        else:
+            out.append(
+                {
+                    "kind": "internal",
+                    "text": f"Logistics keep failing for {members[slug]['name']} ({o['approach']}: {int((1 - o['success']) * 100)}% of actions), but no outsider has acted in the last day, so nobody could claim a goal: keep the delivery on the task board and give directly.",
+                    "evidence": f"{o['approach']} {o['failed']}/{o['actions']} failed; outsiders active in the last day: 0",
+                }
+            )
     if len(members) >= 2 and not (team.extra or {}).get("faction"):
         out.append(
             {
                 "kind": "faction",
-                "text": f"{team.name} has no in-world faction recorded. One member founds a faction named for the team and invites the others; then `faction:` in teams/{team.slug}.yaml records it and the Pulse can count members.",
+                "text": f"{team.name} has no in-world faction recorded. One member founds a faction named for the team and invites the others; then `faction:` in teams/{team.slug}.yaml records it and the Pulse can count membership.",
                 "evidence": f"{len(members)} members, teams/{team.slug}.yaml has no faction",
             }
         )
@@ -266,7 +455,7 @@ def adapt(
     now = datetime.now(UTC).isoformat()
     per_slug: dict[str, dict[str, Any]] = {}
     for slug, persona in personas.items():
-        record = latest_record(root, persona.name, slug)
+        record = latest_record(root, persona.name, slug, planned=True)
         per_slug[slug] = {
             "slug": slug,
             "name": persona.name,
@@ -275,6 +464,7 @@ def adapt(
             "key_results": key_results(root, slug),
             "progress": pulse_progress(root, slug),
             "outcomes": approach_outcomes(graph, persona.name),
+            "stalled": stalled(graph, persona.name),
         }
     for slug, data in per_slug.items():
         teammates = [s for s, d in per_slug.items() if d["team"] == data["team"] and s != slug]
@@ -285,7 +475,15 @@ def adapt(
             if kr.get("measure")
         }
         chosen = assignment_for(personas[slug], data["key_results"], data["progress"], covered)
+        if chosen:
+            data["outcomes"] = approach_outcomes(
+                graph, data["name"], goal_types_for(chosen["measure"], chosen.get("params"))
+            )
         works, avoid = works_and_avoid(data["outcomes"])
+        stall = data.get("stalled")
+        if stall and stall.get("approach") and stall["approach"] not in avoid:
+            avoid = [*avoid, stall["approach"]][:3]
+        prefer = [p for p in prefer_for(chosen["measure"], chosen.get("params"), works) if p not in avoid] if chosen else []
         because = []
         if chosen:
             because.append(
@@ -295,17 +493,33 @@ def adapt(
                 because.append(
                     "a teammate pursues the same measure, so this counts half; split the ground"
                 )
+        if prefer:
+            because.append(f"try first: {', '.join(prefer)}")
         if works:
             because.append(f"approaches that work for {data['name']}: {', '.join(works)}")
         if avoid:
             because.append(f"avoid until fixed: {', '.join(avoid)}")
+        if stall:
+            because.append(
+                f"stalled: {stall['wakes']} wakes of {stall.get('approach') or 'nothing'} with {stall['reason']} since tick {stall['since_tick']}; set it aside and try the rest"
+            )
         data["assignment"] = (
-            {**chosen, "works": works, "avoid": avoid, "because": because, "utc": now}
+            {
+                **chosen,
+                "works": works,
+                "avoid": avoid,
+                "prefer": prefer,
+                "stalled": bool(stall),
+                "because": because,
+                "utc": now,
+            }
             if chosen
             else None
         )
         if chosen:
             node = f"objective:{slug}:{chosen['id']}"
+            previous = graph.node(node) or {}
+            stalled_utc = previous.get("stalled_utc") if previous.get("stalled") and stall else (now if stall else None)
             graph.upsert_node(
                 "objective",
                 node,
@@ -316,6 +530,8 @@ def adapt(
                 target=chosen["target"],
                 measure=chosen["measure"],
                 progress=chosen["progress"],
+                stalled=bool(stall),
+                stalled_utc=stalled_utc,
             )
             graph.remove_edges(data["name"], "pursues")
             graph.add_edge(
@@ -324,15 +540,18 @@ def adapt(
                 "pursues",
                 tick,
                 score=chosen["score"],
-                why=" | ".join(because)[:400],
+                why=" | ".join(because)[:600],
                 utc=now,
                 works=works,
                 avoid=avoid,
+                prefer=prefer,
+                stalled=bool(stall),
             )
+    outsiders = outsiders_recent(root, {p.name for p in personas.values()})
     boards = {}
     for tslug, team in teams.items():
         members = {s: d for s, d in per_slug.items() if d["team"] == tslug}
-        suggestions = team_suggestions(team, members)
+        suggestions = team_suggestions(team, members, outsiders)
         current_kinds = {s["kind"] for s in suggestions}
         for s in suggestions:
             graph.upsert_node(
@@ -361,11 +580,11 @@ def adapt(
             },
             "suggestions": suggestions,
         }
-    return {"utc": now, "agents": per_slug, "teams": boards}
+    return {"utc": now, "agents": per_slug, "teams": boards, "outsiders": outsiders}
 
 
 def brief(root: Path, graph: Graph, plan: dict[str, Any], sender: str = "goals") -> list[str]:
-    """One operator message per persona whose assignment is new or a day old; returns the slugs briefed."""
+    """One operator message per persona whose assignment is new, a day old, or newly stalled; returns the slugs briefed."""
     from hglab.local.a2a import TaskStore
 
     store = TaskStore(graph)
@@ -376,7 +595,8 @@ def brief(root: Path, graph: Graph, plan: dict[str, Any], sender: str = "goals")
             continue
         node = graph.node(f"objective:{slug}:{a['id']}") or {}
         last = node.get("briefed_utc")
-        if last and datetime.fromisoformat(last) > datetime.now(UTC) - timedelta(
+        fresh_stall = bool(node.get("stalled_utc")) and (not last or str(node.get("stalled_utc")) > str(last))
+        if last and not fresh_stall and datetime.fromisoformat(last) > datetime.now(UTC) - timedelta(
             hours=BRIEF_EVERY_HOURS
         ):
             continue
@@ -394,7 +614,7 @@ def brief(root: Path, graph: Graph, plan: dict[str, Any], sender: str = "goals")
 
 
 def wake_guidance(root: Path, name: str, team_slug: str | None) -> dict[str, Any]:
-    """What a wake on this host may read from the graph: its assignment (label, works, avoid) and the team's live suggestions."""
+    """What a wake on this host may read from the graph: its assignment (label, prefer, works, avoid, stalled) and the team's live suggestions."""
     path = root / "runs/local/memory.sqlite"
     if not path.is_file():
         return {}
@@ -408,6 +628,8 @@ def wake_guidance(root: Path, name: str, team_slug: str | None) -> dict[str, Any
                 "label": node.get("label"),
                 "works": list(edges[0].get("works") or []),
                 "avoid": list(edges[0].get("avoid") or []),
+                "prefer": list(edges[0].get("prefer") or []),
+                "stalled": bool(edges[0].get("stalled")),
             }
         suggestions = [
             {
@@ -435,10 +657,10 @@ def wake_guidance(root: Path, name: str, team_slug: str | None) -> dict[str, Any
 def current(
     root: Path, personas: dict[str, Any], graph: Graph | None = None
 ) -> dict[str, dict[str, Any]]:
-    """For a page: activity now plus the recorded assignment (from the graph) for every persona."""
+    """For a page: the last planned wake plus the recorded assignment (from the graph) for every persona."""
     out = {}
     for slug, persona in personas.items():
-        record = latest_record(root, persona.name, slug)
+        record = latest_record(root, persona.name, slug, planned=True)
         assignment = None
         if graph is not None:
             edges = graph.edges(persona.name, kind="pursues", limit=1)
@@ -450,21 +672,31 @@ def current(
                     "progress": node.get("progress"),
                     "why": edges[0].get("why"),
                     "utc": edges[0].get("utc"),
+                    "works": list(edges[0].get("works") or []),
+                    "avoid": list(edges[0].get("avoid") or []),
+                    "prefer": list(edges[0].get("prefer") or []),
+                    "stalled": bool(edges[0].get("stalled")),
                 }
         out[slug] = {"activity": activity(record, persona.name), "assignment": assignment}
     return out
 
 
 __all__ = [
+    "MEASURE_ACTIONS",
+    "MEASURE_APPROACHES",
     "activity",
     "adapt",
     "approach_outcomes",
     "assignment_for",
     "brief",
     "current",
+    "goal_types_for",
     "key_results",
     "latest_record",
+    "outsiders_recent",
+    "prefer_for",
     "pulse_progress",
+    "stalled",
     "team_suggestions",
     "wake_guidance",
     "works_and_avoid",

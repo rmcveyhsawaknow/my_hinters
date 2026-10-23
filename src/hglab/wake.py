@@ -355,8 +355,15 @@ def persona_wake(
             observe["_factions"] = _public_factions(client)
         assignment = guidance.get("assignment") or {}
         avoid = frozenset(str(a) for a in (assignment.get("avoid") or []))
+        prefer = tuple(str(a) for a in (assignment.get("prefer") or []) if str(a) not in avoid)
         if assignment:
-            extras["assignment"] = {"label": assignment.get("label"), "avoid": sorted(avoid), "works": list(assignment.get("works") or [])}
+            extras["assignment"] = {
+                "label": assignment.get("label"),
+                "avoid": sorted(avoid),
+                "works": list(assignment.get("works") or []),
+                "prefer": list(prefer),
+                "stalled": bool(assignment.get("stalled")),
+            }
         plan = plan_wake(
             persona,
             team,
@@ -365,6 +372,7 @@ def persona_wake(
             mode,
             rng,
             skip=avoid,
+            prefer=prefer,
             teammates=mates,
             terrain_rows=terrain_rows,
             allowed=allowed,

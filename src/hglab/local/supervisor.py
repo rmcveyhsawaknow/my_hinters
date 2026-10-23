@@ -285,6 +285,17 @@ class Supervisor:
                     ingest_architectures(graph, cat)
                 except Exception as exc:  # noqa: BLE001 - the catalogue is a bonus of the cycle
                     self._log(f"architecture catalogue skipped: {str(exc)[:160]}")
+                try:
+                    from hglab.local.measure import refresh_archive, refresh_pulse
+
+                    archive = refresh_archive(self.root)
+                    pulse = refresh_pulse(self.root, list(personas))
+                    self._log(
+                        f"measure ok: archive +{archive.get('added', 0)} ({archive.get('total', 0)} events to tick {archive.get('newest_tick', 0)}),"
+                        f" pulse for {len(pulse.get('agents', []))} persona(s)"
+                    )
+                except Exception as exc:  # noqa: BLE001 - measurement is a bonus of the cycle; the assignments still follow
+                    self._log(f"measure skipped: {str(exc)[:160]}")
                 plan = adapt(self.root, graph, personas, load_teams(self.root))
                 briefed = brief(self.root, graph, plan)
             finally:
@@ -292,6 +303,7 @@ class Supervisor:
             result = {
                 "ok": True,
                 "assigned": sum(1 for a in plan["agents"].values() if a.get("assignment")),
+                "stalled": sorted(s for s, a in plan["agents"].items() if (a.get("assignment") or {}).get("stalled")),
                 "briefed": briefed,
             }
         except Exception as exc:  # noqa: BLE001 - adaptation must never stop the supervisor
@@ -301,6 +313,7 @@ class Supervisor:
             self._save_status()
         self._log(
             f"adapt {'ok' if result.get('ok') else 'FAILED'}: {result.get('assigned', result.get('detail', ''))} assignment(s), briefed {', '.join(result.get('briefed') or []) or 'nobody'}"
+            + (f", stalled {', '.join(result['stalled'])}" if result.get("stalled") else "")
         )
         return result
 

@@ -31,7 +31,7 @@ h1{font-size:22px;margin:0 0 2px}h2{font-size:17px;margin:28px 0 8px}
 .strip{display:flex;flex-wrap:wrap;gap:8px 18px;color:var(--muted);font-size:14px;margin-bottom:12px}
 .strip b{color:var(--fg)}
 .pill{display:inline-block;padding:1px 8px;border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.02em}
-.pill.live{background:var(--live);color:#fff}.pill.dry{background:var(--soft);color:var(--fg)}.pill.actions{background:var(--line);color:var(--fg)}
+.pill.live{background:var(--live);color:#fff}.pill.dry{background:var(--soft);color:var(--fg)}.pill.actions{background:var(--line);color:var(--fg)}.pill.stalled{background:#c0392b;color:#fff}
 .ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}.muted{color:var(--muted)}
 .scroll{overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-size:14px}
@@ -51,7 +51,7 @@ pre{font-size:12.5px;overflow-x:auto;background:var(--card);border:1px solid var
 <div class="strip"><span>host <b>$host</b></span><span>supervisor <b class="$running_cls">$running</b></span><span>mode <b>$mode</b></span><span>last backup <b>$backup</b></span><span>sandbox <b>$stack</b></span><span>updated $updated</span><span><a href="/status.json">status.json</a> · <a href="/goals.json">goals.json</a></span></div>
 <h2>Agents, most recent activity first</h2>
 <div class="scroll"><table>
-<tr><th>Persona</th><th>Last activity</th><th>Doing now</th><th>Current goal</th><th>Works / avoid</th><th>Backups</th></tr>
+<tr><th>Persona</th><th>Last activity</th><th>Last planned wake</th><th>Current goal</th><th>Works / avoid / try first</th><th>Backups</th></tr>
 $rows
 </table></div>
 <h2>Teams</h2><div class="teams">$teams</div>
@@ -132,6 +132,8 @@ def render(root: Path, personas: dict[str, Any], teams: dict[str, Any]) -> str:
                 else '<span class="pill live">LIVE</span>'
             )
         )
+        if assignment and assignment.get("stalled"):
+            pill += ' <span class="pill stalled">stalled</span>'
         exit_cls = "ok" if last.get("exit") == 0 else "bad" if last else "muted"
         last_line = (
             f"<span class={exit_cls}>{html.escape(str(last.get('job', '')))} exit {last.get('exit')}</span>"
@@ -164,11 +166,16 @@ def render(root: Path, personas: dict[str, Any], teams: dict[str, Any]) -> str:
         else:
             goal = f"<div class=small>{html.escape(persona.intent[:160])}</div><div class=small>no assignment yet: run <code>hglab local goals --adapt</code></div>"
         works, avoid = works_and_avoid(outcomes.get(slug, []))
+        if assignment and (assignment.get("works") or assignment.get("avoid")):
+            works, avoid = list(assignment.get("works") or []), list(assignment.get("avoid") or [])  # the goal-aware verdicts from the adapt cycle
         wa = (
             f"<span class=ok>{html.escape(', '.join(works))}</span>"
             if works
             else "<span class=muted>not enough data</span>"
         ) + (f"<br><span class=bad>avoid {html.escape(', '.join(avoid))}</span>" if avoid else "")
+        prefer = [str(x) for x in ((assignment or {}).get("prefer") or [])]
+        if prefer:
+            wa += f"<br><span class=small>try first {html.escape(', '.join(prefer))}</span>"
         backups = ((capability.get(slug) or {}).get("x-collective") or {}).get("backups") or {}
         bk = f"{backups.get('snapshots', 0)} snapshot(s)<br><span class=small>last backup {html.escape(_age(backups.get('latest_backup_utc'), now))}</span>"
         rows.append(

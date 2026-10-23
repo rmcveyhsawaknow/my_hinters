@@ -249,3 +249,30 @@ def test_the_assignment_steers_the_heuristic_planner_away_from_an_approach(tmp_p
     assert [a for a in everything["actions"] if a["action"] != "remember"], (
         "the fallback still plans when every approach is avoided"
     )
+
+
+def test_the_assignment_s_preferred_steps_come_before_the_default_order(tmp_path):
+    base = _observe(
+        _factions=[{"id": 7, "name": "Neverland", "members": 3, "membership": "invite"}]
+    )
+    base["you"]["faction"] = {"id": 7, "name": "Neverland"}
+    base["you"]["inventory"] = {"wood": 20, "stone": 10, "fiber": 6, "berries": 4}
+    base["you"]["home"] = None
+    assert _wake("nibs", json.loads(json.dumps(base)), tmp_path)["actions"][0]["action"] == "build"
+    steered_observe = json.loads(json.dumps(base))
+    steered_observe["_guidance"] = {"assignment": {"label": "stores", "works": [], "avoid": [], "prefer": ["gather_trip", "build"]}}
+    steered = _wake("nibs", steered_observe, tmp_path)
+    kinds = [a["action"] for a in steered["actions"] if a["action"] != "remember"]
+    assert kinds[0] in {"move", "gather"} and steered["approach"] in {"gather_trip", "gather_near"}
+    assert steered["assignment"]["prefer"] == ["gather_trip", "build"] and steered["assignment"]["stalled"] is False
+    tick_observe = json.loads(json.dumps(base))
+    tick_observe["_guidance"] = {"assignment": {"label": "stores", "works": [], "avoid": [], "prefer": ["gather_trip"]}}
+    personas = load_personas(ROOT)
+    client = FixtureClient(tick_observe)
+    record = persona_wake(
+        persona=personas["nibs"], team=load_team(ROOT, "neverland"), personas=personas, client=client,
+        lease=acquire(client, personas["nibs"].name), root=ROOT, output_dir=tmp_path, dry_run=True, work=False, seed="team",
+    )
+    record = record[0] if isinstance(record, tuple) else record
+    first = next(a for a in record["actions"] if a["action"] != "remember")
+    assert first["action"] in {"move", "gather"}  # the tick wake, too, runs the gather activity before the build
