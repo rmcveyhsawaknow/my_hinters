@@ -42,8 +42,9 @@ ecosystem:
   data_boundary: internal
   backup_target: gs://my-hinters-billed-ecosystem
   backup_every_minutes: 360
-  # how often the supervisor recomputes assignments from the evidence and briefs changed ones (0 switches it off)
-  adapt_every_minutes: 360
+  # how often the supervisor refreshes the events archive and the Pulse, recomputes assignments from the
+  # evidence and briefs changed or stalled ones (0 switches it off)
+  adapt_every_minutes: 120
   # service_account: the GCP_SERVICE_ACCOUNT_KEY in the keyring (default); gcloud: the signed-in session.
   # `hglab local up --auth gcloud` overrides it for one run.
   auth: service_account

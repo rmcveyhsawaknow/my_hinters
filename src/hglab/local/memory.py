@@ -381,6 +381,16 @@ def wake_attributes(record: dict[str, Any]) -> dict[str, Any]:
     usage = record.get("usage") if isinstance(record.get("usage"), dict) else {}
     calls = int(usage.get("calls", 0) or 0)
     failed = record.get("failed_actions") or []
+    results = record.get("results") if isinstance(record.get("results"), list) else []
+    kinds: dict[str, int] = {}
+    for index, action in enumerate(record.get("actions") or []):
+        if not isinstance(action, dict) or action.get("action") in (None, "remember"):
+            continue
+        outcome = results[index] if index < len(results) and isinstance(results[index], dict) else {}
+        if outcome.get("ok") is False:
+            continue  # only what the world accepted counts toward a goal
+        kind = str(action["action"])
+        kinds[kind] = kinds.get(kind, 0) + 1
     return {
         "agent": str(record.get("agent") or ""),
         "mode": str(record.get("wake_mode") or record.get("kind") or "wake"),
@@ -393,6 +403,7 @@ def wake_attributes(record: dict[str, Any]) -> dict[str, Any]:
         "input_tokens": int(usage.get("input_tokens", 0) or 0),
         "output_tokens": int(usage.get("output_tokens", 0) or 0),
         "actions": len(record.get("actions") or []),
+        "kinds": kinds,
         "failed": len(failed) if isinstance(failed, list) else int(bool(failed)),
         "energy_spent": record.get("energy_spent"),
         "dry_run": bool(record.get("dry_run")),

@@ -160,6 +160,14 @@ natively and no WSL layer is involved. Base OS installed and networked, then:
 Only one runtime may act for a persona at a time; the world's notebook lease enforces it, and
 `HG_AGENT_<NAME>` Actions variables switch the GitHub side off once a host has proved itself.
 
+## Measurement on this host
+
+`hglab local pulse` pulls the newest public events into `data/events/public.jsonl` (no key, two weeks
+kept) and recomputes every persona's Pulse into `reports/` (no judge). The supervisor does the same at
+the start of every adapt cycle, so `/goals.json`, the status page and the briefs carry live progress.
+`hglab local goals` prints each persona's assignment with its prefer and avoid lists and the stalled
+flag; `hglab local goals --adapt --brief` recomputes and briefs now.
+
 ## Hardware inventory for the new host
 
 Fill this in from the pictures and the inventory session, then size the local model from it:

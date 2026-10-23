@@ -17,3 +17,4 @@ htmlcov/
 reports/*
 !reports/examples/
 !reports/README.md
+data/events/

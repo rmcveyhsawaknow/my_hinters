@@ -270,6 +270,16 @@ def local_goals(
     typer.echo(json.dumps(out, ensure_ascii=False, indent=2, default=str))
 
 
+@local_app.command("pulse")
+def local_pulse(
+    fetch: bool = typer.Option(True, "--fetch/--no-fetch", help="Pull the newest public events into data/events first (no key)"),
+) -> None:
+    """Refresh this host's public events archive and recompute every persona's Pulse into reports/ (no judge, no key)."""
+    from hglab.local.measure import refresh
+
+    typer.echo(json.dumps(refresh(_root(), fetch=fetch), ensure_ascii=False, indent=2, default=str))
+
+
 @local_app.command("cards")
 def local_cards(
     write: bool = typer.Option(False, "--write", help="Write runs/local/cards/<slug>.json"),
