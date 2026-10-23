@@ -25,7 +25,7 @@ import yaml
 
 from hglab.local.cron import matches
 
-JOBS = ("tick", "shift", "keepalive", "crier", "land")
+JOBS = ("tick", "shift", "keepalive", "crier", "land", "news")
 STATUS_FILE = Path("runs/local/status.json")
 LOG_FILE = Path("runs/local/supervisor.log")
 
@@ -77,6 +77,8 @@ def command_for(job: str, slug: str, dry_run: bool) -> list[str]:
         return [*base, "shift", "--agent", slug, *(["--dry-run"] if dry_run else []), *flags]
     if job == "keepalive":
         return [*base, "keepalive", "--agent", slug, *flags]
+    if job == "news":
+        return [*base, "shift", "--agent", slug, "--max-wakes", "1", *(["--dry-run"] if dry_run else []), *flags]  # one wake: the news step runs first
     if job == "crier":
         return [
             *base,
@@ -317,6 +319,51 @@ class Supervisor:
         )
         return result
 
+    def watch(self, personas: dict[str, Any]) -> dict[str, Any]:
+        """One look at the game's surface (keyless); when changes wait, the crier gets a news wake at once."""
+        from hglab.client import HinterglassClient
+        from hglab.features import pending_news, watch
+
+        try:
+            result = watch(self.root, HinterglassClient())
+            pending = pending_news(self.root)
+            found = result.get("discoveries") or []
+            summary: dict[str, Any] = {
+                "ok": True,
+                "api_version": result.get("api_version"),
+                "tick": result.get("tick"),
+                "discoveries": len(found),
+                "pending": len(pending),
+                "utc": datetime.now(UTC).isoformat(),
+            }
+            line = f"watch ok: API {result.get('api_version')}, {len(found)} change(s), {len(pending)} pending"
+            if found:
+                line += ": " + "; ".join(str(d.get("text", ""))[:90] for d in found[:3])
+            self._log(line)
+            if pending:
+                for entry in self.entries():
+                    slug = str(entry.get("slug"))
+                    persona = personas.get(slug)
+                    if persona is None or persona.quirk.get("type") != "feature_watch":
+                        continue
+                    with self._lock:
+                        if slug in self._busy:
+                            self._log(f"{slug} news job waits: a job is still running")
+                            continue
+                        self._busy.add(slug)
+                    thread = threading.Thread(target=self._run_job, args=(slug, "news", entry.get("dry_run", None)), daemon=True)
+                    thread.start()
+                    self._threads.append(thread)
+                    self._log(f"{slug} news job started: {len(pending)} discovery(ies) pending")
+                    summary["news_job"] = slug
+        except Exception as exc:  # noqa: BLE001 - the watch must never stop the supervisor
+            summary = {"ok": False, "detail": str(exc)[:300], "utc": datetime.now(UTC).isoformat()}
+            self._log(f"watch FAILED: {summary['detail'][:160]}")
+        with self._lock:
+            self.status["last_watch"] = summary
+            self._save_status()
+        return summary
+
     def loop(self, personas: dict[str, Any], minutes: int | None = None) -> None:
         self._log(
             f"supervisor up: {', '.join(e.get('slug', '?') for e in self.entries())} (dry_run={self.config.get('dry_run', True)})"
@@ -329,6 +376,8 @@ class Supervisor:
         every = int((self.config.get("ecosystem") or {}).get("backup_every_minutes", 0) or 0)
         adapt_every = int((self.config.get("ecosystem") or {}).get("adapt_every_minutes", 0) or 0)
         last_adapt: datetime | None = None
+        watch_every = int((self.config.get("ecosystem") or {}).get("watch_every_minutes", 10) or 0)
+        last_watch: datetime | None = None
         try:
             while minutes is None or count < minutes:
                 now = datetime.now(UTC).replace(second=0, microsecond=0)
@@ -346,6 +395,11 @@ class Supervisor:
                     ):
                         last_adapt = now
                         threading.Thread(target=self.adapt, args=(personas,), daemon=True).start()
+                    if watch_every and (
+                        last_watch is None or (now - last_watch).total_seconds() >= watch_every * 60
+                    ):
+                        last_watch = now
+                        threading.Thread(target=self.watch, args=(personas,), daemon=True).start()
                 time.sleep(5)
         finally:
             self.status["running"] = False

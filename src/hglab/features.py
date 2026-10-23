@@ -11,7 +11,10 @@ with a new membership rule. Everything here is public data and is treated as dat
 from __future__ import annotations
 
 import hashlib
+import json
 import re
+from datetime import UTC, datetime
+from pathlib import Path
 from typing import Any
 
 ACTION_ROW = re.compile(r"^\|\s*`([a-z_]+)`\s*\|", re.MULTILINE)
@@ -231,13 +234,14 @@ def compare(previous: dict[str, Any] | None, current: dict[str, Any]) -> list[di
     if current.get("limits") and previous.get("limits") and current["limits"] != previous["limits"]:
         out.append({"kind": "limits_changed", "text": f"The rate limits changed: {current['limits'][:200]}"})
     seen_events = set(previous.get("event_types", [])) | set(previous.get("event_types_seen", []))
-    new_events = sorted(set(current["event_types"]) - seen_events)
+    new_events = sorted(set(current["event_types"]) - seen_events) if seen_events else []  # a memory trimmed of every kind seen is no evidence of novelty
     if new_events:
         documented = _documented_events(current)
         for kind in new_events:
             where = "documented" if kind in documented else "not in the guide yet"
             out.append({"kind": "new_event_type", "text": f"A new kind of event appeared in the public log: {kind} ({where})."})
-    new_structures = sorted(set(current["structure_types"]) - set(previous.get("structure_types", [])) - set(previous.get("structure_types_seen", [])))
+    seen_structures = set(previous.get("structure_types", [])) | set(previous.get("structure_types_seen", []))
+    new_structures = sorted(set(current["structure_types"]) - seen_structures) if seen_structures else []
     if new_structures:
         out.append({"kind": "new_structure_type", "text": "Something was built that nobody had built before: " + ", ".join(new_structures) + "."})
     new_factions = sorted(set(current["factions"]) - set(previous.get("factions", [])))
@@ -291,4 +295,148 @@ def restore(compacted: dict[str, Any]) -> dict[str, Any]:
     return dict(compacted)
 
 
-__all__ = ["action_rows", "blueprint_catalogue", "catalogue_line", "compact", "compare", "restore", "snapshot", "table_rows"]
+BASELINE_FILE = Path("runs/local/features.json")  # the host's last look at the game's surface (never trimmed, unlike the notebook copy)
+NEWS_FILE = Path("runs/local/news.jsonl")  # discoveries waiting to be said in the open, one row each
+NEWS_KEEP_TICKS = 7 * 8640  # a week of announced news is kept so nothing is said twice
+NEWS_REPEAT_TICKS = 3 * 8640  # the same text is news again after three days at most
+SILENT_KINDS = {"first_look", "blueprint_catalogue", "unpublished_event_type"}  # a host's first look seeds the baseline; it is not news
+
+
+def baseline_path(root: Path) -> Path:
+    return root / BASELINE_FILE
+
+
+def news_path(root: Path) -> Path:
+    return root / NEWS_FILE
+
+
+def load_baseline(root: Path) -> dict[str, Any] | None:
+    path = baseline_path(root)
+    if not path.is_file():
+        return None
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    return data if isinstance(data, dict) and data else None
+
+
+def save_baseline(root: Path, compacted: dict[str, Any]) -> Path:
+    path = baseline_path(root)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(".tmp")
+    tmp.write_text(json.dumps(compacted, ensure_ascii=False, sort_keys=True), encoding="utf-8")
+    tmp.replace(path)
+    return path
+
+
+def news_key(text: str) -> str:
+    return hashlib.sha256(str(text).encode("utf-8")).hexdigest()[:12]
+
+
+def load_news(root: Path) -> list[dict[str, Any]]:
+    path = news_path(root)
+    if not path.is_file():
+        return []
+    rows: list[dict[str, Any]] = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            row = json.loads(line)
+        except ValueError:
+            continue
+        if isinstance(row, dict) and row.get("text"):
+            rows.append(row)
+    return rows
+
+
+def _write_news(root: Path, rows: list[dict[str, Any]]) -> None:
+    path = news_path(root)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("".join(json.dumps(r, ensure_ascii=False, sort_keys=True) + "\n" for r in rows), encoding="utf-8", newline="\n")
+
+
+def queue_news(root: Path, discoveries: list[dict[str, str]], tick: int) -> list[dict[str, Any]]:
+    """Add discoveries to the host's news queue (never the same text twice within three days); returns the rows added."""
+    rows = load_news(root)
+    by_key = {str(r.get("key")): r for r in rows}
+    added: list[dict[str, Any]] = []
+    for d in discoveries:
+        text = str(d.get("text") or "").strip()
+        kind = str(d.get("kind") or "")
+        if not text or kind in SILENT_KINDS:
+            continue
+        key = news_key(text)
+        earlier = by_key.get(key)
+        if earlier is not None and (not earlier.get("announced") or tick - int(earlier.get("tick", 0) or 0) <= NEWS_REPEAT_TICKS):
+            continue
+        row = {"key": key, "kind": kind, "text": text[:300], "tick": int(tick), "utc": datetime.now(UTC).isoformat(), "announced": False}
+        rows.append(row)
+        by_key[key] = row
+        added.append(row)
+    kept = [r for r in rows if not r.get("announced") or tick - int(r.get("tick", 0) or 0) <= NEWS_KEEP_TICKS]
+    _write_news(root, kept)
+    return added
+
+
+def pending_news(root: Path) -> list[dict[str, Any]]:
+    return [r for r in load_news(root) if not r.get("announced")]
+
+
+def mark_announced(root: Path, lines: list[str], tick: int) -> int:
+    """Rows whose text appears in one of the said lines are announced; returns how many."""
+    rows = load_news(root)
+    said = " ".join(str(line) for line in lines)
+    count = 0
+    for row in rows:
+        if row.get("announced"):
+            continue
+        head = str(row.get("text") or "")[:60]
+        if head and head in said:
+            row["announced"] = True
+            row["announced_tick"] = int(tick)
+            count += 1
+    if count:
+        _write_news(root, rows)
+    return count
+
+
+def watch(root: Path, client: Any, *, announce_first_look: bool = False, archive_guide: bool = True) -> dict[str, Any]:
+    """One look at the game's surface against the host's baseline: queue what changed, keep the baseline, archive the guide.
+
+    The first look on a host seeds the baseline and says nothing (Clarion has announced the surface
+    before); every later look queues real changes for the crier's next wake.
+    """
+    current = snapshot(client)
+    previous = load_baseline(root)
+    found = compare(previous, current)
+    if previous is None and not announce_first_look:
+        found = [d for d in found if d.get("kind") not in SILENT_KINDS]
+    save_baseline(root, compact(current, previous))
+    added = queue_news(root, found, int(current.get("tick", 0) or 0))
+    archived: list[str] = []
+    if archive_guide:
+        try:
+            from hglab import observatory as observatory_module
+
+            keeper = next(v for v in vars(observatory_module).values() if isinstance(v, type) and hasattr(v, "collect_guide"))
+            archived = [str(path) for path in keeper(client, root).collect_guide()]
+        except Exception:  # noqa: BLE001 - the archive is a bonus of the look
+            archived = []
+    return {
+        "tick": int(current.get("tick", 0) or 0),
+        "api_version": current.get("api_version"),
+        "discoveries": found,
+        "queued": len(added),
+        "pending": len(pending_news(root)),
+        "archived": archived,
+        "baseline": str(baseline_path(root)),
+    }
+
+
+__all__ = [
+    "action_rows", "baseline_path", "blueprint_catalogue", "catalogue_line", "compact", "compare", "load_baseline", "load_news",
+    "mark_announced", "news_key", "news_path", "pending_news", "queue_news", "restore", "save_baseline", "snapshot", "table_rows", "watch",
+]

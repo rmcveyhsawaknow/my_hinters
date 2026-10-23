@@ -360,6 +360,18 @@ glass!`), which closes the gap that let the jump to API 0.33.1 sit in a record u
 observatory keeps every version of the guide (`data/guide/agent-guide-<sha>.md`) and a line per
 change in `data/guide/versions.jsonl`, so a change can be read as a diff.
 
+Since 2026-10-23 the watch no longer depends on Clarion's own wakes or on its notebook. The notebook
+copy of the snapshot is the first thing trimmed when the state note grows, and once the kinds ever
+seen were gone every old event kind read as news ("a new kind of event appeared: eat"). On the local
+host the baseline lives in `runs/local/features.json` and is never trimmed; a comparison without any
+memory of kinds seen reports no new kinds; the supervisor looks at the surface every ten minutes
+(`ecosystem.watch_every_minutes`, `hglab local watch` by hand), queues real changes in
+`runs/local/news.jsonl`, and starts a one-wake news job for the crier the moment something waits, so
+an API version, a changed rule, a new action, blueprint, observe field, block piece or rate limit is
+said in the open within minutes rather than at the next scheduled wake. A wake marks what it said;
+the queue keeps a week so nothing is said twice. The supervisor's watch also archives the guide
+versions the way the Actions observatory did.
+
 ## The factory's ground is bought, not guessed
 
 Fudgewright's hearth at (65, 71) has no room to grow, so his `house` knob now reads

@@ -22,7 +22,7 @@ One persona (`agents/<slug>/persona.md`) is one in-world identity with knobs the
 
 ## CLI cheat sheet
 
-`hglab doctor`, `hglab observe --agent NAME`, `hglab tick --agent SLUG [--role ROLE] --dry-run [--fixture FILE]`, `hglab lease acquire|release|status --agent NAME`, `hglab persona validate|list|show|check-name|new`, `hglab team set-territory`, `hglab influence compute --team TEAM`, `hglab pulse --agent SLUG|--team TEAM|--all [--fixtures]`, `hglab community board|round|scene|retro`, `hglab keepalive --agent SLUG`, `hglab deploy check --agent SLUG`, `hglab reports pull`, `hglab kb new TYPE "TITLE"`, `hglab kb validate`, `hglab config validate`, `hglab kb index`, `hglab sync --check`, `hglab local status|up|stack|once|tasks|memory|cards|backup|goals|pulse`, `hglab local service install|status|remove`. Do not omit `--dry-run` until the owner has enabled live operation; `--fixture` needs no key at all.
+`hglab doctor`, `hglab observe --agent NAME`, `hglab tick --agent SLUG [--role ROLE] --dry-run [--fixture FILE]`, `hglab lease acquire|release|status --agent NAME`, `hglab persona validate|list|show|check-name|new`, `hglab team set-territory`, `hglab influence compute --team TEAM`, `hglab pulse --agent SLUG|--team TEAM|--all [--fixtures]`, `hglab community board|round|scene|retro`, `hglab keepalive --agent SLUG`, `hglab deploy check --agent SLUG`, `hglab reports pull`, `hglab kb new TYPE "TITLE"`, `hglab kb validate`, `hglab config validate`, `hglab kb index`, `hglab sync --check`, `hglab local status|up|stack|once|tasks|memory|cards|backup|goals|pulse|watch`, `hglab local service install|status|remove`. Do not omit `--dry-run` until the owner has enabled live operation; `--fixture` needs no key at all.
 
 ## Knowledge base
 

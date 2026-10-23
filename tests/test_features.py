@@ -135,3 +135,92 @@ def test_weather_and_ruin_events_count_as_documented():
     found = compare(_snap(), _snap(event_types=["move", "say", "build", "weather_changed", "ruin"]))
     texts = [d["text"] for d in found if d["kind"] == "new_event_type"]
     assert texts and all("(documented)" in t for t in texts)
+
+
+class _Response:
+    def __init__(self, text):
+        self.text = text
+        self.is_success = True
+
+
+class _Http:
+    def __init__(self, guide):
+        self.guide = guide
+
+    def get(self, path):
+        return _Response(self.guide)
+
+
+class _FakeClient:
+    """Just enough of the public API for a snapshot."""
+
+    GUIDE = (
+        "| action | params | energy | rules |\n|---|---|---|---|\n"
+        "| `move` | `x, y` | 1 | walks |\n| `say` | `text` | 1 | speaks |\n| `build` | `type` | 5 | builds |\n"
+        "| type | cost | hp | terrain | function |\n|---|---|---|---|---|\n| `hut` | wood 10, fiber 4 | 40 | any walkable | home |\n"
+    )
+
+    def __init__(self, version="0.33.1", guide=None):
+        self.version = version
+        self.http = _Http(guide or self.GUIDE)
+
+    def request(self, method, path, params=None, **kwargs):
+        if path == "/api/v1":
+            return {"tick": 1000, "version": self.version}
+        if path == "/api/v1/world/events":
+            return {"events": [{"id": 1, "type": "move", "actor": "Quill"}, {"id": 2, "type": "build", "actor": "Quill", "data": {"type": "hut"}}, {"id": 3, "type": "eat", "actor": "Quill"}]}
+        if path == "/live/world.json":
+            return {"structures": [{"type": "hut"}], "stats": {}}
+        if path == "/api/v1/world/factions":
+            return {"factions": [{"name": "Wayfarers", "membership": "open"}]}
+        if path == "/api/v1/world/agents":
+            return {"agents": [{"name": "Quill"}, {"name": "Cairn"}]}
+        raise AssertionError(path)
+
+
+def test_the_watch_seeds_its_baseline_quietly_then_queues_real_changes_and_marks_what_was_said(tmp_path):
+    from hglab.features import load_baseline, mark_announced, pending_news, queue_news, watch
+
+    first = watch(tmp_path, _FakeClient(), archive_guide=False)
+    assert first["queued"] == 0 and first["pending"] == 0 and load_baseline(tmp_path)["api_version"] == "0.33.1"  # the first look says nothing
+    again = watch(tmp_path, _FakeClient(), archive_guide=False)
+    assert again["discoveries"] == [] and again["pending"] == 0  # the same surface: nothing to say, and eat/build/move are not "new"
+    bumped = _FakeClient(version="0.34.0", guide=_FakeClient.GUIDE.replace("| `build` | `type` | 5 | builds |", "| `build` | `type` | 5 | builds |\n| `trade` | `to, item` | 2 | trades |"))
+    third = watch(tmp_path, bumped, archive_guide=False)
+    kinds = {d["kind"] for d in third["discoveries"]}
+    assert {"api_version", "new_action"} <= kinds and third["queued"] >= 2 and third["pending"] >= 2
+    texts = [r["text"] for r in pending_news(tmp_path)]
+    assert any("API 0.33.1 became 0.34.0" in x for x in texts) and any("`trade`" in x for x in texts)
+    fourth = watch(tmp_path, bumped, archive_guide=False)
+    assert fourth["queued"] == 0 and fourth["pending"] == third["pending"]  # queued once, still pending
+    said = "News from the glass! " + " ".join(texts)
+    assert mark_announced(tmp_path, [said], 1200) == len(texts) and pending_news(tmp_path) == []
+    assert queue_news(tmp_path, [{"kind": "api_version", "text": texts[0]}], 1300) == []  # announced lately: not queued again
+    assert len(queue_news(tmp_path, [{"kind": "api_version", "text": texts[0]}], 1300 + 3 * 8640 + 1)) == 1  # three days on it may be news again
+
+
+def test_a_memory_trimmed_of_every_kind_seen_reports_no_new_kinds():
+    previous = compact(_snap())
+    previous.pop("event_types", None)
+    previous.pop("event_types_seen", None)
+    previous.pop("structure_types", None)
+    previous.pop("structure_types_seen", None)
+    kinds = {d["kind"] for d in compare(previous, _snap(event_types=["move", "say", "build", "eat"], structure_types=["hut", "farm"]))}
+    assert "new_event_type" not in kinds and "new_structure_type" not in kinds
+
+
+def test_the_state_note_sheds_the_kinds_seen_last_among_the_feature_trims():
+    import json as _json
+
+    from hglab.mood import STATE_TEXT_LIMIT, PersonaState, dump_state
+
+    state = PersonaState(mood="bright")
+    state.flags["features"] = {
+        "api_version": "0.33.1", "event_types_seen": ["move", "say", "build", "eat", "gather", "give"],
+        "block_pieces": {"material": ["wood"] * 120, "shape": ["cube"] * 120}, "observe_fields": [f"field_{i}" for i in range(120)],
+        "action_row_hashes": {f"a{i}": "0123456789abcdef" for i in range(40)}, "agents": [f"agent{i}" for i in range(30)],
+    }
+    text = dump_state(state)
+    assert len(text) <= STATE_TEXT_LIMIT
+    features = _json.loads(text)["flags"]["features"]
+    assert features["event_types_seen"] == ["move", "say", "build", "eat", "gather", "give"] and "block_pieces" not in features
