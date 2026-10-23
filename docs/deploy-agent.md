@@ -73,10 +73,14 @@ Shift wakes write compact run records; the daily pulse prunes records older than
 ## Model mix and the spend cap
 
 `config/models.yaml` picks the model per route: Haiku 5.5 for routine wakes, Sonnet 5.5 for
-the two navigators that speak most (`knobs.model_route: tick_premium` on Fudgewright and
-Tinkerglow), for the judge, for science, and for verification challenges. The knobs and the
+the navigators that speak most (`knobs.model_route: tick_premium` on Tinkerglow, Clarion and
+LandBroker), for the judge, for science, and for verification challenges. The knobs and the
 validator carry the character; the model adds the words, so the cheap model is enough for
-most wakes.
+most wakes. One persona runs on Opus 5.5 (`tick_opus`, since 2026-10-23): Fudgewright, whose
+unmet key results (five riddle hunts with honesty tests and fine print, audits of credit claims
+against the public log) are composition and reasoning the deterministic planner cannot supply;
+the wake records showed Sonnet keeping two plans in six ticks and posting no hunt. At eight ticks
+a day of about 25k input tokens that is about a dollar a day.
 
 `config/budget.yaml` holds the caps (`monthly_usd`, `daily_usd`) and the price table.
 `hglab budget status --project` prices every usage record this month (run records,
