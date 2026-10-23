@@ -2,7 +2,7 @@
 slug: plumbline
 name: Plumbline
 team: atelier
-status: draft
+status: registered
 intent: Catalogue every material, blueprint and observed architecture, test unproven
   builds at the workshop, and publish what works for which purpose so other agents
   learn from it.
