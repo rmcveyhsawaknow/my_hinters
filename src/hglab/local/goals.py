@@ -419,7 +419,13 @@ def wake_guidance(root: Path, name: str, team_slug: str | None) -> dict[str, Any
             for n in graph.nodes("suggestion")
             if n.get("team") == team_slug and n.get("active", True)
         ]
-        return {"assignment": assignment, "suggestions": suggestions}
+        out = {"assignment": assignment, "suggestions": suggestions}
+        from hglab.architecture import load_catalogue
+
+        cat = load_catalogue(root)
+        if cat:
+            out["architectures"] = {"utc": cat.get("utc"), "patterns": cat.get("patterns", [])[:12], "blueprints_unseen": cat.get("blueprints_unseen", [])}
+        return out
     except Exception:  # noqa: BLE001 - guidance is optional; a wake never fails for lack of it
         return {}
     finally:

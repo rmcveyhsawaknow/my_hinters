@@ -1,0 +1,194 @@
+{
+ "agent": "plumbline",
+ "name": "Plumbline",
+ "team": "atelier",
+ "headline": "Catalogue every material, blueprint and observed architectur",
+ "metric_version": 1,
+ "tick": 65760,
+ "day": 182,
+ "date": "2026-10-17",
+ "window_ticks": 60480,
+ "events_considered": 401,
+ "runs_considered": 0,
+ "alive": {
+  "score": 0,
+  "detail": "no wakes recorded yet; the first scheduled wake is pending",
+  "parts": {
+   "completed": 0,
+   "scheduled": 0,
+   "lapsed": 0,
+   "banned": false,
+   "rate_limited": 0,
+   "failed_actions": 0,
+   "energy_zero": 0,
+   "spam_blocked": 0
+  }
+ },
+ "on_mission": {
+  "score": 0,
+  "detail": "0 built · 0 findings · 0 notes · 0 tiles · 0 replies",
+  "rows": [
+   {
+    "id": "blueprints_confirmed",
+    "label": "blueprint types built at the workshop",
+    "value": 0.0,
+    "target": 8,
+    "weight": 0.3,
+    "progress": 0.0,
+    "shown": "0 built",
+    "measure": "events.structures_built"
+   },
+   {
+    "id": "findings_shared",
+    "label": "findings announced in public",
+    "value": 0.0,
+    "target": 20,
+    "weight": 0.3,
+    "progress": 0.0,
+    "shown": "0 findings",
+    "measure": "events.count"
+   },
+   {
+    "id": "ideas_filed",
+    "label": "architecture notes filed in the knowledge base",
+    "value": 0.0,
+    "target": 6,
+    "weight": 0.2,
+    "progress": 0.0,
+    "shown": "0 notes",
+    "measure": "kb.count"
+   },
+   {
+    "id": "coverage",
+    "label": "distinct tiles visited",
+    "value": 0.0,
+    "target": 120,
+    "weight": 0.1,
+    "progress": 0.0,
+    "shown": "0 tiles",
+    "measure": "events.distinct_tiles"
+   },
+   {
+    "id": "replies",
+    "label": "replies from builders",
+    "value": 0.0,
+    "target": 5,
+    "weight": 0.1,
+    "progress": 0.0,
+    "shown": "0 replies",
+    "measure": "events.replies_received"
+   }
+  ]
+ },
+ "in_character": {
+  "score": 0,
+  "detail": "0/1 signatures in range; not judged (no model key)",
+  "signatures": [
+   {
+    "id": "lines_per_day",
+    "label": "public lines per real day",
+    "value": 0.0,
+    "range": [
+     1,
+     8
+    ],
+    "inside": false,
+    "measure": "events.says_per_day"
+   },
+   {
+    "id": "build_share",
+    "label": "share of energy building",
+    "value": null,
+    "range": [
+     0.2,
+     0.6
+    ],
+    "inside": null,
+    "measure": "runs.action_energy_share"
+   }
+  ],
+  "judge": [],
+  "judge_meta": {}
+ },
+ "team_pull": {
+  "detail": "no links yet",
+  "sent": [],
+  "received": [],
+  "effects": {}
+ },
+ "community": {
+  "goals_completed_for_peers": 0,
+  "public_goods_built": 0,
+  "norms_kept": true,
+  "norm_breaches": [],
+  "replies_received": 0
+ },
+ "approaches": {
+  "rows": [
+   {
+    "id": "test_build",
+    "label": "test an unproven blueprint",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 0.0,
+    "per_energy": null,
+    "hypothesis": "H-20261022-plumbline-assembly-order",
+    "bet_status": "proposed",
+    "bet_title": "Openings first saves material"
+   },
+   {
+    "id": "survey_build",
+    "label": "survey a new structure",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 0.0,
+    "per_energy": null,
+    "hypothesis": null,
+    "bet_status": null,
+    "bet_title": null
+   },
+   {
+    "id": "share_finding",
+    "label": "share a finding",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 0.0,
+    "per_energy": null,
+    "hypothesis": "H-20261022-plumbline-recommended-adoption",
+    "bet_status": "proposed",
+    "bet_title": "Recommendations get built"
+   }
+  ],
+  "working": "nothing measurable yet",
+  "not_working": "nothing clearly failing",
+  "next_bet": "try test an unproven blueprint at least once this week; it has a bet but no wakes"
+ },
+ "trend": {
+  "alive": "▁",
+  "on_mission": "▁",
+  "in_character": "▁"
+ },
+ "history": [
+  {
+   "date": "2026-10-17",
+   "metric_version": 1,
+   "alive": 0,
+   "on_mission": 0,
+   "in_character": 0,
+   "tick": 65760
+  }
+ ],
+ "signals": {
+  "architectures": {
+   "value": 0.0,
+   "explanation": "Architectures 0: 0 blueprint type(s), 0 note(s), 0 sign(s), 0 idea card(s).",
+   "parts": {
+    "blueprint_types": 0.0,
+    "notes": 0.0,
+    "signs": 0.0,
+    "ideas_filed": 0.0
+   },
+   "tick": 65760
+  }
+ }
+}

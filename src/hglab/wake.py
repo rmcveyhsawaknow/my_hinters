@@ -9,6 +9,7 @@ deterministic plan is used and the record says so.
 from __future__ import annotations
 
 import json
+import os
 import random
 from collections.abc import Callable
 from pathlib import Path
@@ -287,10 +288,11 @@ def persona_wake(
             observe
         )  # whispers a keepalive or a round was handed, kept in the notebook
         tick = int(observe.get("tick", 0))
-        observe["inbox"] = [
-            *observe["inbox"],
-            *deliver_tasks(persona.name, root, tick, dry_run),
-        ]  # A2A tasks for this persona, as operator messages
+        if os.environ.get("HGLAB_RUNTIME") == "local":  # only the local runtime reads this host's graph
+            observe["inbox"] = [
+                *observe["inbox"],
+                *deliver_tasks(persona.name, root, tick, dry_run),
+            ]  # A2A tasks for this persona, as operator messages
         you = observe.get("you") or {}
         notebook = observe.get("notebook") or {}
         state = load_state(persona, notebook)
@@ -345,7 +347,9 @@ def persona_wake(
         if guidance is None:
             from hglab.local.goals import wake_guidance
 
-            guidance = wake_guidance(root, persona.name, persona.team)
+            guidance = {}
+            if os.environ.get("HGLAB_RUNTIME") == "local":
+                guidance = wake_guidance(root, persona.name, persona.team)
             observe["_guidance"] = guidance
         if "_factions" not in observe:
             observe["_factions"] = _public_factions(client)
@@ -609,9 +613,10 @@ def persona_wake(
         record_extra=extras,
         compact=work,
     )
-    settle_tasks(
-        persona.name, root, record.get("run_id") if isinstance(record, dict) else None, dry_run
-    )
+    if os.environ.get("HGLAB_RUNTIME") == "local":
+        settle_tasks(
+            persona.name, root, record.get("run_id") if isinstance(record, dict) else None, dry_run
+        )
     return record
 
 

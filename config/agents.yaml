@@ -82,3 +82,13 @@ agents:
   - navigator
   - builder
   runtime: actions-anthropic
+- name: Plumbline
+  persona: plumbline
+  team: atelier
+  enabled: false
+  roles:
+  - experimenter
+  - surveyor
+  - archivist
+  - conjecturer
+  runtime: actions-anthropic

@@ -224,6 +224,16 @@ def build_server(root: Path) -> Any:
             "briefed": briefed,
         }
 
+    @mcp.tool()
+    def architectures(intention: str | None = None) -> dict[str, Any]:
+        """Blueprints from the rules and the architectures seen in public builds; with an intention, the recommended ones for it."""
+        from hglab.architecture import BLUEPRINTS, load_catalogue, recommend
+
+        cat = load_catalogue(root) or {"patterns": [], "utc": None}
+        if intention:
+            return {"intention": intention, "recommended": recommend(cat, intention), "catalogue_utc": cat.get("utc")}
+        return {"blueprints": BLUEPRINTS, "patterns": cat.get("patterns", [])[:20], "catalogue_utc": cat.get("utc")}
+
     return mcp
 
 

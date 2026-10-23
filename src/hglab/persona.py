@@ -31,7 +31,7 @@ ACTION_ENERGY = {
     "take": 1, "post_goal": 2, "claim_goal": 1, "found_faction": 10,
 }
 KNOWN_SIGNALS = {
-    "hope", "bluster", "belief", "escape", "courage", "discoveries", "audit",
+    "hope", "bluster", "belief", "escape", "courage", "discoveries", "audit", "architectures",
 }
 KNOWN_EFFECTS = {
     "inspiration", "suspicion", "discernment", "glow", "resolve", "adventure_options",

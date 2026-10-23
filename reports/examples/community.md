@@ -4,6 +4,7 @@ Order is team, then slug. Each agent is judged against its own intent.
 
 | team | agent | alive | on mission | in character | goals for peers | public goods | norms | replies |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| The Atelier | Plumbline | 0 | 0 | 0 | 0 | 0 | kept | 0 |
 | The Chocolate Factory | Fudgewright | 92 | 83 | 92 | 0 | 7 | kept | 3 |
 | The Chocolate Factory | MotherPail | 94 | 72 | 72 | 1 | 0 | kept | 4 |
 | The Chocolate Factory | GrandadPail | 94 | 26 | 75 | 0 | 0 | kept | 0 |
@@ -34,10 +35,13 @@ Order is team, then slug. Each agent is judged against its own intent.
 | riddle signs | Fudgewright | 6 | 19.0 | 4.0 | 0.211 | proposed |
 | saving materials in a far hut | Lagalong | 7 | 24.0 | 35.0 | 1.458 | proposed |
 | second-star exploration rule | Tinkerglow | 4 | 31.0 | 10.0 | 0.323 | proposed |
+| share a finding | Plumbline | 0 | 0 | 0.0 | n/a | proposed |
 | specific thank-you lines | MotherPail | 9 | 8.0 | 4.0 | 0.5 | proposed |
 | springing to life for glory events | GrandadPail | 0 | 0 | 0.0 | n/a | proposed |
 | stake every free lot, sell at a rising price | LandBroker | 0 | 0 | 0.0 | n/a | — |
+| survey a new structure | Plumbline | 0 | 0 | 0.0 | n/a | — |
 | tall tales with footnotes | GrandadPail | 3 | 1.0 | 0.0 | 0.0 | proposed |
+| test an unproven blueprint | Plumbline | 0 | 0 | 0.0 | n/a | proposed |
 | unusual builds | Strayling | 9 | 24.0 | 71.0 | 2.958 | — |
 | walls | Fudgewright | 0 | 0 | 4.0 | 4.0 | — |
 | walls on Neverland's edges | Stoutheart | 0 | 0 | 1.0 | 1.0 | — |

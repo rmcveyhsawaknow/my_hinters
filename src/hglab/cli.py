@@ -47,6 +47,38 @@ app.add_typer(key_app, name="key")
 from hglab.local.cli import local_app
 
 app.add_typer(local_app, name="local")
+architecture_app = typer.Typer(help="Blueprints from the rules, architectures seen in public builds, and what to recommend (keyless).", no_args_is_help=True)
+app.add_typer(architecture_app, name="architecture")
+
+
+@architecture_app.command("blueprints")
+def architecture_blueprints() -> None:
+    """Every structure type the rules allow: cost, hit points, where it stands, what it is for."""
+    from hglab.architecture import BLUEPRINTS, PIECES
+
+    typer.echo(json.dumps({"blueprints": BLUEPRINTS, "pieces": PIECES}, ensure_ascii=False, indent=2))
+
+
+@architecture_app.command("catalogue")
+def architecture_catalogue(days: int = typer.Option(7, "--days", help="How many real days of the public log to read")) -> None:
+    """Rebuild the catalogue of architectures from the public build log and save it under runs/local."""
+    from hglab.architecture import refresh
+    from hglab.client import HinterglassClient
+
+    cat, new = refresh(repo_root(), HinterglassClient(api_key=""), days)
+    summary = {k: cat[k] for k in ("utc", "builds", "sites", "blueprints_seen", "blueprints_unseen")}
+    summary["patterns"] = [{k: r[k] for k in ("signature", "purpose", "count", "builders", "assembly_order", "materials")} for r in cat["patterns"][:12]]
+    summary["new_since_last"] = [r["signature"] for r in new]
+    typer.echo(json.dumps(summary, ensure_ascii=False, indent=2))
+
+
+@architecture_app.command("recommend")
+def architecture_recommend(intention: str = typer.Argument(..., help="storage, dwelling, lookout, enclosure, crossing, food, homestead, compound ...")) -> None:
+    """The architectures that stood for a purpose, with materials and assembly order; the rules' blueprint when none stood yet."""
+    from hglab.architecture import load_catalogue, recommend
+
+    cat = load_catalogue(repo_root()) or {"patterns": []}
+    typer.echo(json.dumps(recommend(cat, intention), ensure_ascii=False, indent=2))
 
 
 def repo_root() -> Path:

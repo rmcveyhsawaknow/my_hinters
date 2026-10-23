@@ -270,6 +270,14 @@ class Supervisor:
         try:
             graph = Graph(graph_path)
             try:
+                try:
+                    from hglab.architecture import ingest_architectures, refresh
+                    from hglab.client import HinterglassClient
+
+                    cat, _new = refresh(self.root, HinterglassClient(api_key=""), 7)
+                    ingest_architectures(graph, cat)
+                except Exception as exc:  # noqa: BLE001 - the catalogue is a bonus of the cycle
+                    self._log(f"architecture catalogue skipped: {str(exc)[:160]}")
                 plan = adapt(self.root, graph, personas, load_teams(self.root))
                 briefed = brief(self.root, graph, plan)
             finally:
