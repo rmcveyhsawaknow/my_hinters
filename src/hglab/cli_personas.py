@@ -223,7 +223,7 @@ def _persona_tick(
             time.sleep(delay)
         inputs = inputs or gather_inputs(root, fixtures=False, events_paths=events_paths, runs_paths=[], fetch_public=not work, tick=None)
         roster = public_teammate_positions(personas, team)
-        world = fetch_public_world()
+        world = fetch_public_world(world_cache_path(root))
         owned = structure_counts(world, persona.name)
         progress(f"inputs: {len(inputs['events'])} public events, world tick {inputs['tick']}")
     if work:
@@ -304,13 +304,51 @@ def _persona_tick(
     return record
 
 
-def fetch_public_world() -> dict[str, Any]:
-    """The public world snapshot (structures, agents, factions), or an empty dict when it cannot be read."""
+WORLD_CACHE_SECONDS = 60  # the snapshot changes slowly; fifteen personas need not pull it fifteen times a minute
+
+
+def fetch_public_world(cache: Path | None = None, max_age: int = WORLD_CACHE_SECONDS) -> dict[str, Any]:
+    """The public world snapshot (structures, agents, factions, terrain), or an empty dict when it cannot be read.
+
+    With ``cache``, a copy younger than ``max_age`` seconds is returned without a request, a fresh fetch
+    is written there, and a failed fetch (the keyless rate limit, say) falls back to the stale copy, so a
+    wake still knows the map, the stores and the roster.
+    """
+    if cache is not None and cache.is_file():
+        try:
+            if time.time() - cache.stat().st_mtime <= max_age:
+                cached = json.loads(cache.read_text(encoding="utf-8"))
+                if isinstance(cached, dict) and cached:
+                    return cached
+        except (OSError, ValueError):
+            pass
     try:
         world = HinterglassClient().request("GET", "/live/world.json")
     except (HinterglassError, OSError, ValueError):
-        return {}
-    return world if isinstance(world, dict) else {}
+        world = None
+    if isinstance(world, dict) and world:
+        if cache is not None:
+            try:
+                cache.parent.mkdir(parents=True, exist_ok=True)
+                tmp = cache.with_suffix(".tmp")
+                tmp.write_text(json.dumps(world), encoding="utf-8")
+                tmp.replace(cache)
+            except OSError:
+                pass
+        return world
+    if cache is not None and cache.is_file():
+        try:
+            stale = json.loads(cache.read_text(encoding="utf-8"))
+            if isinstance(stale, dict):
+                return stale
+        except (OSError, ValueError):
+            pass
+    return {}
+
+
+def world_cache_path(root: Path) -> Path | None:
+    """Where the local runtime keeps the snapshot; None elsewhere (Actions runs one wake per job)."""
+    return root / "runs/local/world.json" if os.environ.get("HGLAB_RUNTIME") == "local" else None
 
 
 def terrain_rows_from_world(world: dict[str, Any]) -> list[str] | None:
