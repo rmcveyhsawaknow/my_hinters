@@ -370,7 +370,7 @@ def plan_wake(
         if activity == "news":
             step = _plan_news(persona, state, observe, environment)
         elif activity == "team":
-            step = _plan_team_faction(persona, team, state, observe, energy, reserve, collective_names, names, room=budget - len(actions))
+            step = _plan_team_faction(persona, team, state, observe, energy, reserve, collective_names, names, room=budget - len(actions), roster=_roster(view))
         elif activity == "team_goal":
             step = _plan_team_goal(persona, team, observe, view, inventory, energy, reserve)
         elif activity == "research":
@@ -462,6 +462,7 @@ def _plan_team_faction(
     collective_names: set[str] | None,
     names: dict[str, str] | None,
     room: int = 4,
+    roster: dict[str, str | None] | None = None,
 ) -> tuple[list[dict[str, Any]], str, str] | None:
     """The team's own faction, which comes first for its members.
 
@@ -490,9 +491,13 @@ def _plan_team_faction(
     mates = sorted({proper.get(n, n) for n, slug in (names or {}).items() if slug in team.members and slug != persona.slug and slug not in exempt})
     founder = str(cfg.get("founder") or (team.members[0] if team.members else ""))
     in_view = {str(a.get("name")): a.get("faction") for a in (observe.get("agents") or []) if isinstance(a, dict)}
+    if roster is not None:
+        mates = [m for m in mates if m in roster]  # a mate the world does not know yet (not registered) cannot be invited
 
     def inside(name: str) -> bool:
         seen = in_view.get(name)
+        if seen is None and roster is not None:
+            seen = roster.get(name)  # the public roster carries every resident's faction
         label = seen.get("name") if isinstance(seen, dict) else seen
         return bool(label) and str(label).casefold() == wanted.casefold()
 
@@ -512,7 +517,7 @@ def _plan_team_faction(
         expected = len([m for m in team.members if m not in exempt])
         if ours is None or persona.slug != founder or int(ours.get("members") or 0) >= expected:
             return None  # inside already, or full; only the founder invites, each member once
-        invited = {str(n) for n in (state.flags.get("faction_invited") or [])}
+        invited = {str(n) for n in (state.flags.get("faction_invited") or []) if roster is None or str(n) in roster}  # a name the world never knew was never invited
         pending = [m for m in mates if m not in invited and not inside(m)][: max(0, min(3, room))]
         if not pending or energy - len(pending) < reserve:
             return None
@@ -563,6 +568,18 @@ def _plan_crew(
     from hglab.crew import plan_crew
 
     return plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, room, collective_names, names, teammates)
+
+
+def _roster(view: WorldView) -> dict[str, str | None] | None:
+    """Every resident's faction name from the public snapshot (None when the snapshot is not at hand)."""
+    if not view.residents:
+        return None
+    out: dict[str, str | None] = {}
+    for a in view.residents:
+        faction = a.get("faction")
+        label = faction.get("name") if isinstance(faction, dict) else faction
+        out[str(a.get("name"))] = str(label) if label else None
+    return out
 
 
 def _invited_to(observe: dict[str, Any], name: str, faction: str) -> bool:
@@ -717,7 +734,7 @@ def _plan_work(
     if fits_as("news", _plan_news(persona, state, observe, environment)):
         approach = approach or "news"
     # 0.25 the team: its own faction, or a delivery goal for outsiders when our logistics keep failing
-    if fits_as("team", _plan_team_faction(persona, team, state, observe, energy, reserve, collective_names, names, room=cap - len(actions))):
+    if fits_as("team", _plan_team_faction(persona, team, state, observe, energy, reserve, collective_names, names, room=cap - len(actions), roster=_roster(view))):
         approach = approach or "team"
     if fits_as("team_goal", _plan_team_goal(persona, team, observe, view, inventory, energy, reserve)):
         approach = approach or "team_goal"
