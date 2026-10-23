@@ -1252,3 +1252,32 @@ def test_the_public_world_snapshot_is_cached_for_a_minute_and_survives_a_failed_
     assert cli_personas.world_cache_path(tmp_path) == tmp_path / "runs/local/world.json"
     monkeypatch.delenv("HGLAB_RUNTIME")
     assert cli_personas.world_cache_path(tmp_path) is None
+
+
+def test_the_supervisor_watches_the_surface_and_starts_a_news_wake_when_something_waits(tmp_path, monkeypatch):
+    from hglab.features import queue_news
+
+    calls = []
+
+    def runner(command):
+        calls.append(command)
+        return 0, "Clarion (bright): News from the glass!\n"
+
+    def fake_watch(root, client, **kwargs):
+        queue_news(root, [{"kind": "api_version", "text": "The game updated: API 0.33.1 became 0.34.0."}], 1000)
+        return {"tick": 1000, "api_version": "0.34.0", "discoveries": [{"kind": "api_version", "text": "The game updated: API 0.33.1 became 0.34.0."}], "queued": 1, "pending": 1, "archived": []}
+
+    monkeypatch.setattr("hglab.features.watch", fake_watch)
+    config = {"dry_run": True, "agents": [{"slug": "town-crier", "enabled": True, "jobs": []}, {"slug": "wonka", "enabled": True, "jobs": []}], "ecosystem": {"watch_every_minutes": 10}}
+    sup = Supervisor(tmp_path, config, runner)
+    personas = load_personas(ROOT)
+    summary = sup.watch(personas)
+    for thread in sup._threads:
+        thread.join()
+    assert summary["ok"] and summary["pending"] == 1 and summary["news_job"] == "town-crier"
+    assert len(calls) == 1 and "shift" in calls[0] and calls[0][calls[0].index("--max-wakes") + 1] == "1"
+    assert "town-crier" in " ".join(calls[0]) and "wonka" not in " ".join(calls[0])  # only the feature watch gets a news wake
+    status = json.loads((tmp_path / "runs/local/status.json").read_text(encoding="utf-8"))
+    assert status["last_watch"]["news_job"] == "town-crier" and status["agents"]["town-crier"]["last"]["job"] == "news"
+    news = command_for("news", "town-crier", False)
+    assert "shift" in news and news[news.index("--agent") + 1] == "town-crier" and news[news.index("--max-wakes") + 1] == "1" and "--dry-run" not in news

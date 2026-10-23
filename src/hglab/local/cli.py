@@ -280,6 +280,20 @@ def local_pulse(
     typer.echo(json.dumps(refresh(_root(), fetch=fetch), ensure_ascii=False, indent=2, default=str))
 
 
+@local_app.command("watch")
+def local_watch(
+    announce_first_look: bool = typer.Option(False, "--announce-first-look", help="Queue the first look too (by default a new host seeds its baseline quietly)"),
+) -> None:
+    """Look at the game's surface once (keyless), keep the baseline, queue what changed for the crier, archive the guide."""
+    from hglab.client import HinterglassClient
+    from hglab.features import pending_news, watch
+
+    root = _root()
+    out = watch(root, HinterglassClient(), announce_first_look=announce_first_look)
+    out["pending_rows"] = [{k: r.get(k) for k in ("kind", "text", "tick")} for r in pending_news(root)]
+    typer.echo(json.dumps(out, ensure_ascii=False, indent=2, default=str))
+
+
 @local_app.command("cards")
 def local_cards(
     write: bool = typer.Option(False, "--write", help="Write runs/local/cards/<slug>.json"),

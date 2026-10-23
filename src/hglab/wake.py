@@ -318,18 +318,37 @@ def persona_wake(
                 "peers_active": len(env["peers_active"]),
             }
             if isinstance(env.get("features_now"), dict):
+                from hglab.features import (
+                    SILENT_KINDS,
+                    load_baseline,
+                    pending_news,
+                    queue_news,
+                    save_baseline,
+                )
                 from hglab.features import compact as compact_features
                 from hglab.features import compare as compare_features
 
-                previous = (
+                local_host = os.environ.get("HGLAB_RUNTIME") == "local"
+                disk = load_baseline(root) if local_host else None
+                previous = disk if disk is not None else (
                     state.flags.get("features")
                     if isinstance(state.flags.get("features"), dict)
                     else None
                 )
                 discoveries = compare_features(previous, env["features_now"])
+                if local_host and disk is None:
+                    discoveries = [d for d in discoveries if d.get("kind") not in SILENT_KINDS]  # this host's first look seeds the baseline, quietly
+                compacted = compact_features(env["features_now"], previous)
+                state.flags["features"] = compacted
+                if local_host:
+                    save_baseline(root, compacted)  # the host's baseline is never trimmed, unlike the notebook copy
+                    queue_news(root, discoveries, tick)
+                    fresh = {d["text"] for d in discoveries}
+                    discoveries = discoveries + [
+                        {"kind": str(r.get("kind") or ""), "text": str(r.get("text") or "")} for r in pending_news(root) if r.get("text") not in fresh
+                    ]  # what the supervisor's watch found between wakes waits here
                 env["discoveries"] = [d["text"] for d in discoveries][:6]
                 env["discovery_kinds"] = [d["kind"] for d in discoveries][:6]
-                state.flags["features"] = compact_features(env["features_now"], previous)
                 extras["discoveries"] = env["discoveries"]
                 env.pop("features_now", None)
         rng = wake_rng(persona, tick) if seed is None else random.Random(f"{persona.slug}:{seed}")
@@ -649,6 +668,16 @@ def persona_wake(
         settle_tasks(
             persona.name, root, record.get("run_id") if isinstance(record, dict) else None, dry_run
         )
+        if isinstance(record, dict) and not dry_run:
+            from hglab.features import mark_announced
+
+            said = [
+                str(a.get("text") or "")
+                for a, result in zip(record.get("actions") or [], record.get("results") or [], strict=False)
+                if isinstance(a, dict) and a.get("action") == "say" and str(a.get("text") or "").startswith("News from the glass!") and (result or {}).get("ok")
+            ]
+            if said:
+                mark_announced(root, said, int(record.get("tick", 0) or 0))
     return record
 
 
