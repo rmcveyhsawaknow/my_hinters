@@ -15,8 +15,25 @@
       "properties": {
         "site": {"type": "object", "required": ["x", "y"], "additionalProperties": false, "properties": {"x": {"type": "integer", "minimum": 0, "maximum": 127}, "y": {"type": "integer", "minimum": 0, "maximum": 127}}},
         "radius": {"type": "integer", "minimum": 2, "maximum": 20},
-        "range": {"type": "integer", "minimum": 4, "maximum": 40},
+        "range": {"type": "integer", "minimum": 4, "maximum": 128},
         "stock": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "floor": {"type": "integer", "minimum": 0, "maximum": 10, "description": "Nodes are worked down to this many units (the collective's floor of five by default)."},
+        "claims": {
+          "type": "object",
+          "description": "The land office's holdings: the registrar's best staked lots, worked first by the hands.",
+          "required": ["registrar"],
+          "additionalProperties": false,
+          "properties": {
+            "registrar": {"type": "string", "minLength": 3, "maxLength": 24},
+            "keep": {"type": "integer", "minimum": 0, "maximum": 200},
+            "always_ore": {"type": "boolean"},
+            "depots": {"type": "integer", "minimum": 0, "maximum": 10},
+            "floor": {"type": "integer", "minimum": 0, "maximum": 10},
+            "protect_spawn": {"type": "integer", "minimum": 0, "maximum": 40},
+            "protect_homesteads": {"type": "boolean"},
+            "text": {"type": "string", "minLength": 10, "maxLength": 160}
+          }
+        },
         "plan": {"type": "array", "maxItems": 20, "items": {"type": "object", "required": ["type"], "additionalProperties": false, "properties": {
           "type": {"enum": ["sign", "road", "wall", "bridge", "hut", "farm", "storehouse", "tower", "monument"]},
           "count": {"type": "integer", "minimum": 1, "maximum": 40},

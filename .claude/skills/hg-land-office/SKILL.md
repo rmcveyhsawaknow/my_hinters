@@ -38,3 +38,15 @@ the client `SITE for <id>: lot, anchor, price` and says so in public; `paid_deed
 gives into office storehouses from the public log and announces the deed. The client's `house` knob
 with `site_from: land_office` asks once a day, reads the answer from its inbox (never copied into a
 record), carries the wood to the vault, and builds on the bought lot.
+
+## Holdings, hands and the sales desk (2026-10-23)
+
+The office keeps its most valuable staked lots as holdings (`teams/exchange.yaml: pipeline.claims`:
+`keep`, `always_ore`, `depots`, `floor`, `protect_spawn`, `protect_homesteads`, `text`): they leave the
+lot market, `hglab land board` lists them, and the round rewrites a holding's claim sign when the office
+passes it. Five hands with the `crew` knob work the holdings in the office's order and carry every load
+to a depot or the vault; the steward raises depots on the best holdings. `config/plots.yaml: sales`
+lists goods from the vault as self-confirming goals; the round takes the goods from the vault beside
+it when it holds at least `min_stock`, and the goods listing takes the registration slot when the two
+open goals are full. Check: the collective's floor of five stands near the spawn and other residents'
+homesteads; a holding is a record and never a wall; no sale is aimed at a collective member.

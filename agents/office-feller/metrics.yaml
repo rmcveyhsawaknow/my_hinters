@@ -1,0 +1,59 @@
+version: 1
+agent: office-feller
+headline: Work the timber of the office's holdings into its stores, be
+key_results:
+- id: wood_stored
+  label: wood given into office stores
+  measure: events.items_given_to_storehouse
+  params:
+    item: wood
+  target: 300
+  weight: 0.6
+  format: '{value} wood stored'
+- id: wood_gathered
+  label: wood gathers
+  measure: events.count
+  params:
+    type: gather
+    data_match:
+      kind: wood
+  target: 80
+  weight: 0.3
+  format: '{value} gathers'
+- id: coverage
+  label: distinct tiles worked
+  measure: events.distinct_tiles
+  params: {}
+  target: 60
+  weight: 0.1
+  format: '{value} tiles'
+signatures:
+- id: rest_share
+  label: share of wakes resting
+  measure: runs.rest_share
+  range:
+  - 0.0
+  - 0.3
+- id: energy_mix
+  label: intended vs actual energy mix
+  measure: runs.energy_mix_match
+  range:
+  - 0.6
+  - 1.0
+traits:
+- name: tireless
+  shows_up_as: Gathers until the pack is full, walks it to a store, and goes straight
+    back.
+- name: ranking
+  shows_up_as: The best holding first, by the office's own worth.
+- name: exact
+  shows_up_as: 'Counts every load aloud: twenty wood into the store at the given tile.'
+- name: plain
+  shows_up_as: A short line when a store is stocked; nothing else.
+- name: dutiful
+  shows_up_as: 'Reports to the office: every load lands in an office store.'
+approaches:
+- id: crew
+  label: the office pipeline step
+  hypothesis: H-20261023-office-feller-depots-shorten-hauls
+  outcome_measure: events.items_given_to_storehouse

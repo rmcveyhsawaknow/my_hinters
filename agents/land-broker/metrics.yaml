@@ -9,40 +9,43 @@ key_results:
     types:
     - sign
   target: 60
-  weight: 0.3
-  format: '{value} staked'
-- id: lots_sold
-  label: lots sold (sale deeds announced)
-  measure: events.count
-  params:
-    type: say
-    text_contains: sold to
-  target: 10
   weight: 0.2
-  format: '{value} sold'
-- id: deeds
-  label: deeds announced
-  measure: events.count
-  params:
-    type: say
-    text_contains: deed
-  target: 10
-  weight: 0.15
-  format: '{value} deeds'
-- id: offers
-  label: listings, offers and registration slots posted
-  measure: events.goals_posted
-  params: {}
-  target: 12
-  weight: 0.1
-  format: '{value} posted'
+  format: '{value} staked'
 - id: vault
   label: items banked in the vault
   measure: events.items_given_to_storehouse
   params: {}
   target: 100
-  weight: 0.25
+  weight: 0.2
   format: '{value} banked'
+- id: holdings_firmed
+  label: holdings firmed (claim signs rewritten)
+  measure: events.count
+  params:
+    type: write
+    text_contains: land office holding
+  target: 24
+  weight: 0.2
+  format: '{value} firmed'
+- id: goods_listed
+  label: goods sales listed from the vault
+  measure: events.count
+  params:
+    type: goal_posted
+    text_contains: Land office sale
+  target: 10
+  weight: 0.2
+  format: '{value} listed'
+- id: sales_settled
+  label: sales settled (lots and goods)
+  measure: events.count
+  params:
+    type: goal_done
+    data_match:
+      poster: LandBroker
+  target: 10
+  weight: 0.2
+  format: '{value} settled'
 signatures:
 - id: lines_per_day
   label: public lines per real day
@@ -102,3 +105,7 @@ approaches:
   label: deeds written on signs inside the plot
   hypothesis: null
   outcome_measure: events.structures_built
+- id: holdings_and_sales
+  label: keep the best lots, work them, sell the yield
+  hypothesis: null
+  outcome_measure: events.items_given_to_storehouse

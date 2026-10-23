@@ -2,10 +2,49 @@ slug: exchange
 name: The Exchange
 aim: Run an honest market for land and goods - survey the plots, keep the registry,
   broker deals between neighbours, and lend when the vaults are full.
+faction:
+  name: Land Office
+  motto: 'Surveyed, staked, stocked: the office sells what the island yields.'
+  membership: invite
+  precedence: team
+  founder: land-broker
+pipeline:
+  site:
+    x: 73
+    y: 72
+  radius: 2
+  range: 64
+  floor: 0
+  stock:
+    ore: 60
+    stone: 300
+    wood: 300
+    fiber: 150
+    berries: 150
+  plan:
+  - type: storehouse
+    count: 3
+  claims:
+    registrar: LandBroker
+    keep: 24
+    always_ore: true
+    depots: 3
+    floor: 0
+    protect_spawn: 12
+    protect_homesteads: true
+    text: 'Lot {lot}: land office holding ({tags}). Not for sale: its nodes are the
+      office''s stock, sold from the vault. A public record, not a wall.'
 members:
 - land-broker
-home: {x: 71, y: 65}  # the land office hut; shifts walk back here when far and idle
+- office-quarrier
+- office-feller
+- office-reaper
+- office-drayman
+- office-steward
+home:
+  x: 71
+  y: 65
 territory: null
 social_budget:
-  says_per_hour: 3
+  says_per_hour: 8
 links: []

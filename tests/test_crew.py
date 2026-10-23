@@ -43,7 +43,7 @@ def test_the_team_file_carries_the_pipeline_and_every_hand_its_role():
     personas = load_personas(ROOT)
     roles = {personas[s].knobs["crew"]["role"] for s in teams["chocolate-factory"].members if "crew" in personas[s].knobs}
     assert roles == {"woodcutter", "quarrier", "provisioner", "hauler", "mason"}
-    assert all(personas[s].team == "chocolate-factory" for s in personas if "crew" in personas[s].knobs)
+    assert all(personas[s].team in {"chocolate-factory", "exchange"} for s in personas if "crew" in personas[s].knobs)  # the factory crew and the office hands
     assert pipeline_of(teams["neverland"]) is None
 
 
@@ -179,3 +179,110 @@ def test_a_hand_s_character_wake_is_the_pipeline_too_and_never_wanders_back(tmp_
     for a in moves:
         assert max(abs(a["x"] - 89), abs(a["y"] - 99)) < max(abs(here[0] - 89), abs(here[1] - 99))  # each step is closer to the works, none back to the wood node
         here = (a["x"], a["y"])
+
+
+def _office(slug):
+    personas = load_personas(ROOT)
+    return personas[slug], load_team(ROOT, "exchange"), personas
+
+
+def _office_step(slug, inventory, position, view, observe=None, room=3, energy=80, state=None):
+    persona, team, personas = _office(slug)
+    observe = observe or {"you": {"x": position[0], "y": position[1], "faction": {"id": 9, "name": "Land Office"}}, "tick": 1000}
+    return plan_crew(
+        persona, team, state or PersonaState(mood="busy"), observe, view, dict(inventory), position, energy, persona.energy_reserve, room,
+        {p.name for p in personas.values()}, {p.name: s for s, p in personas.items()}, None,
+    )
+
+
+def _claims_world():
+    from hglab.lots import lot_anchor, stake_text
+
+    rows = ["g" * 128] * 128
+    lots = ["J08-NW", "H04-NE", "F06-SW", "G06-NE"]
+    signs = [{"type": "sign", "x": lot_anchor(lid)[0], "y": lot_anchor(lid)[1], "owner": "LandBroker", "text": stake_text(lid, "LandBroker")} for lid in lots]
+    vault = {"id": 1, "type": "storehouse", "x": 73, "y": 72, "owner": "LandBroker", "policy": "private", "storage": {"wood": 10}}
+    ore = [{"kind": "ore", "x": lot_anchor("J08-NW")[0] + 1, "y": lot_anchor("J08-NW")[1], "amount": 9}]
+    stones = [{"kind": "stone", "x": lot_anchor("H04-NE")[0] + dx, "y": lot_anchor("H04-NE")[1], "amount": 3} for dx in (-1, 0, 1)]  # low: under the collective floor, above the office's
+    near = [{"kind": "stone", "x": 75, "y": 72, "amount": 20}]  # beside the vault, in no holding
+    spawn = [{"kind": "stone", "x": 66, "y": 66, "amount": 3}]  # in G06-NE, a holding, but inside the spawn circle
+    return rows, signs, vault, ore + stones + near + spawn
+
+
+def test_in_claims_mode_the_quarrier_works_the_best_holding_first_to_the_office_floor():
+    from hglab.lots import lot_anchor
+
+    rows, signs, vault, nodes = _claims_world()
+    view = WorldView(x0=66, y0=66, rows=rows, full_map=rows, structures=[vault], world_structures=[vault, *signs], world_resources=nodes, resources=[n for n in nodes if abs(n["x"] - 74) <= 6 and abs(n["y"] - 72) <= 6])
+    step = _office_step("office-quarrier", {"berries": 5}, (74, 72), view)
+    assert step[0][0]["action"] == "move" and "holding J08-NW" in step[1]  # the ore lot outranks the stone beside the vault
+    beside_ore = (lot_anchor("J08-NW")[0] + 1, lot_anchor("J08-NW")[1] + 1)
+    at_ore = WorldView(x0=beside_ore[0] - 6, y0=beside_ore[1] - 6, rows=rows, full_map=rows, structures=[], world_structures=[vault, *signs], world_resources=nodes, resources=[n for n in nodes if n["kind"] == "ore"])
+    gather = _office_step("office-quarrier", {"berries": 5}, beside_ore, at_ore)
+    assert gather[0] == [{"action": "gather", "kind": "ore"}] and "leave 0" in gather[1]
+    low = (lot_anchor("H04-NE")[0], lot_anchor("H04-NE")[1] + 1)
+    at_low = WorldView(x0=low[0] - 6, y0=low[1] - 6, rows=rows, full_map=rows, structures=[], world_structures=[vault, *signs], world_resources=nodes, resources=[n for n in nodes if n["kind"] == "stone" and n["amount"] == 3 and n["y"] == lot_anchor("H04-NE")[1]])
+    worked = _office_step("office-quarrier", {"berries": 5}, low, at_low)
+    assert worked[0][0] == {"action": "gather", "kind": "stone"}  # three units: below the collective floor, above the office's zero
+    at_spawn = WorldView(x0=60, y0=60, rows=rows, full_map=rows, structures=[], world_structures=[vault, *signs], world_resources=nodes, resources=[n for n in nodes if (n["x"], n["y"]) == (66, 66)])
+    assert _office_step("office-quarrier", {"berries": 5}, (67, 66), at_spawn) is None or "gather" not in [a["action"] for a in _office_step("office-quarrier", {"berries": 5}, (67, 66), at_spawn)[0]]  # the spawn circle keeps the floor of five
+
+
+def test_a_heavy_pack_goes_to_the_nearest_depot_and_the_drayman_carries_depot_loads_to_the_vault():
+    from hglab.lots import lot_anchor
+
+    rows, signs, vault, nodes = _claims_world()
+    depot = {"id": 2, "type": "storehouse", "x": lot_anchor("J08-NW")[0] + 2, "y": lot_anchor("J08-NW")[1], "owner": "Lintelstave", "policy": "faction", "faction": "Land Office", "storage": {"ore": 30, "stone": 40}}
+    world = [vault, depot, *signs]
+    beside_depot = (depot["x"] + 1, depot["y"])
+    view = WorldView(x0=beside_depot[0] - 6, y0=beside_depot[1] - 6, rows=rows, full_map=rows, structures=[depot], world_structures=world, world_resources=nodes)
+    step = _office_step("office-quarrier", {"stone": 20, "ore": 14, "berries": 5}, beside_depot, view)
+    assert step[0][0]["action"] == "give" and (step[0][0]["x"], step[0][0]["y"]) == (depot["x"], depot["y"])  # the depot on the holding, not the vault forty tiles away
+    drayman = _office_step("office-drayman", {"berries": 6}, beside_depot, view)
+    assert drayman[0][0]["action"] == "take" and (drayman[0][0]["x"], drayman[0][0]["y"]) == (depot["x"], depot["y"]) and drayman[0][0]["item"] == "ore"  # ore is the vault's shortest stock
+    far_view = WorldView(x0=67, y0=66, rows=rows, full_map=rows, structures=[vault], world_structures=world, world_resources=nodes)
+    walk = _office_step("office-drayman", {"berries": 6}, (74, 72), far_view)
+    assert walk[0][0]["action"] == "move" and "walk to the depot" in walk[1]
+    loaded = _office_step("office-drayman", {"ore": 20, "stone": 20, "berries": 6}, (74, 73), far_view)
+    assert loaded[0][0]["action"] == "give" and (loaded[0][0]["x"], loaded[0][0]["y"]) == (73, 72)  # the drayman unloads at the vault only
+    state = PersonaState(mood="busy")
+    bare = {**depot, "storage": {}}
+    nothing = _office_step("office-drayman", {"berries": 6}, beside_depot, WorldView(x0=beside_depot[0] - 6, y0=beside_depot[1] - 6, rows=rows, full_map=rows, structures=[bare], world_structures=[vault, bare, *signs], world_resources=nodes), state=state)
+    assert (nothing is None or nothing[0][0]["action"] != "take") and f"{depot['x']},{depot['y']}" in state.flags["empty_depots"]  # an empty depot is remembered
+
+
+def test_the_steward_raises_depots_on_the_best_holdings_before_the_overflow_vaults():
+    from hglab.lots import lot_anchor, lot_bounds
+
+    rows, signs, vault, nodes = _claims_world()
+    anchor = lot_anchor("J08-NW")
+    view = WorldView(x0=anchor[0] - 6, y0=anchor[1] - 6, rows=rows, full_map=rows, structures=[], world_structures=[vault, *signs], world_resources=nodes)
+    step = _office_step("office-steward", {"wood": 22, "stone": 12, "berries": 4}, (anchor[0] + 1, anchor[1]), view)
+    build = step[0][0]
+    x0, y0, x1, y1 = lot_bounds("J08-NW")
+    assert build["action"] == "build" and build["type"] == "storehouse" and build["policy"] == "faction" and x0 <= build["x"] <= x1 and y0 <= build["y"] <= y1 and "has no depot" in step[1]
+    far = _office_step("office-steward", {"wood": 22, "stone": 12, "berries": 4}, (74, 72), WorldView(x0=67, y0=66, rows=rows, full_map=rows, structures=[vault], world_structures=[vault, *signs], world_resources=nodes))
+    assert far[0][0]["action"] == "move" and "walk to holding J08-NW" in far[1]
+    depot = {"id": 2, "type": "storehouse", "x": anchor[0] + 2, "y": anchor[1], "owner": "Lintelstave", "policy": "faction"}
+    standing = [vault, depot, *signs]
+    nxt = _office_step("office-steward", {"wood": 22, "stone": 12, "berries": 4}, (74, 72), WorldView(x0=67, y0=66, rows=rows, full_map=rows, structures=[vault], world_structures=standing, world_resources=nodes))
+    assert nxt[0][0]["action"] == "move" and "walk to holding" in nxt[1] and "J08-NW" not in nxt[1]  # the first depot stands: on to the next holding
+
+
+def test_the_office_founds_its_faction_and_invites_the_hands(tmp_path):
+    from hglab.fixtures import FixtureClient, load_fixture
+    from hglab.lease import acquire
+
+    personas = load_personas(ROOT)
+    broker = personas["land-broker"]
+    observe = load_fixture(FIX / "observe/land-broker.json")
+    observe["you"]["faction"] = None
+    observe["you"]["energy"] = 100
+    observe["_factions"] = []
+    observe["_guidance"] = {}
+    client = FixtureClient(observe)
+    lease = acquire(client, broker.name)
+    result = persona_wake(persona=broker, team=load_team(ROOT, "exchange"), personas=personas, client=client, lease=lease, root=ROOT, output_dir=tmp_path, dry_run=True, work=True, seed="office")
+    record = result[0] if isinstance(result, tuple) else result
+    kinds = [a["action"] for a in record["actions"] if a["action"] != "remember"]
+    assert kinds[0] == "found_faction" and record["actions"][0]["name"] == "Land Office" and kinds.count("invite") == 2

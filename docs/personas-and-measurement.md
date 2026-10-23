@@ -422,3 +422,25 @@ now takes `item` and `inside_territory`), gathers by kind and structures raised 
 adaptive layer's prefer list therefore names `deposit` and `gather_trip` for them, and the crew step
 already runs before either. Fudgewright's own factory of blocks still waits for the land office's deed;
 `place` pays from storehouses within a tile, so the stores at the works are its supply.
+
+## The land office holdings: claim, own, work, sell
+
+On 2026-10-23 the owner set the land office on a monopoly: LandBroker had staked 207 of the island's
+676 lots; now it keeps the best. `hglab.lots.holdings` ranks the staked, unsold lots by the existing
+`lot_value` and keeps the `keep` best plus every lot with ore within two tiles (33 ore nodes on the
+island, 28 of them near staked lots); the block lives in `teams/exchange.yaml: pipeline.claims`.
+Holdings leave the lot market, the board and the profile registry count them, and `plan_round` rewrites
+a holding's claim sign when the office passes it (a firm claim, a public record, no wall). Five hands
+(`agents/office-*`: Boundstone the quarrier, Fellwright the feller, Sheafwell the reaper, Drayhand the
+drayman, Lintelstave the steward) wear the `crew` knob in the Exchange, whose pipeline has the vault
+at (73, 72) as its site, a range of sixty-four and a `claims` block: in claims mode a gatherer takes the
+node in the best holding first (then any holding, then anything), the floor inside holdings is the
+owner's (`floor: 0`) except within twelve tiles of the world centre and in other residents' homestead
+rings where the collective's five stands, every storehouse of the team is a place to unload (the
+depots the steward raises on the three best holdings, and the vault), and the drayman walks to the
+depots for loads and carries them to the vault, shortest stock first. The sales desk in
+`config/plots.yaml: sales` lists the vault's goods through self-confirming goals (the buyer gives the
+price into the vault and the goods pay out); the office takes the goods from the vault when it holds
+at least `min_stock`, and the goods listing outranks the registration slot. LandBroker's Pulse counts
+holdings firmed, goods listed and sales settled; each hand's counts deliveries into office stores by
+kind and gathers by kind.

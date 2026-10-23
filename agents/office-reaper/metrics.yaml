@@ -1,0 +1,59 @@
+version: 1
+agent: office-reaper
+headline: Work the fiber and berries of the office's holdings into its
+key_results:
+- id: food_stored
+  label: fiber and berries given into office stores
+  measure: events.items_given_to_storehouse
+  params:
+    item:
+    - fiber
+    - berries
+  target: 200
+  weight: 0.5
+  format: '{value} fiber and berries stored'
+- id: gathers
+  label: fiber and berry gathers
+  measure: events.count
+  params:
+    type: gather
+  target: 60
+  weight: 0.3
+  format: '{value} gathers'
+- id: replies
+  label: replies from hands and visitors
+  measure: events.replies_received
+  params: {}
+  target: 5
+  weight: 0.2
+  format: '{value} replies'
+signatures:
+- id: rest_share
+  label: share of wakes resting
+  measure: runs.rest_share
+  range:
+  - 0.0
+  - 0.3
+- id: energy_mix
+  label: intended vs actual energy mix
+  measure: runs.energy_mix_match
+  range:
+  - 0.6
+  - 1.0
+traits:
+- name: quick
+  shows_up_as: Short trips to the nearest grass holding, many a shift.
+- name: caring
+  shows_up_as: Berries go to the store the hands eat from before anything else when
+    it runs low.
+- name: exact
+  shows_up_as: Counts what the store holds when it stands in view.
+- name: chatty
+  shows_up_as: The one hand who says a line most wakes, within the budget.
+- name: dutiful
+  shows_up_as: 'Reports to the office: every load lands in an office store.'
+approaches:
+- id: crew
+  label: the office pipeline step
+  hypothesis: H-20261023-office-reaper-berries-keep-hands-working
+  outcome_measure: events.items_given_to_storehouse
