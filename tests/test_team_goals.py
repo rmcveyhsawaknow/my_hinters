@@ -87,7 +87,7 @@ def test_a_member_joins_once_the_faction_exists_and_a_non_founder_waits(tmp_path
     )
 
 
-def test_a_member_already_inside_tops_up_invitations_once_a_day(tmp_path):
+def test_only_the_founder_invites_and_each_member_only_once(tmp_path):
     observe = _observe(
         _factions=[{"id": 7, "name": "Neverland", "members": 2, "membership": "invite"}]
     )
@@ -104,6 +104,51 @@ def test_a_member_already_inside_tops_up_invitations_once_a_day(tmp_path):
     record = _wake("nibs", observe, tmp_path)
     invited = sorted(a["name"] for a in record["actions"] if a["action"] == "invite")
     assert invited == ["Strayling"]  # Tinkerglow is seen inside already and Lagalong is exempt
+    remembered = json.loads(json.dumps(observe))
+    remembered["notebook"] = {
+        "persona_state": json.dumps({"mood": load_personas(ROOT)["nibs"].mood_model["initial"], "flags": {"faction_invited": ["Strayling"]}})
+    }
+    again = _wake("nibs", remembered, tmp_path)
+    assert not any(a["action"] == "invite" for a in again["actions"])  # invitations never expire: nobody is asked twice
+    member = json.loads(json.dumps(observe))
+    member["you"]["faction"] = {"id": 7, "name": "Neverland"}
+    assert not any(a["action"] == "invite" for a in _wake("tinker-bell", member, tmp_path)["actions"])  # a member inside never tops up
+
+
+def test_a_member_found_in_a_theme_faction_leaves_it_for_the_teams_own(tmp_path):
+    observe = _observe(
+        _factions=[
+            {"id": 2, "name": "Blueprint Science", "members": 2, "membership": "open"},
+            {"id": 6, "name": "Neverland", "members": 2, "membership": "invite"},
+        ]
+    )
+    observe["you"]["faction"] = {"id": 2, "name": "Blueprint Science"}
+    record = _wake("lost-boy", observe, tmp_path)
+    kinds = [a["action"] for a in record["actions"] if a["action"] != "remember"]
+    assert kinds[:2] == ["leave_faction", "join_faction"] and record["actions"][1]["faction_id"] == 6
+    assert record["approach"] == "team" and "the team comes first" in " ".join(record["reasons"])
+    soon = json.loads(json.dumps(observe))
+    soon["notebook"] = {"persona_state": json.dumps({"mood": load_personas(ROOT)["lost-boy"].mood_model["initial"], "flags": {"faction_switch": observe["tick"] - 100}})}
+    assert "leave_faction" not in [a["action"] for a in _wake("lost-boy", soon, tmp_path)["actions"]]  # tried lately: wait
+    theme = json.loads(json.dumps(observe))
+    theme["you"]["faction"] = {"id": 3, "name": "Readable Replay"}
+    assert "leave_faction" not in [a["action"] for a in _wake("tootles", theme, tmp_path)["actions"]]  # Lagalong is exempt: his theme stands
+
+
+def test_a_join_without_an_invitation_in_view_waits_two_hours_between_tries(tmp_path):
+    existing = [{"id": 7, "name": "Neverland", "members": 1, "membership": "invite"}]
+    observe = _observe(_factions=existing)
+    observe["notebook"] = {"persona_state": json.dumps({"mood": load_personas(ROOT)["tinker-bell"].mood_model["initial"], "flags": {"faction_join_try": observe["tick"] - 100}})}
+    assert "join_faction" not in [a["action"] for a in _wake("tinker-bell", observe, tmp_path)["actions"]]
+    invited = json.loads(json.dumps(observe))
+    invited["events"] = [
+        {"type": "faction_invited", "actor": "Stoutheart", "tick": observe["tick"] - 5, "text": "Stoutheart invited Tinkerglow to join the faction Neverland.", "data": {"faction_id": 7, "name": "Neverland", "invitee": "Tinkerglow"}}
+    ]
+    record = _wake("tinker-bell", invited, tmp_path)
+    assert record["actions"][0] == {"action": "join_faction", "faction_id": 7}  # the invitation is in view: join at once
+    later = json.loads(json.dumps(observe))
+    later["notebook"] = {"persona_state": json.dumps({"mood": load_personas(ROOT)["tinker-bell"].mood_model["initial"], "flags": {"faction_join_try": observe["tick"] - 800}})}
+    assert _wake("tinker-bell", later, tmp_path)["actions"][0]["action"] == "join_faction"
 
 
 def test_the_delivery_goal_is_posted_on_the_posters_own_storehouse_when_the_team_asks(tmp_path):

@@ -911,8 +911,11 @@ def crier_round(root: Path, persona: Persona, *, dry_run: bool, fixture: Path | 
         from hglab.crier import faction_name
 
         factions_of = {str(a.get("name")): faction_name(a.get("faction")) for a in agents if isinstance(a, dict) and a.get("name")}
+        from hglab.crier import reserved_names
+
         actions, reasons, update = plan_round(
             persona, ledger, observe, b, active_names=_active_names(agents, tick), state=state, public_events=events, factions_of=factions_of,
+            reserved=reserved_names(personas, load_teams(root)),
         )
         if update:
             actions.append({"action": "remember", "key": STATE_KEY, "text": fit_note({**state, **update})})

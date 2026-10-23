@@ -191,3 +191,13 @@ def test_an_agent_already_invited_in_public_is_not_invited_again():
     actions, _reasons, names = plan_invites(clarion, {}, theme, ["LandBroker", "Quill", "Cairn"], {"Cairn": "Goon Squad"}, {}, public_events=events)
     assert names == ["Quill"] and actions == [{"action": "invite", "name": "Quill"}]
     assert plan_invites(clarion, {}, theme, ["LandBroker"], {}, {"invited": ["LandBroker"]})[2] == []
+
+
+def test_theme_invitations_skip_members_of_teams_with_their_own_faction():
+    from hglab.crier import reserved_names
+    from hglab.persona import load_personas, load_teams
+
+    personas, teams = load_personas(ROOT), load_teams(ROOT)
+    reserved = reserved_names(personas, teams)
+    assert {"Strayling", "Tinkerglow", "Stoutheart", "Fudgewright", "MotherPail", "GrandadPail"} <= reserved
+    assert "Lagalong" not in reserved and "Clarion" not in reserved and "Plumbline" not in reserved  # exempt, or a team with no faction
