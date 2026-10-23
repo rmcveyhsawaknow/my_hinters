@@ -46,13 +46,13 @@ def _observe(**over):
 def test_team_files_carry_their_faction_and_founder():
     teams = load_teams(ROOT)
     neverland = teams["neverland"].extra["faction"]
-    assert neverland["name"] == "Neverland" and neverland["founder"] == "tootles"
+    assert neverland["name"] == "Neverland" and neverland["founder"] == "nibs" and neverland["exempt"] == ["tootles"]
     assert teams["chocolate-factory"].extra["faction"]["founder"] == "wonka"
     assert "faction" not in teams["square"].extra
 
 
 def test_the_founder_founds_the_team_faction_and_invites_within_the_cap(tmp_path):
-    record = _wake("tootles", _observe(), tmp_path)
+    record = _wake("nibs", _observe(), tmp_path)
     kinds = [a["action"] for a in record["actions"] if a["action"] != "remember"]
     assert kinds[0] == "found_faction"
     assert (
@@ -61,7 +61,7 @@ def test_the_founder_founds_the_team_faction_and_invites_within_the_cap(tmp_path
     )
     invited = sorted(a["name"] for a in record["actions"] if a["action"] == "invite")
     # the cap is three actions: the founding and two invitations; the third mate is invited on a later day
-    assert len(invited) == 2 and set(invited) <= {"Stoutheart", "Strayling", "Tinkerglow"}
+    assert invited == ["Strayling", "Tinkerglow"]  # Lagalong is exempt: he founded a theme faction for the collector programme
     assert record["approach"] == "team"
     dumped = json.dumps(record)
     assert "_factions" not in dumped and "_guidance" not in dumped
@@ -93,7 +93,7 @@ def test_a_member_already_inside_tops_up_invitations_once_a_day(tmp_path):
     ]
     record = _wake("nibs", observe, tmp_path)
     invited = sorted(a["name"] for a in record["actions"] if a["action"] == "invite")
-    assert invited == ["Lagalong", "Strayling"]  # Tinkerglow is seen inside already
+    assert invited == ["Strayling"]  # Tinkerglow is seen inside already and Lagalong is exempt
 
 
 def test_the_delivery_goal_is_posted_on_the_posters_own_storehouse_when_the_team_asks(tmp_path):

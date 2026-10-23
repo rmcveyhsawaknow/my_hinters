@@ -388,7 +388,7 @@ def persona_wake(
                 perimeter_loop(tuple(terrain_rows), bridges),
                 str(persona.knobs["patrol"].get("direction", "clockwise")),
             )
-        if planner_mode == "llm" and llm_call is not None and mode != "rest" and not work:
+        if planner_mode == "llm" and llm_call is not None and mode != "rest" and not work and plan.get("approach") not in ("team", "team_goal"):  # the team step is settled, not debated
             from hglab.engage import board as engagement_board
             from hglab.engage import render_board as render_engagement
             from hglab.engage import stance_of
