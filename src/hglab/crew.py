@@ -57,6 +57,7 @@ HUNGRY = 3  # berries below this, with the energy near the reserve, draw ten fro
 EMPTY_DEPOT_TICKS = 2160  # a depot found empty is left alone for six hours
 FAR_RANK = 10**6  # a node outside every holding, in claims mode: after all of them
 STORES_MAX = 6  # storehouses at the works before the hands stop raising more for a full stock (pipeline.stores_max)
+OVERFLOW_ROOM = 25  # a store with less room than this counts as full for the next-store decision and is not worth a walk with a load
 
 Step = tuple[list[dict[str, Any]], str, str]
 FloorFor = Callable[[tuple[int, int]], int]
@@ -157,7 +158,7 @@ def plan_crew(
     stores = factory_stores(view, mates, site, radius)
     tick = int(view.tick or observe.get("tick", 0) or 0)
     full = _full_stores(state, tick)
-    open_stores = [s for s in stores if (int(s["x"]), int(s["y"])) not in full and storehouse_room(s) >= 5]
+    open_stores = [s for s in stores if (int(s["x"]), int(s["y"])) not in full and storehouse_room(s) >= OVERFLOW_ROOM]
     stores_max = int(cfg.get("stores_max", STORES_MAX) or STORES_MAX)
     pack = sum(inventory.values())
     goods = pack - min(inventory.get("berries", 0), BERRY_KEEP)
@@ -336,9 +337,12 @@ def _unload(
     )
     for s in candidates:
         where = (int(s["x"]), int(s["y"]))
-        if isinstance(s.get("storage"), dict) and storehouse_room(s) < 5:
+        known = isinstance(s.get("storage"), dict)
+        if known and storehouse_room(s) < 5:
             _mark_full(state, where, tick)  # seen full from here: no walk to it
             continue
+        if known and chebyshev(position, where) > 1 and storehouse_room(s) < OVERFLOW_ROOM:
+            continue  # the last few slots are not worth the walk with a load; the mason raises another store
         if chebyshev(position, where) <= 1:
             space = storehouse_room(s)
             if space < 5:

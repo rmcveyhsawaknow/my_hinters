@@ -121,7 +121,7 @@ def test_full_stores_make_the_mason_raise_another_and_the_hands_carry_its_cost_t
 
     full = [
         {"id": 1, "type": "storehouse", "x": 90, "y": 98, "owner": "Treacleaxe", "policy": "faction", "faction": "Chocolate Factory", "storage": {"wood": 300, "stone": 198}},
-        {"id": 2, "type": "storehouse", "x": 88, "y": 98, "owner": "Nougatpick", "policy": "faction", "faction": "Chocolate Factory", "storage": {"berries": 400, "wood": 97}},
+        {"id": 2, "type": "storehouse", "x": 88, "y": 98, "owner": "Nougatpick", "policy": "faction", "faction": "Chocolate Factory", "storage": {"berries": 400, "wood": 90}},  # ten slots left: full for the next-store decision
     ]
     view = WorldView(x0=80, y0=90, rows=GRASSY, structures=full, world_structures=full, full_map=GRASSY)
     observe = {"you": {"x": 89, "y": 97, "faction": {"id": 5, "name": "Chocolate Factory"}}, "tick": 100}

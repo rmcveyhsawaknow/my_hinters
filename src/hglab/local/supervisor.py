@@ -42,28 +42,35 @@ def load_local_config(root: Path) -> dict[str, Any]:
     return data
 
 
+ROUND_OFFSET = 30  # the office and collector rounds run this many minutes after the shift starts: a persona runs one job at a time
+KEEPALIVE_OFFSET = 40  # after the shift has ended (the hands' shifts run about 36 minutes), before the next one
+
+
 def due_jobs(persona: Any, when: datetime, entry: dict[str, Any]) -> list[str]:
-    """Which of an agent's jobs are due at this minute, from its knobs (UTC) and its local entry."""
+    """Which of an agent's jobs are due at this minute, from its knobs (UTC) and its local entry.
+
+    The shift starts at the work cron's minute. The land and collector rounds and the keepalive take
+    their own minutes after it, because a persona never runs two jobs at once and a round due in the
+    shift's minute was skipped every hour (the land round ran once and the collector round never
+    between the cut-over and 2026-10-24).
+    """
     jobs = set(entry.get("jobs") or ["tick", "shift", "keepalive", "crier", "land"])
     out: list[str] = []
     cadence = (persona.knobs.get("cadence") or {}).get("cron")
     work = (persona.knobs.get("work") or {}).get("cron")
     if "tick" in jobs and cadence and matches(str(cadence), when):
         out.append("tick")
-    if work and matches(str(work), when):
-        if "shift" in jobs:
-            out.append("shift")
-        if "crier" in jobs and persona.quirk.get("type") == "feature_watch":
-            out.append("crier")
-        if "land" in jobs and persona.knobs.get("stake_lots"):
-            out.append("land")
-    if "keepalive" in jobs and work:
-        minute = (
-            int(str(work).split()[0].split(",")[0])
-            if str(work).split()[0].replace(",", "").isdigit()
-            else 3
-        )
-        if when.minute == (minute + 33) % 60:
+    if work and matches(str(work), when) and "shift" in jobs:
+        out.append("shift")
+    if work:
+        head = str(work).split()[0]
+        minute = int(head.split(",")[0]) if head.replace(",", "").isdigit() else 3
+        if when.minute == (minute + ROUND_OFFSET) % 60:
+            if "crier" in jobs and persona.quirk.get("type") == "feature_watch":
+                out.append("crier")
+            if "land" in jobs and persona.knobs.get("stake_lots"):
+                out.append("land")
+        if "keepalive" in jobs and when.minute == (minute + KEEPALIVE_OFFSET) % 60:
             out.append("keepalive")
     return out
 

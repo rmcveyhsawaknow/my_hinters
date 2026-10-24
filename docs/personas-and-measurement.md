@@ -458,7 +458,16 @@ into its pack and walks to a tile in the works where it fits (`_works_goal`) whe
 store does: the works stand on sand and a farm wants grass, which had the mason walking between the
 store and the site forever. A hand never unloads through the generic deposit steps, and nobody
 deposits into a storehouse whose faction hides its contents (`_opaque_to`): such a store is remembered
-full for a day on sight, and the full-store memory holds sixteen stores instead of eight.
+full for a day on sight, and the full-store memory holds sixteen stores instead of eight. A store with
+fewer than twenty-five free slots counts as full for the next-store decision and is not worth a walk
+with a load (`OVERFLOW_ROOM`), though a hand beside it still tops up the last slots.
+
+**The rounds' own minute (2026-10-24).** The supervisor scheduled the land round and the collector
+round in the shift's minute, and a persona runs one job at a time, so the shift took the slot every
+hour: between the cut-over and 2026-10-24 the land round ran once and the collector round never. Both
+now run thirty minutes after the shift starts (`ROUND_OFFSET`) and the keepalive forty minutes after
+(`KEEPALIVE_OFFSET`, past the hands' thirty-six-minute shifts). LandBroker's rounds are at minute 15,
+Clarion's at minute 21.
 
 ## The land office holdings: claim, own, work, sell
 
