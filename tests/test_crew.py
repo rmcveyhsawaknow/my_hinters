@@ -27,12 +27,12 @@ def _names(personas):
     return {p.name: s for s, p in personas.items()}
 
 
-def _step(slug, inventory, position, view, observe=None, room=3, energy=80):
+def _step(slug, inventory, position, view, observe=None, room=3, energy=80, teammates=None, crew_roles=None):
     persona, team, personas = _crew(slug)
     observe = observe or {"you": {"x": position[0], "y": position[1], "faction": {"id": 5, "name": "Chocolate Factory"}}, "tick": 100}
     return plan_crew(
         persona, team, PersonaState(mood="busy"), observe, view, dict(inventory), position, energy, persona.energy_reserve, room,
-        {p.name for p in personas.values()}, _names(personas), None,
+        {p.name for p in personas.values()}, _names(personas), teammates, crew_roles=crew_roles,
     )
 
 
@@ -114,6 +114,52 @@ def test_the_mason_raises_the_plan_in_order_beside_the_store_that_pays():
         {"id": 7, "type": "sign", "x": 89, "y": 100, "owner": "Toffeetrowel"},
     ]
     assert _step("loompa-mason", {"berries": 5}, (89, 97), WorldView(x0=80, y0=90, rows=GRASSY, structures=done, world_structures=done, full_map=GRASSY), observe) is None  # the works stand
+
+
+def test_full_stores_make_the_mason_raise_another_and_the_hands_carry_its_cost_to_the_mason():
+    from hglab.crew import STORES_MAX, _role_wanted
+
+    full = [
+        {"id": 1, "type": "storehouse", "x": 90, "y": 98, "owner": "Treacleaxe", "policy": "faction", "faction": "Chocolate Factory", "storage": {"wood": 300, "stone": 198}},
+        {"id": 2, "type": "storehouse", "x": 88, "y": 98, "owner": "Nougatpick", "policy": "faction", "faction": "Chocolate Factory", "storage": {"berries": 400, "wood": 97}},
+    ]
+    view = WorldView(x0=80, y0=90, rows=GRASSY, structures=full, world_structures=full, full_map=GRASSY)
+    observe = {"you": {"x": 89, "y": 97, "faction": {"id": 5, "name": "Chocolate Factory"}}, "tick": 100}
+    step = _step("loompa-mason", {"berries": 5}, (89, 97), view, observe)
+    build = step[0][0]
+    assert build["action"] == "build" and build["type"] == "storehouse" and build["policy"] == "faction" and step[1].startswith("every store at the works is full")  # paid from the full store beside it
+    persona, team, personas = _crew("loompa-mason")
+    team.extra["pipeline"]["stores_max"] = 2
+    capped = plan_crew(persona, team, PersonaState(mood="busy"), observe, view, {"berries": 5}, (89, 97), 80, persona.energy_reserve, 3, {p.name for p in personas.values()}, _names(personas), None)
+    assert capped is None  # at the cap, the works stand
+    assert STORES_MAX == 6
+    roles = {"loompa-mason": "mason", "loompa-woodcutter": "woodcutter"}
+    carry = _step("loompa-woodcutter", {"wood": 36, "stone": 5, "berries": 5}, (87, 90), view, teammates={"loompa-mason": (89, 97)}, crew_roles=roles)
+    assert carry[0][0]["action"] == "move" and "carry the next store's cost to the mason" in carry[1]
+    hand = _step("loompa-woodcutter", {"wood": 36, "stone": 5, "berries": 5}, (88, 96), view, teammates={"loompa-mason": (89, 97)}, crew_roles=roles)
+    assert hand[0] == [{"action": "give", "to": "Toffeetrowel", "item": "wood", "qty": 20}, {"action": "give", "to": "Toffeetrowel", "item": "stone", "qty": 5}] and "hand" in hand[1]
+    alone = _step("loompa-woodcutter", {"wood": 36, "stone": 5, "berries": 5}, (84, 92), view)  # no mason known: wait by the works, never a give into a full store
+    assert alone is None or alone[0][0]["action"] != "give"
+    levels = {"wood": (210, 200), "stone": (20, 150), "fiber": (0, 60), "berries": (357, 60), "ore": (0, 30)}
+    assert _role_wanted("woodcutter", levels)[0] in {"fiber", "ore"}  # wood stands above target: the works is short of fiber and ore
+    assert _role_wanted("provisioner", levels)[0] == "fiber"  # berries are six times the target: fiber first
+    assert _role_wanted("quarrier", {"stone": (20, 150), "ore": (0, 30)})[0] in {"stone", "ore"} and _role_wanted("hauler", levels)[0] in {"fiber", "ore"}
+    assert _role_wanted("woodcutter", {}) == ["wood"]  # no store in view: the role's own kind
+
+
+def test_the_mason_takes_the_shortfall_into_its_pack_when_no_tile_beside_the_store_fits():
+    stores = [
+        {"id": 1, "type": "storehouse", "x": 90, "y": 98, "owner": "Treacleaxe", "policy": "faction", "faction": "Chocolate Factory", "storage": {"wood": 60, "stone": 30, "fiber": 10}},
+        {"id": 2, "type": "storehouse", "x": 86, "y": 100, "owner": "Nougatpick", "policy": "faction", "faction": "Chocolate Factory", "storage": {}},
+    ]
+    sandy = ["g" * 128] * 90 + ["s" * 128] * 38  # the works stand on sand; grass only north of y=90
+    view = WorldView(x0=80, y0=90, rows=["s" * 128] * 128, structures=stores, world_structures=stores, full_map=sandy)
+    observe = {"you": {"x": 89, "y": 97, "faction": {"id": 5, "name": "Chocolate Factory"}}, "tick": 100}
+    take = _step("loompa-mason", {"berries": 5}, (89, 97), view, observe)
+    assert take[0] == [{"action": "take", "x": 90, "y": 98, "item": "fiber", "qty": 5}, {"action": "take", "x": 90, "y": 98, "item": "wood", "qty": 5}] and "carry it where it does" in take[1]
+    grass = ["g" * 128] * 128
+    walk = _step("loompa-mason", {"fiber": 5, "wood": 5, "berries": 5}, (89, 97), WorldView(x0=80, y0=90, rows=["s" * 13] * 13, structures=stores, world_structures=stores, full_map=grass), observe)
+    assert walk[0][0]["action"] == "move" and "where it fits" in walk[1]  # the cost is in the pack: walk to grass inside the works
 
 
 def test_the_hauler_takes_what_the_works_is_shortest_of_from_an_open_store_beside_it():

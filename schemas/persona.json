@@ -111,6 +111,16 @@
       "additionalProperties": false
     },
     "welcome": {"type": "string", "minLength": 20, "maxLength": 400, "description": "The whisper every newcomer receives once; {name}, {x} and {y} are filled in."},
+    "supply": {
+      "type": "object",
+      "description": "Draw the next build's shortfall from an allied team's storehouses before gathering it (the owner's rule of 2026-10-24 for the atelier).",
+      "required": ["team"],
+      "properties": {
+        "team": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$"},
+        "range": {"type": "integer", "minimum": 8, "maximum": 96}
+      },
+      "additionalProperties": false
+    },
     "stake_lots": {
       "type": "object",
       "description": "Land office acquisition: stake free lots with one claim sign each, this many per work wake.",

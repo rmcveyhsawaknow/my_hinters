@@ -389,21 +389,24 @@ def save_catalogue(root: Path, cat: dict[str, Any]) -> Path:
 
 
 def refresh(root: Path, client: Any, days: int = 7) -> tuple[dict[str, Any], list[dict[str, Any]]]:
-    """Fetch the public log (keyless), rebuild the catalogue, save it; returns it and the new patterns."""
-    collected: list[dict[str, Any]] = []
-    before = None
-    cutoff = None
-    for _ in range(days * 40):
-        page = client.public_events(before=before) if before else client.public_events()
-        batch = page.get("events", []) if isinstance(page, dict) else []
-        if not batch:
-            break
-        collected.extend(batch)
-        before = page.get("next_before")
-        newest = int(collected[0].get("tick", 0) or 0)
-        cutoff = newest - days * 8640
-        if not before or int(batch[-1].get("tick", 0) or 0) < cutoff:
-            break
+    """Rebuild the catalogue from the public log and save it; returns it and the new patterns.
+
+    The log is the host's event archive (``data/events/public.jsonl``, two weeks deep, refreshed by the
+    measurement cycle just before this runs) when it has rows; only an empty archive is fetched for,
+    through the shared public cache and twenty pages at most. Refetching a week of pages every cycle
+    was the heaviest burst against the world's keyless limit.
+    """
+    from hglab.data import read_jsonl
+    from hglab.local.measure import archive_path
+
+    path = archive_path(root)
+    collected: list[dict[str, Any]] = [e for e in read_jsonl(path) if isinstance(e, dict)] if path.is_file() else []
+    if not collected:
+        from hglab.cli_personas import fetch_public_events
+
+        collected = fetch_public_events(client, pages=min(days * 40, 20), root=root)
+    newest = max((int(e.get("tick", 0) or 0) for e in collected), default=0)
+    cutoff = newest - days * 8640 if collected else None
     previous = load_catalogue(root)
     current = catalogue(
         [e for e in collected if cutoff is None or int(e.get("tick", 0) or 0) >= cutoff]

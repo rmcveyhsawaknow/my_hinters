@@ -56,6 +56,7 @@ CARRY_RANGE = 40  # how far a load is carried to a store
 HUNGRY = 3  # berries below this, with the energy near the reserve, draw ten from a store beside us
 EMPTY_DEPOT_TICKS = 2160  # a depot found empty is left alone for six hours
 FAR_RANK = 10**6  # a node outside every holding, in claims mode: after all of them
+STORES_MAX = 6  # storehouses at the works before the hands stop raising more for a full stock (pipeline.stores_max)
 
 Step = tuple[list[dict[str, Any]], str, str]
 FloorFor = Callable[[tuple[int, int]], int]
@@ -137,8 +138,13 @@ def plan_crew(
     collective_names: set[str] | None,
     names: dict[str, str] | None,
     teammates: dict[str, tuple[int, int]] | None,
+    crew_roles: dict[str, str] | None = None,
 ) -> Step | None:
-    """One pipeline step for a crew member, or None when the role has nothing to do from here."""
+    """One pipeline step for a crew member, or None when the role has nothing to do from here.
+
+    ``crew_roles`` maps every crew persona's slug to its role, so a hand can find the mason when the
+    works' stores are full and hand it the next store's cost.
+    """
     cfg = pipeline_of(team)
     knob = persona.knobs.get("crew")
     if not cfg or not isinstance(knob, dict) or room < 1:
@@ -150,6 +156,9 @@ def plan_crew(
     mates = team_member_names(persona, team, names)
     stores = factory_stores(view, mates, site, radius)
     tick = int(view.tick or observe.get("tick", 0) or 0)
+    full = _full_stores(state, tick)
+    open_stores = [s for s in stores if (int(s["x"]), int(s["y"])) not in full and storehouse_room(s) >= 5]
+    stores_max = int(cfg.get("stores_max", STORES_MAX) or STORES_MAX)
     pack = sum(inventory.values())
     goods = pack - min(inventory.get("berries", 0), BERRY_KEEP)
     floor_default = int(cfg["floor"]) if cfg.get("floor") is not None else NODE_FLOOR
@@ -181,6 +190,10 @@ def plan_crew(
         step = _unload(inventory, position, view, drop_points, room, state, tick, pack)
         if step is not None:
             return step
+        if stores and not open_stores and role != "mason":
+            step = _hand_to_mason(persona, team, inventory, position, view, site, teammates, names, collective_names, crew_roles, stores_max, len(stores))
+            if step is not None:
+                return step
 
     # c. no store at the works yet: raise the first one when the pack can pay
     if not stores:
@@ -215,16 +228,95 @@ def plan_crew(
             step = _depot_step(persona, team, claims, held, inventory, position, view, mates, site, reach, room, teammates, floor_for, ranks)
             if step is not None:
                 return step
-        return _mason(persona, team, cfg, inventory, position, view, stores, site, radius, reach, room, teammates, observe, floor_for, ranks)
+        return _mason(persona, team, cfg, inventory, position, view, stores, site, radius, reach, room, teammates, observe, floor_for, ranks, stores_max=stores_max, open_stores=open_stores)
     if role == "hauler":
         step = _haul(persona, cfg, inventory, position, view, stores, field, collective_names, mates, pack, observe, state, tick)
         if step is not None:
             return step
-    wanted = list(ROLE_WANTED.get(role, []))
-    if role == "hauler":
-        levels = stock_levels(stores, cfg.get("stock") or {})
-        wanted = [k for k in shortest_first(levels) if k in {"wood", "stone", "ore", "fiber", "berries"}] or wanted
+    wanted = _role_wanted(role, stock_levels(stores, cfg.get("stock") or {}))
     return _gather_toward(persona, team, wanted, inventory, position, view, site, reach, room, teammates, "for the works", floor_for, ranks)
+
+
+def _role_wanted(role: str, levels: dict[str, tuple[int, int]]) -> list[str]:
+    """What a hand gathers: its own kinds, the one furthest below the stock target first; when all of its
+    kinds stand at target and the works is short of another kind, that kind; the hauler takes the shortest of all.
+
+    The stock targets set the mix, not a ceiling: with every kind at target the hands keep gathering in
+    the stock's proportions until the stores are full, and then the mason raises another store.
+    """
+    kinds = {"wood", "stone", "ore", "fiber", "berries"}
+    if role == "hauler":
+        return [k for k in shortest_first(levels) if k in kinds] or list(ROLE_WANTED["hauler"])
+    own = list(ROLE_WANTED.get(role, []))
+    if not own:
+        return own
+
+    def ratio(kind: str) -> float:
+        held, target = levels.get(kind, (0, 0))
+        return held / target if target else (9.0 if held else 0.0)
+
+    own.sort(key=ratio)
+    short = [k for k in shortest_first(levels) if k in kinds and ratio(k) < 1.0]
+    if ratio(own[0]) >= 1.0 and short:
+        return [*short, *own]  # the works has enough of ours: fetch what it is short of
+    return [*own, *[k for k in short if k not in own]]
+
+
+def _hand_to_mason(
+    persona: Persona,
+    team: Team | None,
+    inventory: dict[str, int],
+    position: tuple[int, int],
+    view: WorldView,
+    site: tuple[int, int],
+    teammates: dict[str, tuple[int, int]] | None,
+    names: dict[str, str] | None,
+    collective_names: set[str] | None,
+    crew_roles: dict[str, str] | None,
+    stores_max: int,
+    standing: int,
+) -> Step | None:
+    """Every store at the works is full: the heavy pack carries the next store's cost to the mason, who raises it.
+
+    A give to an agent reaches two tiles; the mason's position comes from the view or the public roster.
+    With the works at its cap of stores the hand waits by the site instead of wandering.
+    """
+    proper = {n.casefold(): n for n in (collective_names or set())}
+    by_slug = {slug: proper.get(str(name).casefold(), str(name)) for name, slug in (names or {}).items()}
+    masons = [slug for slug, role in (crew_roles or {}).items() if role == "mason" and (team is None or slug in team.members) and slug != persona.slug]
+    where = None
+    mason_name = ""
+    for slug in masons:
+        mason_name = by_slug.get(slug, "")
+        seen = next((a for a in view.agents if mason_name and str(a.get("name", "")).casefold() == mason_name.casefold()), None)
+        if seen is not None and isinstance(seen.get("x"), int) and isinstance(seen.get("y"), int):
+            where = (int(seen["x"]), int(seen["y"]))
+            break
+        if teammates and slug in teammates:
+            where = tuple(teammates[slug])
+            break
+    if standing >= stores_max or where is None or not mason_name:
+        if chebyshev(position, site) > 3:
+            target = _step_toward(position, {"x": site[0], "y": site[1]}, view)
+            if target is not None and target != position:
+                return [{"action": "move", "x": target[0], "y": target[1]}], f"every store at the works is full ({standing} of {stores_max}): wait by the works", "crew"
+        return None
+    if chebyshev(position, where) <= 2:
+        gives: list[dict[str, Any]] = []
+        for item, qty in BLUEPRINTS["storehouse"].items():
+            have = inventory.get(item, 0)
+            if have >= 1:
+                gives.append({"action": "give", "to": mason_name, "item": item, "qty": min(have, qty)})
+        if not gives:
+            return None
+        what = ", ".join(f"{g['qty']} {g['item']}" for g in gives)
+        return gives, f"every store at the works is full: hand {what} to the mason for the next store", "crew"
+    if chebyshev(position, where) > CARRY_RANGE:
+        return None
+    target = _step_toward(position, {"x": where[0], "y": where[1]}, view)
+    if target is not None and target != position:
+        return [{"action": "move", "x": target[0], "y": target[1]}], f"every store at the works is full: carry the next store's cost to the mason at {where}", "crew"
+    return None
 
 
 def _unload(
@@ -244,6 +336,9 @@ def _unload(
     )
     for s in candidates:
         where = (int(s["x"]), int(s["y"]))
+        if isinstance(s.get("storage"), dict) and storehouse_room(s) < 5:
+            _mark_full(state, where, tick)  # seen full from here: no walk to it
+            continue
         if chebyshev(position, where) <= 1:
             space = storehouse_room(s)
             if space < 5:
@@ -277,6 +372,19 @@ def _works_tile(kind: str, position: tuple[int, int], view: WorldView, site: tup
     if kind == "bridge":
         options = [t for t in neighbours(*position) if view.terrain(*t) == "w" and view.structure_at(*t) is None]
     options.sort(key=lambda t: (chebyshev(t, site), t))
+    return options[0] if options else None
+
+
+def _works_goal(kind: str, position: tuple[int, int], view: WorldView, site: tuple[int, int], radius: int) -> tuple[int, int] | None:
+    """The nearest free tile in the works where this blueprint fits (a farm wants grass), when none is beside the builder."""
+    terrain_ok = {"g"} if kind == "farm" else None
+    options = [
+        (x, y)
+        for x in range(site[0] - radius, site[0] + radius + 1)
+        for y in range(site[1] - radius, site[1] + radius + 1)
+        if chebyshev((x, y), position) > 1 and view.free_tile(x, y, terrain_ok)
+    ]
+    options.sort(key=lambda t: (chebyshev(position, t), chebyshev(t, site), t))
     return options[0] if options else None
 
 
@@ -347,7 +455,17 @@ def _mason(
     observe: dict[str, Any],
     floor_for: FloorFor | None = None,
     ranks: dict[str, int] | None = None,
+    stores_max: int = STORES_MAX,
+    open_stores: list[dict[str, Any]] | None = None,
 ) -> Step | None:
+    """The mason raises the plan's next piece beside a store that pays for it, or carries the cost to where the piece fits.
+
+    A build pays from the pack first and then from storehouses within a tile that admit the builder
+    (the guide), so standing by a store is enough when a fitting tile is beside it. A farm wants grass
+    and the works stand on sand, so when no tile beside the store fits, the mason takes the shortfall
+    into its pack and walks to a tile in the works that does. When every store is full the next piece
+    is another storehouse, up to ``stores_max``, so the hands keep stockpiling.
+    """
     mates = team_member_names(persona, team, None) | {str(s.get("owner", "")).casefold() for s in stores}
     standing: dict[tuple[int, int], dict[str, Any]] = {}
     for s in [*view.world_structures, *view.structures]:
@@ -358,6 +476,8 @@ def _mason(
             standing[where] = s
     counts = Counter(str(s.get("type")) for s in standing.values())
     item = next((p for p in (cfg.get("plan") or []) if isinstance(p, dict) and counts.get(str(p.get("type")), 0) < int(p.get("count", 1) or 1)), None)
+    if stores and open_stores is not None and not open_stores and len(stores) < stores_max:
+        item = {"type": "storehouse", "count": len(stores) + 1}  # every store at the works is full: another one, so the hands keep stockpiling
     if item is None:
         return None  # the works stand; upkeep and the generic steps take over
     kind = str(item["type"])
@@ -377,12 +497,30 @@ def _mason(
             if kind == "sign" and item.get("text"):
                 action["text"] = str(item["text"])[:200]
             paid = "the pack" if materials_ok(inventory, kind) else "the pack and the store beside me"
-            return [action], f"the plan's next piece is a {kind} ({counts.get(kind, 0)} of {item.get('count', 1)} standing): raise it at {tile}, paid from {paid}", "crew"
-        if chebyshev(position, site) > 2:
-            target = _step_toward(position, {"x": site[0], "y": site[1]}, view)
+            why = "every store at the works is full" if open_stores is not None and stores and not open_stores and kind == "storehouse" else f"the plan's next piece is a {kind} ({counts.get(kind, 0)} of {item.get('count', 1)} standing)"
+            return [action], f"{why}: raise it at {tile}, paid from {paid}", "crew"
+        if materials_ok(inventory, kind):
+            goal = _works_goal(kind, position, view, site, radius)
+            if goal is None:
+                return None  # nothing in the works fits this blueprint: the planner's other steps take the wake
+            target = _step_toward(position, {"x": goal[0], "y": goal[1]}, view)
             if target is not None and target != position:
-                return [{"action": "move", "x": target[0], "y": target[1]}], f"materials for the {kind} in hand: walk to the works at {site}", "crew"
+                return [{"action": "move", "x": target[0], "y": target[1]}], f"materials for the {kind} in hand: walk to {goal} in the works, where it fits", "crew"
+            return None
     beside = [s for s in stores if chebyshev(position, (int(s["x"]), int(s["y"]))) <= 1]
+    lacking = shortfall(inventory, kind)
+    if beside and lacking:
+        takes: list[dict[str, Any]] = []
+        pack_room = 50 - sum(inventory.values())
+        for s in beside:
+            held = s.get("storage") if isinstance(s.get("storage"), dict) else {}
+            for kind_, qty in lacking.items():
+                if int(held.get(kind_, 0) or 0) >= qty and pack_room >= qty and all(t["item"] != kind_ for t in takes):
+                    takes.append({"action": "take", "x": int(s["x"]), "y": int(s["y"]), "item": kind_, "qty": qty})
+                    pack_room -= qty
+        if takes and len(takes) == len(lacking):
+            what = ", ".join(f"{t['qty']} {t['item']}" for t in takes)
+            return takes[: max(1, room)], f"the {kind} is next and no tile beside this store fits it: take {what} into the pack and carry it where it does", "crew"
     if stores and not beside:
         nearest = stores[0]
         where = (int(nearest["x"]), int(nearest["y"]))

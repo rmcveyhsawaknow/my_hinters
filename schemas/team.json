@@ -34,6 +34,7 @@
             "text": {"type": "string", "minLength": 10, "maxLength": 160}
           }
         },
+        "stores_max": {"type": "integer", "minimum": 1, "maximum": 12, "description": "Storehouses at the works before the hands stop raising more for a full stock (default 6)"},
         "plan": {"type": "array", "maxItems": 20, "items": {"type": "object", "required": ["type"], "additionalProperties": false, "properties": {
           "type": {"enum": ["sign", "road", "wall", "bridge", "hut", "farm", "storehouse", "tower", "monument"]},
           "count": {"type": "integer", "minimum": 1, "maximum": 40},
@@ -49,7 +50,8 @@
         "motto": {"type": "string", "maxLength": 120},
         "membership": {"enum": ["invite", "open"]}, "precedence": {"enum": ["team", "theme"], "description": "team (default): a member found in another faction leaves it for this one; theme: members may keep a collector theme."},
         "founder": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$"},
-        "exempt": {"type": "array", "items": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$"}, "uniqueItems": true}
+        "exempt": {"type": "array", "items": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$"}, "uniqueItems": true},
+        "allies": {"type": "array", "items": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$"}, "uniqueItems": true, "description": "Personas of other teams the founder invites too; they may take from the faction's stores"}
       }
     },
     "story": {"type": "string", "maxLength": 1200},

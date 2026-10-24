@@ -278,6 +278,33 @@ def test_the_assignment_s_preferred_steps_come_before_the_default_order(tmp_path
     assert first["action"] in {"move", "gather"}  # the tick wake, too, runs the gather activity before the build
 
 
+def test_the_founder_invites_the_factions_allies_and_an_ally_joins_when_invited():
+    from hglab.mood import PersonaState
+    from hglab.planner import WorldView, _plan_team_faction, _roster
+
+    personas = load_personas(ROOT)
+    wonka = personas["wonka"]
+    team = load_team(ROOT, "chocolate-factory")
+    assert team.extra["faction"]["allies"] == ["plumbline"]
+    names = {p.name: s for s, p in personas.items()}
+    residents = [{"name": personas[m].name, "faction": {"id": 5, "name": "Chocolate Factory"}} for m in team.members] + [{"name": "Plumbline", "faction": None}]
+    roster = _roster(WorldView(x0=0, y0=0, rows=["g" * 128] * 128, residents=residents))
+    observe = {"you": {"name": "Fudgewright", "faction": {"id": 5, "name": "Chocolate Factory"}}, "tick": 60000, "agents": [], "_factions": [{"id": 5, "name": "Chocolate Factory", "members": 8, "membership": "invite"}]}
+    everyone = {p.name for p in personas.values()}
+    state = PersonaState(mood="gentle")
+    step = _plan_team_faction(wonka, team, state, observe, 100, 25, everyone, names, room=3, roster=roster, allies={"plumbline": "Plumbline"})
+    assert step is not None and [a["name"] for a in step[0]] == ["Plumbline"]  # every member is inside; the ally is the one left to invite
+    assert _plan_team_faction(wonka, team, PersonaState(mood="gentle"), observe, 100, 25, everyone, names, room=3, roster=roster) is None  # without allies the faction is complete
+    plumbline = personas["plumbline"]
+    atelier = load_team(ROOT, "atelier")
+    assert atelier.extra["faction"]["name"] == "Chocolate Factory" and atelier.extra["faction"]["founder"] == "wonka" and plumbline.knobs["supply"]["team"] == "chocolate-factory"
+    invited = {"you": {"name": "Plumbline", "faction": None}, "tick": 60000, "agents": [], "events": [], "_factions": observe["_factions"]}
+    join = _plan_team_faction(plumbline, atelier, PersonaState(mood="exact"), invited, 100, 25, everyone, {}, room=3, roster=roster)
+    assert join is not None and join[0] == [{"action": "join_faction", "faction_id": 5}]  # the ally joins the factory's faction, never founds one
+    missing = dict(invited, _factions=[])
+    assert _plan_team_faction(plumbline, atelier, PersonaState(mood="exact"), missing, 100, 25, everyone, {}, room=3, roster=roster) is None
+
+
 def test_the_founder_skips_mates_the_world_does_not_know_and_those_the_roster_shows_inside(tmp_path):
     from hglab.mood import PersonaState
     from hglab.planner import WorldView, _plan_team_faction, _roster

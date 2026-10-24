@@ -34,7 +34,7 @@ def refresh_archive(
 
     path = archive_path(root)
     existing = [e for e in read_jsonl(path) if isinstance(e, dict)] if path.is_file() else []
-    fetched = fetch_public_events(client or HinterglassClient(), pages)
+    fetched = fetch_public_events(client or HinterglassClient(), pages, root=root)
     by_id: dict[Any, dict[str, Any]] = {
         e["id"]: e for e in existing if e.get("id") is not None
     }

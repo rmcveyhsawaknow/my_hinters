@@ -235,6 +235,31 @@ def teammate_positions(
     return out
 
 
+def _cast(root: Path, persona: Any, team: Any, personas: dict[str, Any], registrar_name: str | None) -> dict[str, Any]:
+    """Who is who around this persona, for the planner: the crew's roles, the land office's names, the supply team's names, the faction's allies."""
+    from hglab.persona import load_team
+
+    cast: dict[str, Any] = {
+        "crew_roles": {slug: str((p.knobs.get("crew") or {}).get("role") or "") for slug, p in personas.items() if isinstance(p.knobs.get("crew"), dict)},
+    }
+    office = next((p for p in personas.values() if registrar_name and p.name == registrar_name), None)
+    if office is not None:
+        try:
+            cast["office_names"] = {personas[m].name for m in load_team(root, office.team).members if m in personas}
+        except (OSError, ValueError, KeyError):
+            cast["office_names"] = {office.name}
+    supply = persona.knobs.get("supply")
+    if isinstance(supply, dict) and supply.get("team"):
+        try:
+            cast["supply_owners"] = {personas[m].name for m in load_team(root, str(supply["team"])).members if m in personas}
+        except (OSError, ValueError, KeyError):
+            cast["supply_owners"] = set()
+    faction = (team.extra or {}).get("faction") if team is not None else None
+    if isinstance(faction, dict) and faction.get("allies"):
+        cast["allies"] = {str(a): personas[str(a)].name for a in faction["allies"] if str(a) in personas}
+    return cast
+
+
 def persona_wake(
     *,
     persona: Persona,
@@ -365,6 +390,7 @@ def persona_wake(
         names = {
             personas[m].name.casefold(): m for m in (team.members if team else ()) if m in personas
         }
+        cast = _cast(root, persona, team, personas, registrar_name)
         step_mood(persona, state, observe, team, rng, member_names=set(names))
         mode = decide_wake_mode(persona, state, observe, rng)
         if work and mode in {"burst", "distracted"}:
@@ -416,6 +442,7 @@ def persona_wake(
             public_agents=public_agents,
             public_resources=public_resources,
             environment=env,
+            cast=cast,
         )
         used = "heuristic"
         patrol_loop: tuple[tuple[int, int], ...] = ()
@@ -660,6 +687,13 @@ def persona_wake(
         if state_now is None:
             return None
         tick_now = int((context.get("observe") or {}).get("tick", 0) or 0)
+        bought = state_now.flags.get("house_site") if isinstance(state_now.flags.get("house_site"), dict) else None
+        if action.get("action") == "give" and result.get("error") and bought and bought.get("pending") and action.get("item") == bought.get("currency") and int(action.get("qty", 0) or 0) == int(bought["pending"]):
+            bought["paid"] = max(0, int(bought.get("paid", 0) or 0) - int(bought.pop("pending")))  # the deed payment was refused: still owed
+            state_now.flags["house_site"] = bought
+            extras.setdefault("learned", []).append(f"the deed payment of {action.get('qty')} {action.get('item')} was refused ({result.get('error')}): still owed")
+            if not (result.get("error") == "inventory_full" and action.get("x") is not None):
+                return {PERSONA_STATE_KEY: dump_state(state_now)}
         if action.get("action") == "give" and result.get("error") == "inventory_full" and action.get("x") is not None and action.get("y") is not None:
             from hglab.planner import _mark_full
 
