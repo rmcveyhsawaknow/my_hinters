@@ -36,6 +36,11 @@ site_requests:
       - {label: Neverland, x: 74, y: 112, weight: 3, max: 45}
     prefer: {y_min: 80}
     note: The Chocolate Factory wants a 5x5 lot it can expand into, near the southern mountains and close to Neverland, with gold (ore) and fudge (stone) in reach.
+  - id: works
+    client: Fudgewright
+    lots: [I09-SE, I09-NE]
+    wants: [ore, stone]
+    note: The ground under the Chocolate Factory works at (89,99) and its stores at (85,92) and (87,94), deeded as the factory's own at the owner's instruction of 2026-10-24; paid into any office storehouse with room or into the registrar's hands.
 # The sales desk (the owner's instruction of 2026-10-23): the office keeps its best staked lots as holdings
 # (teams/exchange.yaml: pipeline.claims), its hands work their nodes into the vault, and the vault's goods
 # are sold through self-confirming goals: the buyer gives the price into the vault and the goods pay out at

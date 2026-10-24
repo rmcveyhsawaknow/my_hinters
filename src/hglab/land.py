@@ -432,6 +432,7 @@ def sales_due(
 
 
 PAID_INTO = re.compile(r"put (\d+) (\w+) into the storehouse at \((\d+),\s*(\d+)\)", re.IGNORECASE)
+PAID_TO = re.compile(r"gave (\d+) (\w+) to (\w+)", re.IGNORECASE)  # a payment into the registrar's hands, within two tiles
 
 
 def surveys_due(ledger: dict[str, Any], registrar_name: str, state: dict[str, Any], world: dict[str, Any] | None, structures: list[dict[str, Any]], agents: list[dict[str, Any]], tick: int) -> list[dict[str, Any]]:
@@ -449,6 +450,18 @@ def surveys_due(ledger: dict[str, Any], registrar_name: str, state: dict[str, An
         rid = str(request.get("id"))
         if rid in done:
             continue
+        fixed = [str(lid).upper() for lid in (request.get("lots") or []) if isinstance(lid, str)]
+        if fixed:
+            # the ground the client already works: these lots, priced by their worth, no search
+            from hglab.lots import adjacent_lots, lot_value
+
+            values = [lot_value(lid, terrain, resources, structures, agents, tick, exclude_owner=registrar_name) for lid in fixed]
+            price = sum(lot_price(share, int(cfg.get("base_price", 5)), int(cfg.get("price_cap", 50)), v["score"]) for v in values)
+            free = free_lots(structures)
+            expandable = sorted({n for lid in fixed for n in adjacent_lots(lid) if n in free and n not in fixed})
+            reasons = [f"the ground under {request.get('client', 'the client')}'s works: {', '.join(fixed)}", *values[0]["tags"][:2]]
+            out.append({"id": rid, "client": str(request.get("client", "")), "lot": fixed[0], "lots": fixed, "anchor": values[0]["centre"], "expandable": expandable, "reasons": reasons, "price": price, "tick": tick})
+            continue
         found = site_search(request, terrain, resources, structures, agents, tick, registrar=registrar_name, limit=1)
         if not found:
             continue
@@ -458,8 +471,20 @@ def surveys_due(ledger: dict[str, Any], registrar_name: str, state: dict[str, An
     return out
 
 
+def pay_store(structures: list[dict[str, Any]], registrar_name: str, office_names: set[str] | None, anchor: Any) -> dict[str, Any] | None:
+    """The office storehouse nearest the client's ground (the registrar's own when distances tie): where the price goes."""
+    office = {registrar_name.casefold()} | {str(n).casefold() for n in (office_names or ())}
+    stores = [s for s in structures if isinstance(s, dict) and s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() in office and isinstance(s.get("x"), int) and isinstance(s.get("y"), int)]
+    if not stores:
+        return None
+    if not anchor:
+        return stores[0]
+    ax, ay = int(anchor[0]), int(anchor[1])
+    return min(stores, key=lambda s: (max(abs(int(s["x"]) - ax), abs(int(s["y"]) - ay)), str(s.get("owner", "")).casefold() != registrar_name.casefold()))
+
+
 def survey_whisper(survey: dict[str, Any], vault: dict[str, Any] | None, currency: str) -> str:
-    where = f" Put the {currency} into my storehouse at ({vault['x']},{vault['y']}); the deed follows." if vault else ""
+    where = f" Put the {currency} into the land office's storehouse at ({vault['x']},{vault['y']}), or any storehouse of the office, or into my hands within two tiles; the deed follows." if vault else ""
     reasons = "; ".join(str(r) for r in survey["reasons"][:4])
     return (
         f"SITE for {survey['id']}: lot {survey['lot']}, anchor ({survey['anchor'][0]},{survey['anchor'][1]}), {len(survey['expandable'])} free lots beside it to grow into;"
@@ -472,10 +497,11 @@ def survey_line(survey: dict[str, Any], currency: str, limit: int) -> str:
     return f"Survey for {survey['client']}: lot {survey['lot']} at ({survey['anchor'][0]},{survey['anchor'][1]}), {len(survey['expandable'])} free lots beside it; {reasons}. The office asks {survey['price']} {currency}."[:limit]
 
 
-def paid_deeds(state: dict[str, Any], public_events: list[dict[str, Any]], structures: list[dict[str, Any]], registrar_name: str) -> list[dict[str, Any]]:
-    """Surveys whose client has put the price into the office's storehouses since the survey: their deeds."""
+def paid_deeds(state: dict[str, Any], public_events: list[dict[str, Any]], structures: list[dict[str, Any]], registrar_name: str, office_names: set[str] | None = None) -> list[dict[str, Any]]:
+    """Surveys whose client has paid the price since the survey (into any storehouse of the office, or into the registrar's hands): their deeds."""
     surveys = state.get("surveys") if isinstance(state.get("surveys"), dict) else {}
-    vaults = {(int(s["x"]), int(s["y"])) for s in structures if isinstance(s, dict) and s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() == registrar_name.casefold()}
+    office = {registrar_name.casefold()} | {str(n).casefold() for n in (office_names or ())}
+    vaults = {(int(s["x"]), int(s["y"])) for s in structures if isinstance(s, dict) and s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() in office}
     out: list[dict[str, Any]] = []
     for rid, survey in surveys.items():
         if not isinstance(survey, dict) or survey.get("deeded") or not survey.get("client"):
@@ -486,11 +512,17 @@ def paid_deeds(state: dict[str, Any], public_events: list[dict[str, Any]], struc
                 continue
             if int(event.get("tick", 0) or 0) < int(survey.get("tick", 0) or 0):
                 continue
-            match = PAID_INTO.search(str(event.get("text") or ""))
-            if match and (int(match.group(3)), int(match.group(4))) in vaults and match.group(2).casefold() == str(survey.get("currency", "wood")).casefold():
+            text = str(event.get("text") or "")
+            currency = str(survey.get("currency", "wood")).casefold()
+            match = PAID_INTO.search(text)
+            if match and (int(match.group(3)), int(match.group(4))) in vaults and match.group(2).casefold() == currency:
                 paid += int(match.group(1))
+                continue
+            handed = PAID_TO.search(text)
+            if handed and handed.group(3).casefold() == registrar_name.casefold() and handed.group(2).casefold() == currency:
+                paid += int(handed.group(1))
         if paid >= int(survey.get("price", 0) or 0):
-            out.append({"id": rid, "plot": survey["lot"], "holder": survey["client"], "paid": paid, "anchor": survey.get("anchor")})
+            out.append({"id": rid, "plot": survey["lot"], "plots": [str(p) for p in (survey.get("lots") or [survey["lot"]])], "holder": survey["client"], "paid": paid, "anchor": survey.get("anchor")})
     return out
 
 
@@ -517,8 +549,12 @@ def plan_round(
     collective_names: set[str],
     world: dict[str, Any] | None = None,
     claims: dict[str, Any] | None = None,
+    office_names: set[str] | None = None,
 ) -> tuple[list[dict[str, Any]], list[str], dict[str, Any]]:
     """Deterministic office actions for one round; the caller validates and adds the notebook note.
+
+    ``office_names`` are the office's hands: a payment into any of their storehouses counts, and a
+    survey names the office store nearest the client's ground.
 
     Order: deeds for paid registrations and lot sales (one public line, the profile registry, a sign
     or a rewrite when standing there), the lot sale goal at today's price (cancel and repost when the
@@ -627,13 +663,13 @@ def plan_round(
                 break
     # a client's site: survey once (a whisper with the lot and its price, a public line), then the deed once the price is in the vault
     currency = str(cfg.get("currency", "wood"))
-    deeds = paid_deeds(state, public_events, structures, persona.name)
+    deeds = paid_deeds(state, public_events, structures, persona.name, office_names)
     if deeds and len(actions) < 3:
         surveys_state = dict(state.get("surveys") or {})
         for deed in deeds:
             surveys_state[deed["id"]] = {**surveys_state.get(deed["id"], {}), "deeded": tick}
         update["surveys"] = surveys_state
-        rows = list(update.get("registered", state.get("registered", []))) + [f"{d['plot']}:{d['holder']}:{tick}" for d in deeds]
+        rows = list(update.get("registered", state.get("registered", []))) + [f"{p}:{d['holder']}:{tick}" for d in deeds for p in (d.get("plots") or [d["plot"]])]
         update["registered"] = rows[-80:]
         if not said:
             d = deeds[0]
@@ -652,7 +688,7 @@ def plan_round(
         due = reminders < 3 and since >= 720  # a whisper may have gone to a keepalive: remind every two hours, three times
         if asked or due:
             again = {"id": rid, "client": client, "lot": survey["lot"], "anchor": tuple(survey.get("anchor") or (0, 0)), "expandable": [], "reasons": [str(r) for r in survey.get("reasons", [])] or ["as surveyed"], "price": int(survey.get("price", 0) or 0)}
-            actions.append({"action": "whisper", "to": client, "text": survey_whisper(again, vault, str(survey.get("currency", currency)))})
+            actions.append({"action": "whisper", "to": client, "text": survey_whisper(again, pay_store(structures, persona.name, office_names, again["anchor"]) or vault, str(survey.get("currency", currency)))})
             surveys_state = dict(update.get("surveys", state.get("surveys") or {}))
             surveys_state[rid] = {**survey, "answered": tick, "reminders": reminders + (0 if asked else 1)}
             update["surveys"] = surveys_state
@@ -661,12 +697,12 @@ def plan_round(
     for survey in surveys_due(ledger, persona.name, state, world, structures, agents, tick):
         if len(actions) >= 2 or energy - 2 < reserve:
             break
-        actions.append({"action": "whisper", "to": survey["client"], "text": survey_whisper(survey, vault, currency)})
+        actions.append({"action": "whisper", "to": survey["client"], "text": survey_whisper(survey, pay_store(structures, persona.name, office_names, survey["anchor"]) or vault, currency)})
         if not said:
             actions.append({"action": "say", "text": survey_line(survey, currency, limit)})
             said = True
         surveys_state = dict(update.get("surveys", state.get("surveys") or {}))
-        surveys_state[survey["id"]] = {"client": survey["client"], "lot": survey["lot"], "anchor": list(survey["anchor"]), "price": survey["price"], "currency": currency, "tick": tick, "reasons": [str(r) for r in survey["reasons"][:4]]}
+        surveys_state[survey["id"]] = {"client": survey["client"], "lot": survey["lot"], "lots": [str(p) for p in (survey.get("lots") or [survey["lot"]])], "anchor": list(survey["anchor"]), "price": survey["price"], "currency": currency, "tick": tick, "reasons": [str(r) for r in survey["reasons"][:4]]}
         update["surveys"] = surveys_state
         reasons.append(f"survey for {survey['client']}: lot {survey['lot']} ({', '.join(survey['reasons'][:3])}) at {survey['price']} {currency}")
         energy -= 2

@@ -14,12 +14,15 @@ faction:
   membership: invite
   precedence: team
   founder: wonka
+  allies:
+  - plumbline
 pipeline:
   site:
     x: 89
     y: 99
   radius: 7
   range: 16
+  stores_max: 6
   stock:
     wood: 200
     stone: 150

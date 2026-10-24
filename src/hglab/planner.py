@@ -65,6 +65,8 @@ WORK_SUMMARIES = {
     "deposit_trip": "carrying a full pack to the storehouse",
     "stash": "raising a storehouse for a full pack",
     "crew": "working the factory pipeline",
+    "draw": "drawing the next build's materials from an allied store",
+    "draw_trip": "walking to an allied store for materials",
     "profile": "the public profile says which model thinks here",
     "border": "raising the border signs",
     "patrol": "walking the outermost edge of the world, behind the glass",
@@ -78,7 +80,7 @@ REPAIR_WORTH = 10  # mend only when at least half a repair's 20 hp is missing; a
 NODE_FLOOR = 5  # never take a node below this many units: local norm, never strip nodes
 ACTIVITIES = ("build", "gather", "social", "explore", "trade")
 LABEL_ACTIVITY = {  # a shift-planner step label -> the tick activity that runs it
-    "build": "build", "house": "build", "hearth": "build", "repair": "build", "harvest": "build", "border": "build", "reclaim": "build", "stash": "build",
+    "build": "build", "house": "build", "hearth": "build", "repair": "build", "harvest": "build", "border": "build", "reclaim": "build", "stash": "build", "draw": "build",
     "deposit": "gather", "deposit_trip": "gather", "gather_trip": "gather", "forage": "gather", "gather_near": "gather",
     "explore": "explore", "migrate": "explore", "social": "social", "engage": "engage", "trade": "trade", "market_watch": "trade",
     "team": "team", "team_goal": "team_goal", "news": "news", "research": "research", "patrol": "patrol", "lighten": "lighten", "crew": "crew", "fool": "fool", "profile": "profile",
@@ -264,6 +266,7 @@ def plan_wake(
     environment: dict[str, Any] | None = None,
     skip: frozenset[str] = frozenset(),
     prefer: tuple[str, ...] = (),
+    cast: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Return ``{summary, actions, reasons, approach, remember}`` for one wake.
 
@@ -338,17 +341,18 @@ def plan_wake(
                 actions.extend(audit_actions)
                 reasons.append(audit_reason)
                 approach = "audit"
+    our_faction = _faction_name((observe.get("you") or {}).get("faction")) or None
     if work:
         result = _plan_work(
             persona, team, state, observe, rng, view, position, energy, inventory, home, reserve, cap, teammates, allowed, mood, reasons, remember,
             registrar_name=registrar_name, collective_names=collective_names, names=names, environment=environment,
-            skip=skip, prefer=prefer,
+            skip=skip, prefer=prefer, cast=cast,
         )
         if skip and not [a for a in result.get("actions", []) if a.get("action") != "remember"]:
             result = _plan_work(
             persona, team, state, observe, rng, view, position, energy, inventory, home, reserve, cap, teammates, allowed, mood, reasons, remember,
             registrar_name=registrar_name, collective_names=collective_names, names=names, environment=environment,
-            skip=frozenset(), prefer=prefer,
+            skip=frozenset(), prefer=prefer, cast=cast,
         )
         return result
     budget = cap if mood != "sulk" else 1
@@ -374,13 +378,13 @@ def plan_wake(
         if activity == "news":
             step = _plan_news(persona, state, observe, environment)
         elif activity == "team":
-            step = _plan_team_faction(persona, team, state, observe, energy, reserve, collective_names, names, room=budget - len(actions), roster=_roster(view))
+            step = _plan_team_faction(persona, team, state, observe, energy, reserve, collective_names, names, room=budget - len(actions), roster=_roster(view), allies=(cast or {}).get("allies"))
         elif activity == "team_goal":
             step = _plan_team_goal(persona, team, observe, view, inventory, energy, reserve)
         elif activity == "research":
             step = _plan_research(persona, state, observe, inventory, here, view, action_limits(observe)[0] < persona.social_rate)
         elif activity == "crew":
-            step = _plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, budget - len(actions), collective_names, names, teammates)
+            step = _plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, budget - len(actions), collective_names, names, teammates, cast=cast)
         elif activity == "fool":
             step = _plan_fool(persona, state, observe, environment)
         elif activity == "profile":
@@ -397,7 +401,7 @@ def plan_wake(
                 _plan_repair(persona, team, inventory, here, view, teammates)
                 or _plan_harvest(persona, team, inventory, here, view, teammates)
                 or _plan_stake(persona, inventory, here, view)
-                or (_plan_site_trade(persona, state, inventory, here, view, observe, registrar_name) if here == position else None)
+                or (_plan_site_trade(persona, state, inventory, here, view, observe, registrar_name, office_names=(cast or {}).get("office_names")) if here == position else None)
                 or (_plan_hearth(persona, inventory, here, view, home, state) if here == position else None)
                 or _plan_house(persona, inventory, here, view, home, observe, state=state)
                 or (_plan_build(persona, team, inventory, here, view, home) if here == position else None)
@@ -407,8 +411,8 @@ def plan_wake(
         elif activity == "gather":
             step = (
                 _plan_gather(persona, team, inventory, here, view, teammates, rng)
-                or _plan_deposit(persona, inventory, here, view, None, mates=set(collective_names or ()) | set(names or ()), state=state)
-                or _plan_deposit_trip(persona, team, inventory, here, view, teammates, {n.casefold() for n in set(collective_names or ()) | set(names or ())} | {persona.name.casefold()}, state=state)
+                or _plan_deposit(persona, inventory, here, view, None, mates=set(collective_names or ()) | set(names or ()), state=state, faction=our_faction)
+                or _plan_deposit_trip(persona, team, inventory, here, view, teammates, {n.casefold() for n in set(collective_names or ()) | set(names or ())} | {persona.name.casefold()}, state=state, faction=our_faction)
                 or _plan_forage(persona, team, inventory, here, view, teammates)
             )
         elif activity == "explore":
@@ -471,8 +475,12 @@ def _plan_team_faction(
     names: dict[str, str] | None,
     room: int = 4,
     roster: dict[str, str | None] | None = None,
+    allies: dict[str, str] | None = None,
 ) -> tuple[list[dict[str, Any]], str, str] | None:
     """The team's own faction, which comes first for its members.
+
+    ``allies`` (slug to in-world name) are personas of other teams the founder invites as well
+    (``faction.allies`` in the team file): they may then take from the faction's stores.
 
     The founder founds it and invites every member once (invitations never expire, so nobody tops
     them up); members join when it exists, on a visible invitation or every two hours; a member found
@@ -496,7 +504,7 @@ def _plan_team_faction(
     ours = next((f for f in factions if str(f.get("name", "")).casefold() == wanted.casefold()), None)
     tick = int(observe.get("tick", 0) or 0)
     proper = {n.casefold(): n for n in (collective_names or set())}
-    mates = sorted({proper.get(n, n) for n, slug in (names or {}).items() if slug in team.members and slug != persona.slug and slug not in exempt})
+    mates = sorted({proper.get(n, n) for n, slug in (names or {}).items() if slug in team.members and slug != persona.slug and slug not in exempt} | {str(n) for s, n in (allies or {}).items() if s != persona.slug})
     founder = str(cfg.get("founder") or (team.members[0] if team.members else ""))
     in_view = {str(a.get("name")): a.get("faction") for a in (observe.get("agents") or []) if isinstance(a, dict)}
     if roster is not None:
@@ -522,7 +530,7 @@ def _plan_team_faction(
             "team",
         )
     if mine_name:
-        expected = len([m for m in team.members if m not in exempt])
+        expected = len([m for m in team.members if m not in exempt]) + len(allies or {})
         if ours is None or persona.slug != founder or int(ours.get("members") or 0) >= expected:
             return None  # inside already, or full; only the founder invites, each member once
         invited_at = _invited_at(state, roster)
@@ -572,13 +580,14 @@ def _plan_crew(
     collective_names: set[str] | None,
     names: dict[str, str] | None,
     teammates: dict[str, tuple[int, int]] | None,
+    cast: dict[str, Any] | None = None,
 ) -> tuple[list[dict[str, Any]], str, str] | None:
     """The team pipeline's step for a persona with a ``crew`` knob (``hglab.crew``); None for everyone else."""
     if not isinstance(persona.knobs.get("crew"), dict):
         return None
     from hglab.crew import plan_crew
 
-    return plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, room, collective_names, names, teammates)
+    return plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, room, collective_names, names, teammates, crew_roles=(cast or {}).get("crew_roles"))
 
 
 def _invited_at(state: PersonaState, roster: dict[str, str | None] | None) -> dict[str, int]:
@@ -682,6 +691,7 @@ def _plan_work(
     environment: dict[str, Any] | None = None,
     skip: frozenset[str] = frozenset(),
     prefer: tuple[str, ...] = (),
+    cast: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """A work shift wake: the assignment's preferred steps, then build, gather the shortfall, deposit surplus, migrate.
 
@@ -693,8 +703,9 @@ def _plan_work(
     here = position
     used: set[str] = set()  # labels the preferred pass already took this wake
     if persona.knobs.get("crew"):
-        used.update({"build", "hearth", "house", "border", "stash"})  # a hand builds through the team's plan only
+        used.update({"build", "hearth", "house", "border", "stash", "deposit", "deposit_trip"})  # a hand builds and unloads through the team's plan only
     ours = set(collective_names or ()) | set(names or ())
+    our_faction = _faction_name((observe.get("you") or {}).get("faction")) or None
 
     def fits_as(label: str, step: tuple[list[dict[str, Any]], str, str] | None) -> bool:
         if label in skip or label in used:
@@ -757,7 +768,7 @@ def _plan_work(
     if fits_as("news", _plan_news(persona, state, observe, environment)):
         approach = approach or "news"
     # 0.25 the team: its own faction, or a delivery goal for outsiders when our logistics keep failing
-    if fits_as("team", _plan_team_faction(persona, team, state, observe, energy, reserve, collective_names, names, room=cap - len(actions), roster=_roster(view))):
+    if fits_as("team", _plan_team_faction(persona, team, state, observe, energy, reserve, collective_names, names, room=cap - len(actions), roster=_roster(view), allies=(cast or {}).get("allies"))):
         approach = approach or "team"
     if fits_as("team_goal", _plan_team_goal(persona, team, observe, view, inventory, energy, reserve)):
         approach = approach or "team_goal"
@@ -769,20 +780,22 @@ def _plan_work(
         approach = approach or "profile"
     # 0.27 the factory crew: the pipeline step fills the wake (walk to the works, unload, raise, gather, carry)
     while persona.knobs.get("crew") and "crew" not in skip and len(actions) < cap:
-        step = _plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, cap - len(actions), collective_names, names, teammates)
+        step = _plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, cap - len(actions), collective_names, names, teammates, cast=cast)
         if not fits(step):
             break
         approach = approach or "crew"
         for a in actions[-2:]:
             if a.get("action") == "gather":
                 inventory[a.get("kind", "wood")] = inventory.get(a.get("kind", "wood"), 0) + 5
+        if any(a.get("action") in {"build", "give", "take"} for a in step[0]):
+            break  # the view does not yet show what this step changed: one build, hand-off or draw per wake, the rest next time
     # 0.3 a pack heavy with berries makes room for materials
     if fits_as("lighten", _plan_lighten(inventory, energy)):
         approach = approach or "lighten"
     # 0.5 one engagement with a neighbour when there is one: a word, a gift, a deal, a contest (one action, before the build spends the cap)
     engaged = fits(_plan_engage(persona, team, state, inventory, here, view, observe, teammates, names, rng, collective_names, allowed))
     # 0.6 the trade for the house's ground: the brief to the land office, its answer, the payment
-    if not moved() and fits_as("site_trade", _plan_site_trade(persona, state, inventory, here, view, observe, registrar_name)):
+    if not moved() and fits_as("site_trade", _plan_site_trade(persona, state, inventory, here, view, observe, registrar_name, office_names=(cast or {}).get("office_names"))):
         approach = approach or "site_trade"
     # 0.65 the assignment's preferred steps: the measure's own approaches and what produced goal-relevant actions
     if prefer and not persona.knobs.get("patrol"):
@@ -792,8 +805,9 @@ def _plan_work(
             "hearth": lambda: _plan_hearth(persona, inventory, here, view, home, state) if not moved() else None,
             "border": lambda: _plan_border_sign(persona, team, inventory, here, view, teammates, names) if not moved() else None,
             "reclaim": lambda: _plan_reclaim(persona, team, state, inventory, here, view, observe, teammates, collective_names, room=cap - len(actions)) if not moved() else None,
-            "deposit": lambda: _plan_deposit(persona, inventory, here, view, registrar_name, mates=ours, state=state),
-            "deposit_trip": lambda: _plan_deposit_trip(persona, team, inventory, position, view, teammates, {n.casefold() for n in ours} | {persona.name.casefold()}, state=state) if not moved() else None,
+            "deposit": lambda: _plan_deposit(persona, inventory, here, view, registrar_name, mates=ours, state=state, faction=our_faction),
+            "deposit_trip": lambda: _plan_deposit_trip(persona, team, inventory, position, view, teammates, {n.casefold() for n in ours} | {persona.name.casefold()}, state=state, faction=our_faction) if not moved() else None,
+            "draw": lambda: _plan_draw(persona, state, inventory, here, view, observe, (cast or {}).get("supply_owners")) if not moved() else None,
             "stash": lambda: _plan_stash(persona, inventory, position, view, team) if not moved() and here == position else None,
             "gather_trip": lambda: _plan_gather(persona, team, inventory, here, view, teammates, rng),
             "gather_near": lambda: _plan_gather_adjacent(persona, inventory, here, view),
@@ -872,11 +886,14 @@ def _plan_work(
     # 3.6 the border signs of the team's ground, nearest missing first
     if not moved() and fits_as("border", _plan_border_sign(persona, team, inventory, here, view, teammates, names)):
         approach = approach or "border"
+    # 3.8 the next build's shortfall drawn from an allied team's store (the atelier draws on the factory's)
+    if not moved() and fits_as("draw", _plan_draw(persona, state, inventory, here, view, observe, (cast or {}).get("supply_owners"))):
+        approach = approach or "draw"
     # 4. deposit surplus into an adjacent storehouse of ours (so the monument can draw on it)
-    if fits_as("deposit", _plan_deposit(persona, inventory, here, view, registrar_name, mates=ours, state=state)):
+    if fits_as("deposit", _plan_deposit(persona, inventory, here, view, registrar_name, mates=ours, state=state, faction=our_faction)):
         approach = approach or "deposit"
     # 4.2 a full pack walks to the nearest storehouse of ours to unload (a word or a meal may precede the walk)
-    if not moved() and fits_as("deposit_trip", _plan_deposit_trip(persona, team, inventory, position, view, teammates, {n.casefold() for n in ours} | {persona.name.casefold()}, state=state)):
+    if not moved() and fits_as("deposit_trip", _plan_deposit_trip(persona, team, inventory, position, view, teammates, {n.casefold() for n in ours} | {persona.name.casefold()}, state=state, faction=our_faction)):
         approach = approach or "deposit_trip"
     # 4.3 a full pack with no storehouse of ours in reach raises one of its own and unloads next wake
     if not moved() and here == position and fits_as("stash", _plan_stash(persona, inventory, position, view, team)):
@@ -1041,6 +1058,7 @@ def _plan_site_trade(
     view: WorldView,
     observe: dict[str, Any],
     registrar_name: str | None,
+    office_names: set[str] | None = None,
 ) -> tuple[list[dict[str, Any]], str, str] | None:
     """The trade for the house's ground with the land office, in three movements.
 
@@ -1056,22 +1074,30 @@ def _plan_site_trade(
     tick = int(observe.get("tick", 0) or 0)
     request = str(knob.get("request", "site"))
     bought = state.flags.get("house_site") if isinstance(state.flags.get("house_site"), dict) else None
+    if bought and bought.get("id") and str(bought.get("id")).casefold() != request.casefold():
+        state.flags.pop("house_site", None)  # the brief changed (another request id): the old answer is not this ground
+        bought = None
     if not bought:
         for whisper in observe.get("inbox") or []:
             if not isinstance(whisper, dict) or str(whisper.get("from", "")).casefold() != registrar_name.casefold():
                 continue
             match = SITE_WHISPER.search(str(whisper.get("text") or ""))
             if match and match.group("id").casefold() == request.casefold():
-                bought = {"x": int(match.group("x")), "y": int(match.group("y")), "lot": match.group("lot").upper(), "price": int(match.group("price")), "currency": match.group("currency").casefold(), "paid": 0, "tick": tick}
+                bought = {"id": request, "x": int(match.group("x")), "y": int(match.group("y")), "lot": match.group("lot").upper(), "price": int(match.group("price")), "currency": match.group("currency").casefold(), "paid": 0, "tick": tick}
                 state.flags["house_site"] = bought
                 break
     if not bought:
         asked = int(state.flags.get("site_asked", -10**9) or -10**9)
+        if str(state.flags.get("site_asked_for") or "") != request:
+            asked = -(10**9)  # a new brief is asked at once
         brief = str(knob.get("brief") or f"SURVEY REQUEST {request}: a 5x5 lot I can grow into the lots beside it. I pay the office's price in wood.")
         if tick - asked >= 8640:
             state.flags["site_asked"] = tick
+            state.flags["site_asked_for"] = request
             return [{"action": "whisper", "to": registrar_name, "text": f"SURVEY REQUEST {request}: {brief}"[:500] if not brief.upper().startswith("SURVEY REQUEST") else brief[:500]}], f"the house wants ground: the brief goes to {registrar_name}, the land office", "site_request"
         return None
+    if bought.pop("pending", None) is not None:
+        state.flags["house_site"] = bought  # the last payment was not refused (the refusal hook would have rolled it back): settled
     owed = int(bought.get("price", 0) or 0) - int(bought.get("paid", 0) or 0)
     if owed <= 0:
         return None
@@ -1080,24 +1106,58 @@ def _plan_site_trade(
     if carried < min(owed, 10):
         return None  # the gathering steps fetch the currency first
     structures = view.world_structures or view.structures
+    office = {registrar_name.casefold()} | {str(n).casefold() for n in (office_names or ())}  # any storehouse of the land office takes the price
     vaults = sorted(
-        ((int(s["x"]), int(s["y"])) for s in structures if s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() == registrar_name.casefold()),
+        ((int(s["x"]), int(s["y"])) for s in structures if s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() in office),
         key=lambda t: chebyshev(position, t),
     )
     full = _full_stores(state, tick)
     vaults = [v for v in vaults if v not in full and storehouse_room(view.structure_at(*v) or {}) >= min(owed, 5)]  # a full vault takes nothing
     if not vaults:
-        return None
+        return _pay_in_person(registrar_name, state, bought, view, position, currency, carried, owed)
     vault = vaults[0]
     if chebyshev(position, vault) <= 1:
         qty = min(owed, carried, storehouse_room(view.structure_at(*vault) or {}))
         bought["paid"] = int(bought.get("paid", 0) or 0) + qty
+        bought["pending"] = qty  # rolled back by the refusal hook if the world refuses the give
         state.flags["house_site"] = bought
         return [{"action": "give", "x": vault[0], "y": vault[1], "item": currency, "qty": qty}], f"the deed for lot {bought.get('lot')}: {qty} {currency} into the land office's storehouse at {vault} ({owed - qty} still owed)", "deed_payment"
     target = _step_toward(position, {"x": vault[0], "y": vault[1]}, view)
     if target is None or target == position:
         return None
     return [{"action": "move", "x": target[0], "y": target[1]}], f"carrying {carried} {currency} toward the land office's storehouse at {vault} to pay for lot {bought.get('lot')}", "deed_trip"
+
+
+PAY_IN_PERSON_RANGE = 24  # how far the client walks to put the price into the registrar's hands when every office store is full
+
+
+def _pay_in_person(
+    registrar_name: str,
+    state: PersonaState,
+    bought: dict[str, Any],
+    view: WorldView,
+    position: tuple[int, int],
+    currency: str,
+    carried: int,
+    owed: int,
+) -> tuple[list[dict[str, Any]], str, str] | None:
+    """No office storehouse has room: the price goes into the registrar's hands (a give reaches two tiles), when the roster shows them near."""
+    registrar = next((a for a in view.residents if str(a.get("name", "")).casefold() == registrar_name.casefold() and isinstance(a.get("x"), int) and isinstance(a.get("y"), int)), None)
+    if registrar is None:
+        return None
+    there = (int(registrar["x"]), int(registrar["y"]))
+    if chebyshev(position, there) <= 2:
+        qty = min(owed, carried)
+        bought["paid"] = int(bought.get("paid", 0) or 0) + qty
+        bought["pending"] = qty
+        state.flags["house_site"] = bought
+        return [{"action": "give", "to": registrar_name, "item": currency, "qty": qty}], f"no office storehouse has room: {qty} {currency} into {registrar_name}'s hands for lot {bought.get('lot')} ({owed - qty} still owed)", "deed_payment"
+    if chebyshev(position, there) > PAY_IN_PERSON_RANGE:
+        return None
+    target = _step_toward(position, {"x": there[0], "y": there[1]}, view)
+    if target is None or target == position:
+        return None
+    return [{"action": "move", "x": target[0], "y": target[1]}], f"no office storehouse has room: carrying {carried} {currency} to {registrar_name} at {there} to pay for lot {bought.get('lot')}", "deed_trip"
 
 
 def _plan_hearth(
@@ -1548,14 +1608,15 @@ def _plan_deposit_trip(
     teammates: dict[str, tuple[int, int]] | None,
     mates: set[str],
     state: PersonaState | None = None,
+    faction: str | None = None,
 ) -> tuple[list[dict[str, Any]], str, str] | None:
-    """Walk toward the nearest storehouse of ours (own, a teammate's or the collective's) when the pack is full."""
+    """Walk toward the nearest storehouse of ours (own, a teammate's or the collective's) when the pack is full; never toward one whose contents another faction hides."""
     total = sum(inventory.values())
     if total < 46 and not (total >= PACK_TIGHT and inventory.get("berries", 0) > BERRY_KEEP + 10):
         return None
     full = _full_stores(state, int(view.tick or 0))
     stores = sorted(
-        (s for s in (view.world_structures or view.structures) if s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() in mates and (int(s["x"]), int(s["y"])) not in full and storehouse_room(view.structure_at(int(s["x"]), int(s["y"])) or {}) >= 5),
+        (s for s in (view.world_structures or view.structures) if s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() in mates and (int(s["x"]), int(s["y"])) not in full and not _opaque_to(s, persona, faction) and storehouse_room(view.structure_at(int(s["x"]), int(s["y"])) or {}) >= 5),
         key=lambda s: (str(s.get("owner", "")).casefold() != persona.name.casefold(), chebyshev(position, (int(s["x"]), int(s["y"])))),
     )
     mode = persona.knobs["territory"]["mode"]
@@ -1865,7 +1926,94 @@ def _mark_full(state: PersonaState | None, where: tuple[int, int], tick: int) ->
         return
     flags = state.flags.get("full_stores") if isinstance(state.flags.get("full_stores"), dict) else {}
     flags[f"{where[0]},{where[1]}"] = tick
-    state.flags["full_stores"] = dict(sorted(flags.items(), key=lambda kv: -int(kv[1] or 0))[:8])
+    state.flags["full_stores"] = dict(sorted(flags.items(), key=lambda kv: -int(kv[1] or 0))[:16])  # the works, the office depots and the old vaults all fit
+
+
+def _faction_name(value: Any) -> str:
+    """A faction as the world writes it on agents (a dict) and on structures (a name)."""
+    if isinstance(value, dict):
+        return str(value.get("name") or "")
+    return str(value or "")
+
+
+def _opaque_to(structure: dict[str, Any], persona: Persona, faction: str | None) -> bool:
+    """True when another faction's storehouse hides its contents from us: a give into it is a gamble that ends the batch."""
+    theirs = _faction_name(structure.get("faction"))
+    if not theirs or str(structure.get("owner", "")).casefold() == persona.name.casefold():
+        return False
+    return not faction or theirs.casefold() != faction.casefold()
+
+
+DRAW_RANGE = 48  # how far the atelier walks to an allied store for materials
+DRAW_PER_VISIT = 30  # items drawn in one visit, so the stock stays the crew's
+
+
+def _need_of(persona: Persona, inventory: dict[str, int], kind: str) -> int:
+    """The most of ``kind`` any blueprint in the build priority still lacks."""
+    priority = [b for b in (persona.knobs.get("build_priority") or DEFAULT_BUILD_PRIORITY) if b in BLUEPRINTS]
+    return max((shortfall(inventory, b).get(kind, 0) for b in priority), default=0)
+
+
+def _plan_draw(
+    persona: Persona,
+    state: PersonaState | None,
+    inventory: dict[str, int],
+    position: tuple[int, int],
+    view: WorldView,
+    observe: dict[str, Any],
+    supply_owners: set[str] | None,
+) -> tuple[list[dict[str, Any]], str, str] | None:
+    """Draw the next build's shortfall from an allied team's store (the ``supply`` knob) instead of gathering it.
+
+    The stores are those of the supply team's members; which admit us is read on arrival (our own, a
+    public one, or our faction's), and a store that admits nobody or holds nothing wanted is left alone
+    for a day. The owner's rule of 2026-10-24: the build and research agent draws on the factory's stores.
+    """
+    knob = persona.knobs.get("supply")
+    if not isinstance(knob, dict) or not supply_owners:
+        return None
+    pack = sum(inventory.values())
+    if pack >= 40:
+        return None
+    wanted = [k for k in _wanted(persona, inventory, view) if k in {"wood", "stone", "ore", "fiber"}]
+    if not wanted:
+        return None
+    owners = {str(n).casefold() for n in supply_owners}
+    tick = int(view.tick or observe.get("tick", 0) or 0)
+    closed = _full_stores(state, tick)
+    reach = int(knob.get("range", DRAW_RANGE) or DRAW_RANGE)
+    faction = _faction_name((observe.get("you") or {}).get("faction"))
+    stores = sorted(
+        (s for s in (view.world_structures or view.structures) if s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() in owners and (int(s["x"]), int(s["y"])) not in closed),
+        key=lambda s: chebyshev(position, (int(s["x"]), int(s["y"]))),
+    )
+    for store in stores:
+        where = (int(store["x"]), int(store["y"]))
+        if chebyshev(position, where) > reach:
+            break
+        if chebyshev(position, where) <= 1:
+            seen = view.structure_at(*where) or store
+            policy = str(seen.get("policy") or "")
+            admits = str(seen.get("owner", "")).casefold() == persona.name.casefold() or policy == "public" or (policy == "faction" and bool(faction) and _faction_name(seen.get("faction")).casefold() == faction.casefold())
+            storage = seen.get("storage") if isinstance(seen.get("storage"), dict) else {}
+            takes: list[dict[str, Any]] = []
+            room = 50 - pack
+            budget = DRAW_PER_VISIT
+            for kind in wanted:
+                qty = min(int(storage.get(kind, 0) or 0) - 5, _need_of(persona, inventory, kind), room, budget)  # leave five, as with nodes
+                if qty >= 1:
+                    takes.append({"action": "take", "x": where[0], "y": where[1], "item": kind, "qty": qty})
+                    room -= qty
+                    budget -= qty
+            if admits and takes:
+                what = ", ".join(f"{t['qty']} {t['item']}" for t in takes[:2])
+                return takes[:2], f"the next build wants {what}: draw it from the allied store at {where}", "draw"
+            _mark_full(state, where, tick)  # nothing for us here today: it admits nobody, or holds nothing wanted
+            continue
+        target = _step_toward(position, {"x": where[0], "y": where[1]}, view)
+        if target is not None and target != position:
+            return [{"action": "move", "x": target[0], "y": target[1]}], f"the next build wants {', '.join(wanted[:3])}: walk to the allied store at {where} ({chebyshev(position, where)} tiles)", "draw_trip"
+    return None
 
 
 def _plan_deposit(
@@ -1876,6 +2024,7 @@ def _plan_deposit(
     registrar_name: str | None = None,
     mates: set[str] | None = None,
     state: PersonaState | None = None,
+    faction: str | None = None,
 ) -> tuple[list[dict[str, Any]], str, str] | None:
     """Put surplus into an adjacent storehouse: our own first, else a teammate's or the collective's vault.
 
@@ -1892,13 +2041,18 @@ def _plan_deposit(
         (s for s in view.structures if s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() in owners),
         key=lambda s: str(s.get("owner", "")).casefold() != persona.name.casefold(),
     )
+    tick = int(view.tick or 0)
+    full = _full_stores(state, tick)
     for structure in candidates:
         where = (int(structure["x"]), int(structure["y"]))
-        if chebyshev(position, where) > 1:
+        if chebyshev(position, where) > 1 or where in full:
+            continue
+        if _opaque_to(structure, persona, faction):
+            _mark_full(state, where, tick)  # its contents are hidden from us: the office's depots refused 47 gives in a day this way
             continue
         room = storehouse_room(structure)
         if room < 5:
-            _mark_full(state, where, int(view.tick or 0))
+            _mark_full(state, where, tick)
             continue  # the world refuses a give into a full storehouse (inventory_full), and the batch stops there
         for item in ("berries", "stone", "ore", "wood", "fiber"):
             qty = inventory.get(item, 0)

@@ -21,8 +21,8 @@ knobs:
     color: purple
     style: factory
     site_from: land_office
-    request: factory
-    brief: "SURVEY REQUEST factory: LandBroker, the factory needs ground. A 5x5 lot I can grow into the lots beside it, near the mountains in the south and close to Neverland, with gold (ore) and fudge (stone) in reach. Name the lot and your price in wood; I pay into your storehouse."
+    request: works
+    brief: "SURVEY REQUEST works: LandBroker, the factory stands at (89,99) with its stores at (85,92) and (87,94). Deed me the ground under them, lots I09-SE and I09-NE. Name your price in wood; I pay into any storehouse of the land office with room, or into your hands within two tiles."
   welcome: "Welcome through the glass, {name}! Fudgewright, confectioner, at ({x},{y}). The factory rises by the river at (89,98): fudge walls, gold pillars, windows that glow at night. Read its signs when they stand, whisper me the word you find, and the gold (that is ore) is yours. Honest trades, kept promises."
   stance: {cooperative: 0.3, neutral: 0.3, competitive: 0.4}
   reclaim: {dormant_days: 2, per_wake: 3}

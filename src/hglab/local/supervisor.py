@@ -280,14 +280,6 @@ class Supervisor:
             graph = Graph(graph_path)
             try:
                 try:
-                    from hglab.architecture import ingest_architectures, refresh
-                    from hglab.client import HinterglassClient
-
-                    cat, _new = refresh(self.root, HinterglassClient(api_key=""), 7)
-                    ingest_architectures(graph, cat)
-                except Exception as exc:  # noqa: BLE001 - the catalogue is a bonus of the cycle
-                    self._log(f"architecture catalogue skipped: {str(exc)[:160]}")
-                try:
                     from hglab.local.measure import refresh_archive, refresh_pulse
 
                     archive = refresh_archive(self.root)
@@ -298,6 +290,14 @@ class Supervisor:
                     )
                 except Exception as exc:  # noqa: BLE001 - measurement is a bonus of the cycle; the assignments still follow
                     self._log(f"measure skipped: {str(exc)[:160]}")
+                try:
+                    from hglab.architecture import ingest_architectures, refresh
+                    from hglab.client import HinterglassClient
+
+                    cat, _new = refresh(self.root, HinterglassClient(api_key=""), 7)  # reads the archive the measurement just refreshed
+                    ingest_architectures(graph, cat)
+                except Exception as exc:  # noqa: BLE001 - the catalogue is a bonus of the cycle
+                    self._log(f"architecture catalogue skipped: {str(exc)[:160]}")
                 plan = adapt(self.root, graph, personas, load_teams(self.root))
                 briefed = brief(self.root, graph, plan)
             finally:

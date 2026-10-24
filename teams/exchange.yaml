@@ -28,7 +28,7 @@ pipeline:
     registrar: LandBroker
     keep: 24
     always_ore: true
-    depots: 3
+    depots: 5
     floor: 0
     protect_spawn: 12
     protect_homesteads: true

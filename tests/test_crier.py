@@ -200,4 +200,5 @@ def test_theme_invitations_skip_members_of_teams_with_their_own_faction():
     personas, teams = load_personas(ROOT), load_teams(ROOT)
     reserved = reserved_names(personas, teams)
     assert {"Strayling", "Tinkerglow", "Stoutheart", "Fudgewright", "MotherPail", "GrandadPail"} <= reserved
-    assert "Lagalong" not in reserved and "Clarion" not in reserved and "Plumbline" not in reserved  # exempt, or a team with no faction
+    assert "Lagalong" not in reserved and "Clarion" not in reserved  # exempt, or a team with no faction
+    assert "Plumbline" in reserved  # the atelier joins the factory's faction as its ally (2026-10-24): no theme for it

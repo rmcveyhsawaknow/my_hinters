@@ -47,6 +47,9 @@ knobs:
     cron: 41 */3 * * *
     minutes: 20
     interval_seconds: 300
+  supply:
+    team: chocolate-factory
+    range: 48
 voice:
   register: Calm, exact, a drafting-room voice; measurements and materials first,
     a dry aside at the end.

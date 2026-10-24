@@ -414,6 +414,16 @@ machinery is `src/hglab/architecture.py`:
 Registration is the owner's step (`hglab register --name Plumbline`); until then the persona runs
 only from fixtures.
 
+**Drawing on the factory (2026-10-24).** The owner's rule: the build and research agent draws
+resources from the factory crew's stores. Plumbline is an ally of the Chocolate Factory's faction
+(`faction.allies` in the team file: the founder invites allies as it invites members, and the atelier's
+own `faction` block names the same faction so Plumbline joins when invited), which is what lets it
+`take` from the works' faction-policy stores. Its `supply` knob (`team: chocolate-factory`, `range: 48`)
+runs `_plan_draw` before the gathering steps: with the next build's shortfall unmet and the pack under
+forty, walk to the nearest store of the supply team's members, read on arrival whether it admits us
+(our own, public, or our faction's), take what the build priority lacks (thirty items a visit, five left
+of each kind), and remember a store that admits nobody or holds nothing wanted as closed for a day.
+
 ## The factory crew: five hands and a materials pipeline
 
 On 2026-10-23 the owner asked for a workforce for the Chocolate Factory. Five personas joined the team
@@ -434,6 +444,21 @@ now takes `item` and `inside_territory`), gathers by kind and structures raised 
 adaptive layer's prefer list therefore names `deposit` and `gather_trip` for them, and the crew step
 already runs before either. Fudgewright's own factory of blocks still waits for the land office's deed;
 `place` pays from storehouses within a tile, so the stores at the works are its supply.
+
+**Full stores (2026-10-24).** By the evening of 2026-10-23 both works stores were full (one of them
+357 berries against a target of 60), the hands were giving into the land office's depots beside their
+ore lot, whose contents another faction cannot see, and 47 gives a day came back `inventory_full`,
+each ending its wake. Four rules fixed it. A gatherer's kinds follow the stock targets as a mix, not a
+ceiling (`_role_wanted`: its own kind furthest below target first; when its kinds stand at target and
+the works is short of another, that one). When every store at the works is full the mason's next piece
+is another storehouse, up to `pipeline.stores_max` (default 6), paid from the full store beside it; the
+other hands carry the next store's cost to the mason (`give` within two tiles, the mason found through
+the view or the public roster) or wait by the works at the cap. The mason takes a blueprint's shortfall
+into its pack and walks to a tile in the works where it fits (`_works_goal`) when no tile beside the
+store does: the works stand on sand and a farm wants grass, which had the mason walking between the
+store and the site forever. A hand never unloads through the generic deposit steps, and nobody
+deposits into a storehouse whose faction hides its contents (`_opaque_to`): such a store is remembered
+full for a day on sight, and the full-store memory holds sixteen stores instead of eight.
 
 ## The land office holdings: claim, own, work, sell
 
@@ -457,6 +482,17 @@ at least `min_stock`, and the goods listing outranks the registration slot. Land
 holdings firmed, goods listed and sales settled; each hand's counts deliveries into office stores by
 kind and gathers by kind.
 
+**The works' ground (2026-10-24).** The office's first survey for the factory (lot I08-SE, 45 wood)
+never reached Fudgewright, and the vault it named was full. A site request may now carry `lots`: a
+fixed survey of the client's own ground (`site_requests: works` names I09-SE under the works and
+I09-NE under its stores), priced by the lots' worth, no search. The whisper names the office store
+nearest the ground, a payment into any storehouse of the office (the hands' depots too, `office_names`
+from the registrar's team) or into the registrar's hands within two tiles counts (`PAID_TO`), and the
+deed registers every lot of the survey. Fudgewright's `house.request` is `works`; the brief's id is kept
+with the answer, so a changed brief drops the old answer and asks again at once, and his payment goes
+to the nearest office store with room. The office's `claims.depots` rose from three to five so there is
+room to pay into.
+
 ## Which model thought here, and the town fool
 
 Two rules of 2026-10-23. First, every run says its model: a wake record carries `thinking` (planner,
@@ -477,3 +513,17 @@ divide the island, when winter comes), says the most striking one nobody said in
 it in its own words through the `fool` route: Ollama on this host (`provider: ollama`, `qwen3.5:9b`,
 `think: false`), no key, no cost, never a vendor fallback. The plain sentence stands when the model is
 away or drops a number. Its verification challenges go to the same local route (`knobs.challenge_route`).
+
+## Keyless public reads, shared
+
+The world allows sixty keyless requests a minute from one address, in bursts of thirty. Twenty-one
+personas on one host read the public log, roster, goals and factions in every job, several jobs start
+at the same minute, and the architecture catalogue refetched a week of pages every two hours: the
+supervisor log of 2026-10-23 shows 28 `rate_limited` fetches. `hglab.public` keeps one small disk cache
+under `runs/local/public` for the local runtime: the first process to need a page fetches it and the
+others read its copy (events two minutes, the roster one, goals two, factions five), a lock keeps two
+processes from fetching the same thing, a copy up to half an hour old stands in when the world refuses
+a fetch, and outside the local runtime every call is a plain fetch as before. A wake reads six event
+pages (`EVENT_PAGES`, about five hours) and the archive job twenty; the catalogue is built from the
+archive the measurement cycle refreshes just before it (`architecture.refresh`), fetching only when the
+archive is empty. The public world snapshot keeps its own one-minute cache (`runs/local/world.json`).

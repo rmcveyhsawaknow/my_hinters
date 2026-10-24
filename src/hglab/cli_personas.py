@@ -91,25 +91,39 @@ def team_of(root: Path, persona: Persona) -> Team | None:
 # --- shared data assembly ----------------------------------------------------
 
 
-def fetch_public_events(client: HinterglassClient, pages: int = 20) -> list[dict[str, Any]]:
-    """Read-only public event pages (no key); stops at the first repeated cursor."""
-    events: list[dict[str, Any]] = []
-    before: Any = None
-    seen: set[Any] = set()
-    for _ in range(pages):
-        params: dict[str, Any] = {"limit": 100}
-        if before is not None:
-            params["before"] = before
-        page = client.public_events(**params)
-        rows = page.get("events", [])
-        if not rows:
-            break
-        events.extend(r for r in rows if isinstance(r, dict))
-        before = page.get("next_before") or page.get("before") or rows[-1].get("id")
-        if before is None or before in seen:
-            break
-        seen.add(before)
-    return events
+EVENT_PAGES = 6  # public pages a wake reads: six hundred events, about five hours of the world; the archive job reads deeper
+
+
+def fetch_public_events(client: HinterglassClient, pages: int = 20, root: Path | None = None) -> list[dict[str, Any]]:
+    """Read-only public event pages (no key); stops at the first repeated cursor.
+
+    With ``root`` under the local runtime the pages are shared through ``hglab.public``: one fetch every
+    two minutes for every job on this host, which keeps the collective under the world's keyless limit
+    of sixty requests a minute.
+    """
+    from hglab.public import EVENTS_AGE, cached
+
+    def fetch() -> list[dict[str, Any]]:
+        events: list[dict[str, Any]] = []
+        before: Any = None
+        seen: set[Any] = set()
+        for _ in range(pages):
+            params: dict[str, Any] = {"limit": 100}
+            if before is not None:
+                params["before"] = before
+            page = client.public_events(**params)
+            rows = page.get("events", [])
+            if not rows:
+                break
+            events.extend(r for r in rows if isinstance(r, dict))
+            before = page.get("next_before") or page.get("before") or rows[-1].get("id")
+            if before is None or before in seen:
+                break
+            seen.add(before)
+        return events
+
+    rows = cached(root, f"events-{int(pages)}", fetch, EVENTS_AGE)
+    return [r for r in rows if isinstance(r, dict)] if isinstance(rows, list) else []
 
 
 def gather_inputs(
@@ -131,7 +145,7 @@ def gather_inputs(
     events = load_events(paths)
     if fetch_public:
         try:
-            events = load_events([]) + _merge(events, fetch_public_events(HinterglassClient()))
+            events = load_events([]) + _merge(events, fetch_public_events(HinterglassClient(), pages=EVENT_PAGES, root=root))
         except (HinterglassError, OSError) as exc:
             typer.echo(f"public fetch failed ({exc}); using local events only", err=True)
     runs_by_slug: dict[str, list[dict[str, Any]]] = {}
@@ -222,7 +236,7 @@ def _persona_tick(
             typer.echo(f"jitter: sleeping {delay / 60:.1f} minutes")
             time.sleep(delay)
         inputs = inputs or gather_inputs(root, fixtures=False, events_paths=events_paths, runs_paths=[], fetch_public=not work, tick=None)
-        roster = public_teammate_positions(personas, team)
+        roster = public_teammate_positions(personas, team, root)
         world = fetch_public_world(world_cache_path(root))
         owned = structure_counts(world, persona.name)
         progress(f"inputs: {len(inputs['events'])} public events, world tick {inputs['tick']}")
@@ -412,12 +426,14 @@ def _registrar_name(root: Path, personas: dict[str, Persona]) -> str | None:
     return registrar.name if registrar else None
 
 
-def public_teammate_positions(personas: dict[str, Persona], team: Team | None) -> dict[str, tuple[int, int]]:
-    """Teammate positions from the public roster (no key), so a follower can find a leader out of view."""
+def public_teammate_positions(personas: dict[str, Persona], team: Team | None, root: Path | None = None) -> dict[str, tuple[int, int]]:
+    """Teammate positions from the public roster (no key, shared through the public cache), so a follower can find a leader out of view."""
     if team is None:
         return {}
+    from hglab.public import public_agents
+
     try:
-        agents = HinterglassClient().public_agents().get("agents", [])
+        agents = public_agents(root)
     except (HinterglassError, OSError):
         return {}
     by_name = {personas[m].name.casefold(): m for m in team.members if m in personas}
@@ -448,10 +464,11 @@ def build_environment(
     goals: list[dict[str, Any]] = []
     factions: list[dict[str, Any]] = []
     if live:
+        from hglab.public import public_factions, public_goals
+
         try:
-            client = HinterglassClient()
-            goals = client.public_goals().get("goals", [])
-            factions = client.public_factions().get("factions", [])
+            goals = public_goals(root, "open")
+            factions = public_factions(root)
         except (HinterglassError, OSError):
             goals, factions = [], []
     else:
@@ -473,8 +490,10 @@ def build_environment(
             ledger = load_ledger(root)
             claimed: list[dict[str, Any]] = []
             if live:
+                from hglab.public import public_goals as _claimed_goals
+
                 try:
-                    claimed = list(HinterglassClient().public_goals("claimed").get("goals", []))
+                    claimed = list(_claimed_goals(root, "claimed"))
                 except (HinterglassError, OSError):
                     claimed = []
             says = [e for e in inputs["events"] if isinstance(e, dict) and e.get("type") == "say" and now_tick - int(e.get("tick", 0) or 0) <= 8640]
@@ -729,7 +748,7 @@ def land_round(root: Path, persona: Persona, *, dry_run: bool, fixture: Path | N
     team = team_of(root, persona)
     collective_names = {p.name for p in personas.values()}
     goals, _factions, agents, events = _public_board_inputs(root, fixture=fixture)
-    world = fixture_world(root) if fixture is not None else fetch_public_world()
+    world = fixture_world(root) if fixture is not None else fetch_public_world(world_cache_path(root))
     structures = list(world.get("structures", []))
     agents = list(world.get("agents", []) or agents)
     if fixture is not None:
@@ -779,7 +798,8 @@ def land_round(root: Path, persona: Persona, *, dry_run: bool, fixture: Path | N
         claims = ((team.extra or {}).get("pipeline") or {}).get("claims") if team is not None else None
         b = board(ledger, structures, agents, goals, persona.name, state, world=world, tick=tick, claims=claims)
         recent = [e for e in events if isinstance(e, dict) and tick - int(e.get("tick", 0) or 0) <= 8640]
-        actions, reasons, update = plan_round(persona, ledger, observe, b, public_events=recent, structures=structures, agents=agents, state=state, collective_names=collective_names, world=world, claims=claims)
+        office_names = {personas[m].name for m in (team.members if team else ()) if m in personas}  # any store of the office takes a payment
+        actions, reasons, update = plan_round(persona, ledger, observe, b, public_events=recent, structures=structures, agents=agents, state=state, collective_names=collective_names, world=world, claims=claims, office_names=office_names)
         if update:
             actions.append({"action": "remember", "key": STATE_KEY, "text": fit_note({**state, **update})})
         worn = "+".join(persona.roles)
@@ -847,7 +867,7 @@ def land_board_command(fixtures: bool = typer.Option(False, "--fixtures", help="
     registrar = personas[ledger["registrar"]]
     fixture = (root / FIXTURES / "observe" / f"{ledger['registrar']}.json") if fixtures else None
     goals, _factions, agents, _events = _public_board_inputs(root, fixture=fixture)
-    world = fixture_world(root) if fixtures else fetch_public_world()
+    world = fixture_world(root) if fixtures else fetch_public_world(world_cache_path(root))
     typer.echo(render_board(board(ledger, list(world.get("structures", [])), list(world.get("agents", []) or agents), goals, registrar.name)))
     for problem in check_ledger(ledger, personas):
         typer.echo(f"  ! {problem}")
@@ -916,16 +936,18 @@ def _public_board_inputs(root: Path, *, fixture: Path | None) -> tuple[list[dict
         agents_data = json.loads((world / "agents.json").read_text(encoding="utf-8"))
         agents = agents_data.get("agents", []) if isinstance(agents_data, dict) else list(agents_data)
         return goals, factions, agents, load_events([world / "events.jsonl"])
+    from hglab.public import public_agents, public_factions, public_goals
+
     client = HinterglassClient()
     goals: list[dict[str, Any]] = []
     factions: list[dict[str, Any]] = []
     agents: list[dict[str, Any]] = []
     events: list[dict[str, Any]] = []
     try:
-        goals = list(client.public_goals("open").get("goals", [])) + list(client.public_goals("claimed").get("goals", []))
-        factions = client.public_factions().get("factions", [])
-        agents = client.public_agents().get("agents", [])
-        events = fetch_public_events(client, pages=3)
+        goals = list(public_goals(root, "open")) + list(public_goals(root, "claimed"))
+        factions = list(public_factions(root))
+        agents = list(public_agents(root))
+        events = fetch_public_events(client, pages=3, root=root)
     except (HinterglassError, OSError) as exc:
         typer.echo(f"public reads failed ({exc}); the board may be partial", err=True)
     return goals, factions, agents, events
@@ -1685,7 +1707,9 @@ def community_board(
     public_agents: dict[str, dict[str, Any]] = {}
     if public:
         try:
-            public_agents = {a["name"].casefold(): a for a in HinterglassClient().public_agents().get("agents", [])}
+            from hglab import public as public_reads
+
+            public_agents = {a["name"].casefold(): a for a in public_reads.public_agents(root)}
         except (HinterglassError, OSError) as exc:
             typer.echo(f"public agents fetch failed: {exc}", err=True)
     signals: dict[str, dict[str, Any]] = {}
