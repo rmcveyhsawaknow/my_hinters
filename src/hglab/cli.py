@@ -159,10 +159,29 @@ def ensure_verified(client: HinterglassClient, usage: dict[str, int] | None = No
     runs before the lease is taken. Returns True when a challenge was answered.
     """
     observe = client.observe()
+    keep_whispers(client, observe)
     if not observe.get("challenge"):
         return False
     answer_daily_challenge(client, observe, usage, route)
     return True
+
+
+def keep_whispers(client: HinterglassClient, observe: dict[str, Any]) -> bool:
+    """Write the unread whispers this observe delivered into the notebook, for the wake's planner.
+
+    The world marks a whisper read on delivery, and a live wake observes three times before its planner
+    runs (verification, the entry point's look, the loop's own), so an answer that arrived between wakes
+    was consumed by the first look and never reached the planner: the land office's survey of
+    2026-10-24 01:05 UTC was lost this way. A fixture client has nothing to keep.
+    """
+    if not observe.get("inbox"):
+        return False
+    from hglab.inbox import preserve
+
+    try:
+        return bool(preserve(client, observe))
+    except (HinterglassError, OSError, ValueError):
+        return False
 
 
 @app.command()
