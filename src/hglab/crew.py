@@ -58,6 +58,7 @@ EMPTY_DEPOT_TICKS = 2160  # a depot found empty is left alone for six hours
 FAR_RANK = 10**6  # a node outside every holding, in claims mode: after all of them
 STORES_MAX = 6  # storehouses at the works before the hands stop raising more for a full stock (pipeline.stores_max)
 OVERFLOW_ROOM = 25  # a store with less room than this counts as full for the next-store decision and is not worth a walk with a load
+MASON_KEEP = {"wood": 20, "stone": 10, "fiber": 5}  # the mason unloads only what a storehouse, a farm or a hut will not need: the hands hand it the cost
 
 Step = tuple[list[dict[str, Any]], str, str]
 FloorFor = Callable[[tuple[int, int]], int]
@@ -188,7 +189,7 @@ def plan_crew(
     # b. a heavy pack goes to the nearest store of ours with room (the mason carries its materials to the site instead)
     heavy = pack >= 46 if role == "mason" else (goods >= HEAVY or pack >= 46)
     if heavy and drop_points:
-        step = _unload(inventory, position, view, drop_points, room, state, tick, pack)
+        step = _unload(inventory, position, view, drop_points, room, state, tick, pack, keep=MASON_KEEP if role == "mason" and stores else None)
         if step is not None:
             return step
         if stores and not open_stores and role != "mason":
@@ -329,7 +330,9 @@ def _unload(
     state: PersonaState,
     tick: int,
     pack: int,
+    keep: dict[str, int] | None = None,
 ) -> Step | None:
+    """Give the pack into the nearest store with room; ``keep`` holds back what the next build needs (the mason's case)."""
     full = _full_stores(state, tick)
     candidates = sorted(
         (s for s in stores if (int(s["x"]), int(s["y"])) not in full),
@@ -350,8 +353,8 @@ def _unload(
                 continue
             gives: list[dict[str, Any]] = []
             for item in ("wood", "stone", "ore", "fiber", "berries"):
-                keep = BERRY_KEEP if item == "berries" else 0
-                qty = min(inventory.get(item, 0) - keep, space)
+                held_back = BERRY_KEEP if item == "berries" else int((keep or {}).get(item, 0) or 0)
+                qty = min(inventory.get(item, 0) - held_back, space)
                 if qty >= 1:
                     gives.append({"action": "give", "x": where[0], "y": where[1], "item": item, "qty": qty})
                     space -= qty

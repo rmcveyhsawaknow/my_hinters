@@ -147,6 +147,19 @@ def test_full_stores_make_the_mason_raise_another_and_the_hands_carry_its_cost_t
     assert _role_wanted("woodcutter", {}) == ["wood"]  # no store in view: the role's own kind
 
 
+def test_the_mason_keeps_the_next_pieces_cost_when_it_unloads():
+    from hglab.crew import MASON_KEEP
+
+    store = {"id": 1, "type": "storehouse", "x": 90, "y": 98, "owner": "Treacleaxe", "policy": "faction", "faction": "Chocolate Factory", "storage": {"wood": 100}}
+    view = WorldView(x0=80, y0=90, rows=GRASSY, structures=[store], world_structures=[store], full_map=GRASSY)
+    observe = {"you": {"x": 89, "y": 97, "faction": {"id": 5, "name": "Chocolate Factory"}}, "tick": 100}
+    step = _step("loompa-mason", {"wood": 30, "stone": 15, "berries": 5}, (89, 97), view, observe)
+    assert step[0] == [{"action": "give", "x": 90, "y": 98, "item": "wood", "qty": 10}, {"action": "give", "x": 90, "y": 98, "item": "stone", "qty": 5}]  # a storehouse's cost stays in the pack
+    assert MASON_KEEP == {"wood": 20, "stone": 10, "fiber": 5}
+    hand = _step("loompa-woodcutter", {"wood": 30, "stone": 15, "berries": 5}, (89, 97), view, observe)
+    assert hand[0][0] == {"action": "give", "x": 90, "y": 98, "item": "wood", "qty": 30}  # a gatherer keeps nothing back
+
+
 def test_the_mason_takes_the_shortfall_into_its_pack_when_no_tile_beside_the_store_fits():
     stores = [
         {"id": 1, "type": "storehouse", "x": 90, "y": 98, "owner": "Treacleaxe", "policy": "faction", "faction": "Chocolate Factory", "storage": {"wood": 60, "stone": 30, "fiber": 10}},
