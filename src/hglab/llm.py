@@ -156,14 +156,19 @@ def structured_call(
         import httpx
 
         base = str(config.get("base_url") or "http://127.0.0.1:11434").rstrip("/")
+        options: dict[str, Any] = {"num_predict": output_tokens, "temperature": float(config.get("temperature", 0.7))}
+        if config.get("num_ctx"):
+            options["num_ctx"] = int(config["num_ctx"])  # Ollama's default window silently cuts a longer prompt
         payload = {
             "model": config["model"],
             "stream": False,
             "think": False,  # a thinking model spends its whole budget thinking; the fool just answers
             "format": schema,
-            "options": {"num_predict": output_tokens, "temperature": float(config.get("temperature", 0.7))},
+            "options": options,
             "messages": [{"role": "user", "content": prompt}],
         }
+        if config.get("keep_alive"):
+            payload["keep_alive"] = str(config["keep_alive"])  # one load serves the hour's lines instead of one per call
         response = httpx.post(f"{base}/api/chat", json=payload, timeout=float(config.get("timeout", 120)))
         response.raise_for_status()
         data = response.json()

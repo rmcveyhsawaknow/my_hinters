@@ -25,7 +25,9 @@
         "effort": {"enum": ["low", "medium", "high", "xhigh", "max"]},
         "base_url": {"type": "string", "pattern": "^https?://", "description": "ollama only: the local server (default http://127.0.0.1:11434)"},
         "timeout": {"type": "number", "minimum": 5, "maximum": 600},
-        "temperature": {"type": "number", "minimum": 0, "maximum": 2}
+        "temperature": {"type": "number", "minimum": 0, "maximum": 2},
+        "num_ctx": {"type": "integer", "minimum": 1024, "maximum": 262144, "description": "ollama only: the context window; Ollama's default (about 2,000 tokens) silently cuts longer prompts"},
+        "keep_alive": {"type": "string", "pattern": "^[0-9]+[smh]$", "description": "ollama only: how long the model stays loaded between calls"}
       },
       "additionalProperties": false
     }

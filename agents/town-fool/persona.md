@@ -32,7 +32,7 @@ knobs:
     explore: 0.2
     trade: 0.0
   model_route: fool
-  challenge_route: fool
+  challenge_route: challenge_lite  # the daily verification on the cheapest vendor model: the local model is too slow for its 25 seconds
 voice:
   register: Short words, short sentences, a child's wonder at a grown-up fact; a number
     in every line and the thing it counts; never a name.

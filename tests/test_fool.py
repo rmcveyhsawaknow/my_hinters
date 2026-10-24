@@ -43,7 +43,7 @@ def test_the_fool_sees_the_big_picture_in_plain_numbers():
 def test_the_fool_says_the_most_striking_unsaid_fact_once_and_moves_on():
     personas = load_personas(ROOT)
     fool = personas["town-fool"]
-    assert fool.quirk["type"] == "big_picture" and fool.knobs["model_route"] == "fool" and fool.knobs["challenge_route"] == "fool" and "work" not in fool.knobs
+    assert fool.quirk["type"] == "big_picture" and fool.knobs["model_route"] == "fool" and fool.knobs["challenge_route"] == "challenge_lite" and "work" not in fool.knobs
     agents, structures, resources, events = _public()
     env = {"insights": insights(agents=agents, structures=structures, resources=resources, events=events, tick=10000, season="winter")}
     state = PersonaState(mood="wondering")
@@ -155,11 +155,11 @@ def test_every_run_records_its_model_and_the_profile_says_it_once_a_day(tmp_path
     renewed = _plan_model_note(nibs, changed, PersonaState(mood="cheerful"))
     assert renewed is not None and renewed[0][0]["bio"].count("Thinks with") == 1 and renewed[0][0]["bio"].endswith("Thinks with claude-opus-5-5 on route tick_opus.")
     # A note that names something else is wrong in public: replaced after two hours, not a day
-    wrong = {"tick": 5000 + 800, "you": {"name": nibs.name, "bio": "A builder. Thinks with rules only (no model)."}, "_model_label": "claude-haiku-5-5 on routes tick and talk"}
+    wrong = {"tick": 5000 + 800, "you": {"name": nibs.name, "bio": "A builder. Thinks with rules only (no model)."}, "_model_label": "claude-haiku-5-5 on route tick and qwen3.5:9b on route talk for shift lines"}
     soon = PersonaState(mood="cheerful")
     soon.flags["last_profile_tick"] = 5000
     fixed = _plan_model_note(nibs, wrong, soon)
-    assert fixed is not None and fixed[0][0]["bio"].endswith("Thinks with claude-haiku-5-5 on routes tick and talk.") and "rules only" not in fixed[0][0]["bio"]
+    assert fixed is not None and fixed[0][0]["bio"].endswith("Thinks with claude-haiku-5-5 on route tick and qwen3.5:9b on route talk for shift lines.") and "rules only" not in fixed[0][0]["bio"]
     soon.flags["last_profile_tick"] = 5000 + 700
     assert _plan_model_note(nibs, wrong, soon) is None  # not within two hours of the last note
     fool = personas["town-fool"]
@@ -185,14 +185,94 @@ def test_the_label_names_the_identitys_models_even_on_a_rules_only_shift(monkeyp
     monkeypatch.setattr(cli_personas, "_model_key", lambda root: True)
     personas = load_personas(ROOT)
     label = cli_personas._model_label
-    assert label(ROOT, personas["nibs"], None) == "claude-haiku-5-5 on routes tick and talk"
-    assert label(ROOT, personas["town-crier"], None) == "claude-sonnet-5-5 on route tick_premium and claude-haiku-5-5 on route talk for shift lines"
+    assert label(ROOT, personas["nibs"], None) == "claude-haiku-5-5 on route tick and qwen3.5:9b on route talk for shift lines"
+    assert label(ROOT, personas["town-crier"], None) == "claude-sonnet-5-5 on route tick_premium and qwen3.5:9b on route talk for shift lines"
     assert label(ROOT, personas["wonka"], None).startswith("claude-opus-5-5 on route tick_opus")
-    assert label(ROOT, personas["loompa-mason"], None) == "claude-haiku-5-5 on route tick"  # its hats cannot say, so no shift lines
-    assert label(ROOT, personas["town-fool"], None) == "qwen3.5:9b on route fool"
+    for hand in ("loompa-mason", "loompa-woodcutter", "office-steward"):
+        assert label(ROOT, personas[hand], None) == "rules only (no model)"  # planner: rules, and a builder hat cannot say
+    assert label(ROOT, personas["town-fool"], None) == "qwen3.5:9b on route fool, and claude-haiku-5-5 on route challenge_lite for its daily verification"
     monkeypatch.setattr(cli_personas, "_model_key", lambda root: False)
-    assert label(ROOT, personas["nibs"], None) == "rules only (no model)"  # no vendor key: nothing thinks for it
-    assert label(ROOT, personas["town-fool"], None) == "qwen3.5:9b on route fool"  # the local model needs no key
+    assert label(ROOT, personas["nibs"], None) == "rules only, and qwen3.5:9b on route talk for shift lines"  # no vendor key: rules plan, the local model writes its lines
+    assert label(ROOT, personas["town-fool"], None) == "qwen3.5:9b on route fool"  # the local model needs no key; without one nothing answers its verification
+
+
+def test_the_hands_plan_by_rules_and_the_shift_lines_and_the_fool_run_where_the_owner_chose(monkeypatch):
+    from hglab import llm
+    from hglab.cli_personas import effective_planner
+    from hglab.llm import route_config, structured_call
+
+    personas = load_personas(ROOT)
+    hands = [s for s in personas if s.startswith(("loompa-", "office-"))]
+    assert len(hands) == 10 and all(personas[s].knobs["planner"] == "rules" for s in hands)
+    assert all(effective_planner(personas[s], "llm", False) == "heuristic" for s in hands)
+    assert effective_planner(personas["nibs"], "llm", False) == "llm" and effective_planner(personas["nibs"], "llm", True) == "heuristic"
+    monkeypatch.setattr("hglab.llm.get_secret", lambda name, root=None: "set")
+    assert route_config("challenge_lite", ROOT)["model"] == "claude-haiku-5-5" and route_config("challenge", ROOT)["model"] == "claude-sonnet-5-5"
+    talk = route_config("talk", ROOT)
+    assert talk["provider"] == "ollama" and talk["model"] == "qwen3.5:9b" and talk["num_ctx"] == 4096 and route_config("fool", ROOT)["num_ctx"] == 4096
+    calls = []
+
+    class Response:
+        def raise_for_status(self):
+            return None
+
+        def json(self):
+            return {"model": "qwen3.5:9b", "message": {"content": json.dumps({"line": "Twelve stone to the works this hour."})}, "done_reason": "stop", "prompt_eval_count": 1750, "eval_count": 60}
+
+    monkeypatch.setattr(llm.httpx, "post", lambda url, json=None, timeout=None: calls.append((url, json, timeout)) or Response()) if hasattr(llm, "httpx") else monkeypatch.setattr("httpx.post", lambda url, json=None, timeout=None: calls.append((url, json, timeout)) or Response())
+    structured_call("talk", "one line", {"type": "object", "properties": {"line": {"type": "string"}}, "required": ["line"]}, root=ROOT, output_tokens=200)
+    _url, payload, timeout = calls[0]
+    assert payload["options"]["num_ctx"] == 4096 and payload["keep_alive"] == "30m" and timeout == 180
+
+
+def test_a_shift_line_is_written_locally_without_any_vendor_key(monkeypatch):
+    from hglab.talk import compose_line
+
+    personas = load_personas(ROOT)
+    joe = personas["grandpa-joe"]
+    monkeypatch.setattr("hglab.secrets.get_secret", lambda name, root=None: None)
+    monkeypatch.setattr("hglab.llm.get_secret", lambda name, root=None: None)
+    seen = []
+
+    def fake(route, prompt, schema, **kwargs):
+        seen.append(route)
+
+        class Result:
+            def __init__(self):
+                self.value = {"line": "Grandad counted twelve stone into the store this hour, and took the credit for all of it."}
+                self.input_tokens, self.output_tokens, self.model, self.provider = 1750, 40, "qwen3.5:9b", "ollama"
+
+        return Result()
+
+    monkeypatch.setattr("hglab.llm.structured_call", fake)
+    usage = {"calls": 0, "input_tokens": 0, "output_tokens": 0}
+    from hglab.talk import summarise_shift
+
+    summary = summarise_shift([{"actions": [{"action": "gather", "kind": "stone"}], "summary": "gathering", "mood": "boastful", "x": 85, "y": 92}])
+    _line, source = compose_line(joe, load_team(ROOT, joe.team), summary, ROOT, usage=usage)
+    assert seen == ["talk"] and source == "model" and usage["provider"] == "ollama" and usage["model"] == "qwen3.5:9b"
+
+
+def test_a_character_wake_with_no_line_left_this_hour_skips_the_model(tmp_path):
+    personas = load_personas(ROOT)
+    nibs = personas["nibs"]
+    observe = load_fixture(FIX / "observe/nibs.json")
+    tick = int(observe["tick"])
+    team = load_team(ROOT, nibs.team)
+    members = [personas[m].name for m in team.members if m in personas]
+    spent = [{"type": "say", "actor": members[i % len(members)], "tick": tick - 10 - i, "id": 900000 + i, "text": f"line {i}"} for i in range(int(team.social_budget["says_per_hour"]))]
+    called = []
+
+    def llm_call(prompt, schema):
+        called.append(1)
+        raise AssertionError("the model must not be asked for a plan that cannot speak")
+
+    client = FixtureClient(observe)
+    lease = acquire(client, nibs.name)
+    result = persona_wake(persona=nibs, team=team, personas=personas, client=client, lease=lease, root=ROOT, output_dir=tmp_path, dry_run=True, seed="quiet", planner_mode="llm", llm_call=llm_call, public_events=spent)
+    record = result[0] if isinstance(result, tuple) else result
+    if record.get("wake_mode") != "rest":
+        assert not called and "public-speech budget" in record.get("model_skipped", "") and record["thinking"]["planner"] == "heuristic"
 
 
 def test_the_fools_fixture_wake_says_one_plain_truth_and_nothing_else_costly(tmp_path):

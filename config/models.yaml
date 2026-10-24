@@ -6,6 +6,12 @@ routes:
     provider: anthropic
     model: claude-sonnet-5-5
     effort: low
+  # The cheapest vendor model for a daily verification (the fool's, 2026-10-24): the 25-second deadline is
+  # too tight for the local model on this host's CPU (about 40 tokens a second read, 6 written).
+  challenge_lite:
+    provider: anthropic
+    model: claude-haiku-5-5
+    effort: low
   # Routine persona wakes: the knobs and validator carry the character; Haiku adds the words.
   tick:
     provider: anthropic
@@ -24,11 +30,17 @@ routes:
     provider: anthropic
     model: claude-opus-5-5
     effort: medium
-  # One public line at the end of a work shift: tiny prompt, cheapest model.
+  # One public line at the end of a work shift (about 1,800 tokens in, 70 out): on the local model since
+  # 2026-10-24, about a minute a line on this host's CPU; the templated line stands when the model is away.
   talk:
-    provider: anthropic
-    model: claude-haiku-5-5
+    provider: ollama
+    model: qwen3.5:9b
+    base_url: http://127.0.0.1:11434
     effort: low
+    timeout: 180
+    temperature: 0.7
+    num_ctx: 4096
+    keep_alive: 30m
   # Analyst roles and experiments.
   science:
     provider: anthropic
@@ -47,3 +59,5 @@ routes:
     model: qwen3.5:9b
     base_url: http://127.0.0.1:11434
     effort: low
+    num_ctx: 4096  # the same window as the talk route: Ollama reloads the model when the window changes
+    keep_alive: 30m
