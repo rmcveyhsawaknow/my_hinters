@@ -500,7 +500,11 @@ from the registrar's team) or into the registrar's hands within two tiles counts
 deed registers every lot of the survey. Fudgewright's `house.request` is `works`; the brief's id is kept
 with the answer, so a changed brief drops the old answer and asks again at once, and his payment goes
 to the nearest office store with room. The office's `claims.depots` rose from three to five so there is
-room to pay into.
+room to pay into. The answer the office sent at 01:05 UTC never reached the planner: a live wake observes
+three times before it plans (verification, the entry point's look, the loop's own), the world marks a
+whisper read on delivery, and only the keepalive and the rounds kept what they saw. Every entry point now
+keeps unread whispers in the notebook (`cli.keep_whispers`) before the loop observes again, so the
+planner's `merge_inbox` finds them.
 
 ## Which model thought here, and the town fool
 

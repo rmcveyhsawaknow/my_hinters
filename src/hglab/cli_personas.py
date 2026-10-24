@@ -284,6 +284,11 @@ def _persona_tick(
     try:
         observe = client.observe()
         progress(f"observe: tick {observe.get('tick')}, energy {(observe.get('you') or {}).get('energy')}")
+        if fixture is None:
+            from hglab.cli import keep_whispers
+
+            if keep_whispers(client, observe):
+                progress("whispers kept in the notebook for the planner")  # the loop observes again; the world marks them read on delivery
         if observe.get("challenge"):
             if fixture is None or _model_key(root):
                 from hglab.cli import answer_daily_challenge
