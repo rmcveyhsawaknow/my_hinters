@@ -1128,7 +1128,7 @@ def _plan_site_trade(
     return [{"action": "move", "x": target[0], "y": target[1]}], f"carrying {carried} {currency} toward the land office's storehouse at {vault} to pay for lot {bought.get('lot')}", "deed_trip"
 
 
-PAY_IN_PERSON_RANGE = 24  # how far the client walks to put the price into the registrar's hands when every office store is full
+PAY_IN_PERSON_RANGE = 40  # how far the client walks to put the price into the registrar's hands when every office store is full (a few wakes)
 
 
 def _pay_in_person(
