@@ -525,7 +525,7 @@ rest, which node is rare, what everyone did all day, whether anyone claimed a go
 divide the island, when winter comes), says the most striking one nobody said in three days, and puts
 it in its own words through the `fool` route: Ollama on this host (`provider: ollama`, `qwen3.5:9b`,
 `think: false`), no key, no cost, never a vendor fallback. The plain sentence stands when the model is
-away or drops a number. Its verification challenges go to the same local route (`knobs.challenge_route`).
+away or drops a number. Its daily verification goes to the cheapest vendor model (`knobs.challenge_route: challenge_lite`, Haiku 5.5, since 2026-10-24), in its wakes and in its keepalive alike.
 
 ## Keyless public reads, shared
 
@@ -540,3 +540,24 @@ a fetch, and outside the local runtime every call is a plain fetch as before. A 
 pages (`EVENT_PAGES`, about five hours) and the archive job twenty; the catalogue is built from the
 archive the measurement cycle refreshes just before it (`architecture.refresh`), fetching only when the
 archive is empty. The public world snapshot keeps its own one-minute cache (`runs/local/world.json`).
+
+## Which model where, on this host (2026-10-24)
+
+The local model (`qwen3.5:9b` through Ollama) runs on this host's CPU: it reads about 40 tokens a second
+and writes about 6, and Ollama's default window cuts a prompt at about 2,000 tokens unless the route sets
+`num_ctx`. A character wake's prompt is 20,000 to 35,000 tokens, ten minutes or more locally, so character
+wakes stay on vendor models; the local model takes the fool's pattern only, where rules decide and the model
+writes one short line. From the records of 2026-10-23/24 and the owner's decision:
+
+- **The factory crew and the office hands plan by rules** (`knobs.planner: rules`, `effective_planner`).
+  Their pipeline does the work; 16 of 22 of the crew's model plans were discarded because the model
+  proposed says and goal claims the builder hat forbids, and kept ones overrode the pipeline.
+- **No model call when no public line can be said.** A character wake whose persona or team has used its
+  hourly speech budget is planned by rules (`speech_room`, recorded as `model_skipped`). Clarion's seven
+  Sonnet plans after the quantity fix were all discarded for this.
+- **Shift lines on the local model.** The `talk` route is Ollama with `num_ctx: 4096` and `keep_alive: 30m`
+  (about 1,800 tokens in, 70 out, a minute a line); the templated line stands when it is away or slow.
+  The fool's route carries the same window, since Ollama reloads a model whose window changes.
+- **The fool's verification on Haiku.** The 25-second deadline is too tight for the local model, so
+  `challenge_lite` (Haiku 5.5) answers it; the keepalive now honours `knobs.challenge_route` as the wakes
+  do (it used the default Sonnet route before). The fool's profile names both models.

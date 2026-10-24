@@ -240,8 +240,7 @@ def _persona_tick(
         world = fetch_public_world(world_cache_path(root))
         owned = structure_counts(world, persona.name)
         progress(f"inputs: {len(inputs['events'])} public events, world tick {inputs['tick']}")
-    if work:
-        planner = "heuristic"
+    planner = effective_planner(persona, planner, work)
     if planner == "auto":
         planner = "llm" if fixture is None and _model_key(root) else "heuristic"
     if planner == "llm" and not _model_key(root):
@@ -560,6 +559,18 @@ def _restore_mode() -> None:
     wake_module.decide_wake_mode = mood_module.decide_wake_mode
 
 
+def effective_planner(persona: Persona, planner: str, work: bool) -> str:
+    """The planner this wake may use: work shifts and personas with ``knobs.planner: rules`` plan by rules.
+
+    The owner's rule of 2026-10-24 for the factory crew and the office hands: their pipeline does the
+    work, and their model plans were mostly discarded (the model kept proposing says and goal claims the
+    builder hat forbids) or overrode the pipeline with stale reasoning.
+    """
+    if work or str(persona.knobs.get("planner") or "auto") == "rules":
+        return "heuristic"
+    return planner
+
+
 def _model_key(root: Path) -> bool:
     return bool(get_secret("ANTHROPIC_API_KEY", root) or get_secret("OPENAI_API_KEY", root))
 
@@ -570,7 +581,9 @@ def _model_label(root: Path, persona: Persona, role: str | None) -> str:
     The label describes the identity, not the wake: a work shift plans by rules, but the same identity's
     character wakes think on its route and its shift lines are composed on the ``talk`` route, so the
     note names those models whenever one can answer (a vendor key, or a local provider, which needs
-    none). "rules only (no model)" is said only when no model can think for it at all.
+    none). "rules only" is said when no model plans for it (``knobs.planner: rules``, or no key), with
+    the shift-line model after it when one writes its lines. A persona whose ``challenge_route`` is set
+    names the model that answers its daily verification too (the fool's, on the cheapest vendor model).
     """
     from hglab.actions import allowed_for
     from hglab.llm import route_config
@@ -593,15 +606,21 @@ def _model_label(root: Path, persona: Persona, role: str | None) -> str:
             return None
         return str(selected["model"]) if selected.get("provider") == "ollama" or keyed else None
 
-    thinks = model_of(route)
-    if not thinks:
-        return "rules only (no model)"
+    thinks = None if str(persona.knobs.get("planner") or "auto") == "rules" else model_of(route)
     speaks = model_of("talk") if persona.knobs.get("work") and "say" in allowed_for("+".join(persona.roles)) else None
-    if speaks == thinks:
-        return f"{thinks} on routes {route} and talk"
-    if speaks:
-        return f"{thinks} on route {route} and {speaks} on route talk for shift lines"
-    return f"{thinks} on route {route}"
+    if not thinks:
+        label = f"rules only, and {speaks} on route talk for shift lines" if speaks else "rules only (no model)"
+    elif speaks == thinks:
+        label = f"{thinks} on routes {route} and talk"
+    elif speaks:
+        label = f"{thinks} on route {route} and {speaks} on route talk for shift lines"
+    else:
+        label = f"{thinks} on route {route}"
+    checks = str(persona.knobs.get("challenge_route") or "")
+    verifier = model_of(checks) if checks else None
+    if verifier and verifier != thinks:
+        label += f", and {verifier} on route {checks} for its daily verification"
+    return label
 
 
 def _make_llm_call(root: Path, persona: Persona, team: Team | None, role: str, usage: dict[str, int], *, worn: str | None = None) -> Any:
@@ -1310,7 +1329,7 @@ def scaffold_agent(root: Path, data: dict[str, Any]) -> list[Path]:
         knobs["model_route"] = str(data["model_route"])
     if data.get("work"):
         knobs["work"] = dict(data["work"])
-    for key in ("crew", "house", "patrol", "stake_lots", "reclaim", "stance", "welcome", "gatekeeper", "challenge_route"):
+    for key in ("crew", "house", "patrol", "stake_lots", "reclaim", "stance", "welcome", "gatekeeper", "challenge_route", "planner", "supply"):
         if data.get(key) is not None:
             knobs[key] = data[key]  # the special knobs the schema knows, when the interview names them
     traits = data.get("traits") or [{"name": "steady", "shows_up_as": "Keeps to the plan and reports plainly."}] * 3
@@ -1650,11 +1669,12 @@ def keepalive_command(
         client = HinterglassClient(api_key=api_key)
     usage = {"calls": 0, "input_tokens": 0, "output_tokens": 0}
     status = "ok"
+    route = str((persona.knobs.get("challenge_route") if persona else None) or "challenge")  # the persona's own verification route, as the wakes use
     if fixture is None:
         from hglab.cli import ensure_verified
 
         try:
-            if ensure_verified(client, usage):
+            if ensure_verified(client, usage, route=route):
                 status = "answered"
         except (ValueError, HinterglassError) as exc:
             typer.echo(f"{name}: the verification challenge was not passed ({str(exc)[:100]}); nothing else can run until it is")
@@ -1676,7 +1696,7 @@ def keepalive_command(
                 from hglab.cli import answer_daily_challenge
 
                 try:
-                    answer_daily_challenge(client, observe, usage)
+                    answer_daily_challenge(client, observe, usage, route=route)
                     status = "answered"
                 except (ValueError, HinterglassError) as exc:
                     status = f"lapsed: {str(exc)[:80]}"

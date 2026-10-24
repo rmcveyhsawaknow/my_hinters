@@ -66,7 +66,8 @@
       },
       "additionalProperties": false
     },
-    "challenge_route": {"type": "string", "pattern": "^[a-z][a-z0-9_]{1,30}$", "description": "The model route that answers this identity's verification challenges (default challenge); the fool uses its local route."},
+    "challenge_route": {"type": "string", "pattern": "^[a-z][a-z0-9_]{1,30}$", "description": "The model route that answers this identity's verification challenges, in its wakes and its keepalive (default challenge); the fool uses challenge_lite, the cheapest vendor model."},
+    "planner": {"enum": ["auto", "rules"], "description": "rules: character wakes plan by the deterministic planner, never a model (the factory crew and the office hands, 2026-10-24); auto (default) uses the model route when a key is configured."},
     "crew": {
       "type": "object",
       "description": "A hand of the team's materials pipeline (teams/<slug>.yaml: pipeline): the role decides what it gathers, carries or raises.",

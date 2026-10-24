@@ -1,7 +1,7 @@
 """One public line per run, so the Talk feed shows each agent alive and in character.
 
 Character wakes ask the planner model for a line as part of the plan. Work shifts end with
-one announcement composed here: a small call on the ``talk`` route (Haiku) with the shift's
+one announcement composed here: a small call on the ``talk`` route (the local model since 2026-10-24) with the shift's
 own summary as data, or a templated line when no model key exists. Every line still goes
 through the validator (spam caps, text rules, role allowlist) before it is spoken.
 """
@@ -92,10 +92,14 @@ def compose_line(
     rng = random.Random(f"{persona.slug}:{summary.get('wakes')}:{summary.get('where')}")
     fallback = templated_line(persona, summary, rng)
     if caller is None:
-        from hglab.llm import structured_call
+        from hglab.llm import route_config, structured_call
         from hglab.secrets import get_secret
 
-        if not (get_secret("ANTHROPIC_API_KEY", root) or get_secret("OPENAI_API_KEY", root)):
+        try:
+            local = route_config("talk", root).get("provider") == "ollama"
+        except (OSError, ValueError, KeyError):
+            local = False
+        if not local and not (get_secret("ANTHROPIC_API_KEY", root) or get_secret("OPENAI_API_KEY", root)):
             return fallback, "template"
 
         def caller(prompt: str, schema: dict[str, Any]) -> Any:

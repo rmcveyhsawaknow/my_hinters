@@ -458,7 +458,13 @@ def persona_wake(
                 perimeter_loop(tuple(terrain_rows), bridges),
                 str(persona.knobs["patrol"].get("direction", "clockwise")),
             )
-        if planner_mode == "llm" and llm_call is not None and mode != "rest" and not work and plan.get("approach") not in ("team", "team_goal", "fool"):  # the team step is settled, not debated; the fool's fact is phrased, not planned
+        silent = None
+        if planner_mode == "llm" and llm_call is not None and mode != "rest" and not work:
+            room, why = speech_room(persona, team, personas, observe, public_events, tick)
+            if room <= 0:
+                silent = why
+                extras["model_skipped"] = f"{why}: a character wake with no line to say is planned by rules"  # Clarion's Sonnet plans were all discarded for this
+        if silent is None and planner_mode == "llm" and llm_call is not None and mode != "rest" and not work and plan.get("approach") not in ("team", "team_goal", "fool"):  # the team step is settled, not debated; the fool's fact is phrased, not planned
             from hglab.engage import board as engagement_board
             from hglab.engage import render_board as render_engagement
             from hglab.engage import stance_of
@@ -741,6 +747,30 @@ def persona_wake(
     return record
 
 
+def speech_room(
+    persona: Persona,
+    team: Team | None,
+    personas: dict[str, Persona],
+    observe: dict[str, Any],
+    public_events: list[dict[str, Any]] | None,
+    tick: int,
+) -> tuple[int, str]:
+    """Public lines this wake may still say (its own hourly rate, then the team's budget), and why it is that few."""
+    recent, _, _ = action_limits(observe)
+    allowed = max(0, int(persona.social_rate) - int(recent))
+    why = f"{persona.name} has said enough this hour ({persona.social_rate}/hour)"
+    if team is not None:
+        member_names = {personas[m].name for m in team.members if m in personas}
+        team_recent = team_say_count(
+            list(public_events or []) + list(observe.get("events", []) or []), member_names, tick
+        )
+        team_allowed = max(0, int(team.social_budget["says_per_hour"]) - int(team_recent))
+        if team_allowed < allowed:
+            allowed = team_allowed
+            why = f"team {team.slug} has used its public-speech budget ({team.social_budget['says_per_hour']}/hour)"
+    return allowed, why
+
+
 def mute_over_budget(
     actions: list[dict[str, Any]],
     persona: Persona,
@@ -758,18 +788,7 @@ def mute_over_budget(
     says = [i for i, a in enumerate(actions) if a.get("action") == "say"]
     if not says:
         return actions, None
-    recent, _, _ = action_limits(observe)
-    allowed = max(0, int(persona.social_rate) - int(recent))
-    why = f"{persona.name} has said enough this hour ({persona.social_rate}/hour)"
-    if team is not None:
-        member_names = {personas[m].name for m in team.members if m in personas}
-        team_recent = team_say_count(
-            list(public_events or []) + list(observe.get("events", []) or []), member_names, tick
-        )
-        team_allowed = max(0, int(team.social_budget["says_per_hour"]) - int(team_recent))
-        if team_allowed < allowed:
-            allowed = team_allowed
-            why = f"team {team.slug} has used its public-speech budget ({team.social_budget['says_per_hour']}/hour)"
+    allowed, why = speech_room(persona, team, personas, observe, public_events, tick)
     if allowed >= len(says):
         return actions, None
     drop = set(says[allowed:])

@@ -12,6 +12,7 @@ inspiration: The frontier land office's crews of claim workers, haulers and stew
 roles:
 - builder
 knobs:
+  planner: rules  # the pipeline does the work; no model plans for a hand (owner, 2026-10-24)
   cadence:
     cron: 57 */3 * * *
     jitter_minutes: 10

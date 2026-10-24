@@ -12,6 +12,7 @@ inspiration: The tireless factory workforce of Roald Dahl's story, retold in our
 roles:
 - builder
 knobs:
+  planner: rules  # the pipeline does the work; no model plans for a hand (owner, 2026-10-24)
   cadence:
     cron: 29 */3 * * *
     jitter_minutes: 10
