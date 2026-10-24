@@ -65,6 +65,8 @@ WORK_SUMMARIES = {
     "deposit_trip": "carrying a full pack to the storehouse",
     "stash": "raising a storehouse for a full pack",
     "crew": "working the factory pipeline",
+    "blueprint": "raising the factory blueprint",
+    "deed_draw": "drawing the land price from the team's stores",
     "draw": "drawing the next build's materials from an allied store",
     "draw_trip": "walking to an allied store for materials",
     "profile": "the public profile says which model thinks here",
@@ -80,7 +82,7 @@ REPAIR_WORTH = 10  # mend only when at least half a repair's 20 hp is missing; a
 NODE_FLOOR = 5  # never take a node below this many units: local norm, never strip nodes
 ACTIVITIES = ("build", "gather", "social", "explore", "trade")
 LABEL_ACTIVITY = {  # a shift-planner step label -> the tick activity that runs it
-    "build": "build", "house": "build", "hearth": "build", "repair": "build", "harvest": "build", "border": "build", "reclaim": "build", "stash": "build", "draw": "build",
+    "build": "build", "house": "build", "hearth": "build", "repair": "build", "harvest": "build", "border": "build", "reclaim": "build", "stash": "build", "draw": "build", "blueprint": "build",
     "deposit": "gather", "deposit_trip": "gather", "gather_trip": "gather", "forage": "gather", "gather_near": "gather",
     "explore": "explore", "migrate": "explore", "social": "social", "engage": "engage", "trade": "trade", "market_watch": "trade",
     "team": "team", "team_goal": "team_goal", "news": "news", "research": "research", "patrol": "patrol", "lighten": "lighten", "crew": "crew", "fool": "fool", "profile": "profile",
@@ -384,7 +386,8 @@ def plan_wake(
         elif activity == "research":
             step = _plan_research(persona, state, observe, inventory, here, view, action_limits(observe)[0] < persona.social_rate)
         elif activity == "crew":
-            step = _plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, budget - len(actions), collective_names, names, teammates, cast=cast)
+            # the view does not show what a build, a hand-off or a draw changed: one of those per wake, as in a shift
+            step = None if any(a.get("action") in {"build", "give", "take"} for a in actions) else _plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, budget - len(actions), collective_names, names, teammates, cast=cast)
         elif activity == "fool":
             step = _plan_fool(persona, state, observe, environment)
         elif activity == "profile":
@@ -402,6 +405,7 @@ def plan_wake(
                 or _plan_harvest(persona, team, inventory, here, view, teammates)
                 or _plan_stake(persona, inventory, here, view)
                 or (_plan_site_trade(persona, state, inventory, here, view, observe, registrar_name, office_names=(cast or {}).get("office_names")) if here == position else None)
+                or (_plan_blueprint(persona, team, state, observe, view, inventory, here, budget - len(actions), set(names or ())) if not persona.knobs.get("crew") else None)
                 or (_plan_hearth(persona, inventory, here, view, home, state) if here == position else None)
                 or _plan_house(persona, inventory, here, view, home, observe, state=state)
                 or (_plan_build(persona, team, inventory, here, view, home) if here == position else None)
@@ -590,6 +594,25 @@ def _plan_crew(
     return plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, room, collective_names, names, teammates, crew_roles=(cast or {}).get("crew_roles"))
 
 
+def _plan_blueprint(
+    persona: Persona,
+    team: Team | None,
+    state: PersonaState,
+    observe: dict[str, Any],
+    view: WorldView,
+    inventory: dict[str, int],
+    here: tuple[int, int],
+    room: int,
+    mates: set[str] | None = None,
+) -> tuple[list[dict[str, Any]], str, str] | None:
+    """A builder of the team's blueprint (``pipeline.builders``) raises its next step (``hglab.factory``)."""
+    from hglab.factory import builder_sections, plan_step
+
+    if builder_sections(team, persona.slug) is None:
+        return None
+    return plan_step(persona, team, state, observe, view, inventory, here, room, mates=mates)
+
+
 def _invited_at(state: PersonaState, roster: dict[str, str | None] | None) -> dict[str, int]:
     """Whom the founder invited and when (a legacy list counts as long ago); names the roster does not know are dropped."""
     raw = state.flags.get("faction_invited") or {}
@@ -745,6 +768,12 @@ def _plan_work(
                 inventory[str(a["item"])] = inventory.get(str(a["item"]), 0) + int(a.get("qty", 0) or 0)
             elif a.get("action") == "eat":
                 inventory["berries"] = max(0, inventory.get("berries", 0) - int(a.get("qty", 0) or 0))
+            elif a.get("action") == "place" and a.get("material"):
+                from hglab.blocks import MATERIAL_ITEM, cells_of
+
+                item = MATERIAL_ITEM.get(str(a["material"]))
+                if item:
+                    inventory[item] = max(0, inventory.get(item, 0) - -(-cells_of(a) // 4))  # the pack pays first; a store beside pays the rest
         actions.extend(new_actions)
         reasons.append(reason)
         return True
@@ -795,8 +824,16 @@ def _plan_work(
     # 0.5 one engagement with a neighbour when there is one: a word, a gift, a deal, a contest (one action, before the build spends the cap)
     engaged = fits(_plan_engage(persona, team, state, inventory, here, view, observe, teammates, names, rng, collective_names, allowed))
     # 0.6 the trade for the house's ground: the brief to the land office, its answer, the payment
-    if not moved() and fits_as("site_trade", _plan_site_trade(persona, state, inventory, here, view, observe, registrar_name, office_names=(cast or {}).get("office_names"))):
+    if not moved() and fits_as("site_trade", _plan_site_trade(persona, state, inventory, here, view, observe, registrar_name, office_names=(cast or {}).get("office_names"), mates=ours)):
         approach = approach or "site_trade"
+    # 0.62 the team's blueprint (the owner's brief of 2026-10-24): a builder raises it step by step, carrying what it needs
+    while not persona.knobs.get("crew") and "blueprint" not in skip and len(actions) < cap:
+        step = _plan_blueprint(persona, team, state, observe, view, inventory, here, cap - len(actions), set(names or ()))  # the team's own stores
+        if not fits(step):
+            break
+        approach = approach or "blueprint"
+        if all(a.get("action") == "move" for a in step[0]):
+            break  # a walk toward a store or a section: the rest of the wake is spent getting there
     # 0.65 the assignment's preferred steps: the measure's own approaches and what produced goal-relevant actions
     if prefer and not persona.knobs.get("patrol"):
         makers: dict[str, Any] = {
@@ -1013,8 +1050,8 @@ def _house_shortfall(persona: Persona, inventory: dict[str, int], view: WorldVie
     knob = persona.knobs.get("house")
     home = next((s for s in view.structures if s.get("type") == "hut" and _own(persona, s)), None)
     site = _house_site(knob, home, state)
-    if not knob or site is None:
-        return []
+    if not knob or site is None or knob.get("style") == "blueprint":
+        return []  # a blueprint house is the team's: its builders fetch its materials step by step
     plan = house_plan(site[0], site[1], int(knob.get("size", 1)), str(knob.get("color", "natural")), style=str(knob.get("style", "house")))
     for step in plan:
         if inventory.get(step["item"], 0) < step["items"]:
@@ -1059,8 +1096,13 @@ def _plan_site_trade(
     observe: dict[str, Any],
     registrar_name: str | None,
     office_names: set[str] | None = None,
+    mates: set[str] | None = None,
 ) -> tuple[list[dict[str, Any]], str, str] | None:
     """The trade for the house's ground with the land office, in three movements.
+
+    ``knob.requests`` names several briefs, bought one after the other (the works, then the grounds of
+    the factory's four plots); a request paid in full is remembered in ``sites_paid``. The price is wood
+    drawn from the team's stores when the pack holds too little (``mates``).
 
     First the brief, whispered to the registrar once a day until an answer comes. Then the answer: the
     office's ``SITE for <request>`` whisper in the inbox names the lot, its anchor and its price, and the
@@ -1072,8 +1114,17 @@ def _plan_site_trade(
     if knob.get("site_from") != "land_office" or not registrar_name:
         return None
     tick = int(observe.get("tick", 0) or 0)
-    request = str(knob.get("request", "site"))
+    requests = [str(r) for r in (knob.get("requests") or [knob.get("request", "site")])]
+    paid_ids = {str(r) for r in (state.flags.get("sites_paid") or []) if isinstance(r, str)}
     bought = state.flags.get("house_site") if isinstance(state.flags.get("house_site"), dict) else None
+    if bought and bought.get("id") in requests and int(bought.get("paid", 0) or 0) >= int(bought.get("price", 1) or 1) and not bought.get("pending"):
+        paid_ids.add(str(bought["id"]))  # paid in full: the next brief follows
+        state.flags["sites_paid"] = sorted(paid_ids)[-8:]
+        state.flags.pop("house_site", None)
+        bought = None
+    request = next((r for r in requests if r not in paid_ids), None)
+    if request is None:
+        return None
     if bought and bought.get("id") and str(bought.get("id")).casefold() != request.casefold():
         state.flags.pop("house_site", None)  # the brief changed (another request id): the old answer is not this ground
         bought = None
@@ -1104,7 +1155,7 @@ def _plan_site_trade(
     currency = str(bought.get("currency", "wood"))
     carried = inventory.get(currency, 0)
     if carried < min(owed, 10):
-        return None  # the gathering steps fetch the currency first
+        return _draw_price(persona, state, inventory, position, view, observe, mates, currency, owed, bought)
     structures = view.world_structures or view.structures
     office = {registrar_name.casefold()} | {str(n).casefold() for n in (office_names or ())}  # any storehouse of the land office takes the price
     vaults = sorted(
@@ -1129,6 +1180,52 @@ def _plan_site_trade(
 
 
 PAY_IN_PERSON_RANGE = 40  # how far the client walks to put the price into the registrar's hands when every office store is full (a few wakes)
+DRAW_PRICE_RANGE = 40  # how far the client walks to a team store for the price
+
+
+def _draw_price(
+    persona: Persona,
+    state: PersonaState,
+    inventory: dict[str, int],
+    position: tuple[int, int],
+    view: WorldView,
+    observe: dict[str, Any],
+    mates: set[str] | None,
+    currency: str,
+    owed: int,
+    bought: dict[str, Any],
+) -> tuple[list[dict[str, Any]], str, str] | None:
+    """The price is in the team's stores, not the pack: take it from the nearest one that admits us and holds it."""
+    if not mates:
+        return None
+    you = observe.get("you") or {}
+    faction = you.get("faction")
+    faction = str(faction.get("name") if isinstance(faction, dict) else faction or "")
+    pack = sum(int(v) for v in inventory.values())
+    if pack >= 45:
+        return None
+    owners = {m.casefold() for m in mates} | {persona.name.casefold()}
+
+    def admits(s: dict[str, Any]) -> bool:
+        policy = str(s.get("policy") or "private")
+        theirs = s.get("faction")
+        theirs = str(theirs.get("name") if isinstance(theirs, dict) else theirs or "")
+        return str(s.get("owner", "")).casefold() == persona.name.casefold() or policy == "public" or (policy == "faction" and bool(faction) and theirs.casefold() == faction.casefold())
+
+    seen = [s for s in view.structures if s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() in owners and isinstance(s.get("storage"), dict) and admits(s) and int(s["storage"].get(currency, 0) or 0) >= 20]
+    for store in sorted(seen, key=lambda s: chebyshev(position, (int(s["x"]), int(s["y"])))):
+        where = (int(store["x"]), int(store["y"]))
+        if chebyshev(position, where) <= 1:
+            qty = min(50 - pack, owed, int(store["storage"].get(currency, 0) or 0) - 10)
+            if qty >= 10:
+                return [{"action": "take", "x": where[0], "y": where[1], "item": currency, "qty": qty}], f"the deed for lot {bought.get('lot')} wants {owed} {currency}: take {qty} from the team's store at {where}", "deed_draw"
+            continue
+        if chebyshev(position, where) > DRAW_PRICE_RANGE:
+            continue
+        target = _step_toward(position, {"x": where[0], "y": where[1]}, view)
+        if target is not None and target != position:
+            return [{"action": "move", "x": target[0], "y": target[1]}], f"the deed for lot {bought.get('lot')} wants {owed} {currency}: walk to the team's store at {where} for it", "deed_trip"
+    return None
 
 
 def _pay_in_person(
@@ -1174,7 +1271,7 @@ def _plan_hearth(
     and the homing all move to the site with it.
     """
     knob = persona.knobs.get("house")
-    site = _house_site(knob, None, state) if knob and (knob.get("site") or knob.get("site_from")) else None
+    site = _house_site(knob, None, state) if knob and (knob.get("site") or knob.get("site_from")) and knob.get("style") != "blueprint" else None
     if site is None:
         return None
     where = site
@@ -1673,7 +1770,7 @@ def _wanted(persona: Persona, inventory: dict[str, int], view: WorldView) -> lis
     priority = list(persona.knobs.get("build_priority") or DEFAULT_BUILD_PRIORITY)
     wanted: list[str] = list(_house_shortfall(persona, inventory, view))
     knob = persona.knobs.get("house") or {}
-    if knob.get("site_from") == "land_office" and knob.get("style") == "factory":
+    if knob.get("site_from") == "land_office" and knob.get("style") in ("factory", "blueprint"):
         wanted = ["wood", "ore", "stone", *wanted]  # the deed is paid in wood; the factory's door and pillars want ore
     for blueprint in priority:
         if blueprint in BLUEPRINTS:
@@ -1723,8 +1820,8 @@ def _plan_house(
 
     knob = persona.knobs.get("house")
     hut = _house_site(knob, home, state)
-    if not knob or hut is None:
-        return None
+    if not knob or hut is None or knob.get("style") == "blueprint":
+        return None  # the team's blueprint is this persona's house: _plan_blueprint raises it
     you = observe.get("you") or {}
     if int(you.get("blocks_owned", 0) or 0) >= 3900:
         return None
@@ -1772,7 +1869,7 @@ def _plan_homing(
 
     knob = persona.knobs.get("house")
     hut = _house_site(knob, home, state)
-    if not knob or hut is None:
+    if not knob or hut is None or knob.get("style") == "blueprint":
         return None
     if chebyshev(position, hut) <= MOVE_STEP_CAP + 2:
         return None  # within one move: _plan_house walks the last stretch itself

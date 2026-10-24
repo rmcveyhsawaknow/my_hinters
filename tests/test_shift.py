@@ -33,11 +33,14 @@ def test_work_wake_builds_first_when_materials_are_in_hand(tmp_path):
     assert "inbox" not in json.dumps(record) and record["observe"].keys() == {"tick", "you", "goals_nearby", "your_goals", "blocks"}
 
 
-def test_work_wake_deposits_surplus_and_can_raise_a_monument(tmp_path):
+def test_work_wake_deposits_surplus_and_can_raise_a_monument(tmp_path, monkeypatch):
     observe = load_fixture(FIX / "observe/wonka.json")
     you = observe["you"]
     you["inventory"] = {"stone": 30, "ore": 10, "wood": 6}
     observe["structures"] = [{"id": 1, "type": "storehouse", "x": you["x"] + 1, "y": you["y"], "owner": "Peregrine", "faction": None, "hp": 80, "text": None, "policy": "public", "storage": {"stone": 25}}]
+    factory_first, _ = _wake("wonka", json.loads(json.dumps(observe)), tmp_path)
+    assert factory_first["approach"] == "blueprint"  # at the works, the factory's blueprint comes before a monument of his own
+    monkeypatch.setattr("hglab.factory.builder_sections", lambda team, slug: None)  # the monument's mechanics, for a builder with no blueprint in play
     record, _ = _wake("wonka", observe, tmp_path)
     kinds = [a["action"] for a in record["actions"]]
     assert record["approach"] == "build_monument"  # a public storehouse beside the builder pays the rest, per the guide

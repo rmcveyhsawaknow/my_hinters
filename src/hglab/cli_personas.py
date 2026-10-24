@@ -2005,6 +2005,9 @@ def register_persona_commands(app: typer.Typer) -> None:
     app.add_typer(budget_app, name="budget")
     app.add_typer(crier_app, name="crier")
     app.add_typer(land_app, name="land")
+    from hglab.cli_factory import register as register_factory
+
+    register_factory(app)
     app.add_typer(world_app, name="world")
     app.command("pulse")(pulse_command)
     app.command("shift")(tolerate_outage(shift_command))

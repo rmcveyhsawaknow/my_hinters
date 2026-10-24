@@ -113,7 +113,8 @@ def test_the_mason_raises_the_plan_in_order_beside_the_store_that_pays():
         {"id": 5, "type": "hut", "x": 88, "y": 100, "owner": "Toffeetrowel"}, {"id": 6, "type": "tower", "x": 91, "y": 98, "owner": "Toffeetrowel"},
         {"id": 7, "type": "sign", "x": 89, "y": 100, "owner": "Toffeetrowel"},
     ]
-    assert _step("loompa-mason", {"berries": 5}, (89, 97), WorldView(x0=80, y0=90, rows=GRASSY, structures=done, world_structures=done, full_map=GRASSY), observe) is None  # the works stand
+    after = _step("loompa-mason", {"berries": 5}, (89, 97), WorldView(x0=80, y0=90, rows=GRASSY, structures=done, world_structures=done, full_map=GRASSY), observe)
+    assert after is None or after[2] == "blueprint"  # the works stand: the mason turns to the factory's blueprint
 
 
 def test_full_stores_make_the_mason_raise_another_and_the_hands_carry_its_cost_to_the_mason():
@@ -131,7 +132,7 @@ def test_full_stores_make_the_mason_raise_another_and_the_hands_carry_its_cost_t
     persona, team, personas = _crew("loompa-mason")
     team.extra["pipeline"]["stores_max"] = 2
     capped = plan_crew(persona, team, PersonaState(mood="busy"), observe, view, {"berries": 5}, (89, 97), 80, persona.energy_reserve, 3, {p.name for p in personas.values()}, _names(personas), None)
-    assert capped is None  # at the cap, the works stand
+    assert capped is None or capped[2] == "blueprint"  # at the cap the works stand: no more stores, the blueprint instead
     assert STORES_MAX == 6
     roles = {"loompa-mason": "mason", "loompa-woodcutter": "woodcutter"}
     carry = _step("loompa-woodcutter", {"wood": 36, "stone": 5, "berries": 5}, (87, 90), view, teammates={"loompa-mason": (89, 97)}, crew_roles=roles)
@@ -258,10 +259,10 @@ def _claims_world():
     from hglab.lots import lot_anchor, stake_text
 
     rows = ["g" * 128] * 128
-    lots = ["J08-NW", "H04-NE", "F06-SW", "G06-NE"]
+    lots = ["K08-NW", "H04-NE", "F06-SW", "G06-NE"]
     signs = [{"type": "sign", "x": lot_anchor(lid)[0], "y": lot_anchor(lid)[1], "owner": "LandBroker", "text": stake_text(lid, "LandBroker")} for lid in lots]
     vault = {"id": 1, "type": "storehouse", "x": 73, "y": 72, "owner": "LandBroker", "policy": "private", "storage": {"wood": 10}}
-    ore = [{"kind": "ore", "x": lot_anchor("J08-NW")[0] + 1, "y": lot_anchor("J08-NW")[1], "amount": 9}]
+    ore = [{"kind": "ore", "x": lot_anchor("K08-NW")[0] + 1, "y": lot_anchor("K08-NW")[1], "amount": 9}]
     stones = [{"kind": "stone", "x": lot_anchor("H04-NE")[0] + dx, "y": lot_anchor("H04-NE")[1], "amount": 3} for dx in (-1, 0, 1)]  # low: under the collective floor, above the office's
     near = [{"kind": "stone", "x": 75, "y": 72, "amount": 20}]  # beside the vault, in no holding
     spawn = [{"kind": "stone", "x": 66, "y": 66, "amount": 3}]  # in G06-NE, a holding, but inside the spawn circle
@@ -274,8 +275,8 @@ def test_in_claims_mode_the_quarrier_works_the_best_holding_first_to_the_office_
     rows, signs, vault, nodes = _claims_world()
     view = WorldView(x0=66, y0=66, rows=rows, full_map=rows, structures=[vault], world_structures=[vault, *signs], world_resources=nodes, resources=[n for n in nodes if abs(n["x"] - 74) <= 6 and abs(n["y"] - 72) <= 6])
     step = _office_step("office-quarrier", {"berries": 5}, (74, 72), view)
-    assert step[0][0]["action"] == "move" and "holding J08-NW" in step[1]  # the ore lot outranks the stone beside the vault
-    beside_ore = (lot_anchor("J08-NW")[0] + 1, lot_anchor("J08-NW")[1] + 1)
+    assert step[0][0]["action"] == "move" and "holding K08-NW" in step[1]  # the ore lot outranks the stone beside the vault
+    beside_ore = (lot_anchor("K08-NW")[0] + 1, lot_anchor("K08-NW")[1] + 1)
     at_ore = WorldView(x0=beside_ore[0] - 6, y0=beside_ore[1] - 6, rows=rows, full_map=rows, structures=[], world_structures=[vault, *signs], world_resources=nodes, resources=[n for n in nodes if n["kind"] == "ore"])
     gather = _office_step("office-quarrier", {"berries": 5}, beside_ore, at_ore)
     assert gather[0] == [{"action": "gather", "kind": "ore"}] and "leave 0" in gather[1]
@@ -291,7 +292,7 @@ def test_a_heavy_pack_goes_to_the_nearest_depot_and_the_drayman_carries_depot_lo
     from hglab.lots import lot_anchor
 
     rows, signs, vault, nodes = _claims_world()
-    depot = {"id": 2, "type": "storehouse", "x": lot_anchor("J08-NW")[0] + 2, "y": lot_anchor("J08-NW")[1], "owner": "Lintelstave", "policy": "faction", "faction": "Land Office", "storage": {"ore": 30, "stone": 40}}
+    depot = {"id": 2, "type": "storehouse", "x": lot_anchor("K08-NW")[0] + 2, "y": lot_anchor("K08-NW")[1], "owner": "Lintelstave", "policy": "faction", "faction": "Land Office", "storage": {"ore": 30, "stone": 40}}
     world = [vault, depot, *signs]
     beside_depot = (depot["x"] + 1, depot["y"])
     view = WorldView(x0=beside_depot[0] - 6, y0=beside_depot[1] - 6, rows=rows, full_map=rows, structures=[depot], world_structures=world, world_resources=nodes)
@@ -314,18 +315,18 @@ def test_the_steward_raises_depots_on_the_best_holdings_before_the_overflow_vaul
     from hglab.lots import lot_anchor, lot_bounds
 
     rows, signs, vault, nodes = _claims_world()
-    anchor = lot_anchor("J08-NW")
+    anchor = lot_anchor("K08-NW")
     view = WorldView(x0=anchor[0] - 6, y0=anchor[1] - 6, rows=rows, full_map=rows, structures=[], world_structures=[vault, *signs], world_resources=nodes)
     step = _office_step("office-steward", {"wood": 22, "stone": 12, "berries": 4}, (anchor[0] + 1, anchor[1]), view)
     build = step[0][0]
-    x0, y0, x1, y1 = lot_bounds("J08-NW")
+    x0, y0, x1, y1 = lot_bounds("K08-NW")
     assert build["action"] == "build" and build["type"] == "storehouse" and build["policy"] == "faction" and x0 <= build["x"] <= x1 and y0 <= build["y"] <= y1 and "has no depot" in step[1]
     far = _office_step("office-steward", {"wood": 22, "stone": 12, "berries": 4}, (74, 72), WorldView(x0=67, y0=66, rows=rows, full_map=rows, structures=[vault], world_structures=[vault, *signs], world_resources=nodes))
-    assert far[0][0]["action"] == "move" and "walk to holding J08-NW" in far[1]
+    assert far[0][0]["action"] == "move" and "walk to holding K08-NW" in far[1]
     depot = {"id": 2, "type": "storehouse", "x": anchor[0] + 2, "y": anchor[1], "owner": "Lintelstave", "policy": "faction"}
     standing = [vault, depot, *signs]
     nxt = _office_step("office-steward", {"wood": 22, "stone": 12, "berries": 4}, (74, 72), WorldView(x0=67, y0=66, rows=rows, full_map=rows, structures=[vault], world_structures=standing, world_resources=nodes))
-    assert nxt[0][0]["action"] == "move" and "walk to holding" in nxt[1] and "J08-NW" not in nxt[1]  # the first depot stands: on to the next holding
+    assert nxt[0][0]["action"] == "move" and "walk to holding" in nxt[1] and "K08-NW" not in nxt[1]  # the first depot stands: on to the next holding
 
 
 def test_the_office_founds_its_faction_and_invites_the_hands(tmp_path):

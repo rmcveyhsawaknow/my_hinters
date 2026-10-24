@@ -41,6 +41,11 @@ site_requests:
     lots: [I09-SE, I09-NE]
     wants: [ore, stone]
     note: The ground under the Chocolate Factory works at (89,99) and its stores at (85,92) and (87,94), deeded as the factory's own at the owner's instruction of 2026-10-24; paid into any office storehouse with room or into the registrar's hands.
+  - id: grounds
+    client: Fudgewright
+    lots: [I08-NW, I08-NE, I08-SW, I08-SE, J08-NW, J08-NE, J08-SW, J08-SE, I09-NW, I09-SW, J09-NW, J09-NE, J09-SW, J09-SE]
+    wants: [ore, stone]
+    note: The rest of the factory's four plots (I08, J08, I09, J09), from the bay up the hill belt to the foot of the eastern peak, for the blueprint of 2026-10-24; withdrawn from the office's holdings while under contract (teams/exchange.yaml claims.exclude).
 # The sales desk (the owner's instruction of 2026-10-23): the office keeps its best staked lots as holdings
 # (teams/exchange.yaml: pipeline.claims), its hands work their nodes into the vault, and the vault's goods
 # are sold through self-confirming goals: the buyer gives the price into the vault and the goods pay out at

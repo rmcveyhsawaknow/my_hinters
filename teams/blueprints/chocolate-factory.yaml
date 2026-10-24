@@ -1,0 +1,118 @@
+# The Chocolate Factory, as blocks (the owner's brief of 2026-10-24): a complex, many-coloured factory over
+# four plots bought from the land office (I08, J08, I09, J09: x 80-99, y 80-99), climbing from the works on
+# the bay up the hill belt to the foot of the eastern peak, every building joined by the chocolate river.
+#
+# Read from the land survey of tick 67156 (`hglab factory survey`): the eastern massif's south face (rows
+# 78-84, x 84-91) is the highest ground reachable from the works; the hill belt below it (rows 85-89) is
+# thick with stone nodes and the mountain's ore nodes need open ground beside them; grass and sand run from
+# row 87 down to the bay at row 99. The world shapes the rest: a tile is 4x4 cells and 16 levels tall (a
+# door is four levels), a box is at most 256 cells within 2 tiles of its builder, no block stands on water
+# or mountain, and a slab at level 0 or anything above level 5 closes no tile.
+#
+# Tiles are [x0, y0, x1, y1], inclusive. Colours: natural white grey black brown red orange yellow lime
+# green teal cyan blue indigo purple pink tan. Materials: wood (wood), stone (stone), thatch (fiber), metal (ore).
+name: The Chocolate Factory
+team: chocolate-factory
+plots: [I08, J08, I09, J09]
+story: >-
+  A confectionery that climbs a mountain: a glass elevator of rainbow light pressed against the eastern
+  peak, a peppermint lookout at the head of the east hillside, a fudge mill and a cocoa terrace on the
+  hill belt, a candy hall with lemon-drop turrets mid-slope, and a packing hall on the bay behind a golden
+  gate; a river of chocolate runs from the peak and the lookout past every door and pours into the bay.
+sections:
+  - id: elevator
+    name: The Glass Elevator
+    tiles: [89, 84, 90, 85]  # hills under the eastern peak; the mountain stands at (89-90, 83)
+    style: glass_tower
+    levels: 16
+    doors: [west]
+    door: [metal, yellow]
+    pillars: [stone, white]
+    band_levels: 2
+    bands: [red, orange, yellow, lime, green, cyan, blue, purple]
+    crown: [metal, yellow]
+  - id: lookout
+    name: The Peppermint Lookout
+    tiles: [96, 80, 98, 81]  # the head of the east hillside, the plots' northern edge
+    style: stripe_tower
+    levels: 16
+    doors: [south]
+    door: [wood, red]
+    stripes: [red, white]
+    window_levels: [3, 7, 11]
+    window_color: yellow
+    crown_slope: [thatch, pink]
+    crown_cap: [thatch, lime]
+  - id: mill
+    name: The Fudge Mill
+    tiles: [89, 87, 91, 89]  # the hill belt two tiles below the elevator
+    style: hall
+    levels: 10
+    doors: [west]
+    door: [wood, orange]
+    pillars: [stone, brown]
+    courses: [brown, tan]
+    course_levels: 2
+    window_levels: [2, 6]
+    window_color: orange
+    chimney: {x: 364, y: 349, levels: 15, stripes: [red, white], stripe_levels: 3}  # cells (364-365, 349-350): inside the north-east corner, through the roof
+    roof_slope: [thatch, red]
+    roof_cap: [thatch, brown]
+  - id: terrace
+    name: The Cocoa Terrace
+    tiles: [81, 87, 83, 88]  # the western hill belt
+    style: hall
+    levels: 7
+    doors: [east]
+    door: [wood, green]
+    pillars: [stone, tan]
+    courses: [tan, brown]
+    course_levels: 2
+    window_levels: [3]
+    window_color: lime
+    roof_slope: [thatch, green]
+    roof_cap: [thatch, lime]
+  - id: candy
+    name: The Candy Hall
+    tiles: [93, 90, 96, 93]  # mid-slope grass
+    style: hall
+    levels: 12
+    doors: [west, east]
+    door: [metal, yellow]
+    turrets: {size: 2, levels: 15, block: [stone, yellow], cap: [thatch, pink]}
+    courses: [purple, pink]
+    course_levels: 1
+    window_levels: [2, 5, 8]
+    window_color: cyan
+    roof_slope: [thatch, pink]
+    roof_cap: [thatch, purple]
+  - id: packing
+    name: The Packing Hall
+    tiles: [93, 95, 97, 98]  # sand and grass on the bay
+    style: hall
+    levels: 11
+    doors: [south, west]
+    door: [metal, yellow]
+    pillars: [stone, white]
+    courses: [teal, white]
+    course_levels: 2
+    window_levels: [2, 6]
+    window_color: yellow
+    roof_slope: [thatch, indigo]
+    roof_cap: [thatch, blue]
+river:
+  block: [stone, brown]
+  width_cells: 4
+  # computed by `hglab factory route --write` from the doors' front tiles; regenerate after a design change
+  waypoints:
+    west: [[88, 85], [88, 88], [92, 91], [92, 96], [92, 98]]
+    terrace: [[88, 88], [84, 87]]
+    east: [[97, 82], [97, 91], [98, 94], [99, 99]]
+  branches:
+    west: [[88, 85], [88, 86], [88, 87], [88, 88], [88, 89], [88, 90], [88, 91], [89, 91], [90, 91], [91, 91], [92, 91], [92, 92], [92, 93], [92, 94], [92, 95], [92, 96], [92, 97], [92, 98]]
+    terrace: [[88, 88], [87, 88], [86, 88], [85, 88], [85, 87], [84, 87]]
+    east: [[97, 82], [97, 83], [97, 84], [97, 85], [97, 86], [97, 87], [97, 88], [97, 89], [97, 90], [97, 91], [98, 91], [98, 92], [98, 93], [98, 94], [99, 94], [99, 95], [99, 96], [99, 97], [99, 98], [99, 99]]
+depots:
+  - {x: 92, y: 88, name: the mill depot}
+  - {x: 98, y: 82, name: the lookout depot}
+  - {x: 82, y: 89, name: the terrace depot}

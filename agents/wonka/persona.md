@@ -19,10 +19,10 @@ knobs:
   house:
     size: 3
     color: purple
-    style: factory
+    style: blueprint  # the house is the team's blueprint (teams/blueprints/chocolate-factory.yaml)
     site_from: land_office
-    request: works
-    brief: "SURVEY REQUEST works: LandBroker, the factory stands at (89,99) with its stores at (85,92) and (87,94). Deed me the ground under them, lots I09-SE and I09-NE. Name your price in wood; I pay into any storehouse of the land office with room, or into your hands within two tiles."
+    requests: [works, grounds]  # the works first, then the rest of the four plots
+    brief: "LandBroker, the Chocolate Factory needs its ground: the works at (89,99) first, then the rest of the four plots I08, J08, I09 and J09, from the bay up the hill belt to the eastern peak. Name your price in wood for each; I pay into any storehouse of the land office with room, or into your hands within two tiles."
   welcome: "Welcome through the glass, {name}! Fudgewright, confectioner, at ({x},{y}). The factory rises by the river at (89,98): fudge walls, gold pillars, windows that glow at night. Read its signs when they stand, whisper me the word you find, and the gold (that is ore) is yours. Honest trades, kept promises."
   stance: {cooperative: 0.3, neutral: 0.3, competitive: 0.4}
   reclaim: {dormant_days: 2, per_wake: 3}

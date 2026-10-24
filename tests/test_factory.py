@@ -37,10 +37,20 @@ def test_the_factory_plan_is_metal_and_glass_over_coloured_stone_with_support_at
 
 
 def test_the_house_follows_the_chosen_site_and_the_hearth_is_raised_there_first():
-    wonka = load_personas(ROOT)["wonka"]
+    import copy
+
+    current = load_personas(ROOT)["wonka"]
+    assert current.knobs["house"]["style"] == "blueprint"  # since 2026-10-24 his house is the team's blueprint
+    blank = PersonaState(mood="mercurial")
+    blank.flags["house_site"] = {"x": 89, "y": 98, "lot": "R19-NE", "price": 18, "paid": 18}
+    hut_view = WorldView(x0=82, y0=92, rows=ROWS, full_map=ROWS)
+    assert _plan_hearth(current, {"wood": 12, "fiber": 6}, (89, 97), hut_view, {"x": 65, "y": 71}, blank) is None  # no hearth of his own on the works
+    assert _plan_house(current, {"ore": 4, "stone": 20}, (89, 97), hut_view, {"x": 89, "y": 98}, {"you": {"x": 89, "y": 97}, "blocks": [], "tick": 1}, state=blank) is None  # nor a house: _plan_blueprint raises the factory
+    wonka = copy.deepcopy(current)
+    wonka.knobs["house"]["style"] = "factory"  # the house mechanics themselves, as they stand for any persona with a house
     knob = wonka.knobs["house"]
     state = PersonaState(mood="mercurial")
-    assert knob["style"] == "factory" and _house_site(knob, {"x": 65, "y": 71}, state) is None  # the ground is bought from the land office, never the old hearth
+    assert _house_site(knob, {"x": 65, "y": 71}, state) is None  # the ground is bought from the land office, never the old hearth
     state.flags["house_site"] = {"x": 89, "y": 98, "lot": "R19-NE", "price": 18, "paid": 18}
     assert _house_site(knob, {"x": 65, "y": 71}, state) == (89, 98)
     assert _house_site({"size": 1}, {"x": 65, "y": 71}) == (65, 71) and _house_site({"size": 1}, None) is None

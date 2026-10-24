@@ -92,9 +92,23 @@ def _team_stores(view: WorldView, mates: set[str]) -> dict[tuple[int, int], dict
     return by_tile
 
 
-def factory_stores(view: WorldView, mates: set[str], site: tuple[int, int], radius: int) -> list[dict[str, Any]]:
+def blueprint_depots(team: Team | None) -> set[tuple[int, int]]:
+    """The depot tiles of the team's blueprint (``pipeline.blueprint``): stores there are the works' stores too."""
+    cfg = pipeline_of(team)
+    if not cfg or not cfg.get("blueprint"):
+        return set()
+    from hglab.factory import blueprint, root_of
+
+    try:
+        design, _steps, _index = blueprint(root_of(team), str(cfg["blueprint"]))
+    except (OSError, ValueError):
+        return set()
+    return {(int(d["x"]), int(d["y"])) for d in design.get("depots") or []}
+
+
+def factory_stores(view: WorldView, mates: set[str], site: tuple[int, int], radius: int, depots: set[tuple[int, int]] | None = None) -> list[dict[str, Any]]:
     """Storehouses of team members within the works' radius, nearest the site first."""
-    stores = [s for where, s in _team_stores(view, mates).items() if chebyshev(where, site) <= radius]
+    stores = [s for where, s in _team_stores(view, mates).items() if chebyshev(where, site) <= radius or where in (depots or set())]
     return sorted(stores, key=lambda s: chebyshev((int(s["x"]), int(s["y"])), site))
 
 
@@ -156,7 +170,7 @@ def plan_crew(
     radius = int(cfg.get("radius", 7) or 7)
     reach = int(cfg.get("range", 16) or 16)
     mates = team_member_names(persona, team, names)
-    stores = factory_stores(view, mates, site, radius)
+    stores = factory_stores(view, mates, site, radius, blueprint_depots(team))
     tick = int(view.tick or observe.get("tick", 0) or 0)
     full = _full_stores(state, tick)
     open_stores = [s for s in stores if (int(s["x"]), int(s["y"])) not in full and storehouse_room(s) >= OVERFLOW_ROOM]
@@ -230,13 +244,44 @@ def plan_crew(
             step = _depot_step(persona, team, claims, held, inventory, position, view, mates, site, reach, room, teammates, floor_for, ranks)
             if step is not None:
                 return step
-        return _mason(persona, team, cfg, inventory, position, view, stores, site, radius, reach, room, teammates, observe, floor_for, ranks, stores_max=stores_max, open_stores=open_stores)
+        step = _mason(persona, team, cfg, inventory, position, view, stores, site, radius, reach, room, teammates, observe, floor_for, ranks, stores_max=stores_max, open_stores=open_stores)
+        if step is not None:
+            return step
+        return _blueprint(persona, team, state, observe, view, inventory, position, room, mates, site, reach, teammates, floor_for, ranks)
     if role == "hauler":
         step = _haul(persona, cfg, inventory, position, view, stores, field, collective_names, mates, pack, observe, state, tick)
         if step is not None:
             return step
     wanted = _role_wanted(role, stock_levels(stores, cfg.get("stock") or {}))
     return _gather_toward(persona, team, wanted, inventory, position, view, site, reach, room, teammates, "for the works", floor_for, ranks)
+
+
+def _blueprint(
+    persona: Persona,
+    team: Team | None,
+    state: PersonaState,
+    observe: dict[str, Any],
+    view: WorldView,
+    inventory: dict[str, int],
+    position: tuple[int, int],
+    room: int,
+    mates: set[str],
+    site: tuple[int, int],
+    reach: int,
+    teammates: dict[str, tuple[int, int]] | None,
+    floor_for: FloorFor | None,
+    ranks: dict[str, int] | None,
+) -> Step | None:
+    """The works stand: the mason raises the team's blueprint, and gathers what no store holds for it."""
+    from hglab.factory import plan_step
+
+    step = plan_step(persona, team, state, observe, view, inventory, position, room, mates=mates)
+    if step is not None:
+        return step
+    need = getattr(state, "_bp_need", None)
+    if need:
+        return _gather_toward(persona, team, [str(need)], inventory, position, view, site, reach, room, teammates, f"for the blueprint's {need}", floor_for, ranks)
+    return None
 
 
 def _role_wanted(role: str, levels: dict[str, tuple[int, int]]) -> list[str]:
@@ -682,4 +727,4 @@ def _gather_toward(
     return None
 
 
-__all__ = ["ROLE_WANTED", "depots", "factory_stores", "office_claims", "pipeline_of", "plan_crew", "shortest_first", "stock_levels"]
+__all__ = ["ROLE_WANTED", "blueprint_depots", "depots", "factory_stores", "office_claims", "pipeline_of", "plan_crew", "shortest_first", "stock_levels"]
