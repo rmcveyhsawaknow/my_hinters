@@ -561,3 +561,44 @@ writes one short line. From the records of 2026-10-23/24 and the owner's decisio
 - **The fool's verification on Haiku.** The 25-second deadline is too tight for the local model, so
   `challenge_lite` (Haiku 5.5) answers it; the keepalive now honours `knobs.challenge_route` as the wakes
   do (it used the default Sonnet route before). The fool's profile names both models.
+
+## The Chocolate Factory blueprint (2026-10-24)
+
+The owner's brief: a complex, many-coloured factory at least ten storeys tall, over four plots bought
+from the land office, broken into sections that the chocolate river always connects, climbing the
+hillside toward the mountain in the area circled on the site's map. The design is
+`teams/blueprints/chocolate-factory.yaml`; `hglab.factory.expand` turns it into ordered `place` steps.
+
+**The survey.** The circled area is plots I08, J08, I09 and J09 (x 80-99, y 80-99, sixteen lots). The
+eastern massif's south face (rows 78-84, x 84-91) is the highest ground reachable from the works; the
+hill belt below it (rows 85-89) is thick with stone nodes, and the mountain's ore needs open ground beside
+it; grass and sand run from row 87 to the bay at row 99. Every structure on the plots belongs to the
+collective. `hglab factory survey` prints the ground.
+
+**The world's limits shape the design.** A tile is 4x4 block cells and 16 levels tall, so the tallest
+build is four tiles and a door is four levels; at one storey a level the towers reach the ceiling of 16.
+A box holds at most 256 cells and lies within 2 tiles of its builder, so no section is wider than 5 tiles.
+No block stands on water or mountain. A slab at level 0 or anything above level 5 closes no tile.
+
+**Six sections and a river.** The Glass Elevator (2x2 tiles under the peak, rainbow window bands, a gold
+metal crown at level 15), the Peppermint Lookout (3x2 at the head of the east hillside, red and white
+stripes, a pink and lime crown), the Fudge Mill (3x3, brown and tan with orange windows and a striped
+chimney to level 14), the Cocoa Terrace (3x2 on the western hill belt), the Candy Hall (4x4, purple and
+pink courses, cyan windows, four lemon turrets to level 15) and the Packing Hall (5x4 on the bay, teal and
+white, a golden gate south). The river's three branches (`hglab factory route` finds them over the map)
+run past every door as brown stone slabs and pour into the bay. 129 steps, 4,740 blocks: stone 759, wood
+275, fiber 231, ore 26. `hglab factory check` holds every step to the limits above and, against the public
+map, keeps walls off water, mountain, structures, stone and ore nodes and the ore apron.
+
+**Who builds it.** `pipeline.builders` names the builders and the sections each raises first: the mason
+(depots, elevator, mill, terrace), Fudgewright (candy hall, elevator), MotherPail (packing hall, west
+river) and GrandadPail (lookout, east river). `hglab.factory.plan_step` takes the first undone step of a
+section (a section rises in order, sections in parallel), places it when the pack or a store within a tile
+of the stand pays for it, and otherwise carries the material from the nearest store of the team; a builder
+more than 16 tiles from every ready step leaves the walk to the migration. The gatherers' stock targets
+follow the blueprint's cost, three depots stand by the sections, and the land office withdraws the four
+plots from its holdings (`claims.exclude`) while Fudgewright buys them in two deeds (`house.requests`:
+the works, then the grounds), drawing the wood from the team's stores. Live wakes write what the world
+accepted, or refused as already filled, into the ledger (`runs/local/blueprints/chocolate-factory.json`);
+`hglab factory show` and `progress` read it. The render of the finished factory is the artifact
+"Chocolate Factory Blueprint" (`hglab factory export` writes its data).

@@ -32,6 +32,7 @@ pipeline:
     floor: 0
     protect_spawn: 12
     protect_homesteads: true
+    exclude: [I08-NW, I08-NE, I08-SW, I08-SE, J08-NW, J08-NE, J08-SW, J08-SE, I09-NW, I09-NE, I09-SW, I09-SE, J09-NW, J09-NE, J09-SW, J09-SE]  # the Chocolate Factory's four plots, under contract (2026-10-24)
     text: 'Lot {lot}: land office holding ({tags}). Not for sale: its nodes are the
       office''s stock, sold from the vault. A public record, not a wall.'
 members:

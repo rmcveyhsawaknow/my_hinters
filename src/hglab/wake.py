@@ -737,6 +737,13 @@ def persona_wake(
         if isinstance(record, dict) and not dry_run:
             from hglab.features import mark_announced
 
+            blueprint_name = ((team.extra or {}).get("pipeline") or {}).get("blueprint") if team is not None else None
+            if blueprint_name and any(isinstance(a, dict) and a.get("action") in ("place", "build") for a in record.get("actions") or []):
+                from hglab.factory import settle as settle_blueprint
+
+                settled = settle_blueprint(root, str(blueprint_name), list(record.get("actions") or []), list(record.get("results") or []), int(record.get("tick", 0) or 0), persona.name)
+                if settled:
+                    record["blueprint_done"] = settled
             said = [
                 str(a.get("text") or "")
                 for a, result in zip(record.get("actions") or [], record.get("results") or [], strict=False)

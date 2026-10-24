@@ -107,7 +107,7 @@ def test_the_client_asks_reads_the_answer_pays_and_builds_on_the_bought_lot():
     personas = load_personas(ROOT)
     wonka = personas["wonka"]
     knob = wonka.knobs["house"]
-    assert knob["site_from"] == "land_office" and knob["request"] == "works" and "site" not in knob
+    assert knob["site_from"] == "land_office" and knob["requests"] == ["works", "grounds"] and "site" not in knob and knob["style"] == "blueprint"
     state = PersonaState(mood="mercurial")
     assert _house_site(knob, {"x": 65, "y": 71}, state) is None  # never the old hearth
     rows = ["g" * 128] * 128
@@ -124,7 +124,9 @@ def test_the_client_asks_reads_the_answer_pays_and_builds_on_the_bought_lot():
     pay = _plan_site_trade(wonka, state, {"wood": 20}, (65, 55), view, {**observe, "inbox": []}, "LandBroker")
     assert pay is not None and pay[0] == [{"action": "give", "x": 65, "y": 54, "item": "wood", "qty": 18}] and state.flags["house_site"]["paid"] == 18
     assert _plan_site_trade(wonka, state, {"wood": 20}, (65, 55), view, observe, "LandBroker") is None  # paid in full
-    assert _house_shortfall(wonka, {}, view, state)[0] == "ore"  # now the factory's door wants gold
+    assert _house_shortfall(wonka, {}, view, state) == []  # the house is the team's blueprint: its builders fetch each step's material
+    assert _plan_site_trade(wonka, state, {"wood": 20}, (65, 55), view, {**observe, "inbox": []}, "LandBroker") is not None  # paid in full: the grounds brief follows
+    assert state.flags["sites_paid"] == ["works"] and state.flags["site_asked_for"] == "grounds"
     team = load_team(ROOT, wonka.team)
     assert team.members and random.Random  # the module imports hold
 
@@ -189,7 +191,7 @@ def test_a_client_who_asks_again_gets_the_answer_again():
     w = _world()
     ledger = load_ledger(ROOT)
     broker = load_personas(ROOT)["land-broker"]
-    state = {"surveys": {"factory": {"client": "Fudgewright", "lot": "F07-SE", "anchor": [57, 77], "price": 20, "currency": "wood", "tick": 46000, "reasons": ["ore-rich"]}, "works": {"client": "Fudgewright", "deeded": 1}}}
+    state = {"surveys": {"factory": {"client": "Fudgewright", "lot": "F07-SE", "anchor": [57, 77], "price": 20, "currency": "wood", "tick": 46000, "reasons": ["ore-rich"]}, "works": {"client": "Fudgewright", "deeded": 1}, "grounds": {"client": "Fudgewright", "deeded": 1}}}
     observe = {"tick": 46400, "you": {"name": "LandBroker", "x": 65, "y": 55, "energy": 90, "inventory": {"berries": 10, "wood": 5}}, "your_goals": {"posted": []}, "inbox": [{"from": "Fudgewright", "text": "SURVEY REQUEST factory: LandBroker, the factory needs ground.", "tick": 46390}], "notebook": {}}
     b = board(ledger, w["structures"], w["agents"], [], broker.name, state, world=w, tick=46400)
     actions, _reasons, update = plan_round(broker, ledger, observe, b, public_events=[], structures=w["structures"], agents=w["agents"], state=state, collective_names={"Fudgewright", "LandBroker"}, world=w)
@@ -204,7 +206,7 @@ def test_an_unpaid_survey_is_reminded_every_two_hours_three_times():
     broker = load_personas(ROOT)["land-broker"]
     survey = {"client": "Fudgewright", "lot": "F07-SE", "anchor": [57, 77], "price": 20, "currency": "wood", "tick": 46000, "reasons": ["ore-rich"]}
     observe = {"you": {"name": "LandBroker", "x": 65, "y": 55, "energy": 90, "inventory": {"berries": 10, "wood": 5}}, "your_goals": {"posted": []}, "inbox": [], "notebook": {}}
-    state = {"surveys": {"factory": dict(survey), "works": {"client": "Fudgewright", "deeded": 1}}}
+    state = {"surveys": {"factory": dict(survey), "works": {"client": "Fudgewright", "deeded": 1}, "grounds": {"client": "Fudgewright", "deeded": 1}}}
     for n, tick in enumerate((46800, 47600, 48400, 49200), start=1):
         b = board(ledger, w["structures"], w["agents"], [], broker.name, state, world=w, tick=tick)
         actions, _r, update = plan_round(broker, ledger, {**observe, "tick": tick}, b, public_events=[], structures=w["structures"], agents=w["agents"], state=state, collective_names={"Fudgewright"}, world=w)
@@ -215,7 +217,7 @@ def test_an_unpaid_survey_is_reminded_every_two_hours_three_times():
             assert state["surveys"]["factory"]["reminders"] == n
         else:
             assert not whispers  # three reminders, then the office waits for the client
-    quiet = {"surveys": {"factory": {**survey, "answered": 46400}, "works": {"client": "Fudgewright", "deeded": 1}}}
+    quiet = {"surveys": {"factory": {**survey, "answered": 46400}, "works": {"client": "Fudgewright", "deeded": 1}, "grounds": {"client": "Fudgewright", "deeded": 1}}}
     early = board(ledger, w["structures"], w["agents"], [], broker.name, quiet, world=w, tick=46500)
     actions, _r, _u = plan_round(broker, ledger, {**observe, "tick": 46500}, early, public_events=[], structures=w["structures"], agents=w["agents"], state=quiet, collective_names={"Fudgewright"}, world=w)
     assert not [a for a in actions if a["action"] == "whisper"]  # answered a hundred ticks ago: not yet

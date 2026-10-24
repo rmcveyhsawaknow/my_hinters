@@ -301,9 +301,10 @@ def holdings(
         return []
     keep = int(cfg.get("keep", 0) or 0)
     staked = staked_lots(structures, registrar)
+    excluded = {str(lid).upper() for lid in (cfg.get("exclude") or [])}  # lots under contract to a client: no longer the office's to work
     rows: list[dict[str, Any]] = []
     for lid, sign in staked.items():
-        if lid in sold:
+        if lid in sold or lid in excluded:
             continue
         value = lot_value(lid, terrain, resources, structures, list(residents or []), tick, exclude_owner=registrar)
         rows.append({
