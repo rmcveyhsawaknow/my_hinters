@@ -145,22 +145,14 @@ def test_due_jobs_follow_the_knobs_and_the_commands_carry_the_flags():
     entry = {"slug": "town-crier", "jobs": ["tick", "shift", "keepalive", "crier"]}
     work_minute = int(crier.knobs["work"]["cron"].split()[0])
     due = due_jobs(crier, datetime(2026, 10, 22, 10, work_minute, tzinfo=UTC), entry)
-    assert "shift" in due and "crier" in due and "land" not in due
+    assert due == ["shift"]  # the round takes its own minute: a persona runs one job at a time, and the shift won every hour
+    assert due_jobs(crier, datetime(2026, 10, 22, 10, (work_minute + 30) % 60, tzinfo=UTC), entry) == ["crier"]
     assert due_jobs(
-        crier, datetime(2026, 10, 22, 10, (work_minute + 33) % 60, tzinfo=UTC), entry
+        crier, datetime(2026, 10, 22, 10, (work_minute + 40) % 60, tzinfo=UTC), entry
     ) == ["keepalive"]
-    assert due_jobs(
-        personas["land-broker"],
-        datetime(
-            2026,
-            10,
-            22,
-            10,
-            int(personas["land-broker"].knobs["work"]["cron"].split()[0]),
-            tzinfo=UTC,
-        ),
-        {"slug": "land-broker"},
-    ) == ["shift", "land"]
+    land_minute = int(personas["land-broker"].knobs["work"]["cron"].split()[0])
+    assert due_jobs(personas["land-broker"], datetime(2026, 10, 22, 10, land_minute, tzinfo=UTC), {"slug": "land-broker"}) == ["shift"]
+    assert due_jobs(personas["land-broker"], datetime(2026, 10, 22, 10, (land_minute + 30) % 60, tzinfo=UTC), {"slug": "land-broker"}) == ["land"]
     assert command_for("tick", "town-crier", True)[-3:] == [
         "town-crier",
         "--dry-run",
