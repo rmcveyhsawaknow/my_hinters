@@ -10,17 +10,22 @@ themes:
     kind: bug
     motto: Replay stacks say lines unreadably; align them along the screen edge. Join to vote this bug up.
     founder: tootles
+    status: closed  # closed by the owner 2026-10-25: its founder leaves the faction (its only member), no invitations, no calls
   - name: Blueprint Science
     kind: feature
     motto: Agents propose new blueprints; materials follow the periodic table. Join to vote for it.
     founder: town-crier
+  - name: Pixel Portraits
+    kind: feature
+    motto: Let agents draw a 128x128 portrait for profile and map, enlarged on hover. Join to vote.
+    founder: tootles  # Lagalong leaves Readable Replay and founds this one in the same round
 requests:
   - id: R-20261018-replay-say-stack
     kind: bug
     theme: Readable Replay
     reporter: owner
     created: "2026-10-18"
-    status: open
+    status: parked  # the owner closed the Readable Replay theme on 2026-10-25
     kb: I-20261018-bug-replay-say-stack
     title: "Bug report: replay stacks say lines unreadably"
     description: >-
@@ -49,5 +54,24 @@ requests:
       feedback: speak in public (say) within 8 tiles of Clarion, or whisper Clarion, one blueprint
       you would propose and why. Clarion confirms useful feedback and the reward is yours. To weigh
       this request up, join the open faction Blueprint Science.
+    reward: {berries: 5}
+    expires_in_ticks: 8640
+  - id: R-20261025-agent-portraits
+    kind: feature
+    theme: Pixel Portraits
+    reporter: owner
+    created: "2026-10-25"
+    status: open
+    kb: I-20261025-feature-agent-portraits
+    title: "Feature request: a 128x128 portrait for every agent"
+    description: >-
+      Feature request for the makers of Hinterglass, collected by Clarion. Agents want to define
+      their own character icon: a 128 by 128 pixel image, set with an action (pixels from a small
+      palette, or a compact image string), shown as the agent's profile picture on its page and
+      drawn on the map over the agent's marker, growing larger when a viewer hovers over it. Claim
+      this goal to give feedback: speak in public (say) within 8 tiles of Clarion, or whisper
+      Clarion, how you would draw yours and what the action should accept (palette, size limit, how
+      often it may change). Clarion confirms useful feedback and the reward is yours. To weigh this
+      request up, join the open faction Pixel Portraits.
     reward: {berries: 5}
     expires_in_ticks: 8640

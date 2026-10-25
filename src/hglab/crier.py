@@ -103,6 +103,7 @@ def board(
         })
         themes.append({
             "name": theme["name"], "kind": theme["kind"], "founder": theme["founder"], "founded": faction is not None,
+            "status": str(theme.get("status") or "open"),
             "faction_id": faction.get("id") if faction else None, "members": members, "endorsers": endorsers,
             "votes": members + len(endorsers),
         })
@@ -122,7 +123,8 @@ def render_board(b: dict[str, Any]) -> str:
     lines = []
     for t in b["themes"]:
         where = f"open faction #{t['faction_id']}, {t['members']} member(s)" if t["founded"] else "faction not founded yet"
-        lines.append(f"- theme {t['name']} ({t['kind']}): {where}; {len(t['endorsers'])} public endorsement(s); {t['votes']} vote(s)")
+        closed = " [closed]" if t.get("status") == "closed" else ""
+        lines.append(f"- theme {t['name']} ({t['kind']}){closed}: {where}; {len(t['endorsers'])} public endorsement(s); {t['votes']} vote(s)")
     for r in b["requests"]:
         if r["goal_id"] is None:
             goal = "no goal posted yet" if r["ledger_status"] == "open" else r["ledger_status"]
@@ -136,7 +138,7 @@ def call_line(persona: Persona, b: dict[str, Any], names: list[str], tick: int) 
     """The collector's public call: who is asked, the standing, how to vote, which goal pays."""
     opener = OPENERS[(tick // 360) % len(OPENERS)]
     who = ", ".join(names) if names else "every builder"
-    standing = "; ".join(f"{t['name']} {t['votes']} vote{'s' if t['votes'] != 1 else ''}" for t in b["themes"])
+    standing = "; ".join(f"{t['name']} {t['votes']} vote{'s' if t['votes'] != 1 else ''}" for t in b["themes"] if t.get("status", "open") == "open")
     open_goals = [r for r in b["requests"] if r["goal_id"] is not None and r["goal_status"] == "open"]
     goal_part = f" Claim goal #{open_goals[0]['goal_id']} and speak your feedback to earn its reward." if open_goals else ""
     limit = int(persona.voice.get("max_say_chars", 280))
@@ -196,8 +198,8 @@ def plan_invites(
     invitation to the same agent is refused by the world, so names already invited (the notebook state,
     or a public faction_invited event by this persona) are never asked again.
     """
-    if theme is None or not theme["founded"]:
-        return [], [], []
+    if theme is None or not theme["founded"] or theme.get("status", "open") != "open":
+        return [], [], []  # a closed theme invites nobody
     invited = {n for n in state.get("invited", []) if isinstance(n, str)}
     for event in public_events:
         if not isinstance(event, dict) or event.get("type") != "faction_invited" or str(event.get("actor")) != persona.name:
@@ -243,10 +245,15 @@ def plan_round(
     reasons: list[str] = []
     my_faction = faction_name(you.get("faction"))
     my_theme = next((t for t in b["themes"] if my_faction and t["name"].casefold() == my_faction.casefold()), None)
+    in_faction = bool(you.get("faction"))
+    if my_theme is not None and my_theme.get("status") == "closed":
+        actions.append({"action": "leave_faction"})
+        reasons.append(f"theme {my_theme['name']} is closed: leave its faction (an empty faction is a closed one)")
+        my_theme, in_faction = None, False
     invites, invite_reasons, invited_now = plan_invites(persona, b, my_theme, active_names, factions_of or {}, state, public_events=public_events, reserved=reserved)
-    if "found" in mine and not you.get("faction"):
+    if "found" in mine and not in_faction:
         for theme, entry in zip(ledger["themes"], b["themes"], strict=True):
-            if theme["founder"] != persona.slug or entry["founded"]:
+            if theme["founder"] != persona.slug or entry["founded"] or entry.get("status") == "closed":
                 continue
             if energy - 10 < reserve:
                 reasons.append(f"theme {theme['name']}: founding costs 10 energy; not above the reserve yet")

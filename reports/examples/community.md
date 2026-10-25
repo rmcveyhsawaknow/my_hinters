@@ -24,7 +24,7 @@ Order is team, then slug. Each agent is judged against its own intent.
 | Neverland | Strayling | 82 | 62 | 82 | 0 | 5 | kept | 0 |
 | Neverland | Lagalong | 87 | 87 | 95 | 0 | 0 | kept | 0 |
 | Neverland | Stoutheart | 92 | 72 | 70 | 0 | 0 | kept | 1 |
-| The Square | Clarion | 68 | 19 | 52 | 0 | 0 | kept | 1 |
+| The Square | Clarion | 68 | 24 | 52 | 0 | 0 | kept | 1 |
 
 ## What works in Hinterglass (approaches compared across agents)
 
