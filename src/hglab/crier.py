@@ -231,8 +231,9 @@ def plan_round(
 ) -> tuple[list[dict[str, Any]], list[str], dict[str, Any]]:
     """Deterministic collector actions for one round; the caller validates and may add the state note.
 
-    Order: found the theme faction this hat owes, post missing goals (two open at a time, rewards
-    from the pack), confirm feedback on claimed goals, invitations into one's theme faction, then
+    Order: found the theme faction this hat owes, withdraw open goals whose request is no longer
+    open, post missing goals (two open at a time, rewards from the pack), confirm feedback on
+    claimed goals, invitations into one's theme faction, then
     the call naming agents who have not been asked lately. At most three actions, so the notebook
     note fits the four-action cap; a due call always keeps its slot.
     """
@@ -270,6 +271,15 @@ def plan_round(
     posted = [g for g in ((observe.get("your_goals") or {}).get("posted") or []) if isinstance(g, dict)]
     live = [g for g in posted if g.get("status") in {"open", "claimed"}]
     inventory = {k: int(v) for k, v in (you.get("inventory") or {}).items()}
+    withdrawn = {r["title"] for r in ledger["requests"] if r["status"] != "open"}
+    for goal in [g for g in live if g.get("status") == "open" and str(g.get("title", "")) in withdrawn][:2]:
+        actions.append({"action": "cancel_goal", "goal_id": int(goal["id"])})  # 0 energy; a claimed one stays until its claimant is answered
+        reasons.append(f"goal #{goal['id']} asks for a request no longer open: it comes down and its escrow comes back")
+        live.remove(goal)
+        reward = goal.get("reward")
+        if isinstance(reward, dict):
+            for item, qty in reward.items():
+                inventory[item] = inventory.get(item, 0) + int(qty or 0)
     room = max(0, OPEN_GOALS_CAP - len(live))
     for request, entry in zip(ledger["requests"], b["requests"], strict=True):
         if room <= 0:
