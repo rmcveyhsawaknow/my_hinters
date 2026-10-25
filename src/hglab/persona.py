@@ -26,6 +26,7 @@ GLOBAL_ACTIONS_CAP = 4
 GLOBAL_OPEN_GOALS_CAP = 2
 MOVE_STEP_CAP = 12
 PERSONA_STATE_KEY = "persona_state"
+BOOKKEEPING_KEYS = frozenset({PERSONA_STATE_KEY, "quips"})  # notebook notes a wake keeps about itself: not actions a persona chose
 ACTION_ENERGY = {
     "gather": 3, "build": 5, "demolish": 5, "say": 1, "whisper": 1, "write": 1, "give": 1,
     "take": 1, "post_goal": 2, "claim_goal": 1, "found_faction": 10,
@@ -474,7 +475,7 @@ def enforce_knobs(
 
     real = [
         a for a in actions
-        if not (a.get("action") == "remember" and a.get("key") == PERSONA_STATE_KEY)
+        if not (a.get("action") == "remember" and a.get("key") in BOOKKEEPING_KEYS)
     ]
     if len(real) > persona.actions_per_wake:
         raise ValueError(
