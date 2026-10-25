@@ -36,6 +36,7 @@ from hglab.planner import (
     _mark_full,
     _step_toward,
     chebyshev,
+    full_agents,
     materials_ok,
     neighbours,
     reachable_storage,
@@ -207,7 +208,7 @@ def plan_crew(
         if step is not None:
             return step
         if stores and not open_stores and role != "mason":
-            step = _hand_to_mason(persona, team, inventory, position, view, site, teammates, names, collective_names, crew_roles, stores_max, len(stores))
+            step = _hand_to_mason(persona, team, inventory, position, view, site, teammates, names, collective_names, crew_roles, stores_max, len(stores), full=full_agents(state, tick))
             if step is not None:
                 return step
 
@@ -322,11 +323,13 @@ def _hand_to_mason(
     crew_roles: dict[str, str] | None,
     stores_max: int,
     standing: int,
+    full: set[str] | frozenset[str] = frozenset(),
 ) -> Step | None:
     """Every store at the works is full: the heavy pack carries the next store's cost to the mason, who raises it.
 
     A give to an agent reaches two tiles; the mason's position comes from the view or the public roster.
-    With the works at its cap of stores the hand waits by the site instead of wandering.
+    With the works at its cap of stores, or the mason's pack full (``full``: it refused a hand-over
+    within the hour), the hand waits by the site instead of wandering or handing again.
     """
     proper = {n.casefold(): n for n in (collective_names or set())}
     by_slug = {slug: proper.get(str(name).casefold(), str(name)) for name, slug in (names or {}).items()}
@@ -342,11 +345,13 @@ def _hand_to_mason(
         if teammates and slug in teammates:
             where = tuple(teammates[slug])
             break
-    if standing >= stores_max or where is None or not mason_name:
+    packed = bool(mason_name) and mason_name.casefold() in full
+    if standing >= stores_max or where is None or not mason_name or packed:
         if chebyshev(position, site) > 3:
             target = _step_toward(position, {"x": site[0], "y": site[1]}, view)
             if target is not None and target != position:
-                return [{"action": "move", "x": target[0], "y": target[1]}], f"every store at the works is full ({standing} of {stores_max}): wait by the works", "crew"
+                also = " and the mason's pack too" if packed else ""
+                return [{"action": "move", "x": target[0], "y": target[1]}], f"every store at the works is full ({standing} of {stores_max}){also}: wait by the works", "crew"
         return None
     if chebyshev(position, where) <= 2:
         gives: list[dict[str, Any]] = []

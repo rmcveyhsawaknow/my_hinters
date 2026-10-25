@@ -139,6 +139,16 @@ def test_full_stores_make_the_mason_raise_another_and_the_hands_carry_its_cost_t
     assert carry[0][0]["action"] == "move" and "carry the next store's cost to the mason" in carry[1]
     hand = _step("loompa-woodcutter", {"wood": 36, "stone": 5, "berries": 5}, (88, 96), view, teammates={"loompa-mason": (89, 97)}, crew_roles=roles)
     assert hand[0] == [{"action": "give", "to": "Toffeetrowel", "item": "wood", "qty": 20}, {"action": "give", "to": "Toffeetrowel", "item": "stone", "qty": 5}] and "hand" in hand[1]
+    from hglab.planner import mark_full_agent
+
+    hand_persona, hand_team, hand_personas = _crew("loompa-woodcutter")
+    refused = PersonaState(mood="busy")
+    mark_full_agent(refused, "Toffeetrowel", 100)  # the mason's pack refused the last hand-over
+    for tick, handed in ((300, False), (100 + 361, True)):
+        seen = {"you": {"x": 88, "y": 96, "faction": {"id": 5, "name": "Chocolate Factory"}}, "tick": tick}
+        again = plan_crew(hand_persona, hand_team, refused, seen, view, {"wood": 36, "stone": 5, "berries": 5}, (88, 96), 80, hand_persona.energy_reserve, 3, {p.name for p in hand_personas.values()}, _names(hand_personas), {"loompa-mason": (89, 97)}, crew_roles=roles)
+        gave = again is not None and any(a.get("to") == "Toffeetrowel" for a in again[0])
+        assert gave is handed  # no hand-over within the hour; an hour later the mason is asked again
     alone = _step("loompa-woodcutter", {"wood": 36, "stone": 5, "berries": 5}, (84, 92), view)  # no mason known: wait by the works, never a give into a full store
     assert alone is None or alone[0][0]["action"] != "give"
     levels = {"wood": (210, 200), "stone": (20, 150), "fiber": (0, 60), "berries": (357, 60), "ore": (0, 30)}

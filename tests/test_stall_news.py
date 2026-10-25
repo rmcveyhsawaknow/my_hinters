@@ -64,6 +64,12 @@ def test_a_client_does_not_tour_full_office_stores_to_pay(tmp_path):
     view.residents = [{"name": "LandBroker", "x": 95, "y": 95}]
     in_person = _plan_site_trade(wonka, state, {"wood": 20}, (91, 88), view, observe, "LandBroker", office_names={"Lintelstave"})
     assert in_person is not None and ("hands" in in_person[1] or "LandBroker" in in_person[1])  # the registrar nearby takes it in person
+    from hglab.planner import full_agents, mark_full_agent
+
+    mark_full_agent(state, "LandBroker", 72000)  # his pack refused the price (inventory_full), as it did at 15:23 on 2026-10-25
+    assert _plan_site_trade(wonka, state, {"wood": 20}, (91, 88), view, observe, "LandBroker", office_names={"Lintelstave"}) is None  # build instead of walking to him again
+    assert "landbroker" not in full_agents(state, 72000 + 361)  # an hour later his hands may have room
+    state.flags.pop("full_agents")
     view.residents = [{"name": "LandBroker", "x": 72, "y": 58}]
     assert _plan_site_trade(wonka, state, {"wood": 20}, (91, 88), view, observe, "LandBroker", office_names={"Lintelstave"}) is None  # far from the ground: no chase
 
