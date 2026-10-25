@@ -824,6 +824,24 @@ def land_round(root: Path, persona: Persona, *, dry_run: bool, fixture: Path | N
         recent = [e for e in events if isinstance(e, dict) and tick - int(e.get("tick", 0) or 0) <= 8640]
         office_names = {personas[m].name for m in (team.members if team else ()) if m in personas}  # any store of the office takes a payment
         actions, reasons, update = plan_round(persona, ledger, observe, b, public_events=recent, structures=structures, agents=agents, state=state, collective_names=collective_names, world=world, claims=claims, office_names=office_names)
+        # the office's ground (owner, 2026-10-25): the registry goes to the hands, and one builder on a staked lot hears a notice
+        from hglab.evict import evict_cfg, load_shared, plan_notice, record_notice, save_shared
+
+        shared: dict[str, Any] | None = None
+        notice = None
+        if evict_cfg(claims) is not None:
+            shared = load_shared(root)
+            shared["held"] = {**(shared.get("held") or {}), **{str(e["plot"]): str(e["holder"]) for e in (b.get("registered") or []) if e.get("plot") and e.get("holder")}}
+            energy_now = int((observe.get("you") or {}).get("energy", 0) or 0)
+            if len(actions) < 3 and energy_now - 1 >= persona.energy_reserve:
+                lots_b = b.get("lots") or {}
+                notice = plan_notice(
+                    claims, structures, recent, {n.casefold() for n in collective_names}, shared,
+                    prices=lots_b.get("prices"), currency=str(lots_b.get("currency", "wood")), vault=b.get("vault"),
+                )
+                if notice is not None:
+                    actions.append(notice[0])
+                    reasons.append(notice[3])
         if update:
             actions.append({"action": "remember", "key": STATE_KEY, "text": fit_note({**state, **update})})
         worn = "+".join(persona.roles)
@@ -851,8 +869,12 @@ def land_round(root: Path, persona: Persona, *, dry_run: bool, fixture: Path | N
                 except Exception as exc:  # noqa: BLE001 - a world refusal is a failed result, not a crash
                     result = {"ok": False, "error": str(getattr(exc, "code", None) or type(exc).__name__)[:40]}
                 results.append(redact_result(result))
+                if notice is not None and shared is not None and validated.action == "whisper" and validated.to == notice[1] and result.get("ok", False):
+                    shared = record_notice(shared, notice[1], notice[2], tick)  # the hands wait from now
                 if not result.get("ok", False):
                     break
+            if shared is not None:
+                save_shared(root, shared)
         record.update({
             "tick": tick, "board": {k: v for k, v in b.items() if k != "agents"}, "actions": [a.model_dump(exclude_none=True) for a in kept],
             "reasons": reasons, "dropped": dropped, "results": results, "said": any(a.action == "say" for a in kept),
