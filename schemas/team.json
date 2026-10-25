@@ -40,6 +40,14 @@
                 "enabled": {"type": "boolean"},
                 "scope": {"enum": ["holdings", "staked"], "description": "holdings: the holdings only; staked: the holdings first, then every other staked lot"}
               }
+            },
+            "evict": {
+              "type": "object", "additionalProperties": false,
+              "description": "What others build on a staked lot without buying or registering it is taken down by the hands, after the registrar's whispered notice (owner, 2026-10-25; hglab.evict)",
+              "properties": {
+                "enabled": {"type": "boolean"},
+                "notice_ticks": {"type": "integer", "minimum": 0, "maximum": 60480, "description": "Ticks between the notice and the first hit (360 is one real hour)"}
+              }
             }
           }
         },

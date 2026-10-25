@@ -22,6 +22,15 @@ from collections import Counter
 from collections.abc import Callable
 from typing import Any
 
+from hglab.evict import (
+    due_owners,
+    evict_cfg,
+    held_lots,
+    intruders,
+    load_shared,
+    notice_ticks,
+    policed_lots,
+)
 from hglab.lots import holdings as office_holdings
 from hglab.lots import lot_anchor, lot_bounds, lot_id, node_floor
 from hglab.mood import PersonaState
@@ -212,9 +221,15 @@ def plan_crew(
             return [{"action": "move", "x": target[0], "y": target[1]}], f"{distance} tiles from the works at {site}: walk there", "crew"
         return None
 
+    # a1. the office's ground (owner, 2026-10-25): what outsiders built on a staked lot without buying it comes down once its notice ran out
+    if claims and evict_cfg(claims) is not None:
+        step = _evict_step(persona, team, claims, position, view, observe, room, energy, reserve, collective_names, tick)
+        if step is not None:
+            return step
+
     # a2. the office's walls (owner, 2026-10-25): every store full, the stone goes into walls on the staked lots
     if claims and walls_cfg(claims) is not None and office_stores and not any(_has_room(s, full) for s in office_stores):
-        step = _wall_step(persona, claims, held, inventory, position, view, mates, office_stores, room, energy, reserve, state, tick, observe)
+        step = _wall_step(persona, claims, held, inventory, position, view, mates, office_stores, room, energy, reserve, state, tick, observe, team=team)
         if step is not None:
             return step
 
@@ -290,6 +305,87 @@ def _admits(persona: Persona, store: dict[str, Any], faction: str) -> bool:
     return str(store.get("owner", "")).casefold() == persona.name.casefold() or policy == "public" or (policy == "faction" and bool(faction) and theirs.casefold() == faction.casefold())
 
 
+def _evict_step(
+    persona: Persona,
+    team: Team | None,
+    claims: dict[str, Any],
+    position: tuple[int, int],
+    view: WorldView,
+    observe: dict[str, Any],
+    room: int,
+    energy: int,
+    reserve: int,
+    collective_names: set[str] | None,
+    tick: int,
+) -> Step | None:
+    """Take down what an outsider built on a staked lot of the office once the registrar's notice to them ran out (``hglab.evict``).
+
+    Beside a target: hits on the weakest first (10 damage each), as many as the wake and the energy allow.
+    Blocks within two tiles: removals of their tile's box, eight blocks a time. Else a walk toward the
+    nearest. Where the view reaches it is the truth: a structure gone from it is gone, its hp is current.
+    """
+    from hglab.factory import root_of
+
+    cfg = evict_cfg(claims)
+    shared = load_shared(root_of(team))
+    due = due_owners(shared, tick, notice_ticks(cfg))
+    if not due:
+        return None
+    collective = {n.casefold() for n in (collective_names or set())} | {persona.name.casefold()}
+    snapshot = view.world_structures or view.structures
+    policed = policed_lots(claims, snapshot, held_lots(snapshot, str(claims["registrar"]), shared))
+    if not policed:
+        return None
+
+    def in_view(x: int, y: int) -> bool:
+        return bool(view.rows) and 0 <= y - view.y0 < len(view.rows) and 0 <= x - view.x0 < len(view.rows[y - view.y0])
+
+    current = [s for s in snapshot if not (isinstance(s.get("x"), int) and isinstance(s.get("y"), int) and in_view(s["x"], s["y"]))] + list(view.structures)
+    targets = [i for i in intruders(policed, current, collective) if i["owner"].casefold() in due]
+    blocks = [
+        b for b in (observe.get("blocks") or [])
+        if isinstance(b, dict) and isinstance(b.get("x"), int) and isinstance(b.get("y"), int) and b.get("owner")
+        and str(b["owner"]).casefold() not in collective and str(b["owner"]).casefold() in due and lot_id(b["x"], b["y"]) in policed
+    ]
+    if not targets and not blocks:
+        return None
+    spare = max(0, energy - reserve)
+    beside = sorted((i for i in targets if chebyshev(position, (i["x"], i["y"])) <= 1), key=lambda i: (int(i.get("hp") or 10), i["x"], i["y"]))
+    if beside:
+        budget = min(room, spare // 5)
+        if budget < 1:
+            return None
+        hits: list[dict[str, Any]] = []
+        struck: list[str] = []
+        for item in beside:
+            need = max(1, -(-int(item.get("hp") or 10) // 10))
+            take = min(need, budget - len(hits))
+            hits.extend({"action": "demolish", "x": item["x"], "y": item["y"]} for _ in range(take))
+            struck.append(f"{item['owner']}'s {item['type']} at ({item['x']},{item['y']})")
+            if len(hits) >= budget:
+                break
+        return hits, f"lot {beside[0]['lot']} is staked ground of the office and the notice to its builder has run out: {len(hits)} hit(s) on {', '.join(struck)}", "crew"
+    near = sorted((b for b in blocks if chebyshev(position, (b["x"], b["y"])) <= 2), key=lambda b: (b["x"], b["y"]))
+    if near:
+        b = near[0]
+        top = max(1, min(16, int(b.get("top") or 16)))
+        box = {"action": "remove", "bx": b["x"] * 4, "by": b["y"] * 4, "bz": 0, "bx2": b["x"] * 4 + 3, "by2": b["y"] * 4 + 3, "bz2": top - 1}
+        cost = 1 + -(-(16 * top) // 32)  # as the planner counts a box: one, plus one per 32 cells
+        count = min(room, spare // cost, max(1, -(-int(b.get("count") or 8) // 8)))
+        if count < 1:
+            return None
+        return [dict(box) for _ in range(count)], f"{b['owner']}'s blocks at ({b['x']},{b['y']}) stand on staked lot {lot_id(b['x'], b['y'])} and the notice has run out: {count} removal(s), eight blocks each", "crew"
+    spots = [(i["x"], i["y"], f"{i['owner']}'s {i['type']}") for i in targets] + [(b["x"], b["y"], f"{b['owner']}'s blocks") for b in blocks]
+    spots = [s for s in spots if chebyshev(position, (s[0], s[1])) <= CARRY_RANGE]
+    if not spots:
+        return None
+    x, y, what = min(spots, key=lambda s: (chebyshev(position, (s[0], s[1])), s[0], s[1]))
+    target = _step_toward(position, {"x": x, "y": y}, view)
+    if target is None or target == position:
+        return None
+    return [{"action": "move", "x": target[0], "y": target[1]}], f"{what} at ({x},{y}) stands on staked lot {lot_id(x, y)} and its notice has run out: walk there", "crew"
+
+
 def _wall_step(
     persona: Persona,
     claims: dict[str, Any],
@@ -305,6 +401,7 @@ def _wall_step(
     state: PersonaState,
     tick: int,
     observe: dict[str, Any],
+    team: Team | None = None,
 ) -> Step | None:
     """Every store of the office is full: wall the staked lots, the holdings first, with the pack's stone, then the stores'.
 
@@ -314,7 +411,10 @@ def _wall_step(
     no stone in the pack, a draw of up to thirty from the nearest full store that admits us.
     """
     structures = view.world_structures or view.structures
-    first, rest = wall_lots(claims, held, structures, mates)
+    from hglab.factory import root_of
+
+    held_by = set(held_lots(structures, str(claims["registrar"]), load_shared(root_of(team)))) if evict_cfg(claims) is not None else set()
+    first, rest = wall_lots(claims, held, structures, mates, held_by=held_by)
     if not first and not rest:
         return None
     skip = blocked_near(structures, mates) | no_wall(state, tick)

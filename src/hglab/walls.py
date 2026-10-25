@@ -76,6 +76,7 @@ def wall_lots(
     held: list[dict[str, Any]],
     structures: list[dict[str, Any]],
     office: set[str] | frozenset[str],
+    held_by: set[str] | frozenset[str] = frozenset(),
 ) -> tuple[list[str], list[str]]:
     """The lots to wall: (holdings in rank order, then the other staked lots when ``scope`` is ``staked``).
 
@@ -98,7 +99,7 @@ def wall_lots(
     }
 
     def allowed(lid: str) -> bool:
-        return lid not in excluded and lid not in sold and lid not in homes and lid not in foreign and not (spawn and _near_spawn(lid, spawn))
+        return lid not in excluded and lid not in sold and lid not in held_by and lid not in homes and lid not in foreign and not (spawn and _near_spawn(lid, spawn))
 
     first = [str(h["lot"]) for h in held if allowed(str(h["lot"]))]
     rest: list[str] = []

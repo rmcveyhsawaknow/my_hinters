@@ -14,3 +14,12 @@ def _private_blueprint_ledger(tmp_path_factory, monkeypatch):
 
     folder = tmp_path_factory.mktemp("blueprints")
     monkeypatch.setattr(factory, "ledger_path", lambda root, name: folder / f"{name}.json")
+
+
+@pytest.fixture(autouse=True)
+def _private_office_ledger(tmp_path_factory, monkeypatch):
+    """Every test starts with no eviction notices: the live ones are at runs/local/office/evictions.json."""
+    from hglab import evict
+
+    folder = tmp_path_factory.mktemp("office")
+    monkeypatch.setattr(evict, "shared_path", lambda root: folder / "evictions.json")
