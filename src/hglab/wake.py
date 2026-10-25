@@ -692,11 +692,17 @@ def persona_wake(
         extras["knob_checks"] = _knobs(raw_actions, observe, context.get("mates", {}))
 
     def on_refusal(action: dict[str, Any], result: dict[str, Any]) -> dict[str, str] | None:
-        """What a refusal teaches: a storehouse that answers inventory_full is full for a day."""
+        """What a refusal teaches: a storehouse that answers inventory_full is full for a day, an agent's pack for an hour."""
         state_now = context.get("state")
         if state_now is None:
             return None
         tick_now = int((context.get("observe") or {}).get("tick", 0) or 0)
+        handed = action.get("action") == "give" and result.get("error") == "inventory_full" and bool(action.get("to"))
+        if handed:
+            from hglab.planner import mark_full_agent
+
+            mark_full_agent(state_now, str(action["to"]), tick_now)
+            extras.setdefault("learned", []).append(f"{action['to']}'s pack is full: nothing is handed to them for an hour")
         bought = state_now.flags.get("house_site") if isinstance(state_now.flags.get("house_site"), dict) else None
         if action.get("action") == "give" and result.get("error") and bought and bought.get("pending") and action.get("item") == bought.get("currency") and int(action.get("qty", 0) or 0) == int(bought["pending"]):
             bought["paid"] = max(0, int(bought.get("paid", 0) or 0) - int(bought.pop("pending")))  # the deed payment was refused: still owed
@@ -716,7 +722,7 @@ def persona_wake(
             mark_closed(state_now, (int(action["x"]), int(action["y"])), tick_now)
             extras.setdefault("learned", []).append(f"the tile ({action['x']},{action['y']}) is {result.get('error')}: routed around for a day")
             return {PERSONA_STATE_KEY: dump_state(state_now)}
-        return None
+        return {PERSONA_STATE_KEY: dump_state(state_now)} if handed else None
 
     record = run_wake(
         agent=persona.name,

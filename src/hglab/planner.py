@@ -1185,7 +1185,7 @@ def _plan_site_trade(
     full = _full_stores(state, tick)
     vaults = [v for v in vaults if v not in full and storehouse_room(view.structure_at(*v) or {}) >= min(owed, 5)]  # a full vault takes nothing
     if not vaults:
-        return _pay_in_person(registrar_name, state, bought, view, position, currency, carried, owed)
+        return _pay_in_person(registrar_name, state, bought, view, position, currency, carried, owed, tick=tick)
     vault = vaults[0]
     if chebyshev(position, vault) <= 1:
         qty = min(owed, carried, storehouse_room(view.structure_at(*vault) or {}))
@@ -1260,8 +1260,15 @@ def _pay_in_person(
     currency: str,
     carried: int,
     owed: int,
+    tick: int | None = None,
 ) -> tuple[list[dict[str, Any]], str, str] | None:
-    """No office storehouse has room: the price goes into the registrar's hands (a give reaches two tiles), when the roster shows them near."""
+    """No office storehouse has room: the price goes into the registrar's hands (a give reaches two tiles), when the roster shows them near.
+
+    A registrar whose pack refused the price within the hour is not walked to again: the client builds.
+    """
+    now = int(tick if tick is not None else (view.tick or 0))
+    if registrar_name.casefold() in full_agents(state, now):
+        return None  # his pack is full too: build, and pay when the office has room
     registrar = next((a for a in view.residents if str(a.get("name", "")).casefold() == registrar_name.casefold() and isinstance(a.get("x"), int) and isinstance(a.get("y"), int)), None)
     if registrar is None:
         return None
@@ -2064,6 +2071,24 @@ def _mark_full(state: PersonaState | None, where: tuple[int, int], tick: int) ->
     flags = state.flags.get("full_stores") if isinstance(state.flags.get("full_stores"), dict) else {}
     flags[f"{where[0]},{where[1]}"] = tick
     state.flags["full_stores"] = dict(sorted(flags.items(), key=lambda kv: -int(kv[1] or 0))[:16])  # the works, the office depots and the old vaults all fit
+
+
+FULL_PACK_TICKS = 360  # an agent whose pack refused a hand-over is handed nothing for an hour (a pack empties faster than a storehouse)
+
+
+def full_agents(state: PersonaState | None, tick: int) -> set[str]:
+    """Agents (casefolded names) whose pack refused a give from us as inventory_full within the hour."""
+    flags = state.flags.get("full_agents") if state is not None and isinstance(state.flags.get("full_agents"), dict) else {}
+    return {str(name).casefold() for name, seen in flags.items() if tick - int(seen or 0) <= FULL_PACK_TICKS}
+
+
+def mark_full_agent(state: PersonaState | None, name: str, tick: int) -> None:
+    """On 2026-10-25 the office's hands handed their full mason goods some 65 times in three hours, and Fudgewright walked to a registrar whose pack was full."""
+    if state is None or not name:
+        return
+    flags = state.flags.get("full_agents") if isinstance(state.flags.get("full_agents"), dict) else {}
+    flags[str(name)] = tick
+    state.flags["full_agents"] = dict(sorted(flags.items(), key=lambda kv: -int(kv[1] or 0))[:4])
 
 
 def _faction_name(value: Any) -> str:
