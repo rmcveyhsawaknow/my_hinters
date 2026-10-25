@@ -114,3 +114,22 @@ def test_grandad_rests_beside_the_hut_and_holds_court_from_it():
     quiet = {**home, "notebook": {"_limits": {"says": [{"tick": 66990, "text": "a"}, {"tick": 66995, "text": "b"}, {"tick": 66998, "text": "c"}]}}}
     assert _plan_lounge(grandad, team, PersonaState(mood="in_bed"), quiet, view, (88, 96), 100, 40, names, None, random.Random("g")) is None  # three this hour: rest in silence
     assert _plan_lounge(personas["mrs-bucket"], team, PersonaState(mood="warm"), home, view, (88, 96), 100, 40, names, None, random.Random("g")) is None  # only a persona with a lounge
+
+
+def test_the_walk_back_a_line_and_its_memory_fit_his_two_actions():
+    """Live on 2026-10-25 every lounge wake that walked and spoke was refused (three actions against his two) and the shift skipped it silently."""
+    from hglab.fixtures import load_fixture
+    from hglab.persona import enforce_knobs
+
+    grandad = load_personas(ROOT)["grandpa-joe"]
+    team = load_team(ROOT, "chocolate-factory")
+    observe = load_fixture(ROOT / "tests/fixtures/observe/grandpa-joe.json")
+    observe["you"].update({"x": 82, "y": 109})
+    wake = [
+        {"action": "move", "x": 86, "y": 100},
+        {"action": "say", "text": "Some people have a standing desk. I have a lying desk."},
+        {"action": "remember", "key": "quips", "text": "{}"},
+        {"action": "remember", "key": "persona_state", "text": "{}"},
+    ]
+    assert grandad.actions_per_wake == 2
+    enforce_knobs(wake, grandad, team, observe, recent_say_count=0)  # the memory note is bookkeeping, like the persona state
