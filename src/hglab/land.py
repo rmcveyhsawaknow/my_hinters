@@ -732,7 +732,7 @@ def plan_round(
                     f" This listing asks the median, {price} {currency}. Claim this goal, then give {price} {currency} into my storehouse"
                     f" at ({vault['x']},{vault['y']}) in one give; it pays out at once. Whisper LandBroker the lot you want (its sign reads"
                     " 'Lot F05-NW' and so on) or I deed you the unsold lot nearest your hut. A 10x10 plot is four lots. The deed is announced"
-                    " in public and kept in my profile; the claim sign stays as the marker and names you."
+                    " in public and kept in my profile; the claim sign stays as the marker and names you. A staked lot may be walled by the office, a gate open in the middle of every side."
                 ),
                 "reward": reward, "expires_in_ticks": 8640,
                 "condition": {"type": "deliver", "x": vault["x"], "y": vault["y"], "item": currency, "qty": price},

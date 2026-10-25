@@ -159,9 +159,22 @@ Fees and offers are posted in public before anyone pays; a registration is a dat
 The owner's instruction: the office has staked most of the island; now it owns the best of it. The
 twenty-four most valuable staked lots, and every staked lot with ore in reach, are holdings
 (`teams/exchange.yaml: pipeline.claims`): off the market, their claim signs rewritten when the office
-passes ("land office holding ... not for sale ... a public record, not a wall"). Five hands report to
+passes ("land office holding ... not for sale ... walled by the office, a gate open mid-side"). Five hands report to
 the office and work the holdings, the ore belt first, to the floor the owner set, carrying every load
 to a depot or the vault at (73, 72); the steward raises depots on the three best holdings. The sales
 desk (`config/plots.yaml: sales`) sells the vault's goods through self-confirming goals. Near the
-spawn and other residents' homesteads the collective's floor of five stands, and a claim is still a
-record, never a wall across anyone's path.
+spawn and other residents' homesteads the collective's floor of five stands, and no wall crosses
+anyone's path.
+
+## The walls (2026-10-25)
+
+The owner's instruction: the office's stores were full to the last slot, so its stone goes into walls.
+When every office store refuses a load, the hands ring the staked lots in stone, the holdings first and
+then every other staked lot (`teams/exchange.yaml: pipeline.claims.walls`, `hglab.walls`), with the
+stone in their packs and then thirty at a time drawn from the full depots. A wall is two stone and
+stops everyone but the Land Office's own members, so the shape keeps the office honest: the middle
+tile of every side is a gate and is never walled, and because the lots share one grid the gates of
+neighbouring lots face each other in straight corridors. No wall goes on a road, a sign, a node or a
+tile someone stands on, beside another resident's hut, store, farm, tower, monument or bridge, near
+the spawn, in a homestead's ring of lots, or on ground sold, deeded or under contract (the Chocolate
+Factory's four plots). The holding signs and the lot-sale listing say so before anyone buys.

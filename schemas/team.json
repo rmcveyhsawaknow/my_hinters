@@ -32,7 +32,15 @@
             "protect_spawn": {"type": "integer", "minimum": 0, "maximum": 40},
             "protect_homesteads": {"type": "boolean"},
             "exclude": {"type": "array", "items": {"type": "string", "pattern": "^[A-Z][0-9]{2}-(NW|NE|SW|SE)$"}, "uniqueItems": true, "description": "Staked lots under contract to a client (a site request): never holdings, never worked"},
-            "text": {"type": "string", "minLength": 10, "maxLength": 160}
+            "text": {"type": "string", "minLength": 10, "maxLength": 160},
+            "walls": {
+              "type": "object", "additionalProperties": false,
+              "description": "Walls on the staked lots (owner, 2026-10-25): when every office store is full the hands wall the lots with the stone, the middle of every side left open as a gate (hglab.walls)",
+              "properties": {
+                "enabled": {"type": "boolean"},
+                "scope": {"enum": ["holdings", "staked"], "description": "holdings: the holdings only; staked: the holdings first, then every other staked lot"}
+              }
+            }
           }
         },
         "stores_max": {"type": "integer", "minimum": 1, "maximum": 12, "description": "Storehouses at the works before the hands stop raising more for a full stock (default 6)"},

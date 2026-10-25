@@ -716,6 +716,12 @@ def persona_wake(
             _mark_full(state_now, (int(action["x"]), int(action["y"])), tick_now)
             extras.setdefault("learned", []).append(f"the storehouse at ({action['x']},{action['y']}) is full: left alone for a day")
             return {PERSONA_STATE_KEY: dump_state(state_now)}
+        if action.get("action") == "build" and action.get("type") == "wall" and action.get("x") is not None and action.get("y") is not None:
+            from hglab.walls import mark_no_wall
+
+            mark_no_wall(state_now, (int(action["x"]), int(action["y"])), tick_now)
+            extras.setdefault("learned", []).append(f"no wall at ({action['x']},{action['y']}) ({result.get('error')}): left open for a day")
+            return {PERSONA_STATE_KEY: dump_state(state_now)}
         if action.get("action") == "move" and result.get("error") in {"not_walkable", "too_far"} and action.get("x") is not None and action.get("y") is not None:
             from hglab.planner import mark_closed
 
