@@ -14,6 +14,8 @@
 name: The Chocolate Factory
 team: chocolate-factory
 plots: [I08, J08, I09, J09]
+version: 2  # the level rebuild of 2026-10-25: surveyed plinths, windows facing out of their own walls (ledger chocolate-factory.v2)
+foundation_block: [stone, grey]
 story: >-
   A confectionery that climbs a mountain: a glass elevator of rainbow light pressed against the eastern
   peak, a peppermint lookout at the head of the east hillside, a fudge mill and a cocoa terrace on the
@@ -23,6 +25,8 @@ sections:
   - id: elevator
     name: The Glass Elevator
     tiles: [89, 84, 90, 85]  # hills under the eastern peak; the mountain stands at (89-90, 83)
+    foundation: [[0, 1], [4, 5]]  # plinth levels per tile, rows north to south (hglab factory level)
+    clear: {by: loompa-mason, tiles: all}  # version 1 stepped with the slope: Toffeetrowel takes it down, his own blocks come out whole
     style: glass_tower
     levels: 16
     doors: [west]
@@ -34,6 +38,8 @@ sections:
   - id: lookout
     name: The Peppermint Lookout
     tiles: [96, 80, 98, 81]  # the head of the east hillside, the plots' northern edge
+    foundation: [[0, 3, 4], [0, 3, 4]]  # plinth levels per tile, rows north to south (hglab factory level)
+    clear: {by: loompa-mason, tiles: all}
     style: stripe_tower
     levels: 16
     doors: [south]
@@ -46,6 +52,8 @@ sections:
   - id: mill
     name: The Fudge Mill
     tiles: [89, 87, 91, 89]  # the hill belt two tiles below the elevator
+    foundation: [[0, 1, 2], [2, 4, 5], [5, 6, 6]]  # plinth levels per tile, rows north to south (hglab factory level)
+    clear: {by: loompa-mason, tiles: all}
     style: hall
     levels: 10
     doors: [west]
@@ -61,6 +69,8 @@ sections:
   - id: terrace
     name: The Cocoa Terrace
     tiles: [81, 87, 83, 88]  # the western hill belt
+    foundation: [[0, 2, 3], [2, 4, 5]]  # plinth levels per tile, rows north to south (hglab factory level)
+    clear: {by: loompa-mason, tiles: all}
     style: hall
     levels: 7
     doors: [east]
@@ -75,6 +85,8 @@ sections:
   - id: candy
     name: The Candy Hall
     tiles: [93, 90, 96, 93]  # mid-slope grass
+    foundation: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    clear: {by: wonka, boxes: [[374, 360, 2, 385, 360, 2], [372, 362, 2, 372, 366, 2], [387, 362, 2, 387, 366, 2], [372, 369, 2, 372, 373, 2], [387, 369, 2, 387, 373, 2], [374, 375, 2, 385, 375, 2]]}  # the windows that faced north on every side
     style: hall
     levels: 12
     doors: [west, east]
@@ -89,6 +101,8 @@ sections:
   - id: packing
     name: The Packing Hall
     tiles: [93, 95, 97, 98]  # sand and grass on the bay
+    foundation: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    clear: {by: mrs-bucket, boxes: [[373, 380, 2, 390, 380, 2], [372, 381, 2, 372, 386, 2], [391, 381, 2, 391, 394, 2], [372, 389, 2, 372, 394, 2], [373, 395, 2, 380, 395, 2], [383, 395, 2, 390, 395, 2], [373, 380, 6, 390, 380, 6], [372, 381, 6, 372, 394, 6], [391, 381, 6, 391, 394, 6], [373, 395, 6, 390, 395, 6]]}  # the windows that faced north on every side
     style: hall
     levels: 11
     doors: [south, west]

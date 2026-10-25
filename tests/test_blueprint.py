@@ -26,7 +26,7 @@ def test_the_blueprint_keeps_every_rule_of_the_world_and_reaches_the_ceiling():
     assert len(colours) >= 12  # many-coloured
     needs = factory.materials(steps)
     assert set(needs) == {"wood", "stone", "fiber", "ore"} and needs["ore"] <= 40  # ore is scarce: doors and one crown
-    assert len(index) == sum(1 for s in steps if s["kind"] == "place")  # every placement has its own signature
+    assert len(index) == sum(1 for s in steps if s["kind"] in ("place", "remove"))  # every placement and removal has its own signature
     plots = {str(p) for p in design["plots"]}
     assert plots == {"I08", "J08", "I09", "J09"}
     from hglab.lots import lot_id
@@ -54,17 +54,26 @@ def test_a_section_rises_in_order_and_sections_rise_in_parallel():
     first = next(s for s in steps if s["section"] == "elevator")
     after = factory.ready_steps(steps, {first["id"]})
     assert any(s["id"] == "elevator:01" for s in after)
-    assert first["name"].endswith("west door")  # doors first, then the walls skip their cells
+    elevator = [s for s in steps if s["section"] == "elevator"]
+    kinds = [("clear" if s["kind"] == "remove" else "plinth" if "foundation" in s["name"] else "door" if "door" in s["name"] else "rest") for s in elevator]
+    assert kinds[:4] == ["clear"] * 4 and kinds[4:7] == ["plinth"] * 3 and kinds[7] == "door"  # the stepped version down, the plinth, then the door; the walls skip its cells
 
 
 def test_the_ledger_marks_what_the_world_accepted_or_found_already_filled(tmp_path, monkeypatch):
     monkeypatch.setattr(factory, "ledger_path", lambda root, name: tmp_path / f"{name}.json")
-    _design, steps, _ = _bp()
+    design, steps, _ = _bp()
     a, b, c = [s for s in steps if s["kind"] == "place" and s["section"] == "elevator"][:3]
-    done = factory.settle(ROOT, "chocolate-factory", [a["action"], b["action"], c["action"]], [{"ok": True}, {"ok": False, "error": "not_allowed", "message": "every cell already filled"}, {"ok": False, "error": "insufficient_materials"}], 70000, "Toffeetrowel")
-    assert done == [a["id"], b["id"]]
-    ledger = factory.load_ledger(ROOT, "chocolate-factory")
-    assert set(ledger["done"]) == {a["id"], b["id"]} and ledger["done"][a["id"]]["by"] == "Toffeetrowel"
+    d, e, f = [s for s in steps if s["kind"] == "remove" and s["section"] == "elevator"][:3]
+    done = factory.settle(
+        ROOT, "chocolate-factory",
+        [a["action"], b["action"], c["action"], d["action"], e["action"], f["action"]],
+        [{"ok": True}, {"ok": False, "error": "not_allowed", "message": "every cell already filled"}, {"ok": False, "error": "insufficient_materials"}, {"ok": True}, {"ok": False, "error": "not_found"}, {"ok": False, "error": "too_far"}],
+        70000, "Toffeetrowel",
+    )
+    assert done == [a["id"], b["id"], d["id"], e["id"]]  # a removal is done when it ran, or found nothing left to take
+    assert factory.ledger_name(design, "chocolate-factory") == "chocolate-factory.v2"
+    ledger = factory.load_ledger(ROOT, factory.ledger_name(design, "chocolate-factory"))
+    assert set(ledger["done"]) == {a["id"], b["id"], d["id"], e["id"]} and ledger["done"][a["id"]]["by"] == "Toffeetrowel"
 
 
 def test_a_builder_places_from_its_pack_or_carries_the_material_from_a_store(tmp_path, monkeypatch):
@@ -73,16 +82,22 @@ def test_a_builder_places_from_its_pack_or_carries_the_material_from_a_store(tmp
     mason = personas["loompa-mason"]
     team = load_team(ROOT, "chocolate-factory")
     assert factory.builder_sections(team, "loompa-mason")[:2] == ["depots", "elevator"] and factory.builder_sections(team, "loompa-woodcutter") is None
-    _design, steps, _ = _bp()
-    depots = {s["id"] for s in steps if s["section"] == "depots"}
-    factory.mark_done(tmp_path, "chocolate-factory", sorted(depots), 1, "test")
-    monkeypatch.setattr(factory, "ledger_path", lambda root, name: tmp_path / "chocolate-factory.json")
-    door = next(s for s in steps if s["id"] == "elevator:00")
+    design, steps, _ = _bp()
+    led = factory.ledger_name(design, "chocolate-factory")
+    clears = [s for s in steps if s["kind"] == "remove"]
     observe = {"tick": 70000, "you": {"name": mason.name, "x": 88, "y": 86, "faction": {"id": 5, "name": "Chocolate Factory"}, "blocks_owned": 0}}
     view = WorldView(x0=82, y0=80, rows=GRASS, full_map=GRASS, tick=70000)
+    factory.mark_done(ROOT, led, sorted(s["id"] for s in steps if s["section"] == "depots"), 1, "test")
+    first = factory.plan_step(mason, team, PersonaState(mood="busy"), observe, view, {"berries": 5}, (88, 86), 3, mates={"Treacleaxe"})
+    assert first is not None and first[0][-1]["action"] == "remove" and "(the level rebuild)" in first[1]  # his own stepped blocks come down first
+    as_wonka = {**observe, "you": {**observe["you"], "name": "Fudgewright"}}
+    other = factory.plan_step(personas["wonka"], team, PersonaState(mood="busy"), as_wonka, view, {"berries": 5}, (88, 86), 3, mates={"Treacleaxe"})
+    assert other is None or all(a.get("action") != "remove" or a["bx"] // 4 >= 93 for a in other[0])  # never the mason's clears: only his own blocks come out whole
+    factory.mark_done(ROOT, led, sorted(s["id"] for s in clears if s["only"] == "loompa-mason"), 1, "test")
+    plinth = next(s for s in steps if s["section"] == "elevator" and "foundation" in s["name"])
     state = PersonaState(mood="busy")
     step = factory.plan_step(mason, team, state, observe, view, {"ore": 4, "stone": 10}, (88, 86), 3, mates={"Treacleaxe"})
-    assert step is not None and step[2] == "blueprint" and step[0][-1] == door["action"]  # the gold door first, paid from the pack
+    assert step is not None and step[2] == "blueprint" and step[0][-1] == plinth["action"]  # then the plinth, paid from the pack
     assert step[0][0]["action"] in ("move", "place")
     state2 = PersonaState(mood="busy")
     store = {"type": "storehouse", "x": 87, "y": 86, "owner": "Treacleaxe", "policy": "faction", "faction": "Chocolate Factory", "storage": {"ore": 12, "stone": 100}}
