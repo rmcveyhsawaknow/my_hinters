@@ -51,18 +51,18 @@ def test_only_unheld_staked_lots_away_from_the_spawn_and_the_factory_are_policed
     assert policed == {LOT}  # OTHER is bought, the spawn lot protected, I09-SE the factory's under contract
 
 
-def test_intruders_are_outsiders_builds_on_policed_lots_bridges_spared():
+def test_intruders_are_outsiders_builds_on_policed_lots_bridges_included():
     x0, y0, _x1, _y1 = lot_bounds(LOT)
     structures = [
         _sign(LOT),
         {"id": 5, "type": "hut", "x": x0 + 1, "y": y0 + 1, "owner": "Mara", "hp": 40},
         {"id": 6, "type": "road", "x": x0, "y": y0, "owner": "Mara", "hp": 20},
-        {"id": 7, "type": "bridge", "x": x0 + 2, "y": y0, "owner": "Mara", "hp": 40},
+        {"id": 7, "type": "bridge", "x": x0 + 2, "y": y0, "owner": "Mara", "hp": 40},  # bridges are not spared (the owner, 2026-10-25)
         {"id": 8, "type": "farm", "x": x0 + 3, "y": y0 + 1, "owner": "MotherPail", "hp": 30},  # the collective's own
         {"id": 9, "type": "hut", "x": 10, "y": 10, "owner": "Quill", "hp": 40},  # on no staked lot
     ]
     found = intruders({LOT}, structures, COLLECTIVE)
-    assert sorted(i["id"] for i in found) == [5, 6]
+    assert sorted(i["id"] for i in found) == [5, 6, 7]
     events = [
         {"type": "place", "actor": "Cairn", "x": x0 + 2, "y": y0 + 2},
         {"type": "place", "actor": "Toffeetrowel", "x": x0 + 2, "y": y0 + 3},  # the factory's mason
@@ -83,12 +83,12 @@ def test_the_registrar_notices_each_builder_once_with_the_price_and_the_wait():
     first = plan_notice(_claims(), structures, [], COLLECTIVE, shared, prices={LOT: 23}, vault={"x": 73, "y": 72})
     whisper, owner, lots, reason = first
     assert owner == "Mara" and lots == [LOT] and whisper["action"] == "whisper" and whisper["to"] == "Mara"
-    assert LOT in whisper["text"] and "23 wood" in whisper["text"] and "6 hours" in whisper["text"] and "(73,72)" in whisper["text"] and len(whisper["text"]) <= 500
+    assert LOT in whisper["text"] and "23 wood" in whisper["text"] and "1 hour," in whisper["text"] and "(73,72)" in whisper["text"] and len(whisper["text"]) <= 500
     assert "notice first" in reason
     shared = record_notice(shared, owner, lots, 1000)
     second = plan_notice(_claims(), structures, [], COLLECTIVE, shared)
     assert second[1] == "Quill"  # Mara heard hers; the next builder is next
-    assert due_owners(shared, 1000 + 2159, 2160) == set() and due_owners(shared, 1000 + 2160, 2160) == {"mara"}
+    assert due_owners(shared, 1000 + 359, 360) == set() and due_owners(shared, 1000 + 360, 360) == {"mara"}
 
 
 def test_the_shared_ledger_round_trips(tmp_path):
@@ -125,10 +125,10 @@ def test_once_the_notice_ran_out_a_hand_takes_down_the_build_beside_it():
     here = (x0 + 2, y0 + 2)
     assert _step("office-quarrier", {"berries": 5}, here, view) is None or all(a["action"] != "demolish" for a in _step("office-quarrier", {"berries": 5}, here, view)[0])  # no notice yet
     root = root_of(load_team(ROOT, "exchange"))
-    save_shared(root, record_notice(load_shared(root), "Mara", [LOT], 10000 - 600))
+    save_shared(root, record_notice(load_shared(root), "Mara", [LOT], 10000 - 200))
     waiting = _step("office-quarrier", {"berries": 5}, here, view)
-    assert waiting is None or all(a["action"] != "demolish" for a in waiting[0])  # the six hours have not run
-    save_shared(root, record_notice(load_shared(root), "Mara", [LOT], 10000 - 2160))
+    assert waiting is None or all(a["action"] != "demolish" for a in waiting[0])  # the hour has not run
+    save_shared(root, record_notice(load_shared(root), "Mara", [LOT], 10000 - 360))
     hits = _step("office-quarrier", {"berries": 5}, here, view)
     assert hits[0] == [{"action": "demolish", "x": x0 + 1, "y": y0 + 1}] * 3 and "notice to its builder has run out" in hits[1]  # three hits of the four a hut takes
     far = _step("office-quarrier", {"berries": 5}, (74, 73), view)
@@ -158,3 +158,22 @@ def test_blocks_on_a_staked_lot_are_removed_eight_at_a_time_once_noticed():
     from hglab.actions import validate_actions
 
     validate_actions(step[0], "builder", observe=observe)
+
+
+def test_our_own_roads_on_wall_tiles_come_down_without_a_notice():
+    from hglab.evict import ring_roads
+    from hglab.walls import gates
+
+    x0, y0, _x1, _y1 = lot_bounds(LOT)
+    gate = min(gates(LOT))
+    structures = [
+        _sign(LOT),
+        {"id": 1, "type": "road", "x": x0, "y": y0, "owner": "Clarion", "hp": 20},  # ours, on a wall tile
+        {"id": 2, "type": "road", "x": gate[0], "y": gate[1], "owner": "Clarion", "hp": 20},  # ours, on a gate: stays
+        {"id": 3, "type": "road", "x": x0 + 1, "y": y0 + 1, "owner": "Clarion", "hp": 20},  # ours, inside the lot: stays
+        {"id": 4, "type": "sign", "x": x0 + 1, "y": y0, "owner": "Plumbline", "hp": 10},  # ours, not a road: stays
+    ]
+    assert [r["id"] for r in ring_roads({LOT}, structures, COLLECTIVE)] == [1]
+    here = (x0 - 1, y0 + 1)
+    hits = _step("office-quarrier", {"berries": 5}, here, _world(structures[1:]))
+    assert hits[0] == [{"action": "demolish", "x": x0, "y": y0}] * 2 and "a road of ours stands where its wall belongs" in hits[1]  # no notice needed
