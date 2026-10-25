@@ -1179,9 +1179,11 @@ def _plan_site_trade(
         ((int(s["x"]), int(s["y"])) for s in structures if s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() in office),
         key=lambda t: chebyshev(position, t),
     )
+    ground = (int(bought.get("x", position[0])), int(bought.get("y", position[1])))
+    near_ground = [v for v in vaults if chebyshev(ground, v) <= DEED_TRIP_RANGE]
+    vaults = near_ground or vaults  # the office's stores by the ground being bought when it has any there; else its nearest anywhere
     full = _full_stores(state, tick)
     vaults = [v for v in vaults if v not in full and storehouse_room(view.structure_at(*v) or {}) >= min(owed, 5)]  # a full vault takes nothing
-    vaults = [v for v in vaults if chebyshev(position, v) <= DEED_TRIP_RANGE]  # no tour of the office's stores: build, and pay when one near has room
     if not vaults:
         return _pay_in_person(registrar_name, state, bought, view, position, currency, carried, owed)
     vault = vaults[0]
@@ -1198,7 +1200,7 @@ def _plan_site_trade(
 
 
 PAY_IN_PERSON_RANGE = 40  # how far the client walks to put the price into the registrar's hands when every office store is full (a few wakes)
-DEED_TRIP_RANGE = 24  # the farthest office store a client walks to with the price: the office's depots by the factory were full on 2026-10-25
+DEED_TRIP_RANGE = 16  # the office's stores within this of the ground being bought are the ones a client pays into, when it has any there; the registrar is paid in person within this of the client. On 2026-10-25 the office's stores by the factory were full and Fudgewright went from one office store to the next across the island
 DRAW_PRICE_RANGE = 40  # how far the client walks to a team store for the price
 
 
@@ -1264,6 +1266,8 @@ def _pay_in_person(
     if registrar is None:
         return None
     there = (int(registrar["x"]), int(registrar["y"]))
+    if chebyshev(position, there) > DEED_TRIP_RANGE:
+        return None  # the registrar is not near: build, and pay when he passes
     if chebyshev(position, there) <= 2:
         qty = min(owed, carried)
         bought["paid"] = int(bought.get("paid", 0) or 0) + qty
