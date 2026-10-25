@@ -10,10 +10,11 @@ builder a notice first (what stands where, the lot's price, how to buy or regist
 hands take nothing down until ``notice_ticks`` have passed since that notice. What a notice covers:
 structures in the public snapshot and the block placements of the public event log, on policed lots.
 
-Never touched: the collective's own builds (every persona of this repository), bridges (a crossing over
-water is everyone's) and caches; lots sold, deeded or registered to anyone (their signs, and the
-registry the land round shares); ground under contract (``claims.exclude``: the Chocolate Factory's
-plots); the spawn circle (``claims.protect_spawn``).
+Never touched: the collective's own builds (every persona of this repository), except a road of ours
+on a tile where a wall of the ring belongs, which comes down without a notice; caches; lots sold,
+deeded or registered to anyone (their signs, and the registry the land round shares); ground under
+contract (``claims.exclude``: the Chocolate Factory's plots); the spawn circle (``claims.protect_spawn``).
+Bridges are not spared.
 
 The notices and the registry live in a small shared ledger on this host
 (``runs/local/office/evictions.json``): written by the registrar's land round, read by the hands.
@@ -32,8 +33,8 @@ from hglab.lots import QUADRANTS, lot_id, staked_lots
 from hglab.walls import _near_spawn
 
 SHARED = "runs/local/office/evictions.json"
-NOTICE_TICKS = 2160  # six real hours between the notice and the first hit
-SPARE = frozenset({"bridge", "cache"})
+NOTICE_TICKS = 360  # one real hour between the notice and the first hit (the owner, 2026-10-25)
+SPARE = frozenset({"cache"})  # bridges are not spared (the owner, 2026-10-25)
 DEED_SIGN = re.compile(r"^Deed ([A-Z][0-9]{2}(?:-(?:NW|NE|SW|SE))?): holder ([A-Za-z0-9_-]{3,24})")
 SOLD_SIGN = re.compile(r"^Lot ([A-Z][0-9]{2}-(?:NW|NE|SW|SE)): held by ([A-Za-z0-9_-]{3,24})")
 
@@ -126,6 +127,24 @@ def intruders(policed: set[str], structures: list[dict[str, Any]], collective: s
     return out
 
 
+def ring_roads(policed: set[str], structures: list[dict[str, Any]], collective: set[str] | frozenset[str]) -> list[dict[str, Any]]:
+    """The collective's own roads standing where a wall of a policed lot's ring belongs (never a gate): they come down too."""
+    from hglab.walls import gates, ring
+
+    out = []
+    for s in structures:
+        if not isinstance(s, dict) or s.get("type") != "road" or not isinstance(s.get("x"), int) or not isinstance(s.get("y"), int):
+            continue
+        owner = str(s.get("owner") or "")
+        if not owner or owner.casefold() not in collective:
+            continue
+        lid = lot_id(s["x"], s["y"])
+        here = (s["x"], s["y"])
+        if lid in policed and here in set(ring(lid)) and here not in gates(lid):
+            out.append({"id": s.get("id"), "type": "road", "x": s["x"], "y": s["y"], "owner": owner, "lot": lid, "hp": s.get("hp")})
+    return out
+
+
 def block_builders(policed: set[str], events: list[dict[str, Any]], collective: set[str] | frozenset[str]) -> dict[str, set[str]]:
     """Owner -> lots, for block placements in the public event log on policed lots by agents outside the collective."""
     out: dict[str, set[str]] = {}
@@ -160,7 +179,7 @@ def notice_text(owner: str, items: list[dict[str, Any]], lots: list[str], price:
     pay = f" (claim my lot-sale goal, then give the price into my storehouse at ({vault['x']},{vault['y']}))" if vault else ""
     text = (
         f"Land office notice for {owner}: your {what}{more} stand on lot {where}, staked by the land office before you built."
-        f" Buy the lot{cost}{pay} or register it with me within {hours} hours, and it stays. After that the office's hands"
+        f" Buy the lot{cost}{pay} or register it with me within {hours} hour{'s' if hours != 1 else ''}, and it stays. After that the office's hands"
         " take down what you built there. Whisper me to buy."
     )
     return text[:500]
@@ -201,7 +220,7 @@ def plan_notice(
     price = min((int((prices or {}).get(lid, 0) or 0) for lid in lots if (prices or {}).get(lid)), default=None)
     hours = max(1, round(notice_ticks(cfg) / 360))
     text = notice_text(owner, sorted(by_owner[owner], key=lambda i: (i["lot"], i["x"], i["y"])), lots, price, currency, hours, vault)
-    reason = f"{owner} built on staked lot {', '.join(lots[:3])} without buying it: a notice first, the hands after {hours} hours"
+    reason = f"{owner} built on staked lot {', '.join(lots[:3])} without buying it: a notice first, the hands after {hours} hour{'s' if hours != 1 else ''}"
     return {"action": "whisper", "to": owner, "text": text}, owner, lots, reason
 
 
@@ -212,6 +231,21 @@ def record_notice(shared: dict[str, Any], owner: str, lots: list[str], tick: int
 
 
 __all__ = [
-    "NOTICE_TICKS", "SHARED", "SPARE", "block_builders", "due_owners", "evict_cfg", "held_lots", "intruders", "load_shared",
-    "notice_text", "notice_ticks", "plan_notice", "policed_lots", "record_notice", "save_shared", "shared_path",
+    "NOTICE_TICKS",
+    "SHARED",
+    "SPARE",
+    "block_builders",
+    "due_owners",
+    "evict_cfg",
+    "held_lots",
+    "intruders",
+    "load_shared",
+    "notice_text",
+    "notice_ticks",
+    "plan_notice",
+    "policed_lots",
+    "record_notice",
+    "ring_roads",
+    "save_shared",
+    "shared_path",
 ]

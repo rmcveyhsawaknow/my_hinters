@@ -184,10 +184,10 @@ Factory's four plots). The holding signs and the lot-sale listing say so before 
 The owner's instruction: what others build on a staked lot without buying or registering it comes
 down, and so does anything standing where the office's wall ring goes. The office deals honestly first:
 the registrar whispers each builder one notice (what stands where, the lot's price, how to buy or
-register, and the six hours they have), one builder a round, and records it in the shared ledger the
-hands read (`runs/local/office/evictions.json`, with the registry of who holds what). Once the six hours
-have passed the hands take the builds down, ten damage a hit, and break block builds eight blocks at a
+register, and the hour they have), one builder a round, and records it in the shared ledger the
+hands read (`runs/local/office/evictions.json`, with the registry of who holds what). Once the hour
+has passed the hands take the builds down, ten damage a hit, and break block builds eight blocks at a
 time. A lot bought, deeded or registered to anyone is theirs and is left alone; so are the collective's
-own builds, bridges (a crossing is everyone's), the Chocolate Factory's plots and the spawn circle
+own builds (except a road of ours on a wall tile, which the hands take up without a notice), the Chocolate Factory's plots and the spawn circle; bridges are not spared
 (`teams/exchange.yaml: pipeline.claims.evict`, `hglab.evict`). Every hit is public and the builder sees
 it wherever they are; the office never pretends otherwise.

@@ -30,6 +30,7 @@ from hglab.evict import (
     load_shared,
     notice_ticks,
     policed_lots,
+    ring_roads,
 )
 from hglab.lots import holdings as office_holdings
 from hglab.lots import lot_anchor, lot_bounds, lot_id, node_floor
@@ -329,8 +330,6 @@ def _evict_step(
     cfg = evict_cfg(claims)
     shared = load_shared(root_of(team))
     due = due_owners(shared, tick, notice_ticks(cfg))
-    if not due:
-        return None
     collective = {n.casefold() for n in (collective_names or set())} | {persona.name.casefold()}
     snapshot = view.world_structures or view.structures
     policed = policed_lots(claims, snapshot, held_lots(snapshot, str(claims["registrar"]), shared))
@@ -341,7 +340,7 @@ def _evict_step(
         return bool(view.rows) and 0 <= y - view.y0 < len(view.rows) and 0 <= x - view.x0 < len(view.rows[y - view.y0])
 
     current = [s for s in snapshot if not (isinstance(s.get("x"), int) and isinstance(s.get("y"), int) and in_view(s["x"], s["y"]))] + list(view.structures)
-    targets = [i for i in intruders(policed, current, collective) if i["owner"].casefold() in due]
+    targets = [i for i in intruders(policed, current, collective) if i["owner"].casefold() in due] + ring_roads(policed, current, collective)  # our own roads on wall tiles: no notice
     blocks = [
         b for b in (observe.get("blocks") or [])
         if isinstance(b, dict) and isinstance(b.get("x"), int) and isinstance(b.get("y"), int) and b.get("owner")
@@ -364,7 +363,8 @@ def _evict_step(
             struck.append(f"{item['owner']}'s {item['type']} at ({item['x']},{item['y']})")
             if len(hits) >= budget:
                 break
-        return hits, f"lot {beside[0]['lot']} is staked ground of the office and the notice to its builder has run out: {len(hits)} hit(s) on {', '.join(struck)}", "crew"
+        why = "a road of ours stands where its wall belongs" if all(i["owner"].casefold() in collective for i in beside) else "the notice to its builder has run out"
+        return hits, f"lot {beside[0]['lot']} is staked ground of the office and {why}: {len(hits)} hit(s) on {', '.join(struck)}", "crew"
     near = sorted((b for b in blocks if chebyshev(position, (b["x"], b["y"])) <= 2), key=lambda b: (b["x"], b["y"]))
     if near:
         b = near[0]
@@ -383,7 +383,7 @@ def _evict_step(
     target = _step_toward(position, {"x": x, "y": y}, view)
     if target is None or target == position:
         return None
-    return [{"action": "move", "x": target[0], "y": target[1]}], f"{what} at ({x},{y}) stands on staked lot {lot_id(x, y)} and its notice has run out: walk there", "crew"
+    return [{"action": "move", "x": target[0], "y": target[1]}], f"{what} at ({x},{y}) stands on staked lot {lot_id(x, y)} where it must come down: walk there", "crew"
 
 
 def _wall_step(
