@@ -70,6 +70,7 @@ WORK_SUMMARIES = {
     "draw": "drawing the next build's materials from an allied store",
     "draw_trip": "walking to an allied store for materials",
     "profile": "the public profile says which model thinks here",
+    "lounge": "resting by the family hut and holding court",
     "border": "raising the border signs",
     "patrol": "walking the outermost edge of the world, behind the glass",
     "news": "announcing a change in the game",
@@ -311,6 +312,17 @@ def plan_wake(
             return _result(persona, mood, "resting to recover", actions, reasons, "rest", remember)
 
     if mode == "rest":
+        lounge = _plan_lounge(persona, team, state, observe, view, position, energy, reserve, names, allowed, rng)
+        if lounge is not None:
+            lounge_actions, lounge_reason, riff, note = lounge
+            actions.extend(lounge_actions)
+            reasons.append(lounge_reason)
+            if note:
+                remember.append(note)
+            result = _result(persona, mood, "resting by the family hut and holding court", actions, reasons, "lounge", remember)
+            if riff:
+                result["riff"] = True
+            return result
         return _result(persona, mood, _rest_line(persona, mood), actions, reasons, "rest", remember)
 
     if mode == "distracted" and (allowed is None or "move" in allowed):
@@ -1202,8 +1214,6 @@ def _draw_price(
     faction = you.get("faction")
     faction = str(faction.get("name") if isinstance(faction, dict) else faction or "")
     pack = sum(int(v) for v in inventory.values())
-    if pack >= 45:
-        return None
     owners = {m.casefold() for m in mates} | {persona.name.casefold()}
 
     def admits(s: dict[str, Any]) -> bool:
@@ -1216,9 +1226,13 @@ def _draw_price(
     for store in sorted(seen, key=lambda s: chebyshev(position, (int(s["x"]), int(s["y"])))):
         where = (int(store["x"]), int(store["y"]))
         if chebyshev(position, where) <= 1:
-            qty = min(50 - pack, owed, int(store["storage"].get(currency, 0) or 0) - 10)
+            space = max(0, 500 - sum(int(v or 0) for v in store["storage"].values()))
+            surplus = max(0, int(inventory.get("berries", 0)) - 5) if pack >= 40 else 0
+            shed = min(surplus, space)
+            qty = min(50 - pack + shed, owed, int(store["storage"].get(currency, 0) or 0) - 10)
             if qty >= 10:
-                return [{"action": "take", "x": where[0], "y": where[1], "item": currency, "qty": qty}], f"the deed for lot {bought.get('lot')} wants {owed} {currency}: take {qty} from the team's store at {where}", "deed_draw"
+                give = [{"action": "give", "x": where[0], "y": where[1], "item": "berries", "qty": shed}] if shed >= 5 else []
+                return [*give, {"action": "take", "x": where[0], "y": where[1], "item": currency, "qty": qty}], f"the deed for lot {bought.get('lot')} wants {owed} {currency}: take {qty} from the team's store at {where}" + (f" after putting {shed} berries away" if give else ""), "deed_draw"
             continue
         if chebyshev(position, where) > DRAW_PRICE_RANGE:
             continue
@@ -1925,6 +1939,16 @@ def _plan_repair(
     return None
 
 
+def _berry_glut(team: Team | None, view: WorldView) -> bool:
+    """The team's stores in view hold more berries than its pipeline's stock target."""
+    cfg = (team.extra or {}).get("pipeline") if team is not None else None
+    target = int(((cfg or {}).get("stock") or {}).get("berries", 0) or 0) if isinstance(cfg, dict) else 0
+    if not target:
+        return False
+    held = sum(int((s.get("storage") or {}).get("berries", 0) or 0) for s in view.structures if s.get("type") == "storehouse" and isinstance(s.get("storage"), dict))
+    return held >= target
+
+
 def _plan_harvest(
     persona: Persona,
     team: Team | None,
@@ -1933,9 +1957,15 @@ def _plan_harvest(
     view: WorldView,
     teammates: dict[str, tuple[int, int]] | None,
 ) -> tuple[list[dict[str, Any]], str, str] | None:
-    """Take berries from an own farm that is filling up: a farm at its cap of 30 grows nothing."""
+    """Take berries from an own farm that is filling up: a farm at its cap of 30 grows nothing.
+
+    When the team's stores in view already hold more berries than its pipeline's stock target (the
+    factory's 790 against 60 on 2026-10-24), the farm is left full and the harvest only tops the pack up
+    to the keep: a full farm stops growing, which is the point.
+    """
     room = 50 - sum(inventory.values())
-    if room < 5 or inventory.get("berries", 0) >= 2 * BERRY_KEEP:
+    cap = BERRY_KEEP if _berry_glut(team, view) else 2 * BERRY_KEEP
+    if room < 5 or inventory.get("berries", 0) >= cap:
         return None  # a pack already heavy with berries leaves the farm to hold them
     farms: list[tuple[int, dict[str, Any]]] = []
     for s in view.structures:
@@ -1947,7 +1977,7 @@ def _plan_harvest(
             farms.append((stored, s))
     for stored, s in sorted(farms, key=lambda pair: -pair[0]):
         where = (int(s["x"]), int(s["y"]))
-        qty = min(stored, room, 2 * BERRY_KEEP - inventory.get("berries", 0))  # the pack never refills with berries past the keep
+        qty = min(stored, room, cap - inventory.get("berries", 0))  # the pack never refills with berries past the keep
         if qty < 5:
             continue
         take = {"action": "take", "x": where[0], "y": where[1], "item": "berries", "qty": qty}
@@ -2838,12 +2868,20 @@ def _credit_claim(
         "give": "the stores that got filled",
     }[event["type"]]
     openers = [
-        "Back at the old factory we did this in half the time, but yes:",
-        "Credit where it is due, and most of it is due to me:",
-        "I was up before dawn for this one, more or less:",
-        "Hardly worth mentioning, except that it was mostly my doing:",
+        "Hot take from the bed, and it's piping hot:",
+        "Thought leadership incoming, brace yourselves:",
+        "For my podcast listeners, both of you:",
+        "Humble brag, heavy on the brag:",
+        "As the factory's founder, self-appointed and peer-reviewed by me:",
+        "Back at the old factory we did this in half the time, but fine:",
     ]
-    line = f"{rng.choice(openers)} {what}? My idea, my planning, and I carried the heavy end (ask anyone, or the log, event {event.get('id')})."
+    closers = [
+        "My vision, my strategy, my strongest nap to date.",
+        "I didn't lift a finger, which is exactly how visionaries lift.",
+        "The crew did the work; I did the believing. Both count. One counts more.",
+        "I carried the heavy end, emotionally.",
+    ]
+    line = f"{rng.choice(openers)} {what}? {rng.choice(closers)} Receipts: the log, event {event.get('id')}."
     return line[: int(persona.voice.get("max_say_chars", 280))], str(event.get("id"))
 
 
@@ -2939,6 +2977,79 @@ def _route_step(position: tuple[int, int], target: tuple[int, int], view: WorldV
         else:
             break
     return step if step != position else None
+
+
+def _plan_lounge(
+    persona: Persona,
+    team: Team | None,
+    state: PersonaState,
+    observe: dict[str, Any],
+    view: WorldView,
+    position: tuple[int, int],
+    energy: int,
+    reserve: int,
+    names: dict[str, str] | None,
+    allowed: set[str] | None,
+    rng: random.Random,
+) -> tuple[list[dict[str, Any]], str, bool, dict[str, str] | None] | None:
+    """A resting persona with a ``lounge`` (GrandadPail) rests beside that hut and holds court from it.
+
+    Away from it, the rest wake shuffles back (one move). Beside it, he says one line from his bedside
+    material (``hglab.quips``) when his hourly rate allows: the crew's hauls, the blueprint's progress,
+    the weather, the berries, the tickets, the hustle. Returns the actions, the reason and whether the line
+    should be rewritten fresh by the local model (the bank lines the facts support were all said lately),
+    with the notebook note that remembers the lines said (its own key: the persona state is nearly full).
+    """
+    knob = persona.knobs.get("lounge")
+    if not isinstance(knob, dict) or not all(isinstance(knob.get(k), int) for k in ("x", "y")):
+        return None
+    hut = (int(knob["x"]), int(knob["y"]))
+    out: list[dict[str, Any]] = []
+    why: list[str] = []
+    if chebyshev(position, hut) > 1 and (allowed is None or "move" in allowed):
+        centre = territory_center(team)
+        radius = int((team.region or {}).get("radius", 8)) if team and team.region else 8
+        stands = [t for t in neighbours(*hut) if view.walkable(*t)]
+        reach = reachable_tiles(view, position)
+        near = [t for t in stands if t in reach]
+        if near:
+            target = min(near, key=lambda t: (centre is not None and chebyshev(t, centre) > radius, chebyshev(position, t), t))
+        else:
+            target = _step_toward(position, {"x": hut[0], "y": hut[1]}, view)
+        if target is not None and target != position and chebyshev(position, target) <= max(0, energy - reserve):
+            out.append({"action": "move", "x": target[0], "y": target[1]})
+            why.append(f"shuffling back to bed beside the hut at {hut}")
+    recent, _, _ = action_limits(observe)
+    riff = False
+    note: dict[str, str] | None = None
+    if (allowed is None or "say" in allowed) and recent < persona.social_rate and energy - 1 >= reserve:
+        import json
+
+        from hglab.quips import MEMORY_KEY, compose, facts, load_memory
+
+        progress: dict[str, int] | None = None
+        cfg = (team.extra or {}).get("pipeline") if team is not None else None
+        if isinstance(cfg, dict) and cfg.get("blueprint"):
+            try:
+                from hglab.factory import blueprint, load_ledger, root_of
+
+                root = root_of(team)
+                _design, steps, _index = blueprint(root, str(cfg["blueprint"]))
+                done = set((load_ledger(root, str(cfg["blueprint"])).get("done") or {}).keys())
+                progress = {"done": len(done), "total": len(steps), "blocks": sum(int(s.get("cells", 0)) for s in steps if s["id"] in done)}
+            except (OSError, ValueError):
+                progress = None
+        mates = {n for n, slug in (names or {}).items() if slug != persona.slug}
+        known = facts(observe, team_names=mates, season=view.season, weather=view.weather, progress=progress)
+        line = compose(load_memory(observe), known, rng)
+        if line is not None:
+            text, _key, riff, memory = line
+            out.append({"action": "say", "text": text[: int(persona.voice.get("max_say_chars", 240))]})
+            why.append("holding court from the blanket: one line, in character")
+            note = {"key": MEMORY_KEY, "text": json.dumps(memory, separators=(",", ":"))}
+    if not out:
+        return None
+    return out, "; ".join(why), riff, note
 
 
 def _rest_line(persona: Persona, mood: str) -> str:

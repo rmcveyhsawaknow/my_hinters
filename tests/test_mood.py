@@ -81,7 +81,7 @@ def test_grandpa_joe_bursts_only_when_glory_is_near():
     state = PersonaState(mood="in_bed")
     assert step_mood(joe, state, observe, team, random.Random(1)).mood == "in_bed"
     rests = sum(decide_wake_mode(joe, state, observe, random.Random(seed)) == "rest" for seed in range(400))
-    assert 0.5 < rests / 400 < 0.7
+    assert 0.7 < rests / 400 < 0.9  # four wakes in five by the hut (2026-10-24)
     observe["events"].append({"id": 2, "tick": observe["tick"], "type": "goal_confirmed", "actor": "Fudgewright", "x": 89, "y": 99, "text": "Fudgewright confirmed a goal.", "data": {"goal_id": 1, "claimant": "Peregrine"}})
     # a peer's glory does not rouse him; the team's does (actors are in-world names, not slugs)
     assert step_mood(joe, state, observe, team, random.Random(1), member_names={"Peregrine"}).mood == "in_bed"
