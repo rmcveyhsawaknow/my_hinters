@@ -434,7 +434,7 @@ def _wall_step(
         builds = min(room, stone // WALL_COST, max(0, (energy - reserve) // WALL_ENERGY))
         if builds < 1:
             return None  # too tired to build: rest first
-        beside = sorted((pair for pair in tiles if pair[1] != position and chebyshev(position, pair[1]) <= 1), key=lambda pair: pair[1])
+        beside = sorted((pair for pair in tiles if chebyshev(position, pair[1]) <= 1), key=lambda pair: (pair[1] == position, pair[1]))  # the tile underfoot last: a wall does not stop its owner
         if beside:
             chosen = beside[:builds]
             lots = ", ".join(sorted({lid for lid, _ in chosen}))
