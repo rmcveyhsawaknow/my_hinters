@@ -46,7 +46,7 @@ def show_command(name: str = NAME) -> None:
     root = Path.cwd()
     design, steps, _ = factory.blueprint(root, name)
     info = factory.summary(design, steps)
-    done = set(factory.load_ledger(root, name).get("done") or {})
+    done = set(factory.load_ledger(root, factory.ledger_name(design, name)).get("done") or {})
     typer.echo(f"{info['name']}: {info['steps']} steps, {info['blocks']} blocks, tallest {info['tallest']} levels; {len(done)} steps done")
     typer.echo("materials still needed: " + ", ".join(f"{k} {v}" for k, v in sorted(factory.materials(steps, done).items())))
     for sid, s in info["sections"].items():
@@ -93,12 +93,49 @@ def route_command(name: str = NAME, write: bool = typer.Option(False, "--write")
         typer.echo(f"written to {path}")
 
 
+@factory_app.command("level")
+def level_command(name: str = NAME, write: bool = typer.Option(False, "--write")) -> None:
+    """Survey each section's ground as the public 3D viewer draws it and the plinth levels that put every floor on one plane."""
+    from hglab.terrain3d import CELL, foundation, ground_of
+
+    root = Path.cwd()
+    design = factory.load_design(root, name)
+    ground = ground_of(_world(root))
+    rows_of: dict[str, list[list[int]]] = {}
+    for s in design["sections"]:
+        x0, y0, x1, y1 = (int(v) for v in s["tiles"])
+        tiles = [(x, y) for y in range(y0, y1 + 1) for x in range(x0, x1 + 1)]
+        k = foundation(ground, tiles)
+        rows_of[str(s["id"])] = [[k[(x, y)] for x in range(x0, x1 + 1)] for y in range(y0, y1 + 1)]
+        tallest = max(k.values())
+        typer.echo(f"{s['id']}: plinth up to {tallest} level(s), {sum(k.values()) * 16} blocks; ceiling level {15 - tallest}")
+        for y in range(y0, y1 + 1):
+            bases = " ".join(f"{ground.tile_base(x, y):5.2f}" for x in range(x0, x1 + 1))
+            typer.echo(f"   row {y}: levels {rows_of[str(s['id'])][y - y0]}  ground {bases} (a level is {CELL} of a tile)")
+    if not write:
+        return
+    path = factory.design_path(root, name)
+    lines = path.read_text(encoding="utf-8").splitlines()
+    out: list[str] = []
+    current = None
+    for line in lines:
+        if line.startswith("  - id: "):
+            current = line.split(":", 1)[1].strip()
+        if current in rows_of and line.startswith("    foundation:"):
+            continue  # the survey below replaces it
+        out.append(line)
+        if current in rows_of and line.startswith("    tiles:"):
+            out.append(f"    foundation: {rows_of[current]}  # plinth levels per tile, rows north to south (hglab factory level)")
+    path.write_text(chr(10).join(out) + chr(10), encoding="utf-8", newline=chr(10))
+    typer.echo(f"written to {path}")
+
+
 @factory_app.command("progress")
 def progress_command(name: str = NAME) -> None:
     """The ledger: the last steps done and who placed them."""
     root = Path.cwd()
-    _design, steps, _ = factory.blueprint(root, name)
-    done = factory.load_ledger(root, name).get("done") or {}
+    design, steps, _ = factory.blueprint(root, name)
+    done = factory.load_ledger(root, factory.ledger_name(design, name)).get("done") or {}
     names = {s["id"]: s["name"] for s in steps}
     for sid, row in sorted(done.items(), key=lambda kv: -int(kv[1].get("tick", 0)))[:20]:
         typer.echo(f"  tick {row.get('tick')}: {row.get('by')} {names.get(sid, sid)}")

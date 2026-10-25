@@ -11,9 +11,20 @@ the builder (so every section is at most 5 tiles wide), the tallest build is 16 
 blocks never stand on water or mountain, and a slab at level 0 or anything at level 6 and above never
 closes a tile.
 
-Progress is a small ledger per blueprint on this host (``runs/local/blueprints/<name>.json``): steps the
-world accepted, or refused because every cell was already filled, are done. Builders take the first
-undone step of a section, so a section rises in order and sections rise in parallel.
+Progress is a small ledger per blueprint on this host (``runs/local/blueprints/<name>.json``, or
+``<name>.v<N>.json`` for a design ``version`` N above 1): steps the world accepted, or refused because every
+cell was already filled, are done. Builders take the first undone step of a section, so a section rises in
+order and sections rise in parallel.
+
+Level floors (the owner, 2026-10-25). The world has no elevation, but the public 3D viewer stands each
+tile's blocks on that tile's own ground (``hglab.terrain3d``), so on a slope the floors of one building
+stepped up and down from tile to tile. A section's ``foundation`` (levels per tile, row by row from the
+north, surveyed by ``hglab factory level --write``) raises each tile on a solid plinth until its ground
+meets the highest tile's; every box of the building is split by tile and lifted by its tile's levels, so
+every floor lies on one plane, and the section's ceiling drops by its tallest plinth. A section's
+``clear`` takes down what an earlier version built there before the new one rises (``tiles: all``, one
+removal per tile, or explicit ``boxes``), by the builder who owns those blocks (``by``), whose own blocks
+come out whole. Windows are placed side by side, each side facing out of its own wall.
 """
 
 from __future__ import annotations
@@ -66,16 +77,49 @@ def _ring(rect: Rect, z0: int, z1: int, material: str, **extra: Any) -> dict[str
     return box(bx0, by0, z0, bx1, by1, z1, material=material, fill="walls", **extra)
 
 
+def _sides(rect: Rect, z0: int, z1: int, material: str, **extra: Any) -> list[tuple[str, dict[str, Any]]]:
+    """A ring as its four sides; a window (or door) on each side faces out of that side's wall.
+
+    One box with ``fill: walls`` takes a single ``facing``, so on two of its sides the panes stood across
+    the wall instead of in it (the owner's report of 2026-10-25).
+    """
+    bx0, by0, bx1, by1 = rect
+    faced = extra.get("shape") in ("window", "door")
+
+    def side(name: str, a: int, b: int, c: int, d: int) -> tuple[str, dict[str, Any]]:
+        fields = dict(extra)
+        fields.pop("fill", None)
+        if faced:
+            fields["facing"] = name
+        return name, box(a, b, z0, c, d, z1, material=material, **fields)
+
+    out = [side("north", bx0, by0, bx1, by0)]
+    if by1 > by0:
+        out.append(side("south", bx0, by1, bx1, by1))
+    if by1 - by0 >= 2:
+        out += [side("west", bx0, by0 + 1, bx0, by1 - 1)]
+        if bx1 > bx0:
+            out.append(side("east", bx1, by0 + 1, bx1, by1 - 1))
+    return out
+
+
 def _perimeter(rect: Rect) -> int:
     bx0, by0, bx1, by1 = rect
     w, d = bx1 - bx0 + 1, by1 - by0 + 1
     return 2 * (w + d) - 4
 
 
-def _door(rect: Rect, side: str, material: str, color: str, height: int = 4) -> dict[str, Any]:
-    """A door two cells wide in the middle of a wall, ``height`` levels tall, facing out."""
+def _door(rect: Rect, side: str, material: str, color: str, height: int = 4, one_tile: bool = False) -> dict[str, Any]:
+    """A door two cells wide in the middle of a wall, ``height`` levels tall, facing out.
+
+    ``one_tile`` keeps both cells on one tile (a step to the west or north when the middle falls on a
+    tile edge), so a lifted section never splits its door between two plinths of different heights.
+    """
     bx0, by0, bx1, by1 = rect
     mx, my = (bx0 + bx1) // 2, (by0 + by1) // 2
+    if one_tile:
+        mx -= 1 if mx // 4 != (mx + 1) // 4 else 0
+        my -= 1 if my // 4 != (my + 1) // 4 else 0
     top = height - 1
     if side == "west":
         return box(bx0, my, 0, by2=my + 1, bz2=top, material=material, shape="door", facing="west", color=color)
@@ -128,16 +172,25 @@ def _pair(value: Any, default: tuple[str, str]) -> tuple[str, str]:
     return default
 
 
+def foundation_map(section: dict[str, Any]) -> dict[tuple[int, int], int]:
+    """Levels of plinth per tile from the section's surveyed ``foundation`` rows (north to south, west to east)."""
+    rows = section.get("foundation") or []
+    x0, y0, _x1, _y1 = (int(v) for v in section["tiles"])
+    return {(x0 + i, y0 + j): int(k) for j, row in enumerate(rows) for i, k in enumerate(row) if int(k) > 0}
+
+
 def _section_steps(section: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
-    """The named place actions of one section, in building order."""
+    """The named place actions of one section, in building order, on the section's plane (before the lift)."""
     rect = cells_rect(section["tiles"])
     style = str(section.get("style", "hall"))
     levels = int(section.get("levels", 10))
-    top = min(TOP_LEVEL, levels - 1)
+    lift = foundation_map(section)
+    ceiling = TOP_LEVEL - max(lift.values(), default=0)  # the tallest plinth comes off the top
+    top = min(ceiling, levels - 1)
     door_mat, door_color = _pair(section.get("door"), ("metal", "yellow"))
     steps: list[tuple[str, dict[str, Any]]] = []
     for side in section.get("doors") or ["south"]:
-        steps.append((f"{side} door", _door(rect, str(side), door_mat, door_color)))
+        steps.append((f"{side} door", _door(rect, str(side), door_mat, door_color, one_tile=bool(lift))))
     per_level = _perimeter(rect)
     if style == "glass_tower":
         pillar = _pair(section.get("pillars"), ("stone", "white"))
@@ -146,7 +199,8 @@ def _section_steps(section: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
         colors = [str(c) for c in section.get("bands") or ["red", "orange", "yellow", "lime", "green", "cyan", "blue", "purple"]]
         height = int(section.get("band_levels", 2))
         for i, (z0, z1) in enumerate(_bands(0, top - 1, height)):
-            steps.append((f"glass band {z0}-{z1} {colors[i % len(colors)]}", _ring(rect, z0, z1, "wood", shape="window", color=colors[i % len(colors)])))
+            color = colors[i % len(colors)]
+            steps.extend((f"glass band {z0}-{z1} {color} {side}", a) for side, a in _sides(rect, z0, z1, "wood", shape="window", color=color))
         crown = _pair(section.get("crown"), ("metal", "yellow"))
         bx0, by0, bx1, by1 = rect
         steps.append(("crown", box(bx0, by0, top, bx1, by1, top, material=crown[0], shape="slab", color=crown[1])))
@@ -157,7 +211,7 @@ def _section_steps(section: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
         window_color = str(section.get("window_color", "yellow"))
         for z in range(top):
             if z in windows:
-                steps.append((f"window ring {z}", _ring(rect, z, z, "wood", shape="window", color=window_color)))
+                steps.extend((f"window ring {z} {side}", a) for side, a in _sides(rect, z, z, "wood", shape="window", color=window_color))
             else:
                 color = colors[z % len(colors)]
                 steps.append((f"stripe {z} {color}", _ring(rect, z, z, "stone", color=color)))
@@ -169,7 +223,7 @@ def _section_steps(section: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
     turret = section.get("turrets")
     if isinstance(turret, dict):
         size = int(turret.get("size", 2))
-        t_top = min(TOP_LEVEL - 1, int(turret.get("levels", levels + 3)) - 1)
+        t_top = min(ceiling - 1, int(turret.get("levels", levels + 3)) - 1)
         mat, color = _pair(turret.get("block"), ("stone", "yellow"))
         for i, cell in enumerate(_corners(rect, size)):
             steps.append((f"turret {i + 1}", _column(cell, 0, t_top, mat, color=color)))
@@ -184,7 +238,7 @@ def _section_steps(section: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
     chimney = section.get("chimney")
     if isinstance(chimney, dict):
         cx, cy = int(chimney["x"]), int(chimney["y"])
-        c_top = min(TOP_LEVEL, int(chimney.get("levels", 15)) - 1)
+        c_top = min(TOP_LEVEL - lift.get((cx // 4, cy // 4), 0), int(chimney.get("levels", 15)) - 1)  # its own tile's plinth only
         colors = [str(c) for c in chimney.get("stripes") or ["red", "white"]]
         for i, (z0, z1) in enumerate(_bands(0, c_top, int(chimney.get("stripe_levels", 3)))):
             steps.append((f"chimney {z0}-{z1}", box(cx, cy, z0, cx + 1, cy + 1, z1, material="stone", color=colors[i % len(colors)])))
@@ -198,7 +252,7 @@ def _section_steps(section: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
     course = 0
     while z <= wall_top:
         if z in windows:
-            steps.append((f"window band {z}", _ring(rect, z, z, "wood", shape="window", color=window_color)))
+            steps.extend((f"window band {z} {side}", a) for side, a in _sides(rect, z, z, "wood", shape="window", color=window_color))
             z += 1
             continue
         z1 = z
@@ -212,6 +266,65 @@ def _section_steps(section: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
     cap = _pair(section.get("roof_cap"), ("thatch", "purple"))
     steps.extend(_hip_roof(rect, top, slope, cap))
     return steps
+
+
+def _lift(name: str, action: dict[str, Any], lift: dict[tuple[int, int], int]) -> list[tuple[str, dict[str, Any]]]:
+    """Split a box by the tiles it covers into rectangles of equal plinth and raise each by its tile's levels."""
+    if not lift:
+        return [(name, action)]
+    sources = _sides((int(action["bx"]), int(action["by"]), int(action.get("bx2", action["bx"])), int(action.get("by2", action["by"]))), int(action["bz"]), int(action.get("bz2", action["bz"])), str(action["material"]), **{k: v for k, v in action.items() if k not in ("action", "bx", "by", "bz", "bx2", "by2", "bz2", "material")}) if action.get("fill") == "walls" else [("", action)]
+    out: list[tuple[str, dict[str, Any]]] = []
+    for side, a in sources:
+        bx, by, bx2, by2 = int(a["bx"]), int(a["by"]), int(a.get("bx2", a["bx"])), int(a.get("by2", a["by"]))
+        bx, bx2, by, by2 = min(bx, bx2), max(bx, bx2), min(by, by2), max(by, by2)
+        rows: list[tuple[int, int, int, int]] = []  # (ty, tx0, tx1, k)
+        for ty in range(by // 4, by2 // 4 + 1):
+            start = bx // 4
+            for tx in range(bx // 4, bx2 // 4 + 2):
+                if tx > bx2 // 4 or lift.get((tx, ty), 0) != lift.get((start, ty), 0):
+                    rows.append((ty, start, tx - 1, lift.get((start, ty), 0)))
+                    start = tx
+        rects: list[list[int]] = []  # [tx0, tx1, ty0, ty1, k]
+        for ty, tx0, tx1, k in rows:
+            prev = next((r for r in rects if r[0] == tx0 and r[1] == tx1 and r[3] == ty - 1 and r[4] == k), None)
+            if prev is not None:
+                prev[3] = ty
+            else:
+                rects.append([tx0, tx1, ty, ty, k])
+        for tx0, tx1, ty0, ty1, k in rects:
+            part = {key: value for key, value in a.items() if key not in ("bx", "by", "bz", "bx2", "by2", "bz2", "fill")}
+            part.update(box(max(bx, 4 * tx0), max(by, 4 * ty0), int(a["bz"]) + k, min(bx2, 4 * tx1 + 3), min(by2, 4 * ty1 + 3), int(a.get("bz2", a["bz"])) + k))
+            part = {"action": "place", **{key: value for key, value in part.items() if key != "action"}}
+            label = " ".join(p for p in (name, side, f"({tx0},{ty0})" if len(rects) > 1 or len(sources) > 1 else "") if p)
+            out.append((label, part))
+    return out
+
+
+def _plinth(section: dict[str, Any], block: tuple[str, str]) -> list[tuple[str, dict[str, Any]]]:
+    """A solid plinth under every raised tile, its top on the section's plane."""
+    material, color = block
+    return [
+        (f"foundation ({tx},{ty})", box(4 * tx, 4 * ty, 0, 4 * tx + 3, 4 * ty + 3, k - 1, material=material, color=color))
+        for (tx, ty), k in sorted(foundation_map(section).items(), key=lambda kv: (kv[0][1], kv[0][0]))
+    ]
+
+
+def _clears(section: dict[str, Any]) -> list[tuple[str, dict[str, Any], str]]:
+    """Removals that take down an earlier version of the section before the new one rises: (name, action, builder)."""
+    clear = section.get("clear")
+    if not isinstance(clear, dict) or not clear.get("by"):
+        return []
+    by = str(clear["by"])
+    boxes: list[list[int]] = []
+    if clear.get("tiles") == "all":
+        x0, y0, x1, y1 = (int(v) for v in section["tiles"])
+        boxes = [[4 * x, 4 * y, 0, 4 * x + 3, 4 * y + 3, TOP_LEVEL] for y in range(y0, y1 + 1) for x in range(x0, x1 + 1)]
+    boxes += [[int(v) for v in b] for b in clear.get("boxes") or []]
+    out = []
+    for b in boxes:
+        action = {"action": "remove", "bx": b[0], "by": b[1], "bz": b[2], "bx2": b[3], "by2": b[4], "bz2": b[5]}
+        out.append((f"clear ({b[0] // 4},{b[1] // 4}) levels {b[2]}-{b[5]}", action, by))
+    return out
 
 
 def _river_runs(path: list[list[int]]) -> list[list[tuple[int, int]]]:
@@ -280,22 +393,46 @@ def expand(design: dict[str, Any]) -> list[dict[str, Any]]:
             "cells": 0, "items": 30, "item": "wood", "costs": dict(BUILD_COST["storehouse"]), "supported": True, "top": 0,
         })
 
-    def add(section: str, index: int, name: str, action: dict[str, Any]) -> None:
+    counters: Counter[str] = Counter()
+
+    def add(section: str, index: int | None, name: str, action: dict[str, Any], prop: bool = False) -> None:
         cells = _cells_of(action)
-        new = cells - filled
         supported = any(z == 0 for _, _, z in cells) or _touches(cells, filled)
+        if not supported and prop:
+            # a piece over a lower plinth than its neighbours touches nothing: a hidden column from the ground holds it
+            xs, ys = sorted({c[0] for c in cells}), sorted({c[1] for c in cells})
+            cx, cy, z = xs[len(xs) // 2], ys[len(ys) // 2], min(c[2] for c in cells)
+            add(section, None, f"{name}: support", box(cx, cy, 0, cx, cy, z - 1, material=str(action["material"]), color=str(action.get("color") or "natural")))
+            supported = True
+        new = cells - filled
         filled.update(cells)
+        n = counters[section]
+        counters[section] += 1
         steps.append({
-            "id": f"{section}:{index:02d}", "section": section, "name": name, "kind": "place", "action": action,
+            "id": f"{section}:{n:02d}", "section": section, "name": name, "kind": "place", "action": action,
             "tiles": tiles_of(action), "cells": len(new), "items": max(1, math.ceil(len(new) / 4)) if new else 0,
             "item": MATERIAL_ITEM[str(action["material"])], "supported": supported, "top": max(z for _, _, z in cells),
             "box_cells": len(cells),
         })
 
+    plinth_block = _pair(design.get("foundation_block"), ("stone", "grey"))
     for section in design["sections"]:
         sid = str(section["id"])
-        for i, (name, action) in enumerate(_section_steps(section)):
-            add(sid, i, f"{section.get('name', sid)}: {name}", action)
+        label = str(section.get("name", sid))
+        for name, action, by in _clears(section):
+            n = counters[sid]
+            counters[sid] += 1
+            steps.append({
+                "id": f"{sid}:{n:02d}", "section": sid, "name": f"{label}: {name}", "kind": "remove", "action": action, "only": by,
+                "tiles": tiles_of(action), "cells": 0, "items": 0, "item": "stone", "costs": {}, "supported": True,
+                "top": int(action["bz2"]), "box_cells": len(_cells_of(action)),
+            })
+        lift = foundation_map(section)
+        for name, action in _plinth(section, plinth_block):
+            add(sid, None, f"{label}: {name}", action)
+        for name, action in _section_steps(section):
+            for part_name, part in _lift(name, action, lift):
+                add(sid, None, f"{label}: {part_name}", part, prop=bool(lift))
     river = design.get("river") or {}
     material, color = _pair(river.get("block"), ("stone", "brown"))
     width = int(river.get("width_cells", 4))
@@ -372,6 +509,8 @@ def check(design: dict[str, Any], steps: list[dict[str, Any]], world: dict[str, 
     plots = {str(p) for p in design.get("plots") or []}
     river_ok = {"road", "sign"}
     for step in steps:
+        if step["kind"] == "remove":
+            continue  # a removal takes down what an earlier version built: no ground to check
         x0, y0, x1, y1 = step["tiles"]
         floor = step["kind"] == "place" and str(step["action"].get("shape")) == "slab" and int(step["action"]["bz"]) == 0
         for x in range(x0, x1 + 1):
@@ -451,6 +590,12 @@ def ledger_path(root: Path, name: str) -> Path:
     return Path(root) / LEDGER_DIR / f"{name}.json"
 
 
+def ledger_name(design: dict[str, Any], name: str) -> str:
+    """The ledger a design version keeps: ``<name>`` for version 1, ``<name>.v<N>`` after a rebuild."""
+    version = int(design.get("version", 1) or 1)
+    return name if version <= 1 else f"{name}.v{version}"
+
+
 def load_ledger(root: Path, name: str) -> dict[str, Any]:
     try:
         data = json.loads(ledger_path(root, name).read_text(encoding="utf-8"))
@@ -486,7 +631,7 @@ def blueprint(root: Path, name: str) -> tuple[dict[str, Any], list[dict[str, Any
     if key not in _CACHE:
         design = load_design(root, name)
         steps = expand(design)
-        index = {signature(s["action"]): s["id"] for s in steps if s["kind"] == "place"}
+        index = {signature(s["action"]): s["id"] for s in steps if s["kind"] in ("place", "remove")}
         _CACHE.clear()
         _CACHE[key] = (design, steps, index)
     return _CACHE[key]
@@ -495,12 +640,17 @@ def blueprint(root: Path, name: str) -> tuple[dict[str, Any], list[dict[str, Any
 def settle(root: Path, name: str, actions: list[dict[str, Any]], results: list[dict[str, Any]], tick: int, by: str, structures: list[dict[str, Any]] | None = None) -> list[str]:
     """Mark the steps a live wake completed: placements the world accepted, or refused as already filled."""
     try:
-        _design, steps, index = blueprint(root, name)
+        design, steps, index = blueprint(root, name)
     except (OSError, ValueError):
         return []
     done: list[str] = []
     for action, result in zip(actions, results, strict=False):
         if not isinstance(action, dict) or not isinstance(result, dict):
+            continue
+        if action.get("action") == "remove" and action.get("bx") is not None:
+            sid = index.get(signature(action))
+            if sid is not None and (result.get("ok") or str(result.get("error") or "") == "not_found"):
+                done.append(sid)  # the owner's own blocks come out whole in one removal; an empty box is cleared already
             continue
         if action.get("action") == "place" and action.get("bx") is not None:
             sid = index.get(signature(action))
@@ -514,7 +664,7 @@ def settle(root: Path, name: str, actions: list[dict[str, Any]], results: list[d
             for step in steps:
                 if step["kind"] == "build" and (step["action"]["x"], step["action"]["y"]) == (action.get("x"), action.get("y")):
                     done.append(step["id"])
-    mark_done(root, name, done, tick, by)
+    mark_done(root, ledger_name(design, name), done, tick, by)
     return done
 
 
@@ -629,17 +779,17 @@ def plan_step(
     root = root or root_of(team)
     name = str(team.extra["pipeline"]["blueprint"])
     try:
-        _design, steps, _index = blueprint(root, name)
+        design, steps, _index = blueprint(root, name)
     except (OSError, ValueError):
         return None
-    done = set((load_ledger(root, name).get("done") or {}).keys())
+    done = set((load_ledger(root, ledger_name(design, name)).get("done") or {}).keys())
     structures = list(view.world_structures or []) + list(view.structures or [])
     standing = {(int(s.get("x", -1)), int(s.get("y", -1))) for s in structures if s.get("type") == "storehouse"}
     for step in steps:
         if step["kind"] == "build" and (step["action"]["x"], step["action"]["y"]) in standing:
             done.add(step["id"])
     planned: set[str] = getattr(state, "_bp_planned", None) or set()
-    ready = ready_steps(steps, done, planned)
+    ready = [s for s in ready_steps(steps, done, planned) if not s.get("only") or s["only"] == persona.slug]  # a clear is its owner's: their blocks come out whole
     if not ready:
         return None
     rank = {sec: i for i, sec in enumerate(prefs)}
@@ -691,12 +841,18 @@ def plan_step(
         if here_ok:
             stand = min(here_ok, key=lambda t: (t != position, chebyshev(position, t), t))
             act = dict(step["action"])
-            label = f"{step['name']} ({step['cells']} blocks, {step['items']} {step['item']})" if step["kind"] == "place" else f"{step['name']} at {(x0, y0)}"
+            if step["kind"] == "remove":
+                label = f"{step['name']} (the level rebuild)"
+            elif step["kind"] == "place":
+                label = f"{step['name']} ({step['cells']} blocks, {step['items']} {step['item']})"
+            else:
+                label = f"{step['name']} at {(x0, y0)}"
             planned.add(step["id"])
             state._bp_planned = planned
             if stand == position:
                 return [act], f"the factory blueprint: {label}", "blueprint"
-            return [{"action": "move", "x": stand[0], "y": stand[1]}, act], f"the factory blueprint: walk to {stand} and raise {label}", "blueprint"
+            verb = "take down" if step["kind"] == "remove" else "raise"
+            return [{"action": "move", "x": stand[0], "y": stand[1]}, act], f"the factory blueprint: walk to {stand} and {verb} {label}", "blueprint"
         lacking = {item: qty - int(inventory.get(item, 0)) for item, qty in costs.items() if qty - int(inventory.get(item, 0)) > 0}
         # carry it: the nearest store that holds the material, or a team store not yet looked into
         for item, qty in sorted(lacking.items(), key=lambda kv: -kv[1]):
@@ -740,6 +896,6 @@ def plan_step(
 
 
 __all__ = [
-    "LEDGER_DIR", "blueprint", "builder_sections", "cells_rect", "check", "expand", "load_design", "load_ledger", "mark_done",
+    "LEDGER_DIR", "blueprint", "builder_sections", "cells_rect", "check", "expand", "foundation_map", "ledger_name", "load_design", "load_ledger", "mark_done",
     "materials", "plan_step", "ready_steps", "root_of", "route", "settle", "signature", "summary", "tiles_of",
 ]
