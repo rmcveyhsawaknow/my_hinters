@@ -114,6 +114,27 @@ def test_a_settled_round_makes_one_call_naming_fresh_residents():
     assert quiet == [] and none == {}
 
 
+def test_a_parked_request_gives_its_goal_slot_to_an_open_one():
+    """On 2026-10-25 the owner closed Readable Replay while its goal was open; Clarion held two open goals, the most allowed."""
+    ledger = load_ledger(ROOT)
+    clarion = load_personas(ROOT)["town-crier"]
+    observe = load_fixture(FIX / "observe/town-crier.json")
+    observe["you"]["faction"] = {"id": 9, "name": "Blueprint Science"}
+    observe["you"]["inventory"] = {"berries": 2}
+    observe["you"]["energy"] = 90
+    posted = [{**g, "reward": {"berries": 5}} for g in _posted(ledger, ["open", "open", "none"])[:2]]
+    observe["your_goals"] = {"claimed": None, "posted": posted}
+    b = _board(ledger, posted, [{"id": 9, "name": "Blueprint Science", "members": 1}])
+    actions, reasons, _ = plan_round(clarion, ledger, observe, b, active_names=[], state={"last_call_tick": observe["tick"]})
+    assert [a["action"] for a in actions] == ["cancel_goal", "post_goal"] and actions[0]["goal_id"] == 10  # the replay bug's goal, not the blueprint one
+    assert actions[1]["title"] == ledger["requests"][2]["title"]  # the refunded escrow pays the portraits goal's reward
+    assert any("no longer open" in r for r in reasons)
+    validate_actions(actions, "+".join(clarion.roles), open_goal_count=2, observe=observe)
+    posted[0]["status"], posted[0]["claimant"] = "claimed", "Quill"
+    held, _, _ = plan_round(clarion, ledger, observe, _board(ledger, posted, [{"id": 9, "name": "Blueprint Science", "members": 1}]), active_names=[], state={"last_call_tick": observe["tick"]})
+    assert not any(a["action"] == "cancel_goal" for a in held)  # a claimed goal waits for its claimant
+
+
 def test_feedback_from_a_claimant_is_confirmed():
     ledger = load_ledger(ROOT)
     clarion = load_personas(ROOT)["town-crier"]
