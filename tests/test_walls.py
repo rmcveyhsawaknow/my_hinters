@@ -150,3 +150,20 @@ def test_the_holding_sign_says_the_lot_is_walled_with_a_gate():
     assert "Walled" in text and "gate" in text and "not a wall" not in text and len(text) <= 200
     claims_text = load_team(ROOT, "exchange").extra["pipeline"]["claims"]["text"]
     assert "not a wall" not in claims_text and "gate" in claims_text
+
+
+def test_a_hand_on_the_last_open_ring_tile_walls_the_tile_underfoot():
+    """2026-10-25: Lintelstave walked onto the open tile, would not wall it, and his mason step sent him back to the vault."""
+    x0, y0, _x1, _y1 = lot_bounds(LOT)
+    walled = [{"type": "wall", "x": t[0], "y": t[1], "owner": "Fellwright"} for t in ((x0 + 1, y0), (x0, y0 + 1))]
+    step = _step("office-steward", {"stone": 32, "wood": 10, "berries": 5}, (x0, y0), _world({"stone": 500}, extra=walled))
+    assert step[0] == [{"action": "build", "type": "wall", "x": x0, "y": y0}]
+
+
+def test_a_crew_walk_never_heads_back_toward_the_wakes_start():
+    from hglab.planner import _walks_back
+
+    start = (74, 73)
+    assert _walks_back([{"action": "move", "x": 74, "y": 71}], (80, 75), start)  # back to the vault
+    assert not _walks_back([{"action": "move", "x": 86, "y": 79}], (80, 75), start)  # onward
+    assert not _walks_back([{"action": "build", "type": "wall", "x": 81, "y": 75}], (80, 75), start)

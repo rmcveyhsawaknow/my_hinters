@@ -825,6 +825,8 @@ def _plan_work(
     # 0.27 the factory crew: the pipeline step fills the wake (walk to the works, unload, raise, gather, carry)
     while persona.knobs.get("crew") and "crew" not in skip and len(actions) < cap:
         step = _plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, cap - len(actions), collective_names, names, teammates, cast=cast)
+        if step is not None and moved() and _walks_back(step[0], here, position):
+            break  # no walking back the way the wake came: Lintelstave went to a wall and back to the vault every wake (2026-10-25)
         if not fits(step):
             break
         approach = approach or "crew"
@@ -2059,6 +2061,14 @@ def mark_closed(state: PersonaState | None, where: tuple[int, int], tick: int) -
     flags = state.flags.get("closed_tiles") if isinstance(state.flags.get("closed_tiles"), dict) else {}
     flags[f"{where[0]},{where[1]}"] = tick
     state.flags["closed_tiles"] = dict(sorted(flags.items(), key=lambda kv: -int(kv[1] or 0))[:12])
+
+
+def _walks_back(new_actions: list[dict[str, Any]], here: tuple[int, int], start: tuple[int, int]) -> bool:
+    """Whether a step's first move heads back toward where the wake started, undoing the walk so far."""
+    move = next((a for a in new_actions if a.get("action") == "move" and a.get("x") is not None), None)
+    if move is None:
+        return False
+    return chebyshev((int(move["x"]), int(move["y"])), start) < chebyshev(here, start)
 
 
 def _full_stores(state: PersonaState | None, tick: int, within: int = FULL_STORE_TICKS) -> set[tuple[int, int]]:
