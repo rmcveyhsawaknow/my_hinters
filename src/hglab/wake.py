@@ -408,6 +408,9 @@ def persona_wake(
             observe["_guidance"] = guidance
         if "_factions" not in observe:
             observe["_factions"] = _public_factions(client)
+        if "_claim_signs" not in observe:
+            # the land office's claim signs from the public snapshot: the knob check reads them for a wall planned beyond the view (never recorded)
+            observe["_claim_signs"] = [s for s in (public_structures or []) if isinstance(s, dict) and s.get("type") == "sign" and str(s.get("text") or "").startswith("Lot ")]
         if model_label:
             observe["_model_label"] = model_label  # the planner's profile note reads it; never recorded
         assignment = guidance.get("assignment") or {}

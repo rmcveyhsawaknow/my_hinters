@@ -576,8 +576,8 @@ def enforce_knobs(
                 target = (int(position[0]), int(position[1]))
             else:
                 target = (int(action["x"]), int(action["y"]))
-            if in_territory(team, *target) is not True:
-                raise ValueError("walls are only built inside the team's own territory")
+            if in_territory(team, *target) is not True and not _office_wall(team, target, [*structures, *(observe.get("_claim_signs") or [])]):
+                raise ValueError("walls are only built inside the team's own territory or on the ring of a lot the land office has staked")
             for structure in structures:
                 owner = str(structure.get("owner", "")).casefold()
                 if not owner or owner in team_names or _owner_in_team(owner, team):
@@ -586,6 +586,27 @@ def enforce_knobs(
                     raise ValueError("never wall beside another agent's structure or path")
     passed.append("walls_inside_territory")
     return passed
+
+
+def _office_wall(team: Team | None, target: tuple[int, int], structures: list[dict[str, Any]]) -> bool:
+    """The land office walls its staked lots (owner, 2026-10-25): a ring tile, never a gate, of a lot whose claim sign is in view."""
+    claims = ((team.extra or {}).get("pipeline") or {}).get("claims") if team is not None else None
+    walls = claims.get("walls") if isinstance(claims, dict) else None
+    if not isinstance(walls, dict) or not walls.get("enabled", True) or not claims.get("registrar"):
+        return False
+    from hglab.lots import lot_id
+    from hglab.walls import gates, ring
+
+    lid = lot_id(*target)
+    if target not in ring(lid) or target in gates(lid):
+        return False
+    registrar = str(claims["registrar"]).casefold()
+    return any(
+        isinstance(s, dict) and s.get("type") == "sign" and str(s.get("owner", "")).casefold() == registrar
+        and str(s.get("text") or "").startswith("Lot ") and " held by " not in str(s.get("text") or "")
+        and isinstance(s.get("x"), int) and isinstance(s.get("y"), int) and lot_id(s["x"], s["y"]) == lid
+        for s in structures
+    )
 
 
 def _owner_in_team(owner: str, team: Team | None) -> bool:
