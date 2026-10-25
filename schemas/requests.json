@@ -16,7 +16,8 @@
           "name": {"type": "string", "minLength": 3, "maxLength": 32, "pattern": "^[A-Za-z0-9][A-Za-z0-9 _-]*$", "description": "Faction name (unique in the world, ignoring case)"},
           "kind": {"enum": ["bug", "feature"]},
           "motto": {"type": "string", "minLength": 10, "maxLength": 100},
-          "founder": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$", "description": "Persona slug whose hat founds the open faction"}
+          "founder": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$", "description": "Persona slug whose hat founds the open faction"},
+          "status": {"enum": ["open", "closed"], "description": "closed: its founder leaves the faction (closing it when the founder is its last member); no invitations, no calls, never founded again"}
         }
       }
     },

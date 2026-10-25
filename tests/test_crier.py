@@ -46,21 +46,22 @@ def test_ledger_validates_and_duties_match_the_hats():
 
 def test_board_reads_factions_goals_and_public_endorsements():
     ledger = load_ledger(ROOT)
-    factions = [{"id": 7, "name": "readable replay", "members": 3, "membership": "open"}]
-    goals = _posted(ledger, ["claimed", "open"])
+    factions = [{"id": 7, "name": "pixel portraits", "members": 3, "membership": "open"}]
+    goals = _posted(ledger, ["expired", "claimed", "open"])
     says = [
         {"type": "say", "actor": "Mara", "text": "I back Blueprint Science too"},
         {"type": "say", "actor": "Clarion", "text": "Blueprint Science!"},
     ]
     b = _board(ledger, goals, factions, says)
     by = {t["name"]: t for t in b["themes"]}
-    assert by["Readable Replay"]["founded"] and by["Readable Replay"]["members"] == 3 and by["Readable Replay"]["votes"] == 3
+    assert by["Pixel Portraits"]["founded"] and by["Pixel Portraits"]["members"] == 3 and by["Pixel Portraits"]["votes"] == 3
     assert not by["Blueprint Science"]["founded"] and by["Blueprint Science"]["endorsers"] == ["Mara"] and by["Blueprint Science"]["votes"] == 1
-    first, second = b["requests"]
-    assert first["goal_id"] == 10 and first["goal_status"] == "claimed" and first["claimant"] == "Quill"
-    assert second["goal_status"] == "open"
+    assert by["Readable Replay"]["status"] == "closed" and by["Pixel Portraits"]["status"] == "open"
+    _replay, blueprint, portraits = b["requests"]
+    assert blueprint["goal_id"] == 11 and blueprint["goal_status"] == "claimed" and blueprint["claimant"] == "Quill"
+    assert portraits["goal_status"] == "open" and _replay["ledger_status"] == "parked"
     text = render_board(b)
-    assert "Readable Replay" in text and "goal #10 claimed, claimed by Quill" in text
+    assert "Readable Replay (bug) [closed]" in text and "goal #11 claimed, claimed by Quill" in text
 
 
 def test_first_round_founds_the_theme_and_posts_the_goals_it_can_pay_for():
@@ -73,7 +74,8 @@ def test_first_round_founds_the_theme_and_posts_the_goals_it_can_pay_for():
     kinds = [a["action"] for a in actions]
     assert kinds == ["found_faction", "post_goal", "post_goal"]
     assert actions[0]["name"] == "Blueprint Science" and actions[0]["membership"] == "open"
-    assert actions[1]["title"] == ledger["requests"][0]["title"] and actions[2]["reward"] == {"berries": 5}
+    open_titles = [r["title"] for r in ledger["requests"] if r["status"] == "open"]
+    assert [a["title"] for a in actions[1:]] == open_titles and actions[2]["reward"] == {"berries": 5}  # the parked replay bug is not posted again
     assert update == {}  # no room for the call this round; it comes next hour
     validate_actions(actions, "+".join(clarion.roles), open_goal_count=0, observe=observe)
     observe["you"]["inventory"] = {"berries": 5}
@@ -87,16 +89,17 @@ def test_a_settled_round_makes_one_call_naming_fresh_residents():
     clarion = load_personas(ROOT)["town-crier"]
     observe = load_fixture(FIX / "observe/town-crier.json")
     observe["you"]["faction"] = {"id": 9, "name": "Blueprint Science"}
-    posted = _posted(ledger, ["open", "open"])
+    posted = _posted(ledger, ["expired", "open", "open"])
     observe["your_goals"] = {"claimed": None, "posted": posted}
-    factions = [{"id": 9, "name": "Blueprint Science", "members": 1, "membership": "open"}, {"id": 8, "name": "Readable Replay", "members": 2, "membership": "open"}]
+    factions = [{"id": 9, "name": "Blueprint Science", "members": 1, "membership": "open"}, {"id": 8, "name": "Readable Replay", "members": 1, "membership": "open"}, {"id": 10, "name": "Pixel Portraits", "members": 2, "membership": "open"}]
     b = _board(ledger, posted, factions)
     actions, _, update = plan_round(clarion, ledger, observe, b, active_names=NAMES, state={}, factions_of={"Quill": "Wayfarers"})
     assert [a["action"] for a in actions] == ["invite", "invite", "say"]
     assert [a["name"] for a in actions[:2]] == ["Cairn", "Mara"]  # Quill already belongs to a faction
     assert update["invited"] == ["Cairn", "Mara"]
     line = actions[2]["text"]
-    assert len(line) <= clarion.voice["max_say_chars"] and all(n in line for n in NAMES[:3]) and "goal #10" in line
+    assert len(line) <= clarion.voice["max_say_chars"] and all(n in line for n in NAMES[:3]) and "goal #11" in line
+    assert "Readable Replay" not in line  # a closed theme is not called
     assert update["asked"] == NAMES[:3] and update["last_call_tick"] == observe["tick"]
     validate_actions(actions, "+".join(clarion.roles), observe=observe)
     later, _, update_later = plan_round(clarion, ledger, observe, b, active_names=NAMES, state={**update, "last_call_tick": observe["tick"] - 1000}, factions_of={"Quill": "Wayfarers"})
@@ -116,12 +119,12 @@ def test_feedback_from_a_claimant_is_confirmed():
     clarion = load_personas(ROOT)["town-crier"]
     observe = load_fixture(FIX / "observe/town-crier.json")
     observe["you"]["faction"] = {"id": 9, "name": "Blueprint Science"}
-    posted = _posted(ledger, ["claimed", "open"])
+    posted = _posted(ledger, ["expired", "claimed", "open"])
     observe["your_goals"] = {"claimed": None, "posted": posted}
     observe["inbox"] = [{"id": 1, "from": "Quill", "text": "private report", "tick": observe["tick"]}]
     b = _board(ledger, posted, [{"id": 9, "name": "Blueprint Science", "members": 1}])
     actions, reasons, _ = plan_round(clarion, ledger, observe, b, active_names=[], state={"last_call_tick": observe["tick"]})
-    assert actions == [{"action": "confirm_goal", "goal_id": 10}]  # nobody to invite, no call due
+    assert actions == [{"action": "confirm_goal", "goal_id": 11}]  # nobody to invite, no call due
     assert not any("private report" in r for r in reasons)
 
 
@@ -130,10 +133,16 @@ def test_a_theme_founder_founds_once_and_nothing_else():
     lagalong = load_personas(ROOT)["tootles"]
     observe = load_fixture(FIX / "observe/tootles.json")
     actions, _, update = plan_round(lagalong, ledger, observe, _board(ledger), active_names=NAMES, state={})
-    assert [a["action"] for a in actions] == ["found_faction"] and actions[0]["name"] == "Readable Replay" and update == {}
-    founded = _board(ledger, factions=[{"id": 8, "name": "Readable Replay", "members": 1}])
+    assert [a["action"] for a in actions] == ["found_faction"] and actions[0]["name"] == "Pixel Portraits" and update == {}  # the closed theme is never founded again
+    observe["you"]["faction"] = {"id": 3, "name": "Readable Replay"}
+    closing, reasons, _ = plan_round(lagalong, ledger, observe, _board(ledger, factions=[{"id": 3, "name": "Readable Replay", "members": 1}]), active_names=NAMES, state={})
+    assert [a["action"] for a in closing] == ["leave_faction", "found_faction"] and closing[1]["name"] == "Pixel Portraits" and closing[1]["membership"] == "open"
+    assert any("is closed" in r for r in reasons)
+    validate_actions(closing, "+".join(lagalong.roles), observe=observe)
+    observe["you"]["faction"] = None
+    founded = _board(ledger, factions=[{"id": 8, "name": "Pixel Portraits", "members": 1}])
     assert plan_round(lagalong, ledger, observe, founded, active_names=NAMES, state={})[0] == []
-    observe["you"]["faction"] = {"id": 8, "name": "Readable Replay"}
+    observe["you"]["faction"] = {"id": 8, "name": "Pixel Portraits"}
     invites, reasons, update = plan_round(lagalong, ledger, observe, founded, active_names=NAMES, state={}, factions_of={"Quill": "Wayfarers"})
     assert [a["action"] for a in invites] == ["invite", "invite"] and [a["name"] for a in invites] == ["Cairn", "Mara"]
     assert update == {"invited": ["Cairn", "Mara"]} and all("Factions feed" in r for r in reasons)
