@@ -299,6 +299,27 @@ BASELINE_FILE = Path("runs/local/features.json")  # the host's last look at the 
 NEWS_FILE = Path("runs/local/news.jsonl")  # discoveries waiting to be said in the open, one row each
 NEWS_KEEP_TICKS = 7 * 8640  # a week of announced news is kept so nothing is said twice
 NEWS_REPEAT_TICKS = 3 * 8640  # the same text is news again after three days at most
+NEWS_KINDS = {
+    "api_version", "guide_changed", "rule_changed", "new_action", "new_blueprint", "blueprint_cost_changed", "new_observe_field",
+    "new_block_piece", "limits_changed", "new_structure_type", "unpublished_event_type", "newcomers",
+}
+NEWS_FRESH_HOURS = {"newcomers": 2}  # a newcomer is news for two hours; everything else for a day
+NEWS_FRESH_DEFAULT = 24
+
+
+def announceable(kind: str) -> bool:
+    """A kind of discovery the crier announces: the news step and the news queue agree on it."""
+    return not kind or kind in NEWS_KINDS or kind.startswith("new_")
+
+
+def fresh(row: dict[str, Any], now: datetime | None = None) -> bool:
+    """Still news: queued within its kind's freshness (a newcomer two hours, the rest a day)."""
+    try:
+        queued = datetime.fromisoformat(str(row.get("utc")))
+    except ValueError:
+        return True
+    hours = NEWS_FRESH_HOURS.get(str(row.get("kind") or ""), NEWS_FRESH_DEFAULT)
+    return ((now or datetime.now(UTC)) - queued).total_seconds() <= hours * 3600
 SILENT_KINDS = {"first_look", "blueprint_catalogue", "unpublished_event_type"}  # a host's first look seeds the baseline; it is not news
 
 
@@ -381,8 +402,14 @@ def queue_news(root: Path, discoveries: list[dict[str, str]], tick: int) -> list
     return added
 
 
-def pending_news(root: Path) -> list[dict[str, Any]]:
-    return [r for r in load_news(root) if not r.get("announced")]
+def pending_news(root: Path, now: datetime | None = None) -> list[dict[str, Any]]:
+    """News waiting for the crier: not yet announced, of a kind the crier announces, and still fresh.
+
+    A newcomer row the news step never announced (its kind was not in the step's list) stayed pending
+    from 2026-10-23 and started a news wake every ten minutes for a day and a half; stale or
+    unannounceable rows no longer count.
+    """
+    return [r for r in load_news(root) if not r.get("announced") and announceable(str(r.get("kind") or "")) and fresh(r, now)]
 
 
 def mark_announced(root: Path, lines: list[str], tick: int) -> int:
