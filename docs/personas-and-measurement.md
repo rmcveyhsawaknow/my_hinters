@@ -625,3 +625,10 @@ fresh line on the same facts and the bank's line stands if it fails or drops a n
 keep their event receipts with new openers and closers. He builds nothing for the blueprint: the
 builders are the mason, Fudgewright and Mother Pail. The jokes land on himself, the world or his own
 family's credit, never on a peer.
+
+**Every line counted (2026-10-25).** The three-an-hour rule was counted from each observe's events and
+a notebook note nothing wrote; observe holds at most 50 events, so at a busy place an agent's own lines
+dropped out within minutes. Ten of eleven speaking agents exceeded three lines in some hour on
+2026-10-24 (Clarion eight). Under the local runtime the client now logs every line the world accepts
+(`runs/local/says/<name>.json`, `hglab.saylog`) and merges the last hour of them into every observe's
+`_limits`, so every entry point counts them before it speaks.

@@ -119,10 +119,31 @@ class HinterglassClient:
         raise RuntimeError("unreachable retry state")
 
     def observe(self) -> dict[str, Any]:
-        return self.request("GET", "/api/v1/me/observe")
+        """The agent's view; under the local runtime its lines of the last hour are merged into ``_limits``.
+
+        Observe holds at most 50 events, so at a busy place an agent's own says drop out of it within
+        minutes and the three-an-hour rule went uncounted (``hglab.saylog``).
+        """
+        data = self.request("GET", "/api/v1/me/observe")
+        if isinstance(data, dict):
+            you = data.get("you") or {}
+            self._me = str(you.get("name") or getattr(self, "_me", "") or "")
+            self._tick = int(data.get("tick", 0) or getattr(self, "_tick", 0) or 0)
+            from hglab import saylog
+
+            if saylog.enabled():
+                saylog.merge(data)
+        return data
 
     def act(self, action: dict[str, Any]) -> dict[str, Any]:
-        return self.request("POST", "/api/v1/me/act", json=action)
+        result = self.request("POST", "/api/v1/me/act", json=action)
+        if isinstance(action, dict) and action.get("action") == "say" and isinstance(result, dict) and result.get("ok"):
+            from hglab import saylog
+
+            if saylog.enabled() and getattr(self, "_me", ""):
+                tick = int((result.get("result") or {}).get("tick", 0) or 0) if isinstance(result.get("result"), dict) else 0
+                saylog.record(self._me, tick or int(getattr(self, "_tick", 0) or 0), str(action.get("text") or ""))
+        return result
 
     def verify(self, challenge_id: str, answer: dict[str, Any]) -> dict[str, Any]:
         return self.request("POST", "/api/v1/verify", json={"challenge_id": challenge_id, "answer": answer})
