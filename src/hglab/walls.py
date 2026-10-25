@@ -110,10 +110,16 @@ def wall_lots(
 
 
 def blocked_near(structures: list[dict[str, Any]], office: set[str] | frozenset[str]) -> set[tuple[int, int]]:
-    """Tiles beside (or under) another resident's building or bridge: never walled."""
+    """Tiles beside (or under) anything of anyone outside the office, a road or sign included: never walled.
+
+    The same rule the persona knob check enforces ("never wall beside another agent's structure or
+    path"); a planned wall that broke it would have the whole wake refused (2026-10-25: three hands lost
+    a shift that way).
+    """
     out: set[tuple[int, int]] = set()
     for s in structures:
-        if not isinstance(s, dict) or s.get("type") not in VISITED or str(s.get("owner", "")).casefold() in office:
+        owner = str(s.get("owner") or "").casefold() if isinstance(s, dict) else ""
+        if not owner or owner in office:
             continue
         if not isinstance(s.get("x"), int) or not isinstance(s.get("y"), int):
             continue

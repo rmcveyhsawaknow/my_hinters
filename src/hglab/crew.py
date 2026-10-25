@@ -417,7 +417,7 @@ def _wall_step(
     first, rest = wall_lots(claims, held, structures, mates, held_by=held_by)
     if not first and not rest:
         return None
-    skip = blocked_near(structures, mates) | no_wall(state, tick)
+    skip = blocked_near([*view.world_structures, *view.structures], mates) | no_wall(state, tick)
     skip |= {(int(r["x"]), int(r["y"])) for r in (view.world_resources or view.resources) if isinstance(r.get("x"), int) and isinstance(r.get("y"), int)}
     skip |= {(int(a["x"]), int(a["y"])) for a in [*view.agents, *view.residents] if isinstance(a.get("x"), int) and isinstance(a.get("y"), int)}
     tiles: list[tuple[str, tuple[int, int]]] = []

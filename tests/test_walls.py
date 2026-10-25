@@ -79,14 +79,41 @@ def test_with_every_store_full_a_hand_walls_the_holding_beside_it_and_leaves_the
     assert roomy is None or all(a.get("type") != "wall" for a in roomy[0])  # a store with room takes the stone: no walls
     node = _step("office-quarrier", {"stone": 20, "berries": 5}, here, _world({"stone": 500}, nodes=[{"kind": "stone", "x": x0, "y": y0, "amount": 9}]))
     assert node[0] == [{"action": "build", "type": "wall", "x": x0, "y": y0 + 1}]  # never on a node
-    road = _step("office-quarrier", {"stone": 20, "berries": 5}, here, _world({"stone": 500}, extra=[{"type": "road", "x": x0, "y": y0 + 1, "owner": "Mara"}]))
-    assert road[0] == [{"action": "build", "type": "wall", "x": x0, "y": y0}]  # a road stays a road
+    road = _step("office-quarrier", {"stone": 20, "berries": 5}, here, _world({"stone": 500}, extra=[{"type": "road", "x": x0, "y": y0 + 2, "owner": "Mara"}]))
+    assert road[0] == [{"action": "build", "type": "wall", "x": x0, "y": y0}]  # a road stays a road, and no wall stands beside it
     bridge = _step("office-quarrier", {"stone": 20, "berries": 5}, here, _world({"stone": 500}, extra=[{"type": "bridge", "x": x0 - 1, "y": y0, "owner": "Mara"}]))
     assert bridge[0][0]["action"] == "move" and "wall ring open at" in bridge[1]  # beside another resident's bridge: no wall, on to the next tile
     far = _step("office-quarrier", {"stone": 20, "berries": 5}, (74, 73), full)
     assert far[0][0]["action"] == "move" and f"lot {LOT}" in far[1]
     tired = _step("office-quarrier", {"stone": 20, "berries": 5}, here, full, energy=load_personas(ROOT)["office-quarrier"].energy_reserve + 4)
     assert tired is None or all(a.get("type") != "wall" for a in tired[0])  # too tired for one build: rest first
+
+
+def test_a_planned_wall_passes_the_persona_knob_check():
+    """2026-10-25: every wall the hands planned broke the knob check (walls only inside the team's territory), and the wake was refused whole."""
+    import pytest
+
+    from hglab.persona import enforce_knobs
+
+    x0, y0, _x1, _y1 = lot_bounds(LOT)
+    here = (x0 - 1, y0 + 1)
+    view = _world({"stone": 500})
+    step = _step("office-quarrier", {"stone": 20, "berries": 5}, here, view)
+    personas = load_personas(ROOT)
+    persona, team = personas["office-quarrier"], load_team(ROOT, "exchange")
+    office = {personas[m].name for m in team.members}
+    observe = {"you": {"x": here[0], "y": here[1]}, "tick": 1000, "structures": list(view.world_structures)}
+    enforce_knobs(step[0], persona, team, observe, member_names=office)
+    gate = (x0, (y0 + lot_bounds(LOT)[3]) // 2)
+    with pytest.raises(ValueError):
+        enforce_knobs([{"action": "build", "type": "wall", "x": gate[0], "y": gate[1]}], persona, team, observe, member_names=office)  # a gate is never walled
+    unsigned = [s for s in observe["structures"] if s.get("type") != "sign"]
+    with pytest.raises(ValueError):
+        enforce_knobs(step[0], persona, team, {**observe, "structures": unsigned}, member_names=office)  # no claim sign anywhere: not the office's lot
+    beyond = [s for s in observe["structures"] if s.get("type") == "sign"]
+    enforce_knobs(step[0], persona, team, {**observe, "structures": unsigned, "_claim_signs": beyond}, member_names=office)  # the sign beyond the view, from the public snapshot (Fellwright's walls on 2026-10-25)
+    with pytest.raises(ValueError):
+        enforce_knobs(step[0], persona, team, {**observe, "structures": [*observe["structures"], {"type": "road", "x": x0 - 1, "y": y0, "owner": "Clarion"}]}, member_names=office)  # beside another agent's path
 
 
 def test_with_no_stone_in_the_pack_a_hand_draws_it_from_a_full_store_of_the_faction():
