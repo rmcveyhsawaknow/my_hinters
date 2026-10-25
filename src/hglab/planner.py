@@ -1182,7 +1182,7 @@ def _plan_site_trade(
     ground = (int(bought.get("x", position[0])), int(bought.get("y", position[1])))
     near_ground = [v for v in vaults if chebyshev(ground, v) <= DEED_TRIP_RANGE]
     vaults = near_ground or vaults  # the office's stores by the ground being bought when it has any there; else its nearest anywhere
-    full = _full_stores(state, tick)
+    full = _full_stores(state, tick, within=DEED_FULL_TICKS)
     vaults = [v for v in vaults if v not in full and storehouse_room(view.structure_at(*v) or {}) >= min(owed, 5)]  # a full vault takes nothing
     if not vaults:
         return _pay_in_person(registrar_name, state, bought, view, position, currency, carried, owed, tick=tick)
@@ -1202,6 +1202,7 @@ def _plan_site_trade(
 PAY_IN_PERSON_RANGE = 40  # how far the client walks to put the price into the registrar's hands when every office store is full (a few wakes)
 DEED_TRIP_RANGE = 16  # the office's stores within this of the ground being bought are the ones a client pays into, when it has any there; the registrar is paid in person within this of the client. On 2026-10-25 the office's stores by the factory were full and Fudgewright went from one office store to the next across the island
 DRAW_PRICE_RANGE = 40  # how far the client walks to a team store for the price
+DEED_FULL_TICKS = 720  # an office store that refused the price is tried again after two hours: the office's hands wall its stone away when its stores are full (2026-10-25)
 
 
 def _draw_price(
@@ -2060,9 +2061,9 @@ def mark_closed(state: PersonaState | None, where: tuple[int, int], tick: int) -
     state.flags["closed_tiles"] = dict(sorted(flags.items(), key=lambda kv: -int(kv[1] or 0))[:12])
 
 
-def _full_stores(state: PersonaState | None, tick: int) -> set[tuple[int, int]]:
+def _full_stores(state: PersonaState | None, tick: int, within: int = FULL_STORE_TICKS) -> set[tuple[int, int]]:
     flags = state.flags.get("full_stores") if state is not None and isinstance(state.flags.get("full_stores"), dict) else {}
-    return {tuple(int(v) for v in k.split(",")) for k, seen in flags.items() if tick - int(seen or 0) <= FULL_STORE_TICKS}
+    return {tuple(int(v) for v in k.split(",")) for k, seen in flags.items() if tick - int(seen or 0) <= within}
 
 
 def _mark_full(state: PersonaState | None, where: tuple[int, int], tick: int) -> None:

@@ -279,7 +279,7 @@ def site_search(
 
 
 WORLD_CENTRE = (64, 64)  # newcomers start near here; the guide asks that the spawn area is never stripped
-HOLDING_TEXT = "Lot {lot}: land office holding ({tags}). Not for sale: its nodes are the office's stock, sold from the vault. A public record, not a wall."
+HOLDING_TEXT = "Lot {lot}: land office holding ({tags}). Not for sale: its nodes are the office's stock. Walled by the office, a gate open mid-side."
 
 
 def holdings(

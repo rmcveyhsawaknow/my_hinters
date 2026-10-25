@@ -23,7 +23,7 @@ from collections.abc import Callable
 from typing import Any
 
 from hglab.lots import holdings as office_holdings
-from hglab.lots import lot_bounds, lot_id, node_floor
+from hglab.lots import lot_anchor, lot_bounds, lot_id, node_floor
 from hglab.mood import PersonaState
 from hglab.persona import Persona, Team
 from hglab.planner import (
@@ -43,6 +43,16 @@ from hglab.planner import (
     shortfall,
     storehouse_room,
     with_storage,
+)
+from hglab.walls import (
+    WALL_COST,
+    WALL_DRAW,
+    WALL_ENERGY,
+    blocked_near,
+    no_wall,
+    open_tiles,
+    wall_lots,
+    walls_cfg,
 )
 
 ROLE_WANTED: dict[str, list[str]] = {
@@ -192,6 +202,7 @@ def plan_crew(
 
     field = depots(view, mates, site, radius) if claims else []
     drop_points = [*stores, *field] if role != "hauler" else stores
+    office_stores = [*stores, *field]
 
     # a. far from the works: walk there first
     distance = chebyshev(position, site)
@@ -200,6 +211,12 @@ def plan_crew(
         if target is not None and target != position:
             return [{"action": "move", "x": target[0], "y": target[1]}], f"{distance} tiles from the works at {site}: walk there", "crew"
         return None
+
+    # a2. the office's walls (owner, 2026-10-25): every store full, the stone goes into walls on the staked lots
+    if claims and walls_cfg(claims) is not None and office_stores and not any(_has_room(s, full) for s in office_stores):
+        step = _wall_step(persona, claims, held, inventory, position, view, mates, office_stores, room, energy, reserve, state, tick, observe)
+        if step is not None:
+            return step
 
     # b. a heavy pack goes to the nearest store of ours with room (the mason carries its materials to the site instead)
     heavy = pack >= 46 if role == "mason" else (goods >= HEAVY or pack >= 46)
@@ -255,6 +272,100 @@ def plan_crew(
             return step
     wanted = _role_wanted(role, stock_levels(stores, cfg.get("stock") or {}))
     return _gather_toward(persona, team, wanted, inventory, position, view, site, reach, room, teammates, "for the works", floor_for, ranks)
+
+
+def _has_room(store: dict[str, Any], full: set[tuple[int, int]]) -> bool:
+    """A store a load may still go into: not refused as full lately, and room to spare when its contents show."""
+    where = (int(store["x"]), int(store["y"]))
+    if where in full:
+        return False
+    return not isinstance(store.get("storage"), dict) or storehouse_room(store) >= OVERFLOW_ROOM
+
+
+def _admits(persona: Persona, store: dict[str, Any], faction: str) -> bool:
+    """Whether this agent may take from the store: its own, public, or its faction's."""
+    policy = str(store.get("policy") or "private")
+    theirs = store.get("faction")
+    theirs = str(theirs.get("name") if isinstance(theirs, dict) else theirs or "")
+    return str(store.get("owner", "")).casefold() == persona.name.casefold() or policy == "public" or (policy == "faction" and bool(faction) and theirs.casefold() == faction.casefold())
+
+
+def _wall_step(
+    persona: Persona,
+    claims: dict[str, Any],
+    held: list[dict[str, Any]],
+    inventory: dict[str, int],
+    position: tuple[int, int],
+    view: WorldView,
+    mates: set[str],
+    stores: list[dict[str, Any]],
+    room: int,
+    energy: int,
+    reserve: int,
+    state: PersonaState,
+    tick: int,
+    observe: dict[str, Any],
+) -> Step | None:
+    """Every store of the office is full: wall the staked lots, the holdings first, with the pack's stone, then the stores'.
+
+    Walls go on a lot's border, never on the middle tile of a side (the gate), never on a road, a sign, a
+    node, a tile someone stands on or beside another resident's building (``hglab.walls``). The nearest
+    open wall tiles first: beside us, every build the wake allows; else a walk toward the nearest. With
+    no stone in the pack, a draw of up to thirty from the nearest full store that admits us.
+    """
+    structures = view.world_structures or view.structures
+    first, rest = wall_lots(claims, held, structures, mates)
+    if not first and not rest:
+        return None
+    skip = blocked_near(structures, mates) | no_wall(state, tick)
+    skip |= {(int(r["x"]), int(r["y"])) for r in (view.world_resources or view.resources) if isinstance(r.get("x"), int) and isinstance(r.get("y"), int)}
+    skip |= {(int(a["x"]), int(a["y"])) for a in [*view.agents, *view.residents] if isinstance(a.get("x"), int) and isinstance(a.get("y"), int)}
+    tiles: list[tuple[str, tuple[int, int]]] = []
+    for tier in (first, rest):
+        near = [lid for lid in tier if chebyshev(position, lot_anchor(lid)) <= CARRY_RANGE]
+        tiles = [(lid, t) for lid in near for t in open_tiles(lid, view.free_tile, skip)]
+        if tiles:
+            break  # the holdings before the lots for sale
+    if not tiles:
+        return None
+    stone = int(inventory.get("stone", 0) or 0)
+    pack = sum(inventory.values())
+    if stone >= WALL_COST:
+        builds = min(room, stone // WALL_COST, max(0, (energy - reserve) // WALL_ENERGY))
+        if builds < 1:
+            return None  # too tired to build: rest first
+        beside = sorted((pair for pair in tiles if pair[1] != position and chebyshev(position, pair[1]) <= 1), key=lambda pair: pair[1])
+        if beside:
+            chosen = beside[:builds]
+            lots = ", ".join(sorted({lid for lid, _ in chosen}))
+            return (
+                [{"action": "build", "type": "wall", "x": t[0], "y": t[1]} for _, t in chosen],
+                f"every store of the office is full: {len(chosen)} wall(s) on lot {lots} from the pack's {stone} stone, the middle of each side left open as a gate",
+                "crew",
+            )
+        lid, target = min(tiles, key=lambda pair: (chebyshev(position, pair[1]), pair[1]))
+        step = _step_toward(position, {"x": target[0], "y": target[1]}, view)
+        if step is not None and step != position:
+            return [{"action": "move", "x": step[0], "y": step[1]}], f"every store of the office is full: carry {stone} stone to lot {lid}, its wall ring open at {target}", "crew"
+        return None
+    if 50 - pack < 10:
+        return None  # no room to carry stone: the pack's other goods wait for a store with room
+    faction = (observe.get("you") or {}).get("faction")
+    faction = str(faction.get("name") if isinstance(faction, dict) else faction or "")
+    for store in sorted(stores, key=lambda s: chebyshev(position, (int(s["x"]), int(s["y"])))):
+        storage = store.get("storage") if isinstance(store.get("storage"), dict) else None
+        if not storage or int(storage.get("stone", 0) or 0) < 10 or not _admits(persona, store, faction):
+            continue
+        where = (int(store["x"]), int(store["y"]))
+        if chebyshev(position, where) <= 1:
+            qty = min(int(storage["stone"]), 50 - pack, WALL_DRAW)
+            return [{"action": "take", "x": where[0], "y": where[1], "item": "stone", "qty": qty}], f"every store of the office is full: take {qty} stone from the store at {where} to wall the staked lots", "crew"
+        if chebyshev(position, where) > CARRY_RANGE:
+            continue
+        step = _step_toward(position, {"x": where[0], "y": where[1]}, view)
+        if step is not None and step != position:
+            return [{"action": "move", "x": step[0], "y": step[1]}], f"every store of the office is full: walk to the store at {where} for stone to wall with", "crew"
+    return None
 
 
 def _blueprint(
@@ -624,6 +735,8 @@ def _haul(
         owner = str(s.get("owner", "")).casefold()
         admits = owner == persona.name.casefold() or policy == "public" or (policy == "faction" and faction_name and str(s.get("faction") or "").casefold() == faction_name.casefold())
         if not admits:
+            if where in {(int(d["x"]), int(d["y"])) for d in field}:
+                _mark_empty(state, where, tick)  # not ours to take from: Drayhand paced between two private depots of the registrar's on 2026-10-25
             continue
         storage = s.get("storage") if isinstance(s.get("storage"), dict) else {}
         for kind in order:
