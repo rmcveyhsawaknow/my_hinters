@@ -140,3 +140,10 @@ def test_the_four_plots_leave_the_office_holdings_and_are_sold_as_one_ground():
     signs = [{"type": "sign", "x": lot_anchor(lid)[0], "y": lot_anchor(lid)[1], "owner": "LandBroker", "text": stake_text(lid, "LandBroker")} for lid in ("I08-SE", "K04-NW")]
     held = holdings(exchange.extra["pipeline"]["claims"], signs, lambda x, y: "h", [], [], 1000, "LandBroker")
     assert [h["lot"] for h in held] == ["K04-NW"]  # the factory's lot is under contract: not the office's to work
+
+
+def test_a_live_wake_records_its_removals_in_the_blueprint_ledger():
+    """2026-10-25: removals ran but the wake settled only places and builds, so MotherPail cleared the same box three times."""
+    from hglab.wake import SETTLED_ACTIONS
+
+    assert "remove" in SETTLED_ACTIONS and "place" in SETTLED_ACTIONS and "build" in SETTLED_ACTIONS

@@ -22,6 +22,8 @@ from hglab.lease import Lease
 from hglab.limits import action_limits
 from hglab.local.tasks import deliver as deliver_tasks
 from hglab.local.tasks import settle as settle_tasks
+
+SETTLED_ACTIONS = ("place", "build", "remove")  # what the blueprint ledger records after a live wake; a removal too (the level rebuild of 2026-10-25 repeated its clears unrecorded)
 from hglab.loop import build_prompt, run_wake
 from hglab.measures import ACTIVITY_OF_ACTION
 from hglab.mood import (
@@ -757,7 +759,7 @@ def persona_wake(
             from hglab.features import mark_announced
 
             blueprint_name = ((team.extra or {}).get("pipeline") or {}).get("blueprint") if team is not None else None
-            if blueprint_name and any(isinstance(a, dict) and a.get("action") in ("place", "build") for a in record.get("actions") or []):
+            if blueprint_name and any(isinstance(a, dict) and a.get("action") in SETTLED_ACTIONS for a in record.get("actions") or []):
                 from hglab.factory import settle as settle_blueprint
 
                 settled = settle_blueprint(root, str(blueprint_name), list(record.get("actions") or []), list(record.get("results") or []), int(record.get("tick", 0) or 0), persona.name)
