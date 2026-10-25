@@ -122,13 +122,13 @@ def test_energy_reserve_blocks_plans_that_dip_below_it():
 
 
 def test_social_rate_and_team_budget_cap_public_speech():
-    joe = load_persona(ROOT, "grandpa-joe")  # social_rate 2
-    team = load_team(ROOT, "chocolate-factory")  # 5 says/hour
+    joe = load_persona(ROOT, "grandpa-joe")  # social_rate 3, the world's cap (2026-10-24)
+    team = load_team(ROOT, "chocolate-factory")  # 12 says/hour
     observe = load_fixture(FIX / "observe/grandpa-joe.json")
     say = {"action": "say", "text": "Back at the old factory this took half the time."}
-    enforce_knobs([say], joe, team, observe, recent_say_count=1)
-    with pytest.raises(ValueError, match="at most 2 time"):
-        enforce_knobs([say], joe, team, observe, recent_say_count=2)
+    enforce_knobs([say], joe, team, observe, recent_say_count=2)
+    with pytest.raises(ValueError, match="at most 3 time"):
+        enforce_knobs([say], joe, team, observe, recent_say_count=3)
     with pytest.raises(ValueError, match="public-speech budget"):
         enforce_knobs([say], joe, team, observe, recent_say_count=0, team_recent_says=team.social_budget["says_per_hour"])
     with pytest.raises(ValueError, match="under 240 characters"):

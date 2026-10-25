@@ -549,6 +549,37 @@ EMPTY_STORE_TICKS = 1440  # a store found without the item a builder came for is
 BUILD_RANGE = 16  # a builder further than this from every ready step (the crew's range) leaves the walk to the team-site migration
 
 
+SHED_KEEP = 5  # berries a builder keeps when it clears its pack for materials
+
+
+def _shed(inventory: dict[str, int], store: dict[str, Any], costs: dict[str, int], observe: dict[str, Any], room: int) -> list[dict[str, Any]]:
+    """Clear the pack for a fetch: surplus berries (and materials this step does not use) into the store beside,
+    when it has room; otherwise eat what energy allows. Packs full of berries made each fetch carry one to five items."""
+    pack = sum(int(v) for v in inventory.values())
+    if pack < 30 or room < 2:
+        return []
+    storage = store.get("storage") if isinstance(store.get("storage"), dict) else {}
+    space = max(0, 500 - sum(int(v or 0) for v in storage.values()))
+    out: list[dict[str, Any]] = []
+    berries = int(inventory.get("berries", 0)) - SHED_KEEP
+    where = (int(store["x"]), int(store["y"]))
+    if berries >= 5 and space >= 5:
+        qty = min(berries, space)
+        out.append({"action": "give", "x": where[0], "y": where[1], "item": "berries", "qty": qty})
+        space -= qty
+    elif berries >= 1:
+        energy = int((observe.get("you") or {}).get("energy", 100) or 100)
+        meal = min(berries, (100 - energy) // 15, 3)
+        if meal >= 1:
+            out.append({"action": "eat", "qty": meal})
+    if room >= 3 and space >= 5:
+        spare = sorted(((k, int(v)) for k, v in inventory.items() if k not in costs and k != "berries" and int(v) >= 5), key=lambda kv: -kv[1])
+        if spare:
+            kind, qty = spare[0]
+            out.append({"action": "give", "x": where[0], "y": where[1], "item": kind, "qty": min(qty, space)})
+    return out[: max(0, room - 1)]
+
+
 def root_of(team: Any) -> Path:
     """The repository a team file lives in (``teams/<slug>.yaml``), else the working directory."""
     path = getattr(team, "path", None)
@@ -671,10 +702,15 @@ def plan_step(
         for item, qty in sorted(lacking.items(), key=lambda kv: -kv[1]):
             holders = [s for s in seen_stores if int(s["storage"].get(item, 0) or 0) >= min(qty, 4)]
             beside = [s for s in holders if chebyshev(position, (int(s["x"]), int(s["y"]))) <= 1]
-            if beside and pack < 50:
+            if beside:
                 store = beside[0]
-                take = min(50 - pack, int(store["storage"].get(item, 0) or 0), max(qty, 40))
-                return [{"action": "take", "x": int(store["x"]), "y": int(store["y"]), "item": item, "qty": take}], f"the factory blueprint needs {qty} {item} for {step['name']}: take {take} from the store at ({store['x']}, {store['y']})", "blueprint"
+                where = (int(store["x"]), int(store["y"]))
+                shed = _shed(inventory, store, costs, observe, room)
+                freed = sum(int(a.get("qty", 0) or 0) for a in shed)
+                take = min(50 - pack + freed, int(store["storage"].get(item, 0) or 0), max(qty, 40))
+                if take >= 1:
+                    note = f" after putting {freed} of the pack's clutter away" if freed else ""
+                    return [*shed, {"action": "take", "x": where[0], "y": where[1], "item": item, "qty": take}], f"the factory blueprint needs {qty} {item} for {step['name']}: take {take} from the store at {where}{note}", "blueprint"
             for s in [s for s in seen_stores if chebyshev(position, (int(s["x"]), int(s["y"]))) <= 1 and not int(s["storage"].get(item, 0) or 0)]:
                 empty[f"{s['x']},{s['y']}:{item}"] = tick
             targets = sorted(holders, key=lambda s: chebyshev(position, (int(s["x"]), int(s["y"]))))

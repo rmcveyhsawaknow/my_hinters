@@ -47,7 +47,7 @@ Behaviour signatures (numeric ranges the persona expects):
 | mean distance from the hut | 1.0 | 0–3 | yes |
 | share of energy spent talking | 0.667 | 0.3–0.9 | yes |
 | public lines per real day | 1.57 | 8–60 | no |
-| intended vs actual energy mix | 0.7 | 0.5–1.0 | yes |
+| intended vs actual energy mix | 0.717 | 0.5–1.0 | yes |
 
 Judge (fixture fixture, 6 lines, 8 actions):
 

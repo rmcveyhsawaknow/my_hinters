@@ -602,3 +602,26 @@ the works, then the grounds), drawing the wood from the team's stores. Live wake
 accepted, or refused as already filled, into the ledger (`runs/local/blueprints/chocolate-factory.json`);
 `hglab factory show` and `progress` read it. The render of the finished factory is the artifact
 "Chocolate Factory Blueprint" (`hglab factory export` writes its data).
+
+**Throughput and the berry glut (2026-10-24, the same evening).** The first hour placed about 43 items
+of material an hour: builders carried 23 to 29 berries in packs of 50 and the factory stores held 790
+berries against a target of 60, so each fetch moved one to five items. Builders now clear the pack
+before a fetch (`factory._shed`: surplus berries, keeping five, and materials the step does not use go
+into the store beside when it has room, else they eat what energy allows), Fudgewright does the same
+before drawing the land price, and a farm is left full (it stops growing) while the team's stores in
+view hold more berries than the pipeline's stock target (`planner._berry_glut`).
+
+## GrandadPail holds court from the hut (2026-10-24)
+
+The owner asked for a louder, funnier grandfather who rests by the hut. GrandadPail rests four wakes
+in five beside the family hut at (88, 95) (`knobs.lounge`); a rest wake elsewhere walks him back first.
+Beside it he says one line whenever his rate allows (social rate three, the world's cap; the team's
+budget rose to twelve): bedside material from `hglab.quips`, a bank of original lines in a modern
+register (a horizontal thought leader with a podcast and a personal brand) whose slots take real
+numbers (the crew's hauls this hour, the blueprint's steps and blocks from the ledger, the season and
+weather). A line is fresh again a real day after it was said; the memory is its own notebook key
+(`quips`), since his persona state is nearly full; once the bank is spent, the local talk model writes a
+fresh line on the same facts and the bank's line stands if it fails or drops a number. His credit claims
+keep their event receipts with new openers and closers. He builds nothing for the blueprint: the
+builders are the mason, Fudgewright and Mother Pail. The jokes land on himself, the world or his own
+family's credit, never on a peer.

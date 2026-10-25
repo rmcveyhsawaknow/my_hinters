@@ -25,10 +25,10 @@ pipeline:
   stores_max: 10
   blueprint: chocolate-factory  # teams/blueprints/chocolate-factory.yaml (the owner's brief of 2026-10-24)
   builders:
-    loompa-mason: [depots, elevator, mill, terrace]
-    wonka: [candy, elevator, depots]
-    mrs-bucket: [packing, river-west, river-terrace]
-    grandpa-joe: [lookout, river-east, mill]
+    loompa-mason: [depots, elevator, mill, terrace, lookout]
+    wonka: [candy, elevator, depots, lookout]
+    mrs-bucket: [packing, river-west, river-terrace, river-east]
+    # GrandadPail rests by the family hut and holds court from it (owner, 2026-10-24); he builds nothing
   stock:  # the blueprint's remaining cost sets the mix (hglab factory show): stone first, then wood and fiber
     wood: 400
     stone: 800
@@ -72,7 +72,7 @@ territory:
   note: Becomes binding (walls allowed, Stoutheart-style stay rules) only when status
     is confirmed by the owner after Fudgewright picks the site.
 social_budget:
-  says_per_hour: 11
+  says_per_hour: 12  # GrandadPail speaks at the cap of three an hour
   open_goals: 4
 links:
 - from: mrs-bucket

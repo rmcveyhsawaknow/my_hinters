@@ -547,6 +547,10 @@ def persona_wake(
                 except ValueError as exc:
                     extras["fallback_reason"] = str(exc)[:200]
                     used = "llm_fallback"
+        if plan.get("riff") and plan.get("approach") == "lounge" and not dry_run:
+            from hglab.quips import riff as riff_line
+
+            plan = riff_line(plan, persona, root, usage, extras)  # the bank's lines were all said lately: a fresh one on the same facts
         if persona.quirk.get("type") == "big_picture" and plan.get("approach") == "fool" and planner_mode == "llm" and llm_call is not None:
             from hglab.fool import rephrase
 

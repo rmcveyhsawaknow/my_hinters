@@ -98,12 +98,13 @@ def test_every_member_of_the_factory_works_on_the_blueprint():
     team = load_team(ROOT, "chocolate-factory")
     personas = load_personas(ROOT)
     builders = team.extra["pipeline"]["builders"]
-    assert set(builders) == {"loompa-mason", "wonka", "mrs-bucket", "grandpa-joe"}
+    assert set(builders) == {"loompa-mason", "wonka", "mrs-bucket"}  # GrandadPail rests by the hut and holds court (2026-10-24)
     _design, steps, _ = _bp()
     sections = {s["section"] for s in steps}
     assert sections <= {sec for secs in builders.values() for sec in secs}  # every section has a builder who raises it first
-    gatherers = [m for m in team.members if m not in builders]
+    gatherers = [m for m in team.members if m not in builders and m != "grandpa-joe"]
     assert all(personas[m].knobs.get("crew") for m in gatherers)  # the rest gather and carry its materials
+    assert personas["grandpa-joe"].knobs["lounge"] == {"x": 88, "y": 95}
     stock = team.extra["pipeline"]["stock"]
     needs = factory.materials(steps)
     assert all(stock[item] >= min(needs[item], 800) for item in needs)  # the stock targets follow the blueprint's cost
