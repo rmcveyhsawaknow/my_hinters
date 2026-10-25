@@ -1181,6 +1181,7 @@ def _plan_site_trade(
     )
     full = _full_stores(state, tick)
     vaults = [v for v in vaults if v not in full and storehouse_room(view.structure_at(*v) or {}) >= min(owed, 5)]  # a full vault takes nothing
+    vaults = [v for v in vaults if chebyshev(position, v) <= DEED_TRIP_RANGE]  # no tour of the office's stores: build, and pay when one near has room
     if not vaults:
         return _pay_in_person(registrar_name, state, bought, view, position, currency, carried, owed)
     vault = vaults[0]
@@ -1197,6 +1198,7 @@ def _plan_site_trade(
 
 
 PAY_IN_PERSON_RANGE = 40  # how far the client walks to put the price into the registrar's hands when every office store is full (a few wakes)
+DEED_TRIP_RANGE = 24  # the farthest office store a client walks to with the price: the office's depots by the factory were full on 2026-10-25
 DRAW_PRICE_RANGE = 40  # how far the client walks to a team store for the price
 
 
