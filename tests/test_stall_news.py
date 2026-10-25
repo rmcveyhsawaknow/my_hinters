@@ -59,9 +59,13 @@ def test_a_client_does_not_tour_full_office_stores_to_pay(tmp_path):
         _mark_full(state, where, 72000)  # both refused the give as full
     observe = {"tick": 72000, "you": {"name": "Fudgewright", "x": 91, "y": 88}, "inbox": []}
     assert _plan_site_trade(wonka, state, {"wood": 20}, (91, 88), view, observe, "LandBroker", office_names={"Lintelstave"}) is None  # the vault is 31 tiles away: build instead
+    chain = WorldView(x0=80, y0=80, rows=rows, full_map=rows, world_structures=[*near_full, {"type": "storehouse", "x": 81, "y": 76, "owner": "LandBroker"}], tick=72000)
+    assert _plan_site_trade(wonka, state, {"wood": 20}, (92, 79), chain, {**observe, "you": {"name": "Fudgewright", "x": 92, "y": 79}}, "LandBroker", office_names={"Lintelstave"}) is None  # 21 tiles from the ground: no hop from store to store
     view.residents = [{"name": "LandBroker", "x": 95, "y": 95}]
     in_person = _plan_site_trade(wonka, state, {"wood": 20}, (91, 88), view, observe, "LandBroker", office_names={"Lintelstave"})
     assert in_person is not None and ("hands" in in_person[1] or "LandBroker" in in_person[1])  # the registrar nearby takes it in person
+    view.residents = [{"name": "LandBroker", "x": 72, "y": 58}]
+    assert _plan_site_trade(wonka, state, {"wood": 20}, (91, 88), view, observe, "LandBroker", office_names={"Lintelstave"}) is None  # far from the ground: no chase
 
 
 def test_the_news_queue_holds_only_fresh_news_the_crier_announces(tmp_path):
