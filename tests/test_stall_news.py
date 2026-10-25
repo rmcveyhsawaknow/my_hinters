@@ -43,6 +43,27 @@ def test_the_land_payment_walk_is_not_undone_by_a_blueprint_walk_the_other_way(t
     assert moves[0]["x"] < 92 and "land office" in " ".join(plan["reasons"])
 
 
+def test_a_client_does_not_tour_full_office_stores_to_pay(tmp_path):
+    """On 2026-10-25 the office's depots by the factory were full; Fudgewright walked from one to the next instead of building."""
+    from hglab.planner import WorldView, _mark_full, _plan_site_trade
+
+    wonka = load_personas(ROOT)["wonka"]
+    rows = ["g" * 128] * 128
+    near_full = [{"type": "storehouse", "x": 86, "y": 86, "owner": "Lintelstave"}, {"type": "storehouse", "x": 91, "y": 83, "owner": "Lintelstave"}]
+    far = {"type": "storehouse", "x": 60, "y": 60, "owner": "LandBroker"}
+    view = WorldView(x0=80, y0=80, rows=rows, full_map=rows, world_structures=[*near_full, far], tick=72000)
+    state = PersonaState(mood="mercurial")
+    state.flags["house_site"] = {"id": "works", "x": 87, "y": 97, "lot": "I09-SE", "price": 76, "currency": "wood", "paid": 53, "tick": 1}
+    state.flags["site_asked"], state.flags["site_asked_for"] = 71000, "works"
+    for where in ((86, 86), (91, 83)):
+        _mark_full(state, where, 72000)  # both refused the give as full
+    observe = {"tick": 72000, "you": {"name": "Fudgewright", "x": 91, "y": 88}, "inbox": []}
+    assert _plan_site_trade(wonka, state, {"wood": 20}, (91, 88), view, observe, "LandBroker", office_names={"Lintelstave"}) is None  # the vault is 31 tiles away: build instead
+    view.residents = [{"name": "LandBroker", "x": 95, "y": 95}]
+    in_person = _plan_site_trade(wonka, state, {"wood": 20}, (91, 88), view, observe, "LandBroker", office_names={"Lintelstave"})
+    assert in_person is not None and ("hands" in in_person[1] or "LandBroker" in in_person[1])  # the registrar nearby takes it in person
+
+
 def test_the_news_queue_holds_only_fresh_news_the_crier_announces(tmp_path):
     from hglab.features import NEWS_KINDS, announceable, news_path, pending_news
 
