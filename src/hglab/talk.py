@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import random
+import re
 from pathlib import Path
 from typing import Any
 
@@ -48,12 +49,9 @@ def summarise_shift(records: list[dict[str, Any]]) -> dict[str, Any]:
                 deposited[str(action.get("item"))] = deposited.get(str(action.get("item")), 0) + int(action.get("qty", 0) or 0)
     mood = records[-1].get("mood") if records else None
     rests = sum(1 for r in records if r.get("wake_mode") == "rest")
-    discoveries: list[str] = []
-    for record in records:
-        for text in record.get("discoveries") or []:
-            if text not in discoveries:
-                discoveries.append(str(text))
-    return {"wakes": len(records), "rests": rests, "built": built, "gathered": gathered, "moved": moved, "deposited": deposited, "approaches": approaches, "mood": mood, "where": where, "discoveries": discoveries[:4]}
+    # the news queue is the crier's news step's to announce, once and in its own words; a shift line that
+    # retold it repeated day-old news every ten minutes with ticks the model made up (Clarion, 2026-10-25)
+    return {"wakes": len(records), "rests": rests, "built": built, "gathered": gathered, "moved": moved, "deposited": deposited, "approaches": approaches, "mood": mood, "where": where}
 
 
 def templated_line(persona: Persona, summary: dict[str, Any], rng: random.Random) -> str:
@@ -130,8 +128,11 @@ def compose_line(
             output_tokens=int(usage.get("output_tokens", 0)) + result.output_tokens,
             model=getattr(result, "model", "unknown"), provider=getattr(result, "provider", "unknown"), route="talk",
         )
-    if not line or any(frag in line.lower() for frag in BANNED_FRAGMENTS):
+    if not line or any(frag in line.lower() for frag in BANNED_FRAGMENTS) or "redacted" in line.lower():
         return fallback, "template"
+    invented = [n for n in re.findall(r"\d+", line) if n not in set(re.findall(r"\d+", json.dumps(summary)))]
+    if invented:
+        return fallback, "template"  # every number in the line must come from the shift's own data: no invented ticks or coordinates
     if len(line) > limit:
         line = trim_to_sentence(line, limit)
         if len(line) < 40:

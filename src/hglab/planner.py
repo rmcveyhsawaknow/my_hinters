@@ -16,6 +16,9 @@ import re
 from dataclasses import dataclass, field
 from typing import Any
 
+from hglab.features import (  # the news step and the news queue share one list
+    announceable,
+)
 from hglab.limits import action_limits
 from hglab.mood import HEADING_VECTORS, PersonaState, next_heading, note_near_miss
 from hglab.persona import (
@@ -417,7 +420,7 @@ def plan_wake(
                 or _plan_harvest(persona, team, inventory, here, view, teammates)
                 or _plan_stake(persona, inventory, here, view)
                 or (_plan_site_trade(persona, state, inventory, here, view, observe, registrar_name, office_names=(cast or {}).get("office_names")) if here == position else None)
-                or (_plan_blueprint(persona, team, state, observe, view, inventory, here, budget - len(actions), set(names or ())) if not persona.knobs.get("crew") else None)
+                or (_plan_blueprint(persona, team, state, observe, view, inventory, here, budget - len(actions), set(names or ())) if not persona.knobs.get("crew") and here == position else None)
                 or (_plan_hearth(persona, inventory, here, view, home, state) if here == position else None)
                 or _plan_house(persona, inventory, here, view, home, observe, state=state)
                 or (_plan_build(persona, team, inventory, here, view, home) if here == position else None)
@@ -841,6 +844,8 @@ def _plan_work(
     # 0.62 the team's blueprint (the owner's brief of 2026-10-24): a builder raises it step by step, carrying what it needs
     while not persona.knobs.get("crew") and "blueprint" not in skip and len(actions) < cap:
         step = _plan_blueprint(persona, team, state, observe, view, inventory, here, cap - len(actions), set(names or ()))  # the team's own stores
+        if step is not None and moved() and any(a.get("action") == "move" for a in step[0]):
+            break  # one walk per wake: a second one the other way undid the first (Fudgewright, stalled five hours on 2026-10-25)
         if not fits(step):
             break
         approach = approach or "blueprint"
@@ -1526,7 +1531,6 @@ def _meal_after_move(actions: list[dict[str, Any]], inventory: dict[str, int], e
     return {"action": "eat", "qty": 1}
 
 
-NEWS_KINDS = {"api_version", "guide_changed", "rule_changed", "new_action", "new_blueprint", "blueprint_cost_changed", "new_observe_field", "new_block_piece", "limits_changed", "new_structure_type", "unpublished_event_type"}
 
 
 def _plan_research(
@@ -1596,7 +1600,7 @@ def _plan_news(persona: Persona, state: PersonaState, observe: dict[str, Any], e
     news = []
     for text, kind in zip(texts, kinds or [""] * len(texts), strict=False):
         key = hashlib.sha256(str(text).encode("utf-8")).hexdigest()[:12]
-        if (kind and kind not in NEWS_KINDS and not kind.startswith("new_")) or _recent(flags, "news", key, tick, 3 * 8640):
+        if not announceable(kind) or _recent(flags, "news", key, tick, 3 * 8640):
             continue
         news.append((key, str(text)))
     if not news:
