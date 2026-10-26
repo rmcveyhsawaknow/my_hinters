@@ -9,6 +9,8 @@ from __future__ import annotations
 
 import html
 import json
+import threading
+import time
 from datetime import UTC, datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -240,9 +242,32 @@ def goals_json(root: Path, personas: dict[str, Any]) -> bytes:
             graph.close()
 
 
+CACHE_SECONDS = 15  # a render is reused this long, and only one runs at a time: the page refreshes itself and tabs pile up
+
+
+class RenderCache:
+    """One render at a time per page, reused for a few seconds (the supervisor's threads share this process)."""
+
+    def __init__(self, seconds: float = CACHE_SECONDS) -> None:
+        self.seconds = seconds
+        self._lock = threading.Lock()
+        self._pages: dict[str, tuple[float, bytes]] = {}
+
+    def get(self, key: str, make: Any) -> bytes:
+        with self._lock:
+            hit = self._pages.get(key)
+            if hit is not None and time.monotonic() - hit[0] < self.seconds:
+                return hit[1]
+            body = make()
+            self._pages[key] = (time.monotonic(), body)
+            return body
+
+
 def serve(
     root: Path, personas: dict[str, Any], teams: dict[str, Any], port: int = 8766
 ) -> ThreadingHTTPServer:
+    cache = RenderCache()
+
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, format: str, *args: Any) -> None:
             return
@@ -253,18 +278,21 @@ def serve(
                 body = path.read_bytes() if path.is_file() else b"{}"
                 ctype = "application/json"
             elif self.path.startswith("/goals.json"):
-                body = goals_json(root, personas)
+                body = cache.get("goals", lambda: goals_json(root, personas))
                 ctype = "application/json"
             else:
-                body = render(root, personas, teams).encode("utf-8")
+                body = cache.get("page", lambda: render(root, personas, teams).encode("utf-8"))
                 ctype = "text/html; charset=utf-8"
-            self.send_response(200)
-            self.send_header("Content-Type", ctype)
-            self.send_header("Content-Length", str(len(body)))
-            self.end_headers()
-            self.wfile.write(body)
+            try:
+                self.send_response(200)
+                self.send_header("Content-Type", ctype)
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+            except (ConnectionAbortedError, ConnectionResetError, BrokenPipeError):
+                return  # the browser gave up waiting: nothing to answer
 
     return ThreadingHTTPServer(("127.0.0.1", port), Handler)
 
 
-__all__ = ["goals_json", "render", "serve"]
+__all__ = ["CACHE_SECONDS", "RenderCache", "goals_json", "render", "serve"]

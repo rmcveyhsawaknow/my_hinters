@@ -371,6 +371,20 @@ class Supervisor:
             self._save_status()
         return summary
 
+    def keep_dashboard(self) -> dict[str, Any]:
+        """The NemoClaw dashboard's forward: restarted (and its service installed) when it is not answering."""
+        from hglab.local.stack import dashboard_status, ensure_dashboard
+
+        try:
+            status = dashboard_status(self.config)
+            if not status.get("dashboard_ok"):
+                status = ensure_dashboard(self.config, say=lambda line: self._log(f"stack: {line}"))
+        except Exception as exc:  # noqa: BLE001 - a broken check never stops the supervisor
+            status = {"dashboard": "error", "error": str(exc)[:200]}
+        self.status["dashboard"] = status
+        self._save_status()
+        return status
+
     def loop(self, personas: dict[str, Any], minutes: int | None = None) -> None:
         self._log(
             f"supervisor up: {', '.join(e.get('slug', '?') for e in self.entries())} (dry_run={self.config.get('dry_run', True)})"
@@ -385,6 +399,8 @@ class Supervisor:
         last_adapt: datetime | None = None
         watch_every = int((self.config.get("ecosystem") or {}).get("watch_every_minutes", 10) or 0)
         last_watch: datetime | None = None
+        stack_every = int((self.config.get("ecosystem") or {}).get("stack_every_minutes", 15) or 0) if (self.config.get("nemoclaw") or {}).get("sandbox") else 0
+        last_stack: datetime | None = None
         try:
             while minutes is None or count < minutes:
                 now = datetime.now(UTC).replace(second=0, microsecond=0)
@@ -407,6 +423,11 @@ class Supervisor:
                     ):
                         last_watch = now
                         threading.Thread(target=self.watch, args=(personas,), daemon=True).start()
+                    if stack_every and (
+                        last_stack is None or (now - last_stack).total_seconds() >= stack_every * 60
+                    ):
+                        last_stack = now
+                        threading.Thread(target=self.keep_dashboard, daemon=True).start()
                 time.sleep(5)
         finally:
             self.status["running"] = False
