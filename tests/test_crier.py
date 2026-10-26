@@ -27,9 +27,12 @@ def _board(ledger, goals=(), factions=(), says=()):
 
 
 def _posted(ledger, statuses):
+    """Clarion's goals for the ledger's requests in order; a request past the given statuses has none yet."""
+    padded = [*statuses, *["none"] * (len(ledger["requests"]) - len(statuses))]
     return [
         {"id": 10 + i, "title": r["title"], "poster": "Clarion", "status": status, "claimant": "Quill" if status == "claimed" else None}
-        for i, (r, status) in enumerate(zip(ledger["requests"], statuses, strict=True))
+        for i, (r, status) in enumerate(zip(ledger["requests"], padded, strict=True))
+        if status != "none"
     ]
 
 
@@ -57,7 +60,8 @@ def test_board_reads_factions_goals_and_public_endorsements():
     assert by["Pixel Portraits"]["founded"] and by["Pixel Portraits"]["members"] == 3 and by["Pixel Portraits"]["votes"] == 3
     assert not by["Blueprint Science"]["founded"] and by["Blueprint Science"]["endorsers"] == ["Mara"] and by["Blueprint Science"]["votes"] == 1
     assert by["Readable Replay"]["status"] == "closed" and by["Pixel Portraits"]["status"] == "open"
-    _replay, blueprint, portraits = b["requests"]
+    _replay, blueprint, portraits, faction_board = b["requests"]
+    assert by["Faction Board"]["faction"] is False and not by["Faction Board"]["founded"] and faction_board["goal_id"] is None  # no faction of its own: votes are lines naming it
     assert blueprint["goal_id"] == 11 and blueprint["goal_status"] == "claimed" and blueprint["claimant"] == "Quill"
     assert portraits["goal_status"] == "open" and _replay["ledger_status"] == "parked"
     text = render_board(b)
@@ -75,8 +79,8 @@ def test_first_round_founds_the_theme_and_posts_the_goals_it_can_pay_for():
     assert kinds == ["found_faction", "post_goal", "post_goal"]
     assert actions[0]["name"] == "Blueprint Science" and actions[0]["membership"] == "open"
     open_titles = [r["title"] for r in ledger["requests"] if r["status"] == "open"]
-    assert [a["title"] for a in actions[1:]] == open_titles and actions[2]["reward"] == {"berries": 5}  # the parked replay bug is not posted again
-    assert update == {}  # no room for the call this round; it comes next hour
+    assert [a["title"] for a in actions[1:]] == open_titles[:2] and actions[2]["reward"] == {"berries": 5}  # the parked replay bug is not posted again; two goals at a time
+    assert set(update) == {"posted"} and sorted(update["posted"]) == sorted(r["id"] for r in ledger["requests"] if r["title"] in open_titles[:2])  # each posted request remembers its turn; no room for the call, it comes next hour
     validate_actions(actions, "+".join(clarion.roles), open_goal_count=0, observe=observe)
     observe["you"]["inventory"] = {"berries": 5}
     actions, reasons, _ = plan_round(clarion, ledger, observe, _board(ledger), active_names=NAMES, state={})
@@ -232,3 +236,35 @@ def test_theme_invitations_skip_members_of_teams_with_their_own_faction():
     assert {"Strayling", "Tinkerglow", "Stoutheart", "Fudgewright", "MotherPail", "GrandadPail"} <= reserved
     assert "Lagalong" not in reserved and "Clarion" not in reserved  # exempt, or a team with no faction
     assert "Plumbline" in reserved  # the atelier joins the factory's faction as its ally (2026-10-24): no theme for it
+
+
+def test_every_open_request_takes_its_turn_in_the_two_goal_slots():
+    """2026-10-26: the owner's Faction Board request would have waited forever behind two requests reposted on every expiry."""
+    from hglab.crier import ROTATE_TICKS
+
+    ledger = load_ledger(ROOT)
+    clarion = load_personas(ROOT)["town-crier"]
+    observe = load_fixture(FIX / "observe/town-crier.json")
+    observe["you"]["faction"] = {"id": 9, "name": "Blueprint Science"}
+    observe["you"]["inventory"] = {"berries": 12}
+    observe["you"]["energy"] = 90
+    tick = observe["tick"]
+    titles = {r["id"]: r["title"] for r in ledger["requests"]}
+    goals = [
+        {"id": 46, "title": titles["R-20261018-propose-blueprint"], "poster": "Clarion", "status": "open", "claimant": None, "created_tick": tick - ROTATE_TICKS - 10},
+        {"id": 47, "title": titles["R-20261025-agent-portraits"], "poster": "Clarion", "status": "open", "claimant": None, "created_tick": tick - 100},
+    ]
+    observe["your_goals"] = {"claimed": None, "posted": [{k: g[k] for k in ("id", "title", "status")} for g in goals]}
+    b = _board(ledger, goals, [{"id": 9, "name": "Blueprint Science", "members": 1}])
+    actions, reasons, update = plan_round(clarion, ledger, observe, b, active_names=[], state={"last_call_tick": tick})
+    assert [a["action"] for a in actions] == ["cancel_goal", "post_goal"] and actions[0]["goal_id"] == 46  # the goal that stood half a day unclaimed
+    assert actions[1]["title"] == titles["R-20261026-faction-board"] and update["posted"]["R-20261026-faction-board"] == tick
+    assert any("waiting for its first posting" in r for r in reasons)
+    validate_actions(actions, "+".join(clarion.roles), open_goal_count=2, observe=observe)
+    young = [{**goals[0], "created_tick": tick - 100}, goals[1]]
+    held, _, _ = plan_round(clarion, ledger, observe, _board(ledger, young, [{"id": 9, "name": "Blueprint Science", "members": 1}]), active_names=[], state={"last_call_tick": tick})
+    assert held == []  # both goals are young: the new request waits for a slot
+    turned, _, _ = plan_round(clarion, ledger, observe, b, active_names=[], state={"last_call_tick": tick, "posted": {"R-20261026-faction-board": tick - 9000}})
+    assert turned == []  # it has had its turn: it waits for the next slot that frees, no cancel
+    line = call_line(clarion, b, NAMES[:2], tick)
+    assert "Faction Board 0 votes (say its name)" in line

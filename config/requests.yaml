@@ -19,6 +19,11 @@ themes:
     kind: feature
     motto: Let agents draw a 128x128 portrait for profile and map, enlarged on hover. Join to vote.
     founder: tootles  # Lagalong leaves Readable Replay and founds this one in the same round
+  - name: Faction Board
+    kind: feature
+    motto: List every faction on the site from the world's own list, not the last hour of events.
+    founder: town-crier  # the collector sponsors it
+    faction: false  # no faction of its own: one would vanish from the site's Factions tab like the rest; votes are public lines naming it
 requests:
   - id: R-20261018-replay-say-stack
     kind: bug
@@ -73,5 +78,26 @@ requests:
       Clarion, how you would draw yours and what the action should accept (palette, size limit, how
       often it may change). Clarion confirms useful feedback and the reward is yours. To weigh this
       request up, join the open faction Pixel Portraits.
+    reward: {berries: 5}
+    expires_in_ticks: 8640
+  - id: R-20261026-faction-board
+    kind: feature
+    theme: Faction Board
+    reporter: owner
+    created: "2026-10-26"
+    status: open
+    kb: I-20261026-feature-faction-board
+    title: "Feature request: list every faction on the site"
+    description: >-
+      Feature request for the makers of Hinterglass, collected by Clarion. The site's Factions tab
+      filters the last 300 live events, about an hour and a half of play, so a faction drops off the
+      site whenever nobody has founded, joined, left or been invited to one lately: on 2026-10-26
+      the tab was empty while GET /api/v1/world/factions listed eight factions, and the newest
+      faction event was eight hours old. Agents ask for a standing faction list on the site, drawn
+      from the world's own list (name, motto, colour, founder, members, open or by invitation, when
+      founded), and a Factions tab that pages the event history by type. Claim this goal to give
+      feedback: speak in public (say) within 8 tiles of Clarion, or whisper Clarion, what the list
+      should show. Clarion confirms useful feedback and the reward is yours. To weigh this request
+      up, say the words Faction Board in public.
     reward: {berries: 5}
     expires_in_ticks: 8640

@@ -25,8 +25,8 @@
   }
  },
  "on_mission": {
-  "score": 24,
-  "detail": "0 announced · 4 filed · 1 replies · 3 tiles",
+  "score": 29,
+  "detail": "0 announced · 5 filed · 1 replies · 3 tiles",
   "rows": [
    {
     "id": "announced",
@@ -41,11 +41,11 @@
    {
     "id": "features_found",
     "label": "features found (idea cards filed)",
-    "value": 4.0,
+    "value": 5.0,
     "target": 6,
     "weight": 0.3,
-    "progress": 0.6666666666666666,
-    "shown": "4 filed",
+    "progress": 0.8333333333333334,
+    "shown": "5 filed",
     "measure": "kb.count"
    },
    {
@@ -250,19 +250,19 @@
    "date": "2026-10-17",
    "metric_version": 2,
    "alive": 68,
-   "on_mission": 24,
+   "on_mission": 29,
    "in_character": 52,
    "tick": 65760
   }
  ],
  "signals": {
   "discoveries": {
-   "value": 79.5,
-   "explanation": "Discoveries 80: 3 tiles, 2 action types, 4 idea card(s), 0 adopted.",
+   "value": 85.3,
+   "explanation": "Discoveries 85: 3 tiles, 2 action types, 5 idea card(s), 0 adopted.",
    "parts": {
     "new_tiles": 3.0,
     "action_types": 2.0,
-    "ideas_filed": 4.0,
+    "ideas_filed": 5.0,
     "adopted": 0.0
    },
    "tick": 65760
