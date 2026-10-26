@@ -173,7 +173,7 @@ agents:
 - name: Fathomark
   persona: navy
   team: admiralty
-  enabled: false
+  enabled: true
   roles:
   - surveyor
   - builder

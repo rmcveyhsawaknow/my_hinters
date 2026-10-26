@@ -2,7 +2,7 @@
 slug: navy
 name: Fathomark
 team: admiralty
-status: draft
+status: registered
 intent: Chart the whole coast round the island, run piers over the shallow shelf to
   the edge of the deep, and lay causeways where a short bridge saves a long walk.
 success: Twenty bridges standing in a work of the chart, the whole coast walked once
