@@ -147,3 +147,25 @@ def test_a_live_wake_records_its_removals_in_the_blueprint_ledger():
     from hglab.wake import SETTLED_ACTIONS
 
     assert "remove" in SETTLED_ACTIONS and "place" in SETTLED_ACTIONS and "build" in SETTLED_ACTIONS
+
+
+def test_a_full_pack_fetches_only_from_a_store_that_can_take_its_clutter(tmp_path, monkeypatch):
+    """2026-10-26: Toffeetrowel, 40 fiber in a full pack, walked from one full store to the next for one stone; the builds stopped."""
+    monkeypatch.setattr(factory, "ledger_path", lambda root, name: tmp_path / f"{name}.json")
+    personas = load_personas(ROOT)
+    mason = personas["loompa-mason"]
+    team = load_team(ROOT, "chocolate-factory")
+    design, steps, _ = _bp()
+    led = factory.ledger_name(design, "chocolate-factory")
+    first_place = next(s for s in steps if s["section"] == "lookout" and s["kind"] == "place")
+    factory.mark_done(ROOT, led, sorted(s["id"] for s in steps if s["section"] != "lookout" or s["kind"] == "remove"), 1, "test")
+    assert first_place["item"] == "stone"  # the lookout's plinth, far from every store: the stone is carried
+    full = {"type": "storehouse", "x": 87, "y": 86, "owner": "Treacleaxe", "policy": "faction", "faction": "Chocolate Factory", "storage": {"stone": 200, "wood": 300}}
+    roomy = {"type": "storehouse", "x": 84, "y": 90, "owner": "Treacleaxe", "policy": "faction", "faction": "Chocolate Factory", "storage": {"stone": 100}}
+    view = WorldView(x0=78, y0=80, rows=GRASS, full_map=GRASS, structures=[full, roomy], world_structures=[full, roomy], tick=70000)
+    observe = {"tick": 70000, "you": {"name": mason.name, "x": 88, "y": 86, "faction": {"id": 5, "name": "Chocolate Factory"}, "blocks_owned": 0}}
+    pack = {"fiber": 40, "wood": 5, "berries": 5}
+    walk = factory.plan_step(mason, team, PersonaState(mood="busy"), observe, view, dict(pack), (88, 86), 3, mates={"Treacleaxe"})
+    assert walk[0][0]["action"] == "move" and "(84, 90)" in walk[1]  # past the full store beside it, to the one with room
+    beside = factory.plan_step(mason, team, PersonaState(mood="busy"), {**observe, "you": {**observe["you"], "x": 85, "y": 90}}, view, dict(pack), (85, 90), 3, mates={"Treacleaxe"})
+    assert beside[0][0] == {"action": "give", "x": 84, "y": 90, "item": "fiber", "qty": 40} and beside[0][1]["action"] == "take" and beside[0][1]["item"] == "stone"
