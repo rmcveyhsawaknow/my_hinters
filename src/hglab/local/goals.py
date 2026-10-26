@@ -17,6 +17,7 @@ member's goal stands, so in-world goals are for work across collectives.
 from __future__ import annotations
 
 import json
+import os
 import re
 from collections import Counter
 from datetime import UTC, datetime, timedelta
@@ -111,27 +112,57 @@ def prefer_for(measure: Any, params: dict[str, Any] | None, works: list[str]) ->
     return out[:6]
 
 
+RECORD_WINDOW = 4  # records read past the newest file: their created_utc decides, and files are written as wakes end
+
+
+def _read_record(path: Path) -> dict[str, Any] | None:
+    try:
+        record = json.loads(path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return None
+    return record if isinstance(record, dict) else None
+
+
 def latest_record(root: Path, name: str, slug: str, planned: bool = False) -> dict[str, Any] | None:
     """The newest wake record of a persona: local runs first, then the pulled reports.
 
     ``planned`` skips keepalives and announcements, so a page shows what the persona last decided to do.
+    The files are taken newest first by modification time and only a few are read: on 2026-10-26 the
+    page read all 13,600 records of three days for every render and stopped answering in time.
     """
-    newest: tuple[str, dict[str, Any]] | None = None
     folders = [
         *sorted((root / "runs").glob("20*"), reverse=True)[:3],
         *sorted((root / "reports" / "agents" / slug / "runs").glob("20*"), reverse=True)[:2],
     ]
+    prefix = f"{name}-"
+    candidates: list[tuple[float, Path]] = []
     for folder in folders:
-        for path in folder.glob(f"{name}-*.json"):
+        try:
+            entries = list(os.scandir(folder))
+        except OSError:
+            continue
+        for entry in entries:
+            if not entry.name.startswith(prefix) or not entry.name.endswith(".json"):
+                continue
+            if planned and entry.name.startswith(f"{name}-keepalive-"):
+                continue
             try:
-                record = json.loads(path.read_text(encoding="utf-8"))
-            except (json.JSONDecodeError, OSError):
+                candidates.append((entry.stat().st_mtime, Path(entry.path)))
+            except OSError:
                 continue
-            if planned and str(record.get("kind") or "") in QUIET_MODES:
-                continue
-            stamp = str(record.get("created_utc") or "")
-            if newest is None or stamp > newest[0]:
-                newest = (stamp, record)
+    candidates.sort(key=lambda mp: mp[0], reverse=True)
+    newest: tuple[str, dict[str, Any]] | None = None
+    seen = 0
+    for _mtime, path in candidates:
+        record = _read_record(path)
+        if record is None or (planned and str(record.get("kind") or "") in QUIET_MODES):
+            continue
+        stamp = str(record.get("created_utc") or "")
+        if newest is None or stamp > newest[0]:
+            newest = (stamp, record)
+        seen += 1
+        if seen >= RECORD_WINDOW:
+            break
     return newest[1] if newest else None
 
 

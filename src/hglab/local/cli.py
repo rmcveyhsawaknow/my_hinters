@@ -185,6 +185,17 @@ def local_stack(
     typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
 
 
+@local_app.command("dashboard")
+def local_dashboard() -> None:
+    """The NemoClaw (OpenClaw) dashboard: install and start its port-forward service, then report whether it answers."""
+    from hglab.local.stack import ensure_dashboard
+
+    result = ensure_dashboard(load_local_config(_root()), say=typer.echo)
+    typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
+    if not result.get("dashboard_ok"):
+        raise typer.Exit(code=1)
+
+
 service_app = typer.Typer(
     help="Start the environment at logon: a Scheduled Task on Windows, a systemd user unit on Linux.",
     no_args_is_help=True,

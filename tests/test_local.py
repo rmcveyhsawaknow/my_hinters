@@ -426,6 +426,9 @@ def test_the_stack_is_read_through_a_login_shell_and_started_in_reboot_order(tmp
     )
     calls = []
     answers = {
+        "is-active hinters-dashboard-forward;": (0, "active\n200"),  # the dashboard's forward service and the dashboard itself
+        "command -v openshell": (0, "/home/u/.local/bin/openshell"),
+        "base64 -d": (0, "changed=0\nactive\n200"),
         "docker info": (0, "29.2.1"),
         "is-active": (0, "active"),
         "api/tags": (0, "200"),

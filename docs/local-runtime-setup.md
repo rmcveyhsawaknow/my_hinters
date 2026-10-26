@@ -83,7 +83,14 @@ parameter into the logon start.
    `hglab local stack` (docker, gateway, ollama, sandbox Ready, OpenClaw running). If `up` did not
    start, run `hglab local up` yourself and read `runs/local/up.log`.
 3. Open side by side: the status page `http://127.0.0.1:8766/`, the OpenClaw dashboard from
-   `wsl -d Ubuntu -- bash -lc "nemoclaw hinters dashboard-url"`, and `https://hinterglass.com`.
+   `wsl -d Ubuntu -e bash -lc "nemoclaw hinters dashboard-url"`, and `https://hinterglass.com`.
+   The dashboard needs an OpenShell port forward. `hglab local up` (and `hglab local dashboard` on its own)
+   installs it as the systemd user service `hinters-dashboard-forward` in the distribution and starts it; the
+   supervisor checks it every `ecosystem.stack_every_minutes` (15) and starts it again when it does not answer.
+   A forward started by hand with `openshell forward start -d` dies with the shell that started it (2026-10-26).
+   User services keep running without a login session only with linger on: `loginctl enable-linger $USER`
+   once per host. Commands reach WSL as `wsl -d <distro> -e bash -lc`: with `--` the distribution's default
+   shell expands `$vars` and `$(...)` in the script before bash sees it.
 4. Backups: `hglab local backup list` shows the bucket; the supervisor pushes one every
    `ecosystem.backup_every_minutes` (six hours) and after the first minute of a run, and the status
    page and `runs/local/status.json` carry `last_backup`.
