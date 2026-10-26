@@ -702,6 +702,12 @@ BUILD_RANGE = 16  # a builder further than this from every ready step (the crew'
 SHED_KEEP = 5  # berries a builder keeps when it clears its pack for materials
 
 
+def _room(store: dict[str, Any]) -> int:
+    """Free slots in a storehouse whose contents show."""
+    storage = store.get("storage") if isinstance(store.get("storage"), dict) else {}
+    return max(0, 500 - sum(int(v or 0) for v in storage.values()))
+
+
 def _shed(inventory: dict[str, int], store: dict[str, Any], costs: dict[str, int], observe: dict[str, Any], room: int) -> list[dict[str, Any]]:
     """Clear the pack for a fetch: surplus berries (and materials this step does not use) into the store beside,
     when it has room; otherwise eat what energy allows. Packs full of berries made each fetch carry one to five items."""
@@ -857,9 +863,11 @@ def plan_step(
         # carry it: the nearest store that holds the material, or a team store not yet looked into
         for item, qty in sorted(lacking.items(), key=lambda kv: -kv[1]):
             holders = [s for s in seen_stores if int(s["storage"].get(item, 0) or 0) >= min(qty, 4)]
-            beside = [s for s in holders if chebyshev(position, (int(s["x"]), int(s["y"]))) <= 1]
-            if beside:
-                store = beside[0]
+            # a full pack must put something away before it can take: only a store with room for that is any use
+            # (2026-10-26: Toffeetrowel, 40 fiber in a full pack, walked from one full store to the next for one stone)
+            need_free = max(0, min(qty, 4) - (50 - pack))
+            beside = sorted((s for s in holders if chebyshev(position, (int(s["x"]), int(s["y"]))) <= 1), key=lambda s: -_room(s))
+            for store in beside:
                 where = (int(store["x"]), int(store["y"]))
                 shed = _shed(inventory, store, costs, observe, room)
                 freed = sum(int(a.get("qty", 0) or 0) for a in shed)
@@ -869,7 +877,7 @@ def plan_step(
                     return [*shed, {"action": "take", "x": where[0], "y": where[1], "item": item, "qty": take}], f"the factory blueprint needs {qty} {item} for {step['name']}: take {take} from the store at {where}{note}", "blueprint"
             for s in [s for s in seen_stores if chebyshev(position, (int(s["x"]), int(s["y"]))) <= 1 and not int(s["storage"].get(item, 0) or 0)]:
                 empty[f"{s['x']},{s['y']}:{item}"] = tick
-            targets = sorted(holders, key=lambda s: chebyshev(position, (int(s["x"]), int(s["y"]))))
+            targets = sorted((s for s in holders if not need_free or _room(s) >= max(need_free, 5)), key=lambda s: chebyshev(position, (int(s["x"]), int(s["y"]))))  # _shed puts away five at the least
             targets += sorted(
                 (s for s in far_stores if f"{s.get('x')},{s.get('y')}:{item}" not in empty),
                 key=lambda s: chebyshev(position, (int(s["x"]), int(s["y"]))),
