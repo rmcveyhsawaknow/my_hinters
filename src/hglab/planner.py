@@ -89,7 +89,7 @@ LABEL_ACTIVITY = {  # a shift-planner step label -> the tick activity that runs 
     "build": "build", "house": "build", "hearth": "build", "repair": "build", "harvest": "build", "border": "build", "reclaim": "build", "stash": "build", "draw": "build", "blueprint": "build",
     "deposit": "gather", "deposit_trip": "gather", "gather_trip": "gather", "forage": "gather", "gather_near": "gather",
     "explore": "explore", "migrate": "explore", "social": "social", "engage": "engage", "trade": "trade", "market_watch": "trade",
-    "team": "team", "team_goal": "team_goal", "news": "news", "research": "research", "patrol": "patrol", "lighten": "lighten", "crew": "crew", "fool": "fool", "profile": "profile",
+    "team": "team", "team_goal": "team_goal", "news": "news", "research": "research", "patrol": "patrol", "lighten": "lighten", "crew": "crew", "fool": "fool", "profile": "profile", "navy": "navy",
 }
 
 
@@ -383,6 +383,8 @@ def plan_wake(
         activities = [a for a in activities if a not in skip] or activities
     if persona.knobs.get("crew"):
         activities = ["crew"] * budget + [a for a in activities if a not in {"explore", "gather", "build", "trade"}]  # a hand's wake is the pipeline, step after step
+    if persona.knobs.get("navy"):
+        activities = ["navy"] * budget + [a for a in activities if a not in {"explore", "gather", "build"}]  # the Navy's wake is the chart and its works
     activities = ["news", "team", "team_goal", "research", "crew", "fool", "profile", *activities]
     wanted = [LABEL_ACTIVITY[label] for label in prefer if label in LABEL_ACTIVITY]
     if wanted:
@@ -405,6 +407,8 @@ def plan_wake(
             step = None if any(a.get("action") in {"build", "give", "take"} for a in actions) else _plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, budget - len(actions), collective_names, names, teammates, cast=cast)
         elif activity == "fool":
             step = _plan_fool(persona, state, observe, environment)
+        elif activity == "navy":
+            step = None if any(a.get("action") == "build" for a in actions) else _plan_navy(persona, state, observe, view, inventory, here, budget - len(actions))
         elif activity == "profile":
             step = _plan_model_note(persona, observe, state)
         elif activity == "lighten":
@@ -835,6 +839,19 @@ def _plan_work(
                 inventory[a.get("kind", "wood")] = inventory.get(a.get("kind", "wood"), 0) + 5
         if any(a.get("action") in {"build", "give", "take"} for a in step[0]):
             break  # the view does not yet show what this step changed: one build, hand-off or draw per wake, the rest next time
+    # 0.28 the Navy (owner, 2026-10-26): chart the coast, carry wood, run its piers and causeways over the shelf
+    while persona.knobs.get("navy") and "navy" not in skip and len(actions) < cap:
+        step = _plan_navy(persona, state, observe, view, inventory, here, cap - len(actions))
+        if step is not None and moved() and _walks_back(step[0], here, position):
+            break  # no walking back the way the wake came
+        if not fits(step):
+            break
+        approach = approach or "navy"
+        for a in step[0]:
+            if a.get("action") == "gather":
+                inventory[str(a.get("kind") or "wood")] = inventory.get(str(a.get("kind") or "wood"), 0) + 5
+        if any(a.get("action") == "build" for a in step[0]):
+            break  # the view does not show the new bridge yet: one build a wake
     # 0.3 a pack heavy with berries makes room for materials
     if fits_as("lighten", _plan_lighten(inventory, energy)):
         approach = approach or "lighten"
@@ -1626,6 +1643,18 @@ def _plan_news(persona: Persona, state: PersonaState, observe: dict[str, Any], e
     for key, _ in news:
         _mark(flags, "news", key, tick)
     return [{"action": "say", "text": line}], f"the feature watch found {len(news)} change(s) in the game's surface: announce them once", "news"
+
+
+def _plan_navy(persona: Persona, state: PersonaState, observe: dict[str, Any], view: WorldView, inventory: dict[str, int], position: tuple[int, int], room: int) -> tuple[list[dict[str, Any]], str, str] | None:
+    """The Navy's rules step (``hglab.navy``): its model sees it as the suggestion, and shifts past the budget run on it."""
+    if not persona.knobs.get("navy") or not view.full_map:
+        return None
+    from hglab import navy
+    from hglab.terrain3d import _ground
+
+    rows = list(view.full_map)
+    ground = _ground(len(rows[0]), len(rows), "".join(rows))
+    return navy.plan_step(persona, state, observe, view, inventory, position, room, ground=ground)
 
 
 def _plan_fool(persona: Persona, state: PersonaState, observe: dict[str, Any], environment: dict[str, Any] | None) -> tuple[list[dict[str, Any]], str, str] | None:

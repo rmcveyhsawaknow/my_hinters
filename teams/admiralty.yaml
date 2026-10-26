@@ -1,0 +1,11 @@
+slug: admiralty
+name: The Admiralty
+aim: Chart the sea round the island and bridge its shallows for everyone who walks
+  it.
+members:
+- navy
+home: null
+territory: null
+social_budget:
+  says_per_hour: 3
+links: []

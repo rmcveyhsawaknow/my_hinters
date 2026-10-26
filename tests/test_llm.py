@@ -49,6 +49,6 @@ def test_fudgewright_alone_runs_its_character_wakes_on_opus(monkeypatch):
     assert selected == {"provider": "anthropic", "model": "claude-opus-5-5", "effort": "medium"}
     personas = load_personas(ROOT)
     on_opus = sorted(s for s, p in personas.items() if p.knobs.get("model_route") == "tick_opus")
-    assert on_opus == ["wonka"]  # the riddle hunts and the honesty audits are the composition work; nobody else pays Opus prices
+    assert on_opus == ["navy", "wonka"]  # Fudgewright's riddle hunts and audits, and the Navy by the owner's instruction (2026-10-26) within its own daily allowance
     prices = yaml.safe_load((ROOT / "config/budget.yaml").read_text(encoding="utf-8"))["pricing_usd_per_mtok"]
     assert prices["claude-opus-5-5"]["input"] == 4.0 and prices["claude-opus-5-5"]["output"] == 20.0  # the spend ledger prices Opus calls

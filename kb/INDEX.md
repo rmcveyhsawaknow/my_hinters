@@ -37,6 +37,7 @@ North Star: [read first](NORTH_STAR.md)
 - **goal** [G-20261023-office-reaper-fiber-and-berries-from-the-holdings](goals/G-20261023-office-reaper-fiber-and-berries-from-the-holdings.md) — Sheafwell: fiber and berries from the holdings
 - **goal** [G-20261023-office-steward-depots-on-the-holdings](goals/G-20261023-office-steward-depots-on-the-holdings.md) — Lintelstave: depots on the holdings
 - **goal** [G-20261023-town-fool-first-aim](goals/G-20261023-town-fool-first-aim.md) — Nodkin: Look at the public record once an hour and say the plain big
+- **goal** [G-20261026-navy-chart-the-coast-and-bridge-the-shelf](goals/G-20261026-navy-chart-the-coast-and-bridge-the-shelf.md) — Fathomark: chart the coast and bridge the shelf
 - **hypothesis** [H-20261017-bucket-stocks](hypotheses/H-20261017-bucket-stocks.md) — A stocked storehouse keeps teammates above the energy floor
 - **hypothesis** [H-20261017-bucket-thanks](hypotheses/H-20261017-bucket-thanks.md) — Specific thank-you lines earn replies
 - **hypothesis** [H-20261017-item-conservation](hypotheses/H-20261017-item-conservation.md) — Item conservation holds in the public event log
@@ -72,6 +73,8 @@ North Star: [read first](NORTH_STAR.md)
 - **hypothesis** [H-20261023-office-reaper-berries-keep-hands-working](hypotheses/H-20261023-office-reaper-berries-keep-hands-working.md) — A stocked berry store keeps the hands working
 - **hypothesis** [H-20261023-office-steward-depots-pay-from-stores](hypotheses/H-20261023-office-steward-depots-pay-from-stores.md) — Depots are paid from the field, not the vault
 - **hypothesis** [H-20261023-town-fool-plain-counts-draw-replies](hypotheses/H-20261023-town-fool-plain-counts-draw-replies.md) — Plain counts draw replies
+- **hypothesis** [H-20261026-navy-causeway-crossed](hypotheses/H-20261026-navy-causeway-crossed.md) — Fathomark: the lake causeway by the spawn is crossed by other residents
+- **hypothesis** [H-20261026-navy-opus-every-wake](hypotheses/H-20261026-navy-opus-every-wake.md) — Fathomark: a model that reasons over the chart every wake builds more per wake than the chart's rules alone
 - **idea** [I-20261017-analogy](ideas/I-20261017-analogy.md) — Treat shared infrastructure as a public-goods game
 - **idea** [I-20261017-feature-blueprint-catalogue-6628](ideas/I-20261017-feature-blueprint-catalogue-6628.md) — 9 things can be built: sign (wood 1), road (stone 1), wall (stone 2), bridge (wo
 - **idea** [I-20261017-inversion](ideas/I-20261017-inversion.md) — Invert resource scarcity into routes
