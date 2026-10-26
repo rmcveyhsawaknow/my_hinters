@@ -17,7 +17,8 @@
           "kind": {"enum": ["bug", "feature"]},
           "motto": {"type": "string", "minLength": 10, "maxLength": 100},
           "founder": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,30}$", "description": "Persona slug whose hat founds the open faction"},
-          "status": {"enum": ["open", "closed"], "description": "closed: its founder leaves the faction (closing it when the founder is its last member); no invitations, no calls, never founded again"}
+          "status": {"enum": ["open", "closed"], "description": "closed: its founder leaves the faction (closing it when the founder is its last member); no invitations, no calls, never founded again"},
+          "faction": {"type": "boolean", "description": "false: the theme has no faction of its own (its founder only sponsors it); its votes are public lines naming it"}
         }
       }
     },

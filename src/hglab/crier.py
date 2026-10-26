@@ -29,6 +29,7 @@ INVITE_LIMIT = 2  # invitations per round: a faction_invited event each, never t
 CALL_SPACING_TICKS = 300  # one call per shift hour; the character wake may add its own line
 OPEN_GOALS_CAP = 2
 ENDORSEMENT_WINDOW_TICKS = 8640
+ROTATE_TICKS = 4320  # an unclaimed goal that has stood half a day gives its slot to a request waiting for its first posting
 OPENERS = ("Hear this,", "News from the glass,", "Proclamation for", "Attention,")
 
 
@@ -62,7 +63,7 @@ def check_ledger(ledger: dict[str, Any], personas: dict[str, Persona]) -> list[s
         founder = personas.get(theme["founder"])
         if founder is None:
             problems.append(f"theme {theme['name']}: founder {theme['founder']} is not a persona")
-        elif "found_faction" not in allowed_for("+".join(founder.roles)):
+        elif theme.get("faction", True) and "found_faction" not in allowed_for("+".join(founder.roles)):
             problems.append(f"theme {theme['name']}: {founder.slug} wears no hat that may found a faction")
     return problems
 
@@ -72,7 +73,7 @@ def duties(persona: Persona, ledger: dict[str, Any]) -> set[str]:
     out: set[str] = set()
     if persona.slug == ledger["collector"]:
         out.add("collect")
-    if any(t["founder"] == persona.slug for t in ledger["themes"]):
+    if any(t["founder"] == persona.slug and t.get("faction", True) for t in ledger["themes"]):
         out.add("found")
     return out
 
@@ -103,7 +104,7 @@ def board(
         })
         themes.append({
             "name": theme["name"], "kind": theme["kind"], "founder": theme["founder"], "founded": faction is not None,
-            "status": str(theme.get("status") or "open"),
+            "status": str(theme.get("status") or "open"), "faction": bool(theme.get("faction", True)),
             "faction_id": faction.get("id") if faction else None, "members": members, "endorsers": endorsers,
             "votes": members + len(endorsers),
         })
@@ -112,7 +113,7 @@ def board(
         goal = mine.get(request["title"])
         requests.append({
             "id": request["id"], "kind": request["kind"], "theme": request["theme"], "title": request["title"],
-            "ledger_status": request["status"], "goal_id": goal.get("id") if goal else None,
+            "ledger_status": request["status"], "goal_id": goal.get("id") if goal else None, "created": goal.get("created_tick") if goal else None,
             "goal_status": goal.get("status") if goal else None, "claimant": goal.get("claimant") if goal else None,
         })
     return {"themes": themes, "requests": requests}
@@ -122,7 +123,7 @@ def render_board(b: dict[str, Any]) -> str:
     """The board as plain lines (for prompts, logs and humans)."""
     lines = []
     for t in b["themes"]:
-        where = f"open faction #{t['faction_id']}, {t['members']} member(s)" if t["founded"] else "faction not founded yet"
+        where = f"open faction #{t['faction_id']}, {t['members']} member(s)" if t["founded"] else ("no faction of its own, votes are lines naming it" if not t.get("faction", True) else "faction not founded yet")
         closed = " [closed]" if t.get("status") == "closed" else ""
         lines.append(f"- theme {t['name']} ({t['kind']}){closed}: {where}; {len(t['endorsers'])} public endorsement(s); {t['votes']} vote(s)")
     for r in b["requests"]:
@@ -138,7 +139,10 @@ def call_line(persona: Persona, b: dict[str, Any], names: list[str], tick: int) 
     """The collector's public call: who is asked, the standing, how to vote, which goal pays."""
     opener = OPENERS[(tick // 360) % len(OPENERS)]
     who = ", ".join(names) if names else "every builder"
-    standing = "; ".join(f"{t['name']} {t['votes']} vote{'s' if t['votes'] != 1 else ''}" for t in b["themes"] if t.get("status", "open") == "open")
+    standing = "; ".join(
+        f"{t['name']} {t['votes']} vote{'s' if t['votes'] != 1 else ''}" + ("" if t.get("faction", True) else " (say its name)")
+        for t in b["themes"] if t.get("status", "open") == "open"
+    )
     open_goals = [r for r in b["requests"] if r["goal_id"] is not None and r["goal_status"] == "open"]
     goal_part = f" Claim goal #{open_goals[0]['goal_id']} and speak your feedback to earn its reward." if open_goals else ""
     limit = int(persona.voice.get("max_say_chars", 280))
@@ -254,7 +258,7 @@ def plan_round(
     invites, invite_reasons, invited_now = plan_invites(persona, b, my_theme, active_names, factions_of or {}, state, public_events=public_events, reserved=reserved)
     if "found" in mine and not in_faction:
         for theme, entry in zip(ledger["themes"], b["themes"], strict=True):
-            if theme["founder"] != persona.slug or entry["founded"] or entry.get("status") == "closed":
+            if theme["founder"] != persona.slug or entry["founded"] or entry.get("status") == "closed" or not theme.get("faction", True):
                 continue
             if energy - 10 < reserve:
                 reasons.append(f"theme {theme['name']}: founding costs 10 energy; not above the reserve yet")
@@ -281,11 +285,23 @@ def plan_round(
             for item, qty in reward.items():
                 inventory[item] = inventory.get(item, 0) + int(qty or 0)
     room = max(0, OPEN_GOALS_CAP - len(live))
-    for request, entry in zip(ledger["requests"], b["requests"], strict=True):
+    # every open request takes its turn: the least recently posted first (never posted before all), and a request
+    # waiting for its first posting takes the slot of an unclaimed goal that has stood half a day (2026-10-26: the
+    # owner's third request would otherwise wait behind two that are reposted whenever they expire)
+    turns = {str(k): int(v) for k, v in (state.get("posted") or {}).items() if isinstance(v, int)}
+    pairs = [(r, e) for r, e in zip(ledger["requests"], b["requests"], strict=True) if r["status"] == "open" and e["goal_id"] is None]
+    pairs.sort(key=lambda pair: turns.get(pair[0]["id"], -(10**9)))
+    update: dict[str, Any] = {}
+    if room <= 0 and pairs and pairs[0][0]["id"] not in turns and len(actions) < 2:
+        stood = [e for e in b["requests"] if e.get("goal_status") == "open" and e.get("created") is not None and tick - int(e["created"]) >= ROTATE_TICKS]
+        if stood:
+            oldest = min(stood, key=lambda e: int(e["created"]))
+            actions.append({"action": "cancel_goal", "goal_id": int(oldest["goal_id"])})
+            reasons.append(f"goal #{oldest['goal_id']} ({oldest['id']}) has stood half a day unclaimed: it gives its slot to {pairs[0][0]['id']}, waiting for its first posting")
+            room += 1
+    for request, entry in pairs:
         if room <= 0:
             break
-        if request["status"] != "open" or entry["goal_id"] is not None:
-            continue
         if any(inventory.get(item, 0) < qty for item, qty in request["reward"].items()):
             reasons.append(f"{request['id']}: the reward {request['reward']} is not in the pack yet")
             continue
@@ -301,6 +317,7 @@ def plan_round(
             inventory[item] = inventory.get(item, 0) - qty
         room -= 1
         energy -= 2
+        update["posted"] = {**turns, **update.get("posted", {}), request["id"]: tick}
     inbox_from = {str(w.get("from")) for w in (observe.get("inbox") or []) if isinstance(w, dict)}
     spoke = {
         str(e.get("actor"))
@@ -312,7 +329,6 @@ def plan_round(
         if goal.get("status") == "claimed" and claimant and (str(claimant) in inbox_from or str(claimant) in spoke):
             actions.append({"action": "confirm_goal", "goal_id": int(goal["id"])})
             reasons.append(f"{claimant} answered on goal #{goal['id']}: confirming pays the feedback bounty")
-    update: dict[str, Any] = {}
     last_call = int(state.get("last_call_tick", -10**9) or -10**9)
     pool = [n for n in active_names if n != persona.name]
     call_due = bool(pool and b["themes"] and tick - last_call >= CALL_SPACING_TICKS)
@@ -334,6 +350,6 @@ def plan_round(
 
 
 __all__ = [
-    "ASK_LIMIT", "CALL_SPACING_TICKS", "INVITE_LIMIT", "STATE_KEY", "board", "call_line", "check_ledger", "duties",
+    "ASK_LIMIT", "CALL_SPACING_TICKS", "INVITE_LIMIT", "ROTATE_TICKS", "STATE_KEY", "board", "call_line", "check_ledger", "duties",
     "faction_name", "load_ledger", "plan_invites", "plan_round", "render_board",
 ]
