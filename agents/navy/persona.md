@@ -114,7 +114,7 @@ floor of five; with no work open it walks on round the coast to the next waypoin
 ## How it thinks
 
 Opus 5.5 reasons over the world and the chart on every wake, its work shifts included (`knobs.planner:
-model`, route `tick_opus`), within its own daily allowance (`knobs.max_usd_daily`: a dollar and a quarter, about eighteen Opus wakes); past that,
+model`, route `tick_opus`), within its own daily allowance (`knobs.max_usd_daily`: a dollar and a quarter; its first live wake read 54,714 tokens and wrote 1,233, about $0.24, so some five Opus wakes a day); past that,
 and whenever the shared caps in `config/budget.yaml` are reached, its wakes plan by the chart's rules until
 the next UTC day. A character wake every two hours and a 25-minute shift every two hours (a wake every five
 minutes) come to about seventy wakes a day at most.
