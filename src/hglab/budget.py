@@ -26,6 +26,7 @@ class BudgetStatus:
     daily_cap_usd: float
     calls: int
     by_model: dict[str, float]
+    agent_today_usd: float = 0.0  # the named identity's spend today (``status(..., agent=)``)
 
     @property
     def over(self) -> bool:
@@ -90,12 +91,12 @@ def usage_records(root: Path) -> list[dict[str, Any]]:
     return list(records.values())
 
 
-def status(root: Path, now: datetime | None = None, records: list[dict[str, Any]] | None = None) -> BudgetStatus:
+def status(root: Path, now: datetime | None = None, records: list[dict[str, Any]] | None = None, agent: str | None = None) -> BudgetStatus:
     now = now or datetime.now(UTC)
     budget = load_budget(root)
     pricing = budget.get("pricing_usd_per_mtok", {})
     caps = budget.get("caps", {})
-    month_usd = today_usd = 0.0
+    month_usd = today_usd = agent_today = 0.0
     calls = 0
     by_model: dict[str, float] = {}
     for record in records if records is not None else usage_records(root):
@@ -112,10 +113,12 @@ def status(root: Path, now: datetime | None = None, records: list[dict[str, Any]
         by_model[model] = by_model.get(model, 0.0) + cost
         if created.date() == now.date():
             today_usd += cost
+            if agent and str(record.get("agent") or "") == agent:
+                agent_today += cost
     return BudgetStatus(
         month_usd=round(month_usd, 4), today_usd=round(today_usd, 4),
         monthly_cap_usd=float(caps.get("monthly_usd", 100)), daily_cap_usd=float(caps.get("daily_usd", 6)),
-        calls=calls, by_model={k: round(v, 4) for k, v in by_model.items()},
+        calls=calls, by_model={k: round(v, 4) for k, v in by_model.items()}, agent_today_usd=round(agent_today, 4),
     )
 
 
@@ -133,7 +136,13 @@ def projected_month(root: Path) -> dict[str, float]:
         route = persona.knobs.get("model_route", "tick")
         model = models.get(route, models["tick"])["model"]
         wakes = cron_fires_per_day(persona.knobs["cadence"]["cron"]) * 30 * (1 - float(persona.knobs["rest_probability"]))
+        work = persona.knobs.get("work") or {}
+        if str(persona.knobs.get("planner") or "") == "model" and work:
+            # the model plans every wake of its shifts too (the Navy): each shift is minutes * 60 / interval wakes
+            wakes += cron_fires_per_day(work["cron"]) * 30 * max(1, int(work.get("minutes", 25)) * 60 // int(work.get("interval_seconds", 300) or 300))
         cost = wakes * call_cost({"model": model, "input_tokens": estimate["tick_input_tokens"], "output_tokens": estimate["tick_output_tokens"]}, pricing)
+        if persona.knobs.get("max_usd_daily"):
+            cost = min(cost, float(persona.knobs["max_usd_daily"]) * 30)  # its own daily allowance bounds it
         totals[f"ticks:{persona.slug}:{model}"] = round(cost, 2)
     judge_model = models["review"]["model"]
     totals[f"judge:{judge_model}"] = round(7 * 30 * call_cost({"model": judge_model, "input_tokens": estimate["judge_input_tokens"], "output_tokens": estimate["judge_output_tokens"]}, pricing), 2)

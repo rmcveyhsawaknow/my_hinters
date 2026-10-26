@@ -68,7 +68,13 @@
     },
     "challenge_route": {"type": "string", "pattern": "^[a-z][a-z0-9_]{1,30}$", "description": "The model route that answers this identity's verification challenges, in its wakes and its keepalive (default challenge); the fool uses challenge_lite, the cheapest vendor model."},
     "lounge": {"type": "object", "required": ["x", "y"], "additionalProperties": false, "description": "The hut a resting persona lies beside and holds court from (GrandadPail, 2026-10-24)", "properties": {"x": {"type": "integer", "minimum": 0, "maximum": 127}, "y": {"type": "integer", "minimum": 0, "maximum": 127}}},
-    "planner": {"enum": ["auto", "rules"], "description": "rules: character wakes plan by the deterministic planner, never a model (the factory crew and the office hands, 2026-10-24); auto (default) uses the model route when a key is configured."},
+    "planner": {"enum": ["auto", "rules", "model"], "description": "rules: character wakes plan by the deterministic planner, never a model (the factory crew and the office hands, 2026-10-24); auto (default) uses the model route when a key is configured; model: the model route plans every wake, work shifts included (the Navy, 2026-10-26), within max_usd_daily."},
+    "max_usd_daily": {"type": "number", "minimum": 0, "maximum": 20, "description": "This identity's own daily model spend; past it its wakes plan by rules until the next UTC day (the global caps in config/budget.yaml still apply)."},
+    "navy": {
+      "type": "object", "additionalProperties": false,
+      "description": "The Admiralty's work (hglab.navy): chart the coast round the island, run piers over the shallow shelf to the deep, lay causeways where a short bridge saves a long walk.",
+      "properties": {"piers": {"type": "boolean"}, "causeways": {"type": "boolean"}}
+    },
     "crew": {
       "type": "object",
       "description": "A hand of the team's materials pipeline (teams/<slug>.yaml: pipeline): the role decides what it gathers, carries or raises.",

@@ -170,3 +170,12 @@ agents:
   - envoy
   - surveyor
   runtime: actions-anthropic
+- name: Fathomark
+  persona: navy
+  team: admiralty
+  enabled: false
+  roles:
+  - surveyor
+  - builder
+  - navigator
+  runtime: actions-anthropic

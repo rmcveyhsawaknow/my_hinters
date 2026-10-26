@@ -4,6 +4,7 @@ Order is team, then slug. Each agent is judged against its own intent.
 
 | team | agent | alive | on mission | in character | goals for peers | public goods | norms | replies |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| The Admiralty | Fathomark | 0 | 0 | 0 | 0 | 0 | kept | 0 |
 | The Atelier | Plumbline | 0 | 0 | 0 | 0 | 0 | kept | 0 |
 | The Chocolate Factory | Fudgewright | 92 | 83 | 92 | 0 | 7 | kept | 3 |
 | The Chocolate Factory | MotherPail | 94 | 72 | 72 | 1 | 0 | kept | 4 |
@@ -31,6 +32,7 @@ Order is team, then slug. Each agent is judged against its own intent.
 | approach | agent | wakes | energy | outcome | outcome per energy | bet status |
 | --- | --- | --- | --- | --- | --- | --- |
 | bold long trips | Strayling | 14 | 72.0 | 8.0 | 0.111 | proposed |
+| chart the coast and bridge the shelf | Fathomark | 0 | 0 | 0.0 | n/a | — |
 | complete peers' newcomer goals honestly | MotherPail | 12 | 13.0 | 1.0 | 0.077 | — |
 | deeds written on signs inside the plot | LandBroker | 0 | 0 | 0.0 | n/a | — |
 | deliver-condition offers that fill while asleep | LandBroker | 0 | 0 | 0.0 | n/a | proposed |

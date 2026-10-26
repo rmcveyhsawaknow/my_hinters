@@ -1,0 +1,160 @@
+{
+ "agent": "navy",
+ "name": "Fathomark",
+ "team": "admiralty",
+ "headline": "Charts the sea and bridges the shelf",
+ "metric_version": 1,
+ "tick": 65760,
+ "day": 182,
+ "date": "2026-10-17",
+ "window_ticks": 60480,
+ "events_considered": 401,
+ "runs_considered": 0,
+ "alive": {
+  "score": 0,
+  "detail": "no wakes recorded yet; the first scheduled wake is pending",
+  "parts": {
+   "completed": 0,
+   "scheduled": 0,
+   "lapsed": 0,
+   "banned": false,
+   "rate_limited": 0,
+   "failed_actions": 0,
+   "energy_zero": 0,
+   "spam_blocked": 0
+  }
+ },
+ "on_mission": {
+  "score": 0,
+  "detail": "0/20 bridges · 0/400 tiles · 0/6 signed · 0 replies",
+  "rows": [
+   {
+    "id": "bridges",
+    "label": "bridges built over the shallows",
+    "value": 0.0,
+    "target": 20,
+    "weight": 0.35,
+    "progress": 0.0,
+    "shown": "0/20 bridges",
+    "measure": "events.structures_built"
+   },
+   {
+    "id": "coast",
+    "label": "coast tiles walked",
+    "value": 0.0,
+    "target": 400,
+    "weight": 0.25,
+    "progress": 0.0,
+    "shown": "0/400 tiles",
+    "measure": "events.distinct_tiles"
+   },
+   {
+    "id": "signs",
+    "label": "finished works signed",
+    "value": 0.0,
+    "target": 6,
+    "weight": 0.15,
+    "progress": 0.0,
+    "shown": "0/6 signed",
+    "measure": "events.structures_built"
+   },
+   {
+    "id": "reach",
+    "label": "furthest from home",
+    "value": null,
+    "target": 50,
+    "weight": 0.15,
+    "progress": null,
+    "shown": "n/a",
+    "measure": "events.max_distance_from_home"
+   },
+   {
+    "id": "replies",
+    "label": "replies received",
+    "value": 0.0,
+    "target": 3,
+    "weight": 0.1,
+    "progress": 0.0,
+    "shown": "0 replies",
+    "measure": "events.replies_received"
+   }
+  ]
+ },
+ "in_character": {
+  "score": 0,
+  "detail": "0/0 signatures in range; not judged (no model key)",
+  "signatures": [
+   {
+    "id": "rest_share",
+    "label": "share of wakes resting",
+    "value": null,
+    "range": [
+     0.0,
+     0.2
+    ],
+    "inside": null,
+    "measure": "runs.rest_share"
+   },
+   {
+    "id": "energy_mix",
+    "label": "intended vs actual energy mix",
+    "value": null,
+    "range": [
+     0.5,
+     1.0
+    ],
+    "inside": null,
+    "measure": "runs.energy_mix_match"
+   }
+  ],
+  "judge": [],
+  "judge_meta": {}
+ },
+ "team_pull": {
+  "detail": "no links yet",
+  "sent": [],
+  "received": [],
+  "effects": {}
+ },
+ "community": {
+  "goals_completed_for_peers": 0,
+  "public_goods_built": 0,
+  "norms_kept": true,
+  "norm_breaches": [],
+  "replies_received": 0
+ },
+ "approaches": {
+  "rows": [
+   {
+    "id": "chart_and_bridge",
+    "label": "chart the coast and bridge the shelf",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 0.0,
+    "per_energy": null,
+    "hypothesis": null,
+    "bet_status": null,
+    "bet_title": null
+   }
+  ],
+  "working": "nothing measurable yet",
+  "not_working": "nothing clearly failing",
+  "next_bet": "try chart the coast and bridge the shelf at least once this week; it has a bet but no wakes"
+ },
+ "trend": {
+  "alive": "▁",
+  "on_mission": "▁",
+  "in_character": "▁"
+ },
+ "history": [
+  {
+   "date": "2026-10-17",
+   "metric_version": 1,
+   "alive": 0,
+   "on_mission": 0,
+   "in_character": 0,
+   "tick": 65760
+  }
+ ],
+ "signals": {}
+}

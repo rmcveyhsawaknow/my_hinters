@@ -1063,6 +1063,8 @@ def _llm_plan(
             guidance["your_faction"] = (observe.get("you") or {}).get("faction")
         if environment.get("land_office_text"):
             guidance["land_office"] = environment["land_office_text"]
+        if environment.get("sea_chart_text"):
+            guidance["sea_chart"] = environment["sea_chart_text"]
         if environment.get("discoveries"):
             guidance["discoveries_since_last_wake"] = environment["discoveries"]
     try:

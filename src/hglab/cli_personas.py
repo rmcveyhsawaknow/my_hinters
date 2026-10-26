@@ -249,9 +249,14 @@ def _persona_tick(
     if planner == "llm":
         from hglab.budget import status as budget_status
 
-        state = budget_status(root)
+        state = budget_status(root, agent=persona.name)
+        own = float(persona.knobs.get("max_usd_daily") or 0)
         if state.over:
             budget_hold = state.reason
+            planner = "heuristic"
+            typer.echo(f"budget hold: {budget_hold}; using the deterministic planner this wake")
+        elif own and state.agent_today_usd >= own:
+            budget_hold = f"{persona.name}'s own daily cap reached (${state.agent_today_usd:.2f} of ${own:.2f})"
             planner = "heuristic"
             typer.echo(f"budget hold: {budget_hold}; using the deterministic planner this wake")
     incoming: dict[str, dict[str, Any]] = {}
@@ -459,8 +464,17 @@ def build_environment(
     live: bool,
     public_world: dict[str, Any] | None = None,
 ) -> dict[str, Any] | None:
-    """World digest from the public feed (plus open goals and factions when live)."""
+    """World digest from the public feed (plus open goals and factions when live, and the sea chart for the Navy)."""
     from hglab.environment import digest
+
+    sea_chart = None
+    if persona.knobs.get("navy") and public_world and public_world.get("terrain"):
+        from hglab import navy
+        from hglab.terrain3d import ground_of
+
+        me = next((a for a in public_world.get("agents") or [] if isinstance(a, dict) and a.get("name") == persona.name), None)
+        here = (int(me["x"]), int(me["y"])) if me and isinstance(me.get("x"), int) and isinstance(me.get("y"), int) else None
+        sea_chart = navy.brief(public_world, here, None, ground_of(public_world))
 
     if not inputs["events"]:
         return None
@@ -529,6 +543,8 @@ def build_environment(
             result["features_now"] = snapshot(HinterglassClient()) if live else _fixture_feature_snapshot(root, inputs)
         except (HinterglassError, OSError, ValueError) as exc:
             result["features_error"] = str(exc)[:120]
+    if sea_chart:
+        result["sea_chart_text"] = sea_chart
     return result
 
 
@@ -566,7 +582,10 @@ def effective_planner(persona: Persona, planner: str, work: bool) -> str:
     work, and their model plans were mostly discarded (the model kept proposing says and goal claims the
     builder hat forbids) or overrode the pipeline with stale reasoning.
     """
-    if work or str(persona.knobs.get("planner") or "auto") == "rules":
+    mode = str(persona.knobs.get("planner") or "auto")
+    if mode == "model":
+        return "auto"  # the model plans every wake, shifts included (the Navy, 2026-10-26); without a key, rules
+    if work or mode == "rules":
         return "heuristic"
     return planner
 
@@ -1351,7 +1370,7 @@ def scaffold_agent(root: Path, data: dict[str, Any]) -> list[Path]:
         knobs["model_route"] = str(data["model_route"])
     if data.get("work"):
         knobs["work"] = dict(data["work"])
-    for key in ("crew", "house", "patrol", "stake_lots", "reclaim", "stance", "welcome", "gatekeeper", "challenge_route", "planner", "supply", "lounge"):
+    for key in ("crew", "house", "patrol", "stake_lots", "reclaim", "stance", "welcome", "gatekeeper", "challenge_route", "planner", "supply", "lounge", "navy", "max_usd_daily"):
         if data.get(key) is not None:
             knobs[key] = data[key]  # the special knobs the schema knows, when the interview names them
     traits = data.get("traits") or [{"name": "steady", "shows_up_as": "Keeps to the plan and reports plainly."}] * 3
@@ -2030,6 +2049,9 @@ def register_persona_commands(app: typer.Typer) -> None:
     from hglab.cli_factory import register as register_factory
 
     register_factory(app)
+    from hglab.cli_navy import register as register_navy
+
+    register_navy(app)
     app.add_typer(world_app, name="world")
     app.command("pulse")(pulse_command)
     app.command("shift")(tolerate_outage(shift_command))
