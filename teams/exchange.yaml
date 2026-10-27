@@ -32,7 +32,8 @@ pipeline:
     floor: 0
     protect_spawn: 12
     protect_homesteads: true
-    exclude: [I08-NW, I08-NE, I08-SW, I08-SE, J08-NW, J08-NE, J08-SW, J08-SE, I09-NW, I09-NE, I09-SW, I09-SE, J09-NW, J09-NE, J09-SW, J09-SE]  # the Chocolate Factory's four plots, under contract (2026-10-24)
+    exclude: [I08-NW, I08-NE, I08-SW, I08-SE, J08-NW, J08-NE, J08-SW, J08-SE, I09-NW, I09-NE, I09-SW, I09-SE, J09-NW, J09-NE, J09-SW, J09-SE,  # the Chocolate Factory's four plots, under contract (2026-10-24)
+      C07-SE, D07-SW, D07-SE, E07-SW, C08-NE, D08-NW, D08-NE, E08-NW, C08-SE, D08-SW, D08-SE, E08-SW]  # Lower Manhattan's twelve lots, under contract to the Atelier (2026-10-27): never walled, policed or worked
     text: 'Lot {lot}: land office holding ({tags}). Not for sale: its nodes are the
       office''s stock. Walled by the office, a gate open mid-side.'
     walls:  # the owner, 2026-10-25: when every office store is full the hands wall the staked lots with the stone (hglab.walls)

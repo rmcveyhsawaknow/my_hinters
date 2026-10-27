@@ -24,6 +24,7 @@ pipeline:
   range: 16
   stores_max: 10
   blueprint: chocolate-factory  # teams/blueprints/chocolate-factory.yaml (the owner's brief of 2026-10-24)
+  next_blueprint: lower-manhattan  # the owner, 2026-10-27: once every step of the factory is done, the builders and hands take up the Atelier's Lower Manhattan
   builders:
     loompa-mason: [depots, elevator, mill, terrace, lookout, campus-north, campus-east]
     wonka: [candy, tubes-candy, campus-gate, campus-west, elevator, depots, lookout]

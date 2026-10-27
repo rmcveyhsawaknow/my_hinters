@@ -1,0 +1,265 @@
+# Lower Manhattan, as blocks (the owner's brief of 2026-10-27): a replica of the tip of the island on a flat stretch
+# of the map away from the other major works, built on land bought from the land office, segment by segment.
+#
+# The site: the south-west shore, x 25-44, y 75-89, twelve lots (C07-SE, D07-SW, D07-SE, E07-SW, C08-NE, D08-NW,
+# D08-NE, E08-NW, C08-SE, D08-SW, D08-SE, E08-SW), all staked by the office and for sale on 2026-10-27, with no
+# other resident's holdings. Chosen by a survey of every block of lots (the public 3D viewer's ground, ported in
+# hglab.terrain3d; structures in and around; spawn and homesteads; nodes): grass, no stone or ore node, the open sea
+# to the west and an inlet with sand to the south, so the Battery sits at the tip as it should. The ground is level
+# in the south (0.1-0.3) and rises gently in the north-west (to 0.8): those sections stand on surveyed plinths
+# (`hglab factory level --name lower-manhattan --write`).
+#
+# North is up, the Hudson to the west. Broadway runs north-south at x 34 from the Battery to the World Trade Center;
+# Wall Street runs east from it at y 83; Liberty Street at y 80; West Street along the Hudson at x 28. Heights are
+# the world's: sixteen levels at most, so the skyline is a scale model, its proportions kept (One World Trade Center
+# the tallest, a mast to the ceiling). Every box is at most 160 cells, so a pack with its berries aside pays for any
+# step; no step needs a store beside it.
+#
+# Land (the owner: "each building and segment ... working with the land office to properly acquire land"): a step
+# is built only when every lot under it is held by the client by the land office's deed or sale (`land`); the client,
+# the Atelier's Plumbline, buys the four segments in config/plots.yaml (site_requests nyc-*) one after the other.
+# Builders far from the site carry the next step's material from their faction's stores and walk there (`commute`).
+name: Lower Manhattan
+title: the Lower Manhattan blueprint  # how a builder's reasons name it
+team: atelier
+plots: [C07, D07, E07, C08, D08, E08]
+version: 1
+foundation_block: [stone, grey]
+commute: true
+land:
+  client: Plumbline
+  registrar: LandBroker
+  lots: [C07-SE, D07-SW, D07-SE, E07-SW, C08-NE, D08-NW, D08-NE, E08-NW, C08-SE, D08-SW, D08-SE, E08-SW]
+story: >-
+  The Atelier's study of a real skyline at the scale the glass allows: the Financial District around Wall Street,
+  the Stock Exchange's columns facing Federal Hall, Trinity's spire at the head of Wall Street on Broadway, the
+  World Trade Center with its two memorial pools and the white Oculus, the Woolworth Building's green crown, the
+  towers of Battery Park City along the Hudson, and at the tip Battery Park with Castle Clinton's round walls, the
+  ferry terminal and the bronze bull at the foot of Broadway.
+sections:
+  # ---- Wall Street (segment nyc-wall-street: D08-NE, E08-NW)
+  - id: federal-hall
+    name: Federal Hall
+    tiles: [35, 81, 36, 82]  # off the lot's claim sign at (37,82)
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: temple
+    facing: south  # onto Wall Street
+    levels: 6
+    walls: [stone, white]
+    columns: [stone, white]
+    podium: [stone, grey]
+    roof: [stone, white]
+  - id: forty-wall
+    name: 40 Wall Street
+    tiles: [40, 81, 41, 82]
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: skyscraper
+    doors: [south]
+    stages:
+      - {levels: 7, courses: [tan], window_every: 2, window_color: cyan}
+      - {levels: 3, inset: 1, courses: [tan], window_every: 2, window_color: cyan}
+    roof: [stone, tan]
+    crown: {style: pyramid, block: [stone, teal], mast: true, mast_levels: 2}  # the copper pyramid, gone green
+  - id: seventy-pine
+    name: 70 Pine Street
+    tiles: [43, 81, 44, 82]
+    foundation: [[1, 0], [1, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: skyscraper
+    doors: [south]
+    stages:
+      - {levels: 6, courses: [tan, white], window_every: 2, window_color: cyan}
+      - {levels: 4, inset: 1, courses: [white], window_every: 2, window_color: cyan}
+    roof: [stone, white]
+    crown: {style: stepped, block: [stone, white], mast: true, mast_levels: 3}
+  # ---- Wall Street to the Battery (segments nyc-wall-street and nyc-battery)
+  - id: nyse
+    name: The New York Stock Exchange
+    tiles: [36, 84, 38, 85]
+    foundation: [[0, 0, 0], [0, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: temple
+    facing: north  # its columns face Wall Street and Federal Hall
+    levels: 7
+    walls: [stone, white]
+    columns: [stone, white]
+    podium: [stone, grey]
+    roof: [stone, white]
+  - id: twenty-exchange
+    name: 20 Exchange Place
+    tiles: [40, 84, 41, 85]
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: skyscraper
+    doors: [north]
+    stages:
+      - {levels: 8, courses: [grey, tan], window_every: 2, window_color: yellow}
+      - {levels: 3, inset: 1, courses: [tan], window_every: 2, window_color: yellow}
+      - {levels: 1, inset: 1, courses: [tan], window_every: 0}
+    roof: [stone, tan]
+    crown: {style: stepped, block: [stone, tan]}
+  # ---- The Battery (segment nyc-battery: D08-SE, E08-SW, D08-SW, C08-SE)
+  - id: battery-park
+    name: Battery Park
+    tiles: [25, 85, 32, 89]
+    foundation: [[1, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: park
+    hedge: [thatch, green]
+    trees: [[26, 85], [29, 88], [31, 88], [32, 88]]
+    paths: [[30, 85, 30, 89], [28, 86, 32, 86]]
+    path_color: tan
+  - id: castle-clinton
+    name: Castle Clinton
+    tiles: [25, 87, 26, 88]  # on the sand at the water's edge, off the claim sign at (27,87)
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: fort
+    walls: [stone, tan]
+    levels: 3
+    gate: east
+  - id: charging-bull
+    name: The Charging Bull, Bowling Green
+    tiles: [33, 86, 33, 86]
+    foundation: [[0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: statue
+    block: [stone, brown]
+    plinth: grey
+  - id: ferry-terminal
+    name: Whitehall Ferry Terminal
+    tiles: [36, 88, 38, 89]
+    foundation: [[0, 0, 0], [0, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: hall
+    levels: 4
+    doors: [south]
+    door: [wood, white]
+    pillars: [stone, white]
+    courses: [white]
+    window_levels: [1, 2]
+    window_color: cyan
+    roof_slope: [stone, green]
+    roof_cap: [stone, green]
+  - id: seaport
+    name: South Street Seaport
+    tiles: [43, 86, 44, 88]
+    foundation: [[1, 0], [1, 0], [1, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: hall
+    levels: 4
+    doors: [west]
+    door: [wood, brown]
+    pillars: [stone, brown]
+    courses: [red, brown]
+    window_levels: [2]
+    window_color: yellow
+    roof_slope: [stone, grey]
+    roof_cap: [stone, grey]
+  # ---- Trinity and Battery Park City (segment nyc-trinity: D08-NW, C08-NE)
+  - id: trinity-church
+    name: Trinity Church
+    tiles: [32, 83, 33, 84]  # on Broadway at the head of Wall Street (y 83), off the claim sign at (32,82)
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: church
+    levels: 4
+    walls: [stone, brown]
+    window_color: purple
+    roof: [stone, black]
+    tower: {at: east, levels: 10, block: [stone, brown], spire: [stone, black], spire_levels: 5}  # its spire on Broadway, at the head of Wall Street
+  - id: bpc-middle
+    name: Battery Park City, middle tower
+    tiles: [25, 80, 26, 81]
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: skyscraper
+    doors: [east]
+    stages:
+      - {levels: 9, courses: [brown], window_every: 2, window_color: yellow}
+    roof: [stone, brown]
+  - id: bpc-south
+    name: Battery Park City, south tower
+    tiles: [25, 83, 26, 84]
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: skyscraper
+    doors: [east]
+    stages:
+      - {levels: 7, courses: [red], window_every: 2, window_color: yellow}
+      - {levels: 2, inset: 1, courses: [red], window_every: 2, window_color: yellow}
+    roof: [stone, red]
+    crown: {style: stepped, block: [stone, red]}
+  # ---- The World Trade Center and the north (segment nyc-wtc: D07-SW, D07-SE, C07-SE, E07-SW)
+  - id: one-wtc
+    name: One World Trade Center
+    tiles: [30, 75, 31, 76]
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: skyscraper
+    doors: [south]
+    stages:
+      - {levels: 3, courses: [grey], window_every: 0}
+      - {levels: 8, inset: 1, glass: true, window_color: cyan, band: 4}
+      - {levels: 2, inset: 1, glass: true, window_color: blue, band: 2}
+    roof: [stone, white]
+    crown: {style: spire, block: [stone, white]}  # the mast to the ceiling: the tallest on the skyline
+  - id: memorial-north
+    name: The 9/11 Memorial, north pool
+    tiles: [32, 76, 33, 77]
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: pool
+    rim: [stone, black]
+    water: blue
+  - id: memorial-south
+    name: The 9/11 Memorial, south pool
+    tiles: [32, 78, 33, 79]
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: pool
+    rim: [stone, black]
+    water: blue
+  - id: oculus
+    name: The Oculus
+    tiles: [35, 76, 36, 77]  # off the claim sign at (37,77) and the office's road at (37,75-76)
+    foundation: [[0, 0], [0, 1]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: temple
+    facing: east
+    levels: 5
+    walls: [stone, white]
+    columns: [stone, white]
+    podium: [stone, white]
+    roof: [stone, white]
+  - id: seven-wtc
+    name: 7 World Trade Center
+    tiles: [36, 78, 37, 79]
+    foundation: [[0, 0], [0, 1]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: skyscraper
+    doors: [south]
+    stages:
+      - {levels: 12, glass: true, window_color: teal, band: 4}
+    roof: [stone, grey]
+  - id: woolworth
+    name: The Woolworth Building
+    tiles: [41, 75, 42, 76]
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: skyscraper
+    doors: [south]
+    stages:
+      - {levels: 8, courses: [white, tan], window_every: 2, window_color: cyan}
+      - {levels: 3, inset: 1, courses: [white], window_every: 2, window_color: cyan}
+    roof: [stone, white]
+    crown: {style: pyramid, block: [stone, green], mast: true, mast_levels: 2}  # the green crown
+  - id: one-chase
+    name: 28 Liberty Street
+    tiles: [41, 78, 42, 79]
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: skyscraper
+    doors: [south]
+    stages:
+      - {levels: 13, courses: [black], window_every: 2, window_color: white}
+    roof: [stone, black]
+  - id: bpc-north
+    name: Battery Park City, north tower
+    tiles: [25, 77, 26, 78]
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: skyscraper
+    doors: [east]
+    stages:
+      - {levels: 8, courses: [tan], window_every: 2, window_color: yellow}
+      - {levels: 2, inset: 1, courses: [tan], window_every: 2, window_color: yellow}
+    roof: [stone, tan]
+    crown: {style: pyramid, block: [stone, green]}
+streets:
+  - {name: Wall Street, section: streets, tiles: [35, 83, 44, 83], block: [stone, grey]}
+  - {name: Broadway, section: streets, tiles: [34, 75, 34, 89], block: [stone, black]}
+  - {name: Liberty Street (west), section: streets, tiles: [29, 80, 33, 80], block: [stone, black]}
+  - {name: Liberty Street (east), section: streets, tiles: [35, 80, 44, 80], block: [stone, black]}
+  - {name: West Street, section: streets, tiles: [28, 75, 28, 84], block: [stone, black]}
