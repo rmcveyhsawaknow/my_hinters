@@ -41,9 +41,9 @@ knobs:
   - bridge
   - wall
   - road
-  work:
-    cron: 41 */3 * * *
-    minutes: 20
+  work:  # hourly since 2026-10-27: the Lower Manhattan study is a long build, and shifts plan by rules (no model)
+    cron: 41 * * * *
+    minutes: 25
     interval_seconds: 300
   supply:
     team: chocolate-factory

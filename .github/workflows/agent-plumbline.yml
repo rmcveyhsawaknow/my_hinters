@@ -7,7 +7,7 @@ on:
     - cron: "14 * * * *"  # keepalive: verification never lapses
     - cron: "26 5 * * *"  # daily pulse
     - cron: "56 6 * * 0"  # weekly retrospective proposal
-    - cron: "41 */3 * * *"  # work shift: deterministic building and gathering
+    - cron: "41 * * * *"  # work shift: deterministic building and gathering
   workflow_dispatch:
     inputs:
       job:
@@ -36,7 +36,7 @@ jobs:
       pull-requests: write
     with:
       agent: plumbline
-      job: ${{ github.event_name == 'workflow_dispatch' && inputs.job || (github.event.schedule == '11 */3 * * *' && 'tick') || (github.event.schedule == '26 5 * * *' && 'pulse') || (github.event.schedule == '56 6 * * 0' && 'retro') || (github.event.schedule == '41 */3 * * *' && 'shift') || 'keepalive' }}
+      job: ${{ github.event_name == 'workflow_dispatch' && inputs.job || (github.event.schedule == '11 */3 * * *' && 'tick') || (github.event.schedule == '26 5 * * *' && 'pulse') || (github.event.schedule == '56 6 * * 0' && 'retro') || (github.event.schedule == '41 * * * *' && 'shift') || 'keepalive' }}
       dry_run: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
       jitter_minutes: 10
     secrets:
