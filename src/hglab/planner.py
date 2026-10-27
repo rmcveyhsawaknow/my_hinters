@@ -861,10 +861,13 @@ def _plan_work(
     # 0.5 one engagement with a neighbour when there is one: a word, a gift, a deal, a contest (one action, before the build spends the cap)
     engaged = fits(_plan_engage(persona, team, state, inventory, here, view, observe, teammates, names, rng, collective_names, allowed))
     # 0.6 the trade for the house's ground: the brief to the land office, its answer, the payment
-    if not moved() and fits_as("site_trade", _plan_site_trade(persona, state, inventory, here, view, observe, registrar_name, office_names=(cast or {}).get("office_names"), mates=ours, tills=tills)):
+    trade = _plan_site_trade(persona, state, inventory, here, view, observe, registrar_name, office_names=(cast or {}).get("office_names"), mates=ours, tills=tills) if not moved() else None
+    if fits_as("site_trade", trade):
         approach = approach or "site_trade"
+        if trade is not None and trade[2] in {"deed_draw", "deed_trip"}:
+            used.update(PRICE_SPENDERS)  # the price in the pack is the office's: Plumbline took 24 wood for its deed and put 19 back, and raised a tower with another 10 (2026-10-27)
     # 0.62 the team's blueprint (the owner's brief of 2026-10-24): a builder raises it step by step, carrying what it needs
-    while not persona.knobs.get("crew") and "blueprint" not in skip and len(actions) < cap:
+    while not persona.knobs.get("crew") and "blueprint" not in skip and "blueprint" not in used and len(actions) < cap:
         step = _plan_blueprint(persona, team, state, observe, view, inventory, here, cap - len(actions), set(names or ()))  # the team's own stores
         if step is not None and moved() and any(a.get("action") == "move" for a in step[0]):
             break  # one walk per wake: a second one the other way undid the first (Fudgewright, stalled five hours on 2026-10-25)
@@ -1225,6 +1228,7 @@ def _plan_site_trade(
     return [{"action": "move", "x": target[0], "y": target[1]}], f"carrying {carried} {currency} toward the land office's storehouse at {vault} to pay for lot {bought.get('lot')}", "deed_trip"
 
 
+PRICE_SPENDERS = frozenset({"build", "build_monument", "house", "hearth", "draw", "deposit", "deposit_trip", "stash", "gather_trip", "blueprint"})  # what a wake that draws or carries a land price leaves undone
 PAY_IN_PERSON_RANGE = 40  # how far the client walks to put the price into the registrar's hands when every office store is full (a few wakes)
 DEED_TRIP_RANGE = 16  # the office's stores within this of the ground being bought are the ones a client pays into, when it has any there; the registrar is paid in person within this of the client. On 2026-10-25 the office's stores by the factory were full and Fudgewright went from one office store to the next across the island
 DRAW_PRICE_RANGE = 40  # how far the client walks to a team store for the price
@@ -1264,12 +1268,16 @@ def _draw_price(
         where = (int(store["x"]), int(store["y"]))
         if chebyshev(position, where) <= 1:
             space = max(0, 500 - sum(int(v or 0) for v in store["storage"].values()))
-            surplus = max(0, int(inventory.get("berries", 0)) - 5) if pack >= 40 else 0
-            shed = min(surplus, space)
-            qty = min(50 - pack + shed, owed, int(store["storage"].get(currency, 0) or 0) - 10)
+            room = 50 - pack
+            # the pack's largest other load goes into the store first when the room would not carry the whole price (five berries stay for the road)
+            spare = {item: int(qty) - (5 if item == "berries" else 0) for item, qty in inventory.items() if item != currency}
+            item, extra = max(spare.items(), key=lambda kv: (kv[1], kv[0]), default=("berries", 0))
+            shed = min(extra, space) if room < owed else 0
+            shed = shed if shed >= 5 else 0
+            qty = min(room + shed, owed, int(store["storage"].get(currency, 0) or 0) - 10)
             if qty >= 10:
-                give = [{"action": "give", "x": where[0], "y": where[1], "item": "berries", "qty": shed}] if shed >= 5 else []
-                return [*give, {"action": "take", "x": where[0], "y": where[1], "item": currency, "qty": qty}], f"the deed for lot {bought.get('lot')} wants {owed} {currency}: take {qty} from the team's store at {where}" + (f" after putting {shed} berries away" if give else ""), "deed_draw"
+                give = [{"action": "give", "x": where[0], "y": where[1], "item": item, "qty": shed}] if shed else []
+                return [*give, {"action": "take", "x": where[0], "y": where[1], "item": currency, "qty": qty}], f"the deed for lot {bought.get('lot')} wants {owed} {currency}: take {qty} from the team's store at {where}" + (f" after putting {shed} {item} away" if give else ""), "deed_draw"
             continue
         if chebyshev(position, where) > DRAW_PRICE_RANGE:
             continue

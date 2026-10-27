@@ -500,30 +500,58 @@ def survey_line(survey: dict[str, Any], currency: str, limit: int) -> str:
     return f"Survey for {survey['client']}: lot {survey['lot']} at ({survey['anchor'][0]},{survey['anchor'][1]}), {len(survey['expandable'])} free lots beside it; {reasons}. The office asks {survey['price']} {currency}."[:limit]
 
 
-def paid_deeds(state: dict[str, Any], public_events: list[dict[str, Any]], structures: list[dict[str, Any]], registrar_name: str, office_names: set[str] | None = None) -> list[dict[str, Any]]:
-    """Surveys whose client has paid the price since the survey (into any storehouse of the office, or into the registrar's hands): their deeds."""
+def survey_credits(state: dict[str, Any], public_events: list[dict[str, Any]], structures: list[dict[str, Any]], registrar_name: str, office_names: set[str] | None = None) -> dict[str, int]:
+    """What each survey's client has paid toward it: into any storehouse of the office, or into the registrar's hands.
+
+    Each payment counts once (2026-10-27: Plumbline's four Lower Manhattan surveys stood open together, and one
+    give counted toward every one of them). A client's surveys take its payments in the order they were surveyed,
+    the earliest with room first; a payment counts only after its survey, and toward a deeded survey only up to its
+    deed, so what one price leaves over goes to the next.
+    """
     surveys = state.get("surveys") if isinstance(state.get("surveys"), dict) else {}
     office = {registrar_name.casefold()} | {str(n).casefold() for n in (office_names or ())}
     vaults = {(int(s["x"]), int(s["y"])) for s in structures if isinstance(s, dict) and s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() in office}
+    credits: dict[str, int] = {rid: 0 for rid, s in surveys.items() if isinstance(s, dict) and s.get("client")}
+    order = sorted(credits, key=lambda rid: (int(surveys[rid].get("tick", 0) or 0), rid))
+    seen: set[Any] = set()
+    for event in sorted((e for e in public_events if isinstance(e, dict) and e.get("type") == "give"), key=lambda e: (int(e.get("tick", 0) or 0), int(e.get("id", 0) or 0))):
+        if event.get("id") is not None:
+            if event["id"] in seen:
+                continue  # the archive and the live pages overlap
+            seen.add(event["id"])
+        actor = str(event.get("actor", "")).casefold()
+        tick = int(event.get("tick", 0) or 0)
+        text = str(event.get("text") or "")
+        into, handed = PAID_INTO.search(text), PAID_TO.search(text)
+        if into and (int(into.group(3)), int(into.group(4))) in vaults:
+            qty, item = int(into.group(1)), into.group(2).casefold()
+        elif handed and handed.group(3).casefold() == registrar_name.casefold():
+            qty, item = int(handed.group(1)), handed.group(2).casefold()
+        else:
+            continue
+        for rid in order:
+            if qty <= 0:
+                break
+            survey = surveys[rid]
+            if str(survey["client"]).casefold() != actor or str(survey.get("currency", "wood")).casefold() != item or tick < int(survey.get("tick", 0) or 0):
+                continue
+            if survey.get("deeded") and tick > int(survey["deeded"]):
+                continue
+            take = min(qty, max(0, int(survey.get("price", 0) or 0) - credits[rid]))
+            credits[rid] += take
+            qty -= take
+    return credits
+
+
+def paid_deeds(state: dict[str, Any], public_events: list[dict[str, Any]], structures: list[dict[str, Any]], registrar_name: str, office_names: set[str] | None = None) -> list[dict[str, Any]]:
+    """Surveys whose client has paid the price since the survey (``survey_credits``): their deeds."""
+    surveys = state.get("surveys") if isinstance(state.get("surveys"), dict) else {}
+    credits = survey_credits(state, public_events, structures, registrar_name, office_names)
     out: list[dict[str, Any]] = []
     for rid, survey in surveys.items():
         if not isinstance(survey, dict) or survey.get("deeded") or not survey.get("client"):
             continue
-        paid = 0
-        for event in public_events:
-            if not isinstance(event, dict) or event.get("type") != "give" or str(event.get("actor", "")).casefold() != str(survey["client"]).casefold():
-                continue
-            if int(event.get("tick", 0) or 0) < int(survey.get("tick", 0) or 0):
-                continue
-            text = str(event.get("text") or "")
-            currency = str(survey.get("currency", "wood")).casefold()
-            match = PAID_INTO.search(text)
-            if match and (int(match.group(3)), int(match.group(4))) in vaults and match.group(2).casefold() == currency:
-                paid += int(match.group(1))
-                continue
-            handed = PAID_TO.search(text)
-            if handed and handed.group(3).casefold() == registrar_name.casefold() and handed.group(2).casefold() == currency:
-                paid += int(handed.group(1))
+        paid = credits.get(rid, 0)
         if paid >= int(survey.get("price", 0) or 0):
             out.append({"id": rid, "plot": survey["lot"], "plots": [str(p) for p in (survey.get("lots") or [survey["lot"]])], "holder": survey["client"], "paid": paid, "anchor": survey.get("anchor")})
     return out
@@ -553,8 +581,11 @@ def plan_round(
     world: dict[str, Any] | None = None,
     claims: dict[str, Any] | None = None,
     office_names: set[str] | None = None,
+    payments: list[dict[str, Any]] | None = None,
 ) -> tuple[list[dict[str, Any]], list[str], dict[str, Any]]:
     """Deterministic office actions for one round; the caller validates and adds the notebook note.
+
+    ``payments`` are older gives from the host's archive: a price paid in parts is counted past the live pages.
 
     ``office_names`` are the office's hands: a payment into any of their storehouses counts, and a
     survey names the office store nearest the client's ground.
@@ -666,7 +697,7 @@ def plan_round(
                 break
     # a client's site: survey once (a whisper with the lot and its price, a public line), then the deed once the price is in the vault
     currency = str(cfg.get("currency", "wood"))
-    deeds = paid_deeds(state, public_events, structures, persona.name, office_names)
+    deeds = paid_deeds(state, list(public_events) + list(payments or ()), structures, persona.name, office_names)
     if deeds and len(actions) < 3:
         surveys_state = dict(state.get("surveys") or {})
         for deed in deeds:
@@ -823,6 +854,7 @@ __all__ = [
     "sales_due",
     "sold_lots",
     "survey",
+    "survey_credits",
     "survey_line",
     "survey_whisper",
     "surveys_due",

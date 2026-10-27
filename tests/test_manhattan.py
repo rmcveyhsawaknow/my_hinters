@@ -105,3 +105,61 @@ def test_the_price_is_fetched_from_a_faction_store_out_of_view():
     bought = {"id": "nyc-wall-street", "lot": "D08-NE", "price": 61, "paid": 0, "currency": "wood"}
     trip = _draw_price(plumbline, PersonaState(mood="measuring"), {"berries": 5}, (40, 82), view, {"you": {"faction": {"name": "Chocolate Factory"}}}, {"Toffeetrowel", "Plumbline"}, "wood", 61, bought)
     assert trip is not None and trip[0][0]["action"] == "move" and "faction's store" in trip[1]
+
+
+def _survey(price, tick, **extra):
+    return {"client": "Plumbline", "lot": "D08-NE", "price": price, "currency": "wood", "tick": tick, **extra}
+
+
+def _paid(qty, tick, at=(72, 73), eid=None):
+    return {"id": eid or tick, "type": "give", "tick": tick, "actor": "Plumbline", "text": f"Plumbline put {qty} wood into the storehouse at ({at[0]}, {at[1]})."}
+
+
+def test_each_payment_counts_once_toward_the_earliest_survey_with_room():
+    from hglab.land import paid_deeds, survey_credits
+
+    tills = [{"type": "storehouse", "x": 72, "y": 73, "owner": "Lintelstave"}, {"type": "storehouse", "x": 78, "y": 95, "owner": "Lintelstave"}]
+    state = {"surveys": {"nyc-wall-street": _survey(61, 100), "nyc-battery": _survey(103, 110), "nyc-trinity": _survey(54, 400)}}
+    events = [_paid(19, 200), _paid(15, 500, at=(78, 95)), _paid(27, 600), _paid(30, 700)]
+    credits = survey_credits(state, [*events, events[0]], tills, "LandBroker", {"Lintelstave"})  # the archive and the live pages overlap: counted once
+    assert credits == {"nyc-wall-street": 61, "nyc-battery": 30, "nyc-trinity": 0}  # one give never counts toward two surveys
+    assert [d["id"] for d in paid_deeds(state, events, tills, "LandBroker", {"Lintelstave"})] == ["nyc-wall-street"]
+    deeded = {"surveys": {**state["surveys"], "nyc-wall-street": _survey(61, 100, deeded=650)}}
+    assert survey_credits(deeded, events, tills, "LandBroker", {"Lintelstave"})["nyc-battery"] == 30  # a deeded survey takes only what came before its deed
+
+
+def test_the_office_reads_a_price_paid_in_parts_from_the_hosts_archive(tmp_path):
+    import json
+
+    from hglab.cli_personas import _archived_gives
+
+    path = tmp_path / "data" / "events" / "public.jsonl"
+    path.parent.mkdir(parents=True)
+    rows = [_paid(19, 89951, eid=1), {"id": 2, "type": "move", "tick": 89960, "actor": "Plumbline", "text": "walked"}, _paid(5, 1000, eid=3)]
+    path.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
+    assert [e["id"] for e in _archived_gives(tmp_path, 90514)] == [1]  # gives of the last three days only
+    assert _archived_gives(tmp_path / "nowhere", 90514) == []
+
+
+def test_a_wake_that_draws_the_price_keeps_it_and_sheds_its_spare_load():
+    import random
+
+    from hglab.planner import plan_wake
+
+    plumbline = load_personas(ROOT)["plumbline"]
+    state = PersonaState(mood="measuring")
+    state.flags["house_site"] = {"id": "nyc-wall-street", "x": 37, "y": 82, "lot": "D08-NE", "price": 61, "currency": "wood", "paid": 34, "tick": 89706}
+    state.flags["site_asked_for"] = "nyc-wall-street"
+    store = {"type": "storehouse", "x": 82, "y": 89, "owner": "Toffeetrowel", "policy": "faction", "faction": "Chocolate Factory", "storage": {"wood": 200, "stone": 100}}
+    till = {"type": "storehouse", "x": 78, "y": 95, "owner": "Lintelstave"}
+    observe = {
+        "tick": 90341, "inbox": [], "events": [], "structures": [store], "view": {"x0": 75, "y0": 84, "rows": ["g" * 13] * 13},
+        "you": {"name": "Plumbline", "x": 81, "y": 90, "energy": 90, "inventory": {"ore": 5, "fiber": 6, "berries": 15}, "faction": {"id": 5, "name": "Chocolate Factory"}},
+    }
+    plan = plan_wake(
+        plumbline, load_team(ROOT, "atelier"), state, observe, "work", random.Random(1), terrain_rows=GRASS, work=True, registrar_name="LandBroker",
+        public_structures=[store, till], collective_names={"Plumbline", "Toffeetrowel", "LandBroker", "Lintelstave"}, cast={"office_tills": [(78, 95), (72, 73)], "office_names": {"Lintelstave"}},
+    )
+    acts = [a for a in plan["actions"] if a["action"] != "remember"]
+    assert acts[:2] == [{"action": "give", "x": 82, "y": 89, "item": "berries", "qty": 10}, {"action": "take", "x": 82, "y": 89, "item": "wood", "qty": 27}]  # the whole price in one trip
+    assert not [a for a in acts[2:] if a["action"] in {"give", "build", "place", "gather"}]  # nothing spends it or puts it back
