@@ -169,3 +169,11 @@ def test_a_full_pack_fetches_only_from_a_store_that_can_take_its_clutter(tmp_pat
     assert walk[0][0]["action"] == "move" and "(84, 90)" in walk[1]  # past the full store beside it, to the one with room
     beside = factory.plan_step(mason, team, PersonaState(mood="busy"), {**observe, "you": {**observe["you"], "x": 85, "y": 90}}, view, dict(pack), (85, 90), 3, mates={"Treacleaxe"})
     assert beside[0][0] == {"action": "give", "x": 84, "y": 90, "item": "fiber", "qty": 40} and beside[0][1]["action"] == "take" and beside[0][1]["item"] == "stone"
+
+
+def test_every_step_is_something_a_pack_can_pay_for():
+    """2026-10-26: the candy and packing roof caps (48 and 63 fiber) were single placements no pack of 50 could carry."""
+    _design, steps, _ = _bp()
+    assert max(s["items"] for s in steps if s["kind"] == "place") <= factory.PACK_LIMIT
+    caps = [s for s in steps if s["section"] in ("candy", "packing") and "roof cap" in s["name"]]
+    assert len(caps) == 4 and all(s["supported"] and s["items"] <= 40 for s in caps)  # strips the full width, each resting on the slopes
