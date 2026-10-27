@@ -842,7 +842,8 @@ def land_round(root: Path, persona: Persona, *, dry_run: bool, fixture: Path | N
         b = board(ledger, structures, agents, goals, persona.name, state, world=world, tick=tick, claims=claims)
         recent = [e for e in events if isinstance(e, dict) and tick - int(e.get("tick", 0) or 0) <= 8640]
         office_names = {personas[m].name for m in (team.members if team else ()) if m in personas}  # any store of the office takes a payment
-        actions, reasons, update = plan_round(persona, ledger, observe, b, public_events=recent, structures=structures, agents=agents, state=state, collective_names=collective_names, world=world, claims=claims, office_names=office_names)
+        payments = _archived_gives(root, tick) if fixture is None else []  # a price paid in parts outlasts the live pages (about 80 minutes)
+        actions, reasons, update = plan_round(persona, ledger, observe, b, public_events=recent, structures=structures, agents=agents, state=state, collective_names=collective_names, world=world, claims=claims, office_names=office_names, payments=payments)
         # the office's ground (owner, 2026-10-25): the registry goes to the hands, and one builder on a staked lot hears a notice
         from hglab.evict import evict_cfg, load_shared, plan_notice, record_notice, save_shared
 
@@ -989,6 +990,26 @@ def _active_names(agents: list[dict[str, Any]], tick: int) -> list[str]:
     active = [a for a in rows if tick - seen(a) <= 8640] or rows
     active.sort(key=seen, reverse=True)
     return [str(a["name"]) for a in active]
+
+
+PAYMENT_TICKS = 3 * 8640  # how far back the office reads payments toward an open survey
+
+
+def _archived_gives(root: Path, tick: int) -> list[dict[str, Any]]:
+    """The host's archived gives of the last three days (``data/events/public.jsonl``, refreshed hourly by the supervisor).
+
+    The office read payments from the newest three pages only, about eighty minutes of the world; on 2026-10-27
+    Plumbline's first 19 wood for Wall Street fell out of them before the rest was carried, and the deed never came.
+    """
+    from hglab.data import read_jsonl
+    from hglab.local.measure import archive_path
+
+    path = archive_path(root)
+    try:
+        rows = read_jsonl(path) if path.is_file() else []
+    except (OSError, ValueError):
+        return []
+    return [e for e in rows if isinstance(e, dict) and e.get("type") == "give" and tick - int(e.get("tick", 0) or 0) <= PAYMENT_TICKS]
 
 
 def _public_board_inputs(root: Path, *, fixture: Path | None) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
