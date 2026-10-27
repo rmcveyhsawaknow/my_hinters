@@ -1014,14 +1014,15 @@ _CACHE: dict[tuple[str, float], tuple[dict[str, Any], list[dict[str, Any]], dict
 
 
 def blueprint(root: Path, name: str) -> tuple[dict[str, Any], list[dict[str, Any]], dict[tuple[Any, ...], str]]:
-    """The design, its steps and an index from place signature to step id (cached per file version)."""
+    """The design, its steps and an index from place signature to step id (cached per file version, one per design)."""
     path = design_path(root, name)
     key = (str(path), path.stat().st_mtime)
     if key not in _CACHE:
         design = load_design(root, name)
         steps = expand(design)
         index = {signature(s["action"]): s["id"] for s in steps if s["kind"] in ("place", "remove")}
-        _CACHE.clear()
+        for old in [k for k in _CACHE if k[0] == key[0]]:
+            del _CACHE[old]  # an older version of this design; the team's other designs stay (a wake reads the factory and Lower Manhattan both)
         _CACHE[key] = (design, steps, index)
     return _CACHE[key]
 
@@ -1138,6 +1139,12 @@ def team_designs(team: Any) -> list[str]:
         return []
     nxt = cfg.get("next_blueprint")
     return [str(cfg["blueprint"]), *([str(n) for n in nxt] if isinstance(nxt, list) else [str(nxt)] if nxt else [])]
+
+
+def next_design_active(team: Any, root: Path | None = None) -> bool:
+    """The team's first design is done and a later one is being built (the owner, 2026-10-27: Lower Manhattan after the factory)."""
+    designs = team_designs(team)
+    return len(designs) > 1 and design_complete(root or root_of(team), designs[0])
 
 
 def design_complete(root: Path, name: str) -> bool:
@@ -1451,5 +1458,5 @@ def plan_step(
 
 __all__ = [
     "LEDGER_DIR", "blueprint", "builder_sections", "cells_rect", "check", "design_complete", "expand", "foundation_map", "land_wanted", "ledger_name", "load_design", "load_ledger", "mark_done",
-    "materials", "plan_step", "ready_steps", "root_of", "route", "settle", "signature", "step_lots", "summary", "team_designs", "tiles_of",
+    "materials", "next_design_active", "plan_step", "ready_steps", "root_of", "route", "settle", "signature", "step_lots", "summary", "team_designs", "tiles_of",
 ]

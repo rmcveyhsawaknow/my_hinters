@@ -217,6 +217,16 @@ def plan_crew(
     drop_points = [*stores, *field] if role != "hauler" else stores
     office_stores = [*stores, *field]
 
+    # a0. the works stand and the team builds its next design elsewhere (the owner, 2026-10-27: Lower Manhattan after the factory):
+    # every hand, the mason too, takes it up first, its pack paying and the faction's stores supplying, wherever it is
+    from hglab.factory import next_design_active
+
+    away = bool(cfg.get("blueprint")) and next_design_active(team)
+    if away:
+        step = _blueprint(persona, team, state, observe, view, inventory, position, room, mates, site, reach, teammates, floor_for, ranks, hands=True)
+        if step is not None:
+            return step
+
     # a. far from the works: walk there first
     distance = chebyshev(position, site)
     if distance > reach:
@@ -244,7 +254,7 @@ def plan_crew(
             return step
 
     # a3. routed by the graph to the blueprint (an idle hand, 2026-10-27): the pack's material goes into blocks
-    if route == "blueprint" and role != "mason" and cfg.get("blueprint"):
+    if route == "blueprint" and role != "mason" and cfg.get("blueprint") and not away:
         step = _blueprint(persona, team, state, observe, view, inventory, position, room, mates, site, reach, teammates, floor_for, ranks, hands=True)
         if step is not None:
             return step
