@@ -46,6 +46,8 @@ DESIGN_DIR = "teams/blueprints"
 LEDGER_DIR = "runs/local/blueprints"
 MAX_CELLS = 256
 TOP_LEVEL = 15
+MAX_CAP_CELLS = 160  # 40 items: a roof cap larger than this is laid in strips a pack can pay for
+PACK_LIMIT = 45  # what a pack can bring to a step (50 less the berries a builder keeps)
 REACH = 2  # a box's every tile within 2 tiles of the builder
 OWNED_CAP = 4000  # stop short of the world's 4096 blocks per agent
 BUILD_COST = {"storehouse": {"wood": 20, "stone": 10}}
@@ -162,7 +164,17 @@ def _hip_roof(rect: Rect, z: int, slope: tuple[str, str], cap: tuple[str, str]) 
         ("roof east", box(bx1, by0 + 1, z, bx1, by1 - 1, z, material=material, shape="slope", facing="west", color=color)),
     ]
     if bx1 - bx0 >= 2 and by1 - by0 >= 2:
-        steps.append(("roof cap", box(bx0 + 1, by0 + 1, z, bx1 - 1, by1 - 1, z, material=cap[0], shape="slab", color=cap[1])))
+        # a cap is paid whole from the pack (no store stands beside the hall's middle), and a pack holds 50: strips
+        # of rows of at most MAX_CAP_CELLS, each the full width, so each rests on the slopes either side
+        # (2026-10-26: the candy and packing caps, 48 and 63 fiber, could never be carried and the halls stayed open)
+        width = bx1 - bx0 - 1
+        rows = max(1, MAX_CAP_CELLS // width)
+        y = by0 + 1
+        while y <= by1 - 1:
+            y2 = min(by1 - 1, y + rows - 1)
+            name = "roof cap" if (y, y2) == (by0 + 1, by1 - 1) else f"roof cap rows {y - by0}-{y2 - by0}"
+            steps.append((name, box(bx0 + 1, y, z, bx1 - 1, y2, z, material=cap[0], shape="slab", color=cap[1])))
+            y = y2 + 1
     return steps
 
 
@@ -859,6 +871,9 @@ def plan_step(
                 return [act], f"the factory blueprint: {label}", "blueprint"
             verb = "take down" if step["kind"] == "remove" else "raise"
             return [{"action": "move", "x": stand[0], "y": stand[1]}, act], f"the factory blueprint: walk to {stand} and {verb} {label}", "blueprint"
+        if step["kind"] == "place" and sum(costs.values()) > PACK_LIMIT:
+            missing.append(step["item"])  # more than a pack can bring and no store beside a stand: never a shuttle between stores
+            continue
         lacking = {item: qty - int(inventory.get(item, 0)) for item, qty in costs.items() if qty - int(inventory.get(item, 0)) > 0}
         # carry it: the nearest store that holds the material, or a team store not yet looked into
         for item, qty in sorted(lacking.items(), key=lambda kv: -kv[1]):
