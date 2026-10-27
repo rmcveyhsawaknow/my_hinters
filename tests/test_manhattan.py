@@ -231,3 +231,36 @@ def test_an_off_shift_wake_also_buys_before_it_builds():
                          public_structures=[store, *_deeds("D08-NE", "E08-NW")], collective_names={"Plumbline", "Toffeetrowel", "LandBroker"})
         takes = [a for a in plan["actions"] if a["action"] == "take"]
         assert all(a["item"] == "wood" for a in takes), (seed, plan["actions"])  # the price, never the blueprint's stone
+
+
+def _carrying(seed=None):
+    till = {"type": "storehouse", "x": 72, "y": 73, "owner": "Lintelstave", "storage": {"wood": 100}}
+    store = {"type": "storehouse", "x": 70, "y": 85, "owner": "MotherPail", "policy": "faction", "faction": "Chocolate Factory", "storage": {"wood": 200, "stone": 300}}
+    farm = {"type": "farm", "x": 64, "y": 71, "owner": "Plumbline", "storage": {"berries": 30}}
+    structures = [till, store, farm, *_deeds("D08-NE", "E08-NW")]
+    observe = {
+        "tick": 92600, "inbox": [], "events": [], "structures": [farm], "view": {"x0": 59, "y0": 69, "rows": ["g" * 13] * 13},
+        "you": {"name": "Plumbline", "x": 65, "y": 75, "energy": 90, "inventory": {"wood": 23, "berries": 5, "stone": 10}, "faction": {"id": 5, "name": "Chocolate Factory"}, "blocks_owned": 0},
+    }
+    state = PersonaState(mood="measuring")
+    state.flags["house_site"] = {"id": "nyc-battery", "x": 37, "y": 87, "lot": "D08-SE", "price": 103, "paid": 80, "currency": "wood"}
+    state.flags["sites_paid"] = ["nyc-wall-street"]
+    return observe, state, structures
+
+
+def test_a_wake_carrying_the_price_takes_it_to_the_office_before_the_farm_or_a_walk():
+    import random
+
+    from hglab.planner import chebyshev, plan_wake
+
+    plumbline = load_personas(ROOT)["plumbline"]
+    cast = {"office_tills": [(78, 95), (72, 73)], "office_names": {"Lintelstave"}}
+    start = chebyshev((65, 75), (72, 73))
+    for work in (True, False):  # 2026-10-27: at 21:01 a shift walked the Battery's last 23 wood to the farm; at 21:11 an off-shift wake walked it to the till, then to a store and away
+        for seed in range(6):
+            observe, state, structures = _carrying()
+            plan = plan_wake(plumbline, load_team(ROOT, "atelier"), state, observe, "work" if work else "act", random.Random(seed), terrain_rows=GRASS, work=work,
+                             registrar_name="LandBroker", public_structures=structures, collective_names={"Plumbline", "MotherPail", "LandBroker", "Lintelstave"}, cast=cast)
+            acts = [a for a in plan["actions"] if a["action"] not in {"remember", "say", "whisper", "eat"}]
+            assert acts and acts[0]["action"] == "move" and chebyshev((acts[0]["x"], acts[0]["y"]), (72, 73)) < start, (work, seed, plan["actions"])
+            assert not [a for a in acts[1:] if a["action"] in {"move", "take", "give", "gather"}], (work, seed, plan["actions"])  # the farm and the stores wait

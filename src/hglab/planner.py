@@ -374,6 +374,7 @@ def plan_wake(
         )
         return result
     budget = cap if mood != "sulk" else 1
+    paying = False
     spendable = energy + 15 * sum(min(int(a.get("qty") or 0), inventory.get("berries", 0)) for a in actions if a.get("action") == "eat") - reserve
     here = position
     patrolling = bool(persona.knobs.get("patrol"))
@@ -382,6 +383,8 @@ def plan_wake(
         activities = ["lighten", "engage", "patrol", *[a for a in activities[2:] if a != "explore"]]
     if skip:
         activities = [a for a in activities if a not in skip] or activities
+    if _owes_price(state, int(observe.get("tick", 0) or 0)) and "build" in activities:
+        activities = [*activities[:2], "build", *[a for a in activities[2:] if a != "build"]]  # the land price before the mood's roll: the client buys before it builds or wanders
     if persona.knobs.get("crew"):
         activities = ["crew"] * budget + [a for a in activities if a not in {"explore", "gather", "build", "trade"}]  # a hand's wake is the pipeline, step after step
     if persona.knobs.get("navy"):
@@ -422,7 +425,7 @@ def plan_wake(
             # builds are validated against the observed position, so only before any move
             step = (
                 _plan_repair(persona, team, inventory, here, view, teammates)
-                or _plan_harvest(persona, team, inventory, here, view, teammates)
+                or _no_walk_with_price(_plan_harvest(persona, team, inventory, here, view, teammates), state, inventory, int(observe.get("tick", 0) or 0))
                 or _plan_stake(persona, inventory, here, view)
                 or (_plan_site_trade(persona, state, inventory, here, view, observe, registrar_name, office_names=(cast or {}).get("office_names"), mates=set(collective_names or ()) | set(names or ()), tills=tills) if here == position else None)
                 or (_plan_blueprint(persona, team, state, observe, view, inventory, here, budget - len(actions), set(names or ())) if not persona.knobs.get("crew") and here == position and not _owes_price(state, int(observe.get("tick", 0) or 0)) else None)
@@ -450,6 +453,8 @@ def plan_wake(
         new_actions, reason, tag = step
         if patrolling and activity != "patrol" and any(a.get("action") == "move" for a in new_actions):
             continue  # the patrol is the only road: nothing walks the persona off the edge
+        if paying and any(a.get("action") in PRICE_HOLDERS for a in new_actions):
+            continue  # the price is on its way to the office: Plumbline walked 23 wood to the till at 21:11, then to a store to unload and off exploring (2026-10-27)
         if allowed is not None and any(a.get("action") not in allowed for a in new_actions):
             continue
         if len(actions) + len(new_actions) > budget:
@@ -472,6 +477,7 @@ def plan_wake(
         actions.extend(new_actions)
         reasons.append(reason)
         approach = approach or tag
+        paying = paying or tag in {"deed_draw", "deed_trip"}
     meal = _meal_after_move(actions, inventory, energy, budget)
     if meal is not None:
         actions.append(meal)
@@ -811,7 +817,7 @@ def _plan_work(
     # 0.1 upkeep within reach comes before any walking: mend, collect the farm, take salvage
     if fits_as("repair", _plan_repair(persona, team, inventory, here, view, teammates)):
         approach = approach or "repair"
-    if fits_as("harvest", _plan_harvest(persona, team, inventory, here, view, teammates)):
+    if fits_as("harvest", _no_walk_with_price(_plan_harvest(persona, team, inventory, here, view, teammates), state, inventory, int(observe.get("tick", 0) or 0))):
         approach = approach or "harvest"
     if fits_as("salvage", _plan_salvage(inventory, here, view)):
         approach = approach or "salvage"
@@ -1239,6 +1245,19 @@ def _owes_price(state: PersonaState, tick: int) -> bool:
     return tick - int(state.flags.get("deed_backoff", -(10**9)) or -(10**9)) >= DEED_BACKOFF_TICKS
 
 
+def _no_walk_with_price(step: tuple[list[dict[str, Any]], str, str] | None, state: PersonaState, inventory: dict[str, int], tick: int) -> tuple[list[dict[str, Any]], str, str] | None:
+    """A step that walks is left for later while the pack carries a land price owed: the price goes to the office first.
+
+    Plumbline carried 23 wood for the Battery to its farm instead, filled the pack with berries, then walked off to unload them (2026-10-27).
+    """
+    if step is None or not _owes_price(state, tick) or not any(a.get("action") == "move" for a in step[0]):
+        return step
+    bought = state.flags["house_site"]
+    owed = int(bought.get("price", 0) or 0) - int(bought.get("paid", 0) or 0)
+    return None if inventory.get(str(bought.get("currency", "wood")), 0) >= min(owed, 10) else step
+
+
+PRICE_HOLDERS = frozenset({"move", "give", "take", "gather", "build", "place", "remove", "demolish"})  # what an off-shift wake leaves undone after its payment trip
 PRICE_SPENDERS = frozenset({"build", "build_monument", "house", "hearth", "draw", "deposit", "deposit_trip", "stash", "gather_trip", "blueprint"})  # what a wake that draws or carries a land price leaves undone
 PAY_IN_PERSON_RANGE = 40  # how far the client walks to put the price into the registrar's hands when every office store is full (a few wakes)
 DEED_TRIP_RANGE = 16  # the office's stores within this of the ground being bought are the ones a client pays into, when it has any there; the registrar is paid in person within this of the client. On 2026-10-25 the office's stores by the factory were full and Fudgewright went from one office store to the next across the island
