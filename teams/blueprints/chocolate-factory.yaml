@@ -140,6 +140,33 @@ tubes:
     section: tubes-candy  # out of the candy hall's north wall, over the turret line and back in
     color: lime
     path: [[381, 359, 8], [381, 357, 8], [381, 357, 13], [385, 357, 13], [385, 358, 13], [385, 358, 10], [385, 359, 10]]
+# The campus wall (the owner's brief of 2026-10-27): a high wall round the whole campus and one large yellow
+# gate with a round arch on one side. Surveyed against the live world on 2026-10-27: the wall stands on every
+# walkable edge tile of the four plots that closes no one's access to a node, the collective's own roads on
+# the line included (the owner's ruling of 2026-10-25 for walls on our roads). Mountain and water need no
+# wall. Two short jogs keep scarce nodes outside and open: (81,86) behind the ore by the west edge, and
+# (92-93,81) behind the stone node at (92,80). The gate faces west, where the roads from the spawn and the
+# land office arrive; the bridges on the south shore are the one other way in. A check with the world:
+# `hglab factory check`.
+campus_wall:
+  body: [stone, brown]
+  coping: [stone, tan]
+  height: 9  # the body on levels 0-8, the coping on level 9: as tall as the halls' walls
+  runs:
+    - {section: campus-north, edge: north, tiles: [93, 80, 95, 80]}
+    - {section: campus-north, edge: north, tiles: [99, 80, 99, 80]}
+    - {section: campus-north, edge: north, tiles: [92, 81, 93, 81]}  # behind the stone node at (92,80)
+    - {section: campus-south, edge: south, tiles: [80, 99, 88, 99]}
+    - {section: campus-south, edge: south, tiles: [93, 99, 99, 99]}
+    - {section: campus-east, edge: east, tiles: [99, 80, 99, 99]}
+    - {section: campus-west, edge: west, tiles: [80, 88, 80, 89]}
+    - {section: campus-west, edge: west, tiles: [80, 95, 80, 99]}
+    - {section: campus-west, edge: west, tiles: [81, 86, 81, 86]}  # behind the ore by (80,87)
+  gate:
+    section: campus-gate
+    color: yellow
+    x: 80
+    pillars: [90, 94]  # pillar tiles; the arch spans (80,91)-(80,93)
 river:
   block: [stone, brown]
   width_cells: 4

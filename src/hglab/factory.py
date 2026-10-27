@@ -368,6 +368,89 @@ def _tube_steps(tube: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
     return out
 
 
+EDGE_LINE = {"west": (0, None), "east": (3, None), "north": (None, 0), "south": (None, 3)}  # the cell a wall line keeps within its tiles, by the side it faces
+
+
+def _wall_line(run: dict[str, Any], taken: set[tuple[int, int]]) -> list[list[tuple[int, int]]]:
+    """A run's wall line as cell columns (bx, by), split into chunks of ``chunk`` tiles; cells an earlier run took are left out (the corners)."""
+    x0, y0, x1, y1 = (int(v) for v in run["tiles"])
+    dx, dy = EDGE_LINE[str(run["edge"])]
+    cells: list[tuple[int, int]] = []
+    if dx is not None:  # a west or east side: the line runs north-south
+        cells = [(4 * x0 + dx, by) for by in range(4 * min(y0, y1), 4 * max(y0, y1) + 4)]
+    else:  # a north or south side: the line runs east-west
+        cells = [(bx, 4 * y0 + (dy or 0)) for bx in range(4 * min(x0, x1), 4 * max(x0, x1) + 4)]
+    cells = [c for c in cells if c not in taken]
+    taken.update(cells)
+    size = 4 * int(run.get("chunk", 4))
+    chunks, cur = [], []
+    for c in cells:
+        if cur and (len(cur) >= size or abs(c[0] - cur[-1][0]) + abs(c[1] - cur[-1][1]) != 1):
+            chunks.append(cur)
+            cur = []
+        cur.append(c)
+    if cur:
+        chunks.append(cur)
+    return chunks
+
+
+def _campus_steps(spec: dict[str, Any]) -> list[tuple[str, str, dict[str, Any]]]:
+    """The campus wall and its gate (the owner's brief of 2026-10-27): a high wall round the whole campus, one large yellow gate with a round arch.
+
+    The wall is a line one cell thick on the outer edge of every surveyed tile (``runs``: tile runs and the
+    side each faces), levels 0 to ``height - 1`` in the body block and a coping course on top, in chunks
+    of four tiles a pack can pay for. North and south runs come first and keep the corners. The gate
+    (``gate``) stands on a west-side run of five tiles: a pillar on each end tile from the ground to the
+    ceiling, and between them a round arch springing at level 8 and closing at level 12, so the three
+    tiles under it keep every block at level 6 or above and stay open to walkers.
+    """
+    if not spec:
+        return []
+    out: list[tuple[str, str, dict[str, Any]]] = []
+    body_m, body_c = _pair(spec.get("body"), ("stone", "brown"))
+    cap_m, cap_c = _pair(spec.get("coping"), ("stone", "tan"))
+    height = int(spec.get("height", 9))
+    taken: set[tuple[int, int]] = set()
+    runs = sorted(spec.get("runs") or [], key=lambda r: str(r["edge"]) not in ("north", "south"))
+    for run in runs:
+        section = str(run["section"])
+        for chunk in _wall_line(run, taken):
+            xs, ys = [c[0] for c in chunk], [c[1] for c in chunk]
+            where = f"({min(xs) // 4},{min(ys) // 4})..({max(xs) // 4},{max(ys) // 4})"
+            out.append((section, f"the campus wall ({run['edge']} side) {where}", box(min(xs), min(ys), 0, max(xs), max(ys), height - 1, material=body_m, color=body_c)))
+            out.append((section, f"the campus wall's coping ({run['edge']} side) {where}", box(min(xs), min(ys), height, max(xs), max(ys), height, material=cap_m, color=cap_c)))
+    gate = spec.get("gate")
+    if gate:
+        section, color = str(gate.get("section", "campus-gate")), str(gate.get("color", "yellow"))
+        x, (p0, p1) = int(gate["x"]), (int(v) for v in gate["pillars"])
+        depth = int(gate.get("depth", 3))
+        bx0, bx1 = 4 * x, 4 * x + depth - 1
+        a0, a1 = 4 * p0 + 4, 4 * p1 - 1  # the opening's cells, pillar to pillar
+        mat = str(gate.get("material", "stone"))
+
+        def piece(name: str, by0: int, by1: int, z0: int, z1: int) -> None:
+            out.append((section, f"the yellow gate: {name}", box(bx0, by0, z0, bx1, by1, z1, material=mat, color=color)))
+
+        for side, p in (("north", p0), ("south", p1)):
+            piece(f"{side} pillar, lower", 4 * p, 4 * p + 3, 0, 7)
+            piece(f"{side} pillar, upper", 4 * p, 4 * p + 3, 8, TOP_LEVEL)
+        width = a1 - a0 + 1
+        centre = (a0 + a1) / 2
+        radius = width / 2
+        crown = 12
+        for i in range(width // 2):  # the arch ring, from each pillar inward: each cell column filled from the curve to the crown
+            by_l, by_r = a0 + i, a1 - i
+            d = abs(by_l - centre)
+            spring = 6 + (radius * radius - d * d) ** 0.5  # a semicircle on the opening's width, springing at level 6
+            z_from = math.floor(spring + 0.5)
+            if z_from < crown:
+                piece(f"arch, north haunch {i + 1}", by_l, by_l, z_from, crown - 1)
+                piece(f"arch, south haunch {i + 1}", by_r, by_r, z_from, crown - 1)
+        piece("the crown of the arch", a0, a1, crown, crown + 1)
+        piece("the top of the gate", a0, a1, crown + 2, crown + 2)
+    return out
+
+
 def _river_runs(path: list[list[int]]) -> list[list[tuple[int, int]]]:
     """Split a river branch into straight runs of at most 5 tiles (a box within 2 tiles of its builder)."""
     tiles = [(int(p[0]), int(p[1])) for p in path]
@@ -436,7 +519,7 @@ def expand(design: dict[str, Any]) -> list[dict[str, Any]]:
 
     counters: Counter[str] = Counter()
 
-    def add(section: str, index: int | None, name: str, action: dict[str, Any], prop: bool = False) -> None:
+    def add(section: str, index: int | None, name: str, action: dict[str, Any], prop: bool = False, flags: dict[str, Any] | None = None) -> None:
         cells = _cells_of(action)
         supported = any(z == 0 for _, _, z in cells) or _touches(cells, filled)
         if not supported and prop:
@@ -453,7 +536,7 @@ def expand(design: dict[str, Any]) -> list[dict[str, Any]]:
             "id": f"{section}:{n:02d}", "section": section, "name": name, "kind": "place", "action": action,
             "tiles": tiles_of(action), "cells": len(new), "items": max(1, math.ceil(len(new) / 4)) if new else 0,
             "item": MATERIAL_ITEM[str(action["material"])], "supported": supported, "top": max(z for _, _, z in cells),
-            "box_cells": len(cells),
+            "box_cells": len(cells), **(flags or {}),
         })
 
     plinth_block = _pair(design.get("foundation_block"), ("stone", "grey"))
@@ -477,6 +560,8 @@ def expand(design: dict[str, Any]) -> list[dict[str, Any]]:
     for tube in design.get("tubes") or []:
         for name, action in _tube_steps(tube):
             add(str(tube.get("section") or "tubes"), None, name, action)
+    for section, name, action in _campus_steps(design.get("campus_wall") or {}):
+        add(section, None, name, action, flags={"over_roads": True, "apron_ok": True})
     river = design.get("river") or {}
     material, color = _pair(river.get("block"), ("stone", "brown"))
     width = int(river.get("width_cells", 4))
@@ -557,6 +642,7 @@ def check(design: dict[str, Any], steps: list[dict[str, Any]], world: dict[str, 
             continue  # a removal takes down what an earlier version built: no ground to check
         x0, y0, x1, y1 = step["tiles"]
         floor = step["kind"] == "place" and str(step["action"].get("shape")) == "slab" and int(step["action"]["bz"]) == 0
+        high = step["kind"] == "place" and int(step["action"]["bz"]) >= 6  # every block at level 6 or above: the tile stays open, its node and road too
         for x in range(x0, x1 + 1):
             for y in range(y0, y1 + 1):
                 where = (x, y)
@@ -569,15 +655,15 @@ def check(design: dict[str, Any], steps: list[dict[str, Any]], world: dict[str, 
                     if where in structures:
                         problems.append(f"{step['id']}: tile {where} already holds a {structures[where]}")
                     continue
-                if nodes.get(where) in ("stone", "ore"):
+                if nodes.get(where) in ("stone", "ore") and not high:
                     problems.append(f"{step['id']}: tile {where} holds a {nodes[where]} node")
                 if floor:
                     if where in structures and structures[where] not in river_ok:
                         problems.append(f"{step['id']}: river over a {structures[where]} at {where}")
                     continue
-                if where in apron:
+                if where in apron and not high and not step.get("apron_ok"):
                     problems.append(f"{step['id']}: wall in the ore apron at {where}")
-                if where in structures:
+                if where in structures and not (structures[where] in river_ok and high) and not (structures[where] == "road" and step.get("over_roads")):
                     problems.append(f"{step['id']}: wall over a {structures[where]} at {where}")
     return sorted(set(problems))
 
