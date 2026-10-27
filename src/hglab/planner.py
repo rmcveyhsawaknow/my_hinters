@@ -867,7 +867,7 @@ def _plan_work(
         if trade is not None and trade[2] in {"deed_draw", "deed_trip"}:
             used.update(PRICE_SPENDERS)  # the price in the pack is the office's: Plumbline took 24 wood for its deed and put 19 back, and raised a tower with another 10 (2026-10-27)
     # 0.62 the team's blueprint (the owner's brief of 2026-10-24): a builder raises it step by step, carrying what it needs
-    while not persona.knobs.get("crew") and "blueprint" not in skip and "blueprint" not in used and len(actions) < cap:
+    while not persona.knobs.get("crew") and "blueprint" not in skip and "blueprint" not in used and not _owes_price(state, int(observe.get("tick", 0) or 0)) and len(actions) < cap:
         step = _plan_blueprint(persona, team, state, observe, view, inventory, here, cap - len(actions), set(names or ()))  # the team's own stores
         if step is not None and moved() and any(a.get("action") == "move" for a in step[0]):
             break  # one walk per wake: a second one the other way undid the first (Fudgewright, stalled five hours on 2026-10-25)
@@ -1226,6 +1226,17 @@ def _plan_site_trade(
     if target is None or target == position:
         return None
     return [{"action": "move", "x": target[0], "y": target[1]}], f"carrying {carried} {currency} toward the land office's storehouse at {vault} to pay for lot {bought.get('lot')}", "deed_trip"
+
+
+def _owes_price(state: PersonaState, tick: int) -> bool:
+    """A client with an answered survey still unpaid buys before it builds: Plumbline took 24 stone for 70 Pine Street, then put it back to carry the Battery's price (2026-10-27).
+
+    Not while the office's refusal holds the payment back (``DEED_BACKOFF_TICKS``): then the client builds.
+    """
+    bought = state.flags.get("house_site")
+    if not isinstance(bought, dict) or int(bought.get("paid", 0) or 0) >= int(bought.get("price", 0) or 0):
+        return False
+    return tick - int(state.flags.get("deed_backoff", -(10**9)) or -(10**9)) >= DEED_BACKOFF_TICKS
 
 
 PRICE_SPENDERS = frozenset({"build", "build_monument", "house", "hearth", "draw", "deposit", "deposit_trip", "stash", "gather_trip", "blueprint"})  # what a wake that draws or carries a land price leaves undone

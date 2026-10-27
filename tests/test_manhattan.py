@@ -163,3 +163,50 @@ def test_a_wake_that_draws_the_price_keeps_it_and_sheds_its_spare_load():
     acts = [a for a in plan["actions"] if a["action"] != "remember"]
     assert acts[:2] == [{"action": "give", "x": 82, "y": 89, "item": "berries", "qty": 10}, {"action": "take", "x": 82, "y": 89, "item": "wood", "qty": 27}]  # the whole price in one trip
     assert not [a for a in acts[2:] if a["action"] in {"give", "build", "place", "gather"}]  # nothing spends it or puts it back
+
+
+def test_once_the_factory_stands_its_hands_build_manhattan_and_are_not_called_back_to_the_works():
+    from hglab.crew import plan_crew
+
+    personas = load_personas(ROOT)
+    team = load_team(ROOT, "chocolate-factory")
+    hand = personas["loompa-quarrier"]
+    names = {p.name.casefold(): slug for slug, p in personas.items()}
+    observe = {"tick": 90000, "you": {"name": hand.name, "x": 64, "y": 101, "faction": {"id": 5, "name": "Chocolate Factory"}, "blocks_owned": 0}}
+    view = WorldView(x0=58, y0=95, rows=GRASS, full_map=GRASS, world_structures=_deeds("D08-NE", "E08-NW"), tick=90000)
+
+    def wake():
+        return plan_crew(hand, team, PersonaState(mood="busy"), observe, view, {"stone": 35, "berries": 5}, (64, 101), 80, hand.energy_reserve, 3, {p.name for p in personas.values()}, names, None)
+
+    before = wake()
+    assert before is not None and "from the works" in before[1]  # the factory is not done: 25 tiles out, the hand walks back
+    design, steps, _ = factory.blueprint(ROOT, "chocolate-factory")
+    factory.mark_done(ROOT, factory.ledger_name(design, "chocolate-factory"), [s["id"] for s in steps], 1, "test")
+    after = wake()
+    assert after is not None and "Lower Manhattan" in after[1] and after[0][0]["action"] == "move" and after[0][0]["x"] < 64  # west, with the stone, to Wall Street's ground
+    assert factory.blueprint(ROOT, "chocolate-factory")[0] is design  # both designs stay cached
+
+
+def test_a_client_that_owes_on_a_quoted_price_buys_before_it_builds():
+    import random
+
+    from hglab.planner import DEED_BACKOFF_TICKS, _owes_price, plan_wake
+
+    plumbline = load_personas(ROOT)["plumbline"]
+    observe = {
+        "tick": 90000, "inbox": [], "events": [], "structures": _deeds("D08-NE", "E08-NW"), "view": {"x0": 29, "y0": 74, "rows": ["g" * 13] * 13},
+        "you": {"name": "Plumbline", "x": 35, "y": 80, "energy": 90, "inventory": {"stone": 40, "wood": 20, "berries": 5}, "faction": {"id": 5, "name": "Chocolate Factory"}, "blocks_owned": 0},
+    }
+
+    def places(state):
+        plan = plan_wake(plumbline, load_team(ROOT, "atelier"), state, observe, "work", random.Random(1), terrain_rows=GRASS, work=True, registrar_name="LandBroker", public_structures=_deeds("D08-NE", "E08-NW"), collective_names={"Plumbline", "LandBroker"})
+        return [a for a in plan["actions"] if a["action"] == "place"]
+
+    assert places(PersonaState(mood="measuring"))  # Wall Street held, nothing owed: Federal Hall rises
+    owing = PersonaState(mood="measuring")
+    owing.flags["house_site"] = {"id": "nyc-battery", "x": 37, "y": 87, "lot": "D08-SE", "price": 103, "paid": 24, "currency": "wood"}
+    owing.flags["sites_paid"] = ["nyc-wall-street"]
+    owing.flags["deed_backoff"] = 90000 - DEED_BACKOFF_TICKS  # the backoff just ran out: the price comes first again
+    assert _owes_price(owing, 90000) and not places(owing)  # the Battery's price first: no stone taken and put back
+    owing.flags["deed_backoff"] = 90000 - 10  # the office refused the last payment: build meanwhile
+    assert not _owes_price(owing, 90000) and places(owing)
