@@ -177,3 +177,27 @@ def test_every_step_is_something_a_pack_can_pay_for():
     assert max(s["items"] for s in steps if s["kind"] == "place") <= factory.PACK_LIMIT
     caps = [s for s in steps if s["section"] in ("candy", "packing") and "roof cap" in s["name"]]
     assert len(caps) == 4 and all(s["supported"] and s["items"] <= 40 for s in caps)  # strips the full width, each resting on the slopes
+
+
+def test_coloured_tubes_leave_the_halls_and_go_back_in_above_every_path():
+    """The owner's brief of 2026-10-27: tubes out of the factory and back in, to make it look wonky."""
+    design, steps, _index = _bp()
+    tubes = [s for s in steps if s["section"].startswith("tubes")]
+    assert {s["section"] for s in tubes} == {"tubes-candy", "tubes-packing"} and len({s["action"]["color"] for s in tubes}) == 5
+    assert all(s["supported"] and min(c[2] for c in factory._cells_of(s["action"])) >= 6 for s in tubes)  # held by a wall, and no tile closed
+    walls = set()
+    for s in steps:
+        if s["section"] in {"candy", "packing"} and s["kind"] == "place":
+            walls |= factory._cells_of(s["action"])
+    for tube in design["tubes"]:
+        first, last = tube["path"][0], tube["path"][-1]
+        for x, y, z in (first, last):
+            assert any((x + dx, y + dy, z) in walls for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))), tube["name"]  # out of a wall and back into one
+    team = load_team(ROOT, "chocolate-factory")
+    assert "tubes-candy" in factory.builder_sections(team, "wonka") and "tubes-packing" in factory.builder_sections(team, "mrs-bucket")
+    try:
+        factory._tube_steps({"name": "bent", "color": "red", "path": [[0, 0, 6], [2, 2, 6]]})
+    except ValueError as err:
+        assert "not straight" in str(err)
+    else:
+        raise AssertionError("a diagonal leg must be refused")
