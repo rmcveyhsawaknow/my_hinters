@@ -713,7 +713,8 @@ def persona_wake(
         if action.get("action") == "give" and result.get("error") and bought and bought.get("pending") and action.get("item") == bought.get("currency") and int(action.get("qty", 0) or 0) == int(bought["pending"]):
             bought["paid"] = max(0, int(bought.get("paid", 0) or 0) - int(bought.pop("pending")))  # the deed payment was refused: still owed
             state_now.flags["house_site"] = bought
-            extras.setdefault("learned", []).append(f"the deed payment of {action.get('qty')} {action.get('item')} was refused ({result.get('error')}): still owed")
+            extras.setdefault("learned", []).append(f"the deed payment of {action.get('qty')} {action.get('item')} was refused ({result.get('error')}): still owed, tried again in six hours")
+            state_now.flags["deed_backoff"] = tick_now
             if not (result.get("error") == "inventory_full" and action.get("x") is not None):
                 return {PERSONA_STATE_KEY: dump_state(state_now)}
         if action.get("action") == "give" and result.get("error") == "inventory_full" and action.get("x") is not None and action.get("y") is not None:

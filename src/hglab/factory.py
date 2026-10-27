@@ -339,6 +339,35 @@ def _clears(section: dict[str, Any]) -> list[tuple[str, dict[str, Any], str]]:
     return out
 
 
+def _tube_steps(tube: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
+    """A coloured tube as boxes one cell thick along its path (cell points, each leg straight), out of one wall and into another.
+
+    The owner's brief of 2026-10-27: tubes coming out of the factory and going back in, to make it look wonky.
+    Every tube starts beside a wall so its first leg is held; each leg after the first starts past the shared
+    corner. Tubes keep to level 6 and above, where a block closes no tile, so nobody's way is barred.
+    """
+    points = [tuple(int(v) for v in p) for p in tube["path"]]
+    material, color = str(tube.get("material", "stone")), str(tube["color"])
+    out: list[tuple[str, dict[str, Any]]] = []
+    for leg, (a, b) in enumerate(itertools.pairwise(points)):
+        if sum(1 for i in range(3) if a[i] != b[i]) > 1:
+            raise ValueError(f"tube {tube.get('name')}: leg {leg + 1} from {a} to {b} is not straight")
+        axis = next((i for i in range(3) if a[i] != b[i]), 0)
+        step = 1 if b[axis] >= a[axis] else -1
+        cells = []
+        for v in range(a[axis], b[axis] + step, step):
+            cell = list(a)
+            cell[axis] = v
+            cells.append(tuple(cell))
+        if leg:
+            cells = cells[1:]  # the corner belongs to the leg before
+        if not cells:
+            continue
+        xs, ys, zs = [c[0] for c in cells], [c[1] for c in cells], [c[2] for c in cells]
+        out.append((f"tube {tube['name']} ({color}) leg {leg + 1}", box(min(xs), min(ys), min(zs), max(xs), max(ys), max(zs), material=material, color=color)))
+    return out
+
+
 def _river_runs(path: list[list[int]]) -> list[list[tuple[int, int]]]:
     """Split a river branch into straight runs of at most 5 tiles (a box within 2 tiles of its builder)."""
     tiles = [(int(p[0]), int(p[1])) for p in path]
@@ -445,6 +474,9 @@ def expand(design: dict[str, Any]) -> list[dict[str, Any]]:
         for name, action in _section_steps(section):
             for part_name, part in _lift(name, action, lift):
                 add(sid, None, f"{label}: {part_name}", part, prop=bool(lift))
+    for tube in design.get("tubes") or []:
+        for name, action in _tube_steps(tube):
+            add(str(tube.get("section") or "tubes"), None, name, action)
     river = design.get("river") or {}
     material, color = _pair(river.get("block"), ("stone", "brown"))
     width = int(river.get("width_cells", 4))

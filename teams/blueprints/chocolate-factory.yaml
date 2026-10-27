@@ -114,6 +114,32 @@ sections:
     window_color: yellow
     roof_slope: [thatch, indigo]
     roof_cap: [thatch, blue]
+# Tubes (the owner's brief of 2026-10-27): coloured pipes that come out of the factory and go back in, to make it
+# look wonky. Cell points [bx, by, bz], each leg straight; every tube starts and ends beside a hall's wall and keeps
+# to level 6 and above, where a block closes no tile. The candy hall's walls are cells 372-387 x 360-375, the
+# packing hall's 372-391 x 380-395; both stand on level ground (no plinth), so their levels are the tubes' levels.
+# Each tube rises in its section (default "tubes"); the team file names who raises which.
+tubes:
+  - name: red crossing
+    section: tubes-candy  # out of the candy hall's south wall, over the lane, into the packing hall's north wall
+    color: red
+    path: [[377, 376, 7], [377, 376, 11], [377, 379, 11], [377, 379, 7]]
+  - name: cyan crossing
+    section: tubes-packing  # a crooked one beside it, higher and kinked
+    color: cyan
+    path: [[382, 376, 9], [382, 377, 9], [382, 377, 13], [384, 377, 13], [384, 378, 13], [384, 378, 8], [384, 379, 8]]
+  - name: yellow loop
+    section: tubes-candy  # out of the candy hall's east wall, up, along and back in lower down
+    color: yellow
+    path: [[388, 362, 7], [390, 362, 7], [390, 362, 12], [390, 367, 12], [390, 367, 9], [388, 367, 9]]
+  - name: purple loop
+    section: tubes-packing  # out of the packing hall's east wall and back in
+    color: purple
+    path: [[392, 383, 6], [394, 383, 6], [394, 383, 10], [394, 389, 10], [393, 389, 10], [393, 389, 7], [392, 389, 7]]
+  - name: lime loop
+    section: tubes-candy  # out of the candy hall's north wall, over the turret line and back in
+    color: lime
+    path: [[381, 359, 8], [381, 357, 8], [381, 357, 13], [385, 357, 13], [385, 358, 13], [385, 358, 10], [385, 359, 10]]
 river:
   block: [stone, brown]
   width_cells: 4

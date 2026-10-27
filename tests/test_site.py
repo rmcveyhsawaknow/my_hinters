@@ -221,3 +221,22 @@ def test_an_unpaid_survey_is_reminded_every_two_hours_three_times():
     early = board(ledger, w["structures"], w["agents"], [], broker.name, quiet, world=w, tick=46500)
     actions, _r, _u = plan_round(broker, ledger, {**observe, "tick": 46500}, early, public_events=[], structures=w["structures"], agents=w["agents"], state=quiet, collective_names={"Fudgewright"}, world=w)
     assert not [a for a in actions if a["action"] == "whisper"]  # answered a hundred ticks ago: not yet
+
+
+def test_a_refused_deed_payment_waits_six_hours_while_the_client_builds():
+    """2026-10-27: every office store and the registrar's pack were full, and Fudgewright spent each wake carrying the price between them while the Candy Hall stood without its roof."""
+    from hglab.planner import DEED_BACKOFF_TICKS
+
+    wonka = load_personas(ROOT)["wonka"]
+    owing = PersonaState(mood="mercurial")
+    owing.flags["house_site"] = {"id": "works", "x": 87, "y": 97, "lot": "I09-SE", "price": 40, "currency": "wood", "paid": 16, "tick": 57000}
+    owing.flags["deed_backoff"] = 57000
+    rows = ["g" * 128] * 128
+    view = WorldView(x0=80, y0=84, rows=rows, full_map=rows, world_structures=[{"type": "storehouse", "x": 86, "y": 86, "owner": "Lintelstave", "faction": "Land Office"}])
+
+    def trade(tick):
+        return _plan_site_trade(wonka, owing, {"wood": 45}, (87, 87), view, {"tick": tick, "you": {"x": 87, "y": 87}, "inbox": []}, "LandBroker", office_names={"Lintelstave"})
+
+    assert trade(57000 + DEED_BACKOFF_TICKS - 1) is None  # the wake builds instead
+    again = trade(57000 + DEED_BACKOFF_TICKS)
+    assert again is not None and again[0][0]["action"] == "give" and again[0][0]["qty"] == 24  # six hours on: the rest of the price
