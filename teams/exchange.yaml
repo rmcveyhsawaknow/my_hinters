@@ -41,6 +41,8 @@ pipeline:
     evict:  # the owner, 2026-10-25: what others build on a staked lot without buying or registering it comes down (hglab.evict)
       enabled: true
       notice_ticks: 360  # the registrar whispers each builder a notice; the hands wait one hour after it (the owner, 2026-10-25)
+    tills: [[78, 95], [72, 73]]  # the owner, 2026-10-27: storehouses for the price of land only, by the factory's west gate and the registrar's vault; no hand unloads into them
+    stores_max: 14  # the owner, 2026-10-27: while every office store is full the mason raises another beside a full one (paid from it), up to this many with the tills
 members:
 - land-broker
 - office-quarrier

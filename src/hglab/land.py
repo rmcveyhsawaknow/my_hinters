@@ -31,6 +31,7 @@ from hglab.lots import (
     site_search,
     staked_lots,
     terrain_lookup,
+    till_tiles,
     total_lots,
 )
 from hglab.persona import Persona
@@ -471,12 +472,14 @@ def surveys_due(ledger: dict[str, Any], registrar_name: str, state: dict[str, An
     return out
 
 
-def pay_store(structures: list[dict[str, Any]], registrar_name: str, office_names: set[str] | None, anchor: Any) -> dict[str, Any] | None:
-    """The office storehouse nearest the client's ground (the registrar's own when distances tie): where the price goes."""
+def pay_store(structures: list[dict[str, Any]], registrar_name: str, office_names: set[str] | None, anchor: Any, tills: set[tuple[int, int]] | frozenset[tuple[int, int]] = frozenset()) -> dict[str, Any] | None:
+    """The office storehouse nearest the client's ground (the registrar's own when distances tie): where the price goes; a till first when one stands (2026-10-27)."""
     office = {registrar_name.casefold()} | {str(n).casefold() for n in (office_names or ())}
     stores = [s for s in structures if isinstance(s, dict) and s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() in office and isinstance(s.get("x"), int) and isinstance(s.get("y"), int)]
     if not stores:
         return None
+    standing_tills = [s for s in stores if (int(s["x"]), int(s["y"])) in tills]
+    stores = standing_tills or stores  # the tills are kept for the price of land: the other stores fill with the hands' loads
     if not anchor:
         return stores[0]
     ax, ay = int(anchor[0]), int(anchor[1])
@@ -688,7 +691,7 @@ def plan_round(
         due = reminders < 3 and since >= 720  # a whisper may have gone to a keepalive: remind every two hours, three times
         if asked or due:
             again = {"id": rid, "client": client, "lot": survey["lot"], "anchor": tuple(survey.get("anchor") or (0, 0)), "expandable": [], "reasons": [str(r) for r in survey.get("reasons", [])] or ["as surveyed"], "price": int(survey.get("price", 0) or 0)}
-            actions.append({"action": "whisper", "to": client, "text": survey_whisper(again, pay_store(structures, persona.name, office_names, again["anchor"]) or vault, str(survey.get("currency", currency)))})
+            actions.append({"action": "whisper", "to": client, "text": survey_whisper(again, pay_store(structures, persona.name, office_names, again["anchor"], till_tiles(claims)) or vault, str(survey.get("currency", currency)))})
             surveys_state = dict(update.get("surveys", state.get("surveys") or {}))
             surveys_state[rid] = {**survey, "answered": tick, "reminders": reminders + (0 if asked else 1)}
             update["surveys"] = surveys_state
@@ -697,7 +700,7 @@ def plan_round(
     for survey in surveys_due(ledger, persona.name, state, world, structures, agents, tick):
         if len(actions) >= 2 or energy - 2 < reserve:
             break
-        actions.append({"action": "whisper", "to": survey["client"], "text": survey_whisper(survey, pay_store(structures, persona.name, office_names, survey["anchor"]) or vault, currency)})
+        actions.append({"action": "whisper", "to": survey["client"], "text": survey_whisper(survey, pay_store(structures, persona.name, office_names, survey["anchor"], till_tiles(claims)) or vault, currency)})
         if not said:
             actions.append({"action": "say", "text": survey_line(survey, currency, limit)})
             said = True

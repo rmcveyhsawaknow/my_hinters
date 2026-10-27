@@ -33,7 +33,7 @@ from hglab.evict import (
     ring_roads,
 )
 from hglab.lots import holdings as office_holdings
-from hglab.lots import lot_anchor, lot_bounds, lot_id, node_floor
+from hglab.lots import lot_anchor, lot_bounds, lot_id, node_floor, till_tiles
 from hglab.mood import PersonaState
 from hglab.persona import Persona, Team
 from hglab.planner import (
@@ -191,7 +191,8 @@ def plan_crew(
     radius = int(cfg.get("radius", 7) or 7)
     reach = int(cfg.get("range", 16) or 16)
     mates = team_member_names(persona, team, names)
-    stores = factory_stores(view, mates, site, radius, blueprint_depots(team))
+    tills = till_tiles(cfg.get("claims") if isinstance(cfg.get("claims"), dict) else None)
+    stores = [s for s in factory_stores(view, mates, site, radius, blueprint_depots(team)) if (int(s["x"]), int(s["y"])) not in tills]  # a till takes only the price of land
     tick = int(view.tick or observe.get("tick", 0) or 0)
     full = _full_stores(state, tick)
     open_stores = [s for s in stores if (int(s["x"]), int(s["y"])) not in full and storehouse_room(s) >= OVERFLOW_ROOM]
@@ -210,7 +211,7 @@ def plan_crew(
             return node_floor(claims, node, structures_all, registrar, default=floor_default)
         return floor_default
 
-    field = depots(view, mates, site, radius) if claims else []
+    field = [s for s in depots(view, mates, site, radius) if (int(s["x"]), int(s["y"])) not in tills] if claims else []
     drop_points = [*stores, *field] if role != "hauler" else stores
     office_stores = [*stores, *field]
 
@@ -225,6 +226,12 @@ def plan_crew(
     # a1. the office's ground (owner, 2026-10-25): what outsiders built on a staked lot without buying it comes down once its notice ran out
     if claims and evict_cfg(claims) is not None:
         step = _evict_step(persona, team, claims, position, view, observe, room, energy, reserve, collective_names, tick)
+        if step is not None:
+            return step
+
+    # a1b. the office's stores (owner, 2026-10-27): its tills for the price of land, then another store while every one is full
+    if claims and role == "mason":
+        step = _office_store_step(persona, claims, inventory, position, view, mates, office_stores, tills, full, observe)
         if step is not None:
             return step
 
@@ -288,6 +295,106 @@ def plan_crew(
             return step
     wanted = _role_wanted(role, stock_levels(stores, cfg.get("stock") or {}))
     return _gather_toward(persona, team, wanted, inventory, position, view, site, reach, room, teammates, "for the works", floor_for, ranks)
+
+
+def team_tills(team: Team | None) -> set[tuple[int, int]]:
+    cfg = pipeline_of(team)
+    claims = cfg.get("claims") if cfg else None
+    return till_tiles(claims if isinstance(claims, dict) else None)
+
+
+def _office_store_step(
+    persona: Persona,
+    claims: dict[str, Any],
+    inventory: dict[str, int],
+    position: tuple[int, int],
+    view: WorldView,
+    mates: set[str],
+    office_stores: list[dict[str, Any]],
+    tills: set[tuple[int, int]],
+    full: set[tuple[int, int]],
+    observe: dict[str, Any],
+) -> Step | None:
+    """The office's mason keeps room for the price of land and for the hands' loads (owner, 2026-10-27).
+
+    On 2026-10-27 every store of the office held 500, every hand's pack was full of fiber, ore or wood,
+    so no hand could unload or carry stone to its walls, and the factory's deed payments were refused.
+    First the tills (``claims.tills``), raised where none stands and kept out of every unload. Then,
+    while every store of the office is full and fewer than ``claims.stores_max`` stand, another store
+    beside a full one: a build pays from the pack and then from stores within a tile, so the wood and
+    stone come out of the full store itself.
+    """
+    structures = view.world_structures or view.structures
+    standing = {(int(s["x"]), int(s["y"])) for s in structures if s.get("type") == "storehouse" and isinstance(s.get("x"), int) and isinstance(s.get("y"), int)}
+    ours = [s for s in structures if s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() in mates]
+    you = observe.get("you") or {}
+    faction = you.get("faction")
+    faction = str(faction.get("name") if isinstance(faction, dict) else faction or "")
+    pack = sum(inventory.values())
+    every_full = bool(office_stores) and not any(_has_room(s, full) for s in office_stores)
+    missing = sorted((t for t in tills if t not in standing and view.free_tile(*t)), key=lambda t: (chebyshev(position, t), t))
+    if missing:
+        target = missing[0]
+        if materials_ok(inventory, "storehouse"):
+            if chebyshev(position, target) <= 1:
+                return [{"action": "build", "type": "storehouse", "x": target[0], "y": target[1], "policy": "faction"}], f"the office's till at {target} for the price of land: raise it from the pack", "crew"
+            step = _step_toward(position, {"x": target[0], "y": target[1]}, view)
+            if step is not None and step != position:
+                return [{"action": "move", "x": step[0], "y": step[1]}], f"a till's cost in the pack: walk to {target}, where the office takes the price of land", "crew"
+            return None
+        lacking = shortfall(inventory, "storehouse")
+        if 50 - pack >= sum(lacking.values()):
+            for store in sorted(office_stores, key=lambda s: chebyshev(position, (int(s["x"]), int(s["y"])))):
+                where = (int(store["x"]), int(store["y"]))
+                storage = store.get("storage") if isinstance(store.get("storage"), dict) else None
+                if not _admits(persona, store, faction) or (storage is not None and any(int(storage.get(k, 0) or 0) < q for k, q in lacking.items())):
+                    continue
+                if chebyshev(position, where) <= 1 and storage is not None:
+                    return [{"action": "take", "x": where[0], "y": where[1], "item": k, "qty": q} for k, q in sorted(lacking.items())], f"the till at {target} wants {', '.join(f'{q} {k}' for k, q in sorted(lacking.items()))}: take it from the store at {where}", "crew"
+                if chebyshev(position, where) > CARRY_RANGE:
+                    continue
+                step = _step_toward(position, {"x": where[0], "y": where[1]}, view)
+                if step is not None and step != position:
+                    return [{"action": "move", "x": step[0], "y": step[1]}], f"the till at {target} wants a storehouse's cost: walk to the store at {where} for it", "crew"
+                break
+        elif not every_full:
+            return None  # the pack unloads first, into a store with room
+    cap = int(claims.get("stores_max", 0) or 0)
+    if not every_full or len(ours) >= cap:
+        return None
+    excluded = {str(lid).upper() for lid in claims.get("exclude") or []}
+    skip = blocked_near([*view.world_structures, *view.structures], mates) | tills
+    skip |= {(int(r["x"]), int(r["y"])) for r in (view.world_resources or view.resources) if isinstance(r.get("x"), int) and isinstance(r.get("y"), int)}
+
+    def spot(stand: tuple[int, int]) -> tuple[int, int] | None:
+        options = [t for t in [stand, *neighbours(*stand)] if t not in skip and view.free_tile(*t) and lot_id(*t) not in excluded]
+        options.sort(key=lambda t: (t == stand, t))  # beside the mason first: the tile underfoot stays walkable
+        return options[0] if options else None
+
+    payers = []
+    for store in office_stores:
+        where = (int(store["x"]), int(store["y"]))
+        storage = store.get("storage") if isinstance(store.get("storage"), dict) else None
+        if not _admits(persona, store, faction) or lot_id(*where) in excluded:
+            continue
+        if storage is not None and not materials_ok(with_storage(inventory, {k: int(v or 0) for k, v in storage.items()}), "storehouse"):
+            continue
+        payers.append((where, store))
+    payers.sort(key=lambda pair: (chebyshev(position, pair[0]), pair[0]))
+    for where, store in payers:
+        if chebyshev(position, where) <= 1 and isinstance(store.get("storage"), dict):
+            tile = spot(position)
+            if tile is not None:
+                return [{"action": "build", "type": "storehouse", "x": tile[0], "y": tile[1], "policy": "faction"}], f"every store of the office is full ({len(ours)} of {cap} standing): another at {tile}, paid from the pack and the full store at {where}", "crew"
+            continue
+        stands = [t for t in neighbours(*where) if view.walkable(*t)] if chebyshev(position, where) <= CARRY_RANGE else []
+        if not stands:
+            continue
+        stand = min(stands, key=lambda t: (chebyshev(position, t), t))
+        step = _step_toward(position, {"x": stand[0], "y": stand[1]}, view)
+        if step is not None and step != position:
+            return [{"action": "move", "x": step[0], "y": step[1]}], f"every store of the office is full ({len(ours)} of {cap} standing): walk to the store at {where} to raise another beside it", "crew"
+    return None
 
 
 def _has_room(store: dict[str, Any], full: set[tuple[int, int]]) -> bool:
@@ -417,7 +524,7 @@ def _wall_step(
     first, rest = wall_lots(claims, held, structures, mates, held_by=held_by)
     if not first and not rest:
         return None
-    skip = blocked_near([*view.world_structures, *view.structures], mates) | no_wall(state, tick)
+    skip = blocked_near([*view.world_structures, *view.structures], mates) | no_wall(state, tick) | till_tiles(claims)
     skip |= {(int(r["x"]), int(r["y"])) for r in (view.world_resources or view.resources) if isinstance(r.get("x"), int) and isinstance(r.get("y"), int)}
     skip |= {(int(a["x"]), int(a["y"])) for a in [*view.agents, *view.residents] if isinstance(a.get("x"), int) and isinstance(a.get("y"), int)}
     tiles: list[tuple[str, tuple[int, int]]] = []
@@ -945,4 +1052,4 @@ def _gather_toward(
     return None
 
 
-__all__ = ["ROLE_WANTED", "blueprint_depots", "depots", "factory_stores", "office_claims", "pipeline_of", "plan_crew", "shortest_first", "stock_levels"]
+__all__ = ["ROLE_WANTED", "blueprint_depots", "depots", "factory_stores", "office_claims", "pipeline_of", "plan_crew", "shortest_first", "stock_levels", "team_tills", "till_tiles"]

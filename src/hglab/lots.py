@@ -46,6 +46,15 @@ def lot_bounds(lid: str) -> tuple[int, int, int, int]:
     return x0, y0, min(x0 + LOT - 1, WORLD - 1), min(y0 + LOT - 1, WORLD - 1)
 
 
+def till_tiles(claims: dict[str, Any] | None) -> set[tuple[int, int]]:
+    """The office's tills (``claims.tills``): storehouses kept for the price of land, which no one unloads into (owner, 2026-10-27)."""
+    out: set[tuple[int, int]] = set()
+    for tile in (claims or {}).get("tills") or []:
+        if isinstance(tile, (list, tuple)) and len(tile) == 2:
+            out.add((int(tile[0]), int(tile[1])))
+    return out
+
+
 def lot_anchor(lid: str) -> tuple[int, int]:
     """The tile a claim sign goes on: the lot's centre."""
     x0, y0, x1, y1 = lot_bounds(lid)
@@ -381,5 +390,6 @@ __all__ = [
     "stake_text",
     "staked_lots",
     "terrain_lookup",
+    "till_tiles",
     "total_lots",
 ]
