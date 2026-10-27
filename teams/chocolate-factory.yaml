@@ -25,9 +25,9 @@ pipeline:
   stores_max: 10
   blueprint: chocolate-factory  # teams/blueprints/chocolate-factory.yaml (the owner's brief of 2026-10-24)
   builders:
-    loompa-mason: [depots, elevator, mill, terrace, lookout]
-    wonka: [candy, tubes-candy, elevator, depots, lookout]
-    mrs-bucket: [packing, tubes-packing, river-west, river-terrace, river-east]
+    loompa-mason: [depots, elevator, mill, terrace, lookout, campus-north, campus-east]
+    wonka: [candy, tubes-candy, campus-gate, campus-west, elevator, depots, lookout]
+    mrs-bucket: [packing, tubes-packing, campus-south, river-west, river-terrace, river-east, campus-east]
     # GrandadPail rests by the family hut and holds court from it (owner, 2026-10-24); he builds nothing
   stock:  # the blueprint's remaining cost sets the mix (hglab factory show): stone first, then wood and fiber
     wood: 400

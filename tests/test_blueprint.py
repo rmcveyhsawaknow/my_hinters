@@ -201,3 +201,30 @@ def test_coloured_tubes_leave_the_halls_and_go_back_in_above_every_path():
         assert "not straight" in str(err)
     else:
         raise AssertionError("a diagonal leg must be refused")
+
+
+def test_a_high_wall_rings_the_campus_and_its_yellow_gate_keeps_the_way_open():
+    """The owner's brief of 2026-10-27: a high wall round the whole campus, one large yellow gate with a round archway."""
+    _design, steps, _index = _bp()
+    camp = [s for s in steps if s["section"].startswith("campus")]
+    assert {s["section"] for s in camp} == {"campus-north", "campus-south", "campus-east", "campus-west", "campus-gate"}
+    assert all(s["supported"] and s["items"] <= factory.PACK_LIMIT for s in camp)
+    seen: dict = {}
+    for s in camp:
+        for c in factory._cells_of(s["action"]):
+            assert c not in seen, (c, s["id"], seen[c])  # the corners belong to one run
+            seen[c] = s["id"]
+    walls = [s for s in camp if s["section"] != "campus-gate"]
+    assert {s["action"]["color"] for s in walls} == {"brown", "tan"} and max(s["top"] for s in walls) == 9  # as tall as the halls' walls
+    gate = [s for s in camp if s["section"] == "campus-gate"]
+    assert {s["action"]["color"] for s in gate} == {"yellow"} and max(s["top"] for s in gate) == factory.TOP_LEVEL
+    opening = {(80, y) for y in (91, 92, 93)}
+    under = [c for s in gate for c in factory._cells_of(s["action"]) if (c[0] // 4, c[1] // 4) in opening]
+    assert under and min(c[2] for c in under) >= 6  # nothing below level 6 under the arch: the three tiles stay open
+    tops = {}
+    for c in under:
+        tops[c[1]] = min(tops.get(c[1], 99), c[2])
+    lows = [tops.get(by, 99) for by in range(4 * 91, 4 * 94)]
+    assert lows[0] < lows[2] < lows[5] and lows == lows[::-1]  # the archway rises round to its crown, the same on both sides
+    team = load_team(ROOT, "chocolate-factory")
+    assert "campus-gate" in factory.builder_sections(team, "wonka") and "campus-north" in factory.builder_sections(team, "loompa-mason")
