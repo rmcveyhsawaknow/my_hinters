@@ -74,12 +74,12 @@ def test_the_model_plans_every_navy_wake_within_its_own_daily_cap():
     from hglab.cli_personas import effective_planner
 
     fathomark = _navy()
-    assert fathomark.knobs["model_route"] == "tick_opus" and fathomark.knobs["planner"] == "model"
+    assert fathomark.knobs["model_route"] == "tick_premium" and fathomark.knobs["planner"] == "model"  # Sonnet 5.5 since 2026-10-27
     assert effective_planner(fathomark, "heuristic", work=True) == "auto"  # shifts too: the model, when a key is set
     wonka = load_personas(ROOT)["wonka"]
     assert effective_planner(wonka, "heuristic", work=True) == "heuristic"  # everyone else's shifts stay on rules
     records = [
-        {"agent": "Fathomark", "created_utc": "2026-10-26T10:00:00+00:00", "usage": {"model": "claude-opus-5-5", "input_tokens": 400000, "output_tokens": 20000, "calls": 20}},
+        {"agent": "Fathomark", "created_utc": "2026-10-26T10:00:00+00:00", "usage": {"model": "claude-sonnet-5-5", "input_tokens": 600000, "output_tokens": 20000, "calls": 12}},
         {"agent": "Clarion", "created_utc": "2026-10-26T10:00:00+00:00", "usage": {"model": "claude-haiku-5-5", "input_tokens": 10000, "output_tokens": 100, "calls": 1}},
     ]
     from datetime import UTC, datetime
