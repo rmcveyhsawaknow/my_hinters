@@ -15,6 +15,7 @@ from hglab.persona import load_personas, load_team
 from hglab.planner import WorldView, _house_shortfall, _house_site, _plan_site_trade
 
 ROOT = Path(__file__).resolve().parents[1]
+NYC_DEEDED = {rid: {"client": "Plumbline", "deeded": 1} for rid in ("nyc-wall-street", "nyc-battery", "nyc-trinity", "nyc-wtc")}  # Lower Manhattan's ground (2026-10-27), settled: these tests follow the factory's
 
 
 def _world():
@@ -191,7 +192,7 @@ def test_a_client_who_asks_again_gets_the_answer_again():
     w = _world()
     ledger = load_ledger(ROOT)
     broker = load_personas(ROOT)["land-broker"]
-    state = {"surveys": {"factory": {"client": "Fudgewright", "lot": "F07-SE", "anchor": [57, 77], "price": 20, "currency": "wood", "tick": 46000, "reasons": ["ore-rich"]}, "works": {"client": "Fudgewright", "deeded": 1}, "grounds": {"client": "Fudgewright", "deeded": 1}}}
+    state = {"surveys": {"factory": {"client": "Fudgewright", "lot": "F07-SE", "anchor": [57, 77], "price": 20, "currency": "wood", "tick": 46000, "reasons": ["ore-rich"]}, "works": {"client": "Fudgewright", "deeded": 1}, "grounds": {"client": "Fudgewright", "deeded": 1}, **NYC_DEEDED}}
     observe = {"tick": 46400, "you": {"name": "LandBroker", "x": 65, "y": 55, "energy": 90, "inventory": {"berries": 10, "wood": 5}}, "your_goals": {"posted": []}, "inbox": [{"from": "Fudgewright", "text": "SURVEY REQUEST factory: LandBroker, the factory needs ground.", "tick": 46390}], "notebook": {}}
     b = board(ledger, w["structures"], w["agents"], [], broker.name, state, world=w, tick=46400)
     actions, _reasons, update = plan_round(broker, ledger, observe, b, public_events=[], structures=w["structures"], agents=w["agents"], state=state, collective_names={"Fudgewright", "LandBroker"}, world=w)
@@ -206,7 +207,7 @@ def test_an_unpaid_survey_is_reminded_every_two_hours_three_times():
     broker = load_personas(ROOT)["land-broker"]
     survey = {"client": "Fudgewright", "lot": "F07-SE", "anchor": [57, 77], "price": 20, "currency": "wood", "tick": 46000, "reasons": ["ore-rich"]}
     observe = {"you": {"name": "LandBroker", "x": 65, "y": 55, "energy": 90, "inventory": {"berries": 10, "wood": 5}}, "your_goals": {"posted": []}, "inbox": [], "notebook": {}}
-    state = {"surveys": {"factory": dict(survey), "works": {"client": "Fudgewright", "deeded": 1}, "grounds": {"client": "Fudgewright", "deeded": 1}}}
+    state = {"surveys": {"factory": dict(survey), "works": {"client": "Fudgewright", "deeded": 1}, "grounds": {"client": "Fudgewright", "deeded": 1}, **NYC_DEEDED}}
     for n, tick in enumerate((46800, 47600, 48400, 49200), start=1):
         b = board(ledger, w["structures"], w["agents"], [], broker.name, state, world=w, tick=tick)
         actions, _r, update = plan_round(broker, ledger, {**observe, "tick": tick}, b, public_events=[], structures=w["structures"], agents=w["agents"], state=state, collective_names={"Fudgewright"}, world=w)
@@ -217,7 +218,7 @@ def test_an_unpaid_survey_is_reminded_every_two_hours_three_times():
             assert state["surveys"]["factory"]["reminders"] == n
         else:
             assert not whispers  # three reminders, then the office waits for the client
-    quiet = {"surveys": {"factory": {**survey, "answered": 46400}, "works": {"client": "Fudgewright", "deeded": 1}, "grounds": {"client": "Fudgewright", "deeded": 1}}}
+    quiet = {"surveys": {"factory": {**survey, "answered": 46400}, "works": {"client": "Fudgewright", "deeded": 1}, "grounds": {"client": "Fudgewright", "deeded": 1}, **NYC_DEEDED}}
     early = board(ledger, w["structures"], w["agents"], [], broker.name, quiet, world=w, tick=46500)
     actions, _r, _u = plan_round(broker, ledger, {**observe, "tick": 46500}, early, public_events=[], structures=w["structures"], agents=w["agents"], state=quiet, collective_names={"Fudgewright"}, world=w)
     assert not [a for a in actions if a["action"] == "whisper"]  # answered a hundred ticks ago: not yet

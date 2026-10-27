@@ -10,6 +10,14 @@ faction:
   membership: invite
   precedence: team
   founder: wonka
+pipeline:  # the owner's brief of 2026-10-27: the Atelier's replica of Lower Manhattan (teams/blueprints/lower-manhattan.yaml)
+  site: {x: 35, y: 82}
+  radius: 2
+  range: 64
+  plan: []
+  blueprint: lower-manhattan
+  builders:
+    plumbline: [federal-hall, streets, forty-wall, seventy-pine, nyse, twenty-exchange, charging-bull, castle-clinton, battery-park, trinity-church, one-wtc, memorial-north, memorial-south, woolworth]
 home: null
 territory: null
 social_budget:

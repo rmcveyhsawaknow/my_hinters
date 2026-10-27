@@ -46,6 +46,29 @@ site_requests:
     lots: [I08-NW, I08-NE, I08-SW, I08-SE, J08-NW, J08-NE, J08-SW, J08-SE, I09-NW, I09-SW, J09-NW, J09-NE, J09-SW, J09-SE]
     wants: [ore, stone]
     note: The rest of the factory's four plots (I08, J08, I09, J09), from the bay up the hill belt to the foot of the eastern peak, for the blueprint of 2026-10-24; withdrawn from the office's holdings while under contract (teams/exchange.yaml claims.exclude).
+  # Lower Manhattan (the owner's brief of 2026-10-27): the Atelier's replica on the south-west shore, bought in four
+  # segments, each a fixed survey of lots; a step of the blueprint (teams/blueprints/lower-manhattan.yaml) rises only
+  # on lots the office has deeded to Plumbline. Paid into a till of the office, any office store, or the registrar's hands.
+  - id: nyc-wall-street
+    client: Plumbline
+    lots: [D08-NE, E08-NW]
+    wants: [stone]
+    note: Wall Street for the Atelier's Lower Manhattan, Broadway to the East River side; Federal Hall, 40 Wall Street, 70 Pine Street and the head of the Stock Exchange.
+  - id: nyc-battery
+    client: Plumbline
+    lots: [D08-SE, E08-SW, D08-SW, C08-SE]
+    wants: [stone]
+    note: The Battery for the Atelier's Lower Manhattan, the tip of the island by the inlet; the Stock Exchange, the ferry terminal, the Seaport, Battery Park and Castle Clinton.
+  - id: nyc-trinity
+    client: Plumbline
+    lots: [D08-NW, C08-NE]
+    wants: [stone]
+    note: Trinity Church and Battery Park City for the Atelier's Lower Manhattan, Broadway west to the Hudson shore.
+  - id: nyc-wtc
+    client: Plumbline
+    lots: [D07-SW, D07-SE, C07-SE, E07-SW]
+    wants: [stone]
+    note: The World Trade Center and the north of the Atelier's Lower Manhattan; One World Trade Center, the memorial pools, the Oculus, the Woolworth Building.
 # The sales desk (the owner's instruction of 2026-10-23): the office keeps its best staked lots as holdings
 # (teams/exchange.yaml: pipeline.claims), its hands work their nodes into the vault, and the vault's goods
 # are sold through self-confirming goals: the buyer gives the price into the vault and the goods pay out at

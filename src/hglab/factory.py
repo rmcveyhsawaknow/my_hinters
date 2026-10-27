@@ -198,6 +198,8 @@ def _section_steps(section: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
     levels = int(section.get("levels", 10))
     lift = foundation_map(section)
     ceiling = TOP_LEVEL - max(lift.values(), default=0)  # the tallest plinth comes off the top
+    if style in CITY_STYLES:
+        return _city_steps(section, ceiling)
     top = min(ceiling, levels - 1)
     door_mat, door_color = _pair(section.get("door"), ("metal", "yellow"))
     steps: list[tuple[str, dict[str, Any]]] = []
@@ -278,6 +280,260 @@ def _section_steps(section: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
     cap = _pair(section.get("roof_cap"), ("thatch", "purple"))
     steps.extend(_hip_roof(rect, top, slope, cap))
     return steps
+
+
+# ---------------------------------------------------------------- city styles (the owner's brief of 2026-10-27: a replica of Lower Manhattan)
+
+PACK_CELLS = 160  # a city box a pack pays for with its berries aside (40 items): no step needs a store beside it
+CITY_STYLES = {"skyscraper", "temple", "church", "park", "fort", "pool", "statue"}
+
+
+def _inset(rect: Rect, k: int) -> Rect:
+    bx0, by0, bx1, by1 = rect
+    return bx0 + k, by0 + k, bx1 - k, by1 - k
+
+
+def _rows(rect: Rect, z: int, material: str, limit: int = PACK_CELLS, **extra: Any) -> list[dict[str, Any]]:
+    """A floor, cap or podium over ``rect`` at level ``z`` in strips of full-width rows, each at most ``limit`` cells."""
+    bx0, by0, bx1, by1 = rect
+    width = bx1 - bx0 + 1
+    per = max(1, limit // width)
+    out, y = [], by0
+    while y <= by1:
+        y2 = min(by1, y + per - 1)
+        out.append(box(bx0, y, z, bx1, y2, z, material=material, **extra))
+        y = y2 + 1
+    return out
+
+
+def _courses(rect: Rect, z0: int, z1: int, material: str, color: str) -> list[dict[str, Any]]:
+    """Wall rings from ``z0`` to ``z1``, as many levels a box as stay within a pack's worth of cells."""
+    per = max(1, PACK_CELLS // _perimeter(rect))
+    return [_ring(rect, a, b, material, color=color) for a, b in _bands(z0, z1, per)]
+
+
+def _glass(rect: Rect, z0: int, z1: int, color: str, band: int = 4) -> list[tuple[str, dict[str, Any]]]:
+    """A curtain of windows facing out of every side, in bands of up to ``band`` levels."""
+    out = []
+    side_cells = max(rect[2] - rect[0] + 1, rect[3] - rect[1] + 1)
+    per = max(1, min(band, PACK_CELLS // side_cells))
+    for a, b in _bands(z0, z1, per):
+        out.extend((f"glass {a}-{b} {side}", act) for side, act in _sides(rect, a, b, "wood", shape="window", color=color))
+    return out
+
+
+def _crown(rect: Rect, z: int, ceiling: int, crown: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
+    """A tower's top from level ``z``: ``pyramid`` (a level of slopes round a flat cap, each one cell in),
+    ``stepped`` (solid levels each one cell in), ``spire`` (a mast at the centre) or ``flat``; ``mast: true``
+    puts a mast on a pyramid or stepped top. Every level is solid, so the next one in rests on it."""
+    style = str(crown.get("style", "flat"))
+    material, color = _pair(crown.get("block"), ("stone", "grey"))
+    out: list[tuple[str, dict[str, Any]]] = []
+    cur = rect
+    if style in ("pyramid", "stepped"):
+        while z <= ceiling and cur[2] - cur[0] >= 2 and cur[3] - cur[1] >= 2:
+            if style == "pyramid":
+                out.extend((f"crown {z} {name}", act) for name, act in _hip_roof(cur, z, (material, color), (material, color)))
+            else:
+                out.extend((f"crown {z} part {n + 1}", act) for n, act in enumerate(_rows(cur, z, material, color=color)))
+            cur = _inset(cur, 1)
+            z += 1
+        if z <= ceiling and style == "stepped":
+            out.append((f"crown top {z}", box(cur[0], cur[1], z, cur[2], cur[3], z, material=material, color=color)))
+            z += 1
+    if (style == "spire" or crown.get("mast")) and z <= ceiling:
+        mast_m, mast_c = _pair(crown.get("mast_block"), (material, color))
+        cx, cy = (cur[0] + cur[2]) // 2, (cur[1] + cur[3]) // 2
+        top = min(ceiling, z + int(crown.get("mast_levels", 16)) - 1)
+        out.append(("mast", box(cx, cy, z, cx, cy, top, material=mast_m, color=mast_c)))
+    return out
+
+
+def _reach_split(name: str, act: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
+    """A box over more tiles than a builder reaches (five across: two either side) cut at tile edges into parts it does."""
+    span = 2 * REACH + 1
+    bx0, by0, bz0 = int(act["bx"]), int(act["by"]), int(act["bz"])
+    bx1, by1 = int(act.get("bx2", bx0)), int(act.get("by2", by0))
+    if bx1 // 4 - bx0 // 4 < span and by1 // 4 - by0 // 4 < span:
+        return [(name, act)]
+
+    def cuts(a: int, b: int) -> list[tuple[int, int]]:
+        out, start = [], a
+        while start <= b:
+            end = min(b, 4 * (start // 4 + span) - 1)
+            out.append((start, end))
+            start = end + 1
+        return out
+
+    rest = {k: v for k, v in act.items() if k not in ("action", "bx", "by", "bz", "bx2", "by2", "bz2")}
+    parts = [(x0, x1, y0, y1) for x0, x1 in cuts(bx0, bx1) for y0, y1 in cuts(by0, by1)]
+    return [(f"{name} (part {n + 1})", box(x0, y0, bz0, x1, y1, int(act.get("bz2", bz0)), **rest)) for n, (x0, x1, y0, y1) in enumerate(parts)]
+
+
+def _city_steps(section: dict[str, Any], ceiling: int) -> list[tuple[str, dict[str, Any]]]:
+    """The building order of one city section (styles in ``CITY_STYLES``), every box within a pack's worth of cells
+    and a builder's reach."""
+    return [part for name, act in _city_boxes(section, ceiling) for part in _reach_split(name, act)]
+
+
+def _city_boxes(section: dict[str, Any], ceiling: int) -> list[tuple[str, dict[str, Any]]]:
+    rect = cells_rect(section["tiles"])
+    style = str(section["style"])
+    steps: list[tuple[str, dict[str, Any]]] = []
+    if style == "skyscraper":
+        door_m, door_c = _pair(section.get("door"), ("wood", "black"))  # ore is scarce: wooden doors
+        for side in section.get("doors") or ["south"]:
+            steps.append((f"{side} door", _door(rect, str(side), door_m, door_c, one_tile=bool(foundation_map(section)))))
+        z = 0
+        cur = rect
+        for i, stage in enumerate(section.get("stages") or [{"levels": 8}]):
+            inset = int(stage.get("inset", 0))
+            if inset and i:
+                for k in range(inset):  # the setback's ledge, ring by ring inward, on the level the next stage starts
+                    steps.append((f"setback {i} ledge {k + 1}", _ring(_inset(cur, k), z, z, "stone", color=_pair(stage.get("ledge"), ("stone", "grey"))[1])))
+                cur = _inset(cur, inset)
+            top = min(ceiling - 1, z + int(stage.get("levels", 4)) - 1)
+            if top < z:
+                break
+            material, colors = "stone", [str(c) for c in stage.get("courses") or ["grey"]]
+            if stage.get("glass"):
+                steps.extend(_glass(cur, z, top, str(stage.get("window_color", "cyan")), int(stage.get("band", 4))))
+            else:
+                every = int(stage.get("window_every", 2))
+                windows = {lv for lv in range(z, top + 1) if every and (lv - z) % every == every - 1}
+                lv, band = z, 0
+                while lv <= top:
+                    if lv in windows:
+                        steps.extend((f"stage {i + 1} windows {lv} {side}", act) for side, act in _sides(cur, lv, lv, "wood", shape="window", color=str(stage.get("window_color", "cyan"))))
+                        lv += 1
+                        continue
+                    end = lv
+                    while end + 1 <= top and end + 1 not in windows:
+                        end += 1
+                    for box_ in _courses(cur, lv, end, material, colors[band % len(colors)]):
+                        steps.append((f"stage {i + 1} course {box_['bz']}-{box_.get('bz2', box_['bz'])}", box_))
+                    band += 1
+                    lv = end + 1
+            z = top + 1
+        roof_m, roof_c = _pair(section.get("roof"), ("stone", "grey"))
+        if z <= ceiling:
+            steps.extend((f"roof {n + 1}", act) for n, act in enumerate(_rows(cur, z, roof_m, shape="slab", color=roof_c)))
+            z += 1
+        if isinstance(section.get("crown"), dict) and z <= ceiling:
+            steps.extend(_crown(_inset(cur, int(section["crown"].get("inset", 0))), z, ceiling, section["crown"]))
+        return steps
+    if style == "temple":
+        facing = str(section.get("facing", "south"))
+        levels = min(ceiling, int(section.get("levels", 6)))
+        wall_m, wall_c = _pair(section.get("walls"), ("stone", "white"))
+        col_m, col_c = _pair(section.get("columns"), (wall_m, wall_c))
+        pod_m, pod_c = _pair(section.get("podium"), ("stone", "grey"))
+        bx0, by0, bx1, by1 = rect
+        steps.extend((f"podium {n + 1}", act) for n, act in enumerate(_rows(rect, 0, pod_m, color=pod_c)))
+        top = levels - 3  # columns and walls from level 1 to here; the entablature above, the pediment on top
+        front = {"north": (bx0, by0, bx1, by0), "south": (bx0, by1, bx1, by1), "west": (bx0, by0, bx0, by1), "east": (bx1, by0, bx1, by1)}[facing]
+        for name, act in _sides(rect, 1, top, wall_m, color=wall_c):
+            if name != facing:
+                steps.append((f"{name} wall", act))
+        fx0, fy0, fx1, fy1 = front
+        # the corners of an east or west front belong to the north and south walls: the columns stand between them
+        cells = [(x, fy0) for x in range(fx0, fx1 + 1, 2)] if fy0 == fy1 else [(fx0, y) for y in range(fy0 + 1, fy1, 2)]
+        for n, (cx, cy) in enumerate(cells):
+            steps.append((f"column {n + 1}", box(cx, cy, 1, cx, cy, top, material=col_m, color=col_c)))
+        steps.extend((f"entablature {n + 1}", act) for n, act in enumerate(_rows(rect, top + 1, wall_m, color=wall_c)))
+        roof = _pair(section.get("roof"), (wall_m, wall_c))
+        steps.extend(_hip_roof(rect, top + 2, roof, roof))
+        return steps
+    if style == "church":
+        levels = min(ceiling - 1, int(section.get("levels", 5)))
+        wall_m, wall_c = _pair(section.get("walls"), ("stone", "brown"))
+        glass = str(section.get("window_color", "purple"))
+        door_m, door_c = _pair(section.get("door"), ("wood", "brown"))
+        tower = section.get("tower") or {}
+        side = str(tower.get("at", "east"))
+        bx0, by0, bx1, by1 = rect
+        my = (by0 + by1) // 2
+        mx = (bx0 + bx1) // 2
+        t_rect = {"east": (bx1 - 2, my - 1, bx1, my + 1), "west": (bx0, my - 1, bx0 + 2, my + 1), "north": (mx - 1, by0, mx + 1, by0 + 2), "south": (mx - 1, by1 - 2, mx + 1, by1)}[side]
+        t_top = min(ceiling, int(tower.get("levels", 10)) - 1)
+        t_m, t_c = _pair(tower.get("block"), (wall_m, wall_c))
+        steps.append(("tower", box(t_rect[0], t_rect[1], 0, t_rect[2], t_rect[3], t_top, material=t_m, color=t_c)))
+        opposite = {"east": "west", "west": "east", "north": "south", "south": "north"}[side]
+        steps.append((f"{opposite} door", _door(rect, opposite, door_m, door_c, one_tile=bool(foundation_map(section)))))
+        steps.extend((f"nave {box_['bz']}-{box_.get('bz2', box_['bz'])}", box_) for box_ in _courses(rect, 0, 1, wall_m, wall_c))
+        steps.extend((f"stained glass {s}", act) for s, act in _sides(rect, 2, 2, "wood", shape="window", color=glass))
+        steps.extend((f"nave {box_['bz']}-{box_.get('bz2', box_['bz'])}", box_) for box_ in _courses(rect, 3, levels - 1, wall_m, wall_c))
+        roof = _pair(section.get("roof"), ("stone", "black"))
+        steps.extend(_hip_roof(rect, levels, roof, roof))
+        spire = _pair(tower.get("spire"), ("stone", "black"))
+        sx, sy = t_rect[0] + 1, t_rect[1] + 1
+        if t_top + 1 <= ceiling:
+            steps.append(("spire", box(sx, sy, t_top + 1, sx, sy, min(ceiling, t_top + int(tower.get("spire_levels", 4))), material=spire[0], color=spire[1])))
+        return steps
+    if style == "park":
+        hedge_m, hedge_c = _pair(section.get("hedge"), ("thatch", "green"))
+        for name, act in _sides(rect, 0, 0, hedge_m, shape="slab", color=hedge_c):  # slabs at level 0 close no tile: the park stays open
+            steps.append((f"hedge {name}", act))
+        trunk = _pair(section.get("trunk"), ("wood", "brown"))
+        leaves = _pair(section.get("leaves"), ("thatch", "green"))
+        for n, (tx, ty) in enumerate(section.get("trees") or []):
+            cx, cy = 4 * int(tx) + 1, 4 * int(ty) + 1
+            steps.append((f"tree {n + 1} trunk", box(cx, cy, 0, cx, cy, 2, material=trunk[0], color=trunk[1])))
+            steps.append((f"tree {n + 1} crown", box(cx - 1, cy - 1, 3, cx + 1, cy + 1, 4, material=leaves[0], color=leaves[1])))
+        for n, path in enumerate(section.get("paths") or []):
+            px0, py0, px1, py1 = (int(v) for v in path)
+            steps.append((f"path {n + 1}", box(4 * px0 + 1, 4 * py0 + 1, 0, 4 * px1 + 2, 4 * py1 + 2, 0, material="stone", shape="slab", color=str(section.get("path_color", "tan")))))
+        return steps
+    if style == "fort":
+        wall_m, wall_c = _pair(section.get("walls"), ("stone", "tan"))
+        levels = min(ceiling, int(section.get("levels", 3)))
+        bx0, by0, bx1, by1 = rect
+        gate = str(section.get("gate", "east"))
+        sides = {  # the corners cut, so the ring reads round
+            "north": (bx0 + 1, by0, bx1 - 1, by0), "south": (bx0 + 1, by1, bx1 - 1, by1),
+            "west": (bx0, by0 + 1, bx0, by1 - 1), "east": (bx1, by0 + 1, bx1, by1 - 1),
+        }
+        for name, (a, b, c, d) in sides.items():
+            if name == gate:
+                mid = (b + d) // 2 if a == c else (a + c) // 2
+                parts = [(a, b, c, mid - 1), (a, mid + 2, c, d)] if a == c else [(a, b, mid - 1, d), (mid + 2, b, c, d)]
+                for k, (p, q, r, s) in enumerate(parts):
+                    steps.append((f"{name} wall {k + 1}", box(p, q, 0, r, s, levels - 1, material=wall_m, color=wall_c)))
+            else:
+                steps.append((f"{name} wall", box(a, b, 0, c, d, levels - 1, material=wall_m, color=wall_c)))
+        return steps
+    if style == "pool":
+        rim_m, rim_c = _pair(section.get("rim"), ("stone", "black"))
+        water = str(section.get("water", "blue"))
+        steps.extend((f"rim {name}", act) for name, act in _sides(rect, 0, 0, rim_m, shape="slab", color=rim_c))
+        steps.extend((f"water {n + 1}", act) for n, act in enumerate(_rows(_inset(rect, 1), 0, "stone", shape="slab", color=water)))
+        return steps
+    if style == "statue":
+        mat, color = _pair(section.get("block"), ("stone", "brown"))
+        px, py = (int(v) for v in section.get("at") or section["tiles"][:2])
+        bx, by = 4 * px, 4 * py + 1
+        steps.append(("plinth", box(bx, by, 0, bx + 3, by + 1, 0, material="stone", shape="slab", color=str(section.get("plinth", "grey")))))
+        steps.append(("body", box(bx + 1, by, 1, bx + 3, by, 2, material=mat, color=color)))
+        steps.append(("legs", box(bx + 1, by + 1, 1, bx + 3, by + 1, 1, material=mat, color=color)))
+        steps.append(("head", box(bx, by, 2, bx, by, 2, material=mat, color=color)))
+        steps.append(("horns", box(bx, by, 3, bx, by + 1, 3, material=mat, color=color)))
+        return steps
+    raise ValueError(f"unknown city style {style}")
+
+
+def _street_steps(street: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
+    """A street as a slab at level 0 down the middle of its tiles (it closes no tile), with kerbs a cell wide either side."""
+    x0, y0, x1, y1 = (int(v) for v in street["tiles"])
+    material, color = _pair(street.get("block"), ("stone", "black"))
+    out = []
+    per = max(1, min(PACK_CELLS // 16, 2 * REACH + 1))  # a pack's worth, and no wider than a builder reaches
+    if x0 == x1:  # north-south
+        for a, b in _bands(y0, y1, per):
+            out.append((f"{street['name']} ({x0},{a})..({x0},{b})", box(4 * x0, 4 * a, 0, 4 * x0 + 3, 4 * b + 3, 0, material=material, shape="slab", color=color)))
+    else:
+        for a, b in _bands(x0, x1, per):
+            out.append((f"{street['name']} ({a},{y0})..({b},{y0})", box(4 * a, 4 * y0, 0, 4 * b + 3, 4 * y0 + 3, 0, material=material, shape="slab", color=color)))
+    return out
 
 
 def _lift(name: str, action: dict[str, Any], lift: dict[tuple[int, int], int]) -> list[tuple[str, dict[str, Any]]]:
@@ -562,6 +818,9 @@ def expand(design: dict[str, Any]) -> list[dict[str, Any]]:
             add(str(tube.get("section") or "tubes"), None, name, action)
     for section, name, action in _campus_steps(design.get("campus_wall") or {}):
         add(section, None, name, action, flags={"over_roads": True, "apron_ok": True})
+    for street in design.get("streets") or []:
+        for name, action in _street_steps(street):
+            add(str(street.get("section", "streets")), None, name, action)
     river = design.get("river") or {}
     material, color = _pair(river.get("block"), ("stone", "brown"))
     width = int(river.get("width_cells", 4))
@@ -872,6 +1131,109 @@ def root_of(team: Any) -> Path:
     return Path(path).resolve().parents[1] if path else Path.cwd()
 
 
+def team_designs(team: Any) -> list[str]:
+    """The team's blueprints in building order: ``pipeline.blueprint``, then ``pipeline.next_blueprint``."""
+    cfg = (getattr(team, "extra", None) or {}).get("pipeline") if team is not None else None
+    if not isinstance(cfg, dict) or not cfg.get("blueprint"):
+        return []
+    nxt = cfg.get("next_blueprint")
+    return [str(cfg["blueprint"]), *([str(n) for n in nxt] if isinstance(nxt, list) else [str(nxt)] if nxt else [])]
+
+
+def design_complete(root: Path, name: str) -> bool:
+    try:
+        design, steps, _index = blueprint(root, name)
+    except (OSError, ValueError):
+        return True  # a design that cannot be read holds nobody back
+    done = set((load_ledger(root, ledger_name(design, name)).get("done") or {}).keys())
+    return all(s["id"] in done for s in steps)
+
+
+def step_lots(step: dict[str, Any]) -> set[str]:
+    from hglab.lots import lot_id
+
+    x0, y0, x1, y1 = step["tiles"]
+    return {lot_id(x, y) for x in range(x0, x1 + 1) for y in range(y0, y1 + 1)}
+
+
+def land_wanted(root: Path, design: dict[str, Any], structures: list[dict[str, Any]]) -> set[str]:
+    """The design's lots its client does not yet hold: by the registrar's deed and sold signs and the office's shared registry."""
+    from hglab.evict import held_lots, load_shared
+
+    land = design.get("land") or {}
+    client = str(land.get("client") or "").casefold()
+    held = held_lots(structures, str(land.get("registrar") or "LandBroker"), load_shared(root))
+    lots = {str(lid) for lid in land.get("lots") or []}
+    return {lid for lid in lots if str(held.get(lid, "")).casefold() != client}
+
+
+COMMUTE_RANGE = 64  # how far a builder of a far design walks for its material: to its faction's stores (the factory's, from Lower Manhattan)
+
+
+def _provision(design: dict[str, Any], target: dict[str, Any], item: str, qty: int, persona: Any, state: Any, observe: dict[str, Any], view: Any, inventory: dict[str, int], position: tuple[int, int]) -> tuple[list[dict[str, Any]], str, str] | None:
+    """The material for a far design's step: taken from a store in view that admits us, or a walk to the nearest
+    store of our faction within ``COMMUTE_RANGE`` not lately found without it."""
+    from hglab.planner import _step_toward, chebyshev
+
+    you = observe.get("you") or {}
+    faction = you.get("faction")
+    faction = str(faction.get("name") if isinstance(faction, dict) else faction or "")
+    me = str(getattr(persona, "name", ""))
+    title = str(design.get("name") or "the blueprint")
+    pack = sum(int(v) for v in inventory.values())
+    tick = int(observe.get("tick", 0) or 0)
+    empty = state.flags.get("bp_empty") if isinstance(state.flags.get("bp_empty"), dict) else {}
+    empty = {k: v for k, v in empty.items() if tick - int(v or 0) < EMPTY_STORE_TICKS}
+    seen = [s for s in view.structures if s.get("type") == "storehouse" and isinstance(s.get("storage"), dict) and _admits(s, me, faction)]
+    for store in sorted(seen, key=lambda s: chebyshev(position, (int(s["x"]), int(s["y"])))):
+        where = (int(store["x"]), int(store["y"]))
+        have = int(store["storage"].get(item, 0) or 0)
+        if have < qty:
+            empty[f"{where[0]},{where[1]}:{item}"] = tick
+            continue
+        if chebyshev(position, where) <= 1:
+            take = min(50 - pack, have, PACK_LIMIT - 5)
+            if take >= qty:
+                state.flags["bp_empty"] = dict(sorted(empty.items(), key=lambda kv: -int(kv[1]))[:12])
+                return [{"action": "take", "x": where[0], "y": where[1], "item": item, "qty": take}], f"{title}: take {take} {item} at {where} for {target['name']}, then carry it there", "blueprint"
+            continue
+        step = _step_toward(position, {"x": where[0], "y": where[1]}, view)
+        if step is not None and step != position:
+            return [{"action": "move", "x": step[0], "y": step[1]}], f"{title}: walk to the store at {where} for {qty} {item} for {target['name']}", "blueprint"
+    known = {(int(s["x"]), int(s["y"])) for s in seen}
+    ours = [
+        s for s in (view.world_structures or [])
+        if s.get("type") == "storehouse" and isinstance(s.get("x"), int) and (int(s["x"]), int(s["y"])) not in known
+        and (str(s.get("owner", "")).casefold() == me.casefold() or (faction and str((s.get("faction") or {}).get("name") if isinstance(s.get("faction"), dict) else s.get("faction") or "").casefold() == faction.casefold()))
+        and f"{s['x']},{s['y']}:{item}" not in empty and chebyshev(position, (int(s["x"]), int(s["y"]))) <= COMMUTE_RANGE
+    ]
+    state.flags["bp_empty"] = dict(sorted(empty.items(), key=lambda kv: -int(kv[1]))[:12])
+    for store in sorted(ours, key=lambda s: chebyshev(position, (int(s["x"]), int(s["y"])))):
+        where = (int(store["x"]), int(store["y"]))
+        step = _step_toward(position, {"x": where[0], "y": where[1]}, view)
+        if step is not None and step != position:
+            return [{"action": "move", "x": step[0], "y": step[1]}], f"{title}: walk to our faction's store at {where} for {qty} {item} for {target['name']}", "blueprint"
+    state._bp_need = item
+    return None
+
+
+def _commute(design: dict[str, Any], ready: list[dict[str, Any]], persona: Any, state: Any, observe: dict[str, Any], view: Any, inventory: dict[str, int], position: tuple[int, int], centre: Any) -> tuple[list[dict[str, Any]], str, str] | None:
+    """Far from the design: carry the nearest step's material from a store that admits us, then walk there with it."""
+    from hglab.planner import _step_toward, chebyshev
+
+    target = min(ready, key=lambda s: (chebyshev(position, centre(s)), s["id"]))
+    costs = dict(target.get("costs") or {target["item"]: int(target["items"])})
+    lacking = {item: qty - int(inventory.get(item, 0) or 0) for item, qty in costs.items() if qty - int(inventory.get(item, 0) or 0) > 0}
+    if lacking:
+        item, qty = max(lacking.items(), key=lambda kv: kv[1])
+        return _provision(design, target, item, qty, persona, state, observe, view, inventory, position)
+    goal = centre(target)
+    step = _step_toward(position, {"x": goal[0], "y": goal[1]}, view)
+    if step is None or step == position:
+        return None
+    return [{"action": "move", "x": step[0], "y": step[1]}], f"{design.get('name') or 'the blueprint'}: carrying {', '.join(f'{q} {i}' for i, q in costs.items())} to {target['name']} at {goal}", "blueprint"
+
+
 def _has_blueprint(team: Any) -> bool:
     cfg = (getattr(team, "extra", None) or {}).get("pipeline") if team is not None else None
     return isinstance(cfg, dict) and bool(cfg.get("blueprint"))
@@ -901,8 +1263,15 @@ def plan_step(
     root: Path | None = None,
     hands: bool = False,
     pack_only: str | None = None,
+    design_name: str | None = None,
 ) -> tuple[list[dict[str, Any]], str, str] | None:
     """One step of the team's blueprint for a builder: place the next box, carry its material, or raise a depot.
+
+    The team's designs come in order (``pipeline.blueprint``, then ``pipeline.next_blueprint``): a later one
+    opens only when every step of the one before is done, so the builders finish what they began. A design
+    with ``land`` builds only on lots the land office has deeded to its client (``land.client``); one with
+    ``commute`` sends a builder far from it to carry the next step's material from a store in view and walk
+    there with it.
 
     ``hands``: a team member who is not one of the builders takes any section (a crew hand routed to the
     blueprint, or holding a full pack beside full stores). Among equally ranked steps, one the pack can pay
@@ -927,7 +1296,16 @@ def plan_step(
     if int(you.get("blocks_owned", 0) or 0) >= OWNED_CAP:
         return None
     root = root or root_of(team)
-    name = str(team.extra["pipeline"]["blueprint"])
+    if design_name is None:
+        designs = team_designs(team)
+        for i, name in enumerate(designs):
+            if i and not design_complete(root, designs[i - 1]):
+                break  # the next design waits for the one before
+            step = plan_step(persona, team, state, observe, view, inventory, position, room, mates=mates, root=root, hands=hands, pack_only=pack_only, design_name=name)
+            if step is not None:
+                return step
+        return None
+    name = design_name
     try:
         design, steps, _index = blueprint(root, name)
     except (OSError, ValueError):
@@ -940,6 +1318,12 @@ def plan_step(
             done.add(step["id"])
     planned: set[str] = getattr(state, "_bp_planned", None) or set()
     ready = [s for s in ready_steps(steps, done, planned) if not s.get("only") or s["only"] == persona.slug]  # a clear is its owner's: their blocks come out whole
+    land = design.get("land") if isinstance(design.get("land"), dict) else None
+    if land and ready:
+        unheld = land_wanted(root, design, structures)
+        ready = [s for s in ready if not (step_lots(s) & unheld)]  # a building rises only on ground its client holds
+        if unheld:
+            state._bp_land = sorted(unheld)[:8]
     if not ready:
         return None
     rank = {sec: i for i, sec in enumerate(prefs)}
@@ -949,6 +1333,8 @@ def plan_step(
         return (x0 + x1) // 2, (y0 + y1) // 2
 
     if min(chebyshev(position, centre(s)) for s in ready) > BUILD_RANGE:
+        if design.get("commute"):
+            return _commute(design, ready, persona, state, observe, view, inventory, position, centre)
         return None  # far from the factory: the migration walks there first, and errands nearer home still run
     ready = [s for s in ready if chebyshev(position, centre(s)) <= BUILD_RANGE + 10]
     def payable(step: dict[str, Any]) -> bool:
@@ -964,6 +1350,7 @@ def plan_step(
     me = str(getattr(persona, "name", ""))
     mates_cf = {m.casefold() for m in (mates or set())} | {me.casefold()}
     tick = int(observe.get("tick", 0) or 0)
+    title = str(design.get("title") or "the factory blueprint")  # how a builder's reason names the design
     empty = state.flags.get("bp_empty") if isinstance(state.flags.get("bp_empty"), dict) else {}
     empty = {k: v for k, v in empty.items() if tick - int(v or 0) < EMPTY_STORE_TICKS}
     seen_stores = [s for s in view.structures if s.get("type") == "storehouse" and isinstance(s.get("storage"), dict) and _admits(s, me, faction)]
@@ -1007,9 +1394,9 @@ def plan_step(
             planned.add(step["id"])
             state._bp_planned = planned
             if stand == position:
-                return [act], f"the factory blueprint: {label}", "blueprint"
+                return [act], f"{title}: {label}", "blueprint"
             verb = "take down" if step["kind"] == "remove" else "raise"
-            return [{"action": "move", "x": stand[0], "y": stand[1]}, act], f"the factory blueprint: walk to {stand} and {verb} {label}", "blueprint"
+            return [{"action": "move", "x": stand[0], "y": stand[1]}, act], f"{title}: walk to {stand} and {verb} {label}", "blueprint"
         if step["kind"] == "place" and sum(costs.values()) > PACK_LIMIT:
             missing.append(step["item"])  # more than a pack can bring and no store beside a stand: never a shuttle between stores
             continue
@@ -1028,7 +1415,7 @@ def plan_step(
                 take = min(50 - pack + freed, int(store["storage"].get(item, 0) or 0), max(qty, 40))
                 if take >= 1:
                     note = f" after putting {freed} of the pack's clutter away" if freed else ""
-                    return [*shed, {"action": "take", "x": where[0], "y": where[1], "item": item, "qty": take}], f"the factory blueprint needs {qty} {item} for {step['name']}: take {take} from the store at {where}{note}", "blueprint"
+                    return [*shed, {"action": "take", "x": where[0], "y": where[1], "item": item, "qty": take}], f"{title} needs {qty} {item} for {step['name']}: take {take} from the store at {where}{note}", "blueprint"
             for s in [s for s in seen_stores if chebyshev(position, (int(s["x"]), int(s["y"]))) <= 1 and not int(s["storage"].get(item, 0) or 0)]:
                 empty[f"{s['x']},{s['y']}:{item}"] = tick
             targets = sorted((s for s in holders if not need_free or _room(s) >= max(need_free, 5)), key=lambda s: chebyshev(position, (int(s["x"]), int(s["y"]))))  # _shed puts away five at the least
@@ -1043,9 +1430,14 @@ def plan_step(
                 target = _step_toward(position, {"x": where[0], "y": where[1]}, view)
                 if target is not None and target != position:
                     state.flags["bp_empty"] = dict(sorted(empty.items(), key=lambda kv: -int(kv[1]))[:12])
-                    return [{"action": "move", "x": target[0], "y": target[1]}], f"the factory blueprint needs {qty} {item} for {step['name']}: walk to the store at {where} for it", "blueprint"
+                    return [{"action": "move", "x": target[0], "y": target[1]}], f"{title} needs {qty} {item} for {step['name']}: walk to the store at {where} for it", "blueprint"
             missing.append(item)
     state.flags["bp_empty"] = dict(sorted(empty.items(), key=lambda kv: -int(kv[1]))[:12])
+    if missing and design.get("commute"):
+        target = ready[0]
+        costs = dict(target.get("costs") or {target["item"]: int(target["items"])})
+        item = missing[0]
+        return _provision(design, target, item, max(1, costs.get(item, 1) - int(inventory.get(item, 0) or 0)), persona, state, observe, view, inventory, position)
     if missing:
         state._bp_need = missing[0]
         return None
@@ -1053,11 +1445,11 @@ def plan_step(
     goal = centre(ready[0])
     target = _step_toward(position, {"x": goal[0], "y": goal[1]}, view)
     if target is not None and target != position:
-        return [{"action": "move", "x": target[0], "y": target[1]}], f"the factory blueprint: walk toward {ready[0]['name']} at {goal}", "blueprint"
+        return [{"action": "move", "x": target[0], "y": target[1]}], f"{title}: walk toward {ready[0]['name']} at {goal}", "blueprint"
     return None
 
 
 __all__ = [
-    "LEDGER_DIR", "blueprint", "builder_sections", "cells_rect", "check", "expand", "foundation_map", "ledger_name", "load_design", "load_ledger", "mark_done",
-    "materials", "plan_step", "ready_steps", "root_of", "route", "settle", "signature", "summary", "tiles_of",
+    "LEDGER_DIR", "blueprint", "builder_sections", "cells_rect", "check", "design_complete", "expand", "foundation_map", "land_wanted", "ledger_name", "load_design", "load_ledger", "mark_done",
+    "materials", "plan_step", "ready_steps", "root_of", "route", "settle", "signature", "step_lots", "summary", "team_designs", "tiles_of",
 ]

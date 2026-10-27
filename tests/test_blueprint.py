@@ -134,7 +134,8 @@ def test_the_four_plots_leave_the_office_holdings_and_are_sold_as_one_ground():
     lots = set(requests["works"]["lots"]) | set(requests["grounds"]["lots"])
     assert len(lots) == 16 and {lid[:3] for lid in lots} == {"I08", "J08", "I09", "J09"}
     exchange = load_team(ROOT, "exchange")
-    assert set(exchange.extra["pipeline"]["claims"]["exclude"]) == lots
+    nyc = {lid for r in requests.values() if str(r["id"]).startswith("nyc-") for lid in r["lots"]}  # Lower Manhattan's ground, under contract too (2026-10-27)
+    assert set(exchange.extra["pipeline"]["claims"]["exclude"]) == lots | nyc and len(nyc) == 12
     from hglab.lots import holdings, lot_anchor, stake_text
 
     signs = [{"type": "sign", "x": lot_anchor(lid)[0], "y": lot_anchor(lid)[1], "owner": "LandBroker", "text": stake_text(lid, "LandBroker")} for lid in ("I08-SE", "K04-NW")]

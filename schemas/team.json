@@ -55,6 +55,7 @@
         },
         "stores_max": {"type": "integer", "minimum": 1, "maximum": 12, "description": "Storehouses at the works before the hands stop raising more for a full stock (default 6)"},
         "blueprint": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,40}$", "description": "The team's block design in teams/blueprints/<name>.yaml (hglab.factory)"},
+        "next_blueprint": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,40}$", "description": "The design the builders take up once every step of the blueprint is done (the owner, 2026-10-27: Lower Manhattan after the factory)"},
         "builders": {"type": "object", "description": "Personas who place the blueprint, each with the sections it raises first", "additionalProperties": {"type": "array", "items": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,40}$"}}},
         "plan": {"type": "array", "maxItems": 20, "items": {"type": "object", "required": ["type"], "additionalProperties": false, "properties": {
           "type": {"enum": ["sign", "road", "wall", "bridge", "hut", "farm", "storehouse", "tower", "monument"]},

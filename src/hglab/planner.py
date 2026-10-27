@@ -1276,7 +1276,25 @@ def _draw_price(
         target = _step_toward(position, {"x": where[0], "y": where[1]}, view)
         if target is not None and target != position:
             return [{"action": "move", "x": target[0], "y": target[1]}], f"the deed for lot {bought.get('lot')} wants {owed} {currency}: walk to the team's store at {where} for it", "deed_trip"
+    if not seen and faction:
+        # none in view (2026-10-27: Plumbline buys Lower Manhattan's ground far from the factory's stores): walk to our faction's nearest
+        known = sorted(
+            (
+                (int(s["x"]), int(s["y"])) for s in (view.world_structures or [])
+                if s.get("type") == "storehouse" and isinstance(s.get("x"), int) and str(s.get("owner", "")).casefold() in owners
+                and str((s.get("faction") or {}).get("name") if isinstance(s.get("faction"), dict) else s.get("faction") or "").casefold() == faction.casefold()
+                and chebyshev(position, (int(s["x"]), int(s["y"]))) <= FACTION_DRAW_RANGE
+            ),
+            key=lambda w: chebyshev(position, w),
+        )
+        for where in known[:1]:
+            target = _step_toward(position, {"x": where[0], "y": where[1]}, view)
+            if target is not None and target != position:
+                return [{"action": "move", "x": target[0], "y": target[1]}], f"the deed for lot {bought.get('lot')} wants {owed} {currency}: walk to our faction's store at {where} for it", "deed_trip"
     return None
+
+
+FACTION_DRAW_RANGE = 64  # how far a client walks to its faction's store for a price none in view holds
 
 
 def _pay_in_person(
@@ -3116,11 +3134,11 @@ def _plan_lounge(
         cfg = (team.extra or {}).get("pipeline") if team is not None else None
         if isinstance(cfg, dict) and cfg.get("blueprint"):
             try:
-                from hglab.factory import blueprint, load_ledger, root_of
+                from hglab.factory import blueprint, ledger_name, load_ledger, root_of
 
                 root = root_of(team)
-                _design, steps, _index = blueprint(root, str(cfg["blueprint"]))
-                done = set((load_ledger(root, str(cfg["blueprint"])).get("done") or {}).keys())
+                design, steps, _index = blueprint(root, str(cfg["blueprint"]))
+                done = set((load_ledger(root, ledger_name(design, str(cfg["blueprint"]))).get("done") or {}).keys())
                 progress = {"done": len(done), "total": len(steps), "blocks": sum(int(s.get("cells", 0)) for s in steps if s["id"] in done)}
             except (OSError, ValueError):
                 progress = None
