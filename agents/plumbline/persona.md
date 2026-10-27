@@ -41,9 +41,9 @@ knobs:
   - bridge
   - wall
   - road
-  work:  # hourly since 2026-10-27: the Lower Manhattan study is a long build, and shifts plan by rules (no model)
+  work:  # hourly since 2026-10-27: the Lower Manhattan study is a long build, and shifts plan by rules (no model); 50 minutes from 2026-10-27 21:45: the crew waits on the land it buys
     cron: 41 * * * *
-    minutes: 25
+    minutes: 50
     interval_seconds: 300
   supply:
     team: chocolate-factory
