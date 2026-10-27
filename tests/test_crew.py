@@ -322,9 +322,8 @@ def test_a_heavy_pack_goes_to_the_nearest_depot_and_the_drayman_carries_depot_lo
 
 
 def test_the_steward_raises_depots_on_the_best_holdings_before_the_overflow_vaults():
-    from hglab.lots import lot_anchor, lot_bounds
-
     from hglab.crew import team_tills
+    from hglab.lots import lot_anchor, lot_bounds
 
     rows, signs, vault, nodes = _claims_world()
     till_view = WorldView(x0=67, y0=66, rows=rows, full_map=rows, structures=[vault], world_structures=[vault, *signs], world_resources=nodes)
