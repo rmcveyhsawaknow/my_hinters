@@ -176,11 +176,13 @@ def plan_crew(
     names: dict[str, str] | None,
     teammates: dict[str, tuple[int, int]] | None,
     crew_roles: dict[str, str] | None = None,
+    route: str | None = None,
 ) -> Step | None:
     """One pipeline step for a crew member, or None when the role has nothing to do from here.
 
     ``crew_roles`` maps every crew persona's slug to its role, so a hand can find the mason when the
-    works' stores are full and hand it the next store's cost.
+    works' stores are full and hand it the next store's cost. ``route`` is the graph's route for an idle
+    hand (``hglab.local.routing``): ``blueprint`` sends it to the team's blueprint first, its pack paying.
     """
     cfg = pipeline_of(team)
     knob = persona.knobs.get("crew")
@@ -241,12 +243,24 @@ def plan_crew(
         if step is not None:
             return step
 
+    # a3. routed by the graph to the blueprint (an idle hand, 2026-10-27): the pack's material goes into blocks
+    if route == "blueprint" and role != "mason" and cfg.get("blueprint"):
+        step = _blueprint(persona, team, state, observe, view, inventory, position, room, mates, site, reach, teammates, floor_for, ranks, hands=True)
+        if step is not None:
+            return step
+
     # b. a heavy pack goes to the nearest store of ours with room (the mason carries its materials to the site instead)
     heavy = pack >= 46 if role == "mason" else (goods >= HEAVY or pack >= 46)
     if heavy and drop_points:
         step = _unload(inventory, position, view, drop_points, room, state, tick, pack, keep=MASON_KEEP if role == "mason" and stores else None)
         if step is not None:
             return step
+        if stores and not open_stores and role != "mason" and cfg.get("blueprint"):
+            # every store full (2026-10-27: the hands carried 50 for hours, gives refused): the pack pays for the blueprint's next blocks
+            load = max((k for k in inventory if k != "berries"), key=lambda k: inventory[k], default=None)
+            step = _blueprint(persona, team, state, observe, view, inventory, position, room, mates, site, reach, teammates, floor_for, ranks, hands=True, gather=False, pack_only=load) if load else None
+            if step is not None:
+                return step
         if stores and not open_stores and role != "mason":
             step = _hand_to_mason(persona, team, inventory, position, view, site, teammates, names, collective_names, crew_roles, stores_max, len(stores), full=full_agents(state, tick))
             if step is not None:
@@ -590,15 +604,22 @@ def _blueprint(
     teammates: dict[str, tuple[int, int]] | None,
     floor_for: FloorFor | None,
     ranks: dict[str, int] | None,
+    hands: bool = False,
+    gather: bool = True,
+    pack_only: str | None = None,
 ) -> Step | None:
-    """The works stand: the mason raises the team's blueprint, and gathers what no store holds for it."""
+    """The works stand: the mason raises the team's blueprint, and gathers what no store holds for it.
+
+    ``hands``: a hand who is not one of the blueprint's builders raises it too (any section, the pack's
+    material first) when the graph routes it there or every store is full.
+    """
     from hglab.factory import plan_step
 
-    step = plan_step(persona, team, state, observe, view, inventory, position, room, mates=mates)
+    step = plan_step(persona, team, state, observe, view, inventory, position, room, mates=mates, hands=hands, pack_only=pack_only)
     if step is not None:
         return step
     need = getattr(state, "_bp_need", None)
-    if need:
+    if need and gather:
         return _gather_toward(persona, team, [str(need)], inventory, position, view, site, reach, room, teammates, f"for the blueprint's {need}", floor_for, ranks)
     return None
 

@@ -287,6 +287,18 @@ class Supervisor:
             graph = Graph(graph_path)
             try:
                 try:
+                    from hglab.local.memory import ingest_personas, ingest_recent
+
+                    teams = load_teams(self.root)
+                    ingest_personas(graph, personas, teams)
+                    since = float(self.status.get("graph_fed_mtime") or 0.0)
+                    fed = ingest_recent(graph, self.root, since)
+                    with self._lock:
+                        self.status["graph_fed_mtime"] = fed["newest"]
+                    self._log(f"graph fed: {fed['read']} record(s), {fed['added']} edge(s)")
+                except Exception as exc:  # noqa: BLE001 - the feed is a bonus of the cycle; the assignments still follow
+                    self._log(f"graph feed skipped: {str(exc)[:160]}")
+                try:
                     from hglab.local.measure import refresh_archive, refresh_pulse
 
                     archive = refresh_archive(self.root)

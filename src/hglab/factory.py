@@ -872,6 +872,11 @@ def root_of(team: Any) -> Path:
     return Path(path).resolve().parents[1] if path else Path.cwd()
 
 
+def _has_blueprint(team: Any) -> bool:
+    cfg = (getattr(team, "extra", None) or {}).get("pipeline") if team is not None else None
+    return isinstance(cfg, dict) and bool(cfg.get("blueprint"))
+
+
 def builder_sections(team: Any, slug: str) -> list[str] | None:
     """The sections a builder raises first, or None when the persona does not build the team's blueprint."""
     cfg = (getattr(team, "extra", None) or {}).get("pipeline") if team is not None else None
@@ -894,8 +899,15 @@ def plan_step(
     room: int,
     mates: set[str] | None = None,
     root: Path | None = None,
+    hands: bool = False,
+    pack_only: str | None = None,
 ) -> tuple[list[dict[str, Any]], str, str] | None:
     """One step of the team's blueprint for a builder: place the next box, carry its material, or raise a depot.
+
+    ``hands``: a team member who is not one of the builders takes any section (a crew hand routed to the
+    blueprint, or holding a full pack beside full stores). Among equally ranked steps, one the pack can pay
+    for outright comes first: no fetch, no walk to a store. ``pack_only`` (an item): only such steps paid in
+    that item, the pack's main load (a full pack beside full stores builds what it carries, or hands it on).
 
     The builder takes the first undone step of its own sections (the team file's ``pipeline.builders``),
     then of any section, nearest first, skipping a step whose material it cannot find. It places when the
@@ -907,6 +919,8 @@ def plan_step(
     from hglab.planner import _step_toward, chebyshev, reachable_tiles
 
     prefs = builder_sections(team, persona.slug)
+    if prefs is None and hands and _has_blueprint(team):
+        prefs = []  # a hand at the blueprint: any section, nearest and payable first
     if prefs is None or room < 1:
         return None
     you = observe.get("you") or {}
@@ -937,7 +951,14 @@ def plan_step(
     if min(chebyshev(position, centre(s)) for s in ready) > BUILD_RANGE:
         return None  # far from the factory: the migration walks there first, and errands nearer home still run
     ready = [s for s in ready if chebyshev(position, centre(s)) <= BUILD_RANGE + 10]
-    ready.sort(key=lambda s: (rank.get(s["section"], len(rank)), chebyshev(position, centre(s)), s["id"]))
+    def payable(step: dict[str, Any]) -> bool:
+        return step["kind"] != "remove" and all(int(inventory.get(item, 0) or 0) >= qty for item, qty in dict(step.get("costs") or {step["item"]: int(step["items"])}).items())
+
+    if pack_only:
+        ready = [s for s in ready if payable(s) and pack_only in dict(s.get("costs") or {s["item"]: int(s["items"])})]
+        if not ready:
+            return None
+    ready.sort(key=lambda s: (rank.get(s["section"], len(rank)), not payable(s), chebyshev(position, centre(s)), s["id"]))
     faction = you.get("faction")
     faction = str(faction.get("name") if isinstance(faction, dict) else faction or "")
     me = str(getattr(persona, "name", ""))

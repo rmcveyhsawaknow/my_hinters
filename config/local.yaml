@@ -68,7 +68,7 @@ ecosystem:
   backup_every_minutes: 360
   # how often the supervisor refreshes the events archive and the Pulse, recomputes assignments from the
   # evidence and briefs changed or stalled ones (0 switches it off)
-  adapt_every_minutes: 120
+  adapt_every_minutes: 60
   # how often the supervisor looks at the game's surface (API version, guide, actions, blueprints, fields, limits,
   # event kinds) and queues changes for the crier's news wake (0 switches it off)
   watch_every_minutes: 10
