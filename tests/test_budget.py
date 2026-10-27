@@ -32,8 +32,8 @@ def test_status_sums_this_month_and_today_and_flags_the_cap():
 
 def test_projection_stays_well_under_the_monthly_cap():
     totals = projected_month(ROOT)
-    assert 0 < totals["total"] < 100  # under the monthly cap, the Navy's Opus wakes bounded by its own allowance (2026-10-26; before it, under 60)
+    assert 0 < totals["total"] < 100  # under the monthly cap, the Navy's model wakes bounded by its own allowance (2026-10-26; before it, under 60)
     from hglab.persona import load_personas
 
     navy = load_personas(ROOT)["navy"]
-    assert totals["ticks:navy:claude-opus-5-5"] <= float(navy.knobs["max_usd_daily"]) * 30
+    assert totals["ticks:navy:claude-sonnet-5-5"] <= float(navy.knobs["max_usd_daily"]) * 30  # Sonnet 5.5 since 2026-10-27

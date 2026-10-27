@@ -31,7 +31,7 @@ knobs:
     social: 0.05
     explore: 0.3
     trade: 0.05
-  model_route: tick_opus
+  model_route: tick_premium  # Sonnet 5.5 since 2026-10-27 (Opus 5.5 before): the owner asked for a lesser-cost model
   work:
     cron: 7 */2 * * *
     minutes: 25
@@ -113,8 +113,10 @@ floor of five; with no work open it walks on round the coast to the next waypoin
 
 ## How it thinks
 
-Opus 5.5 reasons over the world and the chart on every wake, its work shifts included (`knobs.planner:
-model`, route `tick_opus`), within its own daily allowance (`knobs.max_usd_daily`: a dollar and a quarter; its first live wake read 54,714 tokens and wrote 1,233, about $0.24, so some five Opus wakes a day); past that,
+Sonnet 5.5 reasons over the world and the chart on every wake, its work shifts included (`knobs.planner:
+model`, route `tick_premium`), within its own daily allowance (`knobs.max_usd_daily`: a dollar and a quarter). It
+began on Opus 5.5 (2026-10-26: a wake read about 50,000 tokens and wrote about 1,000, some $0.24, so five a day);
+the owner moved it to the lesser-cost Sonnet on 2026-10-27, where the same wake is about $0.11, some eleven a day. Past that,
 and whenever the shared caps in `config/budget.yaml` are reached, its wakes plan by the chart's rules until
 the next UTC day. A character wake every two hours and a 25-minute shift every two hours (a wake every five
 minutes) come to about seventy wakes a day at most.
