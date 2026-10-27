@@ -210,3 +210,24 @@ def test_a_client_that_owes_on_a_quoted_price_buys_before_it_builds():
     assert _owes_price(owing, 90000) and not places(owing)  # the Battery's price first: no stone taken and put back
     owing.flags["deed_backoff"] = 90000 - 10  # the office refused the last payment: build meanwhile
     assert not _owes_price(owing, 90000) and places(owing)
+
+
+def test_an_off_shift_wake_also_buys_before_it_builds():
+    import random
+
+    from hglab.planner import plan_wake
+
+    plumbline = load_personas(ROOT)["plumbline"]
+    store = {"type": "storehouse", "x": 70, "y": 85, "owner": "Toffeetrowel", "policy": "faction", "faction": "Chocolate Factory", "storage": {"wood": 200, "stone": 300}}
+    observe = {
+        "tick": 90900, "inbox": [], "events": [], "structures": [store, *_deeds("D08-NE", "E08-NW")], "view": {"x0": 64, "y0": 78, "rows": ["g" * 13] * 13},
+        "you": {"name": "Plumbline", "x": 70, "y": 84, "energy": 90, "inventory": {"berries": 5}, "faction": {"id": 5, "name": "Chocolate Factory"}, "blocks_owned": 0},
+    }
+    for seed in range(6):  # whichever activity the mood rolls first (2026-10-27 18:11: an off-shift wake took 24 stone for 70 Pine Street with 79 wood owed)
+        state = PersonaState(mood="measuring")
+        state.flags["house_site"] = {"id": "nyc-battery", "x": 37, "y": 87, "lot": "D08-SE", "price": 103, "paid": 24, "currency": "wood"}
+        state.flags["sites_paid"] = ["nyc-wall-street"]
+        plan = plan_wake(plumbline, load_team(ROOT, "atelier"), state, observe, "act", random.Random(seed), terrain_rows=GRASS, registrar_name="LandBroker",
+                         public_structures=[store, *_deeds("D08-NE", "E08-NW")], collective_names={"Plumbline", "Toffeetrowel", "LandBroker"})
+        takes = [a for a in plan["actions"] if a["action"] == "take"]
+        assert all(a["item"] == "wood" for a in takes), (seed, plan["actions"])  # the price, never the blueprint's stone
