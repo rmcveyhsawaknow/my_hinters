@@ -93,3 +93,29 @@ def test_the_brief_tells_the_model_the_rules_at_sea_and_the_next_works():
     text = navy.brief(world, (40, 27), {"next": 3, "charted": 3})
     assert "a bridge (15 wood) stands only on shallow water" in text and "pier-01 pier from the shore at (40, 27)" in text and "waypoint 4 of 57" in text
     assert json.dumps(text)  # plain text for the guidance
+
+
+def test_the_navy_asks_its_model_on_shift_wakes_even_with_no_line_left(tmp_path):
+    """2026-10-27: every Fathomark wake under the supervisor planned by rules: shifts never asked the model, and a wake after its hour's line skipped it."""
+    from hglab.fixtures import FixtureClient, load_fixture
+    from hglab.lease import acquire
+    from hglab.persona import load_team
+    from hglab.wake import persona_wake
+
+    personas = load_personas(ROOT)
+    fathomark = personas["navy"]
+    observe = load_fixture(ROOT / "tests/fixtures/observe/navy.json")
+    tick = int(observe["tick"])
+    spent = [{"type": "say", "actor": "Fathomark", "tick": tick - 5, "id": 990001, "text": "Log: waypoint 3 of 57."}]
+    asked = []
+
+    def llm_call(guidance, observe_now):
+        asked.append(json.loads(guidance))
+        return {"summary": "the next bridge", "actions": [], "reasons": ["the pier waits for wood"], "approach": "navy"}
+
+    client = FixtureClient(observe)
+    lease = acquire(client, fathomark.name)
+    result = persona_wake(persona=fathomark, team=load_team(ROOT, "admiralty"), personas=personas, client=client, lease=lease, root=ROOT, output_dir=tmp_path, dry_run=True, seed="navy", planner_mode="llm", llm_call=llm_call, public_events=spent, work=True)
+    record = result[0] if isinstance(result, tuple) else result
+    if record.get("wake_mode") != "rest":
+        assert asked and "model_skipped" not in record and record["thinking"]["planner"] == "llm"

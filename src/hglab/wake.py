@@ -464,12 +464,13 @@ def persona_wake(
                 str(persona.knobs["patrol"].get("direction", "clockwise")),
             )
         silent = None
-        if planner_mode == "llm" and llm_call is not None and mode != "rest" and not work:
+        model_plans = str(persona.knobs.get("planner") or "") == "model"  # the Navy (2026-10-26): its model plans every wake, shifts included, line or no line
+        if planner_mode == "llm" and llm_call is not None and mode != "rest" and not work and not model_plans:
             room, why = speech_room(persona, team, personas, observe, public_events, tick)
             if room <= 0:
                 silent = why
                 extras["model_skipped"] = f"{why}: a character wake with no line to say is planned by rules"  # Clarion's Sonnet plans were all discarded for this
-        if silent is None and planner_mode == "llm" and llm_call is not None and mode != "rest" and not work and plan.get("approach") not in ("team", "team_goal", "fool"):  # the team step is settled, not debated; the fool's fact is phrased, not planned
+        if silent is None and planner_mode == "llm" and llm_call is not None and mode != "rest" and (not work or model_plans) and plan.get("approach") not in ("team", "team_goal", "fool"):  # the team step is settled, not debated; the fool's fact is phrased, not planned
             from hglab.engage import board as engagement_board
             from hglab.engage import render_board as render_engagement
             from hglab.engage import stance_of
