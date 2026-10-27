@@ -9,11 +9,14 @@ goes in: whispers are kept as short excerpts of what our agents said, never what
 
 from __future__ import annotations
 
+import contextlib
 import json
+import os
 import re
 import shutil
 import sqlite3
 import threading
+from collections.abc import Iterator
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -78,7 +81,7 @@ class Graph:
             "INSERT INTO nodes(id, kind, props, tick) VALUES (?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET kind = excluded.kind, props = excluded.props, tick = excluded.tick",
             (node_id, kind, json.dumps(merged, ensure_ascii=False, sort_keys=True), newest),
         )
-        self.db.commit()
+        self._commit()
 
     def add_edge(self, src: str, dst: str, kind: str, tick: int = 0, **props: Any) -> bool:
         """True when the edge is new; the same (src, dst, kind, tick) is kept once."""
@@ -96,7 +99,7 @@ class Graph:
                 ),
             ),
         )
-        self.db.commit()
+        self._commit()
         return cur.rowcount == 1
 
     def remove_edges(self, src: str, kind: str) -> int:
@@ -110,8 +113,22 @@ class Graph:
             "INSERT OR IGNORE INTO ingested(key, utc) VALUES (?, ?)",
             (key, datetime.now(UTC).isoformat()),
         )
-        self.db.commit()
+        self._commit()
         return cur.rowcount == 1
+
+    def _commit(self) -> None:
+        if not getattr(self._local, "batch", False):
+            self.db.commit()
+
+    @contextlib.contextmanager
+    def batch(self) -> Iterator[None]:
+        """Many writes in one transaction (a cycle's records), committed once at the end."""
+        self._local.batch = True
+        try:
+            yield
+        finally:
+            self._local.batch = False
+            self.db.commit()
 
     # --- reading -----------------------------------------------------------------------------
     def node(self, node_id: str) -> dict[str, Any] | None:
@@ -291,6 +308,7 @@ def ingest_personas(graph: Graph, personas: dict[str, Any], teams: dict[str, Any
             team=persona.team,
             intent=persona.intent,
             roles=list(persona.roles),
+            crew_role=str((persona.knobs.get("crew") or {}).get("role") or "") if isinstance(persona.knobs.get("crew"), dict) else "",
             ours=True,
         )
         graph.add_edge(persona.name, f"team:{persona.team}", "member_of")
@@ -391,6 +409,13 @@ def wake_attributes(record: dict[str, Any]) -> dict[str, Any]:
             continue  # only what the world accepted counts toward a goal
         kind = str(action["action"])
         kinds[kind] = kinds.get(kind, 0) + 1
+    refused: dict[str, int] = {}
+    for outcome in results:
+        error = outcome.get("error") if isinstance(outcome, dict) else None
+        if error and error != "skipped":
+            refused[str(error)] = refused.get(str(error), 0) + 1
+    observed = record.get("observe") if isinstance(record.get("observe"), dict) else {}
+    inventory = (observed.get("you") or {}).get("inventory") if isinstance(observed.get("you"), dict) else None
     return {
         "agent": str(record.get("agent") or ""),
         "mode": str(record.get("wake_mode") or record.get("kind") or "wake"),
@@ -404,12 +429,43 @@ def wake_attributes(record: dict[str, Any]) -> dict[str, Any]:
         "output_tokens": int(usage.get("output_tokens", 0) or 0),
         "actions": len(record.get("actions") or []),
         "kinds": kinds,
+        "refused": refused,  # the world's refusals by error, e.g. inventory_full: a full store or pack
+        "pack": sum(int(v or 0) for v in inventory.values()) if isinstance(inventory, dict) else None,
         "failed": len(failed) if isinstance(failed, list) else int(bool(failed)),
         "energy_spent": record.get("energy_spent"),
         "dry_run": bool(record.get("dry_run")),
         "approach": record.get("approach"),
         "created_utc": record.get("created_utc"),
     }
+
+
+def ingest_recent(graph: Graph, root: Path, since: float = 0.0, days: int = 3) -> dict[str, Any]:
+    """Feed the graph the live run records written after ``since`` (a file mtime) in the newest ``days`` date folders.
+
+    The supervisor calls it every adaptation cycle. On 2026-10-27 the graph had last been fed by hand at
+    tick 54917, four days earlier: every assignment rested on old evidence and no stalled persona was found.
+    Returns the records read, the edges added and the newest mtime seen (the next call's ``since``).
+    """
+    newest, read, added = since, 0, 0
+    folders = sorted((p for p in (root / "runs").glob("20*-*-*") if p.is_dir()), reverse=True)[:days]
+    with graph.batch():
+        for folder in folders:
+            with os.scandir(folder) as entries:
+                for entry in entries:
+                    if not entry.name.endswith(".json") or "-keepalive" in entry.name or "-announce" in entry.name:
+                        continue
+                    mtime = entry.stat().st_mtime
+                    if mtime <= since:
+                        continue
+                    try:
+                        data = json.loads(Path(entry.path).read_text(encoding="utf-8"))
+                    except (OSError, json.JSONDecodeError, UnicodeDecodeError):
+                        continue
+                    newest = max(newest, mtime)
+                    if isinstance(data, dict) and "actions" in data and not data.get("dry_run"):
+                        added += ingest_record(graph, data)
+                        read += 1
+    return {"read": read, "added": added, "newest": newest}
 
 
 def ingest_status(graph: Graph, status: dict[str, Any], names: dict[str, str]) -> int:
@@ -508,4 +564,4 @@ def ingest_public_events(graph: Graph, events: list[dict[str, Any]]) -> int:
     return added
 
 
-__all__ = ["Graph", "ingest_personas", "ingest_public_events", "ingest_record"]
+__all__ = ["Graph", "ingest_personas", "ingest_public_events", "ingest_recent", "ingest_record"]

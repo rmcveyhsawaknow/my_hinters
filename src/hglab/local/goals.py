@@ -485,7 +485,11 @@ def adapt(
     root: Path, graph: Graph, personas: dict[str, Any], teams: dict[str, Any], tick: int = 0
 ) -> dict[str, Any]:
     """Assignments for every persona and suggestions for every team; written to the graph."""
+    from hglab.local.routing import PATTERN_TICKS, patterns, productivity, route_for
+
     now = datetime.now(UTC).isoformat()
+    newest = graph.db.execute("SELECT COALESCE(MAX(tick), 0) AS t FROM nodes WHERE kind = 'wake'").fetchone()["t"]
+    pats = patterns(graph, int(newest or 0) - PATTERN_TICKS)  # the collective's successful patterns over the last day
     per_slug: dict[str, dict[str, Any]] = {}
     for slug, persona in personas.items():
         record = latest_record(root, persona.name, slug, planned=True)
@@ -517,8 +521,19 @@ def adapt(
         if stall and stall.get("approach") and stall["approach"] not in avoid:
             avoid = [*avoid, stall["approach"]][:3]
         prefer = [p for p in prefer_for(chosen["measure"], chosen.get("params"), works) if p not in avoid] if chosen else []
+        prod = productivity(graph, data["name"], goal_kinds=frozenset(goal_types_for(chosen["measure"], chosen.get("params"))) if chosen else frozenset())
+        done = bool(data["key_results"]) and chosen is None  # every key result met: the stated goals are complete
+        route = route_for(personas[slug], teams.get(data["team"]), prod, pats, done=done, goal_kinds=frozenset(goal_types_for(chosen["measure"], chosen.get("params"))) if chosen else frozenset())  # an idle persona goes where the graph shows work getting done
+        if route and chosen is None:
+            chosen = {"id": "next", "label": f"stated goals met; next: {route['approach']}", "target": None, "weight": 0.0, "measure": "", "params": {}, "progress": 1.0, "score": 0.0, "shared": False}
+        data["productivity"] = {k: v for k, v in prod.items() if k != "approaches"}
+        if route:
+            prefer = [route["approach"], *[p for p in prefer if p != route["approach"]]]
+            avoid = [a for a in avoid if a != route["approach"]]
         because = []
-        if chosen:
+        if chosen and chosen["id"] == "next":
+            because.append("every key result is met")
+        elif chosen:
             because.append(
                 f"largest weighted gap among the key results ({chosen['label']}: {'no measurement yet' if chosen['progress'] is None else f'{int(chosen["progress"] * 100)}% of {chosen["target"]}'}, weight {chosen['weight']})"
             )
@@ -536,6 +551,8 @@ def adapt(
             because.append(
                 f"stalled: {stall['wakes']} wakes of {stall.get('approach') or 'nothing'} with {stall['reason']} since tick {stall['since_tick']}; set it aside and try the rest"
             )
+        if route:
+            because.append(route["why"])
         data["assignment"] = (
             {
                 **chosen,
@@ -543,6 +560,7 @@ def adapt(
                 "avoid": avoid,
                 "prefer": prefer,
                 "stalled": bool(stall),
+                "route": route["approach"] if route else None,
                 "because": because,
                 "utc": now,
             }
@@ -553,6 +571,8 @@ def adapt(
             node = f"objective:{slug}:{chosen['id']}"
             previous = graph.node(node) or {}
             stalled_utc = previous.get("stalled_utc") if previous.get("stalled") and stall else (now if stall else None)
+            routed = route["approach"] if route else ""
+            route_utc = previous.get("route_utc") if previous.get("route", "") == routed else (now if routed else "")
             graph.upsert_node(
                 "objective",
                 node,
@@ -565,6 +585,8 @@ def adapt(
                 progress=chosen["progress"],
                 stalled=bool(stall),
                 stalled_utc=stalled_utc,
+                route=routed,
+                route_utc=route_utc,
             )
             graph.remove_edges(data["name"], "pursues")
             graph.add_edge(
@@ -579,6 +601,7 @@ def adapt(
                 avoid=avoid,
                 prefer=prefer,
                 stalled=bool(stall),
+                route=route["approach"] if route else None,
             )
     outsiders = outsiders_recent(root, {p.name for p in personas.values()})
     boards = {}
@@ -629,12 +652,13 @@ def brief(root: Path, graph: Graph, plan: dict[str, Any], sender: str = "goals")
         node = graph.node(f"objective:{slug}:{a['id']}") or {}
         last = node.get("briefed_utc")
         fresh_stall = bool(node.get("stalled_utc")) and (not last or str(node.get("stalled_utc")) > str(last))
-        if last and not fresh_stall and datetime.fromisoformat(last) > datetime.now(UTC) - timedelta(
+        fresh_route = bool(node.get("route_utc")) and (not last or str(node.get("route_utc")) > str(last))
+        if last and not fresh_stall and not fresh_route and datetime.fromisoformat(last) > datetime.now(UTC) - timedelta(
             hours=BRIEF_EVERY_HOURS
         ):
             continue
         text = (
-            f"Goal brief for {data['name']}: pursue {a['label']} (target {a['target']}). "
+            f"Goal brief for {data['name']}: pursue {a['label']}" + (f" (target {a['target']}). " if a.get("target") is not None else ". ")
             + " ".join(f"{b}." for b in a["because"])
             + " This is guidance from the team's own measurements, not an order from the world."
         )
@@ -663,6 +687,7 @@ def wake_guidance(root: Path, name: str, team_slug: str | None) -> dict[str, Any
                 "avoid": list(edges[0].get("avoid") or []),
                 "prefer": list(edges[0].get("prefer") or []),
                 "stalled": bool(edges[0].get("stalled")),
+                "route": edges[0].get("route"),
             }
         suggestions = [
             {

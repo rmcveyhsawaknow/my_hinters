@@ -405,7 +405,7 @@ def plan_wake(
             step = _plan_research(persona, state, observe, inventory, here, view, action_limits(observe)[0] < persona.social_rate)
         elif activity == "crew":
             # the view does not show what a build, a hand-off or a draw changed: one of those per wake, as in a shift
-            step = None if any(a.get("action") in {"build", "give", "take"} for a in actions) else _plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, budget - len(actions), collective_names, names, teammates, cast=cast)
+            step = None if any(a.get("action") in {"build", "give", "take"} for a in actions) else _plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, budget - len(actions), collective_names, names, teammates, cast=cast, route=prefer[0] if prefer else None)
         elif activity == "fool":
             step = _plan_fool(persona, state, observe, environment)
         elif activity == "navy":
@@ -605,13 +605,14 @@ def _plan_crew(
     names: dict[str, str] | None,
     teammates: dict[str, tuple[int, int]] | None,
     cast: dict[str, Any] | None = None,
+    route: str | None = None,
 ) -> tuple[list[dict[str, Any]], str, str] | None:
     """The team pipeline's step for a persona with a ``crew`` knob (``hglab.crew``); None for everyone else."""
     if not isinstance(persona.knobs.get("crew"), dict):
         return None
     from hglab.crew import plan_crew
 
-    return plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, room, collective_names, names, teammates, crew_roles=(cast or {}).get("crew_roles"))
+    return plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, room, collective_names, names, teammates, crew_roles=(cast or {}).get("crew_roles"), route=route)
 
 
 def _plan_blueprint(
@@ -830,7 +831,7 @@ def _plan_work(
         approach = approach or "profile"
     # 0.27 the factory crew: the pipeline step fills the wake (walk to the works, unload, raise, gather, carry)
     while persona.knobs.get("crew") and "crew" not in skip and len(actions) < cap:
-        step = _plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, cap - len(actions), collective_names, names, teammates, cast=cast)
+        step = _plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, cap - len(actions), collective_names, names, teammates, cast=cast, route=prefer[0] if prefer else None)
         if step is not None and moved() and _walks_back(step[0], here, position):
             break  # no walking back the way the wake came: Lintelstave went to a wall and back to the vault every wake (2026-10-25)
         if not fits(step):
