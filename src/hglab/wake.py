@@ -520,6 +520,7 @@ def persona_wake(
                 engagement=engagement,
                 stance=stance_of(persona),
                 patrol=patrol_text,
+                lines_left=speech_room(persona, team, personas, observe, public_events, tick)[0],
             )
             if error is not None:
                 extras["llm_error"] = error[:300]
@@ -534,12 +535,19 @@ def persona_wake(
                 )
                 candidate["actions"] = _keep_writes(candidate["actions"], observe, persona.name, extras)
                 candidate["actions"] = _fill_quantities(candidate["actions"], observe, extras)
-                try:
-                    _check(candidate.get("actions", []), observe, mates)
+                candidate["actions"], muted_now = mute_over_budget(
+                    candidate["actions"], persona, team, personas, observe, public_events, tick
+                )
+                if muted_now:
+                    extras["speech_budget"] = muted_now  # a line past the hour's budget goes before the check, not the whole plan with it
+
+                def _passes(acts: list[dict[str, Any]]) -> None:
+                    _check(acts, observe, mates)
                     if patrol_loop:
-                        _keep_to_edge(
-                            persona.name, candidate.get("actions", []), observe, patrol_loop
-                        )
+                        _keep_to_edge(persona.name, acts, observe, patrol_loop)
+
+                try:
+                    candidate["actions"] = salvage_plan(candidate.get("actions", []), _passes, extras)
                     plan = {
                         **plan,
                         **candidate,
@@ -987,6 +995,40 @@ def _place_builds(
     return kept
 
 
+def salvage_plan(
+    actions: list[dict[str, Any]],
+    passes: Callable[[list[dict[str, Any]]], None],
+    extras: dict[str, Any],
+) -> list[dict[str, Any]]:
+    """The model's plan less the actions the rules refuse, in order; a paid-for plan is not thrown away for one bad action.
+
+    2026-10-27: four of Fathomark's five Opus plans in an hour fell back to rules whole, for a line past its
+    hourly say or a build two tiles off. Each action is kept when the plan so far still passes with it.
+    Raises the first refusal when nothing but bookkeeping would be left, or when the plan as a whole spends
+    the energy reserve (half a trip is worse than the rules' paced one), so the rules plan the wake.
+    """
+    try:
+        passes(actions)
+        return actions
+    except ValueError as exc:
+        first = exc
+    if "reserve" in str(first):
+        raise first
+    kept: list[dict[str, Any]] = []
+    dropped: list[str] = []
+    for action in actions:
+        try:
+            passes([*kept, action])
+        except ValueError as exc:
+            dropped.append(f"{action.get('action')}: {exc}"[:200])
+            continue
+        kept.append(action)
+    if not any(a.get("action") != "remember" for a in kept):
+        raise first
+    extras.setdefault("dropped", []).extend(dropped)
+    return kept
+
+
 def _rate_limit_profile(
     actions: list[dict[str, Any]], state: PersonaState, tick: int, extras: dict[str, Any]
 ) -> list[dict[str, Any]]:
@@ -1048,9 +1090,12 @@ def _llm_plan(
     engagement: str | None = None,
     stance: dict[str, float] | None = None,
     patrol: str | None = None,
+    lines_left: int | None = None,
 ) -> tuple[dict[str, Any] | None, str | None]:
     """Ask the model for a plan; any failure is returned as text so the record can show it."""
     guidance: dict[str, Any] = {"mode": mode, "mood": state.mood, "suggested": heuristic}
+    if lines_left is not None:
+        guidance["public_lines_left_this_hour"] = lines_left  # a say past it is dropped from the plan
     if patrol:
         guidance["patrol"] = patrol
     if engagement:

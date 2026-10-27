@@ -119,3 +119,39 @@ def test_the_navy_asks_its_model_on_shift_wakes_even_with_no_line_left(tmp_path)
     record = result[0] if isinstance(result, tuple) else result
     if record.get("wake_mode") != "rest":
         assert asked and "model_skipped" not in record and record["thinking"]["planner"] == "llm"
+
+
+def test_a_model_plan_loses_only_the_actions_the_rules_refuse(tmp_path):
+    """2026-10-27: four of five Opus plans fell back to rules whole, for a line past the hour's say or a build two tiles off."""
+    from hglab.fixtures import FixtureClient, load_fixture
+    from hglab.lease import acquire
+    from hglab.persona import load_team
+    from hglab.wake import persona_wake
+
+    personas = load_personas(ROOT)
+    fathomark = personas["navy"]
+    observe = load_fixture(ROOT / "tests/fixtures/observe/navy.json")
+    tick = int(observe["tick"])
+    you = observe["you"]
+    observe.setdefault("notebook", {})["_limits"] = json.dumps({"says": [{"tick": tick - 5, "text": "Log: waypoint 4 of 57."}]})  # the hour's line is said
+    spent = [{"type": "say", "actor": "Fathomark", "tick": tick - 5, "id": 990002, "text": "Log: waypoint 4 of 57."}]
+    seen = []
+
+    def llm_call(guidance, observe_now):
+        g = json.loads(guidance)
+        seen.append(g)
+        suggested = [a for a in g["suggested"]["actions"] if a.get("action") != "say"][:1]
+        far = {"action": "build", "type": "sign", "x": int(you["x"]) + 3, "y": int(you["y"]), "text": "Pier works ahead."}
+        return {"summary": "the pier", "actions": [{"action": "say", "text": "Log: the shelf runs two tiles here."}, far, *suggested], "reasons": ["the pier waits"], "approach": "navy"}
+
+    client = FixtureClient(observe)
+    lease = acquire(client, fathomark.name)
+    result = persona_wake(persona=fathomark, team=load_team(ROOT, "admiralty"), personas=personas, client=client, lease=lease, root=ROOT, output_dir=tmp_path, dry_run=True, seed="navy", planner_mode="llm", llm_call=llm_call, public_events=spent, work=True)
+    record = result[0] if isinstance(result, tuple) else result
+    if record.get("wake_mode") == "rest" or not seen:
+        return
+    assert seen[0]["public_lines_left_this_hour"] == 0
+    kinds = [a.get("action") for a in record["actions"]]
+    if any(a.get("action") not in ("say", "remember") for a in seen[0]["suggested"]["actions"]):
+        assert record["thinking"]["planner"] == "llm" and "say" not in kinds and "fallback_reason" not in record
+        assert record["speech_budget"]["muted"] == 1 and any("build target must be on or adjacent" in d for d in record.get("dropped", []))
