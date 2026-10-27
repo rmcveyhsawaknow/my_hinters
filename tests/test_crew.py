@@ -322,9 +322,14 @@ def test_a_heavy_pack_goes_to_the_nearest_depot_and_the_drayman_carries_depot_lo
 
 
 def test_the_steward_raises_depots_on_the_best_holdings_before_the_overflow_vaults():
+    from hglab.crew import team_tills
     from hglab.lots import lot_anchor, lot_bounds
 
     rows, signs, vault, nodes = _claims_world()
+    till_view = WorldView(x0=67, y0=66, rows=rows, full_map=rows, structures=[vault], world_structures=[vault, *signs], world_resources=nodes)
+    first = _office_step("office-steward", {"wood": 22, "stone": 12, "berries": 4}, (74, 72), till_view)
+    assert "till" in first[1]  # the tills for the price of land come first (2026-10-27)
+    signs = [*signs, *({"type": "storehouse", "x": x, "y": y, "owner": "Lintelstave", "policy": "faction"} for x, y in team_tills(load_team(ROOT, "exchange")))]  # the tills stand
     anchor = lot_anchor("K08-NW")
     view = WorldView(x0=anchor[0] - 6, y0=anchor[1] - 6, rows=rows, full_map=rows, structures=[], world_structures=[vault, *signs], world_resources=nodes)
     step = _office_step("office-steward", {"wood": 22, "stone": 12, "berries": 4}, (anchor[0] + 1, anchor[1]), view)

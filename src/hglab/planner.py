@@ -290,6 +290,7 @@ def plan_wake(
     reserve = persona.energy_reserve
     names = dict(team_names or {})
     names.setdefault(persona.name.casefold(), persona.slug)
+    tills = frozenset((int(t[0]), int(t[1])) for t in (cast or {}).get("office_tills") or ())  # the land office's tills: the price of land only
     actions: list[dict[str, Any]] = []
     reasons: list[str] = []
     remember: list[dict[str, str]] = []
@@ -423,7 +424,7 @@ def plan_wake(
                 _plan_repair(persona, team, inventory, here, view, teammates)
                 or _plan_harvest(persona, team, inventory, here, view, teammates)
                 or _plan_stake(persona, inventory, here, view)
-                or (_plan_site_trade(persona, state, inventory, here, view, observe, registrar_name, office_names=(cast or {}).get("office_names")) if here == position else None)
+                or (_plan_site_trade(persona, state, inventory, here, view, observe, registrar_name, office_names=(cast or {}).get("office_names"), tills=tills) if here == position else None)
                 or (_plan_blueprint(persona, team, state, observe, view, inventory, here, budget - len(actions), set(names or ())) if not persona.knobs.get("crew") and here == position else None)
                 or (_plan_hearth(persona, inventory, here, view, home, state) if here == position else None)
                 or _plan_house(persona, inventory, here, view, home, observe, state=state)
@@ -434,8 +435,8 @@ def plan_wake(
         elif activity == "gather":
             step = (
                 _plan_gather(persona, team, inventory, here, view, teammates, rng)
-                or _plan_deposit(persona, inventory, here, view, None, mates=set(collective_names or ()) | set(names or ()), state=state, faction=our_faction)
-                or _plan_deposit_trip(persona, team, inventory, here, view, teammates, {n.casefold() for n in set(collective_names or ()) | set(names or ())} | {persona.name.casefold()}, state=state, faction=our_faction)
+                or _plan_deposit(persona, inventory, here, view, None, mates=set(collective_names or ()) | set(names or ()), state=state, faction=our_faction, skip=tills)
+                or _plan_deposit_trip(persona, team, inventory, here, view, teammates, {n.casefold() for n in set(collective_names or ()) | set(names or ())} | {persona.name.casefold()}, state=state, faction=our_faction, skip=tills)
                 or _plan_forage(persona, team, inventory, here, view, teammates)
             )
         elif activity == "explore":
@@ -748,6 +749,7 @@ def _plan_work(
         used.update({"build", "hearth", "house", "border", "stash", "deposit", "deposit_trip"})  # a hand builds and unloads through the team's plan only
     ours = set(collective_names or ()) | set(names or ())
     our_faction = _faction_name((observe.get("you") or {}).get("faction")) or None
+    tills = frozenset((int(t[0]), int(t[1])) for t in (cast or {}).get("office_tills") or ())  # the land office's tills: the price of land only
 
     def fits_as(label: str, step: tuple[list[dict[str, Any]], str, str] | None) -> bool:
         if label in skip or label in used:
@@ -858,7 +860,7 @@ def _plan_work(
     # 0.5 one engagement with a neighbour when there is one: a word, a gift, a deal, a contest (one action, before the build spends the cap)
     engaged = fits(_plan_engage(persona, team, state, inventory, here, view, observe, teammates, names, rng, collective_names, allowed))
     # 0.6 the trade for the house's ground: the brief to the land office, its answer, the payment
-    if not moved() and fits_as("site_trade", _plan_site_trade(persona, state, inventory, here, view, observe, registrar_name, office_names=(cast or {}).get("office_names"), mates=ours)):
+    if not moved() and fits_as("site_trade", _plan_site_trade(persona, state, inventory, here, view, observe, registrar_name, office_names=(cast or {}).get("office_names"), mates=ours, tills=tills)):
         approach = approach or "site_trade"
     # 0.62 the team's blueprint (the owner's brief of 2026-10-24): a builder raises it step by step, carrying what it needs
     while not persona.knobs.get("crew") and "blueprint" not in skip and len(actions) < cap:
@@ -878,8 +880,8 @@ def _plan_work(
             "hearth": lambda: _plan_hearth(persona, inventory, here, view, home, state) if not moved() else None,
             "border": lambda: _plan_border_sign(persona, team, inventory, here, view, teammates, names) if not moved() else None,
             "reclaim": lambda: _plan_reclaim(persona, team, state, inventory, here, view, observe, teammates, collective_names, room=cap - len(actions)) if not moved() else None,
-            "deposit": lambda: _plan_deposit(persona, inventory, here, view, registrar_name, mates=ours, state=state, faction=our_faction),
-            "deposit_trip": lambda: _plan_deposit_trip(persona, team, inventory, position, view, teammates, {n.casefold() for n in ours} | {persona.name.casefold()}, state=state, faction=our_faction) if not moved() else None,
+            "deposit": lambda: _plan_deposit(persona, inventory, here, view, registrar_name, mates=ours, state=state, faction=our_faction, skip=tills),
+            "deposit_trip": lambda: _plan_deposit_trip(persona, team, inventory, position, view, teammates, {n.casefold() for n in ours} | {persona.name.casefold()}, state=state, faction=our_faction, skip=tills) if not moved() else None,
             "draw": lambda: _plan_draw(persona, state, inventory, here, view, observe, (cast or {}).get("supply_owners")) if not moved() else None,
             "stash": lambda: _plan_stash(persona, inventory, position, view, team) if not moved() and here == position else None,
             "gather_trip": lambda: _plan_gather(persona, team, inventory, here, view, teammates, rng),
@@ -963,10 +965,10 @@ def _plan_work(
     if not moved() and fits_as("draw", _plan_draw(persona, state, inventory, here, view, observe, (cast or {}).get("supply_owners"))):
         approach = approach or "draw"
     # 4. deposit surplus into an adjacent storehouse of ours (so the monument can draw on it)
-    if fits_as("deposit", _plan_deposit(persona, inventory, here, view, registrar_name, mates=ours, state=state, faction=our_faction)):
+    if fits_as("deposit", _plan_deposit(persona, inventory, here, view, registrar_name, mates=ours, state=state, faction=our_faction, skip=tills)):
         approach = approach or "deposit"
     # 4.2 a full pack walks to the nearest storehouse of ours to unload (a word or a meal may precede the walk)
-    if not moved() and fits_as("deposit_trip", _plan_deposit_trip(persona, team, inventory, position, view, teammates, {n.casefold() for n in ours} | {persona.name.casefold()}, state=state, faction=our_faction)):
+    if not moved() and fits_as("deposit_trip", _plan_deposit_trip(persona, team, inventory, position, view, teammates, {n.casefold() for n in ours} | {persona.name.casefold()}, state=state, faction=our_faction, skip=tills)):
         approach = approach or "deposit_trip"
     # 4.3 a full pack with no storehouse of ours in reach raises one of its own and unloads next wake
     if not moved() and here == position and fits_as("stash", _plan_stash(persona, inventory, position, view, team)):
@@ -1133,6 +1135,7 @@ def _plan_site_trade(
     registrar_name: str | None,
     office_names: set[str] | None = None,
     mates: set[str] | None = None,
+    tills: set[tuple[int, int]] | frozenset[tuple[int, int]] = frozenset(),
 ) -> tuple[list[dict[str, Any]], str, str] | None:
     """The trade for the house's ground with the land office, in three movements.
 
@@ -1201,8 +1204,9 @@ def _plan_site_trade(
         key=lambda t: chebyshev(position, t),
     )
     ground = (int(bought.get("x", position[0])), int(bought.get("y", position[1])))
-    near_ground = [v for v in vaults if chebyshev(ground, v) <= DEED_TRIP_RANGE]
-    vaults = near_ground or vaults  # the office's stores by the ground being bought when it has any there; else its nearest anywhere
+    till_vaults = [v for v in vaults if v in tills]  # the office's tills first, wherever they stand: kept for the price of land (2026-10-27)
+    near_ground = [v for v in vaults if chebyshev(ground, v) <= DEED_TRIP_RANGE and v not in tills]
+    vaults = till_vaults + (near_ground or [v for v in vaults if v not in tills])  # then the office's stores by the ground being bought when it has any there; else its nearest anywhere
     full = _full_stores(state, tick, within=DEED_FULL_TICKS)
     vaults = [v for v in vaults if v not in full and storehouse_room(view.structure_at(*v) or {}) >= min(owed, 5)]  # a full vault takes nothing
     if not vaults:
@@ -1772,14 +1776,15 @@ def _plan_deposit_trip(
     mates: set[str],
     state: PersonaState | None = None,
     faction: str | None = None,
+    skip: set[tuple[int, int]] | frozenset[tuple[int, int]] = frozenset(),
 ) -> tuple[list[dict[str, Any]], str, str] | None:
-    """Walk toward the nearest storehouse of ours (own, a teammate's or the collective's) when the pack is full; never toward one whose contents another faction hides."""
+    """Walk toward the nearest storehouse of ours (own, a teammate's or the collective's) when the pack is full; never toward one whose contents another faction hides, nor a land office till (``skip``)."""
     total = sum(inventory.values())
     if total < 46 and not (total >= PACK_TIGHT and inventory.get("berries", 0) > BERRY_KEEP + 10):
         return None
     full = _full_stores(state, int(view.tick or 0))
     stores = sorted(
-        (s for s in (view.world_structures or view.structures) if s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() in mates and (int(s["x"]), int(s["y"])) not in full and not _opaque_to(s, persona, faction) and storehouse_room(view.structure_at(int(s["x"]), int(s["y"])) or {}) >= 5),
+        (s for s in (view.world_structures or view.structures) if s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() in mates and (int(s["x"]), int(s["y"])) not in full and (int(s["x"]), int(s["y"])) not in skip and not _opaque_to(s, persona, faction) and storehouse_room(view.structure_at(int(s["x"]), int(s["y"])) or {}) >= 5),
         key=lambda s: (str(s.get("owner", "")).casefold() != persona.name.casefold(), chebyshev(position, (int(s["x"]), int(s["y"])))),
     )
     mode = persona.knobs["territory"]["mode"]
@@ -2230,8 +2235,9 @@ def _plan_deposit(
     mates: set[str] | None = None,
     state: PersonaState | None = None,
     faction: str | None = None,
+    skip: set[tuple[int, int]] | frozenset[tuple[int, int]] = frozenset(),
 ) -> tuple[list[dict[str, Any]], str, str] | None:
-    """Put surplus into an adjacent storehouse: our own first, else a teammate's or the collective's vault.
+    """Put surplus into an adjacent storehouse: our own first, else a teammate's or the collective's vault (never the land office's tills, ``skip``).
 
     ``give`` works into any storehouse (its policy only limits ``take``), so a full pack beside the
     land office becomes a deposit; the office counts it toward lending.
@@ -2250,7 +2256,7 @@ def _plan_deposit(
     full = _full_stores(state, tick)
     for structure in candidates:
         where = (int(structure["x"]), int(structure["y"]))
-        if chebyshev(position, where) > 1 or where in full:
+        if chebyshev(position, where) > 1 or where in full or where in skip:
             continue
         if _opaque_to(structure, persona, faction):
             _mark_full(state, where, tick)  # its contents are hidden from us: the office's depots refused 47 gives in a day this way

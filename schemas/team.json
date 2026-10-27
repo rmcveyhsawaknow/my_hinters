@@ -48,7 +48,9 @@
                 "enabled": {"type": "boolean"},
                 "notice_ticks": {"type": "integer", "minimum": 0, "maximum": 60480, "description": "Ticks between the notice and the first hit (360 is one real hour)"}
               }
-            }
+            },
+            "tills": {"type": "array", "maxItems": 6, "items": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "integer", "minimum": 0, "maximum": 127}}, "description": "Tiles of the office's tills (owner, 2026-10-27): storehouses the mason raises for the price of land only; no one unloads into them and clients pay into them first"},
+            "stores_max": {"type": "integer", "minimum": 1, "maximum": 40, "description": "Office storehouses, tills included, up to which the mason raises another beside a full one while every store is full (owner, 2026-10-27)"}
           }
         },
         "stores_max": {"type": "integer", "minimum": 1, "maximum": 12, "description": "Storehouses at the works before the hands stop raising more for a full stock (default 6)"},

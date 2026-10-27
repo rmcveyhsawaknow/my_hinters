@@ -247,7 +247,11 @@ def _cast(root: Path, persona: Any, team: Any, personas: dict[str, Any], registr
     office = next((p for p in personas.values() if registrar_name and p.name == registrar_name), None)
     if office is not None:
         try:
-            cast["office_names"] = {personas[m].name for m in load_team(root, office.team).members if m in personas}
+            office_team = load_team(root, office.team)
+            cast["office_names"] = {personas[m].name for m in office_team.members if m in personas}
+            from hglab.crew import team_tills
+
+            cast["office_tills"] = sorted(team_tills(office_team))  # the office's tills take the price of land and nothing else (2026-10-27)
         except (OSError, ValueError, KeyError):
             cast["office_names"] = {office.name}
     supply = persona.knobs.get("supply")
