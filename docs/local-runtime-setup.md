@@ -95,6 +95,45 @@ parameter into the logon start.
    `ecosystem.backup_every_minutes` (six hours) and after the first minute of a run, and the status
    page and `runs/local/status.json` carry `last_backup`.
 
+## Stop, and resume after an outage
+
+When Hinterglass stops answering, the agents only fail their wakes, so the environment can be stopped
+until it is back. On 2026-10-28 it was stopped like this:
+
+1. `hglab local service remove`: no start at logon (the Startup folder's `hinters-local.cmd` is gone).
+2. Stop the `python -m hglab local up` processes first, so the supervisor launches no new jobs, then
+   every `python -m hglab shift|tick|keepalive` job (Task Manager, or `Stop-Process` on each). This also
+   closes the status page (8766) and A2A (8765). Leases expire on their own after eight minutes.
+3. In WSL: `nemoclaw hinters stop` (the workspace is kept), then
+   `systemctl --user disable --now hinters-dashboard-forward nemoclaw-openshell-gateway`, so neither
+   comes back when the distribution starts (linger is on).
+
+Docker Desktop and Ollama are left as they are. `hglab local status` reads `runs/local/status.json`
+and still shows the supervisor as running until that file goes stale.
+
+To resume, run one script from the repository:
+
+```powershell
+pwsh -File scripts\resume-local.ps1                 # add -NoLogonStart to skip the start at logon
+```
+
+It does nothing unless `https://hinterglass.com/api/v1/world/events` answers (`-Force` starts anyway)
+or a supervisor is already running. Otherwise it enables the gateway unit again, starts `hglab local up`
+detached and minimised (as the logon start does: Docker Desktop, the gateway, the sandbox, the dashboard
+forward, the status page, A2A and the supervisor), runs `hglab local service install`, waits for the
+supervisor's `supervisor up` line, and prints `hglab local status` and `hglab local stack`. By hand,
+the same steps are:
+
+```powershell
+wsl -d Ubuntu -e bash -lc "systemctl --user enable nemoclaw-openshell-gateway"
+.venv\Scripts\hglab local up          # foreground: keep the window open
+.venv\Scripts\hglab local service install
+```
+
+Then check that wakes are recorded again: new files in `runs/<date>/` and `exit 0` lines in
+`runs/local/supervisor.log`. A daily verification that lapsed during the outage is answered by each
+agent's next keepalive.
+
 ## Known failure after a reboot: Docker Desktop updates itself
 
 Seen on 2026-10-22: the Startup script brought everything up, then Docker Desktop installed its
