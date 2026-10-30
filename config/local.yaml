@@ -72,6 +72,12 @@ ecosystem:
   # how often the supervisor looks at the game's surface (API version, guide, actions, blueprints, fields, limits,
   # event kinds) and queues changes for the crier's news wake (0 switches it off)
   watch_every_minutes: 10
+  # how often a live supervisor tells GitHub Actions it runs the agents (the repository variable HG_LOCAL_HEARTBEAT,
+  # through `gh`): the agent workflows stand down while it is fresh and take over when it is older than
+  # HG_LOCAL_STALE_MINUTES (30); a clean stop clears it (0 switches it off). The owner, 2026-10-30.
+  heartbeat_every_minutes: 10
+  # rebuild the blueprint ledgers from what stands in the world when the supervisor starts (`hglab factory reconcile`)
+  reconcile_ledgers_on_start: true
   # service_account: the GCP_SERVICE_ACCOUNT_KEY in the keyring (default); gcloud: the signed-in session.
   # `hglab local up --auth gcloud` overrides it for one run.
   auth: service_account

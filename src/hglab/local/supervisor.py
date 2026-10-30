@@ -44,6 +44,9 @@ def load_local_config(root: Path) -> dict[str, Any]:
 
 ROUND_OFFSET = 30  # the office and collector rounds run this many minutes after the shift starts: a persona runs one job at a time
 KEEPALIVE_OFFSET = 40  # after the shift has ended (the hands' shifts run about 36 minutes), before the next one
+JOB_TIMEOUT_MINUTES = 40  # a tick, a round or a keepalive; a shift gets its own length and a margin
+SHIFT_MARGIN_MINUTES = 15  # Plumbline's 50-minute shifts were cut at 40 (2026-10-30)
+HEARTBEAT_VARIABLE = "HG_LOCAL_HEARTBEAT"  # the repository variable GitHub Actions reads: fresh, the agent workflows stand down
 
 
 def due_jobs(persona: Any, when: datetime, entry: dict[str, Any]) -> list[str]:
@@ -123,6 +126,7 @@ class Supervisor:
         self._lock = threading.RLock()
         self._busy: set[str] = set()
         self._threads: list[threading.Thread] = []
+        self._shift_minutes: dict[str, int] = {}
 
     def _load_status(self) -> dict[str, Any]:
         if self.status_path.is_file():
@@ -152,8 +156,15 @@ class Supervisor:
             with self.log_path.open("a", encoding="utf-8") as handle:
                 handle.write(f"{datetime.now(UTC).isoformat()} {line}\n")
 
+    def _timeout_minutes(self, command: list[str]) -> int:
+        if "shift" in command and "--agent" in command and "--max-wakes" not in command:
+            minutes = self._shift_minutes.get(command[command.index("--agent") + 1], 0)
+            return max(JOB_TIMEOUT_MINUTES, minutes + SHIFT_MARGIN_MINUTES)
+        return JOB_TIMEOUT_MINUTES
+
     def _run_subprocess(self, command: list[str]) -> tuple[int, str]:
         env = {**os.environ, "PYTHONUTF8": "1", "HGLAB_RUNTIME": "local"}
+        limit = self._timeout_minutes(command)
         try:
             proc = subprocess.run(
                 command,
@@ -164,12 +175,12 @@ class Supervisor:
                 encoding="utf-8",
                 errors="replace",  # the child writes UTF-8; a console code page must never fail the job
                 env=env,
-                timeout=40 * 60,
+                timeout=limit * 60,
             )
         except subprocess.TimeoutExpired as exc:
-            tail = (exc.stdout or b"") + (exc.stderr or b"")
-            text = tail.decode("utf-8", "replace") if isinstance(tail, bytes) else str(tail)
-            return 124, f"timed out after 40 minutes\n{text}"[-4000:]
+            # the captured output is text here, bytes on some platforms: str + bytes ended the job's thread (2026-10-27)
+            text = "".join(p.decode("utf-8", "replace") if isinstance(p, bytes) else str(p or "") for p in (exc.stdout, exc.stderr))
+            return 124, f"timed out after {limit} minutes\n{text}"[-4000:]
         return proc.returncode, ((proc.stdout or "") + (proc.stderr or ""))[-4000:]
 
     def entries(self) -> list[dict[str, Any]]:
@@ -397,12 +408,43 @@ class Supervisor:
         self._save_status()
         return status
 
+    def heartbeat(self, stamp: str | None = None) -> bool:
+        """Tell GitHub Actions this host runs the agents (the owner, 2026-10-30): the agent workflows stand down
+        while the repository variable is fresh and take over when it goes stale (``gh`` signed in on this host)."""
+        name = str((self.config.get("ecosystem") or {}).get("heartbeat_variable") or HEARTBEAT_VARIABLE)
+        stamp = datetime.now(UTC).replace(microsecond=0).isoformat() if stamp is None else stamp
+        try:
+            proc = subprocess.run(["gh", "variable", "set", name, "--body", stamp or "stopped"], cwd=str(self.root), capture_output=True, text=True, timeout=60, check=False)
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            self._log(f"heartbeat failed: {exc}")
+            return False
+        if proc.returncode != 0:
+            self._log(f"heartbeat failed: {(proc.stderr or proc.stdout).strip()[:200]}")
+            return False
+        if not self.status.get("heartbeat_utc") or not stamp:
+            self._log(f"heartbeat ok: {name} = {stamp or 'stopped'}")
+        self.status["heartbeat_utc"] = stamp
+        return True
+
+    def reconcile_ledgers(self) -> tuple[int, str]:
+        """The blueprint ledgers from what stands in the world: GitHub Actions built while this host was away."""
+        code, output = self.runner([sys.executable, "-m", "hglab", "factory", "reconcile"])
+        self._log(f"ledgers reconciled (exit {code}): " + " | ".join(line for line in output.strip().splitlines()[-3:] if line.strip())[:300])
+        return code, output
+
     def loop(self, personas: dict[str, Any], minutes: int | None = None) -> None:
         self._log(
             f"supervisor up: {', '.join(e.get('slug', '?') for e in self.entries())} (dry_run={self.config.get('dry_run', True)})"
         )
         self.status["running"] = True
         self._save_status()
+        self._shift_minutes = {slug: int(((getattr(p, "knobs", None) or {}).get("work") or {}).get("minutes") or 0) for slug, p in personas.items()}
+        eco = self.config.get("ecosystem") or {}
+        live = self.config.get("dry_run", True) is False
+        beat_every = int(eco.get("heartbeat_every_minutes", 0) or 0) if live else 0
+        last_beat: datetime | None = None
+        if eco.get("reconcile_ledgers_on_start"):
+            threading.Thread(target=self.reconcile_ledgers, daemon=True).start()
         last_minute = None
         count = 0
         last_backup: datetime | None = None
@@ -440,10 +482,15 @@ class Supervisor:
                     ):
                         last_stack = now
                         threading.Thread(target=self.keep_dashboard, daemon=True).start()
+                    if beat_every and (last_beat is None or (now - last_beat).total_seconds() >= beat_every * 60):
+                        last_beat = now
+                        threading.Thread(target=self.heartbeat, daemon=True).start()
                 time.sleep(5)
         finally:
             self.status["running"] = False
             self._save_status()
+            if beat_every:
+                self.heartbeat("")  # a clean stop hands over at once; a host that dies goes stale instead
             self._log("supervisor down")
 
 

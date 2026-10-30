@@ -181,3 +181,23 @@ def export_command(name: str = NAME, out: Path = typer.Option(Path("runs/local/b
 
 def register(app: typer.Typer) -> None:
     app.add_typer(factory_app, name="factory")
+
+
+@factory_app.command("reconcile")
+def reconcile_command(name: list[str] = typer.Option(None, "--name", help="A design (repeatable); every design under teams/blueprints by default")) -> None:  # noqa: B008
+    """Mark done every step the world already shows, from the public blocks file (no key).
+
+    A host without this ledger (a GitHub Actions run, or this host back from days away) runs it before
+    its agents wake, so builders neither re-raise what stands nor wait on it."""
+    from hglab.client import HinterglassClient
+
+    root = Path.cwd()
+    names = list(name or []) or sorted(p.stem for p in (root / factory.DESIGN_DIR).glob("*.yaml"))
+    world = _world(root)
+    cells = factory.decode_blocks(HinterglassClient().request("GET", "/live/blocks.json"))
+    tick = int(world.get("tick", 0) or 0)
+    for one in names:
+        design, steps, _ = factory.blueprint(root, one)
+        added = factory.reconcile(root, one, cells, world.get("structures") or [], tick=tick)
+        done = factory.load_ledger(root, factory.ledger_name(design, one)).get("done") or {}
+        typer.echo(f"{one}: {len(done)} of {len(steps)} steps done ({len(added)} found standing)")

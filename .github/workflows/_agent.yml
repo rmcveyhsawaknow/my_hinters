@@ -5,6 +5,11 @@ name: Agent (reusable)
 # unless there is a challenge), tick (a persona wake), pulse (refresh reports), plus a weekly
 # retro that proposes persona or metric changes as a pull request. Reports live on the
 # `reports` branch. Secrets arrive explicitly from the caller, one by one, never wholesale.
+#
+# Hand-over with the local host (the owner, 2026-10-30): a live local supervisor sets the repository
+# variable HG_LOCAL_HEARTBEAT every ten minutes. While it is younger than HG_LOCAL_STALE_MINUTES (30)
+# every scheduled job here stands down; when the host goes away the next scheduled run takes over.
+# A manual dispatch always runs. The blueprint ledgers are rebuilt from the world before each wake.
 
 on:
   workflow_call:
@@ -44,8 +49,32 @@ env:
   PYTHONUTF8: "1"
 
 jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    outputs:
+      run: ${{ steps.local.outputs.run }}
+    steps:
+      - id: local
+        name: Stand down while the local host runs the agents
+        env:
+          HEARTBEAT: ${{ vars.HG_LOCAL_HEARTBEAT }}
+          STALE_MINUTES: ${{ vars.HG_LOCAL_STALE_MINUTES || '30' }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          run=true
+          if [ "$EVENT" != "workflow_dispatch" ] && [ -n "$HEARTBEAT" ] && beat="$(date -u -d "$HEARTBEAT" +%s 2>/dev/null)"; then
+            age=$(( $(date -u +%s) - beat ))
+            if [ "$age" -lt $(( STALE_MINUTES * 60 )) ]; then
+              run=false
+              echo "The local host runs the agents (heartbeat $HEARTBEAT, $(( age / 60 )) minutes ago): standing down." >> "$GITHUB_STEP_SUMMARY"
+            fi
+          fi
+          echo "run=$run" >> "$GITHUB_OUTPUT"
+
   keepalive:
-    if: inputs.job == 'keepalive' || inputs.job == 'tick'
+    needs: gate
+    if: needs.gate.outputs.run == 'true' && (inputs.job == 'keepalive' || inputs.job == 'tick')
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -81,8 +110,8 @@ jobs:
           if-no-files-found: ignore
 
   tick:
-    if: inputs.job == 'tick'
-    needs: keepalive
+    if: needs.gate.outputs.run == 'true' && inputs.job == 'tick'
+    needs: [gate, keepalive]
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
@@ -109,6 +138,8 @@ jobs:
           if [ -n "$OPENAI_KEY" ]; then printf '::add-mask::%s\n' "$OPENAI_KEY"; printf 'OPENAI_API_KEY=%s\n' "$OPENAI_KEY" >> "$GITHUB_ENV"; fi
       - name: Pull prior reports (run records feed influence signals)
         run: hglab reports pull || echo "no reports branch yet"
+      - name: Blueprint ledgers from what stands in the world
+        run: hglab factory reconcile || echo "ledgers not reconciled"
       - name: Persona wake
         env:
           AGENT: ${{ inputs.agent }}
@@ -135,9 +166,10 @@ jobs:
         run: bash scripts/publish_reports.sh runs "$AGENT"
 
   shift:
-    if: inputs.job == 'shift'
+    needs: gate
+    if: needs.gate.outputs.run == 'true' && inputs.job == 'shift'
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 70  # Plumbline's shift is 50 minutes, the hands' 40
     permissions:
       contents: write
     steps:
@@ -160,6 +192,10 @@ jobs:
           printf '%s=%s\n' "$name" "$HINTERGLASS_KEY" >> "$GITHUB_ENV"
           if [ -n "$ANTHROPIC_KEY" ]; then printf '::add-mask::%s\n' "$ANTHROPIC_KEY"; printf 'ANTHROPIC_API_KEY=%s\n' "$ANTHROPIC_KEY" >> "$GITHUB_ENV"; fi
           if [ -n "$OPENAI_KEY" ]; then printf '::add-mask::%s\n' "$OPENAI_KEY"; printf 'OPENAI_API_KEY=%s\n' "$OPENAI_KEY" >> "$GITHUB_ENV"; fi
+      - name: Pull prior reports (the spend so far today, for the budget caps)
+        run: hglab reports pull || echo "no reports branch yet"
+      - name: Blueprint ledgers from what stands in the world
+        run: hglab factory reconcile || echo "ledgers not reconciled"
       - name: Work shift (build, gather, deposit, migrate)
         env:
           AGENT: ${{ inputs.agent }}
@@ -184,7 +220,8 @@ jobs:
         run: bash scripts/publish_reports.sh runs "$AGENT"
 
   pulse:
-    if: inputs.job == 'pulse'
+    needs: gate
+    if: needs.gate.outputs.run == 'true' && inputs.job == 'pulse'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -222,7 +259,8 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
   retro:
-    if: inputs.job == 'retro'
+    needs: gate
+    if: needs.gate.outputs.run == 'true' && inputs.job == 'retro'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
