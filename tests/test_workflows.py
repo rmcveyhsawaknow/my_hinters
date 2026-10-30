@@ -63,7 +63,10 @@ def test_reusable_workflow_has_three_jobs_and_no_inherited_secrets():
     assert set(data["jobs"]) >= {"keepalive", "tick", "pulse", "retro"}
     assert "secrets: inherit" not in text
     assert "workflow_call" in data[True]
-    assert data["jobs"]["tick"]["needs"] == "keepalive"
+    assert data["jobs"]["tick"]["needs"] == ["gate", "keepalive"]
+    for name, job in data["jobs"].items():  # the hand-over (2026-10-30): every job stands down while the local host's heartbeat is fresh
+        if name != "gate":
+            assert "gate" in job["needs"] and job["if"].startswith("needs.gate.outputs.run == 'true'")
     assert "pull_request_target" not in text
 
 

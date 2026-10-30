@@ -138,7 +138,24 @@ def test_the_office_reads_a_price_paid_in_parts_from_the_hosts_archive(tmp_path)
     rows = [_paid(19, 89951, eid=1), {"id": 2, "type": "move", "tick": 89960, "actor": "Plumbline", "text": "walked"}, _paid(5, 1000, eid=3)]
     path.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
     assert [e["id"] for e in _archived_gives(tmp_path, 90514)] == [1]  # gives of the last three days only
-    assert _archived_gives(tmp_path / "nowhere", 90514) == []
+
+
+def test_a_host_without_the_archive_reads_three_days_of_gives_from_the_world(tmp_path, monkeypatch):
+    from hglab import cli_personas
+
+    pages = {None: [_paid(19, 90400, eid=9), _paid(5, 89000, eid=8)], 8: [_paid(30, 70000, eid=7), _paid(1, 60000, eid=6)]}
+    asked = []
+
+    class World:
+        def public_events(self, **params):
+            asked.append(params)
+            rows = pages.get(params.get("before"), [])
+            return {"events": rows, "next_before": rows[-1]["id"] if rows else None}
+
+    monkeypatch.setattr(cli_personas, "HinterglassClient", World)
+    gives = cli_personas._archived_gives(tmp_path / "nowhere", 90514)  # a GitHub Actions run: no data/events/public.jsonl
+    assert [e["id"] for e in gives] == [9, 8, 7]  # older than three days are left out, and the paging stops there
+    assert all(p["type"] == "give" for p in asked) and len(asked) == 2
 
 
 def test_a_wake_that_draws_the_price_keeps_it_and_sheds_its_spare_load():

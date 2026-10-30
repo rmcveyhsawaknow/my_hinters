@@ -18,6 +18,9 @@
         "backup_every_minutes": {"type": "integer", "minimum": 0, "maximum": 10080},
         "adapt_every_minutes": {"type": "integer", "minimum": 0, "maximum": 10080},
         "watch_every_minutes": {"type": "integer", "minimum": 0, "maximum": 1440},
+        "heartbeat_every_minutes": {"type": "integer", "minimum": 0, "maximum": 60},
+        "heartbeat_variable": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+        "reconcile_ledgers_on_start": {"type": "boolean"},
         "auth": {"enum": ["service_account", "gcloud"]}
       }
     },

@@ -1005,11 +1005,37 @@ def _archived_gives(root: Path, tick: int) -> list[dict[str, Any]]:
     from hglab.local.measure import archive_path
 
     path = archive_path(root)
+    if not path.is_file():
+        return _public_gives(HinterglassClient(), tick)  # a host without the archive (a GitHub Actions run) reads the gives themselves
     try:
-        rows = read_jsonl(path) if path.is_file() else []
+        rows = read_jsonl(path)
     except (OSError, ValueError):
         return []
     return [e for e in rows if isinstance(e, dict) and e.get("type") == "give" and tick - int(e.get("tick", 0) or 0) <= PAYMENT_TICKS]
+
+
+GIVE_PAGES = 30  # three days of gives were six pages on 2026-10-30
+
+
+def _public_gives(client: HinterglassClient, tick: int) -> list[dict[str, Any]]:
+    """The public gives of the last three days, newest first, from the world's events filtered by type (no key)."""
+    gives: list[dict[str, Any]] = []
+    before: Any = None
+    for _ in range(GIVE_PAGES):
+        params: dict[str, Any] = {"limit": 100, "type": "give"}
+        if before is not None:
+            params["before"] = before
+        try:
+            page = client.public_events(**params)
+        except Exception:  # noqa: BLE001 - the office still reads the live pages without these
+            break
+        rows = [r for r in page.get("events", []) if isinstance(r, dict)]
+        gives.extend(r for r in rows if tick - int(r.get("tick", 0) or 0) <= PAYMENT_TICKS)
+        nxt = page.get("next_before") or (rows[-1].get("id") if rows else None)
+        if not rows or nxt is None or nxt == before or tick - int(rows[-1].get("tick", 0) or 0) > PAYMENT_TICKS:
+            break
+        before = nxt
+    return gives
 
 
 def _public_board_inputs(root: Path, *, fixture: Path | None) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:

@@ -1061,6 +1061,63 @@ def settle(root: Path, name: str, actions: list[dict[str, Any]], results: list[d
 # ---------------------------------------------------------------- the builder
 
 
+BLOCK_BYTES = 10  # one block of /live/blocks.json: bx, by, owner index (16 bits each, little-endian), bz, material, shape, facing and colour
+
+
+def decode_blocks(packed: dict[str, Any]) -> dict[tuple[int, int, int], str]:
+    """Every block of the world's public file (``/live/blocks.json``, as the site's viewer reads it): cell to owner."""
+    import base64
+    import struct
+
+    data = base64.b64decode(str(packed.get("data") or ""))
+    owners = [str(o) for o in packed.get("owners") or []]
+    count = min(len(data) // BLOCK_BYTES, max(0, int(packed.get("count") or 0)))
+    cells: dict[tuple[int, int, int], str] = {}
+    for i in range(count):
+        bx, by, owner, bz = struct.unpack_from("<HHHB", data, i * BLOCK_BYTES)
+        cells[(bx, by, bz)] = owners[owner] if owner < len(owners) else ""
+    return cells
+
+
+def reconcile(root: Path, name: str, cells: dict[tuple[int, int, int], str], structures: list[dict[str, Any]], tick: int = 0) -> list[str]:
+    """Mark done the steps the world already shows, so a host without this ledger (a GitHub Actions run, or this
+    host back from days away) neither re-raises what stands nor waits on it.
+
+    A placement is done when every cell of its box is filled (the world would refuse it as filled); a storehouse
+    when one stands on its tile; a clear when anything after it in its section stands, or none of its owner's
+    blocks are left in its box. Version 2 of the factory rebuilt Fudgewright's sections where his old ones were
+    cleared, so a clear judged by its box alone would take the new walls down. Only adds to the ledger.
+    """
+    try:
+        design, steps, _index = blueprint(root, name)
+    except (OSError, ValueError):
+        return []
+    ledger = ledger_name(design, name)
+    done = set((load_ledger(root, ledger).get("done") or {}).keys())
+    stores = {(int(s.get("x", -1)), int(s.get("y", -1))) for s in structures if s.get("type") == "storehouse"}
+    new: list[str] = []
+    for step in steps:
+        if step["id"] in done:
+            continue
+        if step["kind"] == "place":
+            box = _cells_of(step["action"])
+            if box and all(c in cells for c in box):
+                new.append(step["id"])
+        elif step["kind"] == "build" and (int(step["action"]["x"]), int(step["action"]["y"])) in stores:
+            new.append(step["id"])
+    standing = done | set(new)
+    for i, step in enumerate(steps):
+        if step["kind"] != "remove" or step["id"] in standing:
+            continue
+        later = any(s["section"] == step["section"] and s["id"] in standing for s in steps[i + 1 :])
+        owner = str(step.get("only") or "").casefold()
+        left = any(cells.get(c, "").casefold() == owner for c in _cells_of(step["action"])) if owner else any(c in cells for c in _cells_of(step["action"]))
+        if later or not left:
+            new.append(step["id"])
+    mark_done(root, ledger, new, tick, "world")
+    return new
+
+
 def ready_steps(steps: list[dict[str, Any]], done: set[str], skip: set[str] | frozenset[str] = frozenset()) -> list[dict[str, Any]]:
     """The first undone step of each section: a section rises in order, sections in parallel."""
     out: list[dict[str, Any]] = []
@@ -1457,6 +1514,6 @@ def plan_step(
 
 
 __all__ = [
-    "LEDGER_DIR", "blueprint", "builder_sections", "cells_rect", "check", "design_complete", "expand", "foundation_map", "land_wanted", "ledger_name", "load_design", "load_ledger", "mark_done",
-    "materials", "next_design_active", "plan_step", "ready_steps", "root_of", "route", "settle", "signature", "step_lots", "summary", "team_designs", "tiles_of",
+    "LEDGER_DIR", "blueprint", "builder_sections", "cells_rect", "check", "decode_blocks", "design_complete", "expand", "foundation_map", "land_wanted", "ledger_name", "load_design", "load_ledger", "mark_done",
+    "materials", "next_design_active", "plan_step", "ready_steps", "reconcile", "root_of", "route", "settle", "signature", "step_lots", "summary", "team_designs", "tiles_of",
 ]

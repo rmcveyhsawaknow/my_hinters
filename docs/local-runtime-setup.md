@@ -134,6 +134,25 @@ Then check that wakes are recorded again: new files in `runs/<date>/` and `exit 
 `runs/local/supervisor.log`. A daily verification that lapsed during the outage is answered by each
 agent's next keepalive.
 
+## Hand-over to GitHub Actions while the host is away
+
+Since 2026-10-30 the agent workflows and the local supervisor share the agents without double-running them:
+
+- A live supervisor sets the repository variable `HG_LOCAL_HEARTBEAT` every ten minutes through `gh`
+  (`ecosystem.heartbeat_every_minutes`). A clean stop sets it to `stopped`.
+- Each scheduled agent workflow first runs a `gate` job. While the heartbeat is younger than
+  `HG_LOCAL_STALE_MINUTES` (30 when unset), every job stands down. Once it is older, or `stopped`, the next
+  scheduled run takes over. A manual dispatch always runs.
+- An Actions run has no `runs/local`. Before each tick and shift it runs `hglab factory reconcile`, which
+  marks done every blueprint step that already stands in the world (from `/live/blocks.json`, no key). The
+  land office reads three days of public `give` events in place of the host's archive. The shift job pulls
+  the reports branch so the budget caps see the day's spend.
+- When the host comes back, its supervisor reconciles its own ledgers on start
+  (`ecosystem.reconcile_ledgers_on_start`) and its heartbeat sends Actions back to standing down.
+
+Actions runs only the agents whose `HG_AGENT_<NAME>` variable is `on` and whose `HG_KEY_<NAME>` secret is
+set, and only while `HG_ENABLED` is `true`.
+
 ## Known failure after a reboot: Docker Desktop updates itself
 
 Seen on 2026-10-22: the Startup script brought everything up, then Docker Desktop installed its
