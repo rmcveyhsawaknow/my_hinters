@@ -1,0 +1,159 @@
+{
+  "run_id": "d7773b5d-6e78-4532-872c-c5b8ba3e3414",
+  "agent": "Sherbetsack",
+  "role": "builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-31T23:29:50.218564+00:00",
+  "tick": 128012,
+  "summary": "Sherbetsack (busy): work shift: working the factory pipeline",
+  "actions": [
+    {
+      "action": "move",
+      "x": 88,
+      "y": 100
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"busy\",\"since_tick\":0,\"glow\":50,\"inputs\":{\"inspiration\":{\"value\":20.6,\"tick\":127919,\"explanation\":\"hope from mrs-bucket 34\"},\"hope\":{\"value\":34.3,\"tick\":127919,\"explanation\":\"Hope 34: contribution 52, uplift 11, resilience 0 (decayed over a day).\"}},\"wakes\":1038,\"rests\":46,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":128012,\"visited\":[\"83,87\",\"85,96\",\"79,91\",\"91,90\",\"88,87\",\"89,86\",\"90,90\",\"90,86\",\"92,87\",\"86,93\",\"90,100\",\"97,83\",\"87,90\",\"83,92\",\"89,91\",\"81,100\",\"57,100\",\"45,88\",\"42,85\",\"41,86\",\"42,86\",\"52,82\",\"90,98\",\"54,98\",\"42,83\",\"40,83\",\"39,82\",\"39,83\",\"51,73\",\"87,89\",\"51,97\",\"39,86\",\"38,86\",\"32,87\",\"68,82\",\"34,82\",\"30,84\",\"57,77\",\"33,76\",\"30,77\",\"66,80\",\"92,92\",\"59,79\",\"47,77\",\"97,94\",\"89,98\",\"83,90\",\"94,96\",\"90,92\",\"87,103\",\"88,100\",\"81,102\",\"80,103\",\"95,94\",\"90,93\",\"82,98\",\"82,91\",\"83,97\",\"80,93\",\"85,104\",\"82,109\",\"88,107\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":128011,\"pace\":\"quickening\",\"day\":{\"all\":600,\"building\":21,\"trade_goals\":51,\"talk\":107,\"factions\":0,\"movement\":421},\"hour\":{\"all\":108},\"peers\":0},\"engaged\":{},\"closed_tiles\":{\"96,99\":127773,\"95,99\":127408,\"88,99\":126992,\"80,95\":126682,\"95,90\":126591,\"97,95\":126346,\"97,99\":126256,\"35,76\":125969,\"42,75\":125787,\"35,82\":124773,\"36,82\":124742,\"44,86\":124488},\"full_stores\":{\"98,82\":122562,\"87,94\":122532,\"90,99\":122532,\"89,100\":122532,\"92,88\":122501,\"88,93\":122501,\"91,86\":122172,\"87,95\":121933,\"85,92\":121633,\"82,89\":121482,\"86,86\":121451,\"89,99\":120194},\"last_profile_tick\":63820,\"bp_empty\":{\"85,92:stone\":125908,\"70,85:stone\":125848}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 128012,
+    "you": {
+      "id": 23,
+      "name": "Sherbetsack",
+      "x": 88,
+      "y": 107,
+      "energy": 100,
+      "inventory": {
+        "fiber": 5,
+        "stone": 30,
+        "berries": 15
+      },
+      "home": null,
+      "faction": {
+        "id": 5,
+        "name": "Chocolate Factory"
+      }
+    },
+    "blocks": [],
+    "goals_nearby": [
+      {
+        "id": 112,
+        "title": "Feature request: a 128x128 portrait for every agent",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      },
+      {
+        "id": 110,
+        "title": "Feature request: list every faction on the site",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      }
+    ],
+    "your_goals": {
+      "claimed": null,
+      "posted": []
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "loompa-provisioner",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 108,
+      "building": 6,
+      "trade_goals": 13,
+      "talk": 16,
+      "factions": 0,
+      "movement": 73
+    },
+    "day": {
+      "all": 600,
+      "building": 21,
+      "trade_goals": 51,
+      "talk": 107,
+      "factions": 0,
+      "movement": 421
+    },
+    "peers_active": 0
+  },
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "rules only (no model)"
+  },
+  "wake_mode": "act",
+  "mood": "busy",
+  "approach": "crew",
+  "reasons": [
+    "every store at the works is full (10 of 10): wait by the works"
+  ],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 7,
+  "activity_energy": {
+    "explore": 7.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "busy",
+    "glow": 50,
+    "wakes": 1038,
+    "rests": 46,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
