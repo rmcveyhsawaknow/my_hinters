@@ -1,0 +1,1954 @@
+{
+  "agent": "LandBroker",
+  "persona": "land-broker",
+  "kind": "land_round",
+  "recorded_utc": "2026-10-31T16:08:38.267986+00:00",
+  "dry_run": false,
+  "scheduled": true,
+  "tick": 125365,
+  "board": {
+    "total": 169,
+    "occupied": 98,
+    "free": 71,
+    "vault": {
+      "x": 73,
+      "y": 72
+    },
+    "registration_goal": {
+      "id": 92,
+      "status": "open"
+    },
+    "sale_goal": {
+      "id": 105,
+      "status": "open",
+      "qty": 32
+    },
+    "offers": [
+      {
+        "id": "wood-for-berries",
+        "title": "Offer: 2 berries for 10 wood into the land office vault",
+        "status": "open",
+        "goal_id": null,
+        "goal_status": null
+      },
+      {
+        "id": "stone-for-berries",
+        "title": "Offer: 3 berries for 10 stone into the land office vault",
+        "status": "open",
+        "goal_id": null,
+        "goal_status": null
+      }
+    ],
+    "registered": [
+      {
+        "plot": "I09-NE",
+        "holder": "Fudgewright",
+        "tick": 93724
+      },
+      {
+        "plot": "D07-SW",
+        "holder": "Plumbline",
+        "tick": 94388
+      },
+      {
+        "plot": "D07-SE",
+        "holder": "Plumbline",
+        "tick": 94388
+      },
+      {
+        "plot": "C07-SE",
+        "holder": "Plumbline",
+        "tick": 94388
+      },
+      {
+        "plot": "E07-SW",
+        "holder": "Plumbline",
+        "tick": 94388
+      },
+      {
+        "plot": "D08-NE",
+        "holder": "Plumbline",
+        "tick": 90788
+      },
+      {
+        "plot": "E08-NW",
+        "holder": "Plumbline",
+        "tick": 90788
+      },
+      {
+        "plot": "D08-SE",
+        "holder": "Plumbline",
+        "tick": 93307
+      },
+      {
+        "plot": "E08-SW",
+        "holder": "Plumbline",
+        "tick": 93307
+      },
+      {
+        "plot": "D08-SW",
+        "holder": "Plumbline",
+        "tick": 93307
+      },
+      {
+        "plot": "C08-SE",
+        "holder": "Plumbline",
+        "tick": 93307
+      },
+      {
+        "plot": "D08-NW",
+        "holder": "Plumbline",
+        "tick": 93668
+      },
+      {
+        "plot": "C08-NE",
+        "holder": "Plumbline",
+        "tick": 93668
+      },
+      {
+        "plot": "I09-SE",
+        "holder": "Fudgewright",
+        "tick": 93724
+      }
+    ],
+    "lots": {
+      "total": 676,
+      "free": 354,
+      "free_share": 0.524,
+      "staked": 239,
+      "for_sale": 203,
+      "unsold": [
+        "B04-SE",
+        "B05-NE",
+        "B05-SE",
+        "B05-SW",
+        "B06-NE",
+        "B06-NW",
+        "B06-SE",
+        "B06-SW",
+        "C03-SE",
+        "C04-NE",
+        "C04-NW",
+        "C04-SE",
+        "C04-SW",
+        "C05-NE",
+        "C05-NW",
+        "C05-SE",
+        "C05-SW",
+        "C06-NE",
+        "C06-NW",
+        "C06-SE",
+        "C06-SW",
+        "C07-NE",
+        "C07-NW",
+        "C09-NE",
+        "D02-SE",
+        "D03-NE",
+        "D03-NW",
+        "D03-SE",
+        "D03-SW",
+        "D04-NE",
+        "D04-NW",
+        "D04-SE",
+        "D04-SW",
+        "D05-NE",
+        "D05-NW",
+        "D05-SE",
+        "D05-SW",
+        "D06-NE",
+        "D06-NW",
+        "D06-SE",
+        "D06-SW",
+        "D07-NW",
+        "D09-NE",
+        "D09-SE",
+        "D09-SW",
+        "D10-NE",
+        "D10-NW",
+        "E02-NE",
+        "E02-SE",
+        "E02-SW",
+        "E03-NE",
+        "E03-NW",
+        "E03-SE",
+        "E03-SW",
+        "E04-NE",
+        "E04-NW",
+        "E04-SE",
+        "E05-NW",
+        "E05-SE",
+        "E05-SW",
+        "E06-NE",
+        "E06-NW",
+        "E06-SE",
+        "E06-SW",
+        "E07-NE",
+        "E07-NW",
+        "E07-SE",
+        "E08-NE",
+        "E08-SE",
+        "E09-NE",
+        "E09-NW",
+        "E09-SE",
+        "E09-SW",
+        "E10-NE",
+        "F01-NE",
+        "F01-SE",
+        "F02-NE",
+        "F02-NW",
+        "F02-SE",
+        "F02-SW",
+        "F03-NE",
+        "F03-NW",
+        "F03-SE",
+        "F03-SW",
+        "F04-NE",
+        "F04-NW",
+        "F04-SE",
+        "F04-SW",
+        "F06-SW",
+        "F08-SW",
+        "F09-NW",
+        "F09-SE",
+        "F09-SW",
+        "F10-NW",
+        "G01-NE",
+        "G01-SE",
+        "G01-SW",
+        "G02-NE",
+        "G02-NW",
+        "G02-SE",
+        "G03-NE",
+        "G03-NW",
+        "G03-SE",
+        "G03-SW",
+        "G04-NE",
+        "H01-SE",
+        "H01-SW",
+        "H02-NE",
+        "H02-NW",
+        "H02-SE",
+        "H02-SW",
+        "H03-NE",
+        "H03-NW",
+        "H03-SE",
+        "H03-SW",
+        "H04-NE",
+        "H04-NW",
+        "H04-SE",
+        "H05-NE",
+        "H05-SE",
+        "I01-SE",
+        "I01-SW",
+        "I02-NE",
+        "I02-NW",
+        "I02-SE",
+        "I02-SW",
+        "I03-NE",
+        "I03-NW",
+        "I03-SE",
+        "I03-SW",
+        "I04-NE",
+        "I04-NW",
+        "I04-SE",
+        "I04-SW",
+        "I05-NE",
+        "I05-NW",
+        "I05-SE",
+        "I05-SW",
+        "I06-NE",
+        "I06-NW",
+        "I06-SE",
+        "I08-NW",
+        "I08-SE",
+        "J01-SW",
+        "J02-NE",
+        "J02-NW",
+        "J02-SE",
+        "J02-SW",
+        "J03-NE",
+        "J03-NW",
+        "J03-SE",
+        "J03-SW",
+        "J04-NE",
+        "J04-NW",
+        "J04-SE",
+        "J04-SW",
+        "J05-NE",
+        "J05-NW",
+        "J05-SE",
+        "J05-SW",
+        "J06-NE",
+        "J06-NW",
+        "J06-SE",
+        "J06-SW",
+        "J08-NE",
+        "J08-NW",
+        "J08-SE",
+        "J08-SW",
+        "J09-NE",
+        "J09-NW",
+        "J09-SE",
+        "K02-SW",
+        "K03-NE",
+        "K03-NW",
+        "K03-SE",
+        "K03-SW",
+        "K04-NE",
+        "K04-NW",
+        "K04-SE",
+        "K04-SW",
+        "K05-NE",
+        "K05-NW",
+        "K05-SE",
+        "K05-SW",
+        "K06-NE",
+        "K06-NW",
+        "K06-SE",
+        "K06-SW",
+        "K07-NE",
+        "K07-SE",
+        "K08-NE",
+        "K09-SW",
+        "L03-SW",
+        "L04-NW",
+        "L04-SW",
+        "L05-NW",
+        "L05-SW",
+        "L06-NE",
+        "L06-SE",
+        "L06-SW",
+        "L07-NE",
+        "L07-NW",
+        "L07-SE"
+      ],
+      "sold": 14,
+      "price": 32,
+      "base_price": 10,
+      "prices": {
+        "H05-NE": 37,
+        "H04-SE": 37,
+        "I04-SE": 35,
+        "I04-SW": 35,
+        "I04-NE": 35,
+        "I04-NW": 35,
+        "I03-SW": 35,
+        "H03-SE": 35,
+        "I03-NW": 25,
+        "H03-NE": 28,
+        "I02-SW": 31,
+        "H02-SE": 31,
+        "I02-NW": 30,
+        "I01-SE": 30,
+        "I02-NE": 35,
+        "I01-SW": 10,
+        "H01-SE": 33,
+        "H02-NW": 35,
+        "H02-NE": 35,
+        "H01-SW": 35,
+        "G01-NE": 27,
+        "G01-SE": 35,
+        "F01-NE": 25,
+        "F01-SE": 33,
+        "F02-NW": 32,
+        "E02-NE": 29,
+        "E02-SW": 24,
+        "D03-NE": 36,
+        "E03-NW": 22,
+        "D02-SE": 10,
+        "D03-NW": 37,
+        "D03-SW": 32,
+        "C03-SE": 29,
+        "C04-NW": 29,
+        "C04-NE": 32,
+        "C04-SE": 30,
+        "C04-SW": 31,
+        "C05-NW": 31,
+        "B04-SE": 31,
+        "B05-NE": 32,
+        "B05-SE": 31,
+        "B05-SW": 37,
+        "B06-NE": 31,
+        "B06-NW": 32,
+        "B06-SW": 17,
+        "B06-SE": 25,
+        "C06-NW": 30,
+        "C05-SW": 30,
+        "C05-SE": 29,
+        "C05-NE": 30,
+        "D04-SW": 30,
+        "D05-SW": 29,
+        "D05-NW": 30,
+        "D05-SE": 29,
+        "D05-NE": 25,
+        "E05-NW": 19,
+        "D04-SE": 30,
+        "E04-NW": 31,
+        "D04-NE": 31,
+        "E03-SW": 27,
+        "F04-SE": 30,
+        "E08-NE": 36,
+        "E07-SE": 36,
+        "F04-NE": 27,
+        "F04-SW": 30,
+        "F04-NW": 26,
+        "E04-NE": 16,
+        "F03-SW": 21,
+        "H04-NW": 35,
+        "H04-NE": 35,
+        "H03-SW": 35,
+        "G03-SE": 35,
+        "H03-NW": 32,
+        "G03-NE": 32,
+        "G02-SE": 29,
+        "G02-NE": 29,
+        "H02-SW": 31,
+        "F03-SE": 27,
+        "F03-NE": 29,
+        "F03-NW": 24,
+        "F02-SE": 29,
+        "F02-SW": 29,
+        "F02-NE": 29,
+        "E03-NE": 19,
+        "E02-SE": 29,
+        "D03-SE": 31,
+        "D04-NW": 32,
+        "E03-SE": 11,
+        "E04-SE": 21,
+        "E05-SW": 26,
+        "D06-NE": 30,
+        "E06-NW": 32,
+        "E06-SW": 33,
+        "D06-SE": 33,
+        "D06-NW": 29,
+        "C06-NE": 29,
+        "C06-SE": 32,
+        "C06-SW": 32,
+        "C07-NE": 33,
+        "C07-NW": 37,
+        "D07-NW": 33,
+        "D06-SW": 32,
+        "C09-NE": 21,
+        "D09-SW": 16,
+        "D09-SE": 13,
+        "D09-NE": 22,
+        "E09-NW": 33,
+        "E07-NW": 33,
+        "E07-NE": 34,
+        "E06-SE": 33,
+        "F06-SW": 35,
+        "E06-NE": 32,
+        "E05-SE": 24,
+        "I08-NW": 10,
+        "I06-NW": 37,
+        "I05-SE": 37,
+        "I05-SW": 37,
+        "I05-NE": 35,
+        "I05-NW": 35,
+        "H05-SE": 38,
+        "I06-NE": 38,
+        "I06-SE": 38,
+        "J06-SW": 38,
+        "J06-SE": 37,
+        "K06-SW": 37,
+        "J06-NE": 37,
+        "J06-NW": 37,
+        "F09-NW": 36,
+        "F08-SW": 37,
+        "E08-SE": 36,
+        "E09-NE": 35,
+        "F09-SE": 37,
+        "F10-NW": 28,
+        "F09-SW": 34,
+        "E09-SE": 32,
+        "E09-SW": 30,
+        "E10-NE": 24,
+        "D10-NE": 18,
+        "D10-NW": 18,
+        "J05-SW": 35,
+        "J05-NE": 35,
+        "J05-SE": 35,
+        "J05-NW": 35,
+        "J04-SE": 32,
+        "J04-SW": 35,
+        "J04-NE": 29,
+        "J04-NW": 35,
+        "J03-SE": 30,
+        "J03-SW": 29,
+        "J03-NW": 29,
+        "I03-SE": 31,
+        "I03-NE": 29,
+        "I02-SE": 32,
+        "J02-NW": 31,
+        "J02-SW": 31,
+        "J02-NE": 35,
+        "J01-SW": 27,
+        "K02-SW": 35,
+        "J02-SE": 32,
+        "K03-NW": 30,
+        "J03-NE": 30,
+        "K03-SW": 30,
+        "K04-NE": 30,
+        "K03-SE": 31,
+        "K04-NW": 29,
+        "K04-SW": 29,
+        "K05-NW": 35,
+        "K05-SW": 35,
+        "K05-NE": 32,
+        "K04-SE": 29,
+        "L05-NW": 35,
+        "L04-SW": 32,
+        "L04-NW": 26,
+        "L03-SW": 29,
+        "K03-NE": 32,
+        "J08-NE": 40,
+        "J08-NW": 45,
+        "J08-SE": 40,
+        "J08-SW": 45,
+        "J09-NW": 40,
+        "I08-SE": 45,
+        "J09-NE": 40,
+        "K07-SE": 38,
+        "K07-NE": 38,
+        "L07-NW": 31,
+        "L07-NE": 38,
+        "L07-SE": 10,
+        "K08-NE": 35,
+        "J09-SE": 35,
+        "K09-SW": 32,
+        "K06-NW": 35,
+        "K06-NE": 32,
+        "K05-SE": 32,
+        "L05-SW": 35,
+        "L06-NE": 30,
+        "L06-SW": 35,
+        "K06-SE": 36,
+        "L06-SE": 30,
+        "G04-NE": 35,
+        "G03-SW": 33,
+        "G02-NW": 29,
+        "G01-SW": 35,
+        "G03-NW": 32
+      },
+      "tags": {
+        "H05-NE": [
+          "stone near",
+          "timber",
+          "high ground",
+          "near venues"
+        ],
+        "H04-SE": [
+          "stone near",
+          "timber",
+          "high ground",
+          "near venues"
+        ],
+        "I04-SE": [
+          "timber",
+          "near venues"
+        ],
+        "I04-SW": [
+          "stone near",
+          "timber",
+          "near venues"
+        ],
+        "I04-NE": [
+          "timber",
+          "near venues"
+        ],
+        "I04-NW": [
+          "timber",
+          "near venues"
+        ],
+        "I03-SW": [
+          "timber",
+          "near venues"
+        ],
+        "H03-SE": [
+          "timber",
+          "near venues"
+        ],
+        "I03-NW": [
+          "timber"
+        ],
+        "H03-NE": [
+          "timber",
+          "near venues"
+        ],
+        "I02-SW": [],
+        "H02-SE": [],
+        "I02-NW": [
+          "near venues"
+        ],
+        "I01-SE": [
+          "timber",
+          "coast",
+          "near venues"
+        ],
+        "I02-NE": [
+          "timber",
+          "near venues"
+        ],
+        "I01-SW": [
+          "unbuildable"
+        ],
+        "H01-SE": [
+          "river view",
+          "near venues"
+        ],
+        "H02-NW": [
+          "near venues"
+        ],
+        "H02-NE": [
+          "near venues"
+        ],
+        "H01-SW": [
+          "near venues"
+        ],
+        "G01-NE": [
+          "timber",
+          "near venues"
+        ],
+        "G01-SE": [
+          "timber",
+          "near venues"
+        ],
+        "F01-NE": [
+          "timber",
+          "river view",
+          "near venues"
+        ],
+        "F01-SE": [
+          "timber",
+          "near venues"
+        ],
+        "F02-NW": [
+          "river view"
+        ],
+        "E02-NE": [
+          "coast",
+          "near venues"
+        ],
+        "E02-SW": [
+          "coast",
+          "near venues"
+        ],
+        "D03-NE": [
+          "timber",
+          "near venues"
+        ],
+        "E03-NW": [
+          "near venues"
+        ],
+        "D02-SE": [
+          "unbuildable"
+        ],
+        "D03-NW": [
+          "timber",
+          "near venues"
+        ],
+        "D03-SW": [
+          "timber"
+        ],
+        "C03-SE": [
+          "timber",
+          "river view"
+        ],
+        "C04-NW": [
+          "timber",
+          "river view"
+        ],
+        "C04-NE": [
+          "timber"
+        ],
+        "C04-SE": [
+          "timber"
+        ],
+        "C04-SW": [
+          "timber"
+        ],
+        "C05-NW": [
+          "timber"
+        ],
+        "B04-SE": [
+          "coast"
+        ],
+        "B05-NE": [
+          "timber"
+        ],
+        "B05-SE": [
+          "timber"
+        ],
+        "B05-SW": [
+          "timber",
+          "coast"
+        ],
+        "B06-NE": [
+          "timber"
+        ],
+        "B06-NW": [
+          "timber",
+          "coast"
+        ],
+        "B06-SW": [
+          "coast"
+        ],
+        "B06-SE": [
+          "timber"
+        ],
+        "C06-NW": [
+          "timber"
+        ],
+        "C05-SW": [
+          "timber"
+        ],
+        "C05-SE": [
+          "timber"
+        ],
+        "C05-NE": [
+          "timber"
+        ],
+        "D04-SW": [
+          "timber"
+        ],
+        "D05-SW": [
+          "timber"
+        ],
+        "D05-NW": [
+          "timber"
+        ],
+        "D05-SE": [],
+        "D05-NE": [
+          "timber"
+        ],
+        "E05-NW": [
+          "river view"
+        ],
+        "D04-SE": [
+          "timber"
+        ],
+        "E04-NW": [],
+        "D04-NE": [
+          "timber"
+        ],
+        "E03-SW": [],
+        "F04-SE": [
+          "timber",
+          "near venues"
+        ],
+        "E08-NE": [
+          "timber",
+          "near venues",
+          "in demand"
+        ],
+        "E07-SE": [
+          "near venues",
+          "in demand"
+        ],
+        "F04-NE": [],
+        "F04-SW": [
+          "river view",
+          "near venues"
+        ],
+        "F04-NW": [],
+        "E04-NE": [],
+        "F03-SW": [],
+        "H04-NW": [
+          "timber",
+          "near venues"
+        ],
+        "H04-NE": [
+          "timber",
+          "near venues"
+        ],
+        "H03-SW": [
+          "timber",
+          "near venues"
+        ],
+        "G03-SE": [
+          "timber",
+          "near venues"
+        ],
+        "H03-NW": [
+          "timber",
+          "near venues"
+        ],
+        "G03-NE": [
+          "timber",
+          "near venues"
+        ],
+        "G02-SE": [],
+        "G02-NE": [],
+        "H02-SW": [],
+        "F03-SE": [],
+        "F03-NE": [],
+        "F03-NW": [],
+        "F02-SE": [],
+        "F02-SW": [],
+        "F02-NE": [
+          "timber"
+        ],
+        "E03-NE": [
+          "near venues"
+        ],
+        "E02-SE": [
+          "near venues"
+        ],
+        "D03-SE": [
+          "timber"
+        ],
+        "D04-NW": [
+          "timber"
+        ],
+        "E03-SE": [],
+        "E04-SE": [
+          "coast"
+        ],
+        "E05-SW": [],
+        "D06-NE": [],
+        "E06-NW": [
+          "in demand"
+        ],
+        "E06-SW": [
+          "in demand"
+        ],
+        "D06-SE": [
+          "timber",
+          "in demand"
+        ],
+        "D06-NW": [],
+        "C06-NE": [],
+        "C06-SE": [
+          "timber",
+          "in demand"
+        ],
+        "C06-SW": [
+          "timber",
+          "in demand"
+        ],
+        "C07-NE": [
+          "timber",
+          "in demand"
+        ],
+        "C07-NW": [
+          "timber",
+          "coast",
+          "in demand"
+        ],
+        "D07-NW": [
+          "timber",
+          "in demand"
+        ],
+        "D06-SW": [
+          "timber",
+          "in demand"
+        ],
+        "C09-NE": [
+          "coast",
+          "in demand"
+        ],
+        "D09-SW": [
+          "river view",
+          "in demand"
+        ],
+        "D09-SE": [
+          "in demand"
+        ],
+        "D09-NE": [
+          "river view",
+          "in demand"
+        ],
+        "E09-NW": [
+          "in demand"
+        ],
+        "E07-NW": [
+          "in demand"
+        ],
+        "E07-NE": [
+          "in demand"
+        ],
+        "E06-SE": [
+          "in demand"
+        ],
+        "F06-SW": [
+          "timber",
+          "in demand"
+        ],
+        "E06-NE": [
+          "in demand"
+        ],
+        "E05-SE": [],
+        "I08-NW": [
+          "unbuildable"
+        ],
+        "I06-NW": [
+          "stone near",
+          "timber",
+          "near venues"
+        ],
+        "I05-SE": [
+          "near venues"
+        ],
+        "I05-SW": [
+          "stone near",
+          "near venues"
+        ],
+        "I05-NE": [
+          "timber",
+          "near venues"
+        ],
+        "I05-NW": [
+          "stone near",
+          "timber",
+          "near venues"
+        ],
+        "H05-SE": [
+          "stone near",
+          "high ground",
+          "near venues"
+        ],
+        "I06-NE": [
+          "stone near",
+          "high ground",
+          "near venues"
+        ],
+        "I06-SE": [
+          "stone near",
+          "high ground",
+          "near venues"
+        ],
+        "J06-SW": [
+          "stone near",
+          "high ground",
+          "near venues"
+        ],
+        "J06-SE": [
+          "stone near",
+          "near venues"
+        ],
+        "K06-SW": [
+          "timber",
+          "near venues"
+        ],
+        "J06-NE": [
+          "stone near",
+          "high ground",
+          "near venues"
+        ],
+        "J06-NW": [
+          "stone near",
+          "high ground",
+          "near venues"
+        ],
+        "F09-NW": [
+          "near venues",
+          "in demand"
+        ],
+        "F08-SW": [
+          "timber",
+          "near venues",
+          "in demand"
+        ],
+        "E08-SE": [
+          "timber",
+          "near venues",
+          "in demand"
+        ],
+        "E09-NE": [
+          "in demand"
+        ],
+        "F09-SE": [
+          "timber",
+          "near venues",
+          "in demand"
+        ],
+        "F10-NW": [
+          "timber",
+          "river view",
+          "in demand"
+        ],
+        "F09-SW": [
+          "timber",
+          "in demand"
+        ],
+        "E09-SE": [
+          "in demand"
+        ],
+        "E09-SW": [
+          "in demand"
+        ],
+        "E10-NE": [
+          "timber",
+          "river view",
+          "in demand"
+        ],
+        "D10-NE": [
+          "coast"
+        ],
+        "D10-NW": [
+          "coast"
+        ],
+        "J05-SW": [
+          "stone near",
+          "near venues"
+        ],
+        "J05-NE": [
+          "timber",
+          "near venues"
+        ],
+        "J05-SE": [
+          "stone near",
+          "near venues"
+        ],
+        "J05-NW": [
+          "timber",
+          "near venues"
+        ],
+        "J04-SE": [
+          "timber",
+          "near venues"
+        ],
+        "J04-SW": [
+          "timber",
+          "near venues"
+        ],
+        "J04-NE": [
+          "timber"
+        ],
+        "J04-NW": [
+          "timber",
+          "near venues"
+        ],
+        "J03-SE": [
+          "timber"
+        ],
+        "J03-SW": [
+          "timber"
+        ],
+        "J03-NW": [
+          "timber"
+        ],
+        "I03-SE": [
+          "timber"
+        ],
+        "I03-NE": [
+          "timber"
+        ],
+        "I02-SE": [
+          "near venues"
+        ],
+        "J02-NW": [
+          "timber"
+        ],
+        "J02-SW": [
+          "timber"
+        ],
+        "J02-NE": [
+          "timber",
+          "river view",
+          "near venues"
+        ],
+        "J01-SW": [
+          "timber",
+          "coast"
+        ],
+        "K02-SW": [
+          "timber",
+          "river view",
+          "near venues"
+        ],
+        "J02-SE": [
+          "timber",
+          "near venues"
+        ],
+        "K03-NW": [
+          "timber"
+        ],
+        "J03-NE": [
+          "timber"
+        ],
+        "K03-SW": [
+          "timber"
+        ],
+        "K04-NE": [],
+        "K03-SE": [],
+        "K04-NW": [
+          "timber"
+        ],
+        "K04-SW": [
+          "timber"
+        ],
+        "K05-NW": [
+          "timber",
+          "near venues"
+        ],
+        "K05-SW": [
+          "near venues"
+        ],
+        "K05-NE": [
+          "near venues"
+        ],
+        "K04-SE": [],
+        "L05-NW": [
+          "near venues"
+        ],
+        "L04-SW": [
+          "river view",
+          "near venues"
+        ],
+        "L04-NW": [],
+        "L03-SW": [
+          "river view"
+        ],
+        "K03-NE": [
+          "river view"
+        ],
+        "J08-NE": [
+          "stone near",
+          "near venues",
+          "in demand"
+        ],
+        "J08-NW": [
+          "ore-rich",
+          "stone near",
+          "mountain view",
+          "high ground",
+          "near venues",
+          "in demand"
+        ],
+        "J08-SE": [
+          "stone near",
+          "near venues",
+          "in demand"
+        ],
+        "J08-SW": [
+          "stone near",
+          "mountain view",
+          "high ground",
+          "near venues",
+          "in demand"
+        ],
+        "J09-NW": [
+          "near venues",
+          "in demand"
+        ],
+        "I08-SE": [
+          "ore-rich",
+          "stone near",
+          "mountain view",
+          "high ground",
+          "near venues",
+          "in demand"
+        ],
+        "J09-NE": [
+          "near venues",
+          "in demand"
+        ],
+        "K07-SE": [
+          "timber",
+          "near venues",
+          "in demand"
+        ],
+        "K07-NE": [
+          "timber",
+          "near venues",
+          "in demand"
+        ],
+        "L07-NW": [
+          "timber"
+        ],
+        "L07-NE": [
+          "timber",
+          "coast"
+        ],
+        "L07-SE": [
+          "unbuildable"
+        ],
+        "K08-NE": [
+          "timber",
+          "river view",
+          "near venues",
+          "in demand"
+        ],
+        "J09-SE": [
+          "river view",
+          "near venues",
+          "in demand"
+        ],
+        "K09-SW": [
+          "timber",
+          "coast",
+          "near venues",
+          "in demand"
+        ],
+        "K06-NW": [
+          "near venues"
+        ],
+        "K06-NE": [
+          "near venues"
+        ],
+        "K05-SE": [
+          "near venues"
+        ],
+        "L05-SW": [
+          "near venues"
+        ],
+        "L06-NE": [
+          "coast",
+          "near venues"
+        ],
+        "L06-SW": [
+          "near venues"
+        ],
+        "K06-SE": [
+          "timber",
+          "near venues"
+        ],
+        "L06-SE": [
+          "river view",
+          "near venues"
+        ],
+        "G04-NE": [
+          "timber",
+          "near venues"
+        ],
+        "G03-SW": [
+          "timber",
+          "near venues"
+        ],
+        "G02-NW": [],
+        "G01-SW": [
+          "timber",
+          "near venues"
+        ],
+        "G03-NW": [
+          "timber",
+          "near venues"
+        ]
+      },
+      "currency": "wood",
+      "holdings": 24
+    },
+    "sales": [
+      {
+        "id": "ore-for-wood",
+        "title": "Land office sale: 10 ore for 30 wood",
+        "status": "open",
+        "goal_id": null,
+        "goal_status": null
+      },
+      {
+        "id": "stone-for-berries",
+        "title": "Land office sale: 20 stone for 10 berries",
+        "status": "open",
+        "goal_id": null,
+        "goal_status": null
+      },
+      {
+        "id": "wood-for-berries",
+        "title": "Land office sale: 20 wood for 8 berries",
+        "status": "open",
+        "goal_id": null,
+        "goal_status": null
+      }
+    ],
+    "holdings": [
+      {
+        "lot": "K09-NE",
+        "score": 11.5,
+        "tags": [
+          "timber",
+          "coast",
+          "near venues",
+          "in demand"
+        ],
+        "anchor": [
+          107,
+          92
+        ],
+        "ore": 0,
+        "resources": {
+          "berries": 1,
+          "wood": 6
+        },
+        "rank": 1,
+        "sign_text": "Lot K09-NE: staked by LandBroker for the land office. Timber, coast. 36 wood. For sale; buy through my posted goal or ask by whisper."
+      },
+      {
+        "lot": "I07-SW",
+        "score": 11.0,
+        "tags": [
+          "ore-rich",
+          "stone near",
+          "mountain view",
+          "high ground",
+          "near venues",
+          "in demand"
+        ],
+        "anchor": [
+          82,
+          77
+        ],
+        "ore": 7,
+        "resources": {
+          "stone": 11,
+          "ore": 7
+        },
+        "rank": 2,
+        "sign_text": "Lot I07-SW: land office holding (ore-rich, stone near, mountain view). Not for sale: its nodes are the office's stock. Walled by the office, a gate open mid-side."
+      },
+      {
+        "lot": "J07-SW",
+        "score": 11.0,
+        "tags": [
+          "ore-rich",
+          "stone near",
+          "mountain view",
+          "high ground",
+          "near venues",
+          "in demand"
+        ],
+        "anchor": [
+          92,
+          77
+        ],
+        "ore": 4,
+        "resources": {
+          "stone": 12,
+          "ore": 4
+        },
+        "rank": 3,
+        "sign_text": "Lot J07-SW: land office holding (ore-rich, stone near, mountain view). Not for sale: its nodes are the office's stock. Walled by the office, a gate open mid-side."
+      },
+      {
+        "lot": "G08-SE",
+        "score": 11.0,
+        "tags": [
+          "stone near",
+          "mountain view",
+          "high ground",
+          "near venues",
+          "in demand"
+        ],
+        "anchor": [
+          67,
+          87
+        ],
+        "ore": 0,
+        "resources": {
+          "stone": 7,
+          "berries": 3,
+          "fiber": 3
+        },
+        "rank": 4,
+        "sign_text": "Lot G08-SE: land office holding (stone near, mountain view, high ground). Not for sale: its nodes are the office's stock, sold from the vault. A public record, not a wall."
+      },
+      {
+        "lot": "G09-NE",
+        "score": 11.0,
+        "tags": [
+          "stone near",
+          "mountain view",
+          "high ground",
+          "near venues",
+          "in demand"
+        ],
+        "anchor": [
+          67,
+          92
+        ],
+        "ore": 0,
+        "resources": {
+          "berries": 1,
+          "fiber": 1,
+          "stone": 9
+        },
+        "rank": 5,
+        "sign_text": "Lot G09-NE: staked by LandBroker for the land office. For sale; buy through my posted goal or ask by whisper."
+      },
+      {
+        "lot": "I07-NE",
+        "score": 11.0,
+        "tags": [
+          "stone near",
+          "mountain view",
+          "high ground",
+          "near venues",
+          "in demand"
+        ],
+        "anchor": [
+          87,
+          72
+        ],
+        "ore": 0,
+        "resources": {
+          "stone": 19
+        },
+        "rank": 6,
+        "sign_text": "Lot I07-NE: staked by LandBroker for the land office. For sale; buy through my posted goal or ask by whisper."
+      },
+      {
+        "lot": "J07-NW",
+        "score": 11.0,
+        "tags": [
+          "stone near",
+          "mountain view",
+          "high ground",
+          "near venues",
+          "in demand"
+        ],
+        "anchor": [
+          92,
+          72
+        ],
+        "ore": 0,
+        "resources": {
+          "stone": 18,
+          "berries": 2
+        },
+        "rank": 7,
+        "sign_text": "Lot J07-NW: land office holding (stone near, mountain view, high ground). Not for sale: its nodes are the office's stock. Walled by the office, a gate open mid-side."
+      },
+      {
+        "lot": "K08-SE",
+        "score": 10.5,
+        "tags": [
+          "timber",
+          "river view",
+          "near venues",
+          "in demand"
+        ],
+        "anchor": [
+          107,
+          87
+        ],
+        "ore": 0,
+        "resources": {
+          "berries": 3,
+          "fiber": 1,
+          "wood": 4
+        },
+        "rank": 8,
+        "sign_text": "Lot K08-SE: staked by LandBroker for the land office. Timber, river view. 33 wood. For sale; buy through my posted goal or ask by whisper."
+      },
+      {
+        "lot": "L07-SW",
+        "score": 10.3,
+        "tags": [
+          "timber",
+          "coast",
+          "near venues"
+        ],
+        "anchor": [
+          112,
+          77
+        ],
+        "ore": 0,
+        "resources": {
+          "wood": 5,
+          "berries": 3,
+          "fiber": 1
+        },
+        "rank": 9,
+        "sign_text": "Lot L07-SW: staked by LandBroker for the land office. Timber, coast. 35 wood. For sale; buy through my posted goal or ask by whisper."
+      },
+      {
+        "lot": "F10-NE",
+        "score": 10.0,
+        "tags": [
+          "timber",
+          "river view",
+          "near venues",
+          "in demand"
+        ],
+        "anchor": [
+          57,
+          102
+        ],
+        "ore": 0,
+        "resources": {
+          "wood": 8
+        },
+        "rank": 10,
+        "sign_text": "Lot F10-NE: staked by LandBroker for the land office. For sale; buy through my posted goal or ask by whisper."
+      },
+      {
+        "lot": "H09-SW",
+        "score": 10.0,
+        "tags": [
+          "stone near",
+          "timber",
+          "high ground",
+          "near venues",
+          "in demand"
+        ],
+        "anchor": [
+          72,
+          97
+        ],
+        "ore": 0,
+        "resources": {
+          "stone": 8,
+          "wood": 9,
+          "berries": 1,
+          "fiber": 1
+        },
+        "rank": 11,
+        "sign_text": "Lot H09-SW: staked by LandBroker for the land office. Stone near, timber, high ground. 38 wood. For sale; buy through my posted goal or ask by whisper."
+      },
+      {
+        "lot": "J07-NE",
+        "score": 10.0,
+        "tags": [
+          "stone near",
+          "timber",
+          "high ground",
+          "near venues",
+          "in demand"
+        ],
+        "anchor": [
+          97,
+          72
+        ],
+        "ore": 0,
+        "resources": {
+          "berries": 3,
+          "fiber": 5,
+          "stone": 7,
+          "wood": 2
+        },
+        "rank": 12,
+        "sign_text": "Lot J07-NE: staked by LandBroker for the land office. For sale; buy through my posted goal or ask by whisper."
+      },
+      {
+        "lot": "J07-SE",
+        "score": 10.0,
+        "tags": [
+          "stone near",
+          "timber",
+          "high ground",
+          "near venues",
+          "in demand"
+        ],
+        "anchor": [
+          97,
+          77
+        ],
+        "ore": 0,
+        "resources": {
+          "fiber": 1,
+          "stone": 7,
+          "wood": 3,
+          "berries": 2
+        },
+        "rank": 13,
+        "sign_text": "Lot J07-SE: land office holding (stone near, timber, high ground). Not for sale: its nodes are the office's stock. Walled by the office, a gate open mid-side."
+      },
+      {
+        "lot": "F08-SE",
+        "score": 9.5,
+        "tags": [
+          "near venues",
+          "in demand"
+        ],
+        "anchor": [
+          57,
+          87
+        ],
+        "ore": 0,
+        "resources": {
+          "berries": 13,
+          "fiber": 5
+        },
+        "rank": 14,
+        "sign_text": "Lot F08-SE: staked by LandBroker for the land office. For sale; buy through my posted goal or ask by whisper."
+      },
+      {
+        "lot": "F09-NE",
+        "score": 9.5,
+        "tags": [
+          "near venues",
+          "in demand"
+        ],
+        "anchor": [
+          57,
+          92
+        ],
+        "ore": 0,
+        "resources": {
+          "berries": 10,
+          "fiber": 6
+        },
+        "rank": 15,
+        "sign_text": "Lot F09-NE: staked by LandBroker for the land office. For sale; buy through my posted goal or ask by whisper."
+      },
+      {
+        "lot": "G08-SW",
+        "score": 9.5,
+        "tags": [
+          "near venues",
+          "in demand"
+        ],
+        "anchor": [
+          62,
+          87
+        ],
+        "ore": 0,
+        "resources": {
+          "berries": 10,
+          "fiber": 8
+        },
+        "rank": 16,
+        "sign_text": "Lot G08-SW: land office holding (near venues, in demand). Not for sale: its nodes are the office's stock. Walled by the office, a gate open mid-side."
+      },
+      {
+        "lot": "G09-NW",
+        "score": 9.5,
+        "tags": [
+          "near venues",
+          "in demand"
+        ],
+        "anchor": [
+          62,
+          92
+        ],
+        "ore": 0,
+        "resources": {
+          "fiber": 8,
+          "berries": 6
+        },
+        "rank": 17,
+        "sign_text": "Lot G09-NW: staked by LandBroker for the land office. For sale; buy through my posted goal or ask by whisper."
+      },
+      {
+        "lot": "G09-SE",
+        "score": 9.5,
+        "tags": [
+          "stone near",
+          "timber",
+          "high ground",
+          "near venues",
+          "in demand"
+        ],
+        "anchor": [
+          67,
+          97
+        ],
+        "ore": 0,
+        "resources": {
+          "stone": 4,
+          "fiber": 2,
+          "berries": 2,
+          "wood": 13
+        },
+        "rank": 18,
+        "sign_text": "Lot G09-SE: staked by LandBroker for the land office. For sale; buy through my posted goal or ask by whisper."
+      },
+      {
+        "lot": "K07-NW",
+        "score": 9.5,
+        "tags": [
+          "timber",
+          "near venues",
+          "in demand"
+        ],
+        "anchor": [
+          102,
+          72
+        ],
+        "ore": 0,
+        "resources": {
+          "fiber": 7,
+          "berries": 1,
+          "wood": 8
+        },
+        "rank": 19,
+        "sign_text": "Lot K07-NW: staked by LandBroker for the land office. For sale; buy through my posted goal or ask by whisper."
+      },
+      {
+        "lot": "K07-SW",
+        "score": 9.5,
+        "tags": [
+          "timber",
+          "near venues",
+          "in demand"
+        ],
+        "anchor": [
+          102,
+          77
+        ],
+        "ore": 0,
+        "resources": {
+          "wood": 9,
+          "berries": 3,
+          "fiber": 2
+        },
+        "rank": 20,
+        "sign_text": "Lot K07-SW: staked by LandBroker for the land office. Timber, in demand. 30 wood. For sale; buy through my posted goal or ask by whisper."
+      },
+      {
+        "lot": "K08-NW",
+        "score": 9.5,
+        "tags": [
+          "timber",
+          "near venues",
+          "in demand"
+        ],
+        "anchor": [
+          102,
+          82
+        ],
+        "ore": 0,
+        "resources": {
+          "wood": 2,
+          "berries": 7,
+          "fiber": 5
+        },
+        "rank": 21,
+        "sign_text": "Lot K08-NW: staked by LandBroker for the land office. Timber, in demand. 30 wood. For sale; buy through my posted goal or ask by whisper."
+      },
+      {
+        "lot": "K08-SW",
+        "score": 9.5,
+        "tags": [
+          "timber",
+          "near venues",
+          "in demand"
+        ],
+        "anchor": [
+          102,
+          87
+        ],
+        "ore": 0,
+        "resources": {
+          "berries": 7,
+          "fiber": 4,
+          "wood": 3
+        },
+        "rank": 22,
+        "sign_text": "Lot K08-SW: staked by LandBroker for the land office. Timber, in demand. 32 wood. For sale; buy through my posted goal or ask by whisper."
+      },
+      {
+        "lot": "K09-NW",
+        "score": 9.5,
+        "tags": [
+          "timber",
+          "near venues",
+          "in demand"
+        ],
+        "anchor": [
+          102,
+          92
+        ],
+        "ore": 0,
+        "resources": {
+          "berries": 4,
+          "fiber": 2,
+          "wood": 5
+        },
+        "rank": 23,
+        "sign_text": "Lot K09-NW: staked by LandBroker for the land office. Timber, near venues, in demand. 36 wood. For sale; buy through my posted goal or ask by whisper."
+      },
+      {
+        "lot": "G09-SW",
+        "score": 9.0,
+        "tags": [
+          "timber",
+          "near venues",
+          "in demand"
+        ],
+        "anchor": [
+          62,
+          97
+        ],
+        "ore": 0,
+        "resources": {
+          "berries": 3,
+          "fiber": 3,
+          "wood": 12
+        },
+        "rank": 24,
+        "sign_text": "Lot G09-SW: staked by LandBroker for the land office. For sale; buy through my posted goal or ask by whisper."
+      }
+    ],
+    "surveys": {
+      "works": {
+        "client": "Fudgewright",
+        "lot": "I09-SE",
+        "lots": [
+          "I09-SE",
+          "I09-NE"
+        ],
+        "anchor": [
+          87,
+          97
+        ],
+        "price": 76,
+        "currency": "wood",
+        "tick": 59466,
+        "reasons": [
+          "the ground under Fudgewright's works: I09-SE, I09-NE",
+          "timber",
+          "near venues"
+        ],
+        "answered": 93668,
+        "reminders": 3,
+        "deeded": 93724
+      },
+      "grounds": {
+        "client": "Fudgewright",
+        "lot": "I08-NW",
+        "lots": [
+          "I08-NW",
+          "I08-NE",
+          "I08-SW",
+          "I08-SE",
+          "J08-NW",
+          "J08-NE",
+          "J08-SW",
+          "J08-SE",
+          "I09-NW",
+          "I09-SW",
+          "J09-NW",
+          "J09-NE",
+          "J09-SW",
+          "J09-SE"
+        ],
+        "anchor": [
+          82,
+          82
+        ],
+        "price": 474,
+        "currency": "wood",
+        "tick": 67386,
+        "reasons": [
+          "the ground under Fudgewright's works: I08-NW, I08-NE, I08-SW, I08-SE, J08-NW, J08-NE, J08-SW, J08-SE, I09-NW, I09-SW, J09-NW, J09-NE, J09-SW, J09-SE",
+          "unbuildable"
+        ],
+        "answered": 118925,
+        "reminders": 3
+      },
+      "nyc-wall-street": {
+        "client": "Plumbline",
+        "lot": "D08-NE",
+        "lots": [
+          "D08-NE",
+          "E08-NW"
+        ],
+        "anchor": [
+          37,
+          82
+        ],
+        "price": 61,
+        "currency": "wood",
+        "tick": 89706,
+        "reasons": [
+          "the ground under Plumbline's works: D08-NE, E08-NW"
+        ],
+        "answered": 90427,
+        "reminders": 1,
+        "deeded": 90788
+      },
+      "nyc-battery": {
+        "client": "Plumbline",
+        "lot": "D08-SE",
+        "lots": [
+          "D08-SE",
+          "E08-SW",
+          "D08-SW",
+          "C08-SE"
+        ],
+        "anchor": [
+          37,
+          87
+        ],
+        "price": 103,
+        "currency": "wood",
+        "tick": 89764,
+        "reasons": [
+          "the ground under Plumbline's works: D08-SE, E08-SW, D08-SW, C08-SE"
+        ],
+        "answered": 92644,
+        "reminders": 3,
+        "deeded": 93307
+      },
+      "nyc-trinity": {
+        "client": "Plumbline",
+        "lot": "D08-NW",
+        "lots": [
+          "D08-NW",
+          "C08-NE"
+        ],
+        "anchor": [
+          32,
+          82
+        ],
+        "price": 54,
+        "currency": "wood",
+        "tick": 90068,
+        "reasons": [
+          "the ground under Plumbline's works: D08-NW, C08-NE"
+        ],
+        "answered": 92644,
+        "reminders": 3,
+        "deeded": 93668
+      },
+      "nyc-wtc": {
+        "client": "Plumbline",
+        "lot": "D07-SW",
+        "lots": [
+          "D07-SW",
+          "D07-SE",
+          "C07-SE",
+          "E07-SW"
+        ],
+        "anchor": [
+          32,
+          77
+        ],
+        "price": 116,
+        "currency": "wood",
+        "tick": 90124,
+        "reasons": [
+          "the ground under Plumbline's works: D07-SW, D07-SE, C07-SE, E07-SW",
+          "timber"
+        ],
+        "answered": 94028,
+        "reminders": 3,
+        "deeded": 94388
+      }
+    },
+    "busiest": [
+      {
+        "plot": "I09",
+        "structures": 74,
+        "holder": "MotherPail"
+      },
+      {
+        "plot": "G05",
+        "structures": 59,
+        "holder": "Clarion"
+      },
+      {
+        "plot": "I06",
+        "structures": 48,
+        "holder": "LandBroker"
+      },
+      {
+        "plot": "H06",
+        "structures": 42,
+        "holder": "LandBroker"
+      },
+      {
+        "plot": "I05",
+        "structures": 36,
+        "holder": "Lintelstave"
+      }
+    ]
+  },
+  "actions": [],
+  "reasons": [],
+  "dropped": [],
+  "results": [],
+  "said": false
+}

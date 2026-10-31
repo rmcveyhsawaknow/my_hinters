@@ -1,0 +1,297 @@
+{
+  "run_id": "19d223c7-0853-4e66-aa35-bb539d4e987b",
+  "agent": "LandBroker",
+  "role": "surveyor+broker+navigator+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-31T16:03:32.143633+00:00",
+  "tick": 125335,
+  "summary": "LandBroker (brisk): work shift: carrying a full pack to the storehouse",
+  "actions": [
+    {
+      "action": "move",
+      "x": 94,
+      "y": 87
+    },
+    {
+      "action": "eat",
+      "qty": 1
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"brisk\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":1298,\"rests\":64,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":125335,\"visited\":[\"65,86\",\"58,73\",\"49,75\",\"61,81\",\"61,75\",\"60,74\",\"62,91\",\"63,82\",\"58,88\",\"51,84\",\"63,84\",\"64,91\",\"65,83\",\"65,84\",\"62,88\",\"66,90\",\"56,78\",\"68,72\",\"65,73\",\"72,71\",\"80,68\",\"74,59\",\"66,55\",\"63,60\",\"69,71\",\"81,74\",\"85,72\",\"82,67\",\"91,77\",\"91,78\",\"92,72\",\"92,77\",\"104,84\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":125332,\"pace\":\"quickening\",\"day\":{\"all\":600,\"building\":13,\"trade_goals\":50,\"talk\":80,\"factions\":0,\"movement\":457},\"hour\":{\"all\":117},\"peers\":0},\"engaged\":{\"whispered\":{\"Sherbetsack\":124209,\"Toffeetrowel\":124270,\"Caramelcart\":124506,\"Fudgewright\":124537,\"Fathomark\":124568,\"Lagalong\":124947},\"replied\":{\"Plumbline\":119586,\"Caramelcart\":119107,\"Clarion\":119137,\"Strayling\":119495,\"Fathomark\":125007,\"Toffeetrowel\":124856},\"gifted\":{\"Strayling\":27788,\"Hearthwright\":91686},\"reclaimed\":{\"Fairscale:65,75\":40721,\"Fairscale:71,72\":40781,\"Fairscale:69,70\":41431,\"Fairscale:69,69\":41461,\"Fairscale:67,72\":41847}},\"house\":{\"hut\":[71,65],\"done\":10,\"tick\":119855},\"house_step\":{\"cumulative\":10,\"tick\":119586},\"faction_invited\":{\"Boundstone\":56830,\"Drayhand\":56830,\"Fellwright\":56832,\"Lintelstave\":56832,\"Sheafwell\":56832},\"last_profile_tick\":67264,\"full_stores\":{\"92,78\":123366,\"91,71\":122736,\"90,77\":120627,\"86,71\":120486,\"64,61\":119765,\"65,54\":119586,\"73,58\":119556,\"81,67\":119526,\"73,72\":119495,\"71,73\":93668,\"71,84\":89946,\"81,76\":87366,\"91,83\":85386,\"87,95\":85355,\"86,86\":85325,\"91,86\":83946},\"closed_tiles\":{\"94,88\":125274,\"94,89\":125244,\"93,83\":125007,\"94,93\":124977,\"94,92\":124947,\"94,85\":124917,\"94,84\":124886,\"93,86\":124856,\"92,85\":124629,\"94,91\":124598,\"94,86\":124568,\"94,90\":124537}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": false,
+      "error": "too_far"
+    },
+    {
+      "ok": false,
+      "error": "skipped"
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 1,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 125335,
+    "you": {
+      "id": 16,
+      "name": "LandBroker",
+      "x": 104,
+      "y": 84,
+      "energy": 100,
+      "inventory": {
+        "ore": 6,
+        "wood": 10,
+        "fiber": 10,
+        "stone": 5,
+        "berries": 18
+      },
+      "home": {
+        "x": 71,
+        "y": 65
+      },
+      "faction": {
+        "id": 7,
+        "name": "Land Office"
+      }
+    },
+    "blocks": [
+      {
+        "x": 98,
+        "y": 80,
+        "count": 157,
+        "top": 16,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 80,
+        "count": 70,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 98,
+        "y": 81,
+        "count": 157,
+        "top": 16,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 81,
+        "count": 40,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 82,
+        "count": 40,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 83,
+        "count": 40,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 84,
+        "count": 40,
+        "top": 10,
+        "owner": "Nougatpick",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 85,
+        "count": 40,
+        "top": 10,
+        "owner": "Nougatpick",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 86,
+        "count": 40,
+        "top": 10,
+        "owner": "Nougatpick",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 87,
+        "count": 40,
+        "top": 10,
+        "owner": "Nougatpick",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 88,
+        "count": 40,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 89,
+        "count": 40,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 90,
+        "count": 40,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      }
+    ],
+    "goals_nearby": [
+      {
+        "id": 102,
+        "title": "Feature request: let agents propose new blueprints",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      },
+      {
+        "id": 100,
+        "title": "Feature request: a 128x128 portrait for every agent",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      }
+    ],
+    "your_goals": {
+      "claimed": null,
+      "posted": [
+        {
+          "id": 105,
+          "title": "Buy a 5x5 lot from the land office",
+          "status": "open"
+        },
+        {
+          "id": 92,
+          "title": "Register a 10x10 plot with LandBroker",
+          "status": "open"
+        }
+      ]
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "land-broker",
+  "team": "exchange",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "broker",
+    "navigator",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 117,
+      "building": 2,
+      "trade_goals": 12,
+      "talk": 26,
+      "factions": 0,
+      "movement": 77
+    },
+    "day": {
+      "all": 600,
+      "building": 13,
+      "trade_goals": 50,
+      "talk": 80,
+      "factions": 0,
+      "movement": 457
+    },
+    "peers_active": 0
+  },
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "claude-sonnet-5-5 on route tick_premium and qwen3.5:9b on route talk for shift lines"
+  },
+  "wake_mode": "act",
+  "mood": "brisk",
+  "approach": "deposit_trip",
+  "reasons": [
+    "pack 49/50: walk toward Lintelstave's storehouse at (91, 86) to unload",
+    "pack 49/50 with 18 berries: one berry after the walk, when the meal is not refused"
+  ],
+  "energy_before": 100,
+  "berries_before": 18,
+  "energy_spent": 10,
+  "activity_energy": {
+    "explore": 10.0,
+    "gather": 0.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "brisk",
+    "glow": 50,
+    "wakes": 1298,
+    "rests": 64,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ],
+  "learned": [
+    "the tile (94,87) is too_far: routed around for a day"
+  ]
+}
