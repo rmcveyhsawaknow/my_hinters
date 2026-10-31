@@ -76,6 +76,40 @@ def test_the_ledger_marks_what_the_world_accepted_or_found_already_filled(tmp_pa
     assert set(ledger["done"]) == {a["id"], b["id"], d["id"], e["id"]} and ledger["done"][a["id"]]["by"] == "Toffeetrowel"
 
 
+def test_a_placement_refused_as_filled_settles_from_the_world_on_any_runtime(tmp_path, monkeypatch):
+    import base64
+    import struct
+
+    from hglab.wake import settle_ledgers
+
+    monkeypatch.setattr(factory, "ledger_path", lambda root, name: tmp_path / f"{name}.json")
+    monkeypatch.delenv("HGLAB_RUNTIME", raising=False)  # as under Actions
+    design, steps, _ = _bp()
+    led = factory.ledger_name(design, "chocolate-factory")
+    first, second = [s for s in steps if s["kind"] == "place" and s["section"] == "elevator"][:2]
+    team = load_team(ROOT, "chocolate-factory")
+
+    class World:
+        def __init__(self, cells):
+            self.cells, self.calls = sorted(cells), 0
+
+        def request(self, method, path):
+            assert (method, path) == ("GET", "/live/blocks.json")
+            self.calls += 1
+            data = b"".join(struct.pack("<HHHBBBB", bx, by, 0, bz, 1, 0, 0) for bx, by, bz in self.cells)
+            return {"data": base64.b64encode(data).decode(), "owners": ["Treacleaxe"], "count": len(self.cells)}
+
+    refused = {"actions": [second["action"]], "results": [{"ok": False, "error": "not_allowed"}], "tick": 70000}  # the record keeps the code alone
+    empty = World([])
+    assert second["id"] not in settle_ledgers(ROOT, team, refused, empty, "Caramelcart") and empty.calls == 1  # not filled (unsupported, or the owner's cap): still to do
+    laid = World(factory._cells_of(second["action"]))
+    assert second["id"] in settle_ledgers(ROOT, team, dict(refused), laid, "Caramelcart")  # a teammate on another runner laid it
+    accepted = {"actions": [first["action"]], "results": [{"ok": True}], "tick": 70001}
+    quiet = World([])
+    assert settle_ledgers(ROOT, team, accepted, quiet, "Caramelcart") == [first["id"]] and quiet.calls == 0
+    assert {first["id"], second["id"]} <= set(factory.load_ledger(ROOT, led)["done"])
+
+
 def test_a_builder_places_from_its_pack_or_carries_the_material_from_a_store(tmp_path, monkeypatch):
     monkeypatch.setattr(factory, "ledger_path", lambda root, name: tmp_path / f"{name}.json")
     personas = load_personas(ROOT)

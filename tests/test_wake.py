@@ -73,6 +73,23 @@ def test_llm_plan_outside_the_knobs_falls_back_to_the_deterministic_plan(tmp_pat
     assert "reserve" in record["fallback_reason"]
 
 
+def test_a_model_note_past_the_per_wake_knob_is_dropped_not_the_wake(tmp_path, monkeypatch):
+    monkeypatch.setattr("hglab.wake.decide_wake_mode", lambda *a, **k: "act")
+    personas = load_personas(ROOT)
+    grandad = personas["grandpa-joe"]
+    assert grandad.actions_per_wake == 2
+    client = FixtureClient(load_fixture(FIX / "observe/grandpa-joe.json"))
+    lease = acquire(client, grandad.name)
+
+    def two_steps_and_a_note(_guidance, observe):
+        you = observe["you"]
+        return {"summary": "east", "reasons": [], "approach": None, "actions": [{"action": "move", "x": you["x"] + 1, "y": you["y"]}, {"action": "move", "x": you["x"] + 2, "y": you["y"]}], "remember": [{"key": "plan", "text": "walk east"}]}
+
+    record = persona_wake(persona=grandad, team=load_team(ROOT, "chocolate-factory"), personas=personas, client=client, lease=lease, root=ROOT, output_dir=tmp_path, dry_run=True, planner_mode="llm", llm_call=two_steps_and_a_note, seed="x")
+    assert record["planner"] == "llm"
+    assert [(a["action"], a.get("key")) for a in record["actions"]] == [("move", None), ("move", None), ("remember", "persona_state")]
+
+
 def test_pinned_role_restricts_the_hat_and_union_allows_the_persona():
     personas = load_personas(ROOT)
     wonka = personas["wonka"]
