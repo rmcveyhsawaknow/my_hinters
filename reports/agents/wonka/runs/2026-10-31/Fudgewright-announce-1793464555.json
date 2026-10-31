@@ -1,0 +1,62 @@
+{
+  "run_id": "announce-1793464555",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 125529,
+  "created_utc": "2026-10-31T16:35:55.430569+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Progress report from the gatehouse: walked 4 legs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 10,
+    "rests": 0,
+    "built": [],
+    "gathered": {},
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "tickets",
+      "tickets",
+      "tickets",
+      "tickets",
+      "tickets",
+      "tickets",
+      "tickets",
+      "tickets",
+      "tickets",
+      "tickets"
+    ],
+    "mood": "gentle",
+    "where": [
+      96,
+      84
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce",
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "claude-opus-5-5 on route tick_opus and qwen3.5:9b on route talk for shift lines"
+  }
+}
