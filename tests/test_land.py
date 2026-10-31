@@ -10,6 +10,7 @@ from hglab.land import (
     board,
     check_ledger,
     deed_text,
+    deeded_lots,
     load_ledger,
     office_line,
     plan_round,
@@ -179,7 +180,7 @@ def test_the_office_lists_lots_at_a_rising_price_and_sales_become_deeds():
     assert "I want lot" not in json.dumps(actions3)  # the whisper never leaves the inbox
     validate_actions(actions3, "+".join(broker.roles), observe=observe)
     after = board(ledger, structures, agents, posted, "LandBroker", {"registered": update3["registered"]})
-    assert after["lots"]["for_sale"] == 0 and after["lots"]["sold"] == 2
+    assert after["lots"]["for_sale"] == 0 and after["lots"]["sold"] == 2 + len(deeded_lots(ledger))  # and the ledger's deeded sites (Lower Manhattan)
 
 
 def test_the_lot_listing_takes_an_offers_slot_when_both_are_full():
