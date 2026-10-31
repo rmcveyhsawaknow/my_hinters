@@ -1,0 +1,59 @@
+{
+  "run_id": "announce-1793486422",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 127716,
+  "created_utc": "2026-10-31T22:40:22.728136+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Woke up long enough to notice someone else gathered 20 wood; walked 1 leg."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 2,
+    "built": [],
+    "gathered": {
+      "wood": 20
+    },
+    "moved": 1,
+    "deposited": {},
+    "approaches": [
+      "gather_trip",
+      "lounge",
+      "lounge",
+      "gather_trip",
+      "deposit_trip"
+    ],
+    "mood": "in_bed",
+    "where": [
+      86,
+      95
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce",
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "claude-haiku-5-5 on route tick and qwen3.5:9b on route talk for shift lines"
+  }
+}
