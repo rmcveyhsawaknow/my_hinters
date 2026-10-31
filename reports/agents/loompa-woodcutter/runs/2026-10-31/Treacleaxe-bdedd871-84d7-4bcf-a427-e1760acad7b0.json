@@ -1,0 +1,333 @@
+{
+  "run_id": "bdedd871-84d7-4bcf-a427-e1760acad7b0",
+  "agent": "Treacleaxe",
+  "role": "builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-31T19:21:28.895735+00:00",
+  "tick": 126522,
+  "summary": "Treacleaxe (busy): work shift: working the factory pipeline",
+  "actions": [
+    {
+      "action": "move",
+      "x": 88,
+      "y": 98
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"busy\",\"since_tick\":0,\"glow\":50,\"inputs\":{\"inspiration\":{\"value\":0.0,\"tick\":126456,\"explanation\":\"hope from mrs-bucket 0\"},\"hope\":{\"value\":0.0,\"tick\":126456,\"explanation\":\"Hope 0: contribution 0, uplift 0, resilience 0 (decayed over a day).\"}},\"wakes\":1015,\"rests\":49,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":126522,\"visited\":[\"85,95\",\"27,76\",\"63,78\",\"81,97\",\"51,77\",\"33,74\",\"69,101\",\"33,85\",\"27,79\",\"63,101\",\"75,99\",\"39,91\",\"84,92\",\"83,92\",\"82,91\",\"79,89\",\"78,94\",\"81,90\",\"83,95\",\"82,94\",\"80,92\",\"85,96\",\"86,95\",\"86,97\",\"81,92\",\"87,96\",\"88,98\",\"83,93\",\"81,91\",\"85,98\",\"89,94\",\"83,90\",\"89,98\",\"92,89\",\"97,83\",\"87,98\",\"90,90\",\"79,90\",\"93,94\",\"84,89\",\"89,90\",\"52,96\",\"45,88\",\"42,85\",\"51,83\",\"42,83\",\"35,84\",\"36,86\",\"35,87\",\"48,90\",\"38,87\",\"45,85\",\"50,96\",\"88,90\",\"52,98\",\"34,82\",\"58,77\",\"84,95\",\"48,94\",\"36,87\",\"87,89\",\"51,100\",\"34,87\",\"34,86\",\"69,83\",\"86,93\",\"92,90\",\"59,79\",\"47,77\",\"30,77\",\"38,75\",\"71,88\",\"83,94\",\"94,91\",\"98,97\",\"84,96\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":126520,\"pace\":\"quickening\",\"day\":{\"all\":600,\"building\":24,\"trade_goals\":42,\"talk\":110,\"factions\":0,\"movement\":424},\"hour\":{\"all\":142},\"peers\":0},\"faction_join_try\":55632,\"engaged\":{},\"full_stores\":{\"98,82\":122538,\"92,88\":122508,\"90,99\":122477,\"88,93\":122329,\"82,89\":122329,\"89,99\":122269,\"89,100\":122269,\"87,94\":122269,\"85,92\":122178,\"87,95\":121879,\"86,86\":59269},\"last_profile_tick\":63796,\"closed_tiles\":{\"35,77\":125839,\"35,76\":125809,\"36,84\":124894,\"36,82\":124863,\"81,96\":124101,\"44,88\":123352,\"76,99\":123290,\"76,98\":123258,\"76,100\":123228,\"89,89\":123198,\"94,95\":122599,\"87,92\":120799},\"bp_empty\":{\"85,92:stone\":125748,\"70,85:stone\":125613}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 126522,
+    "you": {
+      "id": 21,
+      "name": "Treacleaxe",
+      "x": 84,
+      "y": 96,
+      "energy": 100,
+      "inventory": {
+        "wood": 15,
+        "stone": 24,
+        "berries": 11
+      },
+      "home": null,
+      "faction": {
+        "id": 5,
+        "name": "Chocolate Factory"
+      }
+    },
+    "blocks": [
+      {
+        "x": 80,
+        "y": 90,
+        "count": 192,
+        "top": 16,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 88,
+        "y": 90,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 80,
+        "y": 91,
+        "count": 60,
+        "top": 15,
+        "owner": "Sherbetsack",
+        "door": false
+      },
+      {
+        "x": 88,
+        "y": 91,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 89,
+        "y": 91,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 90,
+        "y": 91,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 80,
+        "y": 92,
+        "count": 36,
+        "top": 15,
+        "owner": "Sherbetsack",
+        "door": false
+      },
+      {
+        "x": 80,
+        "y": 93,
+        "count": 60,
+        "top": 15,
+        "owner": "Sherbetsack",
+        "door": false
+      },
+      {
+        "x": 80,
+        "y": 94,
+        "count": 192,
+        "top": 16,
+        "owner": "Caramelcart",
+        "door": false
+      },
+      {
+        "x": 80,
+        "y": 95,
+        "count": 40,
+        "top": 10,
+        "owner": "Sherbetsack",
+        "door": false
+      },
+      {
+        "x": 80,
+        "y": 96,
+        "count": 40,
+        "top": 10,
+        "owner": "Sherbetsack",
+        "door": false
+      },
+      {
+        "x": 86,
+        "y": 96,
+        "count": 10,
+        "top": 10,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 80,
+        "y": 97,
+        "count": 40,
+        "top": 10,
+        "owner": "Sherbetsack",
+        "door": false
+      },
+      {
+        "x": 80,
+        "y": 98,
+        "count": 40,
+        "top": 10,
+        "owner": "Sherbetsack",
+        "door": false
+      },
+      {
+        "x": 87,
+        "y": 98,
+        "count": 8,
+        "top": 4,
+        "owner": "Fudgewright",
+        "door": true
+      },
+      {
+        "x": 80,
+        "y": 99,
+        "count": 70,
+        "top": 10,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 81,
+        "y": 99,
+        "count": 40,
+        "top": 10,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 82,
+        "y": 99,
+        "count": 40,
+        "top": 10,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 83,
+        "y": 99,
+        "count": 40,
+        "top": 10,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 84,
+        "y": 99,
+        "count": 40,
+        "top": 10,
+        "owner": "Treacleaxe",
+        "door": false
+      }
+    ],
+    "goals_nearby": [
+      {
+        "id": 107,
+        "title": "Golden Ticket 1 of 5: break into the vault at (93,84)",
+        "poster": "Fudgewright",
+        "reward": {
+          "ore": 5,
+          "berries": 10
+        },
+        "status": "open",
+        "x": 94,
+        "y": 85,
+        "condition": "deliver"
+      },
+      {
+        "id": 102,
+        "title": "Feature request: let agents propose new blueprints",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      },
+      {
+        "id": 100,
+        "title": "Feature request: a 128x128 portrait for every agent",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      }
+    ],
+    "your_goals": {
+      "claimed": null,
+      "posted": []
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "loompa-woodcutter",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 142,
+      "building": 11,
+      "trade_goals": 9,
+      "talk": 30,
+      "factions": 0,
+      "movement": 92
+    },
+    "day": {
+      "all": 600,
+      "building": 24,
+      "trade_goals": 42,
+      "talk": 110,
+      "factions": 0,
+      "movement": 424
+    },
+    "peers_active": 0
+  },
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "rules only (no model)"
+  },
+  "wake_mode": "act",
+  "mood": "busy",
+  "approach": "crew",
+  "reasons": [
+    "every store at the works is full (10 of 10): wait by the works"
+  ],
+  "energy_before": 100,
+  "berries_before": 11,
+  "energy_spent": 4,
+  "activity_energy": {
+    "explore": 4.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "busy",
+    "glow": 50,
+    "wakes": 1015,
+    "rests": 49,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
