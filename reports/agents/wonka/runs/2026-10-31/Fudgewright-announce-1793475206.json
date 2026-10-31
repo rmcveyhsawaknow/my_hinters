@@ -1,0 +1,66 @@
+{
+  "run_id": "announce-1793475206",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 126594,
+  "created_utc": "2026-10-31T19:33:26.222486+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Inventing Room notes: built bridge at (88,108); gathered 25 wood; walked 8 legs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 10,
+    "rests": 2,
+    "built": [
+      "bridge at (88,108)"
+    ],
+    "gathered": {
+      "wood": 25
+    },
+    "moved": 8,
+    "deposited": {},
+    "approaches": [
+      "rest",
+      "gather_trip",
+      "explore",
+      "rest",
+      "explore",
+      "explore",
+      "build",
+      "gather_trip",
+      "explore",
+      "explore"
+    ],
+    "mood": "gentle",
+    "where": [
+      81,
+      105
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce",
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "claude-opus-5-5 on route tick_opus and qwen3.5:9b on route talk for shift lines"
+  }
+}
