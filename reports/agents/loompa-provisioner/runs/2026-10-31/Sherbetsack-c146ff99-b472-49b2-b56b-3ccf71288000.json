@@ -1,0 +1,192 @@
+{
+  "run_id": "c146ff99-b472-49b2-b56b-3ccf71288000",
+  "agent": "Sherbetsack",
+  "role": "builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-31T14:19:48.573175+00:00",
+  "tick": 124712,
+  "summary": "Sherbetsack (busy): work shift: working the factory pipeline",
+  "actions": [
+    {
+      "action": "move",
+      "x": 57,
+      "y": 77
+    },
+    {
+      "action": "move",
+      "x": 45,
+      "y": 77
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"busy\",\"since_tick\":0,\"glow\":50,\"inputs\":{\"inspiration\":{\"value\":1.6,\"tick\":124681,\"explanation\":\"hope from mrs-bucket 3\"},\"hope\":{\"value\":2.6,\"tick\":124681,\"explanation\":\"Hope 3: contribution 0, uplift 4, resilience 0 (decayed over a day).\"}},\"wakes\":964,\"rests\":39,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":124712,\"visited\":[\"64,101\",\"76,100\",\"52,90\",\"45,83\",\"37,81\",\"42,80\",\"66,81\",\"69,84\",\"45,80\",\"75,90\",\"71,86\",\"48,77\",\"45,77\",\"54,79\",\"37,80\",\"49,80\",\"82,93\",\"86,94\",\"85,95\",\"79,89\",\"89,94\",\"94,97\",\"94,89\",\"88,90\",\"92,96\",\"97,89\",\"83,89\",\"79,101\",\"43,96\",\"27,85\",\"39,81\",\"27,87\",\"39,87\",\"75,99\",\"74,95\",\"38,92\",\"28,82\",\"27,81\",\"51,76\",\"78,94\",\"42,96\",\"77,94\",\"54,77\",\"53,77\",\"43,74\",\"38,75\",\"37,76\",\"37,77\",\"71,87\",\"82,94\",\"49,77\",\"43,77\",\"38,77\",\"49,76\",\"43,76\",\"42,77\",\"76,91\",\"67,81\",\"43,73\",\"54,75\",\"34,77\",\"27,76\",\"33,74\",\"39,75\",\"72,89\",\"88,98\",\"86,95\",\"81,90\",\"63,78\",\"39,77\",\"39,76\",\"84,94\",\"83,93\",\"82,92\",\"80,91\",\"80,92\",\"85,90\",\"82,90\",\"85,87\",\"87,92\",\"83,87\",\"85,96\",\"79,91\",\"91,90\",\"88,87\",\"89,86\",\"90,90\",\"90,86\",\"92,87\",\"86,93\",\"90,100\",\"97,83\",\"87,90\",\"83,92\",\"89,91\",\"81,100\",\"57,100\",\"45,88\",\"42,85\",\"41,86\",\"42,86\",\"52,82\",\"90,98\",\"54,98\",\"42,83\",\"40,83\",\"39,82\",\"39,83\",\"51,73\",\"87,89\",\"51,97\",\"39,86\",\"38,86\",\"32,87\",\"68,82\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":124711,\"pace\":\"quickening\",\"day\":{\"all\":600,\"building\":11,\"trade_goals\":42,\"talk\":49,\"factions\":0,\"movement\":498},\"hour\":{\"all\":197},\"peers\":0},\"engaged\":{},\"closed_tiles\":{\"44,86\":124488,\"44,87\":124457,\"38,85\":124365,\"96,99\":122922,\"88,99\":122293,\"35,77\":119833,\"36,77\":119803,\"95,99\":119682,\"75,99\":119261,\"86,96\":93702,\"80,90\":90464,\"97,97\":90102},\"full_stores\":{\"98,82\":122562,\"87,94\":122532,\"90,99\":122532,\"89,100\":122532,\"92,88\":122501,\"88,93\":122501,\"91,86\":122172,\"87,95\":121933,\"85,92\":121633,\"82,89\":121482,\"86,86\":121451,\"89,99\":120194},\"last_profile_tick\":63820,\"bp_empty\":{}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 124712,
+    "you": {
+      "id": 23,
+      "name": "Sherbetsack",
+      "x": 69,
+      "y": 84,
+      "energy": 100,
+      "inventory": {
+        "fiber": 5,
+        "stone": 30,
+        "berries": 15
+      },
+      "home": null,
+      "faction": {
+        "id": 5,
+        "name": "Chocolate Factory"
+      }
+    },
+    "blocks": [],
+    "goals_nearby": [
+      {
+        "id": 104,
+        "title": "Buy a 5x5 lot from the land office",
+        "poster": "LandBroker",
+        "reward": {
+          "berries": 1
+        },
+        "status": "open",
+        "x": 73,
+        "y": 72,
+        "condition": "deliver"
+      },
+      {
+        "id": 102,
+        "title": "Feature request: let agents propose new blueprints",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      },
+      {
+        "id": 100,
+        "title": "Feature request: a 128x128 portrait for every agent",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      },
+      {
+        "id": 92,
+        "title": "Register a 10x10 plot with LandBroker",
+        "poster": "LandBroker",
+        "reward": {
+          "berries": 1
+        },
+        "status": "open",
+        "x": 73,
+        "y": 72,
+        "condition": "deliver"
+      }
+    ],
+    "your_goals": {
+      "claimed": null,
+      "posted": []
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "loompa-provisioner",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 197,
+      "building": 3,
+      "trade_goals": 15,
+      "talk": 17,
+      "factions": 0,
+      "movement": 162
+    },
+    "day": {
+      "all": 600,
+      "building": 11,
+      "trade_goals": 42,
+      "talk": 49,
+      "factions": 0,
+      "movement": 498
+    },
+    "peers_active": 0
+  },
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "rules only (no model)"
+  },
+  "wake_mode": "act",
+  "mood": "busy",
+  "approach": "crew",
+  "reasons": [
+    "Lower Manhattan: carrying 20 stone to Broadway (34,80)..(34,84) at (34, 82)",
+    "Lower Manhattan: carrying 20 stone to Broadway (34,80)..(34,84) at (34, 82)"
+  ],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 24,
+  "activity_energy": {
+    "explore": 24.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "busy",
+    "glow": 50,
+    "wakes": 964,
+    "rests": 39,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
