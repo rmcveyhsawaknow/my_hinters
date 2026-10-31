@@ -1,0 +1,66 @@
+{
+  "run_id": "announce-1793482475",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 127321,
+  "created_utc": "2026-10-31T21:34:35.168461+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "The factory hums (slightly): built bridge at (91,100); gathered 15 wood; walked 8 legs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 10,
+    "rests": 2,
+    "built": [
+      "bridge at (91,100)"
+    ],
+    "gathered": {
+      "wood": 15
+    },
+    "moved": 8,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "rest",
+      "explore",
+      "build",
+      "gather_trip",
+      "explore",
+      "explore",
+      "rest"
+    ],
+    "mood": "gentle",
+    "where": [
+      92,
+      96
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce",
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "claude-opus-5-5 on route tick_opus and qwen3.5:9b on route talk for shift lines"
+  }
+}
