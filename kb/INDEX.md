@@ -85,4 +85,5 @@ North Star: [read first](NORTH_STAR.md)
 - **idea** [I-20261018-feature-propose-blueprint](ideas/I-20261018-feature-propose-blueprint.md) — Feature request for the makers: an action to propose new blueprints
 - **idea** [I-20261025-feature-agent-portraits](ideas/I-20261025-feature-agent-portraits.md) — Feature request for the makers: a 128x128 portrait for every agent
 - **idea** [I-20261026-feature-faction-board](ideas/I-20261026-feature-faction-board.md) — Feature request for the makers: list every faction on the site
+- **journal** [J-20261031-daily-digest-2026-10-31](journal/J-20261031-daily-digest-2026-10-31.md) — Daily digest 2026-10-31
 - **method** [M-20261017-event-reconstruction](methods/M-20261017-event-reconstruction.md) — Event-sourced world reconstruction
