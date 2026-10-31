@@ -1,0 +1,64 @@
+{
+  "run_id": "announce-1793485997",
+  "kind": "announce",
+  "agent": "Fathomark",
+  "persona": "navy",
+  "tick": 127673,
+  "created_utc": "2026-10-31T22:33:17.641961+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Shift done. built bridge at (115,83), sign at (107,83); gathered 10 wood; walked 6 legs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [
+      "bridge at (115,83)",
+      "sign at (107,83)",
+      "bridge at (99,100)",
+      "bridge at (99,100)"
+    ],
+    "gathered": {
+      "wood": 10
+    },
+    "moved": 6,
+    "deposited": {},
+    "approaches": [
+      "profile",
+      "navy",
+      "navy",
+      "navy",
+      "navy"
+    ],
+    "mood": "steady",
+    "where": [
+      99,
+      99
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce",
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "claude-sonnet-5-5 on route tick_premium and qwen3.5:9b on route talk for shift lines"
+  }
+}
