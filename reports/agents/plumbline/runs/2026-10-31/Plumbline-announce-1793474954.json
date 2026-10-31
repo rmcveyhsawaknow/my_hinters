@@ -1,0 +1,68 @@
+{
+  "run_id": "announce-1793474954",
+  "kind": "announce",
+  "agent": "Plumbline",
+  "persona": "plumbline",
+  "tick": 126569,
+  "created_utc": "2026-10-31T19:29:14.311955+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Quiet work: gathered 5 ore, 5 stone; stored 15 ore, 30 wood; walked 9 legs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 10,
+    "rests": 2,
+    "built": [],
+    "gathered": {
+      "ore": 5,
+      "stone": 5
+    },
+    "moved": 9,
+    "deposited": {
+      "ore": 15,
+      "wood": 30
+    },
+    "approaches": [
+      "gather_trip",
+      "deposit_trip",
+      "deposit",
+      "draw",
+      "draw",
+      "rest",
+      "draw",
+      "draw",
+      "draw",
+      "rest"
+    ],
+    "mood": "measuring",
+    "where": [
+      93,
+      91
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce",
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "claude-sonnet-5-5 on route science and qwen3.5:9b on route talk for shift lines"
+  }
+}
