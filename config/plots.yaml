@@ -49,23 +49,29 @@ site_requests:
   # Lower Manhattan (the owner's brief of 2026-10-27): the Atelier's replica on the south-west shore, bought in four
   # segments, each a fixed survey of lots; a step of the blueprint (teams/blueprints/lower-manhattan.yaml) rises only
   # on lots the office has deeded to Plumbline. Paid into a till of the office, any office store, or the registrar's hands.
+  # Each segment's deed tick is copied from the office's round record (runs/<date>/LandBroker-land-*.json), so a host
+  # without the office's shared registry (GitHub Actions) reads the deed too (2026-10-31).
   - id: nyc-wall-street
     client: Plumbline
+    deeded: 90788
     lots: [D08-NE, E08-NW]
     wants: [stone]
     note: Wall Street for the Atelier's Lower Manhattan, Broadway to the East River side; Federal Hall, 40 Wall Street, 70 Pine Street and the head of the Stock Exchange.
   - id: nyc-battery
     client: Plumbline
+    deeded: 93307
     lots: [D08-SE, E08-SW, D08-SW, C08-SE]
     wants: [stone]
     note: The Battery for the Atelier's Lower Manhattan, the tip of the island by the inlet; the Stock Exchange, the ferry terminal, the Seaport, Battery Park and Castle Clinton.
   - id: nyc-trinity
     client: Plumbline
+    deeded: 93668
     lots: [D08-NW, C08-NE]
     wants: [stone]
     note: Trinity Church and Battery Park City for the Atelier's Lower Manhattan, Broadway west to the Hudson shore.
   - id: nyc-wtc
     client: Plumbline
+    deeded: 94388
     lots: [D07-SW, D07-SE, C07-SE, E07-SW]
     wants: [stone]
     note: The World Trade Center and the north of the Atelier's Lower Manhattan; One World Trade Center, the memorial pools, the Oculus, the Woolworth Building.

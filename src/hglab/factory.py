@@ -1221,12 +1221,20 @@ def step_lots(step: dict[str, Any]) -> set[str]:
 
 
 def land_wanted(root: Path, design: dict[str, Any], structures: list[dict[str, Any]]) -> set[str]:
-    """The design's lots its client does not yet hold: by the registrar's deed and sold signs and the office's shared registry."""
+    """The design's lots its client does not yet hold: by the registrar's deed and sold signs, the office's shared
+    registry, and the ledger's deeded sites (``config/plots.yaml``, the record a host without the registry reads)."""
     from hglab.evict import held_lots, load_shared
+    from hglab.land import deeded_lots
+    from hglab.land import load_ledger as load_plots
 
     land = design.get("land") or {}
     client = str(land.get("client") or "").casefold()
     held = held_lots(structures, str(land.get("registrar") or "LandBroker"), load_shared(root))
+    try:
+        for lid, (holder, _tick) in deeded_lots(load_plots(root)).items():
+            held.setdefault(lid, holder)
+    except (OSError, ValueError):
+        pass  # no ledger here: the signs and the registry stand alone
     lots = {str(lid) for lid in land.get("lots") or []}
     return {lid for lid in lots if str(held.get(lid, "")).casefold() != client}
 

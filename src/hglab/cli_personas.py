@@ -781,7 +781,15 @@ def _land_duty(root: Path, persona: Persona) -> bool:
 def land_round(root: Path, persona: Persona, *, dry_run: bool, fixture: Path | None, scheduled: bool, quiet: bool = False) -> dict[str, Any]:
     """One land office round: deeds for paid registrations, the registration goal, offers, the office line."""
     from hglab.actions import redact_result, validate_actions
-    from hglab.land import STATE_KEY, board, is_registrar, load_ledger, plan_round, render_board
+    from hglab.land import (
+        STATE_KEY,
+        board,
+        is_registrar,
+        load_ledger,
+        plan_round,
+        registry_entries,
+        render_board,
+    )
 
     ledger = load_ledger(root)
     if not is_registrar(persona, ledger):
@@ -851,7 +859,8 @@ def land_round(root: Path, persona: Persona, *, dry_run: bool, fixture: Path | N
         notice = None
         if evict_cfg(claims) is not None:
             shared = load_shared(root)
-            shared["held"] = {**(shared.get("held") or {}), **{str(e["plot"]): str(e["holder"]) for e in (b.get("registered") or []) if e.get("plot") and e.get("holder")}}
+            entries = registry_entries({**state, **update}, ledger)  # this round's deeds too, before the note trims them
+            shared["held"] = {**(shared.get("held") or {}), **{str(e["plot"]): str(e["holder"]) for e in entries if e.get("plot") and e.get("holder")}}
             energy_now = int((observe.get("you") or {}).get("energy", 0) or 0)
             if len(actions) < 3 and energy_now - 1 >= persona.energy_reserve:
                 lots_b = b.get("lots") or {}

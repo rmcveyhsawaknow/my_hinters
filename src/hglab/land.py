@@ -119,13 +119,36 @@ def fee_item(ledger: dict[str, Any]) -> tuple[str, int]:
     return str(item), int(qty)
 
 
+def deeded_lots(ledger: dict[str, Any], state: dict[str, Any] | None = None) -> dict[str, tuple[str, int]]:
+    """Lot -> (holder, tick) for every site the office has deeded: the ledger's record (``site_requests[].deeded``,
+    copied by PR from the office's round records, so every host reads it) and the notebook's deeded surveys.
+
+    The notebook's registry rows are trimmed to fit its note: on 2026-10-31 a four-lot deed had kept one row, and
+    the crew read the other three as unbought. A deed is read from its survey and the ledger as well.
+    """
+    out: dict[str, tuple[str, int]] = {}
+    for request in ledger.get("site_requests") or []:
+        if isinstance(request, dict) and request.get("deeded") is not None and request.get("client"):
+            for lid in request.get("lots") or []:
+                out[str(lid)] = (str(request["client"]), int(request["deeded"]))
+    surveys = (state or {}).get("surveys")
+    for survey in (surveys.values() if isinstance(surveys, dict) else ()):
+        if isinstance(survey, dict) and survey.get("deeded") and survey.get("client"):
+            for lid in survey.get("lots") or [survey.get("lot")]:
+                if lid:
+                    out.setdefault(str(lid), (str(survey["client"]), int(survey["deeded"])))
+    return out
+
+
 def registry_entries(state: dict[str, Any], ledger: dict[str, Any]) -> list[dict[str, Any]]:
-    """Registered plots: the ledger's pre-registered ones, then the notebook's ``plot:holder:tick`` rows."""
+    """Registered plots: the ledger's pre-registered ones, the notebook's ``plot:holder:tick`` rows, then the deeded sites' lots."""
     entries = [{"plot": p["id"], "holder": p["holder"], "tick": 0, "note": p.get("note", "")} for p in ledger.get("plots", [])]
     for row in state.get("registered", []) if isinstance(state.get("registered"), list) else []:
         parts = str(row).split(":")
         if len(parts) >= 2:
             entries.append({"plot": parts[0], "holder": parts[1], "tick": int(parts[2]) if len(parts) > 2 and parts[2].isdigit() else 0})
+    listed = {e["plot"] for e in entries}
+    entries += [{"plot": lid, "holder": holder, "tick": tick} for lid, (holder, tick) in deeded_lots(ledger, state).items() if lid not in listed]
     return entries
 
 
@@ -449,8 +472,8 @@ def surveys_due(ledger: dict[str, Any], registrar_name: str, state: dict[str, An
     out: list[dict[str, Any]] = []
     for request in requests:
         rid = str(request.get("id"))
-        if rid in done:
-            continue
+        if rid in done or request.get("deeded") is not None:
+            continue  # a deeded site is not surveyed again, though its survey has left the note
         fixed = [str(lid).upper() for lid in (request.get("lots") or []) if isinstance(lid, str)]
         if fixed:
             # the ground the client already works: these lots, priced by their worth, no search
@@ -833,6 +856,7 @@ __all__ = [
     "check_ledger",
     "deed_line",
     "deed_text",
+    "deeded_lots",
     "fee_item",
     "is_registrar",
     "load_ledger",

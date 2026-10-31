@@ -51,6 +51,20 @@ def test_the_four_segments_are_requested_of_the_office_in_order_by_plumbline():
     assert ask is not None and ask[0][0]["action"] == "whisper" and ask[0][0]["to"] == "LandBroker" and ask[0][0]["text"].startswith("SURVEY REQUEST nyc-wall-street")
 
 
+def _undeeded(monkeypatch):
+    """The ledger without its deed ticks and no shared registry: the land gate reads only the signs given."""
+    from hglab import evict, land
+
+    real = land.load_ledger
+
+    def ledger(root):
+        data = real(root)
+        return {**data, "site_requests": [{k: v for k, v in r.items() if k != "deeded"} for r in data.get("site_requests") or []]}
+
+    monkeypatch.setattr(land, "load_ledger", ledger)
+    monkeypatch.setattr(evict, "load_shared", lambda root: {"notices": {}, "held": {}})
+
+
 def _plumbline_step(structures, position=(35, 80), inventory=None, state=None):
     personas = load_personas(ROOT)
     plumbline = personas["plumbline"]
@@ -61,7 +75,8 @@ def _plumbline_step(structures, position=(35, 80), inventory=None, state=None):
     return factory.plan_step(plumbline, team, state, observe, view, dict(inventory or {"stone": 40, "wood": 20}), position, 3), state
 
 
-def test_nothing_rises_on_a_lot_the_client_does_not_hold():
+def test_nothing_rises_on_a_lot_the_client_does_not_hold(monkeypatch):
+    _undeeded(monkeypatch)
     step, state = _plumbline_step([])
     assert step is None and set(state._bp_land) <= set(_bp()[0]["land"]["lots"])  # no deed: the builder waits for the ground
     others, _ = _plumbline_step(_deeds("D08-NE", "E08-NW", holder="Mara"))
@@ -72,7 +87,8 @@ def test_nothing_rises_on_a_lot_the_client_does_not_hold():
     assert placed and all(lot_id(a["bx"] // 4, a["by"] // 4) in ("D08-NE", "E08-NW") for a in placed)  # Wall Street's ground only
 
 
-def test_a_far_builder_carries_its_material_from_a_faction_store_then_walks_to_the_site():
+def test_a_far_builder_carries_its_material_from_a_faction_store_then_walks_to_the_site(monkeypatch):
+    _undeeded(monkeypatch)
     deeds = _deeds("D08-NE", "E08-NW")
     store = {"type": "storehouse", "x": 86, "y": 93, "owner": "Toffeetrowel", "policy": "faction", "faction": "Chocolate Factory", "storage": {"stone": 300, "wood": 100}}
     take, _ = _plumbline_step([*deeds, store], position=(86, 92), inventory={"berries": 5})
@@ -126,6 +142,36 @@ def test_each_payment_counts_once_toward_the_earliest_survey_with_room():
     assert [d["id"] for d in paid_deeds(state, events, tills, "LandBroker", {"Lintelstave"})] == ["nyc-wall-street"]
     deeded = {"surveys": {**state["surveys"], "nyc-wall-street": _survey(61, 100, deeded=650)}}
     assert survey_credits(deeded, events, tills, "LandBroker", {"Lintelstave"})["nyc-battery"] == 30  # a deeded survey takes only what came before its deed
+
+
+def test_a_deed_outlasts_the_note_that_trims_its_rows():
+    import json
+
+    from hglab.land import registry_entries, sold_lots, surveys_due
+    from hglab.notes import fit_note
+
+    # 2026-10-31: the Battery's deed wrote four rows; the note, full of surveys, kept one, and the crew stalled
+    ledger = {"plots": [], "lots": {"base_price": 5, "price_cap": 50}, "site_requests": [{"id": "nyc-battery", "client": "Plumbline", "lots": SEGMENTS["nyc-battery"]}]}
+    survey = {"client": "Plumbline", "lot": "D08-SE", "lots": SEGMENTS["nyc-battery"], "price": 103, "currency": "wood", "tick": 89764, "deeded": 93307, "reasons": ["x" * 400]}
+    rows = [f"{lid}:Plumbline:93307" for lid in SEGMENTS["nyc-battery"]]
+    trimmed = json.loads(fit_note({"surveys": {f"s{i}": {**survey, "deeded": None} for i in range(3)} | {"nyc-battery": survey}, "registered": rows}))
+    assert len(trimmed["registered"]) < 4  # the trim that lost the deed
+    assert set(SEGMENTS["nyc-battery"]) <= sold_lots(registry_entries(trimmed, ledger))  # the survey still names every lot
+    recorded = {**ledger, "site_requests": [{**ledger["site_requests"][0], "deeded": 93307}]}
+    assert set(SEGMENTS["nyc-battery"]) <= sold_lots(registry_entries({}, recorded))  # the ledger's record, with no note at all
+    world = {"terrain": GRASS}
+    assert len(surveys_due(ledger, "LandBroker", {}, world, [], [], 95000)) == 1
+    assert surveys_due(recorded, "LandBroker", {}, world, [], [], 95000) == []  # a deeded site is not surveyed (and billed) again
+
+
+def test_a_host_without_the_office_registry_reads_the_deeds_from_the_ledger(monkeypatch):
+    from hglab import evict
+
+    monkeypatch.setattr(evict, "load_shared", lambda root: {"notices": {}, "held": {}})  # a GitHub Actions run: no runs/local
+    design = _bp()[0]
+    assert factory.land_wanted(ROOT, design, []) == set()  # every segment's deed tick is in config/plots.yaml
+    step, _ = _plumbline_step([])
+    assert step is not None and step[2] == "blueprint"
 
 
 def test_the_office_reads_a_price_paid_in_parts_from_the_hosts_archive(tmp_path):
