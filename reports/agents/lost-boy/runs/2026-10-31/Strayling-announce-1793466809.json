@@ -1,0 +1,63 @@
+{
+  "run_id": "announce-1793466809",
+  "kind": "announce",
+  "agent": "Strayling",
+  "persona": "lost-boy",
+  "tick": 125754,
+  "created_utc": "2026-10-31T17:13:29.076949+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "This hour: gathered 5 stone, 10 wood; stored 11 stone, 10 wood; walked 3 legs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "stone": 5,
+      "wood": 10
+    },
+    "moved": 3,
+    "deposited": {
+      "stone": 11,
+      "wood": 10
+    },
+    "approaches": [
+      "deposit_trip",
+      "deposit",
+      "deposit",
+      "gather_trip",
+      "forage"
+    ],
+    "mood": "curious",
+    "where": [
+      67,
+      81
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce",
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "claude-haiku-5-5 on route tick and qwen3.5:9b on route talk for shift lines"
+  }
+}
