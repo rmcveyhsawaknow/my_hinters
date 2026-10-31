@@ -1,0 +1,333 @@
+{
+  "run_id": "ee653a70-e418-4f07-bc5c-8dd44d93f297",
+  "agent": "Sherbetsack",
+  "role": "builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-31T18:47:08.232593+00:00",
+  "tick": 126316,
+  "summary": "Sherbetsack (busy): work shift: working the factory pipeline",
+  "actions": [
+    {
+      "action": "move",
+      "x": 88,
+      "y": 98
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"busy\",\"since_tick\":0,\"glow\":50,\"inputs\":{\"inspiration\":{\"value\":5.6,\"tick\":126133,\"explanation\":\"hope from mrs-bucket 9\"},\"hope\":{\"value\":9.3,\"tick\":126133,\"explanation\":\"Hope 9: contribution 0, uplift 15, resilience 0 (decayed over a day).\"}},\"wakes\":1001,\"rests\":43,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":126316,\"visited\":[\"69,84\",\"45,80\",\"75,90\",\"71,86\",\"48,77\",\"45,77\",\"54,79\",\"37,80\",\"49,80\",\"82,93\",\"86,94\",\"85,95\",\"79,89\",\"89,94\",\"94,97\",\"94,89\",\"88,90\",\"92,96\",\"97,89\",\"83,89\",\"79,101\",\"43,96\",\"27,85\",\"39,81\",\"27,87\",\"39,87\",\"75,99\",\"74,95\",\"38,92\",\"28,82\",\"27,81\",\"51,76\",\"78,94\",\"42,96\",\"77,94\",\"54,77\",\"53,77\",\"43,74\",\"38,75\",\"37,76\",\"37,77\",\"71,87\",\"82,94\",\"49,77\",\"43,77\",\"38,77\",\"49,76\",\"43,76\",\"42,77\",\"76,91\",\"67,81\",\"43,73\",\"54,75\",\"34,77\",\"27,76\",\"33,74\",\"39,75\",\"72,89\",\"88,98\",\"86,95\",\"81,90\",\"63,78\",\"39,77\",\"39,76\",\"84,94\",\"83,93\",\"82,92\",\"80,91\",\"80,92\",\"85,90\",\"82,90\",\"85,87\",\"87,92\",\"83,87\",\"85,96\",\"79,91\",\"91,90\",\"88,87\",\"89,86\",\"90,90\",\"90,86\",\"92,87\",\"86,93\",\"90,100\",\"97,83\",\"87,90\",\"83,92\",\"89,91\",\"81,100\",\"57,100\",\"45,88\",\"42,85\",\"41,86\",\"42,86\",\"52,82\",\"90,98\",\"54,98\",\"42,83\",\"40,83\",\"39,82\",\"39,83\",\"51,73\",\"87,89\",\"51,97\",\"39,86\",\"38,86\",\"32,87\",\"68,82\",\"34,82\",\"30,84\",\"57,77\",\"33,76\",\"30,77\",\"66,80\",\"92,92\",\"59,79\",\"47,77\",\"97,94\",\"89,98\",\"83,90\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":126316,\"pace\":\"quickening\",\"day\":{\"all\":600,\"building\":18,\"trade_goals\":46,\"talk\":113,\"factions\":0,\"movement\":423},\"hour\":{\"all\":48},\"peers\":0},\"engaged\":{},\"closed_tiles\":{\"97,99\":126256,\"35,76\":125969,\"42,75\":125787,\"35,82\":124773,\"36,82\":124742,\"44,86\":124488,\"44,87\":124457,\"38,85\":124365,\"96,99\":122922,\"88,99\":122293,\"35,77\":119833,\"36,77\":119803},\"full_stores\":{\"98,82\":122562,\"87,94\":122532,\"90,99\":122532,\"89,100\":122532,\"92,88\":122501,\"88,93\":122501,\"91,86\":122172,\"87,95\":121933,\"85,92\":121633,\"82,89\":121482,\"86,86\":121451,\"89,99\":120194},\"last_profile_tick\":63820,\"bp_empty\":{\"85,92:stone\":125908,\"70,85:stone\":125848}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 126316,
+    "you": {
+      "id": 23,
+      "name": "Sherbetsack",
+      "x": 83,
+      "y": 90,
+      "energy": 100,
+      "inventory": {
+        "fiber": 5,
+        "stone": 30,
+        "berries": 15
+      },
+      "home": null,
+      "faction": {
+        "id": 5,
+        "name": "Chocolate Factory"
+      }
+    },
+    "blocks": [
+      {
+        "x": 89,
+        "y": 84,
+        "count": 86,
+        "top": 11,
+        "owner": "Toffeetrowel",
+        "door": true
+      },
+      {
+        "x": 88,
+        "y": 85,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 89,
+        "y": 85,
+        "count": 150,
+        "top": 15,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 81,
+        "y": 86,
+        "count": 40,
+        "top": 10,
+        "owner": "Treacleaxe",
+        "door": false
+      },
+      {
+        "x": 88,
+        "y": 86,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 81,
+        "y": 87,
+        "count": 58,
+        "top": 7,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 82,
+        "y": 87,
+        "count": 72,
+        "top": 9,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 83,
+        "y": 87,
+        "count": 106,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": true
+      },
+      {
+        "x": 84,
+        "y": 87,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 85,
+        "y": 87,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 88,
+        "y": 87,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 89,
+        "y": 87,
+        "count": 79,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 80,
+        "y": 88,
+        "count": 40,
+        "top": 10,
+        "owner": "Nougatpick",
+        "door": false
+      },
+      {
+        "x": 81,
+        "y": 88,
+        "count": 90,
+        "top": 9,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 82,
+        "y": 88,
+        "count": 104,
+        "top": 11,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 83,
+        "y": 88,
+        "count": 138,
+        "top": 12,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 85,
+        "y": 88,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 86,
+        "y": 88,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 87,
+        "y": 88,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 88,
+        "y": 88,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      }
+    ],
+    "goals_nearby": [
+      {
+        "id": 107,
+        "title": "Golden Ticket 1 of 5: break into the vault at (93,84)",
+        "poster": "Fudgewright",
+        "reward": {
+          "ore": 5,
+          "berries": 10
+        },
+        "status": "open",
+        "x": 94,
+        "y": 85,
+        "condition": "deliver"
+      },
+      {
+        "id": 102,
+        "title": "Feature request: let agents propose new blueprints",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      },
+      {
+        "id": 100,
+        "title": "Feature request: a 128x128 portrait for every agent",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      }
+    ],
+    "your_goals": {
+      "claimed": null,
+      "posted": []
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "loompa-provisioner",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 48,
+      "building": 0,
+      "trade_goals": 5,
+      "talk": 6,
+      "factions": 0,
+      "movement": 37
+    },
+    "day": {
+      "all": 600,
+      "building": 18,
+      "trade_goals": 46,
+      "talk": 113,
+      "factions": 0,
+      "movement": 423
+    },
+    "peers_active": 0
+  },
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "rules only (no model)"
+  },
+  "wake_mode": "act",
+  "mood": "busy",
+  "approach": "crew",
+  "reasons": [
+    "every store at the works is full (10 of 10): wait by the works"
+  ],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 8,
+  "activity_energy": {
+    "explore": 8.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "busy",
+    "glow": 50,
+    "wakes": 1001,
+    "rests": 43,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
