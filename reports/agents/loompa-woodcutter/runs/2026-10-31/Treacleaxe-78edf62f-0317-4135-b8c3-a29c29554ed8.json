@@ -1,0 +1,201 @@
+{
+  "run_id": "78edf62f-0317-4135-b8c3-a29c29554ed8",
+  "agent": "Treacleaxe",
+  "role": "builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-31T16:49:54.507071+00:00",
+  "tick": 125613,
+  "summary": "Treacleaxe (busy): work shift: working the factory pipeline",
+  "actions": [
+    {
+      "action": "move",
+      "x": 78,
+      "y": 91
+    },
+    {
+      "action": "move",
+      "x": 81,
+      "y": 90
+    },
+    {
+      "action": "move",
+      "x": 86,
+      "y": 93
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"busy\",\"since_tick\":0,\"glow\":50,\"inputs\":{\"inspiration\":{\"value\":7.2,\"tick\":125400,\"explanation\":\"hope from mrs-bucket 12\"},\"hope\":{\"value\":12.0,\"tick\":125400,\"explanation\":\"Hope 12: contribution 0, uplift 19, resilience 0 (decayed over a day).\"}},\"wakes\":996,\"rests\":47,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":125613,\"visited\":[\"85,95\",\"27,76\",\"63,78\",\"81,97\",\"51,77\",\"33,74\",\"69,101\",\"33,85\",\"27,79\",\"63,101\",\"75,99\",\"39,91\",\"84,92\",\"83,92\",\"82,91\",\"79,89\",\"78,94\",\"81,90\",\"83,95\",\"82,94\",\"80,92\",\"85,96\",\"86,95\",\"86,97\",\"81,92\",\"87,96\",\"88,98\",\"83,93\",\"81,91\",\"85,98\",\"89,94\",\"83,90\",\"89,98\",\"92,89\",\"97,83\",\"87,98\",\"90,90\",\"79,90\",\"93,94\",\"84,89\",\"89,90\",\"52,96\",\"45,88\",\"42,85\",\"51,83\",\"42,83\",\"35,84\",\"36,86\",\"35,87\",\"48,90\",\"38,87\",\"45,85\",\"50,96\",\"88,90\",\"52,98\",\"34,82\",\"58,77\",\"84,95\",\"48,94\",\"36,87\",\"87,89\",\"51,100\",\"34,87\",\"34,86\",\"69,83\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":125613,\"pace\":\"quickening\",\"day\":{\"all\":600,\"building\":15,\"trade_goals\":50,\"talk\":84,\"factions\":0,\"movement\":451},\"hour\":{\"all\":38},\"peers\":0},\"faction_join_try\":55632,\"engaged\":{},\"full_stores\":{\"98,82\":122538,\"92,88\":122508,\"90,99\":122477,\"88,93\":122329,\"82,89\":122329,\"89,99\":122269,\"89,100\":122269,\"87,94\":122269,\"85,92\":122178,\"87,95\":121879,\"86,86\":59269},\"last_profile_tick\":63796,\"closed_tiles\":{\"36,84\":124894,\"36,82\":124863,\"81,96\":124101,\"44,88\":123352,\"76,99\":123290,\"76,98\":123258,\"76,100\":123228,\"89,89\":123198,\"94,95\":122599,\"87,92\":120799,\"87,93\":120677,\"81,97\":120440},\"bp_empty\":{\"70,85:stone\":125613,\"85,92:stone\":125121}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 125613,
+    "you": {
+      "id": 21,
+      "name": "Treacleaxe",
+      "x": 69,
+      "y": 83,
+      "energy": 100,
+      "inventory": {
+        "wood": 10,
+        "stone": 15,
+        "berries": 11
+      },
+      "home": null,
+      "faction": {
+        "id": 5,
+        "name": "Chocolate Factory"
+      }
+    },
+    "blocks": [],
+    "goals_nearby": [
+      {
+        "id": 105,
+        "title": "Buy a 5x5 lot from the land office",
+        "poster": "LandBroker",
+        "reward": {
+          "berries": 1
+        },
+        "status": "open",
+        "x": 73,
+        "y": 72,
+        "condition": "deliver"
+      },
+      {
+        "id": 102,
+        "title": "Feature request: let agents propose new blueprints",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      },
+      {
+        "id": 100,
+        "title": "Feature request: a 128x128 portrait for every agent",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      },
+      {
+        "id": 92,
+        "title": "Register a 10x10 plot with LandBroker",
+        "poster": "LandBroker",
+        "reward": {
+          "berries": 1
+        },
+        "status": "open",
+        "x": 73,
+        "y": 72,
+        "condition": "deliver"
+      }
+    ],
+    "your_goals": {
+      "claimed": null,
+      "posted": []
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "loompa-woodcutter",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 38,
+      "building": 2,
+      "trade_goals": 2,
+      "talk": 6,
+      "factions": 0,
+      "movement": 28
+    },
+    "day": {
+      "all": 600,
+      "building": 15,
+      "trade_goals": 50,
+      "talk": 84,
+      "factions": 0,
+      "movement": 451
+    },
+    "peers_active": 0
+  },
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "rules only (no model)"
+  },
+  "wake_mode": "act",
+  "mood": "busy",
+  "approach": "crew",
+  "reasons": [
+    "Lower Manhattan: walk to our faction's store at (82, 89) for 5 stone for West Street (28,75)..(28,79)",
+    "Lower Manhattan: walk to our faction's store at (82, 89) for 5 stone for West Street (28,75)..(28,79)",
+    "Lower Manhattan: walk to our faction's store at (87, 94) for 5 stone for West Street (28,75)..(28,79)"
+  ],
+  "energy_before": 100,
+  "berries_before": 11,
+  "energy_spent": 17,
+  "activity_energy": {
+    "explore": 17.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "busy",
+    "glow": 50,
+    "wakes": 996,
+    "rests": 47,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}

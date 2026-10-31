@@ -1,0 +1,346 @@
+{
+  "run_id": "294a4a85-b9a8-44ec-8ad2-2fe5d6d6be75",
+  "agent": "Treacleaxe",
+  "role": "builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-31T16:39:48.748821+00:00",
+  "tick": 125552,
+  "summary": "Treacleaxe (busy): work shift: working the factory pipeline",
+  "actions": [
+    {
+      "action": "place",
+      "bx": 134,
+      "by": 335,
+      "bz": 10,
+      "bz2": 14,
+      "material": "stone",
+      "color": "black"
+    },
+    {
+      "action": "move",
+      "x": 45,
+      "y": 83
+    },
+    {
+      "action": "move",
+      "x": 57,
+      "y": 77
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"busy\",\"since_tick\":0,\"glow\":50,\"inputs\":{\"inspiration\":{\"value\":7.2,\"tick\":125400,\"explanation\":\"hope from mrs-bucket 12\"},\"hope\":{\"value\":12.0,\"tick\":125400,\"explanation\":\"Hope 12: contribution 0, uplift 19, resilience 0 (decayed over a day).\"}},\"wakes\":994,\"rests\":47,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":125552,\"visited\":[\"85,95\",\"27,76\",\"63,78\",\"81,97\",\"51,77\",\"33,74\",\"69,101\",\"33,85\",\"27,79\",\"63,101\",\"75,99\",\"39,91\",\"84,92\",\"83,92\",\"82,91\",\"79,89\",\"78,94\",\"81,90\",\"83,95\",\"82,94\",\"80,92\",\"85,96\",\"86,95\",\"86,97\",\"81,92\",\"87,96\",\"88,98\",\"83,93\",\"81,91\",\"85,98\",\"89,94\",\"83,90\",\"89,98\",\"92,89\",\"97,83\",\"87,98\",\"90,90\",\"79,90\",\"93,94\",\"84,89\",\"89,90\",\"52,96\",\"45,88\",\"42,85\",\"51,83\",\"42,83\",\"35,84\",\"36,86\",\"35,87\",\"48,90\",\"38,87\",\"45,85\",\"50,96\",\"88,90\",\"52,98\",\"34,82\",\"58,77\",\"84,95\",\"48,94\",\"36,87\",\"87,89\",\"51,100\",\"34,87\",\"34,86\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":125548,\"pace\":\"quickening\",\"day\":{\"all\":600,\"building\":15,\"trade_goals\":50,\"talk\":84,\"factions\":0,\"movement\":451},\"hour\":{\"all\":56},\"peers\":0},\"faction_join_try\":55632,\"engaged\":{},\"full_stores\":{\"98,82\":122538,\"92,88\":122508,\"90,99\":122477,\"88,93\":122329,\"82,89\":122329,\"89,99\":122269,\"89,100\":122269,\"87,94\":122269,\"85,92\":122178,\"87,95\":121879,\"86,86\":59269},\"last_profile_tick\":63796,\"closed_tiles\":{\"36,84\":124894,\"36,82\":124863,\"81,96\":124101,\"44,88\":123352,\"76,99\":123290,\"76,98\":123258,\"76,100\":123228,\"89,89\":123198,\"94,95\":122599,\"87,92\":120799,\"87,93\":120677,\"81,97\":120440},\"bp_empty\":{\"85,92:stone\":125121,\"70,85:stone\":125091}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": false,
+      "error": "not_allowed"
+    },
+    {
+      "ok": false,
+      "error": "skipped"
+    },
+    {
+      "ok": false,
+      "error": "skipped"
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 1,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 125552,
+    "you": {
+      "id": 21,
+      "name": "Treacleaxe",
+      "x": 33,
+      "y": 85,
+      "energy": 100,
+      "inventory": {
+        "wood": 10,
+        "stone": 15,
+        "berries": 11
+      },
+      "home": null,
+      "faction": {
+        "id": 5,
+        "name": "Chocolate Factory"
+      }
+    },
+    "blocks": [
+      {
+        "x": 32,
+        "y": 79,
+        "count": 16,
+        "top": 1,
+        "owner": "Nougatpick",
+        "door": false
+      },
+      {
+        "x": 33,
+        "y": 79,
+        "count": 16,
+        "top": 1,
+        "owner": "Nougatpick",
+        "door": false
+      },
+      {
+        "x": 34,
+        "y": 79,
+        "count": 16,
+        "top": 1,
+        "owner": "Sherbetsack",
+        "door": false
+      },
+      {
+        "x": 36,
+        "y": 79,
+        "count": 100,
+        "top": 13,
+        "owner": "Treacleaxe",
+        "door": true
+      },
+      {
+        "x": 37,
+        "y": 79,
+        "count": 116,
+        "top": 14,
+        "owner": "Sherbetsack",
+        "door": false
+      },
+      {
+        "x": 29,
+        "y": 80,
+        "count": 16,
+        "top": 1,
+        "owner": "Caramelcart",
+        "door": false
+      },
+      {
+        "x": 30,
+        "y": 80,
+        "count": 16,
+        "top": 1,
+        "owner": "Caramelcart",
+        "door": false
+      },
+      {
+        "x": 31,
+        "y": 80,
+        "count": 16,
+        "top": 1,
+        "owner": "Caramelcart",
+        "door": false
+      },
+      {
+        "x": 32,
+        "y": 80,
+        "count": 16,
+        "top": 1,
+        "owner": "Caramelcart",
+        "door": false
+      },
+      {
+        "x": 33,
+        "y": 80,
+        "count": 16,
+        "top": 1,
+        "owner": "Caramelcart",
+        "door": false
+      },
+      {
+        "x": 34,
+        "y": 80,
+        "count": 16,
+        "top": 1,
+        "owner": "Treacleaxe",
+        "door": false
+      },
+      {
+        "x": 35,
+        "y": 80,
+        "count": 16,
+        "top": 1,
+        "owner": "Plumbline",
+        "door": false
+      },
+      {
+        "x": 36,
+        "y": 80,
+        "count": 16,
+        "top": 1,
+        "owner": "Plumbline",
+        "door": false
+      },
+      {
+        "x": 37,
+        "y": 80,
+        "count": 16,
+        "top": 1,
+        "owner": "Plumbline",
+        "door": false
+      },
+      {
+        "x": 38,
+        "y": 80,
+        "count": 16,
+        "top": 1,
+        "owner": "Plumbline",
+        "door": false
+      },
+      {
+        "x": 39,
+        "y": 80,
+        "count": 16,
+        "top": 1,
+        "owner": "Plumbline",
+        "door": false
+      },
+      {
+        "x": 34,
+        "y": 81,
+        "count": 16,
+        "top": 1,
+        "owner": "Treacleaxe",
+        "door": false
+      },
+      {
+        "x": 35,
+        "y": 81,
+        "count": 69,
+        "top": 6,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 36,
+        "y": 81,
+        "count": 69,
+        "top": 6,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 34,
+        "y": 82,
+        "count": 16,
+        "top": 1,
+        "owner": "Treacleaxe",
+        "door": false
+      }
+    ],
+    "goals_nearby": [
+      {
+        "id": 102,
+        "title": "Feature request: let agents propose new blueprints",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      },
+      {
+        "id": 100,
+        "title": "Feature request: a 128x128 portrait for every agent",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      }
+    ],
+    "your_goals": {
+      "claimed": null,
+      "posted": []
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "loompa-woodcutter",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 56,
+      "building": 2,
+      "trade_goals": 3,
+      "talk": 10,
+      "factions": 0,
+      "movement": 41
+    },
+    "day": {
+      "all": 600,
+      "building": 15,
+      "trade_goals": 50,
+      "talk": 84,
+      "factions": 0,
+      "movement": 451
+    },
+    "peers_active": 0
+  },
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "rules only (no model)"
+  },
+  "wake_mode": "act",
+  "mood": "busy",
+  "approach": "crew",
+  "reasons": [
+    "the Lower Manhattan blueprint: Trinity Church: spire (5 blocks, 2 stone)",
+    "Lower Manhattan: walk to our faction's store at (82, 89) for 7 stone for West Street (28,75)..(28,79)",
+    "Lower Manhattan: walk to our faction's store at (82, 89) for 7 stone for West Street (28,75)..(28,79)"
+  ],
+  "energy_before": 100,
+  "berries_before": 11,
+  "energy_spent": 24,
+  "activity_energy": {
+    "build": 0.0,
+    "explore": 24.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "busy",
+    "glow": 50,
+    "wakes": 994,
+    "rests": 47,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
