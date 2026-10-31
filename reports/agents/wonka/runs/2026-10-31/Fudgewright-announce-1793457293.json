@@ -1,0 +1,67 @@
+{
+  "run_id": "announce-1793457293",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 124803,
+  "created_utc": "2026-10-31T14:34:53.618395+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "The factory hums (slightly): built storehouse at (94,85); stored 10 wood, 5 fiber; walked 3 legs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 10,
+    "rests": 1,
+    "built": [
+      "storehouse at (94,85)"
+    ],
+    "gathered": {},
+    "moved": 3,
+    "deposited": {
+      "wood": 10,
+      "fiber": 5
+    },
+    "approaches": [
+      "rest",
+      "tickets",
+      "tickets",
+      "tickets",
+      "tickets",
+      "tickets",
+      "tickets",
+      "tickets",
+      "tickets",
+      "tickets"
+    ],
+    "mood": "gentle",
+    "where": [
+      92,
+      87
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce",
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "claude-opus-5-5 on route tick_opus and qwen3.5:9b on route talk for shift lines"
+  }
+}
