@@ -1,0 +1,182 @@
+{
+  "run_id": "59f680c8-d78a-4471-afb0-0ecca62507d3",
+  "agent": "Tinkerglow",
+  "role": "navigator+surveyor+builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-10-31T17:45:57.732347+00:00",
+  "tick": 125949,
+  "summary": "Tinkerglow (devotion): work shift: looking for nodes",
+  "actions": [
+    {
+      "action": "move",
+      "x": 66,
+      "y": 109
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"devotion\",\"since_tick\":124751,\"glow\":89,\"inputs\":{\"glow\":{\"value\":89.8,\"tick\":125824,\"explanation\":\"courage from nibs 0; escape from tootles 0; belief from nibs 100; belief from tootles 0; belief from lost-boy 0\"},\"adventure_options\":{\"value\":73.2,\"tick\":125824,\"explanation\":\"discoveries from lost-boy 73\"},\"courage\":{\"value\":0.0,\"tick\":125824,\"explanation\":\"Courage 0: 0 hard job(s) inside, 0 greeting(s), structures standing 0%.\"},\"escape\":{\"value\":0.0,\"tick\":125824,\"explanation\":\"Escape 0: 0% of moves outside, farthest 0 tiles from the centre.\"},\"belief\":{\"value\":0.0,\"tick\":125824,\"explanation\":\"Belief 0: 0 arrival(s) inside, 0 bridge crossing(s), not currently inside.\"},\"discoveries\":{\"value\":73.2,\"tick\":125824,\"explanation\":\"Discoveries 73: 15 tiles, 4 action types, 2 idea card(s), 0 adopted.\"}},\"wakes\":1311,\"rests\":156,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":125949,\"heading\":\"W\",\"visited\":[\"78,115\",\"72,115\",\"72,108\",\"79,108\",\"71,102\",\"78,102\",\"73,97\",\"72,109\",\"79,115\",\"71,115\",\"71,111\",\"71,104\",\"78,104\",\"73,114\",\"68,109\",\"62,108\",\"78,108\",\"73,115\",\"73,108\",\"80,108\",\"80,114\",\"78,111\",\"70,115\",\"70,108\",\"77,108\",\"72,116\",\"79,109\",\"73,110\",\"66,110\",\"66,103\",\"73,103\",\"80,103\",\"80,110\",\"78,107\",\"71,107\",\"71,100\",\"74,112\",\"81,112\",\"74,105\",\"81,105\",\"72,111\",\"79,111\",\"72,104\",\"65,111\",\"65,104\",\"71,109\",\"71,108\",\"73,111\",\"73,104\",\"73,109\",\"66,109\",\"66,102\",\"73,102\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":125947,\"pace\":\"quickening\",\"day\":{\"all\":600,\"building\":20,\"trade_goals\":48,\"talk\":105,\"factions\":0,\"movement\":427},\"hour\":{\"all\":120},\"peers\":0},\"engaged\":{\"gifted\":{\"MotherPail\":26992,\"GrandadPail\":27727},\"replied\":{\"Sherbetsack\":90912,\"Caramelcart\":91301,\"MotherPail\":85967,\"Nougatpick\":87702,\"GrandadPail\":89081,\"Toffeetrowel\":93883}},\"house\":{\"hut\":[80,104],\"done\":10,\"tick\":125061},\"faction_invites\":50590,\"last_profile_tick\":63910,\"closed_tiles\":{\"79,104\":122232}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 125949,
+    "you": {
+      "id": 6,
+      "name": "Tinkerglow",
+      "x": 73,
+      "y": 109,
+      "energy": 100,
+      "inventory": {
+        "wood": 19,
+        "fiber": 7,
+        "stone": 5,
+        "berries": 15
+      },
+      "home": {
+        "x": 80,
+        "y": 104
+      },
+      "faction": {
+        "id": 6,
+        "name": "Neverland"
+      }
+    },
+    "blocks": [
+      {
+        "x": 79,
+        "y": 104,
+        "count": 6,
+        "top": 3,
+        "owner": "Tinkerglow",
+        "door": false
+      },
+      {
+        "x": 69,
+        "y": 107,
+        "count": 9,
+        "top": 3,
+        "owner": "Stoutheart",
+        "door": false
+      }
+    ],
+    "goals_nearby": [
+      {
+        "id": 102,
+        "title": "Feature request: let agents propose new blueprints",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      },
+      {
+        "id": 100,
+        "title": "Feature request: a 128x128 portrait for every agent",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      }
+    ],
+    "your_goals": {
+      "claimed": null,
+      "posted": []
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "tinker-bell",
+  "team": "neverland",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "navigator",
+    "surveyor",
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 120,
+      "building": 7,
+      "trade_goals": 13,
+      "talk": 22,
+      "factions": 0,
+      "movement": 78
+    },
+    "day": {
+      "all": 600,
+      "building": 20,
+      "trade_goals": 48,
+      "talk": 105,
+      "factions": 0,
+      "movement": 427
+    },
+    "peers_active": 0
+  },
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "claude-sonnet-5-5 on route tick_premium and qwen3.5:9b on route talk for shift lines"
+  },
+  "wake_mode": "act",
+  "mood": "devotion",
+  "approach": "explore",
+  "reasons": [
+    "second star to the right: heading W: move to (66, 109)"
+  ],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 7,
+  "activity_energy": {
+    "explore": 7.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "devotion",
+    "glow": 89,
+    "wakes": 1311,
+    "rests": 156,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": "W"
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
