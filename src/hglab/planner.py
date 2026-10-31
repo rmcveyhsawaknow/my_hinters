@@ -350,6 +350,15 @@ def plan_wake(
         approach = "credit_claim"
         return _result(persona, mood, "springing to life for the glory", actions, reasons, approach, remember)
 
+    team_asks = any(isinstance(s, dict) and s.get("kind") == "post_goal" for s in ((observe.get("_guidance") or {}).get("suggestions") or []))
+    if persona.knobs.get("tickets") and not team_asks and (allowed is None or {"place", "paint", "post_goal"} <= allowed):  # a delivery goal the team asks for goes up first
+        from hglab.tickets import plan_tickets
+
+        hunt = plan_tickets(persona, state, observe, view, inventory, position, energy, reserve, cap - len(actions))  # the golden tickets (owner, 2026-10-31)
+        if hunt is not None:
+            hunt_actions, hunt_reasons = hunt
+            return _result(persona, mood, "hiding a golden ticket", [*actions, *hunt_actions], [*reasons, *hunt_reasons], "tickets", remember)
+
     audit: dict[str, Any] | None = None
     if persona.quirk["type"] == "honesty_test" and (allowed is None or "whisper" in allowed):
         audit_step = _plan_audit(persona, team, observe, names)

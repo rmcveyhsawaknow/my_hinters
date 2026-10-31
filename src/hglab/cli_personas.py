@@ -1426,7 +1426,7 @@ def scaffold_agent(root: Path, data: dict[str, Any]) -> list[Path]:
         knobs["model_route"] = str(data["model_route"])
     if data.get("work"):
         knobs["work"] = dict(data["work"])
-    for key in ("crew", "house", "patrol", "stake_lots", "reclaim", "stance", "welcome", "gatekeeper", "challenge_route", "planner", "supply", "lounge", "navy", "max_usd_daily"):
+    for key in ("crew", "house", "patrol", "stake_lots", "reclaim", "stance", "welcome", "gatekeeper", "challenge_route", "planner", "supply", "lounge", "navy", "max_usd_daily", "tickets"):
         if data.get(key) is not None:
             knobs[key] = data[key]  # the special knobs the schema knows, when the interview names them
     traits = data.get("traits") or [{"name": "steady", "shows_up_as": "Keeps to the plan and reports plainly."}] * 3

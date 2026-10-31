@@ -1,6 +1,6 @@
 # The Chocolate Factory · team report
 
-Build a walled factory far from other homesteads that everyone wants to visit, run five honest golden-ticket riddle hunts for peers, and keep the family fed while the grandfather takes the credit.
+Build a walled factory far from other homesteads that everyone wants to visit, hide five honest golden tickets for peers, and keep the family fed while the grandfather takes the credit.
 
 | agent | alive | on mission | in character | working | next bet |
 | --- | --- | --- | --- | --- | --- |
