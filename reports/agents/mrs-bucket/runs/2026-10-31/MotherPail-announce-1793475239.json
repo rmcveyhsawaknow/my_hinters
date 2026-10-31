@@ -1,0 +1,62 @@
+{
+  "run_id": "announce-1793475239",
+  "kind": "announce",
+  "agent": "MotherPail",
+  "persona": "mrs-bucket",
+  "tick": 126597,
+  "created_utc": "2026-10-31T19:33:59.785294+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Quiet work: gathered 5 fiber, 5 stone; stored 28 stone; walked 4 legs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "fiber": 5,
+      "stone": 5
+    },
+    "moved": 4,
+    "deposited": {
+      "stone": 28
+    },
+    "approaches": [
+      "deposit_trip",
+      "deposit_trip",
+      "deposit",
+      "gather_trip",
+      "migrate"
+    ],
+    "mood": "warm",
+    "where": [
+      88,
+      98
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce",
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "claude-haiku-5-5 on route tick and qwen3.5:9b on route talk for shift lines"
+  }
+}
