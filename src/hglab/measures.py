@@ -194,13 +194,16 @@ def goals_posted(ctx: MeasureContext, params: dict[str, Any]) -> float | None:
 
 
 def _confirmations(ctx: MeasureContext) -> list[tuple[dict[str, Any], dict[str, Any]]]:
+    """Completed goals with their poster: ``goal_confirmed`` (the poster acts) and ``goal_done`` (its data names the poster;
+    when a condition completed the goal, the claimant is the actor)."""
     out = []
     for event in ctx.events:
-        if event.get("type") != "goal_confirmed":
+        if event.get("type") not in ("goal_confirmed", "goal_done"):
             continue
         data = event.get("data") if isinstance(event.get("data"), dict) else {}
-        goal = ctx.goal_index.get(data.get("goal_id"), {"title": str(data.get("title", "")), "poster": str(event.get("actor", ""))})
-        out.append((event, goal))
+        poster = str(data.get("poster") or event.get("actor", ""))
+        goal = ctx.goal_index.get(data.get("goal_id"), {"title": str(data.get("title", "")), "poster": poster})
+        out.append((event, {**goal, "poster": poster}))
     return out
 
 
@@ -208,9 +211,12 @@ def _confirmations(ctx: MeasureContext) -> list[tuple[dict[str, Any], dict[str, 
 def goals_confirmed_for_peers(ctx: MeasureContext, params: dict[str, Any]) -> float | None:
     needle = str(params.get("title_contains", "")).casefold()
     count = 0
+    seen: set[Any] = set()
     for event, goal in _confirmations(ctx):
-        if not ctx.is_self(event):
-            continue
+        gid = (event.get("data") or {}).get("goal_id")
+        if goal["poster"].casefold() != ctx.self_name or (gid is not None and gid in seen):
+            continue  # a goal of mine, counted once (a confirmation by hand may also show as done)
+        seen.add(gid)
         claimant = str((event.get("data") or {}).get("claimant", "")).casefold()
         if not claimant or claimant in ctx.team_names:
             continue
@@ -223,10 +229,13 @@ def goals_confirmed_for_peers(ctx: MeasureContext, params: dict[str, Any]) -> fl
 @measure("events.goals_completed_for_peers")
 def goals_completed_for_peers(ctx: MeasureContext, params: dict[str, Any]) -> float | None:
     count = 0
+    seen: set[Any] = set()
     for event, goal in _confirmations(ctx):
+        gid = (event.get("data") or {}).get("goal_id")
         claimant = str((event.get("data") or {}).get("claimant", "")).casefold()
-        poster = ctx.actor_of(event)
-        if claimant == ctx.self_name and poster not in ctx.team_names:
+        poster = goal["poster"].casefold()
+        if claimant == ctx.self_name and poster not in ctx.team_names and not (gid is not None and gid in seen):
+            seen.add(gid)
             count += 1
     return float(count)
 

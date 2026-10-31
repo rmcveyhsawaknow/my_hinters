@@ -17,7 +17,7 @@ North Star: [read first](NORTH_STAR.md)
 - **goal** [G-20261017-tinker-bell](goals/G-20261017-tinker-bell.md) — Tinkerglow: declare and build Neverland
 - **goal** [G-20261017-tootles](goals/G-20261017-tootles.md) — Lagalong: a big thing outside Neverland
 - **goal** [G-20261017-town-crier-first-aim](goals/G-20261017-town-crier-first-aim.md) — Clarion: Wonder at everything, hunt the game's hidden corners and new
-- **goal** [G-20261017-wonka-tickets](goals/G-20261017-wonka-tickets.md) — Fudgewright: five golden-ticket riddle hunts settled honestly
+- **goal** [G-20261017-wonka-tickets](goals/G-20261017-wonka-tickets.md) — Fudgewright: five golden tickets hidden in a walled vault and settled honestly
 - **goal** [G-20261017-wonka](goals/G-20261017-wonka.md) — Fudgewright: a factory everyone wants to visit
 - **goal** [G-20261019-engagement](goals/G-20261019-engagement.md) — The collective: every agent engages a neighbour every day, in its own stance
 - **goal** [G-20261020-neverland-border](goals/G-20261020-neverland-border.md) — Neverland: a storehouse, a border of riddle signs and a gatekeeper

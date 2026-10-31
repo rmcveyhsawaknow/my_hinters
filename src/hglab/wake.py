@@ -12,6 +12,7 @@ import json
 import os
 import random
 from collections.abc import Callable
+from contextlib import suppress
 from pathlib import Path
 from typing import Any
 
@@ -430,6 +431,13 @@ def persona_wake(
                 "prefer": list(prefer),
                 "stalled": bool(assignment.get("stalled")),
             }
+        from hglab import tickets
+
+        rooms = tickets.vault_stores(personas)  # the golden-ticket strongrooms (owner, 2026-10-31): their storehouses are nobody's store
+        seen_structures = tickets.hide_vault_stores(observe, public_structures, rooms)
+        if tickets.hunting(persona, observe) and hasattr(client, "request"):
+            with suppress(Exception):  # without the public blocks file the note names the last golden square
+                observe["_vault_golden"] = tickets.golden_cells(client.request("GET", "/live/blocks.json"), rooms, persona.name)
         plan = plan_wake(
             persona,
             team,
@@ -446,7 +454,7 @@ def persona_wake(
             work=work,
             owned_counts=owned_counts,
             registrar_name=registrar_name,
-            public_structures=public_structures,
+            public_structures=seen_structures,
             collective_names={p.name for p in personas.values()},
             public_agents=public_agents,
             public_resources=public_resources,
@@ -474,7 +482,7 @@ def persona_wake(
             if room <= 0:
                 silent = why
                 extras["model_skipped"] = f"{why}: a character wake with no line to say is planned by rules"  # Clarion's Sonnet plans were all discarded for this
-        if silent is None and planner_mode == "llm" and llm_call is not None and mode != "rest" and (not work or model_plans) and plan.get("approach") not in ("team", "team_goal", "fool"):  # the team step is settled, not debated; the fool's fact is phrased, not planned
+        if silent is None and planner_mode == "llm" and llm_call is not None and mode != "rest" and (not work or model_plans) and plan.get("approach") not in ("team", "team_goal", "fool", "tickets"):  # the team step and the ticket's hiding are settled, not debated; the fool's fact is phrased, not planned
             from hglab.engage import board as engagement_board
             from hglab.engage import render_board as render_engagement
             from hglab.engage import stance_of
@@ -656,7 +664,10 @@ def persona_wake(
         observe.pop("_guidance", None)
         observe.pop("_factions", None)
         observe.pop("_model_label", None)
+        observe.pop("_vault_golden", None)
+        observe.pop("_vault", None)
         context["observe"] = observe
+        context["approach"] = plan.get("approach")
         context["mates"] = mates
         context["state"] = state
         return {"summary": plan.get("summary", ""), "actions": actions}
@@ -668,6 +679,12 @@ def persona_wake(
     ) -> None:
         from hglab.actions import private_strings
 
+        ours = {p.name.casefold() for p in personas.values()}
+        for a in raw_actions:
+            if a.get("action") == "claim_goal":
+                goal = next((g for g in observe.get("goals_nearby") or [] if isinstance(g, dict) and g.get("id") == a.get("goal_id")), None)
+                if goal is not None and str(goal.get("poster", "")).casefold() in ours:
+                    raise ValueError(f"no collective member claims another's goal ({goal.get('poster')}'s #{goal.get('id')}): give directly")
         recent_say_count, open_goal_count, prior_text = action_limits(observe)
         private_text = private_strings(observe.get("notebook", {})) | private_strings(
             observe.get("inbox", [])
@@ -714,6 +731,12 @@ def persona_wake(
         state_now = context.get("state")
         if state_now is None:
             return None
+        if context.get("approach") == "tickets":
+            from hglab.tickets import keep_note
+
+            kept = keep_note(context.get("observe") or {}, action)
+            if kept:
+                return kept  # a refused ticket step: the note stays as it was, so the next wake tries the step again
         tick_now = int((context.get("observe") or {}).get("tick", 0) or 0)
         handed = action.get("action") == "give" and result.get("error") == "inventory_full" and bool(action.get("to"))
         if handed:
