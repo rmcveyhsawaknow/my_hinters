@@ -39,6 +39,7 @@ from hglab.mood import (
     wake_rng,
 )
 from hglab.persona import (
+    BOOKKEEPING_KEYS,
     Persona,
     Team,
     enforce_knobs,
@@ -595,8 +596,10 @@ def persona_wake(
             state, mode, tick, position if all(isinstance(v, int) for v in position) else None
         )
         actions = list(plan.get("actions", []))
+        room = min(3, persona.actions_per_wake)  # a note counts against the knob: 2026-10-31 GrandadPail's model plan of two moves and a note failed the wake whole
         for note in plan.get("remember", []) or []:
-            if isinstance(note, dict) and note.get("key") and note.get("text") and len(actions) < 3:
+            chosen = sum(1 for a in actions if not (a.get("action") == "remember" and a.get("key") in BOOKKEEPING_KEYS))
+            if isinstance(note, dict) and note.get("key") and note.get("text") and len(actions) < 3 and chosen < room:
                 actions.append(
                     {
                         "action": "remember",
@@ -788,22 +791,15 @@ def persona_wake(
         compact=work,
         on_refusal=on_refusal,
     )
+    if isinstance(record, dict) and not dry_run:
+        settle_ledgers(root, team, record, client, persona.name)  # under Actions too: a shift's wakes share no host, only this ledger
     if os.environ.get("HGLAB_RUNTIME") == "local":
         settle_tasks(
             persona.name, root, record.get("run_id") if isinstance(record, dict) else None, dry_run
         )
         if isinstance(record, dict) and not dry_run:
-            from hglab.factory import team_designs
             from hglab.features import mark_announced
 
-            if team_designs(team) and any(isinstance(a, dict) and a.get("action") in SETTLED_ACTIONS for a in record.get("actions") or []):
-                from hglab.factory import settle as settle_blueprint
-
-                settled = []
-                for blueprint_name in team_designs(team):  # every design the team builds: a placement settles in its own ledger
-                    settled += settle_blueprint(root, str(blueprint_name), list(record.get("actions") or []), list(record.get("results") or []), int(record.get("tick", 0) or 0), persona.name)
-                if settled:
-                    record["blueprint_done"] = settled
             said = [
                 str(a.get("text") or "")
                 for a, result in zip(record.get("actions") or [], record.get("results") or [], strict=False)
@@ -812,6 +808,37 @@ def persona_wake(
             if said:
                 mark_announced(root, said, int(record.get("tick", 0) or 0))
     return record
+
+
+def settle_ledgers(root: Path, team: Team | None, record: dict[str, Any], client: Any, by: str) -> list[str]:
+    """Mark the blueprint steps a live wake finished, and, when the world refused a placement, the steps it already shows.
+
+    2026-10-31, the first hour on Actions: Caramelcart and Sherbetsack were refused Broadway five wakes running,
+    laid already by Treacleaxe on another runner. A run record keeps a refusal's code alone (``not_allowed``),
+    never the world's words, so the filled box is read from the public blocks file instead, once.
+    """
+    from hglab.factory import team_designs
+
+    designs = [str(name) for name in team_designs(team)]
+    actions = list(record.get("actions") or [])
+    if not designs or not any(isinstance(a, dict) and a.get("action") in SETTLED_ACTIONS for a in actions):
+        return []
+    from hglab.factory import decode_blocks, reconcile, settle
+
+    results = list(record.get("results") or [])
+    tick = int(record.get("tick", 0) or 0)
+    settled: list[str] = []
+    for name in designs:  # every design the team builds: a placement settles in its own ledger
+        settled += settle(root, name, actions, results, tick, by)
+    refused = any(isinstance(a, dict) and a.get("action") == "place" and isinstance(r, dict) and r.get("error") == "not_allowed" for a, r in zip(actions, results, strict=False))
+    if refused and hasattr(client, "request"):
+        with suppress(Exception):  # without the blocks file the next job's reconcile catches up
+            cells = decode_blocks(client.request("GET", "/live/blocks.json"))
+            for name in designs:
+                settled += reconcile(root, name, cells, [], tick)  # placements only: a storehouse step waits for the job's reconcile
+    if settled:
+        record["blueprint_done"] = settled
+    return settled
 
 
 def speech_room(
@@ -1230,5 +1257,6 @@ __all__ = [
     "persona_prompt",
     "persona_wake",
     "plan_schema",
+    "settle_ledgers",
     "teammate_positions",
 ]
