@@ -28,7 +28,7 @@ knobs:
   reclaim: {dormant_days: 2, per_wake: 3}
   model_route: tick_opus
   build_priority: [hut, storehouse, sign, bridge, road, tower, farm, monument]
-  work: {cron: "3 * * * *", minutes: 25, interval_seconds: 300}
+  work: {cron: "3 * * * *", minutes: 25, interval_seconds: 150}  # a wake every 2.5 minutes while the golden tickets go up (2026-10-31; rules, no model cost)
   tickets:  # the golden tickets (owner, 2026-10-31): a yellow square in a walled strongroom; the goal pays the guest who breaks in (hglab.tickets)
     count: 5
     reward: {ore: 5, berries: 10}
