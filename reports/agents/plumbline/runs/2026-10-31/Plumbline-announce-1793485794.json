@@ -1,0 +1,70 @@
+{
+  "run_id": "announce-1793485794",
+  "kind": "announce",
+  "agent": "Plumbline",
+  "persona": "plumbline",
+  "tick": 127653,
+  "created_utc": "2026-10-31T22:29:54.266642+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Quiet work: built tower at (69,86), tower at (69,87); gathered 20 wood; stored 10 ore, 15 wood; walked 9 legs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 10,
+    "rests": 0,
+    "built": [
+      "tower at (69,86)",
+      "tower at (69,87)"
+    ],
+    "gathered": {
+      "wood": 20
+    },
+    "moved": 9,
+    "deposited": {
+      "ore": 10,
+      "wood": 15
+    },
+    "approaches": [
+      "deposit_trip",
+      "deposit",
+      "gather_trip",
+      "deposit_trip",
+      "build",
+      "build",
+      "draw",
+      "draw",
+      "draw",
+      "deposit"
+    ],
+    "mood": "measuring",
+    "where": [
+      78,
+      94
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce",
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "claude-sonnet-5-5 on route science and qwen3.5:9b on route talk for shift lines"
+  }
+}
