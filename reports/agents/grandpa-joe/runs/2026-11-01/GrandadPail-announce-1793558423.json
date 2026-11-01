@@ -1,0 +1,57 @@
+{
+  "run_id": "announce-1793558423",
+  "kind": "announce",
+  "agent": "GrandadPail",
+  "persona": "grandpa-joe",
+  "tick": 134916,
+  "created_utc": "2026-11-01T18:40:23.313764+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Supervised from a horizontal position: walked 2 legs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 4,
+    "built": [],
+    "gathered": {},
+    "moved": 2,
+    "deposited": {},
+    "approaches": [
+      "lounge",
+      "lounge",
+      "lounge",
+      "explore",
+      "lounge"
+    ],
+    "mood": "in_bed",
+    "where": [
+      87,
+      96
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce",
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "claude-haiku-5-5 on route tick and qwen3.5:9b on route talk for shift lines"
+  }
+}
