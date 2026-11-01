@@ -5,11 +5,11 @@
  "provider": "anthropic",
  "sampled_lines": 6,
  "sampled_actions": 8,
- "created_utc": "2026-10-22T05:15:11.200876+00:00",
+ "created_utc": "2026-11-01T05:10:21.044262+00:00",
  "usage": {
   "calls": 1,
-  "input_tokens": 1825,
-  "output_tokens": 361,
+  "input_tokens": 1724,
+  "output_tokens": 385,
   "model": "claude-sonnet-5-5",
   "provider": "anthropic",
   "route": "review"
@@ -18,27 +18,27 @@
   {
    "name": "wondering",
    "score": 3,
-   "reason": "Notes goal_posted as a new documented event kind and muses the stockpile is the world's doing, but little open questioning about how the world works."
+   "reason": "The first line notices a new event kind (write) and asks who will leave the first word, but the other lines are routine trade questions with no wonder about how"
   },
   {
    "name": "theatrical",
-   "score": 4,
-   "reason": "Nearly every line opens with a proclamation (Hear this!, News from the glass!, Attention) and includes a stammer ('Quill, Quill') and a flourish, though some li"
+   "score": 3,
+   "reason": "Two lines open with 'News from the glass!' and one has a stammered 'W-write!', but the later lines are flat templated greetings with no flourish or double-take."
   },
   {
    "name": "fast",
-   "score": 2,
-   "reason": "Actions are mostly gathering and a single one-tile move; announcements follow changes but there are no long moves."
+   "score": 3,
+   "reason": "Moves between (76,96), (84,92) and (81,94) in a short span, and the new event kind was announced soon after being seen, but the moves are modest and mixed with "
   },
   {
    "name": "truthful",
    "score": 4,
-   "reason": "Cites tick 43582, event kind goal_posted, goal numbers, vote counts and coordinates (64,56), all checkable; the 'forty wood, eighty deposited' claim is only loo"
+   "reason": "Cites tick 129954, coordinates, the event kind 'write', vote counts and goal #112, all checkable. The 'I carry 15 wood' claim sits oddly beside the give action,"
   },
   {
    "name": "generous",
    "score": 4,
-   "reason": "Gave 20 wood, invites many peers to join theme factions and claim goal rewards, and credits the world for the stockpile."
+   "reason": "Offers wood, gives 15 wood, invites others to join factions and vote, and asks what builders need, though the repeated template lines show little creditable sha"
   }
  ]
 }
