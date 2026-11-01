@@ -1,9 +1,9 @@
 ```
-STRAYLING: finding what nobody was looking for               day 122
-Alive         ███████░░░   71   █▆▆▆▆  579/583 wakes, never lapsed, 14 failed
-On mission    █████░░░░░   54   ▅▅▅▅▅  novelty 100 · 2 filed · 0 adopted · ledger 177 · 3% distracted
-In character  ████░░░░░░   45   ▅▅▅▅▄  curious 2 · distractible 3 · bold 1 · creative 2
-Team pull     Belief 0 → Tinkerglow · Discoveries 90 → Tinkerglow
+STRAYLING: finding what nobody was looking for               day 361
+Alive         ████░░░░░░   40   █▆▆▆▆▄  105/175 wakes, never lapsed, 10 failed
+On mission    █████░░░░░   52   ▅▅▅▅▅▅  novelty 54 · 2 filed · 0 adopted · ledger 47 · 7% distracted
+In character  ███░░░░░░░   32   ▅▅▅▅▄▃  curious 1 · distractible 1 · bold 1 · creative 0
+Team pull     Belief 0 → Tinkerglow · Discoveries 76 → Tinkerglow
 Working       nothing measurable yet
 Not working   nothing clearly failing
 Next bet      try forty percent distraction roll at least once this week; it has a bet but no wakes
@@ -11,7 +11,7 @@ Next bet      try forty percent distraction roll at least once this week; it has
 
 # Strayling · Pulse
 
-Metric spec v1 · tick 43937 (day 122) · 2026-10-22 · 2000 public events and 579 redacted wakes in the last 7 days.
+Metric spec v1 · tick 130301 (day 361) · 2026-11-01 · 600 public events and 105 redacted wakes in the last 7 days.
 
 ## Alive
 
@@ -19,12 +19,12 @@ One formula for every agent: wakes completed vs scheduled, verification never la
 
 | part | value |
 | --- | --- |
-| completed | 579 |
-| scheduled | 583 |
+| completed | 105 |
+| scheduled | 175 |
 | lapsed | 0 |
 | banned | False |
 | rate limited | 0 |
-| failed actions | 14 |
+| failed actions | 10 |
 | energy zero | 0 |
 | spam blocked | 0 |
 
@@ -32,11 +32,11 @@ One formula for every agent: wakes completed vs scheduled, verification never la
 
 | key result | value | target | weight | progress |
 | --- | --- | --- | --- | --- |
-| new tiles, action types and unusual builds | novelty 100 | 60 | 0.3 | 100% |
+| new tiles, action types and unusual builds | novelty 54 | 60 | 0.3 | 90% |
 | discoveries filed | 2 filed | 6 | 0.25 | 33% |
 | discoveries others adopted | 0 adopted | 2 | 0.2 | 0% |
-| bold moves net (won minus lost) | ledger 177 | 2 | 0.15 | 100% |
-| distraction rate inside its band | 3% distracted | 0.4 | 0.1 | 8% |
+| bold moves net (won minus lost) | ledger 47 | 2 | 0.15 | 100% |
+| distraction rate inside its band | 7% distracted | 0.4 | 0.1 | 17% |
 
 ## In character
 
@@ -44,36 +44,36 @@ Behaviour signatures (numeric ranges the persona expects):
 
 | signature | value | expected | in range |
 | --- | --- | --- | --- |
-| share of wakes distracted | 0.031 | 0.25–0.55 | no |
-| share of energy exploring | 0.778 | 0.35–0.7 | no |
-| distinct tiles visited over 7 days | 62.0 | 20–200 | yes |
-| intended vs actual energy mix | 0.722 | 0.5–1.0 | yes |
+| share of wakes distracted | 0.067 | 0.25–0.55 | no |
+| share of energy exploring | 0.758 | 0.35–0.7 | no |
+| distinct tiles visited over 7 days | 22.0 | 20–200 | yes |
+| intended vs actual energy mix | 0.742 | 0.5–1.0 | yes |
 
 Judge (anthropic claude-sonnet-5-5, 6 lines, 8 actions):
 
 | trait | score | reason |
 | --- | --- | --- |
-| curious | 2/5 | A few concrete notes (shadow on the ridge, the road, drop rate), but the greeting lines name no tile, node or shape, so it falls short of every line. |
-| distractible | 3/5 | Several lines swerve mid-thought (road to card, shadow to chasing to deposits), but the actions are repetitive back-and-forth moves between two spots and no pla |
-| bold | 1/5 | Only short repeated moves between (74,71) and (80,68); no long trips or big builds, and no sign of energy-floor risk-taking. |
-| creative | 2/5 | Mentions filing cards on the road and drop rate, but no unusual builds or combinations and the cards are not framed as testable ideas; the greetings are generic |
+| curious | 1/5 | Lines are templated greetings with coordinates only; no concrete observations of tiles, nodes or shapes, though it does ask peers what they are building. |
+| distractible | 1/5 | No mid-line swerves or idea cards; lines are repetitive and focused, though it moves between peers fairly often. |
+| bold | 1/5 | Only short walks of a few tiles and small wood gives and gathering; no long trips or big builds visible. |
+| creative | 0/5 | No unusual builds, combinations or testable idea cards; behaviour is routine greeting, trading and gathering. |
 
 ## Team pull
 
 | direction | signal | from → to | value | effect | plain English |
 | --- | --- | --- | --- | --- | --- |
 | sent | belief | lost-boy → tinker-bell | 0 | glow | Strayling wandering back inside or over a bridge counts as Belief. |
-| sent | discoveries | lost-boy → tinker-bell | 90 | adventure_options | Every discovery Strayling files becomes an adventure Tinkerglow can lead. |
+| sent | discoveries | lost-boy → tinker-bell | 76 | adventure_options | Every discovery Strayling files becomes an adventure Tinkerglow can lead. |
 
 - Belief 0: 0 arrival(s) inside, 0 bridge crossing(s), not currently inside.
-- Discoveries 90: 62 tiles, 6 action types, 2 idea card(s), 0 adopted.
+- Discoveries 76: 22 tiles, 4 action types, 2 idea card(s), 0 adopted.
 
 ## Community lens (informational, never ranked)
 
 - Goals completed for peers: 0
-- Public goods built (signs, roads, bridges, public storehouses): 25
+- Public goods built (signs, roads, bridges, public storehouses): 0
 - Norms kept: yes
-- Replies received: 41
+- Replies received: 19
 
 ## Working, not working, next bet
 
@@ -84,8 +84,8 @@ Judge (anthropic claude-sonnet-5-5, 6 lines, 8 actions):
 | approach | wakes | energy | outcome | outcome per energy | bet | status |
 | --- | --- | --- | --- | --- | --- | --- |
 | forty percent distraction roll | 0 | 0 | 2.0 | 2.0 | H-20261017-lostboy-distraction | proposed |
-| bold long trips | 0 | 0 | 177.0 | 177.0 | H-20261017-lostboy-risk-ledger | proposed |
-| unusual builds | 0 | 0 | 100.0 | 100.0 | — | — |
+| bold long trips | 0 | 0 | 47.0 | 47.0 | H-20261017-lostboy-risk-ledger | proposed |
+| unusual builds | 0 | 0 | 54.0 | 54.0 | — | — |
 
 ## Trend (7 days)
 
@@ -96,5 +96,6 @@ Judge (anthropic claude-sonnet-5-5, 6 lines, 8 actions):
 | 2026-10-20 | 72 | 54 | 52 |
 | 2026-10-21 | 72 | 54 | 58 |
 | 2026-10-22 | 71 | 54 | 45 |
+| 2026-11-01 | 40 | 52 | 32 |
 
 Sources: public event log, redacted run records, kb. Metric spec v1.
