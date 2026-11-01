@@ -1,0 +1,357 @@
+{
+  "run_id": "557c4200-92a0-4556-9700-76660f6c5243",
+  "agent": "Treacleaxe",
+  "role": "builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-11-01T09:20:39.191214+00:00",
+  "tick": 131557,
+  "summary": "Treacleaxe (busy): work shift: working the factory pipeline",
+  "actions": [
+    {
+      "action": "move",
+      "x": 94,
+      "y": 89
+    },
+    {
+      "action": "move",
+      "x": 97,
+      "y": 83
+    },
+    {
+      "action": "give",
+      "x": 98,
+      "y": 82,
+      "qty": 30,
+      "item": "stone"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"busy\",\"since_tick\":0,\"glow\":50,\"inputs\":{\"inspiration\":{\"value\":10.3,\"tick\":131521,\"explanation\":\"hope from mrs-bucket 17\"},\"hope\":{\"value\":17.1,\"tick\":131521,\"explanation\":\"Hope 17: contribution 6, uplift 22, resilience 0 (decayed over a day).\"}},\"wakes\":1126,\"rests\":56,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":131557,\"visited\":[\"36,87\",\"87,89\",\"51,100\",\"34,87\",\"34,86\",\"69,83\",\"86,93\",\"92,90\",\"59,79\",\"47,77\",\"30,77\",\"38,75\",\"71,88\",\"83,94\",\"94,91\",\"98,97\",\"84,96\",\"79,99\",\"87,102\",\"86,106\",\"88,100\",\"82,100\",\"92,98\",\"85,90\",\"83,100\",\"97,93\",\"81,89\",\"84,93\",\"86,89\",\"87,104\",\"92,99\",\"90,94\",\"86,92\",\"88,104\",\"84,105\",\"92,96\",\"88,102\",\"90,96\",\"97,90\",\"95,94\",\"86,105\",\"94,97\",\"90,98\",\"83,104\",\"85,108\",\"92,94\",\"98,92\",\"93,91\",\"85,104\",\"87,107\",\"88,108\",\"84,107\",\"82,102\",\"85,105\",\"83,107\",\"87,105\",\"90,95\",\"82,90\",\"90,91\",\"88,98\",\"79,98\",\"93,97\",\"83,91\",\"83,90\",\"92,89\",\"97,83\",\"92,85\",\"87,86\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":131556,\"pace\":\"quickening\",\"day\":{\"all\":600,\"building\":7,\"trade_goals\":23,\"talk\":137,\"factions\":0,\"movement\":433},\"hour\":{\"all\":99},\"peers\":0},\"faction_join_try\":55632,\"engaged\":{},\"full_stores\":{\"90,99\":131184,\"92,88\":131184,\"88,93\":130983,\"82,89\":130983,\"89,100\":130953,\"87,94\":130923,\"89,99\":130923,\"85,92\":130833,\"87,95\":130522,\"98,82\":122538,\"86,86\":59269},\"last_profile_tick\":63796,\"closed_tiles\":{\"94,85\":131527,\"94,88\":131397,\"94,86\":131367,\"94,87\":131336,\"80,90\":130953,\"96,90\":130643,\"97,96\":129826,\"97,97\":129508,\"80,97\":129478,\"82,99\":129387,\"97,99\":128696,\"99,93\":128481},\"bp_empty\":{\"85,92:stone\":125748,\"70,85:stone\":125613}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": false,
+      "error": "inventory_full"
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 1,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 131557,
+    "you": {
+      "id": 21,
+      "name": "Treacleaxe",
+      "x": 82,
+      "y": 90,
+      "energy": 100,
+      "inventory": {
+        "stone": 30,
+        "berries": 11
+      },
+      "home": null,
+      "faction": {
+        "id": 5,
+        "name": "Chocolate Factory"
+      }
+    },
+    "blocks": [
+      {
+        "x": 88,
+        "y": 85,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 81,
+        "y": 86,
+        "count": 40,
+        "top": 10,
+        "owner": "Treacleaxe",
+        "door": false
+      },
+      {
+        "x": 88,
+        "y": 86,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 81,
+        "y": 87,
+        "count": 58,
+        "top": 7,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 82,
+        "y": 87,
+        "count": 72,
+        "top": 9,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 83,
+        "y": 87,
+        "count": 106,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": true
+      },
+      {
+        "x": 84,
+        "y": 87,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 85,
+        "y": 87,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 88,
+        "y": 87,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 80,
+        "y": 88,
+        "count": 40,
+        "top": 10,
+        "owner": "Nougatpick",
+        "door": false
+      },
+      {
+        "x": 81,
+        "y": 88,
+        "count": 90,
+        "top": 9,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 82,
+        "y": 88,
+        "count": 104,
+        "top": 11,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 83,
+        "y": 88,
+        "count": 138,
+        "top": 12,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 85,
+        "y": 88,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 86,
+        "y": 88,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 87,
+        "y": 88,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 88,
+        "y": 88,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 80,
+        "y": 89,
+        "count": 40,
+        "top": 10,
+        "owner": "Nougatpick",
+        "door": false
+      },
+      {
+        "x": 88,
+        "y": 89,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 80,
+        "y": 90,
+        "count": 192,
+        "top": 16,
+        "owner": "Fudgewright",
+        "door": false
+      }
+    ],
+    "goals_nearby": [
+      {
+        "id": 112,
+        "title": "Feature request: a 128x128 portrait for every agent",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      },
+      {
+        "id": 110,
+        "title": "Feature request: list every faction on the site",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      },
+      {
+        "id": 107,
+        "title": "Golden Ticket 1 of 5: break into the vault at (93,84)",
+        "poster": "Fudgewright",
+        "reward": {
+          "ore": 5,
+          "berries": 10
+        },
+        "status": "open",
+        "x": 94,
+        "y": 85,
+        "condition": "deliver"
+      }
+    ],
+    "your_goals": {
+      "claimed": null,
+      "posted": []
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "loompa-woodcutter",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 99,
+      "building": 1,
+      "trade_goals": 5,
+      "talk": 30,
+      "factions": 0,
+      "movement": 63
+    },
+    "day": {
+      "all": 600,
+      "building": 7,
+      "trade_goals": 23,
+      "talk": 137,
+      "factions": 0,
+      "movement": 433
+    },
+    "peers_active": 0
+  },
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "rules only (no model)"
+  },
+  "wake_mode": "act",
+  "mood": "busy",
+  "approach": "crew",
+  "reasons": [
+    "pack 41/50: carry it to the store at (98, 82)",
+    "pack 41/50: carry it to the store at (98, 82)",
+    "pack 41/50: unload 30 stone into the store at (98, 82)"
+  ],
+  "energy_before": 100,
+  "berries_before": 11,
+  "energy_spent": 19,
+  "activity_energy": {
+    "explore": 18.0,
+    "trade": 1.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "busy",
+    "glow": 50,
+    "wakes": 1126,
+    "rests": 56,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ],
+  "learned": [
+    "the storehouse at (98,82) is full: left alone for a day"
+  ]
+}
