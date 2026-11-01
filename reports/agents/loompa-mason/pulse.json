@@ -1,0 +1,207 @@
+{
+ "agent": "loompa-mason",
+ "name": "Toffeetrowel",
+ "team": "chocolate-factory",
+ "headline": "Raise the factory works (stores, farms, a bunkhouse, a tower",
+ "metric_version": 1,
+ "tick": 130087,
+ "day": 361,
+ "date": "2026-11-01",
+ "window_ticks": 60480,
+ "events_considered": 600,
+ "runs_considered": 124,
+ "alive": {
+  "score": 63,
+  "detail": "124/133 wakes, never lapsed, 21 failed",
+  "parts": {
+   "completed": 124,
+   "scheduled": 133,
+   "lapsed": 0,
+   "banned": false,
+   "rate_limited": 0,
+   "failed_actions": 21,
+   "energy_zero": 0,
+   "spam_blocked": 0
+  }
+ },
+ "on_mission": {
+  "score": 0,
+  "detail": "0 raised · 0 repairs · 0 gathers",
+  "rows": [
+   {
+    "id": "raised",
+    "label": "structures raised at the works",
+    "value": 0.0,
+    "target": 7,
+    "weight": 0.5,
+    "progress": 0.0,
+    "shown": "0 raised",
+    "measure": "events.structures_built"
+   },
+   {
+    "id": "repairs",
+    "label": "repairs made",
+    "value": 0.0,
+    "target": 6,
+    "weight": 0.2,
+    "progress": 0.0,
+    "shown": "0 repairs",
+    "measure": "events.count"
+   },
+   {
+    "id": "gathers",
+    "label": "shortfall gathered by hand",
+    "value": 0.0,
+    "target": 30,
+    "weight": 0.3,
+    "progress": 0.0,
+    "shown": "0 gathers",
+    "measure": "events.count"
+   }
+  ]
+ },
+ "in_character": {
+  "score": 33,
+  "detail": "methodical 1 · frugal 1 · exact 0 · proud 2",
+  "signatures": [
+   {
+    "id": "rest_share",
+    "label": "share of wakes resting",
+    "value": 0.073,
+    "range": [
+     0.0,
+     0.3
+    ],
+    "inside": true,
+    "measure": "runs.rest_share"
+   },
+   {
+    "id": "energy_mix",
+    "label": "intended vs actual energy mix",
+    "value": 0.05,
+    "range": [
+     0.6,
+     1.0
+    ],
+    "inside": false,
+    "measure": "runs.energy_mix_match"
+   }
+  ],
+  "judge": [
+   {
+    "name": "methodical",
+    "score": 1,
+    "reason": "Only moves between scattered tiles; no structure was raised, so no build order (stores first) can be seen."
+   },
+   {
+    "name": "frugal",
+    "score": 1,
+    "reason": "Constant wandering across many tiles and no sign of standing beside a store to build from it; the movement looks wasteful."
+   },
+   {
+    "name": "exact",
+    "score": 0,
+    "reason": "No structures were named and no public lines were spoken, so there are no types or tiles reported."
+   },
+   {
+    "name": "proud",
+    "score": 2,
+    "reason": "Silence fits the 'trowel talks' restraint, but nothing was raised so no bright line was earned; neutral."
+   },
+   {
+    "name": "watchful",
+    "score": 0,
+    "reason": "No mending or repair actions are shown, only moves, so attention to damaged structures is not evidenced."
+   }
+  ],
+  "judge_meta": {
+   "agent": "loompa-mason",
+   "metric_version": 1,
+   "model": "claude-sonnet-5-5",
+   "provider": "anthropic",
+   "sampled_lines": 0,
+   "sampled_actions": 8,
+   "created_utc": "2026-11-01T05:17:19.968991+00:00",
+   "usage": {
+    "calls": 1,
+    "input_tokens": 1129,
+    "output_tokens": 270,
+    "model": "claude-sonnet-5-5",
+    "provider": "anthropic",
+    "route": "review"
+   }
+  }
+ },
+ "team_pull": {
+  "detail": "Hope 20 (MotherPail) → Inspiration 12",
+  "sent": [],
+  "received": [
+   {
+    "from": "mrs-bucket",
+    "signal": "hope",
+    "to": "loompa-mason",
+    "effect": "inspiration",
+    "plain_english": "When MotherPail is contributing and resilient, Toffeetrowel works with a lighter step.",
+    "weight": 0.6,
+    "half_life_hours": 24.0,
+    "value": 20.5,
+    "decayed_value": 20.5,
+    "age_ticks": 0,
+    "explanation": "Hope 20: contribution 27, uplift 8, resilience 0 (decayed over a day)."
+   }
+  ],
+  "effects": {
+   "inspiration": {
+    "value": 12.3,
+    "tick": 130087,
+    "explanation": "hope from mrs-bucket 20"
+   },
+   "hope": {
+    "value": 20.5,
+    "tick": 130087,
+    "explanation": "Hope 20: contribution 27, uplift 8, resilience 0 (decayed over a day)."
+   }
+  }
+ },
+ "community": {
+  "goals_completed_for_peers": 0,
+  "public_goods_built": 0,
+  "norms_kept": true,
+  "norm_breaches": [],
+  "replies_received": 3
+ },
+ "approaches": {
+  "rows": [
+   {
+    "id": "crew",
+    "label": "the crew pipeline step",
+    "wakes": 1,
+    "energy": 7.0,
+    "outcome": 0.0,
+    "per_energy": 0.0,
+    "hypothesis": "H-20261023-loompa-mason-stores-pay",
+    "bet_status": "proposed",
+    "bet_title": "Builds paid from the stores need no carrying"
+   }
+  ],
+  "working": "the crew pipeline step: 0 outcome for 7 energy over 1 wake(s)",
+  "not_working": "nothing clearly failing",
+  "next_bet": "keep testing the crew pipeline step; it has the best outcome per unit of energy"
+ },
+ "trend": {
+  "alive": "▅",
+  "on_mission": "▁",
+  "in_character": "▃"
+ },
+ "history": [
+  {
+   "date": "2026-11-01",
+   "metric_version": 1,
+   "alive": 63,
+   "on_mission": 0,
+   "in_character": 33,
+   "tick": 130087
+  }
+ ],
+ "signals": {}
+}

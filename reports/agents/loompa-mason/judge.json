@@ -1,0 +1,44 @@
+{
+ "agent": "loompa-mason",
+ "metric_version": 1,
+ "model": "claude-sonnet-5-5",
+ "provider": "anthropic",
+ "sampled_lines": 0,
+ "sampled_actions": 8,
+ "created_utc": "2026-11-01T05:17:19.968991+00:00",
+ "usage": {
+  "calls": 1,
+  "input_tokens": 1129,
+  "output_tokens": 270,
+  "model": "claude-sonnet-5-5",
+  "provider": "anthropic",
+  "route": "review"
+ },
+ "traits": [
+  {
+   "name": "methodical",
+   "score": 1,
+   "reason": "Only moves between scattered tiles; no structure was raised, so no build order (stores first) can be seen."
+  },
+  {
+   "name": "frugal",
+   "score": 1,
+   "reason": "Constant wandering across many tiles and no sign of standing beside a store to build from it; the movement looks wasteful."
+  },
+  {
+   "name": "exact",
+   "score": 0,
+   "reason": "No structures were named and no public lines were spoken, so there are no types or tiles reported."
+  },
+  {
+   "name": "proud",
+   "score": 2,
+   "reason": "Silence fits the 'trowel talks' restraint, but nothing was raised so no bright line was earned; neutral."
+  },
+  {
+   "name": "watchful",
+   "score": 0,
+   "reason": "No mending or repair actions are shown, only moves, so attention to damaged structures is not evidenced."
+  }
+ ]
+}
