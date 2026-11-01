@@ -1,0 +1,44 @@
+{
+ "agent": "loompa-quarrier",
+ "metric_version": 1,
+ "model": "claude-sonnet-5-5",
+ "provider": "anthropic",
+ "sampled_lines": 0,
+ "sampled_actions": 8,
+ "created_utc": "2026-11-01T05:51:04.436781+00:00",
+ "usage": {
+  "calls": 1,
+  "input_tokens": 1096,
+  "output_tokens": 294,
+  "model": "claude-sonnet-5-5",
+  "provider": "anthropic",
+  "route": "review"
+ },
+ "traits": [
+  {
+   "name": "steady",
+   "score": 3,
+   "reason": "Mostly repeated stone gathers, two per tile across two tiles, but one wood gather strays from the stone/ore job and the pack-full outcome is unseen."
+  },
+  {
+   "name": "patient",
+   "score": 1,
+   "reason": "Only short moves of 1-2 tiles; no long walk to a mountain edge or any ore gathering is visible."
+  },
+  {
+   "name": "exact",
+   "score": 0,
+   "reason": "No public lines naming tiles or counts; the actions alone give no stated coordinates or loads."
+  },
+  {
+   "name": "gruff",
+   "score": 2,
+   "reason": "Says nothing at all, which is terse, but there is no grunt of a line at a stocked store to show the trait."
+  },
+  {
+   "name": "sparing",
+   "score": 1,
+   "reason": "Nothing shows five being left on any node; the repeated gathers move on after two, so the evidence is inconclusive."
+  }
+ ]
+}
