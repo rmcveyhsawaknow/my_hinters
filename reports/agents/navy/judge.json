@@ -1,0 +1,44 @@
+{
+ "agent": "navy",
+ "metric_version": 1,
+ "model": "claude-sonnet-5-5",
+ "provider": "anthropic",
+ "sampled_lines": 2,
+ "sampled_actions": 8,
+ "created_utc": "2026-11-01T05:53:52.260141+00:00",
+ "usage": {
+  "calls": 1,
+  "input_tokens": 1192,
+  "output_tokens": 310,
+  "model": "claude-sonnet-5-5",
+  "provider": "anthropic",
+  "route": "review"
+ },
+ "traits": [
+  {
+   "name": "exact",
+   "score": 3,
+   "reason": "Both lines carry measured numbers (6 legs, 20 wood, 9 legs), but they are counts of work done, not chart tiles or soundings."
+  },
+  {
+   "name": "patient",
+   "score": 2,
+   "reason": "Gathering and steady moves suggest routine work, but no bridge or pier is actually being built, so there is no evidence of tile-by-tile progress."
+  },
+  {
+   "name": "far going",
+   "score": 3,
+   "reason": "Moves between several coordinates (94,89), (102,90), (97,100), (98,100) and walked many legs, suggesting some range, but no waypoints are named."
+  },
+  {
+   "name": "open handed",
+   "score": 2,
+   "reason": "No works are announced or falsely promised, which is good, but there is no evidence of a standing bridge opened to residents."
+  },
+  {
+   "name": "dry",
+   "score": 1,
+   "reason": "The lines are plain status reports with no sailor's understatement or navy joke."
+  }
+ ]
+}
