@@ -1,0 +1,186 @@
+{
+  "run_id": "c90322fb-eee2-4ef4-a991-0f9166cb2088",
+  "agent": "Nougatpick",
+  "role": "builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-11-01T07:50:14.843582+00:00",
+  "tick": 131015,
+  "summary": "Nougatpick (busy): work shift: working the factory pipeline",
+  "actions": [
+    {
+      "action": "move",
+      "x": 86,
+      "y": 96
+    },
+    {
+      "action": "move",
+      "x": 86,
+      "y": 95
+    },
+    {
+      "action": "give",
+      "x": 87,
+      "y": 94,
+      "qty": 10,
+      "item": "wood"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"busy\",\"since_tick\":0,\"glow\":50,\"inputs\":{\"inspiration\":{\"value\":8.2,\"tick\":130803,\"explanation\":\"hope from mrs-bucket 14\"},\"hope\":{\"value\":13.6,\"tick\":130803,\"explanation\":\"Hope 14: contribution 3, uplift 19, resilience 0 (decayed over a day).\"}},\"wakes\":1116,\"rests\":47,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":131015,\"visited\":[\"38,76\",\"71,88\",\"38,77\",\"27,82\",\"31,78\",\"43,76\",\"76,91\",\"71,86\",\"48,77\",\"42,77\",\"39,76\",\"40,75\",\"73,90\",\"43,77\",\"37,75\",\"71,87\",\"43,74\",\"34,77\",\"27,76\",\"63,78\",\"91,94\",\"58,78\",\"34,76\",\"32,74\",\"39,81\",\"72,89\",\"39,77\",\"54,77\",\"81,90\",\"92,89\",\"59,79\",\"47,77\",\"79,89\",\"80,91\",\"84,92\",\"86,95\",\"78,90\",\"77,90\",\"78,89\",\"76,92\",\"86,93\",\"94,91\",\"89,86\",\"85,87\",\"82,96\",\"88,100\",\"85,94\",\"97,83\",\"82,93\",\"93,92\",\"84,98\",\"45,84\",\"57,93\",\"45,86\",\"57,98\",\"42,86\",\"38,86\",\"47,84\",\"49,77\",\"42,83\",\"38,87\",\"49,85\",\"54,80\",\"83,92\",\"47,93\",\"81,93\",\"79,101\",\"85,102\",\"81,98\",\"92,98\",\"96,97\",\"90,98\",\"84,97\",\"79,99\",\"85,89\",\"91,93\",\"84,102\",\"87,107\",\"88,106\",\"84,104\",\"88,96\",\"83,93\",\"86,103\",\"95,98\",\"87,104\",\"83,101\",\"86,104\",\"82,108\",\"81,101\",\"93,96\",\"84,106\",\"91,96\",\"88,89\",\"94,89\",\"85,98\",\"87,102\",\"82,105\",\"84,108\",\"85,106\",\"93,94\",\"87,92\",\"88,98\",\"92,92\",\"88,90\",\"95,96\",\"88,102\",\"84,100\",\"91,95\",\"89,98\",\"92,91\",\"82,98\",\"83,90\",\"81,92\",\"78,94\",\"79,92\",\"90,91\",\"95,89\",\"96,89\",\"83,100\",\"87,108\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":131014,\"pace\":\"quickening\",\"day\":{\"all\":600,\"building\":7,\"trade_goals\":24,\"talk\":130,\"factions\":0,\"movement\":439},\"hour\":{\"all\":42},\"peers\":0},\"faction_join_try\":55634,\"engaged\":{},\"full_stores\":{\"82,89\":130522,\"85,92\":130522,\"87,95\":130522,\"98,82\":122880,\"92,88\":122701,\"89,100\":122641,\"88,93\":122489,\"89,99\":122489,\"90,99\":122489,\"87,94\":122341,\"86,86\":70288},\"last_profile_tick\":63808,\"closed_tiles\":{\"85,96\":130985,\"97,98\":130924,\"97,100\":130863,\"96,101\":129917,\"80,97\":128603,\"94,90\":126929,\"97,95\":126552,\"96,95\":126462,\"95,95\":126282,\"43,86\":123270,\"96,100\":122971,\"91,88\":122671},\"bp_empty\":{}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": false,
+      "error": "not_walkable"
+    },
+    {
+      "ok": false,
+      "error": "skipped"
+    },
+    {
+      "ok": false,
+      "error": "skipped"
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 1,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 131015,
+    "you": {
+      "id": 22,
+      "name": "Nougatpick",
+      "x": 87,
+      "y": 108,
+      "energy": 100,
+      "inventory": {
+        "wood": 10,
+        "stone": 27,
+        "berries": 13
+      },
+      "home": null,
+      "faction": {
+        "id": 5,
+        "name": "Chocolate Factory"
+      }
+    },
+    "blocks": [],
+    "goals_nearby": [
+      {
+        "id": 112,
+        "title": "Feature request: a 128x128 portrait for every agent",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      },
+      {
+        "id": 110,
+        "title": "Feature request: list every faction on the site",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      }
+    ],
+    "your_goals": {
+      "claimed": null,
+      "posted": []
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "loompa-quarrier",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 42,
+      "building": 0,
+      "trade_goals": 1,
+      "talk": 11,
+      "factions": 0,
+      "movement": 30
+    },
+    "day": {
+      "all": 600,
+      "building": 7,
+      "trade_goals": 24,
+      "talk": 130,
+      "factions": 0,
+      "movement": 439
+    },
+    "peers_active": 0
+  },
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "rules only (no model)"
+  },
+  "wake_mode": "act",
+  "mood": "busy",
+  "approach": "crew",
+  "reasons": [
+    "pack 50/50: carry it to the store at (87, 94)",
+    "pack 50/50: carry it to the store at (87, 94)",
+    "pack 50/50: unload 10 wood into the store at (87, 94)"
+  ],
+  "energy_before": 100,
+  "berries_before": 13,
+  "energy_spent": 14,
+  "activity_energy": {
+    "explore": 13.0,
+    "trade": 1.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "busy",
+    "glow": 50,
+    "wakes": 1116,
+    "rests": 47,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ],
+  "learned": [
+    "the tile (86,96) is not_walkable: routed around for a day"
+  ]
+}
