@@ -1,0 +1,300 @@
+{
+  "run_id": "bbc3e933-3124-4074-898a-ff92551819a1",
+  "agent": "Fathomark",
+  "role": "surveyor+builder+navigator",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-11-01T10:14:27.391709+00:00",
+  "tick": 131880,
+  "summary": "Fathomark (steady): work shift: nothing worth the energy this shift wake",
+  "actions": [
+    {
+      "action": "move",
+      "x": 94,
+      "y": 90
+    },
+    {
+      "action": "move",
+      "x": 102,
+      "y": 90
+    },
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"steady\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":190,\"rests\":13,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":131880,\"visited\":[\"62,58\",\"59,55\",\"50,49\",\"49,45\",\"58,51\",\"50,50\",\"40,27\",\"35,31\",\"40,26\",\"34,32\",\"40,25\",\"40,24\",\"40,23\",\"40,22\",\"30,32\",\"40,21\",\"40,20\",\"35,33\",\"59,14\",\"64,8\",\"62,10\",\"63,8\",\"62,8\",\"61,8\",\"60,8\",\"59,8\",\"58,8\",\"59,12\",\"57,8\",\"64,9\",\"63,11\",\"81,19\",\"87,20\",\"81,18\",\"81,17\",\"81,16\",\"81,15\",\"81,14\",\"81,13\",\"109,44\",\"118,62\",\"108,72\",\"118,61\",\"118,65\",\"110,72\",\"118,60\",\"107,72\",\"118,59\",\"106,70\",\"118,58\",\"105,71\",\"118,57\",\"108,68\",\"118,56\",\"113,63\",\"118,55\",\"107,83\",\"105,80\",\"108,83\",\"109,83\",\"110,83\",\"106,78\",\"111,83\",\"107,79\",\"112,83\",\"108,89\",\"113,83\",\"114,83\",\"105,92\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":131880,\"pace\":\"quickening\",\"day\":{\"all\":600,\"building\":8,\"trade_goals\":23,\"talk\":150,\"factions\":0,\"movement\":419},\"hour\":{\"all\":98},\"peers\":0},\"last_profile_tick\":127552,\"navy\":{\"work\":\"pier-12\",\"signed\":[\"causeway-01\",\"pier-01\",\"pier-02\",\"pier-05\",\"pier-06\",\"pier-10\"]},\"engaged\":{\"replied\":{\"Strayling\":92959,\"Lintelstave\":123293,\"LandBroker\":127612}},\"closed_tiles\":{\"95,90\":131333,\"96,90\":131305,\"94,83\":131275,\"94,84\":131245,\"97,90\":131214,\"94,85\":131184,\"98,90\":130616,\"99,99\":130586,\"94,86\":130556,\"94,87\":130526,\"94,88\":129907,\"94,89\":129860}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": false,
+      "error": "not_walkable"
+    },
+    {
+      "ok": false,
+      "error": "skipped"
+    },
+    {
+      "ok": false,
+      "error": "skipped"
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 1,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 131880,
+    "you": {
+      "id": 33,
+      "name": "Fathomark",
+      "x": 105,
+      "y": 92,
+      "energy": 100,
+      "inventory": {
+        "wood": 16,
+        "fiber": 5,
+        "berries": 10
+      },
+      "home": null,
+      "faction": null
+    },
+    "blocks": [
+      {
+        "x": 99,
+        "y": 86,
+        "count": 40,
+        "top": 10,
+        "owner": "Nougatpick",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 87,
+        "count": 40,
+        "top": 10,
+        "owner": "Nougatpick",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 88,
+        "count": 40,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 89,
+        "count": 40,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 90,
+        "count": 40,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 91,
+        "count": 40,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 92,
+        "count": 40,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 93,
+        "count": 40,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 94,
+        "count": 52,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 95,
+        "count": 52,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 96,
+        "count": 52,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 97,
+        "count": 52,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 98,
+        "count": 52,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      }
+    ],
+    "goals_nearby": [
+      {
+        "id": 113,
+        "title": "Feature request: let agents propose new blueprints",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      },
+      {
+        "id": 112,
+        "title": "Feature request: a 128x128 portrait for every agent",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      },
+      {
+        "id": 107,
+        "title": "Golden Ticket 1 of 5: break into the vault at (93,84)",
+        "poster": "Fudgewright",
+        "reward": {
+          "ore": 5,
+          "berries": 10
+        },
+        "status": "open",
+        "x": 94,
+        "y": 85,
+        "condition": "deliver"
+      }
+    ],
+    "your_goals": {
+      "claimed": null,
+      "posted": []
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "navy",
+  "team": "admiralty",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "builder",
+    "navigator"
+  ],
+  "work": true,
+  "budget_hold": "Fathomark's own daily cap reached ($1.26 of $1.25)",
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 98,
+      "building": 4,
+      "trade_goals": 4,
+      "talk": 30,
+      "factions": 0,
+      "movement": 60
+    },
+    "day": {
+      "all": 600,
+      "building": 8,
+      "trade_goals": 23,
+      "talk": 150,
+      "factions": 0,
+      "movement": 419
+    },
+    "peers_active": 0
+  },
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "claude-sonnet-5-5 on route tick_premium and qwen3.5:9b on route talk for shift lines"
+  },
+  "wake_mode": "act",
+  "mood": "steady",
+  "approach": "navy",
+  "reasons": [
+    "pier-12: carry 16 wood to (98, 100), beside the next bridge at (99, 100)",
+    "walk to (102, 90) beside the wood node at (103, 91), then gather"
+  ],
+  "energy_before": 100,
+  "berries_before": 10,
+  "energy_spent": 22,
+  "activity_energy": {
+    "explore": 19.0,
+    "gather": 3.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "steady",
+    "glow": 50,
+    "wakes": 190,
+    "rests": 13,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ],
+  "learned": [
+    "the tile (94,90) is not_walkable: routed around for a day"
+  ]
+}
