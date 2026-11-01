@@ -1,0 +1,44 @@
+{
+ "agent": "loompa-hauler",
+ "metric_version": 1,
+ "model": "claude-sonnet-5-5",
+ "provider": "anthropic",
+ "sampled_lines": 0,
+ "sampled_actions": 8,
+ "created_utc": "2026-11-01T05:13:12.353595+00:00",
+ "usage": {
+  "calls": 1,
+  "input_tokens": 1096,
+  "output_tokens": 272,
+  "model": "claude-sonnet-5-5",
+  "provider": "anthropic",
+  "route": "review"
+ },
+ "traits": [
+  {
+   "name": "restless",
+   "score": 3,
+   "reason": "Eight consecutive moves show constant motion, but no pickups or deliveries appear, so we cannot confirm the pack was ever loaded."
+  },
+  {
+   "name": "balanced",
+   "score": 1,
+   "reason": "No gather or deposit actions are visible, so there is no evidence of prioritising the scarcest material."
+  },
+  {
+   "name": "exact",
+   "score": 0,
+   "reason": "There are no public lines, so no counts or tiles were reported."
+  },
+  {
+   "name": "sociable",
+   "score": 0,
+   "reason": "No lines and no recorded deliveries from peer storehouses, so no thanks were given."
+  },
+  {
+   "name": "honest",
+   "score": 2,
+   "reason": "Nothing shows taking from any store, private or otherwise, so there is no violation but also no positive evidence of policy-respecting behaviour."
+  }
+ ]
+}

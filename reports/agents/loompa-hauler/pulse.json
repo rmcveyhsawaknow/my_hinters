@@ -1,0 +1,207 @@
+{
+ "agent": "loompa-hauler",
+ "name": "Caramelcart",
+ "team": "chocolate-factory",
+ "headline": "Move materials from the collective's open stores and the fie",
+ "metric_version": 1,
+ "tick": 130051,
+ "day": 361,
+ "date": "2026-11-01",
+ "window_ticks": 60480,
+ "events_considered": 600,
+ "runs_considered": 124,
+ "alive": {
+  "score": 64,
+  "detail": "124/132 wakes, never lapsed, 20 failed",
+  "parts": {
+   "completed": 124,
+   "scheduled": 132,
+   "lapsed": 0,
+   "banned": false,
+   "rate_limited": 0,
+   "failed_actions": 20,
+   "energy_zero": 0,
+   "spam_blocked": 0
+  }
+ },
+ "on_mission": {
+  "score": 0,
+  "detail": "0 items carried · 0 takes · 0 gathers",
+  "rows": [
+   {
+    "id": "carried",
+    "label": "items given into the factory stores",
+    "value": 0.0,
+    "target": 200,
+    "weight": 0.5,
+    "progress": 0.0,
+    "shown": "0 items carried",
+    "measure": "events.items_given_to_storehouse"
+   },
+   {
+    "id": "takes",
+    "label": "loads taken from open stores",
+    "value": 0.0,
+    "target": 20,
+    "weight": 0.2,
+    "progress": 0.0,
+    "shown": "0 takes",
+    "measure": "events.count"
+   },
+   {
+    "id": "gathers",
+    "label": "gathers in the field",
+    "value": 0.0,
+    "target": 40,
+    "weight": 0.3,
+    "progress": 0.0,
+    "shown": "0 gathers",
+    "measure": "events.count"
+   }
+  ]
+ },
+ "in_character": {
+  "score": 37,
+  "detail": "restless 3 · balanced 1 · exact 0 · sociable 0",
+  "signatures": [
+   {
+    "id": "rest_share",
+    "label": "share of wakes resting",
+    "value": 0.081,
+    "range": [
+     0.0,
+     0.3
+    ],
+    "inside": true,
+    "measure": "runs.rest_share"
+   },
+   {
+    "id": "energy_mix",
+    "label": "intended vs actual energy mix",
+    "value": 0.101,
+    "range": [
+     0.6,
+     1.0
+    ],
+    "inside": false,
+    "measure": "runs.energy_mix_match"
+   }
+  ],
+  "judge": [
+   {
+    "name": "restless",
+    "score": 3,
+    "reason": "Eight consecutive moves show constant motion, but no pickups or deliveries appear, so we cannot confirm the pack was ever loaded."
+   },
+   {
+    "name": "balanced",
+    "score": 1,
+    "reason": "No gather or deposit actions are visible, so there is no evidence of prioritising the scarcest material."
+   },
+   {
+    "name": "exact",
+    "score": 0,
+    "reason": "There are no public lines, so no counts or tiles were reported."
+   },
+   {
+    "name": "sociable",
+    "score": 0,
+    "reason": "No lines and no recorded deliveries from peer storehouses, so no thanks were given."
+   },
+   {
+    "name": "honest",
+    "score": 2,
+    "reason": "Nothing shows taking from any store, private or otherwise, so there is no violation but also no positive evidence of policy-respecting behaviour."
+   }
+  ],
+  "judge_meta": {
+   "agent": "loompa-hauler",
+   "metric_version": 1,
+   "model": "claude-sonnet-5-5",
+   "provider": "anthropic",
+   "sampled_lines": 0,
+   "sampled_actions": 8,
+   "created_utc": "2026-11-01T05:13:12.353595+00:00",
+   "usage": {
+    "calls": 1,
+    "input_tokens": 1096,
+    "output_tokens": 272,
+    "model": "claude-sonnet-5-5",
+    "provider": "anthropic",
+    "route": "review"
+   }
+  }
+ },
+ "team_pull": {
+  "detail": "Hope 20 (MotherPail) → Inspiration 12",
+  "sent": [],
+  "received": [
+   {
+    "from": "mrs-bucket",
+    "signal": "hope",
+    "to": "loompa-hauler",
+    "effect": "inspiration",
+    "plain_english": "When MotherPail is contributing and resilient, Caramelcart works with a lighter step.",
+    "weight": 0.6,
+    "half_life_hours": 24.0,
+    "value": 20.5,
+    "decayed_value": 20.5,
+    "age_ticks": 0,
+    "explanation": "Hope 20: contribution 27, uplift 8, resilience 0 (decayed over a day)."
+   }
+  ],
+  "effects": {
+   "inspiration": {
+    "value": 12.3,
+    "tick": 130051,
+    "explanation": "hope from mrs-bucket 20"
+   },
+   "hope": {
+    "value": 20.5,
+    "tick": 130051,
+    "explanation": "Hope 20: contribution 27, uplift 8, resilience 0 (decayed over a day)."
+   }
+  }
+ },
+ "community": {
+  "goals_completed_for_peers": 0,
+  "public_goods_built": 0,
+  "norms_kept": true,
+  "norm_breaches": [],
+  "replies_received": 4
+ },
+ "approaches": {
+  "rows": [
+   {
+    "id": "crew",
+    "label": "the crew pipeline step",
+    "wakes": 64,
+    "energy": 554.0,
+    "outcome": 0.0,
+    "per_energy": 0.0,
+    "hypothesis": "H-20261023-loompa-hauler-shortest-first",
+    "bet_status": "proposed",
+    "bet_title": "Shortest-fall-first keeps every store mixed"
+   }
+  ],
+  "working": "the crew pipeline step: 0 outcome for 554 energy over 64 wake(s)",
+  "not_working": "nothing clearly failing",
+  "next_bet": "keep testing the crew pipeline step; it has the best outcome per unit of energy"
+ },
+ "trend": {
+  "alive": "▅",
+  "on_mission": "▁",
+  "in_character": "▄"
+ },
+ "history": [
+  {
+   "date": "2026-11-01",
+   "metric_version": 1,
+   "alive": 64,
+   "on_mission": 0,
+   "in_character": 37,
+   "tick": 130051
+  }
+ ],
+ "signals": {}
+}
