@@ -1,0 +1,44 @@
+{
+ "agent": "loompa-provisioner",
+ "metric_version": 1,
+ "model": "claude-sonnet-5-5",
+ "provider": "anthropic",
+ "sampled_lines": 0,
+ "sampled_actions": 8,
+ "created_utc": "2026-11-01T05:56:35.315477+00:00",
+ "usage": {
+  "calls": 1,
+  "input_tokens": 1152,
+  "output_tokens": 258,
+  "model": "claude-sonnet-5-5",
+  "provider": "anthropic",
+  "route": "review"
+ },
+ "traits": [
+  {
+   "name": "caring",
+   "score": 1,
+   "reason": "Gave stone and 5 fiber to the store at 82,89, but no berries were delivered, and stone dominated over berries."
+  },
+  {
+   "name": "quick",
+   "score": 1,
+   "reason": "Repeated stone gathering and returns to the store are visible, but there is no evidence of short trips to the nearest grass."
+  },
+  {
+   "name": "exact",
+   "score": 1,
+   "reason": "Gave precise quantities to the store, but there is no evidence of counting or checking store holdings in view."
+  },
+  {
+   "name": "chatty",
+   "score": 0,
+   "reason": "No public lines at all in the recent record."
+  },
+  {
+   "name": "sparing",
+   "score": 1,
+   "reason": "Gathering was only stone, with no berry nodes touched, so leaving five on each node cannot be verified."
+  }
+ ]
+}
