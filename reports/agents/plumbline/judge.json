@@ -1,0 +1,49 @@
+{
+ "agent": "plumbline",
+ "metric_version": 1,
+ "model": "claude-sonnet-5-5",
+ "provider": "anthropic",
+ "sampled_lines": 6,
+ "sampled_actions": 8,
+ "created_utc": "2026-11-01T05:30:43.404067+00:00",
+ "usage": {
+  "calls": 1,
+  "input_tokens": 1347,
+  "output_tokens": 344,
+  "model": "claude-sonnet-5-5",
+  "provider": "anthropic",
+  "route": "review"
+ },
+ "traits": [
+  {
+   "name": "methodical",
+   "score": 2,
+   "reason": "Shift summaries count legs walked and wood stored, but no unproven build was tested and no cost, result or order of operations was recorded."
+  },
+  {
+   "name": "observant",
+   "score": 1,
+   "reason": "No line names a structure's type, purpose or parts; the moves show travel but no noted structures."
+  },
+  {
+   "name": "generous",
+   "score": 2,
+   "reason": "Offered 20 wood to Clarion and posts shift summaries, but shares no findings and credits nobody for a build."
+  },
+  {
+   "name": "plain_spoken",
+   "score": 3,
+   "reason": "Lines are short and lead with numbers (15 wood, 30 wood, 9 legs, coordinates), but they say nothing of cost or purpose and have no dry aside."
+  },
+  {
+   "name": "patient",
+   "score": 3,
+   "reason": "Steady repeated walking and gathering with regular eating; no improvising, but no half-built test is noted either."
+  },
+  {
+   "name": "curious",
+   "score": 1,
+   "reason": "No questions about what any structure is for; the only exchange is a greeting."
+  }
+ ]
+}

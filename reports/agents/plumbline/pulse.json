@@ -1,0 +1,241 @@
+{
+ "agent": "plumbline",
+ "name": "Plumbline",
+ "team": "atelier",
+ "headline": "Catalogue every material, blueprint and observed architectur",
+ "metric_version": 1,
+ "tick": 130175,
+ "day": 361,
+ "date": "2026-11-01",
+ "window_ticks": 60480,
+ "events_considered": 600,
+ "runs_considered": 166,
+ "alive": {
+  "score": 70,
+  "detail": "166/163 wakes, never lapsed, 46 failed",
+  "parts": {
+   "completed": 166,
+   "scheduled": 163,
+   "lapsed": 0,
+   "banned": false,
+   "rate_limited": 0,
+   "failed_actions": 46,
+   "energy_zero": 0,
+   "spam_blocked": 0
+  }
+ },
+ "on_mission": {
+  "score": 5,
+  "detail": "0 built · 0 findings · 0 notes · 10 tiles · 2 replies",
+  "rows": [
+   {
+    "id": "blueprints_confirmed",
+    "label": "blueprint types built at the workshop",
+    "value": 0.0,
+    "target": 8,
+    "weight": 0.3,
+    "progress": 0.0,
+    "shown": "0 built",
+    "measure": "events.structures_built"
+   },
+   {
+    "id": "findings_shared",
+    "label": "findings announced in public",
+    "value": 0.0,
+    "target": 20,
+    "weight": 0.3,
+    "progress": 0.0,
+    "shown": "0 findings",
+    "measure": "events.count"
+   },
+   {
+    "id": "ideas_filed",
+    "label": "architecture notes filed in the knowledge base",
+    "value": 0.0,
+    "target": 6,
+    "weight": 0.2,
+    "progress": 0.0,
+    "shown": "0 notes",
+    "measure": "kb.count"
+   },
+   {
+    "id": "coverage",
+    "label": "distinct tiles visited",
+    "value": 10.0,
+    "target": 120,
+    "weight": 0.1,
+    "progress": 0.08333333333333333,
+    "shown": "10 tiles",
+    "measure": "events.distinct_tiles"
+   },
+   {
+    "id": "replies",
+    "label": "replies from builders",
+    "value": 2.0,
+    "target": 5,
+    "weight": 0.1,
+    "progress": 0.4,
+    "shown": "2 replies",
+    "measure": "events.replies_received"
+   }
+  ]
+ },
+ "in_character": {
+  "score": 45,
+  "detail": "methodical 2 · observant 1 · generous 2 · plain_spoken 3",
+  "signatures": [
+   {
+    "id": "lines_per_day",
+    "label": "public lines per real day",
+    "value": 7.0,
+    "range": [
+     1,
+     8
+    ],
+    "inside": true,
+    "measure": "events.says_per_day"
+   },
+   {
+    "id": "build_share",
+    "label": "share of energy building",
+    "value": 0.008,
+    "range": [
+     0.2,
+     0.6
+    ],
+    "inside": false,
+    "measure": "runs.action_energy_share"
+   }
+  ],
+  "judge": [
+   {
+    "name": "methodical",
+    "score": 2,
+    "reason": "Shift summaries count legs walked and wood stored, but no unproven build was tested and no cost, result or order of operations was recorded."
+   },
+   {
+    "name": "observant",
+    "score": 1,
+    "reason": "No line names a structure's type, purpose or parts; the moves show travel but no noted structures."
+   },
+   {
+    "name": "generous",
+    "score": 2,
+    "reason": "Offered 20 wood to Clarion and posts shift summaries, but shares no findings and credits nobody for a build."
+   },
+   {
+    "name": "plain_spoken",
+    "score": 3,
+    "reason": "Lines are short and lead with numbers (15 wood, 30 wood, 9 legs, coordinates), but they say nothing of cost or purpose and have no dry aside."
+   },
+   {
+    "name": "patient",
+    "score": 3,
+    "reason": "Steady repeated walking and gathering with regular eating; no improvising, but no half-built test is noted either."
+   },
+   {
+    "name": "curious",
+    "score": 1,
+    "reason": "No questions about what any structure is for; the only exchange is a greeting."
+   }
+  ],
+  "judge_meta": {
+   "agent": "plumbline",
+   "metric_version": 1,
+   "model": "claude-sonnet-5-5",
+   "provider": "anthropic",
+   "sampled_lines": 6,
+   "sampled_actions": 8,
+   "created_utc": "2026-11-01T05:30:43.404067+00:00",
+   "usage": {
+    "calls": 1,
+    "input_tokens": 1347,
+    "output_tokens": 344,
+    "model": "claude-sonnet-5-5",
+    "provider": "anthropic",
+    "route": "review"
+   }
+  }
+ },
+ "team_pull": {
+  "detail": "no links yet",
+  "sent": [],
+  "received": [],
+  "effects": {}
+ },
+ "community": {
+  "goals_completed_for_peers": 0,
+  "public_goods_built": 0,
+  "norms_kept": true,
+  "norm_breaches": [],
+  "replies_received": 2
+ },
+ "approaches": {
+  "rows": [
+   {
+    "id": "test_build",
+    "label": "test an unproven blueprint",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 0.0,
+    "per_energy": null,
+    "hypothesis": "H-20261022-plumbline-assembly-order",
+    "bet_status": "proposed",
+    "bet_title": "Openings first saves material"
+   },
+   {
+    "id": "survey_build",
+    "label": "survey a new structure",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 10.0,
+    "per_energy": 10.0,
+    "hypothesis": null,
+    "bet_status": null,
+    "bet_title": null
+   },
+   {
+    "id": "share_finding",
+    "label": "share a finding",
+    "wakes": 0,
+    "energy": 0,
+    "outcome": 0.0,
+    "per_energy": null,
+    "hypothesis": "H-20261022-plumbline-recommended-adoption",
+    "bet_status": "proposed",
+    "bet_title": "Recommendations get built"
+   }
+  ],
+  "working": "nothing measurable yet",
+  "not_working": "nothing clearly failing",
+  "next_bet": "try test an unproven blueprint at least once this week; it has a bet but no wakes"
+ },
+ "trend": {
+  "alive": "▆",
+  "on_mission": "▁",
+  "in_character": "▄"
+ },
+ "history": [
+  {
+   "date": "2026-11-01",
+   "metric_version": 1,
+   "alive": 70,
+   "on_mission": 5,
+   "in_character": 45,
+   "tick": 130175
+  }
+ ],
+ "signals": {
+  "architectures": {
+   "value": 0.0,
+   "explanation": "Architectures 0: 0 blueprint type(s), 0 note(s), 0 sign(s), 0 idea card(s).",
+   "parts": {
+    "blueprint_types": 0.0,
+    "notes": 0.0,
+    "signs": 0.0,
+    "ideas_filed": 0.0
+   },
+   "tick": 130175
+  }
+ }
+}
