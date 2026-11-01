@@ -1,0 +1,59 @@
+{
+  "run_id": "announce-1793509253",
+  "kind": "announce",
+  "agent": "Stoutheart",
+  "persona": "nibs",
+  "tick": 129999,
+  "created_utc": "2026-11-01T05:00:53.439540+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Shift done. gathered 5 wood; walked 4 legs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 1,
+    "built": [],
+    "gathered": {
+      "wood": 5
+    },
+    "moved": 4,
+    "deposited": {},
+    "approaches": [
+      "gather_trip",
+      "explore",
+      "rest",
+      "explore",
+      "explore"
+    ],
+    "mood": "brave",
+    "where": [
+      75,
+      107
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce",
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "claude-haiku-5-5 on route tick and qwen3.5:9b on route talk for shift lines"
+  }
+}
