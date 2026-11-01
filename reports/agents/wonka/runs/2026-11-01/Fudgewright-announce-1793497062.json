@@ -1,0 +1,62 @@
+{
+  "run_id": "announce-1793497062",
+  "kind": "announce",
+  "agent": "Fudgewright",
+  "persona": "wonka",
+  "tick": 128780,
+  "created_utc": "2026-11-01T01:37:42.234141+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Inventing Room notes: walked 7 legs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 10,
+    "rests": 3,
+    "built": [],
+    "gathered": {},
+    "moved": 7,
+    "deposited": {},
+    "approaches": [
+      "explore",
+      "explore",
+      "explore",
+      "rest",
+      "explore",
+      "rest",
+      "rest",
+      "explore",
+      "explore",
+      "explore"
+    ],
+    "mood": "gentle",
+    "where": [
+      97,
+      98
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce",
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "claude-opus-5-5 on route tick_opus and qwen3.5:9b on route talk for shift lines"
+  }
+}
