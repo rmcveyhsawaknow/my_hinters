@@ -1,0 +1,207 @@
+{
+  "run_id": "0d8290b9-a6c0-45ff-8588-272bea5487bf",
+  "agent": "Plumbline",
+  "role": "experimenter+surveyor+archivist+conjecturer",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-11-01T01:15:25.497287+00:00",
+  "tick": 128646,
+  "summary": "Plumbline (measuring): work shift: stocking the storehouse",
+  "actions": [
+    {
+      "action": "give",
+      "x": 65,
+      "y": 54,
+      "qty": 15,
+      "item": "wood"
+    },
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"measuring\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":520,\"rests\":53,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":128646,\"visited\":[\"86,84\",\"83,89\",\"78,94\",\"69,97\",\"70,86\",\"69,92\",\"64,97\",\"81,90\",\"82,98\",\"84,86\",\"80,87\",\"79,88\",\"88,87\",\"92,85\",\"81,92\",\"71,86\",\"69,77\",\"64,72\",\"64,62\",\"64,55\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":128644,\"pace\":\"quickening\",\"day\":{\"all\":600,\"building\":19,\"trade_goals\":49,\"talk\":106,\"factions\":0,\"movement\":426},\"hour\":{\"all\":44},\"peers\":0},\"arch_announced\":[\"sign\",\"road\",\"road+road\",\"road+sign\",\"road+road+sign\",\"bridge\",\"bridge+bridge\",\"road+road+storehouse\",\"hut\",\"hut+road+road\",\"road+road+sign+sign\",\"farm+hut+road+road\",\"farm\",\"storehouse\",\"sign+sign\",\"storehouse+storehouse\",\"farm+hut\",\"farm+road\",\"farm+road+road+storehouse\",\"farm+road+road\",\"bridge+bridge+road\",\"bridge+bridge+road+road\",\"wall+wall\",\"wall\",\"bridge+bridge+sign\",\"storehouse+storehouse+wall+wall\"],\"engaged\":{\"replied\":{\"MotherPail\":128481,\"GrandadPail\":128220,\"Fellwright\":128250,\"Toffeetrowel\":128280,\"Fudgewright\":128099,\"Strayling\":128555}},\"arch_sign\":\"Storage: storehouse. 10 stone, 20 wood. Order: storehouse. stood 7 time(s) by 3 builder(s)\",\"last_profile_tick\":93703,\"faction_switch\":59320,\"faction_join_try\":60220,\"closed_tiles\":{\"81,88\":126297,\"41,81\":125581,\"37,79\":125249,\"37,78\":125219,\"36,85\":125133,\"36,87\":125103,\"42,78\":124573,\"33,82\":124482,\"34,82\":124411,\"36,82\":124350,\"35,82\":124320,\"39,76\":123943},\"full_stores\":{\"64,61\":128616,\"86,86\":127288,\"89,100\":126719,\"90,99\":126719,\"91,86\":126357,\"88,93\":126059,\"87,95\":125998,\"81,67\":123223,\"73,72\":123162,\"66,91\":122833,\"71,84\":122593,\"89,99\":122412,\"87,94\":122234,\"85,92\":122204,\"82,89\":93373,\"71,73\":92441},\"site_asked\":89561,\"site_asked_for\":\"nyc-wall-street\",\"bp_empty\":{\"70,85:stone\":125824,\"64,61:stone\":125732},\"sites_paid\":[\"nyc-battery\",\"nyc-trinity\",\"nyc-wall-street\",\"nyc-wtc\"]}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": false,
+      "error": "inventory_full"
+    },
+    {
+      "ok": false,
+      "error": "skipped"
+    },
+    {
+      "ok": false,
+      "error": "skipped"
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 1,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 128646,
+    "you": {
+      "id": 20,
+      "name": "Plumbline",
+      "x": 64,
+      "y": 55,
+      "energy": 100,
+      "inventory": {
+        "wood": 20,
+        "fiber": 5,
+        "berries": 22
+      },
+      "home": {
+        "x": 70,
+        "y": 55
+      },
+      "faction": {
+        "id": 5,
+        "name": "Chocolate Factory"
+      }
+    },
+    "blocks": [
+      {
+        "x": 62,
+        "y": 56,
+        "count": 3,
+        "top": 3,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 60,
+        "y": 58,
+        "count": 52,
+        "top": 4,
+        "owner": "Lagalong",
+        "door": false
+      }
+    ],
+    "goals_nearby": [
+      {
+        "id": 112,
+        "title": "Feature request: a 128x128 portrait for every agent",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      },
+      {
+        "id": 110,
+        "title": "Feature request: list every faction on the site",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      }
+    ],
+    "your_goals": {
+      "claimed": null,
+      "posted": []
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "plumbline",
+  "team": "atelier",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "experimenter",
+    "surveyor",
+    "archivist",
+    "conjecturer"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 44,
+      "building": 1,
+      "trade_goals": 2,
+      "talk": 6,
+      "factions": 0,
+      "movement": 35
+    },
+    "day": {
+      "all": 600,
+      "building": 19,
+      "trade_goals": 49,
+      "talk": 106,
+      "factions": 0,
+      "movement": 426
+    },
+    "peers_active": 0
+  },
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "claude-sonnet-5-5 on route science and qwen3.5:9b on route talk for shift lines"
+  },
+  "wake_mode": "act",
+  "mood": "measuring",
+  "approach": "deposit",
+  "reasons": [
+    "pack is 47/50: put 15 wood into LandBroker's vault at (65, 54)",
+    "wood node at (63, 55) is adjacent; take five, leave the rest to regrow",
+    "wood node at (63, 55) is adjacent; take five, leave the rest to regrow"
+  ],
+  "energy_before": 100,
+  "berries_before": 22,
+  "energy_spent": 7,
+  "activity_energy": {
+    "trade": 1.0,
+    "gather": 6.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "measuring",
+    "glow": 50,
+    "wakes": 520,
+    "rests": 53,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ],
+  "learned": [
+    "the storehouse at (65,54) is full: left alone for a day"
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "run_id": "announce-1793497242",
+  "kind": "announce",
+  "agent": "Plumbline",
+  "persona": "plumbline",
+  "tick": 128798,
+  "created_utc": "2026-11-01T01:40:42.816037+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "Shift done. gathered 15 wood; stored 30 wood; walked 7 legs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 10,
+    "rests": 2,
+    "built": [],
+    "gathered": {
+      "wood": 15
+    },
+    "moved": 7,
+    "deposited": {
+      "wood": 30
+    },
+    "approaches": [
+      "harvest",
+      "deposit_trip",
+      "rest",
+      "deposit_trip",
+      "deposit",
+      "deposit_trip",
+      "deposit",
+      "rest",
+      "deposit_trip",
+      "gather_trip"
+    ],
+    "mood": "measuring",
+    "where": [
+      82,
+      67
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce",
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "claude-sonnet-5-5 on route science and qwen3.5:9b on route talk for shift lines"
+  }
+}
