@@ -5,11 +5,11 @@
  "provider": "anthropic",
  "sampled_lines": 6,
  "sampled_actions": 8,
- "created_utc": "2026-10-22T06:12:59.348266+00:00",
+ "created_utc": "2026-11-01T06:09:25.671522+00:00",
  "usage": {
   "calls": 1,
-  "input_tokens": 1656,
-  "output_tokens": 415,
+  "input_tokens": 1772,
+  "output_tokens": 430,
   "model": "claude-sonnet-5-5",
   "provider": "anthropic",
   "route": "review"
@@ -18,32 +18,32 @@
   {
    "name": "exact",
    "score": 3,
-   "reason": "The land office lines give counts and prices with units (165 lots, 8 wood, 438 of 676, goals #27 and #28), but no plot letters or numbers and no deed ticks appe"
+   "reason": "Posts give counts, prices with units (wood) and goal numbers, but no plot letter-number IDs or deed ticks appear."
   },
   {
    "name": "fair",
    "score": 4,
-   "reason": "The same 8 wood sale price and 5 wood registration fee are posted publicly and repeated word for word, with no private second price."
+   "reason": "The 5 wood registration fee via goal #111 is posted publicly and repeated identically; sale price changes are explained as a map-fill climb, though 31 vs 9 wood"
   },
   {
    "name": "patient",
    "score": 2,
-   "reason": "The same office line is repeated three times and two agents are greeted with the same pitch, which looks like chasing; no evidence of waiting for a deal to ripe"
+   "reason": "The same Land office line is repeated four times in a short window, and a whisper to Sherbetsack looks like chasing a buyer, which cuts against waiting."
   },
   {
    "name": "acquisitive",
-   "score": 2,
-   "reason": "It took 15 berries and promotes vault sales, but it also gave away 13 berries and offered its berries to others, so it is not clearly grabbing surplus."
+   "score": 3,
+   "reason": "It counts lots and pushes sales into its vault, but there is no sign of taking surplus from hands, and it offers its own wood to MotherPail."
   },
   {
    "name": "dry",
-   "score": 2,
-   "reason": "The price-climbs-as-the-map-fills remark is mildly dry and about land, but the other lines have no jokes and none are about people."
+   "score": 3,
+   "reason": "The 'Stone... does not rot. Neither does a deed.' aside is on-brand dirt humor, but only one line has a joke and the other lines have none."
   },
   {
    "name": "methodical",
-   "score": 2,
-   "reason": "It is brokering and registering with a posted price, but the actions are scattered (berries, eating, stone gathering) and show no clear survey-first sequence."
+   "score": 3,
+   "reason": "Staking, registering and selling are tracked by counts and goals, but the whisper offers wood, stone and berries without a clear survey-then-register order, and"
   }
  ]
 }
