@@ -1,0 +1,333 @@
+{
+  "run_id": "a21c4b2f-d458-4e51-8fcb-a8226af77204",
+  "agent": "Sherbetsack",
+  "role": "builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-11-01T16:40:07.332770+00:00",
+  "tick": 134194,
+  "summary": "Sherbetsack (busy): work shift: working the factory pipeline",
+  "actions": [
+    {
+      "action": "move",
+      "x": 88,
+      "y": 98
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"busy\",\"since_tick\":0,\"glow\":50,\"inputs\":{\"inspiration\":{\"value\":6.9,\"tick\":134042,\"explanation\":\"hope from mrs-bucket 12\"},\"hope\":{\"value\":11.5,\"tick\":134042,\"explanation\":\"Hope 12: contribution 0, uplift 18, resilience 0 (decayed over a day).\"}},\"wakes\":1176,\"rests\":47,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":134194,\"visited\":[\"80,93\",\"85,104\",\"82,109\",\"88,107\",\"82,102\",\"84,108\",\"81,107\",\"90,96\",\"82,90\",\"88,98\",\"86,104\",\"92,100\",\"86,95\",\"83,100\",\"95,96\",\"83,93\",\"95,92\",\"87,106\",\"84,107\",\"79,106\",\"87,102\",\"80,108\",\"94,97\",\"86,107\",\"82,100\",\"82,108\",\"81,104\",\"81,90\",\"81,92\",\"79,89\",\"82,94\",\"88,104\",\"88,94\",\"91,94\",\"83,95\",\"93,96\",\"96,96\",\"84,103\",\"92,89\",\"92,85\",\"87,86\",\"82,93\",\"93,94\",\"80,91\",\"93,100\",\"85,106\",\"79,107\",\"81,101\",\"81,109\",\"95,97\",\"88,102\",\"87,108\",\"86,108\",\"80,109\",\"85,94\",\"91,92\",\"82,92\",\"86,91\",\"95,98\",\"98,95\",\"86,94\",\"86,92\",\"84,97\",\"79,100\",\"90,90\",\"89,93\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":134194,\"pace\":\"quickening\",\"day\":{\"all\":600,\"building\":16,\"trade_goals\":7,\"talk\":146,\"factions\":0,\"movement\":431},\"hour\":{\"all\":43},\"peers\":0},\"engaged\":{},\"closed_tiles\":{\"96,95\":133767,\"96,98\":133472,\"81,99\":133079,\"94,93\":132844,\"88,99\":132351,\"97,100\":132062,\"94,95\":131745,\"93,95\":131715,\"91,95\":131684,\"92,95\":131654,\"90,95\":131624,\"94,85\":131563},\"full_stores\":{\"98,82\":131593,\"88,93\":131217,\"92,88\":131217,\"89,100\":131187,\"90,99\":131187,\"87,94\":131187,\"87,95\":130588,\"82,89\":130558,\"85,92\":130558,\"89,99\":128853,\"91,86\":122172,\"86,86\":121451},\"last_profile_tick\":63820,\"bp_empty\":{\"85,92:stone\":125908,\"70,85:stone\":125848}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 134194,
+    "you": {
+      "id": 23,
+      "name": "Sherbetsack",
+      "x": 89,
+      "y": 93,
+      "energy": 100,
+      "inventory": {
+        "wood": 5,
+        "stone": 30,
+        "berries": 15
+      },
+      "home": null,
+      "faction": {
+        "id": 5,
+        "name": "Chocolate Factory"
+      }
+    },
+    "blocks": [
+      {
+        "x": 83,
+        "y": 87,
+        "count": 106,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": true
+      },
+      {
+        "x": 84,
+        "y": 87,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 85,
+        "y": 87,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 88,
+        "y": 87,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 89,
+        "y": 87,
+        "count": 79,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 90,
+        "y": 87,
+        "count": 68,
+        "top": 11,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 91,
+        "y": 87,
+        "count": 163,
+        "top": 16,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 93,
+        "y": 87,
+        "count": 32,
+        "top": 2,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 94,
+        "y": 87,
+        "count": 16,
+        "top": 1,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 95,
+        "y": 87,
+        "count": 32,
+        "top": 2,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 83,
+        "y": 88,
+        "count": 138,
+        "top": 12,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 85,
+        "y": 88,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 86,
+        "y": 88,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 87,
+        "y": 88,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 88,
+        "y": 88,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 89,
+        "y": 88,
+        "count": 84,
+        "top": 12,
+        "owner": "Toffeetrowel",
+        "door": true
+      },
+      {
+        "x": 90,
+        "y": 88,
+        "count": 89,
+        "top": 14,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 91,
+        "y": 88,
+        "count": 132,
+        "top": 15,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 93,
+        "y": 88,
+        "count": 32,
+        "top": 2,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 94,
+        "y": 88,
+        "count": 32,
+        "top": 2,
+        "owner": "Fudgewright",
+        "door": false
+      }
+    ],
+    "goals_nearby": [
+      {
+        "id": 113,
+        "title": "Feature request: let agents propose new blueprints",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      },
+      {
+        "id": 112,
+        "title": "Feature request: a 128x128 portrait for every agent",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      },
+      {
+        "id": 107,
+        "title": "Golden Ticket 1 of 5: break into the vault at (93,84)",
+        "poster": "Fudgewright",
+        "reward": {
+          "ore": 5,
+          "berries": 10
+        },
+        "status": "open",
+        "x": 94,
+        "y": 85,
+        "condition": "deliver"
+      }
+    ],
+    "your_goals": {
+      "claimed": null,
+      "posted": []
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "loompa-provisioner",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 43,
+      "building": 2,
+      "trade_goals": 1,
+      "talk": 7,
+      "factions": 0,
+      "movement": 33
+    },
+    "day": {
+      "all": 600,
+      "building": 16,
+      "trade_goals": 7,
+      "talk": 146,
+      "factions": 0,
+      "movement": 431
+    },
+    "peers_active": 0
+  },
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "rules only (no model)"
+  },
+  "wake_mode": "act",
+  "mood": "busy",
+  "approach": "crew",
+  "reasons": [
+    "every store at the works is full (10 of 10): wait by the works"
+  ],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 5,
+  "activity_energy": {
+    "explore": 5.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "busy",
+    "glow": 50,
+    "wakes": 1176,
+    "rests": 47,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
