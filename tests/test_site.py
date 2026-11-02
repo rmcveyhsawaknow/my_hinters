@@ -269,3 +269,21 @@ def test_a_client_counts_the_ledgers_deeds_as_paid_and_asks_for_the_next_ground(
     again = PersonaState(mood="measuring")
     _plan_site_trade(plumbline, again, {"wood": 10}, (35, 82), view, {"tick": 150000, "you": {"x": 35, "y": 82}, "inbox": []}, "LandBroker", office_names=set(), tills=set())
     assert again.flags["site_asked_for"] == "nyc-wall-street"  # without the ledger's deeds the notebook alone decides, as before
+
+
+def test_the_offices_relic_stores_inside_the_campus_are_no_drop_for_the_registrar_either():
+    """LandBroker, no crew hand, walked toward Lintelstave's old depot at (86,86) inside the factory's walled campus (2026-11-02 18:00 UTC)."""
+    from hglab.mood import PersonaState
+    from hglab.planner import _plan_deposit_trip
+    from hglab.wake import _cast
+
+    personas = load_personas(ROOT)
+    broker = personas["land-broker"]
+    relic = {"type": "storehouse", "x": 86, "y": 86, "owner": "Lintelstave", "policy": "faction", "faction": "Land Office", "storage": {"stone": 10}}
+    vault = {"type": "storehouse", "x": 92, "y": 78, "owner": "Lintelstave", "policy": "faction", "faction": "Land Office", "storage": {"stone": 10}}
+    cast = _cast(ROOT, broker, load_team(ROOT, "exchange"), personas, "LandBroker", [relic, vault])
+    assert cast["office_relics"] == [(86, 86)] and (72, 73) in cast["office_tills"]  # on the factory's plot J08... I08-SE: ground under contract
+    rows = ["g" * 128] * 128
+    view = WorldView(x0=80, y0=70, rows=rows, full_map=rows, structures=[relic, vault], world_structures=[relic, vault], tick=1000)
+    trip = _plan_deposit_trip(broker, load_team(ROOT, "exchange"), {"wood": 46, "berries": 4}, (89, 76), view, None, {"lintelstave", "landbroker"}, state=PersonaState(mood=broker.mood_model["initial"]), faction="Land Office", skip=frozenset(cast["office_relics"]))
+    assert trip is not None and "(92, 78)" in trip[1] and "(86, 86)" not in trip[1]

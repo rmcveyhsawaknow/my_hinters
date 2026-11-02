@@ -240,7 +240,7 @@ def teammate_positions(
     return out
 
 
-def _cast(root: Path, persona: Any, team: Any, personas: dict[str, Any], registrar_name: str | None) -> dict[str, Any]:
+def _cast(root: Path, persona: Any, team: Any, personas: dict[str, Any], registrar_name: str | None, public_structures: list[dict[str, Any]] | None = None) -> dict[str, Any]:
     """Who is who around this persona, for the planner: the crew's roles, the land office's names, the supply team's names, the faction's allies."""
     from hglab.persona import load_team
 
@@ -255,6 +255,14 @@ def _cast(root: Path, persona: Any, team: Any, personas: dict[str, Any], registr
             from hglab.crew import team_tills
 
             cast["office_tills"] = sorted(team_tills(office_team))  # the office's tills take the price of land and nothing else (2026-10-27)
+            from hglab.lots import lot_id
+
+            excluded = {str(lid).upper() for lid in (((office_team.extra or {}).get("pipeline") or {}).get("claims") or {}).get("exclude") or []}
+            office_cf = {str(n).casefold() for n in cast["office_names"]}
+            cast["office_relics"] = sorted(
+                (int(s["x"]), int(s["y"])) for s in (public_structures or [])
+                if isinstance(s, dict) and s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() in office_cf and isinstance(s.get("x"), int) and isinstance(s.get("y"), int) and lot_id(int(s["x"]), int(s["y"])) in excluded
+            )  # the office's old depots on ground under contract (inside the factory's campus, 2026-11-02): nobody unloads into them, the registrar included
         except (OSError, ValueError, KeyError):
             cast["office_names"] = {office.name}
     supply = persona.knobs.get("supply")
@@ -399,7 +407,7 @@ def persona_wake(
         names = {
             personas[m].name.casefold(): m for m in (team.members if team else ()) if m in personas
         }
-        cast = _cast(root, persona, team, personas, registrar_name)
+        cast = _cast(root, persona, team, personas, registrar_name, public_structures)
         step_mood(persona, state, observe, team, rng, member_names=set(names))
         mode = decide_wake_mode(persona, state, observe, rng)
         if work and mode in {"burst", "distracted"}:

@@ -293,7 +293,9 @@ def plan_wake(
     reserve = persona.energy_reserve
     names = dict(team_names or {})
     names.setdefault(persona.name.casefold(), persona.slug)
-    tills = frozenset((int(t[0]), int(t[1])) for t in (cast or {}).get("office_tills") or ())  # the land office's tills: the price of land only
+    tills = frozenset((int(t[0]), int(t[1])) for t in (cast or {}).get("office_tills") or ()) | frozenset(
+        (int(t[0]), int(t[1])) for t in (cast or {}).get("office_relics") or ()
+    )  # the land office's tills (the price of land only) and its relic stores on ground under contract (inside the factory's campus, 2026-11-02): nobody unloads into either
     actions: list[dict[str, Any]] = []
     reasons: list[str] = []
     remember: list[dict[str, str]] = []
@@ -768,7 +770,9 @@ def _plan_work(
         used.update({"build", "hearth", "house", "border", "stash", "deposit", "deposit_trip"})  # a hand builds and unloads through the team's plan only
     ours = set(collective_names or ()) | set(names or ())
     our_faction = _faction_name((observe.get("you") or {}).get("faction")) or None
-    tills = frozenset((int(t[0]), int(t[1])) for t in (cast or {}).get("office_tills") or ())  # the land office's tills: the price of land only
+    tills = frozenset((int(t[0]), int(t[1])) for t in (cast or {}).get("office_tills") or ()) | frozenset(
+        (int(t[0]), int(t[1])) for t in (cast or {}).get("office_relics") or ()
+    )  # the land office's tills (the price of land only) and its relic stores on ground under contract (inside the factory's campus, 2026-11-02): nobody unloads into either
 
     def fits_as(label: str, step: tuple[list[dict[str, Any]], str, str] | None) -> bool:
         if label in skip or label in used:
