@@ -1177,6 +1177,7 @@ def _plan_site_trade(
     tick = int(observe.get("tick", 0) or 0)
     requests = [str(r) for r in (knob.get("requests") or [knob.get("request", "site")])]
     paid_ids = {str(r) for r in (state.flags.get("sites_paid") or []) if isinstance(r, str)}
+    paid_ids |= {str(r) for r in (observe.get("_deeded_requests") or []) if isinstance(r, str)}  # the ledger's deeds count too: Plumbline's notebook had lost Lower Manhattan's (2026-11-02)
     bought = state.flags.get("house_site") if isinstance(state.flags.get("house_site"), dict) else None
     if bought and bought.get("id") in requests and int(bought.get("paid", 0) or 0) >= int(bought.get("price", 1) or 1) and not bought.get("pending"):
         paid_ids.add(str(bought["id"]))  # paid in full: the next brief follows

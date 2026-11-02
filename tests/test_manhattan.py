@@ -42,7 +42,7 @@ def test_the_four_segments_are_requested_of_the_office_in_order_by_plumbline():
     for rid, lots in SEGMENTS.items():
         assert requests[rid]["client"] == "Plumbline" and requests[rid]["lots"] == lots
     plumbline = load_personas(ROOT)["plumbline"]
-    assert plumbline.knobs["house"]["requests"] == list(SEGMENTS) and plumbline.knobs["house"]["style"] == "blueprint"
+    assert plumbline.knobs["house"]["requests"] == [*SEGMENTS, "nyc-midtown-south", "nyc-midtown-north", "nyc-park-south", "nyc-park-north"] and plumbline.knobs["house"]["style"] == "blueprint"  # then the larger replica (2026-11-02)
     claims = load_team(ROOT, "exchange").extra["pipeline"]["claims"]
     assert set(design_lots := _bp()[0]["land"]["lots"]) <= set(claims["exclude"]) and len(design_lots) == 12  # never walled, policed or worked by the office
     state = PersonaState(mood="measuring")

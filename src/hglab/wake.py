@@ -417,6 +417,11 @@ def persona_wake(
             observe["_guidance"] = guidance
         if "_factions" not in observe:
             observe["_factions"] = _public_factions(client)
+        if "_deeded_requests" not in observe:
+            with suppress(Exception):  # the office's deeds in the ledger (config/plots.yaml): a client never asks again for ground it holds
+                from hglab.land import load_ledger
+
+                observe["_deeded_requests"] = sorted(str(r.get("id")) for r in (load_ledger(root).get("site_requests") or []) if isinstance(r, dict) and r.get("deeded") is not None)
         if "_claim_signs" not in observe:
             # the land office's claim signs from the public snapshot: the knob check reads them for a wall planned beyond the view (never recorded)
             observe["_claim_signs"] = [s for s in (public_structures or []) if isinstance(s, dict) and s.get("type") == "sign" and str(s.get("text") or "").startswith("Lot ")]
@@ -679,6 +684,7 @@ def persona_wake(
         observe.pop("_vault_golden", None)
         observe.pop("_vault", None)
         observe.pop("_closed_world", None)
+        observe.pop("_deeded_requests", None)
         context["observe"] = observe
         context["approach"] = plan.get("approach")
         context["mates"] = mates
