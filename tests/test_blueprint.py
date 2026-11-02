@@ -115,7 +115,7 @@ def test_a_builder_places_from_its_pack_or_carries_the_material_from_a_store(tmp
     personas = load_personas(ROOT)
     mason = personas["loompa-mason"]
     team = load_team(ROOT, "chocolate-factory")
-    assert factory.builder_sections(team, "loompa-mason")[:2] == ["depots", "elevator"] and factory.builder_sections(team, "loompa-woodcutter") is None
+    assert factory.builder_sections(team, "loompa-mason")[:2] == ["depots", "elevator"] and factory.builder_sections(team, "loompa-woodcutter") == ["silo", "tubes-fudge"]  # every hand builds (2026-11-02)
     design, steps, _ = _bp()
     led = factory.ledger_name(design, "chocolate-factory")
     clears = [s for s in steps if s["kind"] == "remove"]
@@ -147,12 +147,12 @@ def test_every_member_of_the_factory_works_on_the_blueprint():
     team = load_team(ROOT, "chocolate-factory")
     personas = load_personas(ROOT)
     builders = team.extra["pipeline"]["builders"]
-    assert set(builders) == {"loompa-mason", "wonka", "mrs-bucket"}  # GrandadPail rests by the hut and holds court (2026-10-24)
+    assert set(builders) == {"loompa-mason", "wonka", "mrs-bucket", "loompa-woodcutter", "loompa-quarrier", "loompa-provisioner", "loompa-hauler"}  # every hand builds (2026-11-02); GrandadPail rests by the hut and holds court (2026-10-24)
     _design, steps, _ = _bp()
     sections = {s["section"] for s in steps}
     assert sections <= {sec for secs in builders.values() for sec in secs}  # every section has a builder who raises it first
-    gatherers = [m for m in team.members if m not in builders and m != "grandpa-joe"]
-    assert all(personas[m].knobs.get("crew") for m in gatherers)  # the rest gather and carry its materials
+    hands = [m for m in team.members if m.startswith("loompa-")]
+    assert all(personas[m].knobs.get("crew") and m in builders for m in hands)  # the hands gather its materials and raise it too
     assert personas["grandpa-joe"].knobs["lounge"] == {"x": 88, "y": 95}
     stock = team.extra["pipeline"]["stock"]
     needs = factory.materials(steps)
@@ -218,16 +218,21 @@ def test_coloured_tubes_leave_the_halls_and_go_back_in_above_every_path():
     """The owner's brief of 2026-10-27: tubes out of the factory and back in, to make it look wonky."""
     design, steps, _index = _bp()
     tubes = [s for s in steps if s["section"].startswith("tubes")]
-    assert {s["section"] for s in tubes} == {"tubes-candy", "tubes-packing"} and len({s["action"]["color"] for s in tubes}) == 5
+    assert {s["section"] for s in tubes} > {"tubes-candy", "tubes-packing"} and len({s["action"]["color"] for s in tubes if s["section"] in ("tubes-candy", "tubes-packing")}) == 5  # the five of 2026-10-27, and the wild ones of 2026-11-02
     assert all(s["supported"] and min(c[2] for c in factory._cells_of(s["action"])) >= 6 for s in tubes)  # held by a wall, and no tile closed
     walls = set()
     for s in steps:
         if s["section"] in {"candy", "packing"} and s["kind"] == "place":
             walls |= factory._cells_of(s["action"])
+    anchors = set()
+    for s in steps:
+        if not s["section"].startswith("tubes") and s["kind"] == "place":
+            anchors |= factory._cells_of(s["action"])
     for tube in design["tubes"]:
         first, last = tube["path"][0], tube["path"][-1]
+        held_by = walls if tube["section"] in ("tubes-candy", "tubes-packing") else anchors  # the halls' walls for the five of 2026-10-27; any building or the campus wall for the wild ones
         for x, y, z in (first, last):
-            assert any((x + dx, y + dy, z) in walls for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))), tube["name"]  # out of a wall and back into one
+            assert any((x + dx, y + dy, z) in held_by for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))), tube["name"]  # out of a wall and back into one
     team = load_team(ROOT, "chocolate-factory")
     assert "tubes-candy" in factory.builder_sections(team, "wonka") and "tubes-packing" in factory.builder_sections(team, "mrs-bucket")
     try:

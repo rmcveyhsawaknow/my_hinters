@@ -27,13 +27,18 @@ pipeline:
   next_blueprint: lower-manhattan  # the owner, 2026-10-27: once every step of the factory is done, the builders and hands take up the Atelier's Lower Manhattan
   builders:
     loompa-mason: [depots, elevator, mill, terrace, lookout, campus-north, campus-east]
-    wonka: [candy, tubes-candy, campus-gate, campus-west, elevator, depots, lookout]
-    mrs-bucket: [packing, tubes-packing, campus-south, river-west, river-terrace, river-east, campus-east]
+    wonka: [candy, tubes-candy, campus-gate, campus-west, elevator, depots, lookout, mast, tubes-sky]
+    mrs-bucket: [packing, tubes-packing, campus-south, river-west, river-terrace, river-east, campus-east, boiler, tubes-bay]
+    # the owner's brief of 2026-11-02: every hand builds; the hands take the wild tubes and the silo (Toffeetrowel stands at the world's cap of blocks)
+    loompa-woodcutter: [silo, tubes-fudge]
+    loompa-quarrier: [tubes-spine]
+    loompa-provisioner: [tubes-haul]
+    loompa-hauler: [tubes-crossing]
     # GrandadPail rests by the family hut and holds court from it (owner, 2026-10-24); he builds nothing
   stock:  # the blueprint's remaining cost sets the mix (hglab factory show): stone first, then wood and fiber
     wood: 400
     stone: 800
-    fiber: 250
+    fiber: 300  # the wild expansion of 2026-11-02 asks 268 fiber of thatch roofs and crowns
     berries: 60
     ore: 40
   plan:
