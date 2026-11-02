@@ -44,7 +44,7 @@ pipeline:
       enabled: true
       notice_ticks: 360  # the registrar whispers each builder a notice; the hands wait one hour after it (the owner, 2026-10-25)
     tills: [[78, 95], [72, 73]]  # the owner, 2026-10-27: storehouses for the price of land only, by the factory's west gate and the registrar's vault; no hand unloads into them
-    stores_max: 14  # the owner, 2026-10-27: while every office store is full the mason raises another beside a full one (paid from it), up to this many with the tills
+    stores_max: 24  # the owner, 2026-10-27: while every office store is full the mason raises another beside a full one (paid from it), up to this many with the tills; 24 since 2026-11-02 (14 stood full, the hands' loads bounced)
     overflow_at: 0.75  # the owner, 2026-11-02: a store past three quarters counts as full for that decision, so no give is ever refused
 members:
 - land-broker
