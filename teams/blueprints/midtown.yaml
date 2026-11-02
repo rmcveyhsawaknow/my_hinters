@@ -1,0 +1,274 @@
+# Midtown Manhattan, as blocks (the owner's brief of 2026-11-02): the larger replica continues north of Lower Manhattan
+# on land bought from the land office, segment by segment, every building with a sign beside it.
+#
+# The site: x 30-49, y 60-74, nine lots north of Lower Manhattan (D06-NW, D06-NE, E06-NW, E06-NE, D06-SE, E06-SW,
+# E06-SE, E07-NW, E07-NE), all grass staked by the office on 2026-11-02 with no stone or ore node and no resident's
+# holding; the office's claim sign stands on each lot's centre tile and nothing but a street's slab crosses it. Two
+# lots in the rectangle are not ours and stay empty: D06-SW (forest, x 30-34, y 65-69) and D07-NE (x 35-39, y 70-74).
+#
+# North is up. Fifth Avenue runs north-south at x 42 the length of the site, Sixth Avenue at x 37 from 57th Street to
+# the top of Bryant Park; 42nd Street runs east-west at y 64 across every lot, 34th Street at y 70 across the southern
+# two. Broadway does not reach here: the ten tiles between 42nd Street and Lower Manhattan's Broadway at x 34 are not
+# ours. Heights are the world's, sixteen levels at most, so the skyline is a scale model with its proportions kept:
+# the Empire State Building the tallest, a mast to the ceiling; the Chrysler Building a level below it. Every box is
+# at most 160 cells, so a pack with its berries aside pays for any step; no step needs a store beside it.
+#
+# Land: a step rises only on lots the office has deeded to Plumbline (`land`); the segments are nyc-midtown-south
+# (E07-NW, E07-NE, E06-SW, E06-SE) and nyc-midtown-north (D06-NW, D06-NE, E06-NW, E06-NE, D06-SE) in
+# config/plots.yaml, each offered once the one before is deeded. Builders far from the site carry the next step's
+# material from their faction's stores and walk there (`commute`). Each section's `sign` is its last step: a sign on
+# the tile beside it, its words written fresh for the glass.
+name: Midtown Manhattan
+title: the Midtown blueprint  # how a builder's reasons name it
+team: atelier
+plots: [D06, E06, E07]
+version: 1
+foundation_block: [stone, grey]
+commute: true
+land:
+  client: Plumbline
+  registrar: LandBroker
+  lots: [D06-NW, D06-NE, E06-NW, E06-NE, D06-SE, E06-SW, E06-SE, E07-NW, E07-NE]
+story: >-
+  The Atelier's second study of the real skyline: Midtown, where the island's grid fills with the tallest buildings
+  of their day. The Empire State Building rises off Fifth Avenue in grey setbacks to a mast at the ceiling; the
+  Chrysler Building answers from the east with a silver crown; between them Grand Central's hall faces 42nd Street
+  with the MetLife slab behind it and One Vanderbilt beside it. North along Fifth the Public Library's white
+  columns look over Bryant Park, St Patrick's spire and the tan slab of 30 Rockefeller Plaza stand off Sixth Avenue,
+  and the Plaza and Carnegie Hall close the north. Times Square's bright towers flank a small square, the Waldorf
+  and the Seagram Building keep the east, the Flatiron's narrow prow and Madison Square Garden the south.
+sections:
+  # ---- the north (segment nyc-midtown-north: D06-NW, D06-NE, E06-NW, E06-NE, D06-SE)
+  - id: plaza-hotel
+    name: The Plaza Hotel
+    tiles: [30, 62, 31, 63]  # the north-west corner, off the claim sign at (32,62)
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 31, y: 61, text: "The Plaza Hotel: a French chateau of 1907 at the corner of the park; its tea court and its guests have filled novels and films."}
+    style: hall
+    levels: 7
+    doors: [south]
+    door: [wood, brown]
+    pillars: [stone, white]
+    courses: [white, tan]
+    course_levels: 1
+    window_levels: [2, 4]
+    window_color: yellow
+    roof_slope: [stone, green]
+    roof_cap: [stone, green]
+  - id: carnegie-hall
+    name: Carnegie Hall
+    tiles: [33, 62, 34, 63]
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 32, y: 63, text: "Carnegie Hall: built in 1891 with a steel baron's money and opened by Tchaikovsky; the joke about reaching it is older than most of its musicians."}
+    style: hall
+    levels: 6
+    doors: [south]
+    door: [wood, brown]
+    pillars: [stone, tan]
+    courses: [brown, tan]
+    course_levels: 1
+    window_levels: [2, 4]
+    window_color: yellow
+    roof_slope: [stone, grey]
+    roof_cap: [stone, grey]
+  - id: st-patricks
+    name: St Patrick's Cathedral
+    tiles: [35, 60, 36, 62]  # off Sixth Avenue; its spire at the south end, the door to the north
+    foundation: [[1, 0], [0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 35, y: 63, text: "St Patrick's Cathedral: white marble in the Gothic manner, begun in 1858 on what was then the edge of town, its spires finished in 1888."}
+    style: church
+    levels: 6
+    walls: [stone, white]
+    window_color: blue
+    door: [wood, brown]
+    roof: [stone, grey]
+    tower: {at: south, levels: 11, block: [stone, white], spire: [stone, grey], spire_levels: 3}
+  - id: rockefeller
+    name: 30 Rockefeller Plaza
+    tiles: [38, 60, 39, 62]  # between Sixth Avenue and the library's lot, off the claim sign at (37,62)
+    foundation: [[1, 1], [0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 38, y: 63, text: "30 Rockefeller Plaza: the tall slab of a city within the city, raised through the Depression in 1933; a skating rink sits at its feet."}
+    style: skyscraper
+    doors: [south]
+    stages:
+      - {levels: 7, courses: [tan], window_every: 2, window_color: cyan}
+      - {levels: 3, inset: 1, courses: [tan], window_every: 2, window_color: cyan}
+    roof: [stone, tan]
+    crown: {style: stepped, block: [stone, tan]}  # a level under the Chrysler, two under the Empire State
+  - id: one-vanderbilt
+    name: One Vanderbilt
+    tiles: [43, 60, 43, 61]  # a slim glass tower beside Grand Central, east of Fifth Avenue
+    foundation: [[1], [0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 43, y: 62, text: "One Vanderbilt: a glass tower of 2020 beside the terminal, its point among the highest in Midtown."}
+    style: skyscraper
+    doors: [south]
+    stages:
+      - {levels: 10, glass: true, window_color: cyan, band: 4}
+      - {levels: 2, inset: 1, glass: true, window_color: white, band: 2}
+    roof: [stone, white]
+    crown: {style: spire, block: [stone, white], mast_levels: 1}
+  - id: metlife
+    name: The MetLife Building
+    tiles: [46, 60, 46, 61]  # the slab behind Grand Central, astride where Park Avenue would run
+    foundation: [[0], [0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 45, y: 60, text: "The MetLife Building: the wide slab of 1963 standing astride Park Avenue behind the terminal, once the largest office building in the world."}
+    style: skyscraper
+    doors: [north]
+    stages:
+      - {levels: 11, courses: [grey], window_every: 2, window_color: white}
+    roof: [stone, grey]
+  - id: grand-central
+    name: Grand Central Terminal
+    tiles: [45, 62, 46, 63]  # its hall faces 42nd Street
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 44, y: 62, text: "Grand Central Terminal: a railway hall of 1913 under a painted sky of stars; forty-four platforms lie beneath the streets around it."}
+    style: hall
+    levels: 5
+    doors: [south]
+    door: [wood, brown]
+    pillars: [stone, tan]
+    courses: [tan]
+    course_levels: 1
+    window_levels: [2, 3]
+    window_color: yellow
+    roof_slope: [stone, tan]
+    roof_cap: [stone, green]
+  - id: chrysler
+    name: The Chrysler Building
+    tiles: [48, 60, 49, 62]  # the east end of 42nd Street, off the claim sign at (47,62)
+    foundation: [[1, 1], [0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 48, y: 63, text: "The Chrysler Building: steel eagles and a crown of silver arches, finished in 1930; the spire was assembled inside and raised in secret to win the race for height."}
+    style: skyscraper
+    doors: [south]
+    stages:
+      - {levels: 7, courses: [grey, white], window_every: 2, window_color: cyan}
+      - {levels: 3, inset: 1, courses: [white], window_every: 2, window_color: cyan}
+      - {levels: 2, inset: 1, courses: [white], window_every: 0}
+    roof: [stone, white]
+    crown: {style: spire, block: [stone, white], mast_levels: 2}  # the silver crown, a level under the Empire State's mast
+  - id: one-times-square
+    name: One Times Square
+    tiles: [35, 65, 35, 66]  # the north tower of the square, west of Sixth Avenue
+    foundation: [[0], [0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 36, y: 65, text: "One Times Square: a slim tower of 1904 built for a newspaper; since 1907 a lit ball has dropped down its pole at midnight on the last day of the year."}
+    style: skyscraper
+    doors: [east]
+    stages:
+      - {levels: 9, courses: [red, white], window_every: 2, window_color: yellow}
+    roof: [stone, white]
+    crown: {style: spire, block: [stone, white], mast_levels: 2}  # the pole the ball drops down
+  - id: duffy-square
+    name: Duffy Square
+    tiles: [36, 67, 36, 68]  # the square between the two towers, a lawn with one tree
+    foundation: [[0], [0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 36, y: 69, text: "Duffy Square: the small triangle at the head of Times Square, named for a wartime chaplain; its steps look down the lights."}
+    style: park
+    hedge: [thatch, green]
+    trees: [[36, 68]]
+    path_color: tan
+  - id: paramount
+    name: The Paramount Building
+    tiles: [35, 68, 35, 69]  # the south tower of the square
+    foundation: [[0], [0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 35, y: 67, text: "The Paramount Building: a film company's tower of 1927 with a clock and a glass globe at the top, setbacks all the way up."}
+    style: skyscraper
+    doors: [east]
+    stages:
+      - {levels: 6, courses: [tan], window_every: 2, window_color: pink}
+      - {levels: 3, inset: 1, courses: [tan], window_every: 2, window_color: pink}
+    roof: [stone, tan]
+    crown: {style: stepped, block: [stone, tan]}
+  - id: bryant-park
+    name: Bryant Park
+    tiles: [38, 65, 39, 66]  # behind the library, between it and Sixth Avenue
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 38, y: 67, text: "Bryant Park: a lawn behind the library on the site of a reservoir; the books are kept in stacks beneath the grass."}
+    style: park
+    hedge: [thatch, green]
+    trees: [[39, 66]]
+    paths: [[38, 66, 39, 66]]
+    path_color: tan
+  # ---- the south (segment nyc-midtown-south: E07-NW, E07-NE, E06-SW, E06-SE)
+  - id: nypl
+    name: The New York Public Library
+    tiles: [40, 65, 41, 66]  # its columns face Fifth Avenue
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 40, y: 67, text: "The New York Public Library: white marble opened in 1911, two stone lions at the steps named Patience and Fortitude."}
+    style: temple
+    facing: east
+    levels: 6
+    walls: [stone, white]
+    columns: [stone, white]
+    podium: [stone, grey]
+    roof: [stone, white]
+  - id: waldorf
+    name: The Waldorf Astoria
+    tiles: [45, 65, 46, 66]
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 44, y: 65, text: "The Waldorf Astoria: the hotel of 1931 on Park Avenue, twin towers over a block; presidents kept suites here."}
+    style: hall
+    levels: 9
+    doors: [west]
+    door: [wood, brown]
+    pillars: [stone, tan]
+    courses: [tan, brown]
+    course_levels: 2
+    window_levels: [2, 5]
+    window_color: yellow
+    roof_slope: [stone, green]
+    roof_cap: [stone, green]
+  - id: seagram
+    name: The Seagram Building
+    tiles: [48, 65, 49, 66]  # the bronze slab on its plaza, off the claim sign at (47,67)
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 47, y: 65, text: "The Seagram Building: bronze and dark glass of 1958, set back from the avenue behind a plaza that became the rule."}
+    style: skyscraper
+    doors: [west]
+    stages:
+      - {levels: 11, glass: true, window_color: orange, band: 4}
+    roof: [stone, black]
+  - id: flatiron
+    name: The Flatiron Building
+    tiles: [41, 71, 41, 72]  # the narrow prow at the foot of Fifth Avenue
+    foundation: [[0], [1]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 40, y: 71, text: "The Flatiron Building: a narrow triangle of 1902 where Broadway crosses Fifth, twenty-two storeys on a prow six feet wide."}
+    style: skyscraper
+    doors: [south]
+    stages:
+      - {levels: 7, courses: [tan, white], window_every: 2, window_color: cyan}
+    roof: [stone, tan]
+  - id: empire-state
+    name: The Empire State Building
+    tiles: [43, 71, 44, 72]  # off Fifth Avenue below 34th Street, the tallest: setbacks and a mast to the ceiling
+    foundation: [[1, 1], [1, 1]]  # the survey lifts the south row one level; the whole building stands on that podium, so its mast reaches level 15
+    sign: {x: 43, y: 73, text: "The Empire State Building: 102 storeys of limestone raised in 410 days and finished in 1931; the mast was meant for airships and holds the lights instead."}
+    style: skyscraper
+    doors: [west]
+    stages:
+      - {levels: 5, courses: [grey], window_every: 2, window_color: cyan}
+      - {levels: 4, inset: 1, courses: [grey, tan], window_every: 2, window_color: cyan}
+      - {levels: 2, inset: 1, courses: [grey], window_every: 0}
+      - {levels: 1, inset: 1, courses: [grey], window_every: 0}
+    roof: [stone, grey]
+    crown: {style: spire, block: [stone, white]}  # the mast to the ceiling
+  - id: msg
+    name: Madison Square Garden
+    tiles: [45, 73, 46, 74]  # the round hall, a square one in the glass
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 45, y: 72, text: "Madison Square Garden: the round arena of 1968 over the railway station, the fourth to carry the name."}
+    style: hall
+    levels: 4
+    doors: [north]
+    door: [wood, brown]
+    pillars: [stone, white]
+    courses: [tan]
+    course_levels: 1
+    window_levels: [2]
+    window_color: orange
+    roof_slope: [stone, grey]
+    roof_cap: [stone, grey]
+streets:
+  - {name: Fifth Avenue, section: streets, tiles: [42, 60, 42, 74], block: [stone, black]}
+  - {name: Sixth Avenue, section: streets, tiles: [37, 60, 37, 69], block: [stone, black]}
+  - {name: 42nd Street, section: streets, tiles: [30, 64, 49, 64], block: [stone, grey]}
+  - {name: 34th Street, section: streets, tiles: [40, 70, 49, 70], block: [stone, grey]}
