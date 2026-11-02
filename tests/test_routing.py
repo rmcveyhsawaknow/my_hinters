@@ -50,6 +50,7 @@ def test_a_character_keeps_its_personality_and_an_explorers_moves_count(tmp_path
     personas, teams = load_personas(ROOT), load_teams(ROOT)
     pats = patterns(g, 0)
     strayling = personas["lost-boy"]
+    strayling.knobs.pop("crew", None)  # the owner, 2026-11-02: Strayling is crew now, and a hand's one route is the blueprint; this is the character branch
     walker = productivity(g, "Strayling", goal_kinds=frozenset({"move"}))
     assert walker["share"] == 1.0 and route_for(strayling, teams["neverland"], walker, pats) is None  # discoveries are made on foot
     idle = productivity(g, "Strayling")

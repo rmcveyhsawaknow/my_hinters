@@ -43,8 +43,10 @@ def test_the_team_file_carries_the_pipeline_and_every_hand_its_role():
     personas = load_personas(ROOT)
     roles = {personas[s].knobs["crew"]["role"] for s in teams["chocolate-factory"].members if "crew" in personas[s].knobs}
     assert roles == {"woodcutter", "quarrier", "provisioner", "hauler", "mason"}
-    assert all(personas[s].team in {"chocolate-factory", "exchange"} for s in personas if "crew" in personas[s].knobs)  # the factory crew and the office hands
-    assert pipeline_of(teams["neverland"]) is None
+    assert all(personas[s].team in {"chocolate-factory", "exchange", "neverland"} for s in personas if "crew" in personas[s].knobs)  # the factory crew, the office hands and Neverland's (2026-11-02)
+    neverland = pipeline_of(teams["neverland"])
+    assert neverland["blueprint"] == "treetop-hideaway" and neverland["plan"] == [{"type": "storehouse", "count": 1}]
+    assert {personas[s].knobs["crew"]["role"] for s in teams["neverland"].members if "crew" in personas[s].knobs} == {"woodcutter", "hauler", "mason"}  # Tinkerglow builds without a crew role: she keeps the gate
 
 
 def test_a_woodcutter_clears_the_forest_nearest_the_works_first():

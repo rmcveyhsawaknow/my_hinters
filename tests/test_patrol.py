@@ -69,6 +69,7 @@ def test_the_patrol_walks_ahead_two_hops_and_counts_the_laps():
 def test_lagalong_keeps_to_the_edge_in_shifts_and_wakes(work):
     personas = load_personas(ROOT)
     persona = personas["tootles"]
+    persona.knobs.pop("crew", None)  # the owner, 2026-11-02: Lagalong is crew now, so a shift runs the pipeline first; the patrol shapes his own plans only, which is what this test checks
     team = load_team(ROOT, persona.team)
     rows = _island(lake=False)
     observe = {

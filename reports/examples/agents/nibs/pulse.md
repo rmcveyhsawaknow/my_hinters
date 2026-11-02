@@ -46,7 +46,7 @@ Behaviour signatures (numeric ranges the persona expects):
 | mean distance from Neverland's centre | 1.868 | 0–6 | yes |
 | share of energy building | 0.15 | 0.3–0.6 | no |
 | visitors greeted over 7 days | 4.0 | 0–10 | yes |
-| intended vs actual energy mix | 0.41 | 0.6–1.0 | no |
+| intended vs actual energy mix | 0.39 | 0.6–1.0 | no |
 
 Judge (fixture fixture, 6 lines, 8 actions):
 

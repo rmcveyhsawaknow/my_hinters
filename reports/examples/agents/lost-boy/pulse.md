@@ -47,7 +47,7 @@ Behaviour signatures (numeric ranges the persona expects):
 | share of wakes distracted | 0.362 | 0.25–0.55 | yes |
 | share of energy exploring | 0.563 | 0.35–0.7 | yes |
 | distinct tiles visited over 7 days | 14.0 | 20–200 | no |
-| intended vs actual energy mix | 0.833 | 0.5–1.0 | yes |
+| intended vs actual energy mix | 0.683 | 0.5–1.0 | yes |
 
 Judge (fixture fixture, 6 lines, 8 actions):
 

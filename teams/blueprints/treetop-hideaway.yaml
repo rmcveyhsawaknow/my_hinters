@@ -1,0 +1,85 @@
+# The Treetop Hideaway, as blocks (the owner's instruction of 2026-11-02): Neverland builds up into its own
+# forest. Three treehouses on free forest tiles inside the ring of riddle signs, joined by rope bridges, all of
+# it wood and thatch from the woods around.
+#
+# Read from the public world of tick 142000: the forest fills the ring from the signs on row 102 down to the
+# farms on rows 109-110, the roads Tinkerglow laid cross it at (70-74,107-108) and (77-79,101-105), and
+# Stoutheart's hut stands at (69,107), Tinkerglow's at (80,104) with her house blocks on (79,104) and (80,105).
+# Every trunk stands on a forest tile with no node, structure or block (a trunk closes its tile); the decks lie
+# at level 6, where a block closes no tile, so the roads and the wood nodes under them stay open. A treehouse
+# keeps no plinth (the deck is its one plane), so no foundation rows: the ground survey is not applied here.
+#
+# Tiles are [x0, y0, x1, y1], inclusive; cells are 4 per tile. Colours: natural white grey black brown red orange
+# yellow lime green teal cyan blue indigo purple pink tan. Materials: wood (wood), thatch (fiber).
+name: The Treetop Hideaway
+title: the Treetop Hideaway blueprint  # how a builder's reasons name it
+team: neverland
+version: 1
+foundation_block: [wood, brown]
+story: >-
+  Three trees over the forest floor of Neverland: the Great Tree in the middle, where the fire is kept and the
+  store stands below, the West Tree where Strayling forgets what he came for, and the Lookout Tree by the
+  opening in the ring, where Tinkerglow watches the water for whoever she will find next. Rope bridges swing
+  between them, high enough that nobody's way through the woods is barred.
+sections:
+  - id: great-tree
+    name: The Great Tree
+    tiles: [72, 104, 75, 107]  # free forest mid-ring; the road at (72,107) runs under the deck
+    style: treehouse
+    deck: 6
+    trunks: [[73, 104], [75, 105], [72, 106], [74, 107]]
+    trunk: [wood, brown]
+    deck_block: [wood, natural]
+    railing: [wood, tan]
+    cabin: [73, 105, 74, 106]
+    doors: [east]
+    door: [wood, orange]
+    cabin_color: green
+    window_color: yellow
+    roof_slope: [thatch, natural]
+    roof_cap: [thatch, lime]
+    lantern: [288, 416]  # the north-west corner of the deck
+  - id: west-tree
+    name: The West Tree
+    tiles: [66, 103, 68, 105]  # free forest below the north signs, east of the sign at (64,105)
+    style: treehouse
+    deck: 6
+    trunks: [[67, 103], [66, 105], [68, 104]]
+    trunk: [wood, brown]
+    deck_block: [wood, natural]
+    railing: [wood, tan]
+    cabin: [66, 104, 67, 105]
+    doors: [east]
+    door: [wood, teal]
+    cabin_color: teal
+    window_color: yellow
+    roof_slope: [thatch, natural]
+    roof_cap: [thatch, green]
+  - id: lookout-tree
+    name: The Lookout Tree
+    tiles: [81, 103, 83, 105]  # free forest beside the opening at (84,105); the road at (81,103) runs under the deck
+    style: treehouse
+    deck: 6
+    trunks: [[82, 103], [81, 105], [83, 104]]
+    trunk: [wood, brown]
+    deck_block: [wood, natural]
+    railing: [wood, tan]
+    cabin: [82, 104, 83, 105]
+    doors: [west]
+    door: [wood, lime]
+    cabin_color: green
+    window_color: cyan
+    roof_slope: [thatch, natural]
+    roof_cap: [thatch, pink]
+    lantern: [335, 412]  # the north-east corner of the deck, a light for the opening
+tubes:  # rope bridges: wood one cell thick at the railings' level, each leg straight and short, sagging a level mid-way
+  - name: west rope bridge
+    section: bridge-west  # from the West Tree's east railing to the Great Tree's west railing, over (69-71,104)
+    material: wood
+    color: tan
+    path: [[276, 418, 7], [281, 418, 7], [281, 418, 6], [284, 418, 6], [284, 418, 7], [287, 418, 7]]
+  - name: east rope bridge
+    section: bridge-east  # from the Great Tree's east railing to the Lookout Tree's west railing, over (76-80,105)
+    material: wood
+    color: tan
+    path: [[304, 420, 7], [309, 420, 7], [309, 420, 6], [318, 420, 6], [318, 420, 7], [323, 420, 7]]

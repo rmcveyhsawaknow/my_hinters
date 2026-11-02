@@ -14,12 +14,16 @@ INSIDE = {"id": 9, "name": "Chocolate Factory"}
 def _wake(slug: str, observe: dict, tmp_path: Path, **overrides):
     personas = load_personas(ROOT)
     persona = personas[slug]
+    team = load_team(ROOT, persona.team)
+    if persona.team == "neverland":  # the owner, 2026-11-02: Stoutheart is Neverland's mason and a builder of its hideaway now, so a live wake runs the pipeline and the blueprint first; these tests check the generic builder's order
+        persona.knobs.pop("crew", None)
+        team.extra["pipeline"]["builders"].pop(slug, None)
     observe["you"]["name"] = persona.name
     client = FixtureClient(observe)
     lease = acquire(client, persona.name)
     return persona_wake(
         persona=persona,
-        team=load_team(ROOT, persona.team),
+        team=team,
         personas=personas,
         client=client,
         lease=lease,
@@ -268,9 +272,12 @@ def test_the_assignment_s_preferred_steps_come_before_the_default_order(tmp_path
     tick_observe = json.loads(json.dumps(base))
     tick_observe["_guidance"] = {"assignment": {"label": "stores", "works": [], "avoid": [], "prefer": ["gather_trip"]}}
     personas = load_personas(ROOT)
+    personas["nibs"].knobs.pop("crew", None)  # as in _wake: the generic builder's order, not the mason's pipeline or the hideaway
+    neverland = load_team(ROOT, "neverland")
+    neverland.extra["pipeline"]["builders"].pop("nibs", None)
     client = FixtureClient(tick_observe)
     record = persona_wake(
-        persona=personas["nibs"], team=load_team(ROOT, "neverland"), personas=personas, client=client,
+        persona=personas["nibs"], team=neverland, personas=personas, client=client,
         lease=acquire(client, personas["nibs"].name), root=ROOT, output_dir=tmp_path, dry_run=True, work=False, seed="team",
     )
     record = record[0] if isinstance(record, tuple) else record
