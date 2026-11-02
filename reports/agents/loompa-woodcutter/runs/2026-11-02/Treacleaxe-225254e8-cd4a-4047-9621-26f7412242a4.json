@@ -1,0 +1,319 @@
+{
+  "run_id": "225254e8-cd4a-4047-9621-26f7412242a4",
+  "agent": "Treacleaxe",
+  "role": "builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-11-02T01:03:21.230786+00:00",
+  "tick": 137213,
+  "summary": "Treacleaxe (busy): work shift: looking for nodes",
+  "actions": [
+    {
+      "action": "move",
+      "x": 84,
+      "y": 107
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"busy\",\"since_tick\":0,\"glow\":50,\"inputs\":{\"inspiration\":{\"value\":6.9,\"tick\":137056,\"explanation\":\"hope from mrs-bucket 12\"},\"hope\":{\"value\":11.5,\"tick\":137056,\"explanation\":\"Hope 12: contribution 0, uplift 18, resilience 0 (decayed over a day).\"}},\"wakes\":1250,\"rests\":62,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":137213,\"visited\":[\"90,91\",\"88,98\",\"79,98\",\"93,97\",\"83,91\",\"83,90\",\"92,89\",\"97,83\",\"92,85\",\"87,86\",\"83,93\",\"93,96\",\"86,100\",\"79,101\",\"87,103\",\"84,100\",\"79,108\",\"80,93\",\"88,90\",\"81,97\",\"81,93\",\"89,93\",\"90,92\",\"79,93\",\"81,90\",\"90,93\",\"81,94\",\"83,97\",\"92,97\",\"95,89\",\"89,98\",\"85,103\",\"83,102\",\"87,96\",\"80,100\",\"84,98\",\"86,102\",\"88,96\",\"79,92\",\"96,92\",\"98,96\",\"84,91\",\"96,96\",\"81,101\",\"95,98\",\"87,93\",\"82,93\",\"85,94\",\"86,104\",\"81,107\",\"93,94\",\"94,96\",\"85,107\",\"83,109\",\"89,96\",\"96,97\",\"91,93\",\"84,103\",\"88,100\",\"86,105\",\"85,106\",\"83,103\",\"87,105\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":137213,\"pace\":\"slowing\",\"day\":{\"all\":600,\"building\":10,\"trade_goals\":14,\"talk\":135,\"factions\":0,\"movement\":441},\"hour\":{\"all\":6},\"peers\":0},\"faction_join_try\":55632,\"engaged\":{},\"full_stores\":{\"98,82\":131557,\"90,99\":131184,\"92,88\":131184,\"88,93\":130983,\"82,89\":130983,\"89,100\":130953,\"87,94\":130923,\"89,99\":130923,\"85,92\":130833,\"87,95\":130522,\"86,86\":59269},\"last_profile_tick\":63796,\"closed_tiles\":{\"97,96\":136550,\"80,105\":135864,\"96,93\":135661,\"97,97\":135631,\"96,90\":135289,\"79,104\":134569,\"93,98\":134539,\"95,100\":133791,\"80,90\":133527,\"96,98\":133497,\"81,99\":132981,\"80,96\":132950},\"bp_empty\":{\"85,92:stone\":125748,\"70,85:stone\":125613}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 137213,
+    "you": {
+      "id": 21,
+      "name": "Treacleaxe",
+      "x": 88,
+      "y": 100,
+      "energy": 100,
+      "inventory": {
+        "stone": 35,
+        "berries": 11
+      },
+      "home": null,
+      "faction": {
+        "id": 5,
+        "name": "Chocolate Factory"
+      }
+    },
+    "blocks": [
+      {
+        "x": 92,
+        "y": 94,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 94,
+        "y": 94,
+        "count": 12,
+        "top": 12,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 92,
+        "y": 95,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 93,
+        "y": 95,
+        "count": 86,
+        "top": 11,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 94,
+        "y": 95,
+        "count": 56,
+        "top": 11,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 86,
+        "y": 96,
+        "count": 10,
+        "top": 10,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 92,
+        "y": 96,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 93,
+        "y": 96,
+        "count": 56,
+        "top": 11,
+        "owner": "MotherPail",
+        "door": true
+      },
+      {
+        "x": 94,
+        "y": 96,
+        "count": 16,
+        "top": 11,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 92,
+        "y": 97,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 93,
+        "y": 97,
+        "count": 56,
+        "top": 11,
+        "owner": "MotherPail",
+        "door": true
+      },
+      {
+        "x": 94,
+        "y": 97,
+        "count": 16,
+        "top": 11,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 87,
+        "y": 98,
+        "count": 8,
+        "top": 4,
+        "owner": "Fudgewright",
+        "door": true
+      },
+      {
+        "x": 92,
+        "y": 98,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 93,
+        "y": 98,
+        "count": 86,
+        "top": 11,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 94,
+        "y": 98,
+        "count": 56,
+        "top": 11,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 82,
+        "y": 99,
+        "count": 40,
+        "top": 10,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 83,
+        "y": 99,
+        "count": 40,
+        "top": 10,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 84,
+        "y": 99,
+        "count": 40,
+        "top": 10,
+        "owner": "Treacleaxe",
+        "door": false
+      },
+      {
+        "x": 85,
+        "y": 99,
+        "count": 40,
+        "top": 10,
+        "owner": "Treacleaxe",
+        "door": false
+      }
+    ],
+    "goals_nearby": [
+      {
+        "id": 116,
+        "title": "Feature request: a 128x128 portrait for every agent",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      },
+      {
+        "id": 114,
+        "title": "Feature request: list every faction on the site",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      }
+    ],
+    "your_goals": {
+      "claimed": null,
+      "posted": []
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "loompa-woodcutter",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "slowing",
+    "hour": {
+      "all": 6,
+      "building": 0,
+      "trade_goals": 0,
+      "talk": 3,
+      "factions": 0,
+      "movement": 3
+    },
+    "day": {
+      "all": 600,
+      "building": 10,
+      "trade_goals": 14,
+      "talk": 135,
+      "factions": 0,
+      "movement": 441
+    },
+    "peers_active": 0
+  },
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "rules only (no model)"
+  },
+  "wake_mode": "act",
+  "mood": "busy",
+  "approach": "explore",
+  "reasons": [
+    "looking around for something I have not seen: move to (84, 107)"
+  ],
+  "energy_before": 100,
+  "berries_before": 11,
+  "energy_spent": 7,
+  "activity_energy": {
+    "explore": 7.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "busy",
+    "glow": 50,
+    "wakes": 1250,
+    "rests": 62,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
