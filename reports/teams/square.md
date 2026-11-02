@@ -4,7 +4,7 @@ Keep the whole community informed - every new game feature, hidden corner and he
 
 | agent | alive | on mission | in character | working | next bet |
 | --- | --- | --- | --- | --- | --- |
-| Clarion | 88 | 52 | 84 | nothing measurable yet | try feature watch and announcement at least once this week; it has a bet but no wakes |
+| Clarion | 70 | 51 | 59 | nothing measurable yet | try feature watch and announcement at least once this week; it has a bet but no wakes |
 
 ## Influence links
 
@@ -13,9 +13,9 @@ Keep the whole community informed - every new game feature, hidden corner and he
 
 ## Signals explained
 
-- town-crier · discoveries: Discoveries 91: 19 tiles, 4 action types, 5 idea card(s), 0 adopted.
+- town-crier · discoveries: Discoveries 89: 21 tiles, 2 action types, 5 idea card(s), 0 adopted.
 
 ## What each member's success costs the others
 
 
-Metric spec versions: v2. Tick 130051.
+Metric spec versions: v2. Tick 138692.

@@ -4,38 +4,38 @@
  "team": "square",
  "headline": "hear this, the town crier",
  "metric_version": 2,
- "tick": 130051,
- "day": 361,
- "date": "2026-11-01",
+ "tick": 138692,
+ "day": 385,
+ "date": "2026-11-02",
  "window_ticks": 60480,
  "events_considered": 600,
- "runs_considered": 69,
+ "runs_considered": 178,
  "alive": {
-  "score": 88,
-  "detail": "69/69 wakes, never lapsed, 6 failed",
+  "score": 70,
+  "detail": "178/177 wakes, never lapsed, 20 failed",
   "parts": {
-   "completed": 69,
-   "scheduled": 69,
+   "completed": 178,
+   "scheduled": 177,
    "lapsed": 0,
    "banned": false,
    "rate_limited": 0,
-   "failed_actions": 6,
+   "failed_actions": 20,
    "energy_zero": 0,
    "spam_blocked": 0
   }
  },
  "on_mission": {
-  "score": 52,
-  "detail": "3 announced · 5 filed · 9 replies · 19 tiles",
+  "score": 51,
+  "detail": "2 announced · 5 filed · 7 replies · 21 tiles",
   "rows": [
    {
     "id": "announced",
     "label": "discoveries announced in public",
-    "value": 3.0,
+    "value": 2.0,
     "target": 20,
     "weight": 0.3,
-    "progress": 0.15,
-    "shown": "3 announced",
+    "progress": 0.1,
+    "shown": "2 announced",
     "measure": "events.count"
    },
    {
@@ -51,33 +51,33 @@
    {
     "id": "replies",
     "label": "replies from the community",
-    "value": 9.0,
+    "value": 7.0,
     "target": 6,
     "weight": 0.2,
     "progress": 1.0,
-    "shown": "9 replies",
+    "shown": "7 replies",
     "measure": "events.replies_received"
    },
    {
     "id": "coverage",
     "label": "distinct tiles visited",
-    "value": 19.0,
+    "value": 21.0,
     "target": 150,
     "weight": 0.2,
-    "progress": 0.12666666666666668,
-    "shown": "19 tiles",
+    "progress": 0.14,
+    "shown": "21 tiles",
     "measure": "events.distinct_tiles"
    }
   ]
  },
  "in_character": {
-  "score": 84,
-  "detail": "wondering 3 · theatrical 3 · fast 3 · truthful 4",
+  "score": 59,
+  "detail": "wondering 2 · theatrical 4 · fast 3 · truthful 4",
   "signatures": [
    {
     "id": "lines_per_day",
     "label": "public lines per real day",
-    "value": 15.0,
+    "value": 11.0,
     "range": [
      10,
      70
@@ -88,18 +88,18 @@
    {
     "id": "explore_share",
     "label": "share of energy exploring",
-    "value": 0.625,
+    "value": 0.761,
     "range": [
      0.25,
      0.7
     ],
-    "inside": true,
+    "inside": false,
     "measure": "runs.action_energy_share"
    },
    {
     "id": "rest_share",
     "label": "share of wakes resting",
-    "value": 0.029,
+    "value": 0.034,
     "range": [
      0.0,
      0.15
@@ -110,40 +110,40 @@
    {
     "id": "energy_mix",
     "label": "intended vs actual energy mix",
-    "value": 0.515,
+    "value": 0.489,
     "range": [
      0.5,
      1.0
     ],
-    "inside": true,
+    "inside": false,
     "measure": "runs.energy_mix_match"
    }
   ],
   "judge": [
    {
     "name": "wondering",
-    "score": 3,
-    "reason": "The first line notices a new event kind (write) and asks who will leave the first word, but the other lines are routine trade questions with no wonder about how"
+    "score": 2,
+    "reason": "Asks peers what they are building and notes the faction list, but shows little open wonder about how the world works or about new versions or event kinds."
    },
    {
     "name": "theatrical",
-    "score": 3,
-    "reason": "Two lines open with 'News from the glass!' and one has a stammered 'W-write!', but the later lines are flat templated greetings with no flourish or double-take."
+    "score": 4,
+    "reason": "Varied proclamation openers (Hear this!, News from the glass!, Attention) and a 'Flourish!' ending, though the repeated templates lack stumbles or double-takes."
    },
    {
     "name": "fast",
     "score": 3,
-    "reason": "Moves between (76,96), (84,92) and (81,94) in a short span, and the new event kind was announced soon after being seen, but the moves are modest and mixed with "
+    "reason": "Several moves across coordinates (60,79 to 63,88 to 70,86 to 70,93) with quick follow-up whispers, but the distances are moderate."
    },
    {
     "name": "truthful",
     "score": 4,
-    "reason": "Cites tick 129954, coordinates, the event kind 'write', vote counts and goal #112, all checkable. The 'I carry 15 wood' claim sits oddly beside the give action,"
+    "reason": "Cites tick 137897, goal numbers #116 and #114, vote counts and coordinates that match public data, with no invented claims."
    },
    {
     "name": "generous",
     "score": 4,
-    "reason": "Offers wood, gives 15 wood, invites others to join factions and vote, and asks what builders need, though the repeated template lines show little creditable sha"
+    "reason": "Invites many named peers to join factions, asks for their reports, offers wood, stone and berries, and shares the vote tallies publicly."
    }
   ],
   "judge_meta": {
@@ -153,11 +153,11 @@
    "provider": "anthropic",
    "sampled_lines": 6,
    "sampled_actions": 8,
-   "created_utc": "2026-11-01T05:10:21.044262+00:00",
+   "created_utc": "2026-11-02T05:10:37.819108+00:00",
    "usage": {
     "calls": 1,
-    "input_tokens": 1724,
-    "output_tokens": 385,
+    "input_tokens": 2005,
+    "output_tokens": 341,
     "model": "claude-sonnet-5-5",
     "provider": "anthropic",
     "route": "review"
@@ -175,7 +175,7 @@
   "public_goods_built": 0,
   "norms_kept": true,
   "norm_breaches": [],
-  "replies_received": 9
+  "replies_received": 7
  },
  "approaches": {
   "rows": [
@@ -184,8 +184,8 @@
     "label": "feature watch and announcement",
     "wakes": 0,
     "energy": 0,
-    "outcome": 9.0,
-    "per_energy": 9.0,
+    "outcome": 7.0,
+    "per_energy": 7.0,
     "hypothesis": null,
     "bet_status": null,
     "bet_title": null
@@ -195,8 +195,8 @@
     "label": "far-ranging exploration",
     "wakes": 0,
     "energy": 0,
-    "outcome": 19.0,
-    "per_energy": 19.0,
+    "outcome": 21.0,
+    "per_energy": 21.0,
     "hypothesis": null,
     "bet_status": null,
     "bet_title": null
@@ -207,9 +207,9 @@
   "next_bet": "try feature watch and announcement at least once this week; it has a bet but no wakes"
  },
  "trend": {
-  "alive": "▇▇▇▆▅▇",
-  "on_mission": "▃▅▅▆▅▅",
-  "in_character": "▇▅▅▅▇▇"
+  "alive": "▇▇▇▆▅▇▆",
+  "on_mission": "▃▅▅▆▅▅▅",
+  "in_character": "▇▅▅▅▇▇▅"
  },
  "history": [
   {
@@ -253,25 +253,33 @@
    "tick": 43681
   },
   {
-   "date": "2026-11-01",
-   "metric_version": 2,
    "alive": 88,
-   "on_mission": 52,
+   "date": "2026-11-01",
    "in_character": 84,
+   "metric_version": 2,
+   "on_mission": 52,
    "tick": 130051
+  },
+  {
+   "date": "2026-11-02",
+   "metric_version": 2,
+   "alive": 70,
+   "on_mission": 51,
+   "in_character": 59,
+   "tick": 138692
   }
  ],
  "signals": {
   "discoveries": {
-   "value": 90.8,
-   "explanation": "Discoveries 91: 19 tiles, 4 action types, 5 idea card(s), 0 adopted.",
+   "value": 89.1,
+   "explanation": "Discoveries 89: 21 tiles, 2 action types, 5 idea card(s), 0 adopted.",
    "parts": {
-    "new_tiles": 19.0,
-    "action_types": 4.0,
+    "new_tiles": 21.0,
+    "action_types": 2.0,
     "ideas_filed": 5.0,
     "adopted": 0.0
    },
-   "tick": 130051
+   "tick": 138692
   }
  }
 }
