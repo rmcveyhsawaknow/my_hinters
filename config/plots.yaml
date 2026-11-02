@@ -80,6 +80,33 @@ site_requests:
 # are sold through self-confirming goals: the buyer gives the price into the vault and the goods pay out at
 # once. A sale is listed when the pack holds the goods; the office takes them from the vault when it holds
 # at least min_stock. Nobody in the collective may claim these; they are for the other residents.
+  # The larger replica (the owner's brief of 2026-11-02): Midtown north of Lower Manhattan and Central Park round the inland
+  # lake, chosen from the lot table of tick 143028 (grass, staked by the office, no stone or ore node, no resident's
+  # holding, the lake as the park's water). Bought in four segments, south to north, as Lower Manhattan was.
+  - id: nyc-midtown-south
+    client: Plumbline
+    after: nyc-wtc
+    lots: [E07-NW, E07-NE, E06-SW, E06-SE]
+    wants: [stone]
+    note: Midtown's southern half for the Atelier's larger replica, from 34th Street up; the Empire State Building, Madison Square Garden and Penn Station, the Flatiron's head.
+  - id: nyc-midtown-north
+    client: Plumbline
+    after: nyc-midtown-south
+    lots: [D06-NW, D06-NE, E06-NW, E06-NE, D06-SE]
+    wants: [stone]
+    note: Midtown's northern half; 42nd Street with the Chrysler Building, Grand Central and the Public Library, Rockefeller Center, St Patrick's, Times Square.
+  - id: nyc-park-south
+    client: Plumbline
+    after: nyc-midtown-north
+    lots: [D05-SW, D05-SE, E05-SW, E05-SE]
+    wants: [wood]
+    note: Central Park's southern end for the Atelier; Sheep Meadow, the Mall, Bethesda Terrace by the lake, the Dairy and the carousel.
+  - id: nyc-park-north
+    client: Plumbline
+    after: nyc-park-south
+    lots: [D05-NE, E05-NW, D04-NE, E04-NW, E04-SE]
+    wants: [wood]
+    note: Central Park's northern half; Belvedere Castle over the lake, the Great Lawn, the Reservoir's shore, the Obelisk and the museum on Fifth Avenue.
 sales:
   - {id: ore-for-wood, sell: {ore: 10}, price: {wood: 30}, min_stock: 20, status: open}
   - {id: stone-for-berries, sell: {stone: 20}, price: {berries: 10}, min_stock: 60, status: open}

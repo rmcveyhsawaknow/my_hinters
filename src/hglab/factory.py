@@ -50,7 +50,7 @@ MAX_CAP_CELLS = 160  # 40 items: a roof cap larger than this is laid in strips a
 PACK_LIMIT = 45  # what a pack can bring to a step (50 less the berries a builder keeps)
 REACH = 2  # a box's every tile within 2 tiles of the builder
 OWNED_CAP = 4000  # stop short of the world's 4096 blocks per agent
-BUILD_COST = {"storehouse": {"wood": 20, "stone": 10}}
+BUILD_COST = {"storehouse": {"wood": 20, "stone": 10}, "sign": {"wood": 1}}
 
 Rect = tuple[int, int, int, int]  # inclusive cell rectangle bx0, by0, bx1, by1
 
@@ -852,7 +852,7 @@ def expand(design: dict[str, Any]) -> list[dict[str, Any]]:
         steps.append({
             "id": f"depots:{i:02d}", "section": "depots", "name": str(depot.get("name") or f"depot {i + 1}"), "kind": "build",
             "action": {"action": "build", "type": "storehouse", "x": x, "y": y, "policy": "faction"}, "tiles": (x, y, x, y),
-            "cells": 0, "items": 30, "item": "wood", "costs": dict(BUILD_COST["storehouse"]), "supported": True, "top": 0,
+            "cells": 0, "items": 30, "item": "wood", "costs": dict(BUILD_COST["storehouse"]), "supported": True, "top": 0, "box_cells": 0,
         })
 
     counters: Counter[str] = Counter()
@@ -895,6 +895,19 @@ def expand(design: dict[str, Any]) -> list[dict[str, Any]]:
         for name, action in _section_steps(section):
             for part_name, part in _lift(name, action, lift):
                 add(sid, None, f"{label}: {part_name}", part, prop=bool(lift))
+        sign = section.get("sign")
+        if isinstance(sign, dict) and sign.get("x") is not None and sign.get("y") is not None:
+            # the owner, 2026-11-02: every building and monument has a sign next to it, the building's last step
+            sx, sy = int(sign["x"]), int(sign["y"])
+            x0, y0, x1, y1 = (int(v) for v in section["tiles"])
+            n = counters[sid]
+            counters[sid] += 1
+            steps.append({
+                "id": f"{sid}:{n:02d}", "section": sid, "name": f"{label}: sign", "kind": "build",
+                "action": {"action": "build", "type": "sign", "x": sx, "y": sy, "text": str(sign.get("text") or label)[:200]}, "tiles": (sx, sy, sx, sy),
+                "cells": 0, "items": 1, "item": "wood", "costs": dict(BUILD_COST["sign"]), "supported": True, "top": 0, "box_cells": 0,
+                "beside": x0 - 1 <= sx <= x1 + 1 and y0 - 1 <= sy <= y1 + 1 and not (x0 <= sx <= x1 and y0 <= sy <= y1),
+            })
     for tube in design.get("tubes") or []:
         for name, action in _tube_steps(tube):
             add(str(tube.get("section") or "tubes"), None, name, action)
@@ -952,6 +965,8 @@ def check(design: dict[str, Any], steps: list[dict[str, Any]], world: dict[str, 
     world) terrain under every tile, scarce nodes and the ore apron kept clear of walls, the plots kept."""
     problems: list[str] = []
     for step in steps:
+        if step["kind"] == "build" and step.get("beside") is False:
+            problems.append(f"{step['id']}: the sign does not stand beside its building")
         if step["kind"] != "place":
             continue
         action = step["action"]
@@ -995,6 +1010,8 @@ def check(design: dict[str, Any], steps: list[dict[str, Any]], world: dict[str, 
                 if step["kind"] == "build":
                     if where in structures:
                         problems.append(f"{step['id']}: tile {where} already holds a {structures[where]}")
+                    if str(step["action"].get("type")) == "sign" and where in nodes:
+                        problems.append(f"{step['id']}: sign on a {nodes[where]} node at {where}")
                     continue
                 if nodes.get(where) in ("stone", "ore") and not high:
                     problems.append(f"{step['id']}: tile {where} holds a {nodes[where]} node")
@@ -1132,9 +1149,9 @@ def settle(root: Path, name: str, actions: list[dict[str, Any]], results: list[d
             text = json.dumps(result).casefold()
             if result.get("ok") or (refused == "not_allowed" and "filled" in text):
                 done.append(sid)
-        elif action.get("action") == "build" and action.get("type") == "storehouse" and result.get("ok"):
+        elif action.get("action") == "build" and action.get("type") in ("storehouse", "sign") and result.get("ok"):
             for step in steps:
-                if step["kind"] == "build" and (step["action"]["x"], step["action"]["y"]) == (action.get("x"), action.get("y")):
+                if step["kind"] == "build" and step["action"].get("type") == action.get("type") and (step["action"]["x"], step["action"]["y"]) == (action.get("x"), action.get("y")):
                     done.append(step["id"])
     mark_done(root, ledger_name(design, name), done, tick, by)
     return done
@@ -1176,7 +1193,7 @@ def reconcile(root: Path, name: str, cells: dict[tuple[int, int, int], str], str
         return []
     ledger = ledger_name(design, name)
     done = set((load_ledger(root, ledger).get("done") or {}).keys())
-    stores = {(int(s.get("x", -1)), int(s.get("y", -1))) for s in structures if s.get("type") == "storehouse"}
+    stands = {(int(s.get("x", -1)), int(s.get("y", -1)), str(s.get("type"))) for s in structures if s.get("type") in ("storehouse", "sign")}
     new: list[str] = []
     for step in steps:
         if step["id"] in done:
@@ -1185,7 +1202,7 @@ def reconcile(root: Path, name: str, cells: dict[tuple[int, int, int], str], str
             box = _cells_of(step["action"])
             if box and all(c in cells for c in box):
                 new.append(step["id"])
-        elif step["kind"] == "build" and (int(step["action"]["x"]), int(step["action"]["y"])) in stores:
+        elif step["kind"] == "build" and (int(step["action"]["x"]), int(step["action"]["y"]), str(step["action"].get("type"))) in stands:
             new.append(step["id"])
     standing = done | set(new)
     for i, step in enumerate(steps):
@@ -1466,9 +1483,9 @@ def plan_step(
         return None
     done = set((load_ledger(root, ledger_name(design, name)).get("done") or {}).keys())
     structures = list(view.world_structures or []) + list(view.structures or [])
-    standing = {(int(s.get("x", -1)), int(s.get("y", -1))) for s in structures if s.get("type") == "storehouse"}
+    standing = {(int(s.get("x", -1)), int(s.get("y", -1)), str(s.get("type"))) for s in structures if s.get("type") in ("storehouse", "sign")}
     for step in steps:
-        if step["kind"] == "build" and (step["action"]["x"], step["action"]["y"]) in standing:
+        if step["kind"] == "build" and (step["action"]["x"], step["action"]["y"], str(step["action"].get("type"))) in standing:
             done.add(step["id"])
     planned: set[str] = getattr(state, "_bp_planned", None) or set()
     ready = [s for s in ready_steps(steps, done, planned) if not s.get("only") or s["only"] == persona.slug]  # a clear is its owner's: their blocks come out whole

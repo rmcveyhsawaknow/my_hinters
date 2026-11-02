@@ -16,6 +16,7 @@ pipeline:  # the owner's brief of 2026-10-27: the Atelier's replica of Lower Man
   range: 64
   plan: []
   blueprint: lower-manhattan
+  next_blueprint: [midtown, central-park]  # the owner's brief of 2026-11-02: the larger replica, north of Lower Manhattan, every building with a sign beside it
   builders:
     plumbline: [federal-hall, streets, forty-wall, seventy-pine, nyse, twenty-exchange, charging-bull, castle-clinton, battery-park, trinity-church, one-wtc, memorial-north, memorial-south, woolworth]
 home: null

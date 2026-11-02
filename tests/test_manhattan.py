@@ -102,7 +102,7 @@ def test_a_far_builder_carries_its_material_from_a_faction_store_then_walks_to_t
 
 def test_the_factory_takes_up_lower_manhattan_only_once_the_factory_stands():
     team = load_team(ROOT, "chocolate-factory")
-    assert factory.team_designs(team) == ["chocolate-factory", "lower-manhattan"]
+    assert factory.team_designs(team) == ["chocolate-factory", "lower-manhattan", "midtown", "central-park"]  # then the larger replica (2026-11-02)
     personas = load_personas(ROOT)
     observe = {"tick": 90000, "you": {"name": "MotherPail", "x": 38, "y": 82, "faction": {"id": 5, "name": "Chocolate Factory"}, "blocks_owned": 0}}
     view = WorldView(x0=32, y0=76, rows=GRASS, full_map=GRASS, world_structures=_deeds("D08-NE", "E08-NW"), tick=90000)
