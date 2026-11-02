@@ -5,11 +5,11 @@
  "provider": "anthropic",
  "sampled_lines": 0,
  "sampled_actions": 8,
- "created_utc": "2026-11-01T05:13:12.353595+00:00",
+ "created_utc": "2026-11-02T05:15:06.195085+00:00",
  "usage": {
   "calls": 1,
   "input_tokens": 1096,
-  "output_tokens": 272,
+  "output_tokens": 290,
   "model": "claude-sonnet-5-5",
   "provider": "anthropic",
   "route": "review"
@@ -18,27 +18,27 @@
   {
    "name": "restless",
    "score": 3,
-   "reason": "Eight consecutive moves show constant motion, but no pickups or deliveries appear, so we cannot confirm the pack was ever loaded."
+   "reason": "Eight consecutive move actions show constant motion, but there is no evidence of what the pack held, so 'never with an empty pack' can't be confirmed."
   },
   {
    "name": "balanced",
    "score": 1,
-   "reason": "No gather or deposit actions are visible, so there is no evidence of prioritising the scarcest material."
+   "reason": "No pickups or deposits are recorded, so there is no evidence of filling the scarcest kind first; moves alone say nothing about priority."
   },
   {
    "name": "exact",
    "score": 0,
-   "reason": "There are no public lines, so no counts or tiles were reported."
+   "reason": "No public lines exist, so no counts or tiles were stated for any transfer."
   },
   {
    "name": "sociable",
    "score": 0,
-   "reason": "No lines and no recorded deliveries from peer storehouses, so no thanks were given."
+   "reason": "No lines at all, so no thanks to any peer whose storehouse gave materials."
   },
   {
    "name": "honest",
    "score": 2,
-   "reason": "Nothing shows taking from any store, private or otherwise, so there is no violation but also no positive evidence of policy-respecting behaviour."
+   "reason": "Only moves are shown with no takes from any store, so no violation is visible, but there is no positive evidence of policy-respecting behaviour either."
   }
  ]
 }
