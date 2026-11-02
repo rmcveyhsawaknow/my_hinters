@@ -115,7 +115,13 @@ class HinterglassClient:
                     str(detail.get("message", "Hinterglass request failed")),
                     detail,
                 )
-            return response.json()
+            try:
+                return response.json()
+            except ValueError as exc:  # a success without a JSON body: three shifts and four keepalives failed on it, 2026-11-01
+                if attempt < self.retries and idempotent:
+                    time.sleep(_retry_delay(response, attempt))
+                    continue
+                raise WorldUnreachable(f"{method} {path}: HTTP {response.status_code} without a JSON body after {attempt + 1} attempt(s)") from exc
         raise RuntimeError("unreachable retry state")
 
     def observe(self) -> dict[str, Any]:

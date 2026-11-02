@@ -78,6 +78,23 @@ def test_an_action_is_not_repeated_after_a_read_timeout_but_is_after_a_refused_c
 
 
 @respx.mock
+def test_a_success_without_a_json_body_is_retried_then_named_an_outage(monkeypatch):
+    from hglab.client import WorldUnreachable
+
+    monkeypatch.setattr("hglab.client.time.sleep", lambda _: None)
+    events = respx.get("https://hinterglass.com/api/v1/world/events").mock(side_effect=[httpx.Response(200, content=b""), httpx.Response(200, json={"events": []})])
+    assert HinterglassClient(retries=2).public_events(limit=1) == {"events": []}
+    assert events.call_count == 2
+    respx.get("https://hinterglass.com/api/v1/world/agents").mock(return_value=httpx.Response(200, content=b"<html>"))
+    with pytest.raises(WorldUnreachable, match="without a JSON body"):
+        HinterglassClient(retries=1).public_agents()
+    act = respx.post("https://hinterglass.com/api/v1/me/act").mock(return_value=httpx.Response(200, content=b""))
+    with pytest.raises(WorldUnreachable):
+        HinterglassClient(api_key="fake-test-key", retries=3).act({"action": "say", "text": "hello"})
+    assert act.call_count == 1  # an action answered 200 may have happened: never sent twice
+
+
+@respx.mock
 def test_retry_after_is_honoured_and_an_outage_is_named(monkeypatch):
     from hglab.client import WorldUnreachable
 
