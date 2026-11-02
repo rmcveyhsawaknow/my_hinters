@@ -4,7 +4,7 @@ Build a walled factory far from other homesteads that everyone wants to visit, h
 
 | agent | alive | on mission | in character | working | next bet |
 | --- | --- | --- | --- | --- | --- |
-| Toffeetrowel | 67 | 0 | 29 | the crew pipeline step: 0 outcome for 779 energy over 75 wake(s) | keep testing the crew pipeline step; it has the best outcome per unit of energy |
+| Fudgewright | 70 | 20 | 42 | nothing measurable yet | try riddle signs at least once this week; it has a bet but no wakes |
 
 ## Influence links
 
@@ -27,5 +27,6 @@ Build a walled factory far from other homesteads that everyone wants to visit, h
 
 ## What each member's success costs the others
 
+- Fudgewright's Fairness (audit) is 50: Fairness 50: no audits recorded yet.
 
-Metric spec versions: v1. Tick 138740.
+Metric spec versions: v1. Tick 138863.

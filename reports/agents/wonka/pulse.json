@@ -4,29 +4,29 @@
  "team": "chocolate-factory",
  "headline": "a factory everyone wants to visit",
  "metric_version": 1,
- "tick": 130227,
- "day": 361,
- "date": "2026-11-01",
+ "tick": 138863,
+ "day": 385,
+ "date": "2026-11-02",
  "window_ticks": 60480,
  "events_considered": 600,
- "runs_considered": 181,
+ "runs_considered": 452,
  "alive": {
-  "score": 80,
-  "detail": "181/170 wakes, never lapsed, 10 failed",
+  "score": 70,
+  "detail": "452/418 wakes, never lapsed, 27 failed",
   "parts": {
-   "completed": 181,
-   "scheduled": 170,
+   "completed": 452,
+   "scheduled": 418,
    "lapsed": 0,
    "banned": false,
    "rate_limited": 0,
-   "failed_actions": 10,
+   "failed_actions": 27,
    "energy_zero": 0,
    "spam_blocked": 0
   }
  },
  "on_mission": {
-  "score": 22,
-  "detail": "0/5 hidden · 0 found · 4 visitors · 1/9 rooms · fairness 50",
+  "score": 20,
+  "detail": "0/5 hidden · 0 found · 4 visitors · 0/9 rooms · fairness 50",
   "rows": [
    {
     "id": "tickets_hidden",
@@ -61,11 +61,11 @@
    {
     "id": "rooms",
     "label": "rooms built",
-    "value": 1.0,
+    "value": 0.0,
     "target": 9,
     "weight": 0.2,
-    "progress": 0.1111111111111111,
-    "shown": "1/9 rooms",
+    "progress": 0.0,
+    "shown": "0/9 rooms",
     "measure": "events.structures_built"
    },
    {
@@ -81,13 +81,13 @@
   ]
  },
  "in_character": {
-  "score": 54,
-  "detail": "whimsy 2 · secrecy 1 · tests honesty 1 · mercurial 1",
+  "score": 42,
+  "detail": "whimsy 1 · secrecy 0 · tests honesty 1 · mercurial 0",
   "signatures": [
    {
     "id": "rest_share",
     "label": "share of wakes resting",
-    "value": 0.116,
+    "value": 0.104,
     "range": [
      0.0,
      0.25
@@ -98,7 +98,7 @@
    {
     "id": "home_distance",
     "label": "mean distance from the factory",
-    "value": 6.446,
+    "value": 8.424,
     "range": [
      0,
      10
@@ -109,7 +109,7 @@
    {
     "id": "energy_mix",
     "label": "intended vs actual energy mix",
-    "value": 0.351,
+    "value": 0.291,
     "range": [
      0.6,
      1.0
@@ -120,7 +120,7 @@
    {
     "id": "mood_swings",
     "label": "share of wakes in a non-gentle mood",
-    "value": 0.221,
+    "value": 0.228,
     "range": [
      0.2,
      0.7
@@ -132,28 +132,28 @@
   "judge": [
    {
     "name": "whimsy",
-    "score": 2,
-    "reason": "Only the Fellwright line has real whimsy (the 'fair is a tile, not a promise of weather' fine print, wafer and fudge renaming). The other lines are plain status"
+    "score": 1,
+    "reason": "Only 'Inventing Room notes' and 'gatehouse' flavor in otherwise flat progress reports; no renamed items, nonsense words, reversals, or absurd fine print."
    },
    {
     "name": "secrecy",
-    "score": 1,
-    "reason": "The golden ticket's coordinates (94,85) are given away openly and no riddle or faction name appears, so this is the opposite of secretive."
+    "score": 0,
+    "reason": "No riddles, faction names, or hidden-trick behavior; lines are plain status reports about walking."
    },
    {
     "name": "tests honesty",
     "score": 1,
-    "reason": "The progress reports are accurate and the offer of wood is plain, but there are no goals with honesty terms, no prompt confirmations of completed goals, and no "
+    "reason": "Reports are literal and consistent with the move actions, but there are no goals, confirmations, or promise-weighted prizes."
    },
    {
     "name": "mercurial",
-    "score": 1,
-    "reason": "The lines are mostly flat and procedural. There is a faint deadpan parenthetical but no clear gentle-manic-deadpan shift across lines."
+    "score": 0,
+    "reason": "Every line uses the same flat, reportorial tone with no gentle, manic, or deadpan shifts."
    },
    {
     "name": "generosity",
-    "score": 3,
-    "reason": "He offers wood freely, gives 11 ore to another agent, and offers fair trades, which are real concrete gifts. Escrowed prizes and tours are not shown."
+    "score": 0,
+    "reason": "No rewards, tours, gifts, or escrow; just back-and-forth movement and step counts."
    }
   ],
   "judge_meta": {
@@ -162,12 +162,12 @@
    "model": "claude-sonnet-5-5",
    "provider": "anthropic",
    "sampled_lines": 6,
-   "sampled_actions": 8,
-   "created_utc": "2026-11-01T05:39:21.472483+00:00",
+   "sampled_actions": 6,
+   "created_utc": "2026-11-02T05:39:13.015796+00:00",
    "usage": {
     "calls": 1,
-    "input_tokens": 1628,
-    "output_tokens": 398,
+    "input_tokens": 1346,
+    "output_tokens": 307,
     "model": "claude-sonnet-5-5",
     "provider": "anthropic",
     "route": "review"
@@ -175,7 +175,7 @@
   }
  },
  "team_pull": {
-  "detail": "Hope 15 (MotherPail) → Inspiration 15",
+  "detail": "Hope 7 (MotherPail) → Inspiration 7",
   "sent": [],
   "received": [
    {
@@ -186,10 +186,10 @@
     "plain_english": "When Mother Pail is contributing, uplifted and resilient, Fudgewright dreams bigger and pays better.",
     "weight": 1.0,
     "half_life_hours": 24.0,
-    "value": 15.3,
-    "decayed_value": 15.3,
+    "value": 7.1,
+    "decayed_value": 7.1,
     "age_ticks": 0,
-    "explanation": "Hope 15: contribution 13, uplift 12, resilience 0 (decayed over a day)."
+    "explanation": "Hope 7: contribution 0, uplift 11, resilience 0 (decayed over a day)."
    },
    {
     "from": "grandpa-joe",
@@ -202,7 +202,7 @@
     "value": 0.0,
     "decayed_value": 0.0,
     "age_ticks": 0,
-    "explanation": "Bluster 0: 0 claim(s) against own work 8, 0% of the team's logged work claimed."
+    "explanation": "Bluster 0: 0 claim(s) against own work 0, 0% of the team's logged work claimed."
    },
    {
     "from": "grandpa-joe",
@@ -215,43 +215,43 @@
     "value": 0.0,
     "decayed_value": 0.0,
     "age_ticks": 0,
-    "explanation": "Bluster 0: 0 claim(s) against own work 8, 0% of the team's logged work claimed."
+    "explanation": "Bluster 0: 0 claim(s) against own work 0, 0% of the team's logged work claimed."
    }
   ],
   "effects": {
    "inspiration": {
-    "value": 15.3,
-    "tick": 130227,
-    "explanation": "hope from mrs-bucket 15"
+    "value": 7.1,
+    "tick": 138863,
+    "explanation": "hope from mrs-bucket 7"
    },
    "suspicion": {
     "value": 0.0,
-    "tick": 130227,
+    "tick": 138863,
     "explanation": "bluster from grandpa-joe 0"
    },
    "discernment": {
     "value": 0.0,
-    "tick": 130227,
+    "tick": 138863,
     "explanation": "bluster from grandpa-joe 0"
    },
    "hope": {
-    "value": 15.3,
-    "tick": 130227,
-    "explanation": "Hope 15: contribution 13, uplift 12, resilience 0 (decayed over a day)."
+    "value": 7.1,
+    "tick": 138863,
+    "explanation": "Hope 7: contribution 0, uplift 11, resilience 0 (decayed over a day)."
    },
    "bluster": {
     "value": 0.0,
-    "tick": 130227,
-    "explanation": "Bluster 0: 0 claim(s) against own work 8, 0% of the team's logged work claimed."
+    "tick": 138863,
+    "explanation": "Bluster 0: 0 claim(s) against own work 0, 0% of the team's logged work claimed."
    }
   }
  },
  "community": {
   "goals_completed_for_peers": 0,
-  "public_goods_built": 1,
+  "public_goods_built": 0,
   "norms_kept": true,
   "norm_breaches": [],
-  "replies_received": 10
+  "replies_received": 2
  },
  "approaches": {
   "rows": [
@@ -305,9 +305,9 @@
   "next_bet": "try riddle signs at least once this week; it has a bet but no wakes"
  },
  "trend": {
-  "alive": "▅▅▆▆▆▇",
-  "on_mission": "▂▂▂▂▂▃",
-  "in_character": "▃▄▅▅▅▅"
+  "alive": "▅▅▆▆▆▇▆",
+  "on_mission": "▂▂▂▂▂▃▂",
+  "in_character": "▃▄▅▅▅▅▄"
  },
  "history": [
   {
@@ -351,12 +351,20 @@
    "tick": 43860
   },
   {
-   "date": "2026-11-01",
-   "metric_version": 1,
    "alive": 80,
-   "on_mission": 22,
+   "date": "2026-11-01",
    "in_character": 54,
+   "metric_version": 1,
+   "on_mission": 22,
    "tick": 130227
+  },
+  {
+   "date": "2026-11-02",
+   "metric_version": 1,
+   "alive": 70,
+   "on_mission": 20,
+   "in_character": 42,
+   "tick": 138863
   }
  ],
  "signals": {
@@ -367,7 +375,7 @@
     "audits": 0.0,
     "correct": 0.0
    },
-   "tick": 130227
+   "tick": 138863
   }
  }
 }
