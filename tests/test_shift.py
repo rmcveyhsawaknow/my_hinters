@@ -18,9 +18,13 @@ FIX = ROOT / "tests/fixtures"
 def _wake(slug: str, observe: dict, tmp_path: Path, **overrides):
     personas = load_personas(ROOT)
     persona = personas[slug]
+    team = load_team(ROOT, persona.team)
+    if persona.team == "neverland":  # the owner, 2026-11-02: Stoutheart is Neverland's mason and a builder of its hideaway now, so a live wake runs the pipeline and the blueprint first; these tests check the generic builder's order
+        persona.knobs.pop("crew", None)
+        team.extra["pipeline"]["builders"].pop(slug, None)
     client = FixtureClient(observe)
     lease = acquire(client, persona.name)
-    return persona_wake(persona=persona, team=load_team(ROOT, persona.team), personas=personas, client=client, lease=lease, root=ROOT, output_dir=tmp_path, dry_run=True, work=True, seed="shift", **overrides), client
+    return persona_wake(persona=persona, team=team, personas=personas, client=client, lease=lease, root=ROOT, output_dir=tmp_path, dry_run=True, work=True, seed="shift", **overrides), client
 
 
 def test_work_wake_builds_first_when_materials_are_in_hand(tmp_path):
