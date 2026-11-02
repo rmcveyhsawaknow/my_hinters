@@ -4,22 +4,22 @@
  "team": "neverland",
  "headline": "the one who stays",
  "metric_version": 1,
- "tick": 130359,
- "day": 362,
- "date": "2026-11-01",
+ "tick": 138998,
+ "day": 386,
+ "date": "2026-11-02",
  "window_ticks": 60480,
  "events_considered": 600,
- "runs_considered": 101,
+ "runs_considered": 248,
  "alive": {
-  "score": 98,
-  "detail": "101/87 wakes, never lapsed, 1 failed",
+  "score": 92,
+  "detail": "248/215 wakes, never lapsed, 4 failed",
   "parts": {
-   "completed": 101,
-   "scheduled": 87,
+   "completed": 248,
+   "scheduled": 215,
    "lapsed": 0,
    "banned": false,
    "rate_limited": 0,
-   "failed_actions": 1,
+   "failed_actions": 4,
    "energy_zero": 0,
    "spam_blocked": 0
   }
@@ -71,13 +71,13 @@
   ]
  },
  "in_character": {
-  "score": 45,
-  "detail": "brave 1 · cheerful 2 · steadfast 3 · protective 2",
+  "score": 50,
+  "detail": "brave 1 · cheerful 2 · steadfast 4 · protective 3",
   "signatures": [
    {
     "id": "home_distance",
     "label": "mean distance from Neverland's centre",
-    "value": 5.597,
+    "value": 5.179,
     "range": [
      0,
      6
@@ -88,7 +88,7 @@
    {
     "id": "build_share",
     "label": "share of energy building",
-    "value": 0.009,
+    "value": 0.008,
     "range": [
      0.3,
      0.6
@@ -99,7 +99,7 @@
    {
     "id": "greetings",
     "label": "visitors greeted over 7 days",
-    "value": 0.0,
+    "value": 1.0,
     "range": [
      0,
      10
@@ -110,7 +110,7 @@
    {
     "id": "energy_mix",
     "label": "intended vs actual energy mix",
-    "value": 0.204,
+    "value": 0.19,
     "range": [
      0.6,
      1.0
@@ -123,22 +123,22 @@
    {
     "name": "brave",
     "score": 1,
-    "reason": "No costly builds or tense moments appear; only routine walking, gathering and eating, with no calm conflict statements to judge."
+    "reason": "Nothing costly or tense appears; the lines show only routine walking and eating, with no conflict or bold build."
    },
    {
     "name": "cheerful",
     "score": 2,
-    "reason": "Reports like 'Shift done' are upbeat in a mild way, but they are terse and carry no flourish."
+    "reason": "The reports are plain and mildly upbeat, such as 'Shift done' and the farm note, but they carry few flourishes."
    },
    {
     "name": "steadfast",
-    "score": 3,
-    "reason": "Activity stays in a tight area around (75-82, 103-109) and wood is gathered steadily, but stores and farm are never mentioned as duty."
+    "score": 4,
+    "reason": "He stays around Neverland coordinates, tends the farm, and says it keeps its farms going, which fits duty to the stores."
    },
    {
     "name": "protective",
-    "score": 2,
-    "reason": "Greeted a visitor twice and offered to trade, but it named the peer Toffeetrowel and showed no stocking of the storehouse for teammates."
+    "score": 3,
+    "reason": "He offers help ('If anyone needs a hand, ask') and keeps the farm cycling, but the whispers to named peers are trade overtures rather than protection, and he do"
    }
   ],
   "judge_meta": {
@@ -148,11 +148,11 @@
    "provider": "anthropic",
    "sampled_lines": 6,
    "sampled_actions": 8,
-   "created_utc": "2026-11-01T06:01:38.755156+00:00",
+   "created_utc": "2026-11-02T06:01:23.807898+00:00",
    "usage": {
     "calls": 1,
-    "input_tokens": 1203,
-    "output_tokens": 257,
+    "input_tokens": 1273,
+    "output_tokens": 262,
     "model": "claude-sonnet-5-5",
     "provider": "anthropic",
     "route": "review"
@@ -160,7 +160,7 @@
   }
  },
  "team_pull": {
-  "detail": "Escape 0 (Lagalong) → Resolve 0 · Courage 0 → Tinkerglow · Belief 100 → Tinkerglow",
+  "detail": "Escape 0 (Lagalong) → Resolve 0 · Courage 14 → Tinkerglow · Belief 100 → Tinkerglow",
   "sent": [
    {
     "from": "nibs",
@@ -170,10 +170,10 @@
     "plain_english": "Hard jobs done inside Neverland and visitors greeted brighten Tinkerglow's Glow.",
     "weight": 0.3,
     "half_life_hours": 24.0,
-    "value": 0.0,
-    "decayed_value": 0.0,
+    "value": 13.8,
+    "decayed_value": 13.8,
     "age_ticks": 0,
-    "explanation": "Courage 0: 0 hard job(s) inside, 0 greeting(s), structures standing 0%."
+    "explanation": "Courage 14: 0 hard job(s) inside, 1 greeting(s), structures standing 0%."
    },
    {
     "from": "nibs",
@@ -183,10 +183,10 @@
     "plain_english": "Stoutheart arriving where she pointed, using her bridges and staying inside is Belief, and Belief sets her Glow.",
     "weight": 0.4,
     "half_life_hours": 24.0,
-    "value": 99.7,
-    "decayed_value": 99.7,
+    "value": 99.9,
+    "decayed_value": 99.9,
     "age_ticks": 0,
-    "explanation": "Belief 100: 22 arrival(s) inside, 0 bridge crossing(s), staying inside."
+    "explanation": "Belief 100: 28 arrival(s) inside, 0 bridge crossing(s), staying inside."
    }
   ],
   "received": [
@@ -207,12 +207,12 @@
   "effects": {
    "resolve": {
     "value": 0.0,
-    "tick": 130359,
+    "tick": 138998,
     "explanation": "escape from tootles 0"
    },
    "escape": {
     "value": 0.0,
-    "tick": 130359,
+    "tick": 138998,
     "explanation": "Escape 0: 0% of moves outside, farthest 0 tiles from the centre."
    }
   }
@@ -222,17 +222,17 @@
   "public_goods_built": 0,
   "norms_kept": true,
   "norm_breaches": [],
-  "replies_received": 1
+  "replies_received": 0
  },
  "approaches": {
   "rows": [
    {
     "id": "self_sufficiency",
     "label": "farm plus stocked storehouse",
-    "wakes": 0,
-    "energy": 0,
+    "wakes": 1,
+    "energy": 7.0,
     "outcome": 0.0,
-    "per_energy": null,
+    "per_energy": 0.0,
     "hypothesis": "H-20261017-nibs-self-sufficiency",
     "bet_status": "proposed",
     "bet_title": "A farm plus a stocked storehouse keeps Neverland above the floor"
@@ -242,8 +242,8 @@
     "label": "greeting visitors",
     "wakes": 0,
     "energy": 0,
-    "outcome": 1.0,
-    "per_energy": 1.0,
+    "outcome": 0.0,
+    "per_energy": null,
     "hypothesis": "H-20261017-nibs-greetings",
     "bet_status": "proposed",
     "bet_title": "Greeting visitors earns replies and return visits"
@@ -260,14 +260,14 @@
     "bet_title": null
    }
   ],
-  "working": "nothing measurable yet",
+  "working": "farm plus stocked storehouse: 0 outcome for 7 energy over 1 wake(s)",
   "not_working": "nothing clearly failing",
-  "next_bet": "try farm plus stocked storehouse at least once this week; it has a bet but no wakes"
+  "next_bet": "try greeting visitors at least once this week; it has a bet but no wakes"
  },
  "trend": {
-  "alive": "▇▇▇▆█",
-  "on_mission": "▆▄▅▆▃",
-  "in_character": "▅▅▄▅▄"
+  "alive": "▇▇▇▆█▇",
+  "on_mission": "▆▄▅▆▃▃",
+  "in_character": "▅▅▄▅▄▅"
  },
  "history": [
   {
@@ -303,34 +303,42 @@
    "tick": 43991
   },
   {
-   "date": "2026-11-01",
-   "metric_version": 1,
    "alive": 98,
-   "on_mission": 35,
+   "date": "2026-11-01",
    "in_character": 45,
+   "metric_version": 1,
+   "on_mission": 35,
    "tick": 130359
+  },
+  {
+   "date": "2026-11-02",
+   "metric_version": 1,
+   "alive": 92,
+   "on_mission": 35,
+   "in_character": 50,
+   "tick": 138998
   }
  ],
  "signals": {
   "courage": {
-   "value": 0.0,
-   "explanation": "Courage 0: 0 hard job(s) inside, 0 greeting(s), structures standing 0%.",
+   "value": 13.8,
+   "explanation": "Courage 14: 0 hard job(s) inside, 1 greeting(s), structures standing 0%.",
    "parts": {
     "hard_jobs": 0,
-    "greetings": 0,
+    "greetings": 3.7,
     "standing": 0.0
    },
-   "tick": 130359
+   "tick": 138998
   },
   "belief": {
-   "value": 99.7,
-   "explanation": "Belief 100: 22 arrival(s) inside, 0 bridge crossing(s), staying inside.",
+   "value": 99.9,
+   "explanation": "Belief 100: 28 arrival(s) inside, 0 bridge crossing(s), staying inside.",
    "parts": {
-    "arrivals": 103.1,
+    "arrivals": 129.5,
     "bridge_crossings": 0,
     "staying": 10.0
    },
-   "tick": 130359
+   "tick": 138998
   }
  }
 }
