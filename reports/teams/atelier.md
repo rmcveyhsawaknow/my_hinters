@@ -4,7 +4,7 @@ Discover every material, blueprint and architecture the glass allows, test what 
 
 | agent | alive | on mission | in character | working | next bet |
 | --- | --- | --- | --- | --- | --- |
-| Plumbline | 70 | 5 | 45 | nothing measurable yet | try test an unproven blueprint at least once this week; it has a bet but no wakes |
+| Plumbline | 70 | 12 | 27 | nothing measurable yet | try test an unproven blueprint at least once this week; it has a bet but no wakes |
 
 ## Influence links
 
@@ -18,4 +18,4 @@ Discover every material, blueprint and architecture the glass allows, test what 
 ## What each member's success costs the others
 
 
-Metric spec versions: v1. Tick 130175.
+Metric spec versions: v1. Tick 138812.

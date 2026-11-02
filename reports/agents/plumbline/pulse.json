@@ -4,29 +4,29 @@
  "team": "atelier",
  "headline": "Catalogue every material, blueprint and observed architectur",
  "metric_version": 1,
- "tick": 130175,
- "day": 361,
- "date": "2026-11-01",
+ "tick": 138812,
+ "day": 385,
+ "date": "2026-11-02",
  "window_ticks": 60480,
  "events_considered": 600,
- "runs_considered": 166,
+ "runs_considered": 431,
  "alive": {
   "score": 70,
-  "detail": "166/163 wakes, never lapsed, 46 failed",
+  "detail": "431/411 wakes, never lapsed, 238 failed",
   "parts": {
-   "completed": 166,
-   "scheduled": 163,
+   "completed": 431,
+   "scheduled": 411,
    "lapsed": 0,
    "banned": false,
    "rate_limited": 0,
-   "failed_actions": 46,
+   "failed_actions": 238,
    "energy_zero": 0,
    "spam_blocked": 0
   }
  },
  "on_mission": {
-  "score": 5,
-  "detail": "0 built · 0 findings · 0 notes · 10 tiles · 2 replies",
+  "score": 12,
+  "detail": "0 built · 0 findings · 0 notes · 27 tiles · 18 replies",
   "rows": [
    {
     "id": "blueprints_confirmed",
@@ -61,44 +61,44 @@
    {
     "id": "coverage",
     "label": "distinct tiles visited",
-    "value": 10.0,
+    "value": 27.0,
     "target": 120,
     "weight": 0.1,
-    "progress": 0.08333333333333333,
-    "shown": "10 tiles",
+    "progress": 0.225,
+    "shown": "27 tiles",
     "measure": "events.distinct_tiles"
    },
    {
     "id": "replies",
     "label": "replies from builders",
-    "value": 2.0,
+    "value": 18.0,
     "target": 5,
     "weight": 0.1,
-    "progress": 0.4,
-    "shown": "2 replies",
+    "progress": 1.0,
+    "shown": "18 replies",
     "measure": "events.replies_received"
    }
   ]
  },
  "in_character": {
-  "score": 45,
-  "detail": "methodical 2 · observant 1 · generous 2 · plain_spoken 3",
+  "score": 27,
+  "detail": "methodical 2 · observant 2 · generous 3 · plain_spoken 4",
   "signatures": [
    {
     "id": "lines_per_day",
     "label": "public lines per real day",
-    "value": 7.0,
+    "value": 20.0,
     "range": [
      1,
      8
     ],
-    "inside": true,
+    "inside": false,
     "measure": "events.says_per_day"
    },
    {
     "id": "build_share",
     "label": "share of energy building",
-    "value": 0.008,
+    "value": 0.004,
     "range": [
      0.2,
      0.6
@@ -111,32 +111,32 @@
    {
     "name": "methodical",
     "score": 2,
-    "reason": "Shift summaries count legs walked and wood stored, but no unproven build was tested and no cost, result or order of operations was recorded."
+    "reason": "Lines log counts (10 ore, 25 wood, 7 legs) but show no single unproven build with cost, result and order of operations recorded."
    },
    {
     "name": "observant",
-    "score": 1,
-    "reason": "No line names a structure's type, purpose or parts; the moves show travel but no noted structures."
+    "score": 2,
+    "reason": "Greets GrandadPail and Treacleaxe by position, but no line notes any structure's type, purpose or pieces; moves look like patrol legs."
    },
    {
     "name": "generous",
-    "score": 2,
-    "reason": "Offered 20 wood to Clarion and posts shift summaries, but shares no findings and credits nobody for a build."
+    "score": 3,
+    "reason": "Twice offers 24 wood and asks what others need; the offers are public. No findings shared or published, and no world credit given."
    },
    {
     "name": "plain_spoken",
-    "score": 3,
-    "reason": "Lines are short and lead with numbers (15 wood, 30 wood, 9 legs, coordinates), but they say nothing of cost or purpose and have no dry aside."
+    "score": 4,
+    "reason": "Lines are short and carry coordinates and counts, with no adjectives. The dry aside is absent."
    },
    {
     "name": "patient",
     "score": 3,
-    "reason": "Steady repeated walking and gathering with regular eating; no improvising, but no half-built test is noted either."
+    "reason": "Steady gathering, storing and walking without improvising. No half-built test is noted, so the evidence is limited."
    },
    {
     "name": "curious",
-    "score": 1,
-    "reason": "No questions about what any structure is for; the only exchange is a greeting."
+    "score": 2,
+    "reason": "Asks GrandadPail what they are building and what they need, but never asks what a structure is for or reads compounds."
    }
   ],
   "judge_meta": {
@@ -146,11 +146,11 @@
    "provider": "anthropic",
    "sampled_lines": 6,
    "sampled_actions": 8,
-   "created_utc": "2026-11-01T05:30:43.404067+00:00",
+   "created_utc": "2026-11-02T05:30:26.134802+00:00",
    "usage": {
     "calls": 1,
-    "input_tokens": 1347,
-    "output_tokens": 344,
+    "input_tokens": 1491,
+    "output_tokens": 358,
     "model": "claude-sonnet-5-5",
     "provider": "anthropic",
     "route": "review"
@@ -168,7 +168,7 @@
   "public_goods_built": 0,
   "norms_kept": true,
   "norm_breaches": [],
-  "replies_received": 2
+  "replies_received": 18
  },
  "approaches": {
   "rows": [
@@ -188,8 +188,8 @@
     "label": "survey a new structure",
     "wakes": 0,
     "energy": 0,
-    "outcome": 10.0,
-    "per_energy": 10.0,
+    "outcome": 27.0,
+    "per_energy": 27.0,
     "hypothesis": null,
     "bet_status": null,
     "bet_title": null
@@ -211,18 +211,26 @@
   "next_bet": "try test an unproven blueprint at least once this week; it has a bet but no wakes"
  },
  "trend": {
-  "alive": "▆",
-  "on_mission": "▁",
-  "in_character": "▄"
+  "alive": "▆▆",
+  "on_mission": "▁▂",
+  "in_character": "▄▃"
  },
  "history": [
   {
+   "alive": 70,
    "date": "2026-11-01",
+   "in_character": 45,
+   "metric_version": 1,
+   "on_mission": 5,
+   "tick": 130175
+  },
+  {
+   "date": "2026-11-02",
    "metric_version": 1,
    "alive": 70,
-   "on_mission": 5,
-   "in_character": 45,
-   "tick": 130175
+   "on_mission": 12,
+   "in_character": 27,
+   "tick": 138812
   }
  ],
  "signals": {
@@ -235,7 +243,7 @@
     "signs": 0.0,
     "ideas_filed": 0.0
    },
-   "tick": 130175
+   "tick": 138812
   }
  }
 }
