@@ -115,4 +115,4 @@ def test_a_builder_takes_the_step_its_pack_already_pays_for():
     view = WorldView(x0=82, y0=82, rows=GRASS, full_map=GRASS, tick=70000)
     step = factory.plan_step(personas["loompa-quarrier"], team, PersonaState(mood="busy"), observe, view, {"stone": 40, "berries": 5}, (94, 97), 3, hands=True)
     assert step is not None and step[2] == "blueprint" and any(a.get("action") == "place" for a in step[0])
-    assert factory.plan_step(personas["loompa-quarrier"], team, PersonaState(mood="busy"), observe, view, {"stone": 40}, (94, 97), 3) is None  # not a builder, not routed: nothing
+    assert factory.plan_step(personas["grandpa-joe"], team, PersonaState(mood="busy"), observe, view, {"stone": 40}, (94, 97), 3) is None  # not a builder (GrandadPail builds nothing), not routed: nothing; every hand is a builder since 2026-11-02

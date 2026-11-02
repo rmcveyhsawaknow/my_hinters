@@ -117,7 +117,7 @@ def test_the_mason_raises_the_plan_in_order_beside_the_store_that_pays():
     assert after is None or after[2] == "blueprint"  # the works stand: the mason turns to the factory's blueprint
 
 
-def test_full_stores_make_the_mason_raise_another_and_the_hands_carry_its_cost_to_the_mason():
+def test_full_stores_make_the_mason_raise_another_and_the_hands_carry_its_cost_to_the_mason(monkeypatch):
     from hglab.crew import STORES_MAX, _role_wanted
 
     full = [
@@ -135,6 +135,7 @@ def test_full_stores_make_the_mason_raise_another_and_the_hands_carry_its_cost_t
     assert capped is None or capped[2] == "blueprint"  # at the cap the works stand: no more stores, the blueprint instead
     assert STORES_MAX == 6
     roles = {"loompa-mason": "mason", "loompa-woodcutter": "woodcutter"}
+    monkeypatch.setattr("hglab.factory.plan_step", lambda *a, **k: None)  # nothing left to build: with the blueprint open a full pack beside full stores raises it instead (every hand builds, 2026-11-02)
     carry = _step("loompa-woodcutter", {"wood": 36, "stone": 5, "berries": 5}, (87, 90), view, teammates={"loompa-mason": (89, 97)}, crew_roles=roles)
     assert carry[0][0]["action"] == "move" and "carry the next store's cost to the mason" in carry[1]
     hand = _step("loompa-woodcutter", {"wood": 36, "stone": 5, "berries": 5}, (88, 96), view, teammates={"loompa-mason": (89, 97)}, crew_roles=roles)

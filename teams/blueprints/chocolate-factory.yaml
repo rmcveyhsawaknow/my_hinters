@@ -114,6 +114,50 @@ sections:
     window_color: yellow
     roof_slope: [thatch, indigo]
     roof_cap: [thatch, blue]
+  # The owner's brief of 2026-11-02: the factory keeps growing, wild with tubes and structures joining every building.
+  # Three more pieces on the free ground the survey of tick 142000 showed, each a tube's anchor.
+  - id: silo
+    name: The Cocoa Silo
+    tiles: [86, 89, 87, 89]  # grass between the terrace's depot and the mill, below the hill belt
+    foundation: [[0, 2]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: stripe_tower
+    levels: 14
+    doors: [south]
+    door: [wood, brown]
+    stripes: [brown, tan]
+    window_levels: [4, 8]
+    window_color: orange
+    crown_slope: [thatch, brown]
+    crown_cap: [thatch, orange]
+  - id: boiler
+    name: The Boiler House
+    tiles: [98, 84, 98, 85]  # the strip between the east river and the campus wall
+    foundation: [[0], [0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: hall
+    levels: 8
+    doors: [west]
+    door: [wood, red]
+    pillars: [stone, black]
+    chimney: {x: 393, y: 337, levels: 15, stripes: [red, white], stripe_levels: 3}  # inside the hall's west tile
+    courses: [red, black]
+    course_levels: 2
+    window_levels: [3]
+    window_color: orange
+    roof_slope: [thatch, black]
+    roof_cap: [thatch, red]
+  - id: mast
+    name: The Taffy Mast
+    tiles: [96, 84, 96, 85]  # grass east of the vault, west of the river
+    foundation: [[0], [0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: stripe_tower
+    levels: 14
+    doors: [south]
+    door: [metal, pink]
+    stripes: [pink, white]
+    window_levels: [3, 7, 11]
+    window_color: red
+    crown_slope: [thatch, pink]
+    crown_cap: [thatch, red]
 # Tubes (the owner's brief of 2026-10-27): coloured pipes that come out of the factory and go back in, to make it
 # look wonky. Cell points [bx, by, bz], each leg straight; every tube starts and ends beside a hall's wall and keeps
 # to level 6 and above, where a block closes no tile. The candy hall's walls are cells 372-387 x 360-375, the
@@ -140,6 +184,57 @@ tubes:
     section: tubes-candy  # out of the candy hall's north wall, over the turret line and back in
     color: lime
     path: [[381, 359, 8], [381, 357, 8], [381, 357, 13], [385, 357, 13], [385, 358, 13], [385, 358, 10], [385, 359, 10]]
+  # The owner's brief of 2026-11-02: wild tubes joining every building. Some are two or three cells thick (size); a long
+  # leg is laid in runs of five tiles, a builder's reach (hglab.factory._tube_runs). Surveyed against the live world of
+  # tick 142000: every tile under a tube is ground inside the plots, no storehouse, hut or farm stands under one (a
+  # road, a sign or a node may), and every tube keeps to level 6 and above. The team file names who raises which.
+  - name: mountain tube
+    section: tubes-spine  # out of the elevator's south wall, up over the stone nodes and down into the mill's north wall
+    color: orange
+    path: [[358, 344, 10], [358, 345, 10], [358, 345, 13], [362, 345, 13], [362, 347, 13], [362, 347, 8]]
+  - name: fudge line
+    section: tubes-fudge  # the terrace's east wall to the mill's west wall, over the river's terrace branch
+    color: teal
+    size: 2
+    path: [[336, 350, 8], [345, 350, 8], [345, 350, 11], [350, 350, 11], [350, 350, 8], [355, 350, 8]]  # back down to the mill's top course
+  - name: long haul
+    section: tubes-haul  # the packing hall's west wall, west over the roads of the works, north up the lane, into the terrace's south wall
+    color: indigo
+    path: [[371, 386, 9], [338, 386, 9], [338, 386, 12], [338, 358, 12], [338, 358, 7], [333, 358, 7], [333, 356, 7]]
+  - name: skyline
+    section: tubes-sky  # the elevator's east wall round the north of the mast to the lookout's south wall
+    color: blue
+    path: [[364, 337, 10], [371, 337, 10], [371, 333, 10], [371, 333, 12], [390, 333, 12], [390, 328, 12]]
+  - name: east spine
+    section: tubes-spine  # the lookout's south wall down the river's east bank, west over the vault's corner, into the candy hall's north wall
+    color: green
+    size: 2
+    path: [[390, 328, 9], [390, 354, 9], [378, 354, 9], [378, 359, 9]]
+  - name: cocoa line
+    section: tubes-haul  # the mill's south wall to the candy hall's west wall, over the river's west branch
+    color: white
+    path: [[365, 360, 9], [365, 364, 9], [371, 364, 9]]
+  - name: silo feed
+    section: tubes-fudge  # the silo's west wall to the terrace's east wall, low over the hill
+    color: yellow
+    path: [[343, 357, 6], [336, 357, 6], [336, 352, 6]]
+  - name: mast loop
+    section: tubes-bay  # out of the mast's east wall, over the river, up and down into the boiler house's west wall
+    color: pink
+    path: [[388, 338, 8], [391, 338, 8], [391, 338, 11], [391, 342, 11], [391, 342, 7]]
+  - name: bay chute
+    section: tubes-bay  # out of the packing hall's east wall, up, along and down to the campus wall by the bay
+    color: black
+    path: [[392, 392, 8], [398, 392, 8], [398, 392, 12], [398, 394, 12], [398, 394, 8]]
+  - name: north loop
+    section: tubes-sky  # out of the lookout's east wall, over the campus wall and back in
+    color: grey
+    path: [[396, 322, 11], [398, 322, 11], [398, 322, 14], [398, 326, 14], [398, 326, 11], [396, 326, 11]]
+  - name: candy spiral
+    section: tubes-crossing  # a fat third crossing from the candy hall's south wall into the packing hall's north wall
+    color: tan
+    size: 3
+    path: [[373, 376, 7], [373, 379, 7]]
 # The campus wall (the owner's brief of 2026-10-27): a high wall round the whole campus and one large yellow
 # gate with a round arch on one side. Surveyed against the live world on 2026-10-27: the wall stands on every
 # walkable edge tile of the four plots that closes no one's access to a node, the collective's own roads on

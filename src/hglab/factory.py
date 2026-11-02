@@ -596,14 +596,18 @@ def _clears(section: dict[str, Any]) -> list[tuple[str, dict[str, Any], str]]:
 
 
 def _tube_steps(tube: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
-    """A coloured tube as boxes one cell thick along its path (cell points, each leg straight), out of one wall and into another.
+    """A coloured tube as boxes along its path (cell points, each leg straight), out of one wall and into another.
 
     The owner's brief of 2026-10-27: tubes coming out of the factory and going back in, to make it look wonky.
     Every tube starts beside a wall so its first leg is held; each leg after the first starts past the shared
     corner. Tubes keep to level 6 and above, where a block closes no tile, so nobody's way is barred.
+    Since the owner's brief of 2026-11-02 (tubes and structures joining every building) a tube may be
+    ``size`` cells thick (its square cross-section grows from the path's cell toward +y and +z along an
+    east-west leg, and so on), and a long leg is laid in runs of at most five tiles, a builder's reach.
     """
     points = [tuple(int(v) for v in p) for p in tube["path"]]
     material, color = str(tube.get("material", "stone")), str(tube["color"])
+    size = max(1, min(3, int(tube.get("size", 1) or 1)))
     out: list[tuple[str, dict[str, Any]]] = []
     for leg, (a, b) in enumerate(itertools.pairwise(points)):
         if sum(1 for i in range(3) if a[i] != b[i]) > 1:
@@ -619,9 +623,26 @@ def _tube_steps(tube: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
             cells = cells[1:]  # the corner belongs to the leg before
         if not cells:
             continue
-        xs, ys, zs = [c[0] for c in cells], [c[1] for c in cells], [c[2] for c in cells]
-        out.append((f"tube {tube['name']} ({color}) leg {leg + 1}", box(min(xs), min(ys), min(zs), max(xs), max(ys), max(zs), material=material, color=color)))
+        runs = _tube_runs(cells, axis)
+        for n, run in enumerate(runs):
+            lo = [min(c[i] for c in run) for i in range(3)]
+            hi = [max(c[i] for c in run) + (0 if i == axis else size - 1) for i in range(3)]
+            label = f"tube {tube['name']} ({color}) leg {leg + 1}" + (f" run {n + 1}" if len(runs) > 1 else "")
+            out.append((label, box(lo[0], lo[1], lo[2], hi[0], hi[1], hi[2], material=material, color=color)))
     return out
+
+
+def _tube_runs(cells: list[tuple[int, int, int]], axis: int) -> list[list[tuple[int, int, int]]]:
+    """A leg's cells in runs that span at most five tiles along the leg (a builder's reach either side), in order; a vertical leg is one run."""
+    if axis == 2:
+        return [cells]
+    runs: list[list[tuple[int, int, int]]] = []
+    for cell in cells:
+        if runs and abs(cell[axis] // 4 - runs[-1][0][axis] // 4) < 2 * REACH + 1:
+            runs[-1].append(cell)
+        else:
+            runs.append([cell])
+    return runs
 
 
 EDGE_LINE = {"west": (0, None), "east": (3, None), "north": (None, 0), "south": (None, 3)}  # the cell a wall line keeps within its tiles, by the side it faces
