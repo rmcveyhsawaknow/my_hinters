@@ -15,7 +15,7 @@ from hglab.persona import load_personas, load_team
 from hglab.planner import WorldView, _house_shortfall, _house_site, _plan_site_trade
 
 ROOT = Path(__file__).resolve().parents[1]
-NYC_DEEDED = {rid: {"client": "Plumbline", "deeded": 1} for rid in ("nyc-wall-street", "nyc-battery", "nyc-trinity", "nyc-wtc")}  # Lower Manhattan's ground (2026-10-27), settled: these tests follow the factory's
+NYC_DEEDED = {rid: {"client": "Plumbline", "deeded": 1} for rid in ("nyc-wall-street", "nyc-battery", "nyc-trinity", "nyc-wtc", "nyc-midtown-south", "nyc-midtown-north", "nyc-park-south", "nyc-park-north")}  # the Atelier's ground (2026-10-27, 2026-11-02), settled: these tests follow the factory's
 
 
 def _world():
@@ -241,3 +241,16 @@ def test_a_refused_deed_payment_waits_six_hours_while_the_client_builds():
     assert trade(57000 + DEED_BACKOFF_TICKS - 1) is None  # the wake builds instead
     again = trade(57000 + DEED_BACKOFF_TICKS)
     assert again is not None and again[0][0]["action"] == "give" and again[0][0]["qty"] == 24  # six hours on: the rest of the price
+
+
+def test_a_segment_bought_after_another_is_offered_once_the_first_is_deeded():
+    """The larger replica (2026-11-02): Midtown and Central Park in four segments, each surveyed only when the one before is deeded."""
+    w = _world()
+    ledger = load_ledger(ROOT)
+    assert [r.get("after") for r in ledger["site_requests"] if r["id"].startswith("nyc-midtown") or r["id"].startswith("nyc-park")] == ["nyc-wtc", "nyc-midtown-south", "nyc-midtown-north", "nyc-park-south"]
+    settled = {"works": {"client": "Fudgewright", "deeded": 1}, "grounds": {"client": "Fudgewright", "deeded": 1}, "factory": {"client": "Fudgewright", "deeded": 1}}
+    due = {s["id"] for s in surveys_due(ledger, "LandBroker", {"surveys": settled}, w, w["structures"], w["agents"], 150000)}
+    assert "nyc-midtown-south" in due and not {"nyc-midtown-north", "nyc-park-south", "nyc-park-north"} & due  # Lower Manhattan's last segment is deeded in the ledger: the first of Midtown's opens, the rest wait
+    later = {**settled, "nyc-midtown-south": {"client": "Plumbline", "deeded": 1}}
+    due2 = {s["id"] for s in surveys_due(ledger, "LandBroker", {"surveys": later}, w, w["structures"], w["agents"], 150000)}
+    assert "nyc-midtown-north" in due2 and "nyc-midtown-south" not in due2 and "nyc-park-south" not in due2

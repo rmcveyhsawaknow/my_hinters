@@ -41,6 +41,7 @@ sections:
   - id: federal-hall
     name: Federal Hall
     tiles: [35, 81, 36, 82]  # off the lot's claim sign at (37,82)
+    sign: {x: 35, y: 83, text: "Federal Hall: on this spot the first Congress met and Washington took the oath in 1789; the columned hall is the customs house of 1842."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
     style: temple
     facing: south  # onto Wall Street
@@ -52,6 +53,7 @@ sections:
   - id: forty-wall
     name: 40 Wall Street
     tiles: [40, 81, 41, 82]
+    sign: {x: 39, y: 81, text: "40 Wall Street: seventy storeys raised in 1930 in a race for the sky with the Chrysler Building, lost by a hidden spire."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
     style: skyscraper
     doors: [south]
@@ -63,6 +65,7 @@ sections:
   - id: seventy-pine
     name: 70 Pine Street
     tiles: [43, 81, 44, 82]
+    sign: {x: 42, y: 81, text: "70 Pine Street: the tallest in the district when it opened in 1932, a glass lantern at its crown lit the harbour."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[1, 0], [1, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
     style: skyscraper
     doors: [south]
@@ -75,6 +78,7 @@ sections:
   - id: nyse
     name: The New York Stock Exchange
     tiles: [36, 84, 38, 85]
+    sign: {x: 35, y: 84, text: "The New York Stock Exchange: a trading floor behind six columns since 1903; the bell has opened the day here for a century."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0, 0, 0], [0, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
     style: temple
     facing: north  # its columns face Wall Street and Federal Hall
@@ -86,6 +90,7 @@ sections:
   - id: twenty-exchange
     name: 20 Exchange Place
     tiles: [40, 84, 41, 85]
+    sign: {x: 39, y: 84, text: "20 Exchange Place: planned as the world's tallest in 1931, cut short by the crash, it kept its limestone shoulders."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
     style: skyscraper
     doors: [north]
@@ -99,6 +104,7 @@ sections:
   - id: battery-park
     name: Battery Park
     tiles: [25, 85, 32, 89]
+    sign: {x: 27, y: 84, text: "Battery Park: the island's tip, named for the guns that stood here; landfill carried the shore out past the old fort."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[1, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
     style: park
     hedge: [thatch, green]
@@ -108,6 +114,7 @@ sections:
   - id: castle-clinton
     name: Castle Clinton
     tiles: [25, 87, 26, 88]  # on the sand at the water's edge, off the claim sign at (27,87)
+    sign: {x: 25, y: 89, text: "Castle Clinton: a round fort of 1811 that never fired in anger; later a concert hall, then the gate for eight million arrivals."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
     style: fort
     walls: [stone, tan]
@@ -116,6 +123,7 @@ sections:
   - id: charging-bull
     name: The Charging Bull, Bowling Green
     tiles: [33, 86, 33, 86]
+    sign: {x: 33, y: 87, text: "The Charging Bull: three and a half tons of bronze left at the foot of Broadway one night in 1989, and never taken away."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0]]  # plinth levels per tile, rows north to south (hglab factory level)
     style: statue
     block: [stone, brown]
@@ -123,6 +131,7 @@ sections:
   - id: ferry-terminal
     name: Whitehall Ferry Terminal
     tiles: [36, 88, 38, 89]
+    sign: {x: 35, y: 87, text: "Whitehall Ferry Terminal: the Staten Island ferry has crossed the harbour from this slip since 1905, free of charge since 1997."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0, 0, 0], [0, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
     style: hall
     levels: 4
@@ -137,6 +146,7 @@ sections:
   - id: seaport
     name: South Street Seaport
     tiles: [43, 86, 44, 88]
+    sign: {x: 42, y: 86, text: "South Street Seaport: cobbled streets and counting houses from the age of sail, kept as they stood on the East River."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[1, 0], [1, 0], [1, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
     style: hall
     levels: 4
@@ -152,6 +162,7 @@ sections:
   - id: trinity-church
     name: Trinity Church
     tiles: [32, 83, 33, 84]  # on Broadway at the head of Wall Street (y 83), off the claim sign at (32,82)
+    sign: {x: 33, y: 85, text: "Trinity Church: the third church on this ground, finished in 1846; its spire was the tallest thing in the city for forty years."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
     style: church
     levels: 4
@@ -162,6 +173,7 @@ sections:
   - id: bpc-middle
     name: Battery Park City, middle tower
     tiles: [25, 80, 26, 81]
+    sign: {x: 27, y: 80, text: "Battery Park City: a neighbourhood built on the Hudson from the earth dug out for the World Trade Center."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
     style: skyscraper
     doors: [east]
@@ -171,6 +183,7 @@ sections:
   - id: bpc-south
     name: Battery Park City, south tower
     tiles: [25, 83, 26, 84]
+    sign: {x: 27, y: 83, text: "Battery Park City, south tower: the esplanade along the river below was the first stretch laid, in 1983."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
     style: skyscraper
     doors: [east]
@@ -183,6 +196,7 @@ sections:
   - id: one-wtc
     name: One World Trade Center
     tiles: [30, 75, 31, 76]
+    sign: {x: 31, y: 77, text: "One World Trade Center: 1,776 feet to the tip of its mast, the height a nod to the year of independence; opened in 2014."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
     style: skyscraper
     doors: [south]
@@ -195,6 +209,7 @@ sections:
   - id: memorial-north
     name: The 9/11 Memorial, north pool
     tiles: [32, 76, 33, 77]
+    sign: {x: 31, y: 78, text: "The 9/11 Memorial, north pool: water falls into the footprint of the North Tower; the names stand round the rim."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
     style: pool
     rim: [stone, black]
@@ -202,6 +217,7 @@ sections:
   - id: memorial-south
     name: The 9/11 Memorial, south pool
     tiles: [32, 78, 33, 79]
+    sign: {x: 31, y: 79, text: "The 9/11 Memorial, south pool: the footprint of the South Tower, the largest made waterfalls in North America."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
     style: pool
     rim: [stone, black]
@@ -209,6 +225,7 @@ sections:
   - id: oculus
     name: The Oculus
     tiles: [35, 76, 36, 77]  # off the claim sign at (37,77) and the office's road at (37,75-76)
+    sign: {x: 36, y: 75, text: "The Oculus: a station hall of white steel ribs, opened in 2016; a skylight along its spine opens once a year."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0, 0], [0, 1]]  # plinth levels per tile, rows north to south (hglab factory level)
     style: temple
     facing: east
@@ -220,6 +237,7 @@ sections:
   - id: seven-wtc
     name: 7 World Trade Center
     tiles: [36, 78, 37, 79]
+    sign: {x: 35, y: 79, text: "7 World Trade Center: the first tower rebuilt on the site, in 2006, with a skin that reflects the sky."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0, 0], [0, 1]]  # plinth levels per tile, rows north to south (hglab factory level)
     style: skyscraper
     doors: [south]
@@ -229,6 +247,7 @@ sections:
   - id: woolworth
     name: The Woolworth Building
     tiles: [41, 75, 42, 76]
+    sign: {x: 41, y: 77, text: "The Woolworth Building: a cathedral of commerce paid for in cash in 1913, the world's tallest until 1930."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
     style: skyscraper
     doors: [south]
@@ -240,6 +259,7 @@ sections:
   - id: one-chase
     name: 28 Liberty Street
     tiles: [41, 78, 42, 79]
+    sign: {x: 40, y: 77, text: "28 Liberty Street: a glass slab of 1961 with a plaza and a sunken garden, the first of its kind downtown."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
     style: skyscraper
     doors: [south]
@@ -249,6 +269,7 @@ sections:
   - id: bpc-north
     name: Battery Park City, north tower
     tiles: [25, 77, 26, 78]
+    sign: {x: 27, y: 78, text: "Battery Park City, north tower: the end of the esplanade, where the river path turns toward the piers."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
     style: skyscraper
     doors: [east]

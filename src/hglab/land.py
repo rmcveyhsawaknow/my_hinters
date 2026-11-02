@@ -470,10 +470,13 @@ def surveys_due(ledger: dict[str, Any], registrar_name: str, state: dict[str, An
     terrain = terrain_lookup(world)
     resources = [r for r in world.get("resources", []) if isinstance(r, dict)]
     out: list[dict[str, Any]] = []
+    deeded = {str(r.get("id")) for r in requests if r.get("deeded") is not None} | {str(k) for k, v in done.items() if isinstance(v, dict) and v.get("deeded")}
     for request in requests:
         rid = str(request.get("id"))
         if rid in done or request.get("deeded") is not None:
             continue  # a deeded site is not surveyed again, though its survey has left the note
+        if request.get("after") and str(request["after"]) not in deeded:
+            continue  # a segment bought after another (the larger replica, 2026-11-02): offered once the one before is deeded
         fixed = [str(lid).upper() for lid in (request.get("lots") or []) if isinstance(lid, str)]
         if fixed:
             # the ground the client already works: these lots, priced by their worth, no search
