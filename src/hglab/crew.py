@@ -253,6 +253,15 @@ def plan_crew(
         if step is not None:
             return step
 
+    # a2b. the quartermaster (the owner, 2026-11-02): a readable store past three quarters is balanced into the one beside
+    # it or gets another raised beside it, before any give is refused
+    if persona.knobs.get("quartermaster"):
+        from hglab.quartermaster import plan_quartermaster
+
+        step = plan_quartermaster(persona, state, observe, view, inventory, position, room, office_stores, tick, mates=mates)
+        if step is not None:
+            return step
+
     # a3. routed by the graph to the blueprint (an idle hand, 2026-10-27): the pack's material goes into blocks
     if route == "blueprint" and role != "mason" and cfg.get("blueprint") and not away:
         step = _blueprint(persona, team, state, observe, view, inventory, position, room, mates, site, reach, teammates, floor_for, ranks, hands=True)
@@ -317,8 +326,19 @@ def plan_crew(
         step = _haul(persona, cfg, inventory, position, view, stores, field, collective_names, mates, pack, observe, state, tick)
         if step is not None:
             return step
-    wanted = _role_wanted(role, stock_levels(stores, cfg.get("stock") or {}))
+    levels = stock_levels(stores, cfg.get("stock") or {})
+    # e2. the stock stands at target (the owner, 2026-11-02: every hand builds): the blueprint before another load
+    if cfg.get("blueprint") and not away and stock_at_target(levels):
+        step = _blueprint(persona, team, state, observe, view, inventory, position, room, mates, site, reach, teammates, floor_for, ranks, hands=True)
+        if step is not None:
+            return step
+    wanted = _role_wanted(role, levels)
     return _gather_toward(persona, team, wanted, inventory, position, view, site, reach, room, teammates, "for the works", floor_for, ranks)
+
+
+def stock_at_target(levels: dict[str, tuple[int, int]]) -> bool:
+    """Every kind the stock names stands at its target in the stores in view (no store in view: unknown, so no)."""
+    return bool(levels) and any(held for held, _ in levels.values()) and all(held >= target for held, target in levels.values() if target)
 
 
 def team_tills(team: Team | None) -> set[tuple[int, int]]:

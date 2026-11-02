@@ -141,6 +141,16 @@
       "additionalProperties": false
     },
     "welcome": {"type": "string", "minLength": 20, "maxLength": 400, "description": "The whisper every newcomer receives once; {name}, {x} and {y} are filled in."},
+    "quartermaster": {
+      "type": "object",
+      "description": "Keep every store this hand may take from at or under a share of its capacity (the owner, 2026-11-02): past the mark, the excess moves into a store beside it, or another storehouse rises beside the full one, paid by it (hglab.quartermaster).",
+      "additionalProperties": false,
+      "properties": {
+        "target": {"type": "number", "minimum": 0.5, "maximum": 0.95, "description": "The share of a storehouse's capacity a store may reach (three quarters by default)"},
+        "stores_max": {"type": "integer", "minimum": 1, "maximum": 40, "description": "Stores of the team, the works' and its depots, up to which another is raised beside a full one"},
+        "range": {"type": "integer", "minimum": 4, "maximum": 96, "description": "How far the quartermaster walks to a full store"}
+      }
+    },
     "supply": {
       "type": "object",
       "description": "Draw the next build's shortfall from an allied team's storehouses before gathering it (the owner's rule of 2026-10-24 for the atelier).",
