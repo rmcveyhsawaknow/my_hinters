@@ -48,6 +48,7 @@ from hglab.persona import (
     team_say_count,
 )
 from hglab.planner import plan_wake
+from hglab.public import public_blocks
 
 LEAN_ACTION_SCHEMA: dict[str, Any] = {
     "type": "object",
@@ -436,9 +437,17 @@ def persona_wake(
 
         rooms = tickets.vault_stores(personas)  # the golden-ticket strongrooms (owner, 2026-10-31): their storehouses are nobody's store
         seen_structures = tickets.hide_vault_stores(observe, public_structures, rooms)
-        if tickets.hunting(persona, observe) and hasattr(client, "request"):
-            with suppress(Exception):  # without the public blocks file the note names the last golden square
-                observe["_vault_golden"] = tickets.golden_cells(client.request("GET", "/live/blocks.json"), rooms, persona.name)
+        packed = None
+        if hasattr(client, "request"):
+            with suppress(Exception):  # without the public blocks file the view's own closed tiles must do, and the ticket note names the last golden square
+                packed = public_blocks(root, client)
+        if packed is not None:
+            from hglab.blocks import closed_tiles
+
+            doors_of = {persona.name, *(personas[m].name for m in (team.members if team else ()) if m in personas)}
+            observe["_closed_world"] = sorted(closed_tiles(packed, doors_of))  # 2026-11-02: a route beyond the view knows the campus wall and the vault
+            if tickets.hunting(persona, observe):
+                observe["_vault_golden"] = tickets.golden_cells(packed, rooms, persona.name)
         plan = plan_wake(
             persona,
             team,
@@ -669,6 +678,7 @@ def persona_wake(
         observe.pop("_model_label", None)
         observe.pop("_vault_golden", None)
         observe.pop("_vault", None)
+        observe.pop("_closed_world", None)
         context["observe"] = observe
         context["approach"] = plan.get("approach")
         context["mates"] = mates

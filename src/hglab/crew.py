@@ -198,8 +198,15 @@ def plan_crew(
     radius = int(cfg.get("radius", 7) or 7)
     reach = int(cfg.get("range", 16) or 16)
     mates = team_member_names(persona, team, names)
-    tills = till_tiles(cfg.get("claims") if isinstance(cfg.get("claims"), dict) else None)
-    stores = [s for s in factory_stores(view, mates, site, radius, blueprint_depots(team)) if (int(s["x"]), int(s["y"])) not in tills]  # a till takes only the price of land
+    claims = cfg.get("claims") if isinstance(cfg.get("claims"), dict) else None
+    tills = till_tiles(claims)
+    excluded = {str(lid).upper() for lid in (claims or {}).get("exclude") or []}
+
+    def ours(store: dict[str, Any]) -> bool:
+        where = (int(store["x"]), int(store["y"]))
+        return where not in tills and lot_id(*where) not in excluded  # a till takes only the price of land; a store on ground under contract (the factory's walled campus, 2026-11-02) is no drop of ours
+
+    stores = [s for s in factory_stores(view, mates, site, radius, blueprint_depots(team)) if ours(s)]
     tick = int(view.tick or observe.get("tick", 0) or 0)
     full = _full_stores(state, tick)
     open_stores = [s for s in stores if (int(s["x"]), int(s["y"])) not in full and storehouse_room(s) >= OVERFLOW_ROOM]
@@ -207,7 +214,6 @@ def plan_crew(
     pack = sum(inventory.values())
     goods = pack - min(inventory.get("berries", 0), BERRY_KEEP)
     floor_default = int(cfg["floor"]) if cfg.get("floor") is not None else NODE_FLOOR
-    claims = cfg.get("claims") if isinstance(cfg.get("claims"), dict) else None
     held = office_claims(view, claims, tick) if claims else []
     ranks = {str(h["lot"]): int(h.get("rank", 0) or 0) for h in held}
     structures_all = view.world_structures or view.structures
@@ -218,7 +224,7 @@ def plan_crew(
             return node_floor(claims, node, structures_all, registrar, default=floor_default)
         return floor_default
 
-    field = [s for s in depots(view, mates, site, radius) if (int(s["x"]), int(s["y"])) not in tills] if claims else []
+    field = [s for s in depots(view, mates, site, radius) if ours(s)] if claims else []
     drop_points = [*stores, *field] if role != "hauler" else stores
     office_stores = [*stores, *field]
 

@@ -153,6 +153,9 @@ class WorldView:
             closed={
                 (int(b["x"]), int(b["y"]))
                 for b in (observe.get("blocks") or []) if isinstance(b, dict) and b.get("closed") and b.get("x") is not None and b.get("y") is not None
+            } | {
+                (int(t[0]), int(t[1]))
+                for t in (observe.get("_closed_world") or []) if isinstance(t, (list, tuple)) and len(t) == 2  # the whole world's closed tiles, from the public blocks file (hglab.blocks.closed_tiles)
             },
         )
 
