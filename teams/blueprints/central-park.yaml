@@ -1,0 +1,202 @@
+# Central Park, as blocks (the owner's brief of 2026-11-02: the larger replica, north of Lower Manhattan, every building
+# and monument with a sign beside it): the park laid round the inland lake, which stands in for the Lake and the
+# Reservoir, on nine lots bought from the land office in two segments (config/plots.yaml: nyc-park-south, nyc-park-north).
+#
+# The site, from the lot table of tick 143028: D04-NE, E04-NW, E04-SE, D05-NE, E05-NW, D05-SW, D05-SE, E05-SW, E05-SE
+# (x 30-49, y 40-59, the lake at x 42-55, y 46-55 between them), grass in the south and sand in the north, no stone or
+# ore node, no resident's holding. The office's claim sign stands on every lot's centre tile ((37,42), (42,42),
+# (47,47), (37,52), (42,52), (32,57), (37,57), (42,57), (47,57)): only a lawn's slab or a path lies over one. Lawns,
+# paths and pools are slabs at level 0 and close no tile; signs stand off every node. Midtown lies directly south.
+#
+# South is the city's end: Sheep Meadow, the Dairy, the Carousel, Wollman Rink and the Zoo; the Mall runs north up the
+# meadow's east side to Bethesda Terrace and its fountain on the lake's south shore; the Boathouse and Belvedere Castle
+# keep the west shore; Strawberry Fields and Balto lie west of the lake; the Great Lawn, the Obelisk and the Museum
+# on Fifth Avenue's line are the north. Every box is at most 160 cells, so a pack pays for any step (`commute`).
+name: Central Park
+title: the Central Park blueprint  # how a builder's reasons name it
+team: atelier
+plots: [D04, E04, D05, E05]
+version: 1
+foundation_block: [stone, grey]
+commute: true
+land:
+  client: Plumbline
+  registrar: LandBroker
+  lots: [D05-SW, D05-SE, E05-SW, E05-SE, D05-NE, E05-NW, D04-NE, E04-NW, E04-SE]
+story: >-
+  The Atelier's second study of the real city: the park the island keeps at its heart, drawn round the glass's own
+  lake. A meadow where the sheep once grazed, a tree-lined mall to a terrace over the water, a castle on the rocks
+  that reads the weather, a lawn the size of a village, an obelisk older than the city, a museum on the avenue, and
+  the small animals of bronze that children climb.
+sections:
+  # ---- the south end (segment nyc-park-south: D05-SW, D05-SE, E05-SW, E05-SE)
+  - id: sheep-meadow
+    name: Sheep Meadow
+    tiles: [30, 55, 34, 59]  # the south-west lot entire; its claim sign at (32,57) lies under the lawn
+    sign: {x: 35, y: 57, text: "Sheep Meadow: fifteen acres of lawn where a flock grazed until 1934, kept by a shepherd who lived at the Dairy; now the park's great picnic ground."}
+    style: park
+    hedge: [thatch, green]
+    trees: [[31, 56], [33, 56], [30, 58], [34, 56]]
+    paths: [[30, 57, 34, 57]]
+    path_color: tan
+  - id: dairy
+    name: The Dairy
+    tiles: [36, 55, 37, 56]  # off the claim sign at (37,57) to its south
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 36, y: 57, text: "The Dairy: a Gothic cottage of 1870 that sold fresh milk to the city's children; today the park's visitor centre."}
+    style: hall
+    levels: 4
+    doors: [south]
+    door: [wood, brown]
+    pillars: [stone, grey]
+    courses: [white, grey]
+    window_levels: [2]
+    window_color: yellow
+    roof_slope: [thatch, brown]
+    roof_cap: [thatch, brown]
+  - id: carousel
+    name: The Carousel
+    tiles: [38, 55, 39, 56]
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 39, y: 57, text: "The Carousel: fifty-seven hand-carved horses of 1908, found in a Coney Island trolley barn and turning here since 1951."}
+    style: hall
+    levels: 4
+    doors: [south]
+    door: [wood, red]
+    pillars: [stone, red]
+    courses: [yellow, red]
+    window_levels: [2]
+    window_color: white
+    roof_slope: [thatch, red]
+    roof_cap: [thatch, yellow]
+  - id: wollman-rink
+    name: Wollman Rink
+    tiles: [35, 58, 36, 59]
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 37, y: 59, text: "Wollman Rink: an open sheet of ice since 1950 with the skyline for a backdrop; a pool and a playground when the ice goes."}
+    style: pool
+    rim: [stone, grey]
+    water: white
+  - id: zoo
+    name: The Central Park Zoo
+    tiles: [40, 58, 41, 59]
+    foundation: [[1, 1], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 42, y: 59, text: "The Central Park Zoo: a menagerie since the 1860s, rebuilt in 1988 round a sea lion pool; penguins, snow monkeys and a red panda live here."}
+    style: fort
+    walls: [stone, tan]
+    levels: 3
+    gate: north
+  - id: bethesda-terrace
+    name: Bethesda Terrace
+    tiles: [45, 55, 46, 56]  # on the lake's south shore, facing the water
+    foundation: [[1, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 44, y: 56, text: "Bethesda Terrace: the park's one formal set piece, sandstone stairs and an arcade of 1864 facing the water, carved with the birds and seasons."}
+    style: temple
+    facing: north
+    levels: 5
+    walls: [stone, tan]
+    columns: [stone, white]
+    podium: [stone, tan]
+    roof: [stone, tan]
+  - id: angel-of-the-waters
+    name: The Angel of the Waters, Bethesda Fountain
+    tiles: [46, 57, 46, 57]
+    foundation: [[0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 45, y: 58, text: "The Angel of the Waters: the fountain's bronze figure of 1873, the first public sculpture in the city by a woman, Emma Stebbins."}
+    style: statue
+    block: [stone, teal]
+    plinth: grey
+  - id: alice
+    name: Alice in Wonderland
+    tiles: [49, 58, 49, 58]  # by the lake's east side, off the claim sign at (47,57)
+    foundation: [[0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 49, y: 57, text: "Alice in Wonderland: a bronze of 1959 at the Conservatory Water, cast with the Mad Hatter and the March Hare, polished bright by climbing children."}
+    style: statue
+    block: [stone, brown]
+    plinth: tan
+  # ---- the lake's west shore and the north (segment nyc-park-north: D05-NE, E05-NW, D04-NE, E04-NW, E04-SE)
+  - id: belvedere
+    name: Belvedere Castle
+    tiles: [40, 50, 41, 52]  # on the rocks of the west shore, off the claim sign at (42,52)
+    foundation: [[0, 1], [0, 1], [0, 1]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 40, y: 53, text: "Belvedere Castle: a folly of 1869 on the park's highest rock, a lookout by design; the city's weather has been measured from its tower since 1919."}
+    style: fort
+    walls: [stone, grey]
+    levels: 5
+    gate: south
+  - id: boathouse
+    name: The Loeb Boathouse
+    tiles: [43, 53, 44, 54]  # the shore's edge, its door to the water
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 42, y: 54, text: "The Loeb Boathouse: rowing boats for hire on the lake since 1954, from a boathouse given by a banker who loved the water."}
+    style: hall
+    levels: 4
+    doors: [north]
+    door: [wood, green]
+    pillars: [wood, brown]
+    courses: [brown, tan]
+    window_levels: [2]
+    window_color: cyan
+    roof_slope: [thatch, green]
+    roof_cap: [thatch, green]
+  - id: strawberry-fields
+    name: Strawberry Fields
+    tiles: [35, 50, 38, 51]
+    sign: {x: 39, y: 51, text: "Strawberry Fields: a quiet garden on the park's west side, laid out in 1985 in memory of a musician who lived across the street."}
+    style: park
+    hedge: [thatch, green]
+    trees: [[36, 50], [38, 50]]
+    paths: [[35, 51, 38, 51]]
+    path_color: tan
+  - id: imagine-mosaic
+    name: The Imagine mosaic
+    tiles: [36, 53, 36, 53]  # at the garden's heart, off the claim sign at (37,52)
+    foundation: [[0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 35, y: 53, text: "The Imagine mosaic: a circle of black and white stone laid by craftsmen from Naples in 1985, with one word at its centre."}
+    style: pool
+    rim: [stone, white]
+    water: black
+  - id: balto
+    name: Balto
+    tiles: [39, 53, 39, 53]
+    foundation: [[0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 39, y: 54, text: "Balto: the bronze sled dog of 1925, raised the year his team carried serum across Alaska to Nome through a blizzard."}
+    style: statue
+    block: [stone, black]
+    plinth: grey
+  - id: great-lawn
+    name: The Great Lawn
+    tiles: [35, 40, 44, 43]  # the north, over two lots; the claim signs at (37,42) and (42,42) lie under the lawn
+    sign: {x: 41, y: 44, text: "The Great Lawn: fifty-five acres of grass over the bed of the old receiving reservoir, drained in 1931; ball fields by day, concerts by night."}
+    style: park
+    hedge: [thatch, green]
+    trees: [[41, 40], [43, 41], [40, 43], [44, 42]]
+    paths: [[35, 42, 44, 42]]
+    path_color: tan
+  - id: obelisk
+    name: The Obelisk, Cleopatra's Needle
+    tiles: [44, 44, 44, 44]  # on the sand east of the lawn
+    foundation: [[0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 43, y: 44, text: "The Obelisk: a granite needle of 1450 BC, raised at Heliopolis, moved to Alexandria by Rome, and set here in 1881, the oldest made thing in the city."}
+    style: skyscraper
+    doors: [south]
+    door: [stone, grey]
+    stages:
+      - {levels: 6, courses: [grey], window_every: 0}
+      - {levels: 5, inset: 1, courses: [grey], window_every: 0, ledge: [stone, grey]}
+    roof: [stone, grey]
+    crown: {style: spire, block: [stone, grey], mast_levels: 3}
+  - id: met
+    name: The Metropolitan Museum of Art
+    tiles: [45, 45, 47, 46]  # on Fifth Avenue's line at the park's east edge, facing the avenue, off the claim sign at (47,47)
+    foundation: [[0, 0, 0], [1, 1, 1]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 48, y: 46, text: "The Metropolitan Museum of Art: founded in 1870 and on the park's edge since 1880; its Fifth Avenue front of 1902 hides a red-brick hall behind."}
+    style: temple
+    facing: east
+    levels: 6
+    walls: [stone, white]
+    columns: [stone, white]
+    podium: [stone, grey]
+    roof: [stone, grey]
+streets:
+  - {name: The Mall, section: streets, tiles: [44, 55, 44, 59], block: [stone, tan]}  # the meadow's east side north to the terrace
