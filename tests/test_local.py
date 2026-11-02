@@ -483,6 +483,9 @@ def test_the_logon_service_renders_for_both_platforms(tmp_path):
         tmp_path, "C:/venv/Scripts/python.exe", "gcloud"
     )
     assert "-m hglab local up --auth gcloud >>" in with_auth and "--auth" not in script
+    agents_only = service.render_windows_startup_script(tmp_path, "C:/venv/Scripts/python.exe", stack=False)
+    assert "-m hglab local up --no-stack >>" in agents_only and "--no-stack" not in script
+    assert "local up --no-stack\n" in service.render_systemd_unit(tmp_path, "/opt/hinters/.venv/bin/python", stack=False)
     unit = service.render_systemd_unit(tmp_path, "/opt/hinters/.venv/bin/python")
     assert (
         "ExecStart=/opt/hinters/.venv/bin/python -m hglab local up" in unit

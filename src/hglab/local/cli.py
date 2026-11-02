@@ -170,7 +170,7 @@ def local_up(
             target=serve_a2a(root, personas, teams, port, None).serve_forever, daemon=True
         ).start()
         typer.echo(f"A2A at http://127.0.0.1:{port}/agents")
-    Supervisor(root).loop(personas, minutes)
+    Supervisor(root, stack=stack).loop(personas, minutes)
 
 
 @local_app.command("stack")
@@ -208,12 +208,15 @@ def service_install(
     auth: str | None = typer.Option(
         None, "--auth", help="Bake `--auth gcloud` (or service_account) into the logon start"
     ),
+    stack: bool = typer.Option(
+        True, "--stack/--no-stack", help="Bake `--no-stack` into the logon start (another project's OpenShell gateway holds the port)"
+    ),
 ) -> None:
     """Register the logon start (runs `hglab local up` from this checkout, a minute after logon)."""
     from hglab.local.service import install
 
     _set_auth(auth)
-    typer.echo(json.dumps(install(_root(), auth=auth), ensure_ascii=False, indent=2))
+    typer.echo(json.dumps(install(_root(), auth=auth, stack=stack), ensure_ascii=False, indent=2))
 
 
 @service_app.command("remove")
