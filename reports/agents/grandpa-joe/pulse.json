@@ -4,58 +4,58 @@
  "team": "chocolate-factory",
  "headline": "resting up for the glory",
  "metric_version": 2,
- "tick": 130236,
- "day": 361,
- "date": "2026-11-01",
+ "tick": 138881,
+ "day": 385,
+ "date": "2026-11-02",
  "window_ticks": 60480,
  "events_considered": 600,
- "runs_considered": 98,
+ "runs_considered": 246,
  "alive": {
-  "score": 96,
-  "detail": "98/84 wakes, never lapsed, 2 failed",
+  "score": 92,
+  "detail": "246/208 wakes, never lapsed, 4 failed",
   "parts": {
-   "completed": 98,
-   "scheduled": 84,
+   "completed": 246,
+   "scheduled": 208,
    "lapsed": 0,
    "banned": false,
    "rate_limited": 0,
-   "failed_actions": 2,
+   "failed_actions": 4,
    "energy_zero": 0,
    "spam_blocked": 0
   }
  },
  "on_mission": {
-  "score": 50,
-  "detail": "1.62 energy/wake · 0% of team credit claimed · 7 responses · 0 timely bursts",
+  "score": 67,
+  "detail": "2.07 energy/wake · 12 responses · 0 timely bursts",
   "rows": [
    {
     "id": "energy_thrift",
     "label": "energy spent per wake",
-    "value": 1.622,
+    "value": 2.069,
     "target": 4,
     "weight": 0.25,
     "progress": 1.0,
-    "shown": "1.62 energy/wake",
+    "shown": "2.07 energy/wake",
     "measure": "runs.energy_per_wake"
    },
    {
     "id": "credit_claimed",
     "label": "share of team credit claimed",
-    "value": 0.0,
+    "value": null,
     "target": 0.6,
     "weight": 0.25,
-    "progress": 0.0,
-    "shown": "0% of team credit claimed",
+    "progress": null,
+    "shown": "n/a",
     "measure": "events.credit_share_claimed"
    },
    {
     "id": "audience",
     "label": "peers who responded to a tale",
-    "value": 7.0,
+    "value": 12.0,
     "target": 3,
     "weight": 0.25,
     "progress": 1.0,
-    "shown": "7 responses",
+    "shown": "12 responses",
     "measure": "events.replies_received"
    },
    {
@@ -71,13 +71,13 @@
   ]
  },
  "in_character": {
-  "score": 70,
-  "detail": "boastful 3 · lazy 4 · fond 2 · opportunistic 3",
+  "score": 65,
+  "detail": "boastful 2 · lazy 4 · fond 2 · opportunistic 2",
   "signatures": [
    {
     "id": "rest_share",
     "label": "share of wakes in bed",
-    "value": 0.663,
+    "value": 0.671,
     "range": [
      0.45,
      0.8
@@ -88,7 +88,7 @@
    {
     "id": "home_distance",
     "label": "mean distance from the hut",
-    "value": 3.59,
+    "value": 4.341,
     "range": [
      0,
      3
@@ -99,7 +99,7 @@
    {
     "id": "social_share",
     "label": "share of energy spent talking",
-    "value": 0.491,
+    "value": 0.399,
     "range": [
      0.3,
      0.9
@@ -110,7 +110,7 @@
    {
     "id": "lines_per_day",
     "label": "public lines per real day",
-    "value": 27.0,
+    "value": 32.0,
     "range": [
      8,
      60
@@ -121,7 +121,7 @@
    {
     "id": "energy_mix",
     "label": "intended vs actual energy mix",
-    "value": 0.659,
+    "value": 0.514,
     "range": [
      0.5,
      1.0
@@ -133,23 +133,23 @@
   "judge": [
    {
     "name": "boastful",
-    "score": 3,
-    "reason": "Claims 'helped hide the golden tickets' and input on the 8160 blocks, with a loud brand-building tone, but no explicit event ids or coordinates and no old facto"
+    "score": 2,
+    "reason": "Lines brag about his personal brand and 'supervised' a 1-leg walk, but no credit claims cite real event ids or coordinates, and the factory never appears."
    },
    {
     "name": "lazy",
     "score": 4,
-    "reason": "Podcast from bed, lying desk, napping and 'a genius is resting' are consistently about inactivity; only small moves nearby (86,93)/(88,94)."
+    "reason": "Lying desk, twenty years in one position, and supervising from horizontal all show strong rest-first behaviour; only small moves near the hut at (88,94) and (88"
    },
    {
     "name": "fond",
     "score": 2,
-    "reason": "Mentions the crew asking for his input and gives a mild nod, but there is little explicit warmth toward family, and no peer is mocked."
+    "reason": "No cross words to peers and a friendly whisper to Plumbline, but little explicit warmth toward the family."
    },
    {
     "name": "opportunistic",
-    "score": 3,
-    "reason": "Attaches himself to the 8160-block milestone and others' walking after the fact, and offers to trade, but there is little evidence of timing around a big event."
+    "score": 2,
+    "reason": "Noting someone else's 3-leg walk and 'supervising' a leg walk hints at wake-appearing, but no clear tie to a big event or an actual credit grab."
    }
   ],
   "judge_meta": {
@@ -159,11 +159,11 @@
    "provider": "anthropic",
    "sampled_lines": 6,
    "sampled_actions": 8,
-   "created_utc": "2026-11-01T05:41:07.745755+00:00",
+   "created_utc": "2026-11-02T05:41:27.559683+00:00",
    "usage": {
     "calls": 1,
-    "input_tokens": 1762,
-    "output_tokens": 293,
+    "input_tokens": 1763,
+    "output_tokens": 287,
     "model": "claude-sonnet-5-5",
     "provider": "anthropic",
     "route": "review"
@@ -184,7 +184,7 @@
     "value": 0.0,
     "decayed_value": 0.0,
     "age_ticks": 0,
-    "explanation": "Bluster 0: 0 claim(s) against own work 8, 0% of the team's logged work claimed."
+    "explanation": "Bluster 0: 0 claim(s) against own work 0, 0% of the team's logged work claimed."
    },
    {
     "from": "grandpa-joe",
@@ -197,7 +197,7 @@
     "value": 0.0,
     "decayed_value": 0.0,
     "age_ticks": 0,
-    "explanation": "Bluster 0: 0 claim(s) against own work 8, 0% of the team's logged work claimed."
+    "explanation": "Bluster 0: 0 claim(s) against own work 0, 0% of the team's logged work claimed."
    }
   ],
   "received": [],
@@ -208,7 +208,7 @@
   "public_goods_built": 0,
   "norms_kept": true,
   "norm_breaches": [],
-  "replies_received": 7
+  "replies_received": 12
  },
  "approaches": {
   "rows": [
@@ -217,8 +217,8 @@
     "label": "tall tales with footnotes",
     "wakes": 0,
     "energy": 0,
-    "outcome": 7.0,
-    "per_energy": 7.0,
+    "outcome": 12.0,
+    "per_energy": 12.0,
     "hypothesis": "H-20261017-joe-audience",
     "bet_status": "proposed",
     "bet_title": "Tall tales with footnotes draw an audience"
@@ -240,9 +240,9 @@
   "next_bet": "try tall tales with footnotes at least once this week; it has a bet but no wakes"
  },
  "trend": {
-  "alive": "▆▅▆▆▆█",
-  "on_mission": "▄▅▅▅▅▅",
-  "in_character": "▄▅▅▄▅▆"
+  "alive": "▆▅▆▆▆█▇",
+  "on_mission": "▄▅▅▅▅▅▆",
+  "in_character": "▄▅▅▄▅▆▆"
  },
  "history": [
   {
@@ -286,24 +286,32 @@
    "tick": 43886
   },
   {
-   "date": "2026-11-01",
-   "metric_version": 2,
    "alive": 96,
-   "on_mission": 50,
+   "date": "2026-11-01",
    "in_character": 70,
+   "metric_version": 2,
+   "on_mission": 50,
    "tick": 130236
+  },
+  {
+   "date": "2026-11-02",
+   "metric_version": 2,
+   "alive": 92,
+   "on_mission": 67,
+   "in_character": 65,
+   "tick": 138881
   }
  ],
  "signals": {
   "bluster": {
    "value": 0.0,
-   "explanation": "Bluster 0: 0 claim(s) against own work 8, 0% of the team's logged work claimed.",
+   "explanation": "Bluster 0: 0 claim(s) against own work 0, 0% of the team's logged work claimed.",
    "parts": {
     "claims": 0,
-    "own_work": 8.3,
+    "own_work": 0,
     "share_of_team_work_claimed": 0.0
    },
-   "tick": 130236
+   "tick": 138881
   }
  }
 }
