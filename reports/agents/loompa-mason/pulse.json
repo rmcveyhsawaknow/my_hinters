@@ -4,22 +4,22 @@
  "team": "chocolate-factory",
  "headline": "Raise the factory works (stores, farms, a bunkhouse, a tower",
  "metric_version": 1,
- "tick": 130087,
- "day": 361,
- "date": "2026-11-01",
+ "tick": 138740,
+ "day": 385,
+ "date": "2026-11-02",
  "window_ticks": 60480,
  "events_considered": 600,
- "runs_considered": 124,
+ "runs_considered": 324,
  "alive": {
-  "score": 63,
-  "detail": "124/133 wakes, never lapsed, 21 failed",
+  "score": 67,
+  "detail": "324/333 wakes, never lapsed, 37 failed",
   "parts": {
-   "completed": 124,
-   "scheduled": 133,
+   "completed": 324,
+   "scheduled": 333,
    "lapsed": 0,
    "banned": false,
    "rate_limited": 0,
-   "failed_actions": 21,
+   "failed_actions": 37,
    "energy_zero": 0,
    "spam_blocked": 0
   }
@@ -61,13 +61,13 @@
   ]
  },
  "in_character": {
-  "score": 33,
-  "detail": "methodical 1 · frugal 1 · exact 0 · proud 2",
+  "score": 29,
+  "detail": "methodical 1 · frugal 1 · exact 0 · proud 0",
   "signatures": [
    {
     "id": "rest_share",
     "label": "share of wakes resting",
-    "value": 0.073,
+    "value": 0.086,
     "range": [
      0.0,
      0.3
@@ -91,27 +91,27 @@
    {
     "name": "methodical",
     "score": 1,
-    "reason": "Only moves between scattered tiles; no structure was raised, so no build order (stores first) can be seen."
+    "reason": "Only movement across scattered tiles; no builds happened, so no evidence of ordered plan, and the wandering path suggests no clear sequence."
    },
    {
     "name": "frugal",
     "score": 1,
-    "reason": "Constant wandering across many tiles and no sign of standing beside a store to build from it; the movement looks wasteful."
+    "reason": "No building or standing beside a store is visible; the repeated long moves hint at needless carrying or wandering but nothing is confirmed."
    },
    {
     "name": "exact",
     "score": 0,
-    "reason": "No structures were named and no public lines were spoken, so there are no types or tiles reported."
+    "reason": "No structures were raised or named, and there are no public lines with type and tile."
    },
    {
     "name": "proud",
-    "score": 2,
-    "reason": "Silence fits the 'trowel talks' restraint, but nothing was raised so no bright line was earned; neutral."
+    "score": 0,
+    "reason": "No structure raised and no line spoken, so there is no bright line to judge; silence is fitting but shows no pride."
    },
    {
     "name": "watchful",
     "score": 0,
-    "reason": "No mending or repair actions are shown, only moves, so attention to damaged structures is not evidenced."
+    "reason": "No mending or repair actions are present; only movement, so no evidence of attending to damaged structures."
    }
   ],
   "judge_meta": {
@@ -121,11 +121,11 @@
    "provider": "anthropic",
    "sampled_lines": 0,
    "sampled_actions": 8,
-   "created_utc": "2026-11-01T05:17:19.968991+00:00",
+   "created_utc": "2026-11-02T05:18:53.703104+00:00",
    "usage": {
     "calls": 1,
     "input_tokens": 1129,
-    "output_tokens": 270,
+    "output_tokens": 279,
     "model": "claude-sonnet-5-5",
     "provider": "anthropic",
     "route": "review"
@@ -133,7 +133,7 @@
   }
  },
  "team_pull": {
-  "detail": "Hope 20 (MotherPail) → Inspiration 12",
+  "detail": "Hope 7 (MotherPail) → Inspiration 4",
   "sent": [],
   "received": [
    {
@@ -144,22 +144,22 @@
     "plain_english": "When MotherPail is contributing and resilient, Toffeetrowel works with a lighter step.",
     "weight": 0.6,
     "half_life_hours": 24.0,
-    "value": 20.5,
-    "decayed_value": 20.5,
+    "value": 7.2,
+    "decayed_value": 7.2,
     "age_ticks": 0,
-    "explanation": "Hope 20: contribution 27, uplift 8, resilience 0 (decayed over a day)."
+    "explanation": "Hope 7: contribution 0, uplift 11, resilience 0 (decayed over a day)."
    }
   ],
   "effects": {
    "inspiration": {
-    "value": 12.3,
-    "tick": 130087,
-    "explanation": "hope from mrs-bucket 20"
+    "value": 4.3,
+    "tick": 138740,
+    "explanation": "hope from mrs-bucket 7"
    },
    "hope": {
-    "value": 20.5,
-    "tick": 130087,
-    "explanation": "Hope 20: contribution 27, uplift 8, resilience 0 (decayed over a day)."
+    "value": 7.2,
+    "tick": 138740,
+    "explanation": "Hope 7: contribution 0, uplift 11, resilience 0 (decayed over a day)."
    }
   }
  },
@@ -168,15 +168,15 @@
   "public_goods_built": 0,
   "norms_kept": true,
   "norm_breaches": [],
-  "replies_received": 3
+  "replies_received": 4
  },
  "approaches": {
   "rows": [
    {
     "id": "crew",
     "label": "the crew pipeline step",
-    "wakes": 1,
-    "energy": 7.0,
+    "wakes": 75,
+    "energy": 779.0,
     "outcome": 0.0,
     "per_energy": 0.0,
     "hypothesis": "H-20261023-loompa-mason-stores-pay",
@@ -184,23 +184,31 @@
     "bet_title": "Builds paid from the stores need no carrying"
    }
   ],
-  "working": "the crew pipeline step: 0 outcome for 7 energy over 1 wake(s)",
+  "working": "the crew pipeline step: 0 outcome for 779 energy over 75 wake(s)",
   "not_working": "nothing clearly failing",
   "next_bet": "keep testing the crew pipeline step; it has the best outcome per unit of energy"
  },
  "trend": {
-  "alive": "▅",
-  "on_mission": "▁",
-  "in_character": "▃"
+  "alive": "▅▆",
+  "on_mission": "▁▁",
+  "in_character": "▃▃"
  },
  "history": [
   {
-   "date": "2026-11-01",
-   "metric_version": 1,
    "alive": 63,
-   "on_mission": 0,
+   "date": "2026-11-01",
    "in_character": 33,
+   "metric_version": 1,
+   "on_mission": 0,
    "tick": 130087
+  },
+  {
+   "date": "2026-11-02",
+   "metric_version": 1,
+   "alive": 67,
+   "on_mission": 0,
+   "in_character": 29,
+   "tick": 138740
   }
  ],
  "signals": {}
