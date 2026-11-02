@@ -114,11 +114,12 @@ def command_for(job: str, slug: str, dry_run: bool) -> list[str]:
 
 class Supervisor:
     def __init__(
-        self, root: Path, config: dict[str, Any] | None = None, runner: Any = None
+        self, root: Path, config: dict[str, Any] | None = None, runner: Any = None, stack: bool = True
     ) -> None:
         self.root = root
         self.config = config or load_local_config(root)
         self.runner = runner or self._run_subprocess
+        self.stack = stack  # `local up --no-stack`: the supervisor leaves the NemoClaw side alone too
         self.backup_runner: Any = None
         self.status_path = root / STATUS_FILE
         self.log_path = root / LOG_FILE
@@ -394,6 +395,16 @@ class Supervisor:
             self._save_status()
         return summary
 
+    def _stack_every(self) -> int:
+        """Minutes between checks of the NemoClaw dashboard forward; 0 without a sandbox or under ``--no-stack``.
+
+        2026-11-02: engtk's OpenShell gateway held 127.0.0.1:8080, the port the hinters gateway uses, and the
+        check would have restarted the forward against it every 15 minutes.
+        """
+        if not self.stack or not (self.config.get("nemoclaw") or {}).get("sandbox"):
+            return 0
+        return int((self.config.get("ecosystem") or {}).get("stack_every_minutes", 15) or 0)
+
     def keep_dashboard(self) -> dict[str, Any]:
         """The NemoClaw dashboard's forward: restarted (and its service installed) when it is not answering."""
         from hglab.local.stack import dashboard_status, ensure_dashboard
@@ -453,7 +464,7 @@ class Supervisor:
         last_adapt: datetime | None = None
         watch_every = int((self.config.get("ecosystem") or {}).get("watch_every_minutes", 10) or 0)
         last_watch: datetime | None = None
-        stack_every = int((self.config.get("ecosystem") or {}).get("stack_every_minutes", 15) or 0) if (self.config.get("nemoclaw") or {}).get("sandbox") else 0
+        stack_every = self._stack_every()
         last_stack: datetime | None = None
         try:
             while minutes is None or count < minutes:

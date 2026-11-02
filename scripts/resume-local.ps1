@@ -7,10 +7,12 @@ the logon start. See docs/local-runtime-setup.md, "Stop, and resume after an out
 .EXAMPLE
 pwsh -File scripts\resume-local.ps1
 pwsh -File scripts\resume-local.ps1 -NoLogonStart   # run now, but do not start at logon
+pwsh -File scripts\resume-local.ps1 -NoStack        # agents only: another project's OpenShell gateway holds 127.0.0.1:8080
 #>
 param(
     [switch]$Force,         # start even though Hinterglass does not answer yet
     [switch]$NoLogonStart,  # leave the logon start removed
+    [switch]$NoStack,       # leave the NemoClaw sandbox, its gateway and the dashboard forward alone (the agents need none of them)
     [string]$Distro = "Ubuntu",  # config/local.yaml: nemoclaw.wsl_distro
     [int]$WaitMinutes = 10
 )
@@ -40,17 +42,24 @@ if ($running) {
 }
 
 # 3. the sandbox's gateway starts with WSL again; `hglab local up` starts it and the sandbox and re-enables the dashboard forward
-wsl -d $Distro -e bash -lc "systemctl --user enable nemoclaw-openshell-gateway"
+$flag = ""
+if ($NoStack) {
+    $flag = " --no-stack"  # 2026-11-02: engtk's gateway in Ubuntu-24.04 held the port; WSL distros share one network
+} else {
+    wsl -d $Distro -e bash -lc "systemctl --user enable nemoclaw-openshell-gateway"
+}
 
 # 4. `hglab local up`, detached and minimised, as the logon start runs it
 $started = [datetimeoffset]::UtcNow
 Add-Content -Path $log -Value ("`n==== resume requested {0} ====" -f $started.ToString("o"))
-$cmd = '/c cd /d "' + $repo + '" && "' + $python + '" -m hglab local up >> "' + $log + '" 2>&1'
+$cmd = '/c cd /d "' + $repo + '" && "' + $python + '" -m hglab local up' + $flag + ' >> "' + $log + '" 2>&1'
 Start-Process -FilePath "cmd.exe" -ArgumentList $cmd -WindowStyle Minimized
-Write-Output "hglab local up started in a minimised window (log: runs\local\up.log)"
+Write-Output "hglab local up$flag started in a minimised window (log: runs\local\up.log)"
 
 # 5. the logon start
-if (-not $NoLogonStart) { & $hglab local service install }
+if (-not $NoLogonStart) {
+    if ($NoStack) { & $hglab local service install --no-stack } else { & $hglab local service install }
+}
 
 # 6. wait for the supervisor's first line (the NemoClaw stack can take a few minutes), then report
 $deadline = $started.AddMinutes($WaitMinutes)
@@ -69,4 +78,4 @@ if (-not $up) {
 }
 Write-Output "supervisor up"
 & $hglab local status | Select-Object -First 3
-& $hglab local stack
+if (-not $NoStack) { & $hglab local stack }

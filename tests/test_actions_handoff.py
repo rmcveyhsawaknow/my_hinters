@@ -56,6 +56,15 @@ def _supervisor(tmp_path):
     return sup
 
 
+def test_no_stack_keeps_the_supervisor_off_the_nemoclaw_side(tmp_path):
+    from hglab.local.supervisor import Supervisor
+
+    config = {"dry_run": False, "agents": [], "nemoclaw": {"sandbox": "hinters"}, "ecosystem": {"stack_every_minutes": 15}}
+    assert Supervisor(tmp_path, config=config)._stack_every() == 15
+    assert Supervisor(tmp_path, config=config, stack=False)._stack_every() == 0  # engtk's gateway held the port (2026-11-02)
+    assert Supervisor(tmp_path, config={**config, "nemoclaw": {}})._stack_every() == 0
+
+
 def test_a_shift_may_run_its_own_length_and_a_timeout_is_reported_not_raised(tmp_path, monkeypatch):
     import subprocess
 
