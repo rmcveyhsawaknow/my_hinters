@@ -5,11 +5,11 @@
  "provider": "anthropic",
  "sampled_lines": 6,
  "sampled_actions": 8,
- "created_utc": "2026-11-01T05:47:28.345073+00:00",
+ "created_utc": "2026-11-02T05:47:21.237268+00:00",
  "usage": {
   "calls": 1,
-  "input_tokens": 1343,
-  "output_tokens": 261,
+  "input_tokens": 1362,
+  "output_tokens": 287,
   "model": "claude-sonnet-5-5",
   "provider": "anthropic",
   "route": "review"
@@ -18,27 +18,27 @@
   {
    "name": "fierce",
    "score": 0,
-   "reason": "No conflict or damage appears; no sharp lines and no mending."
+   "reason": "No conflict or damage appears; every line is friendly and there is nothing to mend."
   },
   {
    "name": "loyal",
-   "score": 1,
-   "reason": "She reaches out to peers and offers trade, but gives no directions, bridges, or joy at arrivals."
+   "score": 2,
+   "reason": "She welcomes peers and offers wood, which is mildly teammate-oriented, but there are no directions, bridges, or joy at arrivals."
   },
   {
    "name": "jealous",
    "score": 0,
-   "reason": "No mention of anyone who left and no sign of building harder."
+   "reason": "No mention of anyone who left and no clipped lines or harder building."
   },
   {
    "name": "vain",
    "score": 1,
-   "reason": "Trail updates hint at pride in her walking, but there is no pleased talk of bridges or trail quality."
+   "reason": "'Trail update' and 'Small hands, busy' hint at pride in her work, but there is no pleased talk of bridges."
   },
   {
    "name": "chime like",
-   "score": 2,
-   "reason": "Short lines like 'Chime. walked 4 legs.' fit, but the greetings run long, name peers, and lack headings, counts, or exclamations."
+   "score": 1,
+   "reason": "Some lines are short, but several run well over eight words, and there are no headings or counts. The 'walked N legs' lines are closest, and there is no exclama"
   }
  ]
 }

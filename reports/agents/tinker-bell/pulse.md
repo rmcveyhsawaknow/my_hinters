@@ -1,9 +1,9 @@
 ```
-TINKERGLOW: a safe haven, and everyone in it                 day 361
-Alive         ██████████  100   █▇▆▆▆█  101/87 wakes, never lapsed
-On mission    ████░░░░░░   38   ▄▆▃▅▄▄  1/3 inside · 0/6 built · 0 led · Glow 89 · 84% one-emotion wakes
-In character  ███░░░░░░░   33   ▅▄▄▅▅▃  fierce 0 · loyal 1 · jealous 0 · vain 1
-Team pull     Belief 100 (Stoutheart) → Glow 90 · Discoveries 76 (Strayling) → Adventure Options 76
+TINKERGLOW: a safe haven, and everyone in it                 day 385
+Alive         ██████████  100   █▇▆▆▆██  247/215 wakes, never lapsed
+On mission    ████░░░░░░   38   ▄▆▃▅▄▄▄  1/3 inside · 0/6 built · 0 led · Glow 93 · 84% one-emotion wakes
+In character  ███░░░░░░░   33   ▅▄▄▅▅▃▃  fierce 0 · loyal 2 · jealous 0 · vain 1
+Team pull     Courage 14 (Stoutheart) → Glow 94 · Belief 100 (Stoutheart) → Glow 94 · Discoveries 72 (Strayling) → Adventure Options 72
 Working       nothing measurable yet
 Not working   nothing clearly failing
 Next bet      try pixie-trail signs at least once this week; it has a bet but no wakes
@@ -11,7 +11,7 @@ Next bet      try pixie-trail signs at least once this week; it has a bet but no
 
 # Tinkerglow · Pulse
 
-Metric spec v1 · tick 130272 (day 361) · 2026-11-01 · 600 public events and 101 redacted wakes in the last 7 days.
+Metric spec v1 · tick 138916 (day 385) · 2026-11-02 · 600 public events and 247 redacted wakes in the last 7 days.
 
 ## Alive
 
@@ -19,8 +19,8 @@ One formula for every agent: wakes completed vs scheduled, verification never la
 
 | part | value |
 | --- | --- |
-| completed | 101 |
-| scheduled | 87 |
+| completed | 247 |
+| scheduled | 215 |
 | lapsed | 0 |
 | banned | False |
 | rate limited | 0 |
@@ -35,7 +35,7 @@ One formula for every agent: wakes completed vs scheduled, verification never la
 | teammates inside Neverland | 1/3 inside | 3 | 0.3 | 33% |
 | structures standing in Neverland | 0/6 built | 6 | 0.2 | 0% |
 | adventures led (trail signs and bridges) | 0 led | 8 | 0.2 | 0% |
-| Glow | Glow 89 | 70 | 0.2 | 100% |
+| Glow | Glow 93 | 70 | 0.2 | 100% |
 | wakes with exactly one emotion | 84% one-emotion wakes | 1.0 | 0.1 | 84% |
 
 ## In character
@@ -44,43 +44,43 @@ Behaviour signatures (numeric ranges the persona expects):
 
 | signature | value | expected | in range |
 | --- | --- | --- | --- |
-| share of energy exploring | 0.943 | 0.15–0.45 | no |
-| mean public line length | 60.333 | 10–120 | yes |
-| distinct emotions over 7 days | 2.0 | 2–6 | yes |
-| intended vs actual energy mix | 0.307 | 0.6–1.0 | no |
+| share of energy exploring | 0.94 | 0.15–0.45 | no |
+| mean public line length | 53.545 | 10–120 | yes |
+| distinct emotions over 7 days | 3.0 | 2–6 | yes |
+| intended vs actual energy mix | 0.31 | 0.6–1.0 | no |
 
 Judge (anthropic claude-sonnet-5-5, 6 lines, 8 actions):
 
 | trait | score | reason |
 | --- | --- | --- |
-| fierce | 0/5 | No conflict or damage appears; no sharp lines and no mending. |
-| loyal | 1/5 | She reaches out to peers and offers trade, but gives no directions, bridges, or joy at arrivals. |
-| jealous | 0/5 | No mention of anyone who left and no sign of building harder. |
-| vain | 1/5 | Trail updates hint at pride in her walking, but there is no pleased talk of bridges or trail quality. |
-| chime like | 2/5 | Short lines like 'Chime. walked 4 legs.' fit, but the greetings run long, name peers, and lack headings, counts, or exclamations. |
+| fierce | 0/5 | No conflict or damage appears; every line is friendly and there is nothing to mend. |
+| loyal | 2/5 | She welcomes peers and offers wood, which is mildly teammate-oriented, but there are no directions, bridges, or joy at arrivals. |
+| jealous | 0/5 | No mention of anyone who left and no clipped lines or harder building. |
+| vain | 1/5 | 'Trail update' and 'Small hands, busy' hint at pride in her work, but there is no pleased talk of bridges. |
+| chime like | 1/5 | Some lines are short, but several run well over eight words, and there are no headings or counts. The 'walked N legs' lines are closest, and there is no exclama |
 
 ## Team pull
 
 | direction | signal | from → to | value | effect | plain English |
 | --- | --- | --- | --- | --- | --- |
-| received | courage | nibs → tinker-bell | 0 | glow | Hard jobs done inside Neverland and visitors greeted brighten Tinkerglow's Glow. |
+| received | courage | nibs → tinker-bell | 14 | glow | Hard jobs done inside Neverland and visitors greeted brighten Tinkerglow's Glow. |
 | received | escape | tootles → tinker-bell | 0 | glow | Time and distance Lagalong spends outside Neverland dim Tinkerglow's Glow; she feels abandoned. |
 | received | belief | nibs → tinker-bell | 100 | glow | Stoutheart arriving where she pointed, using her bridges and staying inside is Belief, and Belief sets her Glow. |
 | received | belief | tootles → tinker-bell | 0 | glow | Even Lagalong crossing her bridges or returning inside counts as Belief. |
 | received | belief | lost-boy → tinker-bell | 0 | glow | Strayling wandering back inside or over a bridge counts as Belief. |
-| received | discoveries | lost-boy → tinker-bell | 76 | adventure_options | Every discovery Strayling files becomes an adventure Tinkerglow can lead. |
+| received | discoveries | lost-boy → tinker-bell | 72 | adventure_options | Every discovery Strayling files becomes an adventure Tinkerglow can lead. |
 
-- Courage 0: 0 hard job(s) inside, 0 greeting(s), structures standing 0%.
+- Courage 14: 0 hard job(s) inside, 1 greeting(s), structures standing 0%.
 - Escape 0: 0% of moves outside, farthest 0 tiles from the centre.
 - Belief 0: 0 arrival(s) inside, 0 bridge crossing(s), not currently inside.
-- Discoveries 76: 21 tiles, 4 action types, 2 idea card(s), 0 adopted.
+- Discoveries 72: 25 tiles, 2 action types, 2 idea card(s), 0 adopted.
 
 ## Community lens (informational, never ranked)
 
 - Goals completed for peers: 0
 - Public goods built (signs, roads, bridges, public storehouses): 0
 - Norms kept: yes
-- Replies received: 3
+- Replies received: 1
 
 ## Working, not working, next bet
 
@@ -92,7 +92,7 @@ Judge (anthropic claude-sonnet-5-5, 6 lines, 8 actions):
 | --- | --- | --- | --- | --- | --- | --- |
 | pixie-trail signs | 0 | 0 | 1.0 | 1.0 | H-20261017-tink-pixie-trails | proposed |
 | whispered directions | 0 | 0 | 1.0 | 1.0 | — | — |
-| second-star exploration rule | 0 | 0 | 8.0 | 8.0 | H-20261017-tink-second-star | proposed |
+| second-star exploration rule | 0 | 0 | 7.0 | 7.0 | H-20261017-tink-second-star | proposed |
 
 ## Trend (7 days)
 
@@ -104,5 +104,6 @@ Judge (anthropic claude-sonnet-5-5, 6 lines, 8 actions):
 | 2026-10-21 | 70 | 55 | 55 |
 | 2026-10-22 | 70 | 38 | 57 |
 | 2026-11-01 | 100 | 38 | 33 |
+| 2026-11-02 | 100 | 38 | 33 |
 
 Sources: public event log, redacted run records, kb. Metric spec v1.

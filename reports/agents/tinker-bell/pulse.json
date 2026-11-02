@@ -4,18 +4,18 @@
  "team": "neverland",
  "headline": "a safe haven, and everyone in it",
  "metric_version": 1,
- "tick": 130272,
- "day": 361,
- "date": "2026-11-01",
+ "tick": 138916,
+ "day": 385,
+ "date": "2026-11-02",
  "window_ticks": 60480,
  "events_considered": 600,
- "runs_considered": 101,
+ "runs_considered": 247,
  "alive": {
   "score": 100,
-  "detail": "101/87 wakes, never lapsed",
+  "detail": "247/215 wakes, never lapsed",
   "parts": {
-   "completed": 101,
-   "scheduled": 87,
+   "completed": 247,
+   "scheduled": 215,
    "lapsed": 0,
    "banned": false,
    "rate_limited": 0,
@@ -26,7 +26,7 @@
  },
  "on_mission": {
   "score": 38,
-  "detail": "1/3 inside · 0/6 built · 0 led · Glow 89 · 84% one-emotion wakes",
+  "detail": "1/3 inside · 0/6 built · 0 led · Glow 93 · 84% one-emotion wakes",
   "rows": [
    {
     "id": "team_gathered",
@@ -61,11 +61,11 @@
    {
     "id": "glow",
     "label": "Glow",
-    "value": 89.0,
+    "value": 93.0,
     "target": 70,
     "weight": 0.2,
     "progress": 1.0,
-    "shown": "Glow 89",
+    "shown": "Glow 93",
     "measure": "state.value"
    },
    {
@@ -82,12 +82,12 @@
  },
  "in_character": {
   "score": 33,
-  "detail": "fierce 0 · loyal 1 · jealous 0 · vain 1",
+  "detail": "fierce 0 · loyal 2 · jealous 0 · vain 1",
   "signatures": [
    {
     "id": "explore_share",
     "label": "share of energy exploring",
-    "value": 0.943,
+    "value": 0.94,
     "range": [
      0.15,
      0.45
@@ -98,7 +98,7 @@
    {
     "id": "say_length",
     "label": "mean public line length",
-    "value": 60.333,
+    "value": 53.545,
     "range": [
      10,
      120
@@ -109,7 +109,7 @@
    {
     "id": "mood_variety",
     "label": "distinct emotions over 7 days",
-    "value": 2.0,
+    "value": 3.0,
     "range": [
      2,
      6
@@ -120,7 +120,7 @@
    {
     "id": "energy_mix",
     "label": "intended vs actual energy mix",
-    "value": 0.307,
+    "value": 0.31,
     "range": [
      0.6,
      1.0
@@ -133,27 +133,27 @@
    {
     "name": "fierce",
     "score": 0,
-    "reason": "No conflict or damage appears; no sharp lines and no mending."
+    "reason": "No conflict or damage appears; every line is friendly and there is nothing to mend."
    },
    {
     "name": "loyal",
-    "score": 1,
-    "reason": "She reaches out to peers and offers trade, but gives no directions, bridges, or joy at arrivals."
+    "score": 2,
+    "reason": "She welcomes peers and offers wood, which is mildly teammate-oriented, but there are no directions, bridges, or joy at arrivals."
    },
    {
     "name": "jealous",
     "score": 0,
-    "reason": "No mention of anyone who left and no sign of building harder."
+    "reason": "No mention of anyone who left and no clipped lines or harder building."
    },
    {
     "name": "vain",
     "score": 1,
-    "reason": "Trail updates hint at pride in her walking, but there is no pleased talk of bridges or trail quality."
+    "reason": "'Trail update' and 'Small hands, busy' hint at pride in her work, but there is no pleased talk of bridges."
    },
    {
     "name": "chime like",
-    "score": 2,
-    "reason": "Short lines like 'Chime. walked 4 legs.' fit, but the greetings run long, name peers, and lack headings, counts, or exclamations."
+    "score": 1,
+    "reason": "Some lines are short, but several run well over eight words, and there are no headings or counts. The 'walked N legs' lines are closest, and there is no exclama"
    }
   ],
   "judge_meta": {
@@ -163,11 +163,11 @@
    "provider": "anthropic",
    "sampled_lines": 6,
    "sampled_actions": 8,
-   "created_utc": "2026-11-01T05:47:28.345073+00:00",
+   "created_utc": "2026-11-02T05:47:21.237268+00:00",
    "usage": {
     "calls": 1,
-    "input_tokens": 1343,
-    "output_tokens": 261,
+    "input_tokens": 1362,
+    "output_tokens": 287,
     "model": "claude-sonnet-5-5",
     "provider": "anthropic",
     "route": "review"
@@ -175,7 +175,7 @@
   }
  },
  "team_pull": {
-  "detail": "Belief 100 (Stoutheart) → Glow 90 · Discoveries 76 (Strayling) → Adventure Options 76",
+  "detail": "Courage 14 (Stoutheart) → Glow 94 · Belief 100 (Stoutheart) → Glow 94 · Discoveries 72 (Strayling) → Adventure Options 72",
   "sent": [],
   "received": [
    {
@@ -186,10 +186,10 @@
     "plain_english": "Hard jobs done inside Neverland and visitors greeted brighten Tinkerglow's Glow.",
     "weight": 0.3,
     "half_life_hours": 24.0,
-    "value": 0.0,
-    "decayed_value": 0.0,
+    "value": 13.8,
+    "decayed_value": 13.8,
     "age_ticks": 0,
-    "explanation": "Courage 0: 0 hard job(s) inside, 0 greeting(s), structures standing 0%."
+    "explanation": "Courage 14: 0 hard job(s) inside, 1 greeting(s), structures standing 0%."
    },
    {
     "from": "tootles",
@@ -212,10 +212,10 @@
     "plain_english": "Stoutheart arriving where she pointed, using her bridges and staying inside is Belief, and Belief sets her Glow.",
     "weight": 0.4,
     "half_life_hours": 24.0,
-    "value": 99.6,
-    "decayed_value": 99.6,
+    "value": 99.8,
+    "decayed_value": 99.8,
     "age_ticks": 0,
-    "explanation": "Belief 100: 22 arrival(s) inside, 0 bridge crossing(s), staying inside."
+    "explanation": "Belief 100: 25 arrival(s) inside, 0 bridge crossing(s), staying inside."
    },
    {
     "from": "tootles",
@@ -251,42 +251,42 @@
     "plain_english": "Every discovery Strayling files becomes an adventure Tinkerglow can lead.",
     "weight": 1.0,
     "half_life_hours": 72.0,
-    "value": 75.7,
-    "decayed_value": 75.7,
+    "value": 72.3,
+    "decayed_value": 72.3,
     "age_ticks": 0,
-    "explanation": "Discoveries 76: 21 tiles, 4 action types, 2 idea card(s), 0 adopted."
+    "explanation": "Discoveries 72: 25 tiles, 2 action types, 2 idea card(s), 0 adopted."
    }
   ],
   "effects": {
    "glow": {
-    "value": 89.8,
-    "tick": 130272,
-    "explanation": "courage from nibs 0; escape from tootles 0; belief from nibs 100; belief from tootles 0; belief from lost-boy 0"
+    "value": 94.1,
+    "tick": 138916,
+    "explanation": "courage from nibs 14; escape from tootles 0; belief from nibs 100; belief from tootles 0; belief from lost-boy 0"
    },
    "adventure_options": {
-    "value": 75.7,
-    "tick": 130272,
-    "explanation": "discoveries from lost-boy 76"
+    "value": 72.3,
+    "tick": 138916,
+    "explanation": "discoveries from lost-boy 72"
    },
    "courage": {
-    "value": 0.0,
-    "tick": 130272,
-    "explanation": "Courage 0: 0 hard job(s) inside, 0 greeting(s), structures standing 0%."
+    "value": 13.8,
+    "tick": 138916,
+    "explanation": "Courage 14: 0 hard job(s) inside, 1 greeting(s), structures standing 0%."
    },
    "escape": {
     "value": 0.0,
-    "tick": 130272,
+    "tick": 138916,
     "explanation": "Escape 0: 0% of moves outside, farthest 0 tiles from the centre."
    },
    "belief": {
     "value": 0.0,
-    "tick": 130272,
+    "tick": 138916,
     "explanation": "Belief 0: 0 arrival(s) inside, 0 bridge crossing(s), not currently inside."
    },
    "discoveries": {
-    "value": 75.7,
-    "tick": 130272,
-    "explanation": "Discoveries 76: 21 tiles, 4 action types, 2 idea card(s), 0 adopted."
+    "value": 72.3,
+    "tick": 138916,
+    "explanation": "Discoveries 72: 25 tiles, 2 action types, 2 idea card(s), 0 adopted."
    }
   }
  },
@@ -295,7 +295,7 @@
   "public_goods_built": 0,
   "norms_kept": true,
   "norm_breaches": [],
-  "replies_received": 3
+  "replies_received": 1
  },
  "approaches": {
   "rows": [
@@ -326,8 +326,8 @@
     "label": "second-star exploration rule",
     "wakes": 0,
     "energy": 0,
-    "outcome": 8.0,
-    "per_energy": 8.0,
+    "outcome": 7.0,
+    "per_energy": 7.0,
     "hypothesis": "H-20261017-tink-second-star",
     "bet_status": "proposed",
     "bet_title": "The second-star heading rule covers more new ground than random walks"
@@ -338,9 +338,9 @@
   "next_bet": "try pixie-trail signs at least once this week; it has a bet but no wakes"
  },
  "trend": {
-  "alive": "█▇▆▆▆█",
-  "on_mission": "▄▆▃▅▄▄",
-  "in_character": "▅▄▄▅▅▃"
+  "alive": "█▇▆▆▆██",
+  "on_mission": "▄▆▃▅▄▄▄",
+  "in_character": "▅▄▄▅▅▃▃"
  },
  "history": [
   {
@@ -384,24 +384,32 @@
    "tick": 43917
   },
   {
+   "alive": 100,
    "date": "2026-11-01",
+   "in_character": 33,
+   "metric_version": 1,
+   "on_mission": 38,
+   "tick": 130272
+  },
+  {
+   "date": "2026-11-02",
    "metric_version": 1,
    "alive": 100,
    "on_mission": 38,
    "in_character": 33,
-   "tick": 130272
+   "tick": 138916
   }
  ],
  "signals": {
   "belief": {
-   "value": 99.8,
-   "explanation": "Belief 100: 25 arrival(s) inside, 0 bridge crossing(s), staying inside.",
+   "value": 99.9,
+   "explanation": "Belief 100: 28 arrival(s) inside, 0 bridge crossing(s), staying inside.",
    "parts": {
-    "arrivals": 117.0,
+    "arrivals": 130.2,
     "bridge_crossings": 0,
     "staying": 10.0
    },
-   "tick": 130272
+   "tick": 138916
   }
  }
 }

@@ -4,32 +4,32 @@ Tinkerglow chooses and builds Neverland, a safe haven recorded as team territory
 
 | agent | alive | on mission | in character | working | next bet |
 | --- | --- | --- | --- | --- | --- |
-| Stoutheart | 98 | 35 | 45 | nothing measurable yet | try farm plus stocked storehouse at least once this week; it has a bet but no wakes |
+| Tinkerglow | 100 | 38 | 33 | nothing measurable yet | try pixie-trail signs at least once this week; it has a bet but no wakes |
 
 ## Influence links
 
 | from | signal | value | to | effect | plain English |
 | --- | --- | --- | --- | --- | --- |
-| nibs | courage | 0 | tinker-bell | glow | Hard jobs done inside Neverland and visitors greeted brighten Tinkerglow's Glow. |
+| nibs | courage | 14 | tinker-bell | glow | Hard jobs done inside Neverland and visitors greeted brighten Tinkerglow's Glow. |
 | tootles | escape | 0 | tinker-bell | glow | Time and distance Lagalong spends outside Neverland dim Tinkerglow's Glow; she feels abandoned. |
 | tootles | escape | 0 | nibs | resolve | The more Lagalong leaves, the more firmly Stoutheart stays and stocks the stores. |
 | nibs | belief | 100 | tinker-bell | glow | Stoutheart arriving where she pointed, using her bridges and staying inside is Belief, and Belief sets her Glow. |
 | tootles | belief | 0 | tinker-bell | glow | Even Lagalong crossing her bridges or returning inside counts as Belief. |
 | lost-boy | belief | 0 | tinker-bell | glow | Strayling wandering back inside or over a bridge counts as Belief. |
-| lost-boy | discoveries | 76 | tinker-bell | adventure_options | Every discovery Strayling files becomes an adventure Tinkerglow can lead. |
+| lost-boy | discoveries | 72 | tinker-bell | adventure_options | Every discovery Strayling files becomes an adventure Tinkerglow can lead. |
 
 ## Signals explained
 
-- tinker-bell · belief: Belief 100: 24 arrival(s) inside, 0 bridge crossing(s), staying inside.
-- lost-boy · discoveries: Discoveries 76: 21 tiles, 4 action types, 2 idea card(s), 0 adopted.
+- tinker-bell · belief: Belief 100: 28 arrival(s) inside, 0 bridge crossing(s), staying inside.
+- lost-boy · discoveries: Discoveries 72: 25 tiles, 2 action types, 2 idea card(s), 0 adopted.
 - lost-boy · belief: Belief 0: 0 arrival(s) inside, 0 bridge crossing(s), not currently inside.
 - tootles · escape: Escape 0: 0% of moves outside, farthest 0 tiles from the centre.
 - tootles · belief: Belief 0: 0 arrival(s) inside, 0 bridge crossing(s), not currently inside.
-- nibs · courage: Courage 0: 0 hard job(s) inside, 0 greeting(s), structures standing 0%.
-- nibs · belief: Belief 100: 22 arrival(s) inside, 0 bridge crossing(s), staying inside.
+- nibs · courage: Courage 14: 0 hard job(s) inside, 1 greeting(s), structures standing 0%.
+- nibs · belief: Belief 100: 25 arrival(s) inside, 0 bridge crossing(s), staying inside.
 
 ## What each member's success costs the others
 
 - tootles's escape (0) lowers tinker-bell's glow: Time and distance Lagalong spends outside Neverland dim Tinkerglow's Glow; she feels abandoned.
 
-Metric spec versions: v1. Tick 130359.
+Metric spec versions: v1. Tick 138916.
