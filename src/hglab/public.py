@@ -25,6 +25,7 @@ EVENTS_AGE = 120
 AGENTS_AGE = 60
 GOALS_AGE = 120
 FACTIONS_AGE = 300
+BLOCKS_AGE = 300  # the public blocks file (200 KB): the campus wall and the vault do not move much in five minutes
 
 
 def cache_dir(root: Path | None) -> Path | None:
@@ -132,5 +133,20 @@ def public_factions(root: Path | None, max_age: int = FACTIONS_AGE) -> list[dict
     rows = cached(root, "factions", lambda: list(HinterglassClient().public_factions().get("factions", [])), max_age)
     return [r for r in rows if isinstance(r, dict)] if isinstance(rows, list) else []
 
+def public_blocks(root: Path | None, client: Any, max_age: int = BLOCKS_AGE) -> dict[str, Any]:
+    """The world's blocks file (``/live/blocks.json``), shared across this host's processes (2026-11-02: every wake reads it for the tiles blocks close)."""
+    return cached(root, "blocks", lambda: client.request("GET", "/live/blocks.json"), max_age)
 
-__all__ = ["AGENTS_AGE", "EVENTS_AGE", "FACTIONS_AGE", "GOALS_AGE", "cache_dir", "cached", "public_agents", "public_factions", "public_goals"]
+
+__all__ = [
+    "AGENTS_AGE",
+    "EVENTS_AGE",
+    "FACTIONS_AGE",
+    "GOALS_AGE",
+    "cache_dir",
+    "cached",
+    "public_agents",
+    "public_blocks",
+    "public_factions",
+    "public_goals",
+]

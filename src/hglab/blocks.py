@@ -18,6 +18,38 @@ COLORS = (
     "natural", "white", "grey", "black", "brown", "red", "orange", "yellow", "lime", "green", "teal", "cyan", "blue",
     "indigo", "purple", "pink", "tan",
 )
+SHAPES = ("cube", "slab", "slope", "door", "window")  # the world's shape codes, as /live/blocks.json names them
+
+
+def closed_tiles(packed: dict[str, Any], doors_of: set[str] | frozenset[str] = frozenset()) -> set[tuple[int, int]]:
+    """Tiles the world's blocks close to a walker, from the public blocks file (``/live/blocks.json``).
+
+    The guide: a tile is closed when it holds a block below level 6 that stands in the way (at level 0 a
+    cube, a window or a door one may not use; at levels 1-5 anything but such a door); slabs and slopes at
+    level 0 are floors and ramps; a door one may use (``doors_of``: the walker's own name and its faction's)
+    opens its whole tile. ``observe.blocks`` says this for the tiles in view only; beyond it a route is
+    blind, and on 2026-11-02 the office's hands walked into the factory's campus wall for a day.
+    """
+    import base64
+    import struct
+
+    data = base64.b64decode(str(packed.get("data") or ""))
+    owners = [str(o).casefold() for o in packed.get("owners") or []]
+    shapes = [str(s) for s in packed.get("shapes") or SHAPES]
+    mine = {str(n).casefold() for n in doors_of}
+    blocking: set[tuple[int, int]] = set()
+    opened: set[tuple[int, int]] = set()
+    for i in range(min(len(data) // 10, max(0, int(packed.get("count") or 0)))):
+        bx, by, owner, bz, _material, shape, _flags = struct.unpack_from("<HHHBBBB", data, i * 10)
+        if bz > 5:
+            continue
+        tile = (bx // 4, by // 4)
+        kind = shapes[shape] if shape < len(shapes) else "cube"
+        if kind == "door" and owner < len(owners) and owners[owner] in mine:
+            opened.add(tile)
+        elif not (bz == 0 and kind in ("slab", "slope")):
+            blocking.add(tile)
+    return blocking - opened
 
 
 def tile_cells(x: int, y: int) -> tuple[int, int, int, int]:
