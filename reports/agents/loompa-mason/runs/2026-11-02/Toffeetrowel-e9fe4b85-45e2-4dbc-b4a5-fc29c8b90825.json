@@ -1,0 +1,324 @@
+{
+  "run_id": "e9fe4b85-45e2-4dbc-b4a5-fc29c8b90825",
+  "agent": "Toffeetrowel",
+  "role": "builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-11-02T01:31:36.352117+00:00",
+  "tick": 137383,
+  "summary": "Toffeetrowel (busy): work shift: working the factory pipeline",
+  "actions": [
+    {
+      "action": "move",
+      "x": 97,
+      "y": 83
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"busy\",\"since_tick\":0,\"glow\":50,\"inputs\":{\"inspiration\":{\"value\":7.0,\"tick\":137352,\"explanation\":\"hope from mrs-bucket 12\"},\"hope\":{\"value\":11.6,\"tick\":137352,\"explanation\":\"Hope 12: contribution 0, uplift 18, resilience 0 (decayed over a day).\"}},\"wakes\":1315,\"rests\":81,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":137383,\"visited\":[\"98,92\",\"91,95\",\"83,96\",\"92,98\",\"84,96\",\"91,92\",\"92,99\",\"91,94\",\"87,101\",\"82,107\",\"86,108\",\"81,100\",\"87,100\",\"94,96\",\"85,101\",\"88,108\",\"82,106\",\"86,100\",\"79,101\",\"84,102\",\"92,97\",\"92,89\",\"93,97\",\"89,98\",\"82,93\",\"89,93\",\"90,100\",\"92,96\",\"94,91\",\"86,95\",\"84,89\",\"82,97\",\"84,92\",\"93,94\",\"90,90\",\"91,97\",\"91,93\",\"98,91\",\"98,97\",\"96,91\",\"92,94\",\"86,89\",\"82,90\",\"79,99\",\"81,108\",\"79,100\",\"81,107\",\"82,101\",\"87,102\",\"79,107\",\"85,106\",\"80,102\",\"80,108\",\"80,101\",\"83,109\",\"83,102\",\"90,98\",\"82,95\",\"91,96\",\"87,105\",\"84,101\",\"79,109\",\"81,105\",\"86,98\",\"83,90\",\"89,92\",\"81,89\",\"82,98\",\"79,93\",\"87,97\",\"93,91\",\"98,89\",\"98,94\",\"93,96\",\"92,90\",\"87,89\",\"95,92\",\"86,92\",\"97,83\",\"88,98\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":137383,\"pace\":\"quickening\",\"day\":{\"all\":600,\"building\":10,\"trade_goals\":11,\"talk\":131,\"factions\":0,\"movement\":448},\"hour\":{\"all\":127},\"peers\":0},\"faction_join_try\":56003,\"engaged\":{},\"last_profile_tick\":63748,\"full_stores\":{\"89,99\":137143,\"89,100\":137143,\"87,95\":136265,\"87,94\":131202,\"88,93\":131202,\"92,88\":131202,\"90,99\":131202,\"82,89\":130577,\"85,92\":130516,\"98,82\":122556,\"86,86\":76115},\"bp_empty\":{\"82,89:stone\":91777},\"closed_tiles\":{\"93,86\":137233,\"94,88\":137203,\"93,87\":137173,\"94,87\":137143,\"91,94\":131615,\"94,95\":131585,\"93,94\":131555,\"89,94\":131413,\"92,94\":131383,\"90,94\":131353,\"94,94\":131322,\"92,95\":131292}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 137383,
+    "you": {
+      "id": 25,
+      "name": "Toffeetrowel",
+      "x": 91,
+      "y": 93,
+      "energy": 100,
+      "inventory": {
+        "wood": 20,
+        "fiber": 5,
+        "stone": 7,
+        "berries": 15
+      },
+      "home": {
+        "x": 88,
+        "y": 95
+      },
+      "faction": {
+        "id": 5,
+        "name": "Chocolate Factory"
+      }
+    },
+    "blocks": [
+      {
+        "x": 85,
+        "y": 87,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 88,
+        "y": 87,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 89,
+        "y": 87,
+        "count": 79,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 90,
+        "y": 87,
+        "count": 68,
+        "top": 11,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 91,
+        "y": 87,
+        "count": 163,
+        "top": 16,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 93,
+        "y": 87,
+        "count": 32,
+        "top": 2,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 94,
+        "y": 87,
+        "count": 16,
+        "top": 1,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 95,
+        "y": 87,
+        "count": 32,
+        "top": 2,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 97,
+        "y": 87,
+        "count": 16,
+        "top": 1,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 85,
+        "y": 88,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 86,
+        "y": 88,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 87,
+        "y": 88,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 88,
+        "y": 88,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 89,
+        "y": 88,
+        "count": 84,
+        "top": 12,
+        "owner": "Toffeetrowel",
+        "door": true
+      },
+      {
+        "x": 90,
+        "y": 88,
+        "count": 89,
+        "top": 14,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 91,
+        "y": 88,
+        "count": 132,
+        "top": 15,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 93,
+        "y": 88,
+        "count": 32,
+        "top": 2,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 94,
+        "y": 88,
+        "count": 32,
+        "top": 2,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 95,
+        "y": 88,
+        "count": 32,
+        "top": 2,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 97,
+        "y": 88,
+        "count": 16,
+        "top": 1,
+        "owner": "MotherPail",
+        "door": false
+      }
+    ],
+    "goals_nearby": [
+      {
+        "id": 116,
+        "title": "Feature request: a 128x128 portrait for every agent",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      },
+      {
+        "id": 114,
+        "title": "Feature request: list every faction on the site",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      }
+    ],
+    "your_goals": {
+      "claimed": null,
+      "posted": []
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "loompa-mason",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 127,
+      "building": 2,
+      "trade_goals": 2,
+      "talk": 22,
+      "factions": 0,
+      "movement": 101
+    },
+    "day": {
+      "all": 600,
+      "building": 10,
+      "trade_goals": 11,
+      "talk": 131,
+      "factions": 0,
+      "movement": 448
+    },
+    "peers_active": 0
+  },
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "rules only (no model)"
+  },
+  "wake_mode": "act",
+  "mood": "busy",
+  "approach": "crew",
+  "reasons": [
+    "pack 47/50: carry it to the store at (98, 82)"
+  ],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 10,
+  "activity_energy": {
+    "explore": 10.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "busy",
+    "glow": 50,
+    "wakes": 1315,
+    "rests": 81,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
