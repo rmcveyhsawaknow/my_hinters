@@ -26,12 +26,15 @@ def _sign(lid, text=None):
     return {"type": "sign", "x": x, "y": y, "owner": "LandBroker", "text": text or stake_text(lid, "LandBroker")}
 
 
-def _step(slug, inventory, position, view, state=None, room=3, energy=80):
+def _step(slug, inventory, position, view, state=None, room=3, energy=80, when=None):
     personas = load_personas(ROOT)
     persona = personas[slug]
+    team = load_team(ROOT, "exchange")
+    if when is not None:
+        team.extra["pipeline"]["claims"]["walls"]["when"] = when
     observe = {"you": {"x": position[0], "y": position[1], "faction": {"id": 7, "name": "Land Office"}}, "tick": 1000}
     return plan_crew(
-        persona, load_team(ROOT, "exchange"), state or PersonaState(mood="busy"), observe, view, dict(inventory), position, energy, persona.energy_reserve, room,
+        persona, team, state or PersonaState(mood="busy"), observe, view, dict(inventory), position, energy, persona.energy_reserve, room,
         {p.name for p in personas.values()}, {p.name: s for s, p in personas.items()}, None,
     )
 
@@ -76,7 +79,9 @@ def test_with_every_store_full_a_hand_walls_the_holding_beside_it_and_leaves_the
     assert step[0] == [{"action": "build", "type": "wall", "x": x0, "y": y0}, {"action": "build", "type": "wall", "x": x0, "y": y0 + 1}]
     assert "every store of the office is full" in step[1] and "gate" in step[1]
     roomy = _step("office-quarrier", {"stone": 20, "berries": 5}, here, _world({"stone": 100}))
-    assert roomy is None or all(a.get("type") != "wall" for a in roomy[0])  # a store with room takes the stone: no walls
+    assert roomy[0][0]["type"] == "wall" and roomy[1].startswith("the office walls its staked lots")  # standing work since 2026-11-02: the stone goes into walls, full stores or not
+    overflow = _step("office-quarrier", {"stone": 20, "berries": 5}, here, _world({"stone": 100}), when="full")
+    assert overflow is None or all(a.get("type") != "wall" for a in overflow[0])  # the old rule: a store with room takes the stone, no walls
     node = _step("office-quarrier", {"stone": 20, "berries": 5}, here, _world({"stone": 500}, nodes=[{"kind": "stone", "x": x0, "y": y0, "amount": 9}]))
     assert node[0] == [{"action": "build", "type": "wall", "x": x0, "y": y0 + 1}]  # never on a node
     road = _step("office-quarrier", {"stone": 20, "berries": 5}, here, _world({"stone": 500}, extra=[{"type": "road", "x": x0, "y": y0 + 2, "owner": "Mara"}]))
@@ -167,3 +172,18 @@ def test_a_crew_walk_never_heads_back_toward_the_wakes_start():
     assert _walks_back([{"action": "move", "x": 74, "y": 71}], (80, 75), start)  # back to the vault
     assert not _walks_back([{"action": "move", "x": 86, "y": 79}], (80, 75), start)  # onward
     assert not _walks_back([{"action": "build", "type": "wall", "x": 81, "y": 75}], (80, 75), start)
+
+
+def test_the_walls_are_standing_work_since_the_owners_brief_of_2026_11_02():
+    """A hand with stone walls the lots whether the stores are full or not; with none it draws stone from a store with some; a heavy pack unloads first."""
+    x0, y0, _x1, _y1 = lot_bounds(LOT)
+    here = (x0 - 1, y0 + 1)
+    assert load_team(ROOT, "exchange").extra["pipeline"]["claims"]["walls"]["when"] == "always"
+    roomy = _world({"stone": 100})
+    walls = _step("office-feller", {"stone": 12, "berries": 5}, here, roomy)
+    assert [a["type"] for a in walls[0]] == ["wall", "wall"] and walls[1].startswith("the office walls its staked lots")  # two tiles beside, the third is the gate
+    little = _step("office-feller", {"stone": 4, "wood": 40, "berries": 5}, (74, 73), roomy)  # a heavy pack with four stone: the load goes into the store first
+    assert little[0][0]["action"] in ("give", "move") and all(a.get("type") != "wall" for a in little[0])
+    depot = {"id": 2, "type": "storehouse", "x": 80, "y": 74, "owner": "Lintelstave", "policy": "faction", "faction": "Land Office", "storage": {"stone": 100, "wood": 200}}
+    draw = _step("office-feller", {"berries": 5}, (74, 73), _world({"stone": 100}, extra=[depot]))  # the vault is the registrar's: the depot admits the hand
+    assert draw[0][0]["action"] in ("take", "move") and "stone" in draw[1] and draw[1].startswith("the office walls its staked lots")
