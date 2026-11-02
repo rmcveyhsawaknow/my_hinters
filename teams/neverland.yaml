@@ -14,6 +14,28 @@ faction:
   precedence: team  # a member found in a theme faction leaves it for this one (exempt members keep theirs)
   founder: nibs
   exempt: [tootles]  # Lagalong founded the Readable Replay theme faction for the collector programme
+pipeline:  # the owner, 2026-11-02: Neverland builds a treetop hideaway in its own forest; its wanderers work as a crew
+  site:
+    x: 74
+    y: 105
+  radius: 6
+  range: 24
+  floor: 5
+  stores_max: 4
+  blueprint: treetop-hideaway  # teams/blueprints/treetop-hideaway.yaml
+  builders:
+    tinker-bell: [lookout-tree, great-tree, west-tree, bridge-east, bridge-west]
+    nibs: [great-tree, west-tree, lookout-tree, bridge-west, bridge-east]
+    lost-boy: [west-tree, great-tree, lookout-tree]
+    tootles: [great-tree, lookout-tree, west-tree]
+  stock:  # the blueprint is wood and thatch (hglab factory show --name treetop-hideaway)
+    wood: 200
+    fiber: 80
+    stone: 40
+    berries: 40
+  plan:
+  - type: storehouse
+    count: 1
 members: [tinker-bell, lost-boy, tootles, nibs]
 home:
   x: 74

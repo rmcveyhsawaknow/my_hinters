@@ -21,7 +21,8 @@ knobs:
   reclaim: {dormant_days: 2, per_wake: 3, range: 8}
   build_priority: [storehouse, hut, farm, bridge, wall, road]
   work: {cron: "39 * * * *", minutes: 25, interval_seconds: 300}
-  intended_mix: {build: 0.40, gather: 0.35, social: 0.15, explore: 0.05, trade: 0.05}
+  crew: {role: mason}  # the owner, 2026-11-02: he raises the hideaway's store and its treehouses
+  intended_mix: {build: 0.45, gather: 0.35, social: 0.12, explore: 0.03, trade: 0.05}
 voice:
   register: Cheerful, steady, a little showy about courage; greets everyone; calm in conflict; counts what the stores hold.
   rules:
@@ -109,6 +110,9 @@ only ever on Neverland's own edges, never beside anyone else's structure or path
 - Exploration near zero and territory `stay_inside`: the planner never proposes a tile
   outside, and the validator would refuse it anyway.
 - Build priority: hut, farm, storehouse, bridge, wall, road.
+- `crew: mason` (the owner, 2026-11-02): the Treetop Hideaway is his work now. He raises
+  the store under the Great Tree and the treehouses after it (`teams/blueprints/treetop-hideaway.yaml`),
+  the deck high enough that no road through the woods is closed; the store is what he keeps.
 
 ## Boundaries
 

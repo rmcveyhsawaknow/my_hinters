@@ -198,6 +198,8 @@ def _section_steps(section: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
     levels = int(section.get("levels", 10))
     lift = foundation_map(section)
     ceiling = TOP_LEVEL - max(lift.values(), default=0)  # the tallest plinth comes off the top
+    if style == "treehouse":
+        return _treehouse_steps(section, ceiling)
     if style in CITY_STYLES:
         return _city_steps(section, ceiling)
     top = min(ceiling, levels - 1)
@@ -279,6 +281,65 @@ def _section_steps(section: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
     slope = _pair(section.get("roof_slope"), ("thatch", "pink"))
     cap = _pair(section.get("roof_cap"), ("thatch", "purple"))
     steps.extend(_hip_roof(rect, top, slope, cap))
+    return steps
+
+
+def _treehouse_steps(section: dict[str, Any], ceiling: int) -> list[tuple[str, dict[str, Any]]]:
+    """A treehouse (the owner's instruction of 2026-11-02 for Neverland): trunks from the ground, a deck at level
+    six or above where a block closes no tile, a railing round it, and a cabin of window walls with a door and a
+    thatch roof. Rope bridges between treehouses are ``tubes`` of wood at the deck's level.
+
+    ``trunks`` are tiles inside the section, each a column two cells square (a trunk closes its tile, so it
+    stands on forest with no node, structure or block); ``cabin`` an inner tile rect; ``doors`` the cabin's door
+    sides; ``deck`` the deck level (6 by default; never lower). A treehouse stands on its trunks and keeps no
+    plinth: the deck is its one plane. The deck is laid in strips a pack pays for (``PACK_CELLS``).
+    """
+    tiles = tuple(int(v) for v in section["tiles"])
+    rect = cells_rect(tiles)
+    deck = max(6, int(section.get("deck", 6)))
+    if deck + 5 > ceiling:
+        raise ValueError(f"section {section.get('id')}: a deck at level {deck} puts the roof above the ceiling")
+    trunk = _pair(section.get("trunk"), ("wood", "brown"))
+    deck_block = _pair(section.get("deck_block"), ("wood", "natural"))
+    railing = _pair(section.get("railing"), ("wood", "tan"))
+    cabin_color = str(section.get("cabin_color", "green"))
+    window_color = str(section.get("window_color", "yellow"))
+    door_mat, door_color = _pair(section.get("door"), ("wood", "orange"))
+    slope = _pair(section.get("roof_slope"), ("thatch", "natural"))
+    cap = _pair(section.get("roof_cap"), ("thatch", "lime"))
+    x0, y0, x1, y1 = tiles
+    steps: list[tuple[str, dict[str, Any]]] = []
+    for i, (tx, ty) in enumerate(section.get("trunks") or []):
+        tx, ty = int(tx), int(ty)
+        if not (x0 <= tx <= x1 and y0 <= ty <= y1):
+            raise ValueError(f"section {section.get('id')}: trunk ({tx},{ty}) stands outside its tiles")
+        cx, cy = 4 * tx + 1, 4 * ty + 1
+        steps.append((f"trunk {i + 1} ({tx},{ty})", box(cx, cy, 0, cx + 1, cy + 1, deck - 1, material=trunk[0], color=trunk[1])))
+    bx0, _by0, bx1, _by1 = rect
+    rows = max(1, PACK_CELLS // (4 * (bx1 - bx0 + 1)))  # tile rows per deck strip
+    y = y0
+    while y <= y1:
+        y2 = min(y1, y + rows - 1)
+        name = "deck" if (y, y2) == (y0, y1) else f"deck rows {y - y0 + 1}-{y2 - y0 + 1}"
+        steps.append((name, box(bx0, 4 * y, deck, bx1, 4 * y2 + 3, deck, material=deck_block[0], shape="slab", color=deck_block[1])))
+        y = y2 + 1
+    steps.append(("railing", _ring(rect, deck + 1, deck + 1, railing[0], color=railing[1])))
+    cabin = tuple(int(v) for v in section.get("cabin") or tiles)
+    if not (x0 <= cabin[0] <= cabin[2] <= x1 and y0 <= cabin[1] <= cabin[3] <= y1):
+        raise ValueError(f"section {section.get('id')}: the cabin lies outside its tiles")
+    crect = cells_rect(cabin)
+    for side in section.get("doors") or ["south"]:
+        door = _door(crect, str(side), door_mat, door_color, one_tile=True)
+        door["bz"], door["bz2"] = deck + 1, deck + 4  # the door opens onto the deck
+        steps.append((f"{side} door", door))
+    steps.append(("cabin sill", _ring(crect, deck + 1, deck + 1, "wood", color=cabin_color)))
+    steps.extend((f"cabin windows {side}", a) for side, a in _sides(crect, deck + 2, deck + 3, "wood", shape="window", color=window_color))
+    steps.append(("cabin lintel", _ring(crect, deck + 4, deck + 4, "wood", color=cabin_color)))
+    steps.extend(_hip_roof(crect, deck + 5, slope, cap))
+    lantern = section.get("lantern")
+    if isinstance(lantern, (list, tuple)) and len(lantern) == 2:
+        lx, ly = int(lantern[0]), int(lantern[1])
+        steps.append(("lantern", box(lx, ly, deck + 1, lx, ly, deck + 2, material="wood", color="yellow")))
     return steps
 
 
