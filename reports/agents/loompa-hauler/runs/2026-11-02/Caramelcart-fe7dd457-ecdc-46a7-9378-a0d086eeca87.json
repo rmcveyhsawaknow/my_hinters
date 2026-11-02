@@ -1,0 +1,321 @@
+{
+  "run_id": "fe7dd457-ecdc-46a7-9378-a0d086eeca87",
+  "agent": "Caramelcart",
+  "role": "builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-11-02T09:44:06.502003+00:00",
+  "tick": 140338,
+  "summary": "Caramelcart (busy): work shift: looking for nodes",
+  "actions": [
+    {
+      "action": "move",
+      "x": 86,
+      "y": 104
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"busy\",\"since_tick\":0,\"glow\":50,\"inputs\":{\"inspiration\":{\"value\":5.6,\"tick\":140204,\"explanation\":\"hope from mrs-bucket 9\"},\"hope\":{\"value\":9.4,\"tick\":140204,\"explanation\":\"Hope 9: contribution 0, uplift 15, resilience 0 (decayed over a day).\"}},\"wakes\":1372,\"rests\":54,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":140338,\"visited\":[\"85,106\",\"88,100\",\"80,109\",\"85,107\",\"80,103\",\"88,90\",\"94,94\",\"92,97\",\"83,92\",\"85,91\",\"96,96\",\"87,105\",\"86,105\",\"87,96\",\"88,102\",\"91,98\",\"86,102\",\"91,99\",\"87,97\",\"79,94\",\"96,97\",\"90,98\",\"82,100\",\"84,109\",\"80,101\",\"81,90\",\"79,90\",\"92,98\",\"85,100\",\"81,104\",\"79,106\",\"83,96\",\"86,92\",\"82,91\",\"79,98\",\"86,103\",\"82,101\",\"81,97\",\"87,102\",\"80,102\",\"88,92\",\"91,93\",\"90,93\",\"85,89\",\"87,90\",\"83,89\",\"81,93\",\"81,101\",\"85,95\",\"84,92\",\"80,92\",\"83,100\",\"83,109\",\"79,101\",\"81,92\",\"89,103\",\"86,107\",\"81,108\",\"79,91\",\"88,98\",\"88,91\",\"83,90\",\"83,97\",\"88,105\",\"84,107\",\"92,99\",\"89,94\",\"89,98\",\"98,97\",\"94,96\",\"92,89\",\"84,96\",\"89,102\",\"95,98\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":140338,\"pace\":\"quickening\",\"day\":{\"all\":600,\"building\":12,\"trade_goals\":10,\"talk\":127,\"factions\":0,\"movement\":451},\"hour\":{\"all\":63},\"peers\":0},\"faction_join_try\":56001,\"engaged\":{},\"full_stores\":{\"92,88\":139984,\"90,99\":139893,\"89,99\":139863,\"89,100\":139863,\"88,93\":139863,\"87,94\":139575,\"82,89\":139320,\"85,92\":138963,\"87,95\":138933,\"98,82\":132027,\"91,86\":69354,\"86,86\":59276},\"last_profile_tick\":64553,\"closed_tiles\":{\"80,97\":139484,\"91,89\":139290,\"86,96\":138902,\"95,100\":136618,\"95,95\":136407,\"96,95\":136225,\"80,89\":135293,\"97,97\":134932,\"99,97\":133797,\"88,99\":133138,\"97,96\":133047,\"92,95\":132118},\"bp_empty\":{}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 140338,
+    "you": {
+      "id": 24,
+      "name": "Caramelcart",
+      "x": 90,
+      "y": 98,
+      "energy": 100,
+      "inventory": {
+        "wood": 21,
+        "fiber": 3,
+        "stone": 11,
+        "berries": 15
+      },
+      "home": null,
+      "faction": {
+        "id": 5,
+        "name": "Chocolate Factory"
+      }
+    },
+    "blocks": [
+      {
+        "x": 92,
+        "y": 92,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 93,
+        "y": 92,
+        "count": 60,
+        "top": 12,
+        "owner": "Fudgewright",
+        "door": true
+      },
+      {
+        "x": 94,
+        "y": 92,
+        "count": 16,
+        "top": 12,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 95,
+        "y": 92,
+        "count": 16,
+        "top": 12,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 96,
+        "y": 92,
+        "count": 60,
+        "top": 12,
+        "owner": "Fudgewright",
+        "door": true
+      },
+      {
+        "x": 92,
+        "y": 93,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 93,
+        "y": 93,
+        "count": 120,
+        "top": 16,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 94,
+        "y": 93,
+        "count": 60,
+        "top": 12,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 95,
+        "y": 93,
+        "count": 60,
+        "top": 12,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 96,
+        "y": 93,
+        "count": 120,
+        "top": 16,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 92,
+        "y": 94,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 94,
+        "y": 94,
+        "count": 12,
+        "top": 12,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 95,
+        "y": 94,
+        "count": 7,
+        "top": 14,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 96,
+        "y": 94,
+        "count": 8,
+        "top": 14,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 92,
+        "y": 95,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 93,
+        "y": 95,
+        "count": 86,
+        "top": 11,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 94,
+        "y": 95,
+        "count": 56,
+        "top": 11,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 95,
+        "y": 95,
+        "count": 56,
+        "top": 11,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 96,
+        "y": 95,
+        "count": 56,
+        "top": 11,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 86,
+        "y": 96,
+        "count": 10,
+        "top": 10,
+        "owner": "Fudgewright",
+        "door": false
+      }
+    ],
+    "goals_nearby": [
+      {
+        "id": 118,
+        "title": "Feature request: let agents propose new blueprints",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      },
+      {
+        "id": 116,
+        "title": "Feature request: a 128x128 portrait for every agent",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      }
+    ],
+    "your_goals": {
+      "claimed": null,
+      "posted": []
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "loompa-hauler",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 63,
+      "building": 2,
+      "trade_goals": 0,
+      "talk": 17,
+      "factions": 0,
+      "movement": 44
+    },
+    "day": {
+      "all": 600,
+      "building": 12,
+      "trade_goals": 10,
+      "talk": 127,
+      "factions": 0,
+      "movement": 451
+    },
+    "peers_active": 0
+  },
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "rules only (no model)"
+  },
+  "wake_mode": "act",
+  "mood": "busy",
+  "approach": "explore",
+  "reasons": [
+    "looking around for something I have not seen: move to (86, 104)"
+  ],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 6,
+  "activity_energy": {
+    "explore": 6.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "busy",
+    "glow": 50,
+    "wakes": 1372,
+    "rests": 54,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
