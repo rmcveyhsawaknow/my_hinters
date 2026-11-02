@@ -1,0 +1,59 @@
+{
+  "run_id": "announce-1793602371",
+  "kind": "announce",
+  "agent": "Fathomark",
+  "persona": "navy",
+  "tick": 139311,
+  "created_utc": "2026-11-02T06:52:51.685402+00:00",
+  "author_runtime": "actions-anthropic",
+  "actions": [
+    {
+      "action": "say",
+      "text": "This hour: gathered 20 berries; walked 10 legs."
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "source": "template",
+  "shift_summary": {
+    "wakes": 5,
+    "rests": 0,
+    "built": [],
+    "gathered": {
+      "berries": 20
+    },
+    "moved": 10,
+    "deposited": {},
+    "approaches": [
+      "navy",
+      "navy",
+      "navy",
+      "navy",
+      "navy"
+    ],
+    "mood": "steady",
+    "where": [
+      97,
+      92
+    ]
+  },
+  "work": true,
+  "wake_mode": "announce",
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "claude-sonnet-5-5 on route tick_premium and qwen3.5:9b on route talk for shift lines"
+  }
+}

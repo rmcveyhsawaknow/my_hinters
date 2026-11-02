@@ -1,0 +1,343 @@
+{
+  "run_id": "b4554ef9-bf93-4339-9eb9-996fc9b93328",
+  "agent": "Fathomark",
+  "role": "surveyor+builder+navigator",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-11-02T06:47:42.739496+00:00",
+  "tick": 139279,
+  "summary": "Fathomark (steady): work shift: nothing worth the energy this shift wake",
+  "actions": [
+    {
+      "action": "move",
+      "x": 94,
+      "y": 87
+    },
+    {
+      "action": "move",
+      "x": 97,
+      "y": 92
+    },
+    {
+      "action": "gather",
+      "kind": "berries"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"steady\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":252,\"rests\":17,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":139279,\"visited\":[\"62,58\",\"59,55\",\"50,49\",\"49,45\",\"58,51\",\"50,50\",\"40,27\",\"35,31\",\"40,26\",\"34,32\",\"40,25\",\"40,24\",\"40,23\",\"40,22\",\"30,32\",\"40,21\",\"40,20\",\"35,33\",\"59,14\",\"64,8\",\"62,10\",\"63,8\",\"62,8\",\"61,8\",\"60,8\",\"59,8\",\"58,8\",\"59,12\",\"57,8\",\"64,9\",\"63,11\",\"81,19\",\"87,20\",\"81,18\",\"81,17\",\"81,16\",\"81,15\",\"81,14\",\"81,13\",\"109,44\",\"118,62\",\"108,72\",\"118,61\",\"118,65\",\"110,72\",\"118,60\",\"107,72\",\"118,59\",\"106,70\",\"118,58\",\"105,71\",\"118,57\",\"108,68\",\"118,56\",\"113,63\",\"118,55\",\"107,83\",\"105,80\",\"108,83\",\"109,83\",\"110,83\",\"106,78\",\"111,83\",\"107,79\",\"112,83\",\"108,89\",\"113,83\",\"114,83\",\"105,92\",\"102,90\",\"100,98\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":139279,\"pace\":\"quickening\",\"day\":{\"all\":600,\"building\":10,\"trade_goals\":7,\"talk\":127,\"factions\":0,\"movement\":456},\"hour\":{\"all\":45},\"peers\":0},\"last_profile_tick\":127552,\"navy\":{\"work\":\"pier-12\",\"signed\":[\"causeway-01\",\"pier-01\",\"pier-02\",\"pier-05\",\"pier-06\",\"pier-10\"],\"next\":0},\"engaged\":{\"replied\":{\"Strayling\":92959,\"Lintelstave\":123293,\"LandBroker\":127612}},\"closed_tiles\":{\"94,91\":139248,\"94,94\":139217,\"88,100\":139186,\"98,98\":138520,\"96,99\":138507,\"97,100\":138477,\"97,99\":138446,\"98,100\":138385,\"98,99\":137856,\"95,90\":136287,\"96,90\":136257,\"97,90\":136227}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": false,
+      "error": "too_far"
+    },
+    {
+      "ok": false,
+      "error": "skipped"
+    },
+    {
+      "ok": false,
+      "error": "skipped"
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 1,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 139279,
+    "you": {
+      "id": 33,
+      "name": "Fathomark",
+      "x": 100,
+      "y": 98,
+      "energy": 100,
+      "inventory": {
+        "wood": 21,
+        "fiber": 5,
+        "berries": 10
+      },
+      "home": null,
+      "faction": null
+    },
+    "blocks": [
+      {
+        "x": 94,
+        "y": 92,
+        "count": 16,
+        "top": 12,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 95,
+        "y": 92,
+        "count": 16,
+        "top": 12,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 96,
+        "y": 92,
+        "count": 60,
+        "top": 12,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 98,
+        "y": 92,
+        "count": 16,
+        "top": 1,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 92,
+        "count": 40,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 94,
+        "y": 93,
+        "count": 60,
+        "top": 12,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 95,
+        "y": 93,
+        "count": 60,
+        "top": 12,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 96,
+        "y": 93,
+        "count": 120,
+        "top": 16,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 98,
+        "y": 93,
+        "count": 16,
+        "top": 1,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 93,
+        "count": 40,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 94,
+        "y": 94,
+        "count": 12,
+        "top": 12,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 95,
+        "y": 94,
+        "count": 7,
+        "top": 14,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 96,
+        "y": 94,
+        "count": 8,
+        "top": 14,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 98,
+        "y": 94,
+        "count": 16,
+        "top": 1,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 99,
+        "y": 94,
+        "count": 52,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 94,
+        "y": 95,
+        "count": 56,
+        "top": 11,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 95,
+        "y": 95,
+        "count": 56,
+        "top": 11,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 96,
+        "y": 95,
+        "count": 56,
+        "top": 11,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 97,
+        "y": 95,
+        "count": 86,
+        "top": 11,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 98,
+        "y": 95,
+        "count": 7,
+        "top": 11,
+        "owner": "MotherPail",
+        "door": false
+      }
+    ],
+    "goals_nearby": [
+      {
+        "id": 116,
+        "title": "Feature request: a 128x128 portrait for every agent",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      },
+      {
+        "id": 114,
+        "title": "Feature request: list every faction on the site",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      }
+    ],
+    "your_goals": {
+      "claimed": null,
+      "posted": []
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "navy",
+  "team": "admiralty",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "surveyor",
+    "builder",
+    "navigator"
+  ],
+  "work": true,
+  "budget_hold": "Fathomark's own daily cap reached ($1.28 of $1.25)",
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 45,
+      "building": 2,
+      "trade_goals": 1,
+      "talk": 10,
+      "factions": 0,
+      "movement": 32
+    },
+    "day": {
+      "all": 600,
+      "building": 10,
+      "trade_goals": 7,
+      "talk": 127,
+      "factions": 0,
+      "movement": 456
+    },
+    "peers_active": 0
+  },
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "claude-sonnet-5-5 on route tick_premium and qwen3.5:9b on route talk for shift lines"
+  },
+  "wake_mode": "act",
+  "mood": "steady",
+  "approach": "navy",
+  "reasons": [
+    "charting the coast: waypoint 1 of 57 at (10, 61) (0 sounded so far)",
+    "walk to (97, 92) beside the berries node at (98, 93), then gather"
+  ],
+  "energy_before": 100,
+  "berries_before": 10,
+  "energy_spent": 19,
+  "activity_energy": {
+    "explore": 16.0,
+    "gather": 3.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "steady",
+    "glow": 50,
+    "wakes": 252,
+    "rests": 17,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ],
+  "learned": [
+    "the tile (94,87) is too_far: routed around for a day"
+  ]
+}
