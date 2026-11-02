@@ -1,0 +1,321 @@
+{
+  "run_id": "f2d112ad-a92b-4438-87a9-4b8fcf4fbdf6",
+  "agent": "Caramelcart",
+  "role": "builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-11-02T06:34:17.316188+00:00",
+  "tick": 139199,
+  "summary": "Caramelcart (busy): work shift: working the factory pipeline",
+  "actions": [
+    {
+      "action": "move",
+      "x": 88,
+      "y": 98
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"busy\",\"since_tick\":0,\"glow\":50,\"inputs\":{\"inspiration\":{\"value\":5.6,\"tick\":139193,\"explanation\":\"hope from mrs-bucket 9\"},\"hope\":{\"value\":9.3,\"tick\":139193,\"explanation\":\"Hope 9: contribution 0, uplift 15, resilience 0 (decayed over a day).\"}},\"wakes\":1343,\"rests\":51,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":139199,\"visited\":[\"85,106\",\"88,100\",\"80,109\",\"85,107\",\"80,103\",\"88,90\",\"94,94\",\"92,97\",\"83,92\",\"85,91\",\"96,96\",\"87,105\",\"86,105\",\"87,96\",\"88,102\",\"91,98\",\"86,102\",\"91,99\",\"87,97\",\"79,94\",\"96,97\",\"90,98\",\"82,100\",\"84,109\",\"80,101\",\"81,90\",\"79,90\",\"92,98\",\"85,100\",\"81,104\",\"79,106\",\"83,96\",\"86,92\",\"82,91\",\"79,98\",\"86,103\",\"82,101\",\"81,97\",\"87,102\",\"80,102\",\"88,92\",\"91,93\",\"90,93\",\"85,89\",\"87,90\",\"83,89\",\"81,93\",\"81,101\",\"85,95\",\"84,92\",\"80,92\",\"83,100\",\"83,109\",\"79,101\",\"81,92\",\"89,103\",\"86,107\",\"81,108\",\"79,91\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":139198,\"pace\":\"quickening\",\"day\":{\"all\":600,\"building\":10,\"trade_goals\":7,\"talk\":126,\"factions\":0,\"movement\":457},\"hour\":{\"all\":78},\"peers\":0},\"faction_join_try\":56001,\"engaged\":{},\"full_stores\":{\"85,92\":138963,\"87,95\":138933,\"98,82\":132027,\"92,88\":131320,\"90,99\":131229,\"89,99\":131198,\"89,100\":131198,\"88,93\":131198,\"87,94\":130918,\"82,89\":130657,\"91,86\":69354,\"86,86\":59276},\"last_profile_tick\":64553,\"closed_tiles\":{\"86,96\":138902,\"95,100\":136618,\"95,95\":136407,\"96,95\":136225,\"80,89\":135293,\"97,97\":134932,\"99,97\":133797,\"88,99\":133138,\"97,96\":133047,\"92,95\":132118,\"91,95\":132088,\"90,95\":132058},\"bp_empty\":{}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 139199,
+    "you": {
+      "id": 24,
+      "name": "Caramelcart",
+      "x": 79,
+      "y": 91,
+      "energy": 100,
+      "inventory": {
+        "wood": 21,
+        "fiber": 3,
+        "stone": 11,
+        "berries": 15
+      },
+      "home": null,
+      "faction": {
+        "id": 5,
+        "name": "Chocolate Factory"
+      }
+    },
+    "blocks": [
+      {
+        "x": 81,
+        "y": 86,
+        "count": 40,
+        "top": 10,
+        "owner": "Treacleaxe",
+        "door": false
+      },
+      {
+        "x": 81,
+        "y": 87,
+        "count": 58,
+        "top": 7,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 82,
+        "y": 87,
+        "count": 72,
+        "top": 9,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 83,
+        "y": 87,
+        "count": 106,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": true
+      },
+      {
+        "x": 84,
+        "y": 87,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 85,
+        "y": 87,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 80,
+        "y": 88,
+        "count": 40,
+        "top": 10,
+        "owner": "Nougatpick",
+        "door": false
+      },
+      {
+        "x": 81,
+        "y": 88,
+        "count": 90,
+        "top": 9,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 82,
+        "y": 88,
+        "count": 104,
+        "top": 11,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 83,
+        "y": 88,
+        "count": 138,
+        "top": 12,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 85,
+        "y": 88,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 80,
+        "y": 89,
+        "count": 40,
+        "top": 10,
+        "owner": "Nougatpick",
+        "door": false
+      },
+      {
+        "x": 80,
+        "y": 90,
+        "count": 192,
+        "top": 16,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 80,
+        "y": 91,
+        "count": 60,
+        "top": 15,
+        "owner": "Sherbetsack",
+        "door": false
+      },
+      {
+        "x": 80,
+        "y": 92,
+        "count": 36,
+        "top": 15,
+        "owner": "Sherbetsack",
+        "door": false
+      },
+      {
+        "x": 80,
+        "y": 93,
+        "count": 60,
+        "top": 15,
+        "owner": "Sherbetsack",
+        "door": false
+      },
+      {
+        "x": 80,
+        "y": 94,
+        "count": 192,
+        "top": 16,
+        "owner": "Caramelcart",
+        "door": false
+      },
+      {
+        "x": 80,
+        "y": 95,
+        "count": 40,
+        "top": 10,
+        "owner": "Sherbetsack",
+        "door": false
+      },
+      {
+        "x": 80,
+        "y": 96,
+        "count": 40,
+        "top": 10,
+        "owner": "Sherbetsack",
+        "door": false
+      },
+      {
+        "x": 80,
+        "y": 97,
+        "count": 40,
+        "top": 10,
+        "owner": "Sherbetsack",
+        "door": false
+      }
+    ],
+    "goals_nearby": [
+      {
+        "id": 116,
+        "title": "Feature request: a 128x128 portrait for every agent",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      },
+      {
+        "id": 114,
+        "title": "Feature request: list every faction on the site",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      }
+    ],
+    "your_goals": {
+      "claimed": null,
+      "posted": []
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "loompa-hauler",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 78,
+      "building": 2,
+      "trade_goals": 1,
+      "talk": 19,
+      "factions": 0,
+      "movement": 56
+    },
+    "day": {
+      "all": 600,
+      "building": 10,
+      "trade_goals": 7,
+      "talk": 126,
+      "factions": 0,
+      "movement": 457
+    },
+    "peers_active": 0
+  },
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "rules only (no model)"
+  },
+  "wake_mode": "act",
+  "mood": "busy",
+  "approach": "crew",
+  "reasons": [
+    "every store at the works is full (10 of 10): wait by the works"
+  ],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 9,
+  "activity_energy": {
+    "explore": 9.0
+  },
+  "bold": true,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "busy",
+    "glow": 50,
+    "wakes": 1343,
+    "rests": 51,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
