@@ -4,12 +4,12 @@
  "model": "claude-sonnet-5-5",
  "provider": "anthropic",
  "sampled_lines": 0,
- "sampled_actions": 8,
- "created_utc": "2026-11-01T05:51:04.436781+00:00",
+ "sampled_actions": 6,
+ "created_utc": "2026-11-02T05:52:57.828234+00:00",
  "usage": {
   "calls": 1,
-  "input_tokens": 1096,
-  "output_tokens": 294,
+  "input_tokens": 1048,
+  "output_tokens": 293,
   "model": "claude-sonnet-5-5",
   "provider": "anthropic",
   "route": "review"
@@ -17,28 +17,28 @@
  "traits": [
   {
    "name": "steady",
-   "score": 3,
-   "reason": "Mostly repeated stone gathers, two per tile across two tiles, but one wood gather strays from the stone/ore job and the pack-full outcome is unseen."
+   "score": 1,
+   "reason": "Only move actions are recorded; no quarrying, five-a-swing pattern, or full pack is shown, and the moves jump between tiles without a clear single-node focus."
   },
   {
    "name": "patient",
-   "score": 1,
-   "reason": "Only short moves of 1-2 tiles; no long walk to a mountain edge or any ore gathering is visible."
+   "score": 2,
+   "reason": "Several moves around (87-95, 93-98) could be a long walk toward an edge, but there is no ore or stocked-stone context to confirm it."
   },
   {
    "name": "exact",
-   "score": 0,
-   "reason": "No public lines naming tiles or counts; the actions alone give no stated coordinates or loads."
+   "score": 1,
+   "reason": "Coordinates are precise in the moves, but there are no public lines naming a tile and load count."
   },
   {
    "name": "gruff",
    "score": 2,
-   "reason": "Says nothing at all, which is terse, but there is no grunt of a line at a stocked store to show the trait."
+   "reason": "No public lines at all, which is technically terse, but there is no grunt of a line on stocking a store to judge."
   },
   {
    "name": "sparing",
-   "score": 1,
-   "reason": "Nothing shows five being left on any node; the repeated gathers move on after two, so the evidence is inconclusive."
+   "score": 0,
+   "reason": "No harvesting actions are visible, so there is no evidence of leaving five on any node."
   }
  ]
 }
