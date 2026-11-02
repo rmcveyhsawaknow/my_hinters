@@ -4,29 +4,29 @@
  "team": "admiralty",
  "headline": "Charts the sea and bridges the shelf",
  "metric_version": 1,
- "tick": 130307,
- "day": 361,
- "date": "2026-11-01",
+ "tick": 138949,
+ "day": 385,
+ "date": "2026-11-02",
  "window_ticks": 60480,
  "events_considered": 600,
- "runs_considered": 55,
+ "runs_considered": 137,
  "alive": {
   "score": 70,
-  "detail": "55/50 wakes, never lapsed, 20 failed",
+  "detail": "137/122 wakes, never lapsed, 84 failed",
   "parts": {
-   "completed": 55,
-   "scheduled": 50,
+   "completed": 137,
+   "scheduled": 122,
    "lapsed": 0,
    "banned": false,
    "rate_limited": 0,
-   "failed_actions": 20,
+   "failed_actions": 84,
    "energy_zero": 0,
    "spam_blocked": 0
   }
  },
  "on_mission": {
-  "score": 0,
-  "detail": "0/20 bridges · 1/400 tiles · 0/6 signed · 0 replies",
+  "score": 4,
+  "detail": "0/20 bridges · 2/400 tiles · 0/6 signed · 1 replies",
   "rows": [
    {
     "id": "bridges",
@@ -41,11 +41,11 @@
    {
     "id": "coast",
     "label": "coast tiles walked",
-    "value": 1.0,
+    "value": 2.0,
     "target": 400,
     "weight": 0.25,
-    "progress": 0.0025,
-    "shown": "1/400 tiles",
+    "progress": 0.005,
+    "shown": "2/400 tiles",
     "measure": "events.distinct_tiles"
    },
    {
@@ -71,23 +71,23 @@
    {
     "id": "replies",
     "label": "replies received",
-    "value": 0.0,
+    "value": 1.0,
     "target": 3,
     "weight": 0.1,
-    "progress": 0.0,
-    "shown": "0 replies",
+    "progress": 0.3333333333333333,
+    "shown": "1 replies",
     "measure": "events.replies_received"
    }
   ]
  },
  "in_character": {
-  "score": 72,
-  "detail": "exact 3 · patient 2 · far going 3 · open handed 2",
+  "score": 76,
+  "detail": "exact 4 · patient 3 · far going 2 · open handed 3",
   "signatures": [
    {
     "id": "rest_share",
     "label": "share of wakes resting",
-    "value": 0.073,
+    "value": 0.066,
     "range": [
      0.0,
      0.2
@@ -98,7 +98,7 @@
    {
     "id": "energy_mix",
     "label": "intended vs actual energy mix",
-    "value": 0.645,
+    "value": 0.501,
     "range": [
      0.5,
      1.0
@@ -110,28 +110,28 @@
   "judge": [
    {
     "name": "exact",
-    "score": 3,
-    "reason": "Both lines carry measured numbers (6 legs, 20 wood, 9 legs), but they are counts of work done, not chart tiles or soundings."
+    "score": 4,
+    "reason": "Nearly every line carries chart numbers (coordinates, sounding 0.83, 5 bridges, 8 tiles, legs walked); the repeated 'bridge at (99,100)' is slightly sloppy but "
    },
    {
     "name": "patient",
-    "score": 2,
-    "reason": "Gathering and steady moves suggest routine work, but no bridge or pier is actually being built, so there is no evidence of tile-by-tile progress."
+    "score": 3,
+    "reason": "It gathered wood first and then built a bridge at (99,100), one work at a time from the shore, but the repeated build at the same tile and the wandering moves h"
    },
    {
     "name": "far going",
-    "score": 3,
-    "reason": "Moves between several coordinates (94,89), (102,90), (97,100), (98,100) and walked many legs, suggesting some range, but no waypoints are named."
+    "score": 2,
+    "reason": "Moves range between x 84 and 98 and y 98 to 102, but all of it is around the one pier near (99,100); there is no sign of waypoints around the coast."
    },
    {
     "name": "open handed",
-    "score": 2,
-    "reason": "No works are announced or falsely promised, which is good, but there is no evidence of a standing bridge opened to residents."
+    "score": 3,
+    "reason": "It announced only built work ('built bridge') and promised nothing unbuilt, though the opening line about 5 bridges is a plan; there is no direct evidence on re"
    },
    {
     "name": "dry",
     "score": 1,
-    "reason": "The lines are plain status reports with no sailor's understatement or navy joke."
+    "reason": "The lines are terse and factual with no sailor's understatement or navy joke."
    }
   ],
   "judge_meta": {
@@ -139,13 +139,13 @@
    "metric_version": 1,
    "model": "claude-sonnet-5-5",
    "provider": "anthropic",
-   "sampled_lines": 2,
+   "sampled_lines": 4,
    "sampled_actions": 8,
-   "created_utc": "2026-11-01T05:53:52.260141+00:00",
+   "created_utc": "2026-11-02T05:53:49.492717+00:00",
    "usage": {
     "calls": 1,
-    "input_tokens": 1192,
-    "output_tokens": 310,
+    "input_tokens": 1313,
+    "output_tokens": 377,
     "model": "claude-sonnet-5-5",
     "provider": "anthropic",
     "route": "review"
@@ -163,7 +163,7 @@
   "public_goods_built": 0,
   "norms_kept": true,
   "norm_breaches": [],
-  "replies_received": 0
+  "replies_received": 1
  },
  "approaches": {
   "rows": [
@@ -184,18 +184,26 @@
   "next_bet": "try chart the coast and bridge the shelf at least once this week; it has a bet but no wakes"
  },
  "trend": {
-  "alive": "▆",
-  "on_mission": "▁",
-  "in_character": "▆"
+  "alive": "▆▆",
+  "on_mission": "▁▁",
+  "in_character": "▆▆"
  },
  "history": [
   {
+   "alive": 70,
    "date": "2026-11-01",
+   "in_character": 72,
+   "metric_version": 1,
+   "on_mission": 0,
+   "tick": 130307
+  },
+  {
+   "date": "2026-11-02",
    "metric_version": 1,
    "alive": 70,
-   "on_mission": 0,
-   "in_character": 72,
-   "tick": 130307
+   "on_mission": 4,
+   "in_character": 76,
+   "tick": 138949
   }
  ],
  "signals": {}

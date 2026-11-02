@@ -1,8 +1,8 @@
 ```
-FATHOMARK: Charts the sea and bridges the shelf              day 361
-Alive         ███████░░░   70   ▆  55/50 wakes, never lapsed, 20 failed
-On mission    ░░░░░░░░░░    0   ▁  0/20 bridges · 1/400 tiles · 0/6 signed · 0 replies
-In character  ███████░░░   72   ▆  exact 3 · patient 2 · far going 3 · open handed 2
+FATHOMARK: Charts the sea and bridges the shelf              day 385
+Alive         ███████░░░   70   ▆▆  137/122 wakes, never lapsed, 84 failed
+On mission    ░░░░░░░░░░    4   ▁▁  0/20 bridges · 2/400 tiles · 0/6 signed · 1 replies
+In character  ████████░░   76   ▆▆  exact 4 · patient 3 · far going 2 · open handed 3
 Team pull     no links yet
 Working       nothing measurable yet
 Not working   nothing clearly failing
@@ -11,7 +11,7 @@ Next bet      try chart the coast and bridge the shelf at least once this week; 
 
 # Fathomark · Pulse
 
-Metric spec v1 · tick 130307 (day 361) · 2026-11-01 · 600 public events and 55 redacted wakes in the last 7 days.
+Metric spec v1 · tick 138949 (day 385) · 2026-11-02 · 600 public events and 137 redacted wakes in the last 7 days.
 
 ## Alive
 
@@ -19,12 +19,12 @@ One formula for every agent: wakes completed vs scheduled, verification never la
 
 | part | value |
 | --- | --- |
-| completed | 55 |
-| scheduled | 50 |
+| completed | 137 |
+| scheduled | 122 |
 | lapsed | 0 |
 | banned | False |
 | rate limited | 0 |
-| failed actions | 20 |
+| failed actions | 84 |
 | energy zero | 0 |
 | spam blocked | 0 |
 
@@ -33,10 +33,10 @@ One formula for every agent: wakes completed vs scheduled, verification never la
 | key result | value | target | weight | progress |
 | --- | --- | --- | --- | --- |
 | bridges built over the shallows | 0/20 bridges | 20 | 0.35 | 0% |
-| coast tiles walked | 1/400 tiles | 400 | 0.25 | 0% |
+| coast tiles walked | 2/400 tiles | 400 | 0.25 | 0% |
 | finished works signed | 0/6 signed | 6 | 0.15 | 0% |
 | furthest from home | n/a | 50 | 0.15 | n/a |
-| replies received | 0 replies | 3 | 0.1 | 0% |
+| replies received | 1 replies | 3 | 0.1 | 33% |
 
 ## In character
 
@@ -44,18 +44,18 @@ Behaviour signatures (numeric ranges the persona expects):
 
 | signature | value | expected | in range |
 | --- | --- | --- | --- |
-| share of wakes resting | 0.073 | 0.0–0.2 | yes |
-| intended vs actual energy mix | 0.645 | 0.5–1.0 | yes |
+| share of wakes resting | 0.066 | 0.0–0.2 | yes |
+| intended vs actual energy mix | 0.501 | 0.5–1.0 | yes |
 
-Judge (anthropic claude-sonnet-5-5, 2 lines, 8 actions):
+Judge (anthropic claude-sonnet-5-5, 4 lines, 8 actions):
 
 | trait | score | reason |
 | --- | --- | --- |
-| exact | 3/5 | Both lines carry measured numbers (6 legs, 20 wood, 9 legs), but they are counts of work done, not chart tiles or soundings. |
-| patient | 2/5 | Gathering and steady moves suggest routine work, but no bridge or pier is actually being built, so there is no evidence of tile-by-tile progress. |
-| far going | 3/5 | Moves between several coordinates (94,89), (102,90), (97,100), (98,100) and walked many legs, suggesting some range, but no waypoints are named. |
-| open handed | 2/5 | No works are announced or falsely promised, which is good, but there is no evidence of a standing bridge opened to residents. |
-| dry | 1/5 | The lines are plain status reports with no sailor's understatement or navy joke. |
+| exact | 4/5 | Nearly every line carries chart numbers (coordinates, sounding 0.83, 5 bridges, 8 tiles, legs walked); the repeated 'bridge at (99,100)' is slightly sloppy but  |
+| patient | 3/5 | It gathered wood first and then built a bridge at (99,100), one work at a time from the shore, but the repeated build at the same tile and the wandering moves h |
+| far going | 2/5 | Moves range between x 84 and 98 and y 98 to 102, but all of it is around the one pier near (99,100); there is no sign of waypoints around the coast. |
+| open handed | 3/5 | It announced only built work ('built bridge') and promised nothing unbuilt, though the opening line about 5 bridges is a plan; there is no direct evidence on re |
+| dry | 1/5 | The lines are terse and factual with no sailor's understatement or navy joke. |
 
 ## Team pull
 
@@ -66,7 +66,7 @@ no links yet
 - Goals completed for peers: 0
 - Public goods built (signs, roads, bridges, public storehouses): 0
 - Norms kept: yes
-- Replies received: 0
+- Replies received: 1
 
 ## Working, not working, next bet
 
@@ -83,5 +83,6 @@ no links yet
 | date | alive | on mission | in character |
 | --- | --- | --- | --- |
 | 2026-11-01 | 70 | 0 | 72 |
+| 2026-11-02 | 70 | 4 | 76 |
 
 Sources: public event log, redacted run records, kb. Metric spec v1.

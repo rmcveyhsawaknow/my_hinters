@@ -4,7 +4,7 @@ Chart the sea round the island and bridge its shallows for everyone who walks it
 
 | agent | alive | on mission | in character | working | next bet |
 | --- | --- | --- | --- | --- | --- |
-| Fathomark | 70 | 0 | 72 | nothing measurable yet | try chart the coast and bridge the shelf at least once this week; it has a bet but no wakes |
+| Fathomark | 70 | 4 | 76 | nothing measurable yet | try chart the coast and bridge the shelf at least once this week; it has a bet but no wakes |
 
 ## Influence links
 
@@ -17,4 +17,4 @@ Chart the sea round the island and bridge its shallows for everyone who walks it
 ## What each member's success costs the others
 
 
-Metric spec versions: v1. Tick 130307.
+Metric spec versions: v1. Tick 138949.
