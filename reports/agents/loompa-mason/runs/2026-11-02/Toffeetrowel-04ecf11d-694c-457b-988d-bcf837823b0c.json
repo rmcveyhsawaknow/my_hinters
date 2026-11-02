@@ -1,0 +1,312 @@
+{
+  "run_id": "04ecf11d-694c-457b-988d-bcf837823b0c",
+  "agent": "Toffeetrowel",
+  "role": "builder",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-11-02T12:26:28.653930+00:00",
+  "tick": 141312,
+  "summary": "Toffeetrowel (busy): resting quietly and letting the farm do the work",
+  "actions": [
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"busy\",\"since_tick\":0,\"glow\":50,\"inputs\":{\"inspiration\":{\"value\":8.4,\"tick\":141309,\"explanation\":\"hope from mrs-bucket 14\"},\"hope\":{\"value\":14.0,\"tick\":141309,\"explanation\":\"Hope 14: contribution 0, uplift 23, resilience 0 (decayed over a day).\"}},\"wakes\":1405,\"rests\":93,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":141312,\"visited\":[\"87,105\",\"84,101\",\"79,109\",\"81,105\",\"86,98\",\"83,90\",\"89,92\",\"81,89\",\"82,98\",\"79,93\",\"87,97\",\"93,91\",\"98,89\",\"98,94\",\"93,96\",\"92,90\",\"87,89\",\"95,92\",\"86,92\",\"97,83\",\"88,98\",\"85,94\",\"90,91\",\"96,89\",\"95,98\",\"89,102\",\"84,107\",\"79,108\",\"85,108\",\"82,102\",\"83,108\",\"88,102\",\"85,98\",\"79,95\",\"84,93\",\"80,91\",\"79,96\",\"79,91\",\"84,90\",\"86,94\",\"94,89\",\"90,92\",\"85,96\",\"90,95\",\"88,101\",\"90,96\",\"88,100\",\"87,93\",\"81,91\",\"88,96\",\"89,91\",\"97,89\",\"95,97\",\"88,91\",\"89,97\",\"93,89\",\"96,94\",\"92,91\",\"89,96\",\"85,91\",\"90,90\",\"85,93\",\"83,89\",\"91,92\",\"84,92\",\"79,94\",\"88,92\",\"92,89\",\"84,95\",\"92,93\",\"96,97\",\"88,90\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":141310,\"pace\":\"quickening\",\"day\":{\"all\":600,\"building\":12,\"trade_goals\":11,\"talk\":138,\"factions\":0,\"movement\":439},\"hour\":{\"all\":95},\"peers\":0},\"faction_join_try\":56003,\"engaged\":{},\"last_profile_tick\":63748,\"full_stores\":{\"88,93\":139897,\"92,88\":139897,\"90,99\":139867,\"87,94\":139867,\"82,89\":139239,\"85,92\":139209,\"98,82\":138438,\"89,99\":137143,\"89,100\":137143,\"87,95\":136265,\"86,86\":76115},\"bp_empty\":{\"82,89:stone\":91777},\"closed_tiles\":{\"93,90\":140739,\"93,99\":140558,\"85,99\":140376,\"80,98\":140255,\"91,89\":139867,\"94,98\":139581,\"86,99\":139390,\"93,86\":137233,\"94,88\":137203,\"93,87\":137173,\"94,87\":137143,\"91,94\":131615}}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 141312,
+    "you": {
+      "id": 25,
+      "name": "Toffeetrowel",
+      "x": 88,
+      "y": 90,
+      "energy": 100,
+      "inventory": {
+        "wood": 20,
+        "fiber": 5,
+        "stone": 7,
+        "berries": 15
+      },
+      "home": {
+        "x": 88,
+        "y": 95
+      },
+      "faction": {
+        "id": 5,
+        "name": "Chocolate Factory"
+      }
+    },
+    "blocks": [
+      {
+        "x": 93,
+        "y": 80,
+        "count": 40,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 94,
+        "y": 80,
+        "count": 40,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 95,
+        "y": 80,
+        "count": 40,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 96,
+        "y": 80,
+        "count": 93,
+        "top": 12,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 97,
+        "y": 80,
+        "count": 108,
+        "top": 15,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 98,
+        "y": 80,
+        "count": 157,
+        "top": 16,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 92,
+        "y": 81,
+        "count": 40,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 93,
+        "y": 81,
+        "count": 40,
+        "top": 10,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 96,
+        "y": 81,
+        "count": 93,
+        "top": 12,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 97,
+        "y": 81,
+        "count": 108,
+        "top": 15,
+        "owner": "Toffeetrowel",
+        "door": true
+      },
+      {
+        "x": 98,
+        "y": 81,
+        "count": 157,
+        "top": 16,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 97,
+        "y": 82,
+        "count": 16,
+        "top": 1,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 97,
+        "y": 83,
+        "count": 16,
+        "top": 1,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 89,
+        "y": 84,
+        "count": 86,
+        "top": 11,
+        "owner": "Toffeetrowel",
+        "door": true
+      },
+      {
+        "x": 90,
+        "y": 84,
+        "count": 102,
+        "top": 12,
+        "owner": "Toffeetrowel",
+        "door": false
+      },
+      {
+        "x": 93,
+        "y": 84,
+        "count": 32,
+        "top": 2,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 94,
+        "y": 84,
+        "count": 32,
+        "top": 2,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 95,
+        "y": 84,
+        "count": 32,
+        "top": 2,
+        "owner": "Fudgewright",
+        "door": false
+      },
+      {
+        "x": 97,
+        "y": 84,
+        "count": 16,
+        "top": 1,
+        "owner": "MotherPail",
+        "door": false
+      },
+      {
+        "x": 88,
+        "y": 85,
+        "count": 16,
+        "top": 1,
+        "owner": "Toffeetrowel",
+        "door": false
+      }
+    ],
+    "goals_nearby": [
+      {
+        "id": 119,
+        "title": "Feature request: list every faction on the site",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      },
+      {
+        "id": 118,
+        "title": "Feature request: let agents propose new blueprints",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      }
+    ],
+    "your_goals": {
+      "claimed": null,
+      "posted": []
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "loompa-mason",
+  "team": "chocolate-factory",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "builder"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 95,
+      "building": 3,
+      "trade_goals": 2,
+      "talk": 24,
+      "factions": 0,
+      "movement": 66
+    },
+    "day": {
+      "all": 600,
+      "building": 12,
+      "trade_goals": 11,
+      "talk": 138,
+      "factions": 0,
+      "movement": 439
+    },
+    "peers_active": 0
+  },
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "rules only (no model)"
+  },
+  "wake_mode": "rest",
+  "mood": "busy",
+  "approach": "rest",
+  "reasons": [],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 0,
+  "activity_energy": {},
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "busy",
+    "glow": 50,
+    "wakes": 1405,
+    "rests": 93,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:prefer_inside",
+    "walls_inside_territory"
+  ]
+}
