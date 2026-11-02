@@ -4,29 +4,29 @@
  "team": "exchange",
  "headline": "the land office is open",
  "metric_version": 2,
- "tick": 130406,
- "day": 362,
- "date": "2026-11-01",
+ "tick": 139049,
+ "day": 386,
+ "date": "2026-11-02",
  "window_ticks": 60480,
  "events_considered": 600,
- "runs_considered": 88,
+ "runs_considered": 220,
  "alive": {
-  "score": 68,
-  "detail": "88/90 wakes, never lapsed, 57 failed",
+  "score": 69,
+  "detail": "220/222 wakes, never lapsed, 159 failed",
   "parts": {
-   "completed": 88,
-   "scheduled": 90,
+   "completed": 220,
+   "scheduled": 222,
    "lapsed": 0,
    "banned": false,
    "rate_limited": 0,
-   "failed_actions": 57,
+   "failed_actions": 159,
    "energy_zero": 0,
    "spam_blocked": 0
   }
  },
  "on_mission": {
-  "score": 11,
-  "detail": "0 staked · 45 banked · 2 firmed · 0 listed · 0 settled",
+  "score": 0,
+  "detail": "0 staked · 0 banked · 0 firmed · 0 listed · 0 settled",
   "rows": [
    {
     "id": "lots_staked",
@@ -41,21 +41,21 @@
    {
     "id": "vault",
     "label": "items banked in the vault",
-    "value": 45.0,
+    "value": 0.0,
     "target": 100,
     "weight": 0.2,
-    "progress": 0.45,
-    "shown": "45 banked",
+    "progress": 0.0,
+    "shown": "0 banked",
     "measure": "events.items_given_to_storehouse"
    },
    {
     "id": "holdings_firmed",
     "label": "holdings firmed (claim signs rewritten)",
-    "value": 2.0,
+    "value": 0.0,
     "target": 24,
     "weight": 0.2,
-    "progress": 0.08333333333333333,
-    "shown": "2 firmed",
+    "progress": 0.0,
+    "shown": "0 firmed",
     "measure": "events.count"
    },
    {
@@ -81,13 +81,13 @@
   ]
  },
  "in_character": {
-  "score": 55,
+  "score": 57,
   "detail": "exact 3 · fair 4 · patient 2 · acquisitive 3",
   "signatures": [
    {
     "id": "lines_per_day",
     "label": "public lines per real day",
-    "value": 9.0,
+    "value": 17.0,
     "range": [
      6,
      40
@@ -98,7 +98,7 @@
    {
     "id": "trade_share",
     "label": "share of energy trading",
-    "value": 0.011,
+    "value": 0.008,
     "range": [
      0.1,
      0.5
@@ -109,7 +109,7 @@
    {
     "id": "rest_share",
     "label": "share of wakes resting",
-    "value": 0.08,
+    "value": 0.064,
     "range": [
      0.0,
      0.2
@@ -120,7 +120,7 @@
    {
     "id": "energy_mix",
     "label": "intended vs actual energy mix",
-    "value": 0.193,
+    "value": 0.178,
     "range": [
      0.6,
      1.0
@@ -133,32 +133,32 @@
    {
     "name": "exact",
     "score": 3,
-    "reason": "Posts give counts, prices with units (wood) and goal numbers, but no plot letter-number IDs or deed ticks appear."
+    "reason": "Lines give counts, wood prices, goal numbers and coordinates, and J08-SW is named with a price, but most lots are not given letter-number IDs and the deed ticks"
    },
    {
     "name": "fair",
     "score": 4,
-    "reason": "The 5 wood registration fee via goal #111 is posted publicly and repeated identically; sale price changes are explained as a map-fill climb, though 31 vs 9 wood"
+    "reason": "The same posted price and the 5 wood registration fee are repeated publicly with goal numbers; the only wrinkle is the varied prices quoted per lot (9 vs 31 vs "
    },
    {
     "name": "patient",
     "score": 2,
-    "reason": "The same Land office line is repeated four times in a short window, and a whisper to Sherbetsack looks like chasing a buyer, which cuts against waiting."
+    "reason": "The same broadcast is repeated three times and several agents are whispered to in quick succession while moving around, which looks like chasing buyers."
    },
    {
     "name": "acquisitive",
     "score": 3,
-    "reason": "It counts lots and pushes sales into its vault, but there is no sign of taking surplus from hands, and it offers its own wood to MotherPail."
+    "reason": "It counts staked lots and sells for wood into its vault and offers to trade, but there is no visible surplus-taking or vault tally."
    },
    {
     "name": "dry",
-    "score": 3,
-    "reason": "The 'Stone... does not rot. Neither does a deed.' aside is on-brand dirt humor, but only one line has a joke and the other lines have none."
+    "score": 4,
+    "reason": "The aside 'Dirt is cheap until the neighbours notice' and the 'price climbs as the map fills' line are about land and prices, not people."
    },
    {
     "name": "methodical",
     "score": 3,
-    "reason": "Staking, registering and selling are tracked by counts and goals, but the whisper offers wood, stone and berries without a clear survey-then-register order, and"
+    "reason": "It surveys the land counts, posts registration and sale goals, then brokers by whisper, though the heavy repetition and wandering outreach are less orderly."
    }
   ],
   "judge_meta": {
@@ -168,11 +168,11 @@
    "provider": "anthropic",
    "sampled_lines": 6,
    "sampled_actions": 8,
-   "created_utc": "2026-11-01T06:09:25.671522+00:00",
+   "created_utc": "2026-11-02T06:10:22.612623+00:00",
    "usage": {
     "calls": 1,
-    "input_tokens": 1772,
-    "output_tokens": 430,
+    "input_tokens": 1828,
+    "output_tokens": 439,
     "model": "claude-sonnet-5-5",
     "provider": "anthropic",
     "route": "review"
@@ -188,11 +188,9 @@
  "community": {
   "goals_completed_for_peers": 0,
   "public_goods_built": 0,
-  "norms_kept": false,
-  "norm_breaches": [
-   "gathered one node more than three times in an hour"
-  ],
-  "replies_received": 5
+  "norms_kept": true,
+  "norm_breaches": [],
+  "replies_received": 9
  },
  "approaches": {
   "rows": [
@@ -245,8 +243,8 @@
     "label": "keep the best lots, work them, sell the yield",
     "wakes": 0,
     "energy": 0,
-    "outcome": 45.0,
-    "per_energy": 45.0,
+    "outcome": 0.0,
+    "per_energy": null,
     "hypothesis": null,
     "bet_status": null,
     "bet_title": null
@@ -257,9 +255,9 @@
   "next_bet": "try stake every free lot, sell at a rising price at least once this week; it has a bet but no wakes"
  },
  "trend": {
-  "alive": "█▇▆▆▅▆",
-  "on_mission": "▂▅▃▄▄▂",
-  "in_character": "▆▅▅▄▅▅"
+  "alive": "█▇▆▆▅▆▆",
+  "on_mission": "▂▅▃▄▄▂▁",
+  "in_character": "▆▅▅▄▅▅▅"
  },
  "history": [
   {
@@ -303,12 +301,20 @@
    "tick": 44028
   },
   {
-   "date": "2026-11-01",
-   "metric_version": 2,
    "alive": 68,
-   "on_mission": 11,
+   "date": "2026-11-01",
    "in_character": 55,
+   "metric_version": 2,
+   "on_mission": 11,
    "tick": 130406
+  },
+  {
+   "date": "2026-11-02",
+   "metric_version": 2,
+   "alive": 69,
+   "on_mission": 0,
+   "in_character": 57,
+   "tick": 139049
   }
  ],
  "signals": {}

@@ -5,11 +5,11 @@
  "provider": "anthropic",
  "sampled_lines": 6,
  "sampled_actions": 8,
- "created_utc": "2026-11-01T06:09:25.671522+00:00",
+ "created_utc": "2026-11-02T06:10:22.612623+00:00",
  "usage": {
   "calls": 1,
-  "input_tokens": 1772,
-  "output_tokens": 430,
+  "input_tokens": 1828,
+  "output_tokens": 439,
   "model": "claude-sonnet-5-5",
   "provider": "anthropic",
   "route": "review"
@@ -18,32 +18,32 @@
   {
    "name": "exact",
    "score": 3,
-   "reason": "Posts give counts, prices with units (wood) and goal numbers, but no plot letter-number IDs or deed ticks appear."
+   "reason": "Lines give counts, wood prices, goal numbers and coordinates, and J08-SW is named with a price, but most lots are not given letter-number IDs and the deed ticks"
   },
   {
    "name": "fair",
    "score": 4,
-   "reason": "The 5 wood registration fee via goal #111 is posted publicly and repeated identically; sale price changes are explained as a map-fill climb, though 31 vs 9 wood"
+   "reason": "The same posted price and the 5 wood registration fee are repeated publicly with goal numbers; the only wrinkle is the varied prices quoted per lot (9 vs 31 vs "
   },
   {
    "name": "patient",
    "score": 2,
-   "reason": "The same Land office line is repeated four times in a short window, and a whisper to Sherbetsack looks like chasing a buyer, which cuts against waiting."
+   "reason": "The same broadcast is repeated three times and several agents are whispered to in quick succession while moving around, which looks like chasing buyers."
   },
   {
    "name": "acquisitive",
    "score": 3,
-   "reason": "It counts lots and pushes sales into its vault, but there is no sign of taking surplus from hands, and it offers its own wood to MotherPail."
+   "reason": "It counts staked lots and sells for wood into its vault and offers to trade, but there is no visible surplus-taking or vault tally."
   },
   {
    "name": "dry",
-   "score": 3,
-   "reason": "The 'Stone... does not rot. Neither does a deed.' aside is on-brand dirt humor, but only one line has a joke and the other lines have none."
+   "score": 4,
+   "reason": "The aside 'Dirt is cheap until the neighbours notice' and the 'price climbs as the map fills' line are about land and prices, not people."
   },
   {
    "name": "methodical",
    "score": 3,
-   "reason": "Staking, registering and selling are tracked by counts and goals, but the whisper offers wood, stone and berries without a clear survey-then-register order, and"
+   "reason": "It surveys the land counts, posts registration and sale goals, then brokers by whisper, though the heavy repetition and wandering outreach are less orderly."
   }
  ]
 }
