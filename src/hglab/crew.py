@@ -40,6 +40,7 @@ from hglab.planner import (
     BERRY_KEEP,
     BLUEPRINTS,
     NODE_FLOOR,
+    STOREHOUSE_CAPACITY,
     WorldView,
     _adjacent_stand,
     _full_stores,
@@ -79,6 +80,10 @@ EMPTY_DEPOT_TICKS = 2160  # a depot found empty is left alone for six hours
 FAR_RANK = 10**6  # a node outside every holding, in claims mode: after all of them
 STORES_MAX = 6  # storehouses at the works before the hands stop raising more for a full stock (pipeline.stores_max)
 OVERFLOW_ROOM = 25  # a store with less room than this counts as full for the next-store decision and is not worth a walk with a load
+WALL_LOAD = 10  # stone in the pack worth a walk to the lots when the walls are standing work (five walls)
+GATHERERS = frozenset({"woodcutter", "quarrier", "provisioner"})  # the hands who wall as standing work (owner, 2026-11-02)
+WALLS_WHY = "every store of the office is full"
+WALLS_ALWAYS_WHY = "the office walls its staked lots"  # the owner, 2026-11-02: the walls are the hands' standing work
 MASON_KEEP = {"wood": 20, "stone": 10, "fiber": 5}  # the mason unloads only what a storehouse, a farm or a hut will not need: the hands hand it the cost
 
 Step = tuple[list[dict[str, Any]], str, str]
@@ -247,9 +252,23 @@ def plan_crew(
         if step is not None:
             return step
 
-    # a2. the office's walls (owner, 2026-10-25): every store full, the stone goes into walls on the staked lots
-    if claims and walls_cfg(claims) is not None and office_stores and not any(_has_room(s, full) for s in office_stores):
-        step = _wall_step(persona, claims, held, inventory, position, view, mates, office_stores, room, energy, reserve, state, tick, observe, team=team)
+    # a2. the office's walls (owner, 2026-10-25): every store full, the stone goes into walls on the staked lots; since the
+    # owner's brief of 2026-11-02 (`walls.when: always`) the walls are the hands' standing work, and stone in the pack goes into them first
+    walls = walls_cfg(claims) if claims else None
+    every_full = bool(office_stores) and not any(_has_room(s, full) for s in office_stores)
+    heavy = pack >= 46 if role == "mason" else (goods >= HEAVY or pack >= 46)
+    always = walls is not None and str(walls.get("when", "full")) == "always" and role in GATHERERS  # the mason's stone pays for depots and stores; the drayman keeps the vault supplied
+    if walls is not None and office_stores and (every_full or (always and not heavy and int(inventory.get("stone", 0) or 0) >= WALL_LOAD)):
+        step = _wall_step(persona, claims, held, inventory, position, view, mates, office_stores, room, energy, reserve, state, tick, observe, team=team, why=WALLS_WHY if every_full else WALLS_ALWAYS_WHY)
+        if step is not None:
+            return step
+
+    # a2b. the quartermaster (the owner, 2026-11-02): a readable store past three quarters is balanced into the one beside
+    # it or gets another raised beside it, before any give is refused
+    if persona.knobs.get("quartermaster"):
+        from hglab.quartermaster import plan_quartermaster
+
+        step = plan_quartermaster(persona, state, observe, view, inventory, position, room, office_stores, tick, mates=mates)
         if step is not None:
             return step
 
@@ -260,7 +279,6 @@ def plan_crew(
             return step
 
     # b. a heavy pack goes to the nearest store of ours with room (the mason carries its materials to the site instead)
-    heavy = pack >= 46 if role == "mason" else (goods >= HEAVY or pack >= 46)
     if heavy and drop_points:
         step = _unload(inventory, position, view, drop_points, room, state, tick, pack, keep=MASON_KEEP if role == "mason" and stores else None)
         if step is not None:
@@ -275,6 +293,12 @@ def plan_crew(
             step = _hand_to_mason(persona, team, inventory, position, view, site, teammates, names, collective_names, crew_roles, stores_max, len(stores), full=full_agents(state, tick))
             if step is not None:
                 return step
+
+    # b2. the walls as standing work (owner, 2026-11-02): the pack unloaded, the stone comes next, drawn from a store when the pack holds none
+    if always and office_stores:
+        step = _wall_step(persona, claims, held, inventory, position, view, mates, office_stores, room, energy, reserve, state, tick, observe, team=team, why=WALLS_ALWAYS_WHY)
+        if step is not None:
+            return step
 
     # c. no store at the works yet: raise the first one when the pack can pay
     if not stores:
@@ -317,8 +341,19 @@ def plan_crew(
         step = _haul(persona, cfg, inventory, position, view, stores, field, collective_names, mates, pack, observe, state, tick)
         if step is not None:
             return step
-    wanted = _role_wanted(role, stock_levels(stores, cfg.get("stock") or {}))
+    levels = stock_levels(stores, cfg.get("stock") or {})
+    # e2. the stock stands at target (the owner, 2026-11-02: every hand builds): the blueprint before another load
+    if cfg.get("blueprint") and not away and stock_at_target(levels):
+        step = _blueprint(persona, team, state, observe, view, inventory, position, room, mates, site, reach, teammates, floor_for, ranks, hands=True)
+        if step is not None:
+            return step
+    wanted = _role_wanted(role, levels)
     return _gather_toward(persona, team, wanted, inventory, position, view, site, reach, room, teammates, "for the works", floor_for, ranks)
+
+
+def stock_at_target(levels: dict[str, tuple[int, int]]) -> bool:
+    """Every kind the stock names stands at its target in the stores in view (no store in view: unknown, so no)."""
+    return bool(levels) and any(held for held, _ in levels.values()) and all(held >= target for held, target in levels.values() if target)
 
 
 def team_tills(team: Team | None) -> set[tuple[int, int]]:
@@ -355,7 +390,9 @@ def _office_store_step(
     faction = you.get("faction")
     faction = str(faction.get("name") if isinstance(faction, dict) else faction or "")
     pack = sum(inventory.values())
-    every_full = bool(office_stores) and not any(_has_room(s, full) for s in office_stores)
+    room_min = overflow_room(claims)
+    every_full = bool(office_stores) and not any(_has_room(s, full, room_min) for s in office_stores)
+    why = WALLS_WHY if not any(_has_room(s, full) for s in office_stores) else f"every store of the office is past {round(100 * (1 - room_min / STOREHOUSE_CAPACITY))}%"
     missing = sorted((t for t in tills if t not in standing and view.free_tile(*t)), key=lambda t: (chebyshev(position, t), t))
     if missing:
         target = missing[0]
@@ -409,7 +446,7 @@ def _office_store_step(
         if chebyshev(position, where) <= 1 and isinstance(store.get("storage"), dict):
             tile = spot(position)
             if tile is not None:
-                return [{"action": "build", "type": "storehouse", "x": tile[0], "y": tile[1], "policy": "faction"}], f"every store of the office is full ({len(ours)} of {cap} standing): another at {tile}, paid from the pack and the full store at {where}", "crew"
+                return [{"action": "build", "type": "storehouse", "x": tile[0], "y": tile[1], "policy": "faction"}], f"{why} ({len(ours)} of {cap} standing): another at {tile}, paid from the pack and the full store at {where}", "crew"
             continue
         stands = [t for t in neighbours(*where) if view.walkable(*t)] if chebyshev(position, where) <= CARRY_RANGE else []
         if not stands:
@@ -421,12 +458,19 @@ def _office_store_step(
     return None
 
 
-def _has_room(store: dict[str, Any], full: set[tuple[int, int]]) -> bool:
+def _has_room(store: dict[str, Any], full: set[tuple[int, int]], room_min: int = OVERFLOW_ROOM) -> bool:
     """A store a load may still go into: not refused as full lately, and room to spare when its contents show."""
     where = (int(store["x"]), int(store["y"]))
     if where in full:
         return False
-    return not isinstance(store.get("storage"), dict) or storehouse_room(store) >= OVERFLOW_ROOM
+    return not isinstance(store.get("storage"), dict) or storehouse_room(store) >= room_min
+
+
+def overflow_room(claims: dict[str, Any] | None) -> int:
+    """Room a store must keep before the office counts it full for the next-store decision: the capacity past
+    ``claims.overflow_at`` (three quarters since the owner's brief of 2026-11-02), never less than OVERFLOW_ROOM."""
+    share = float((claims or {}).get("overflow_at", 1.0) or 1.0)
+    return max(OVERFLOW_ROOM, round((1.0 - share) * STOREHOUSE_CAPACITY))
 
 
 def _admits(persona: Persona, store: dict[str, Any], faction: str) -> bool:
@@ -533,8 +577,9 @@ def _wall_step(
     tick: int,
     observe: dict[str, Any],
     team: Team | None = None,
+    why: str = "every store of the office is full",
 ) -> Step | None:
-    """Every store of the office is full: wall the staked lots, the holdings first, with the pack's stone, then the stores'.
+    """Every store of the office is full, or the walls are its standing work (``why`` says which): wall the staked lots, the holdings first, with the pack's stone, then the stores'.
 
     Walls go on a lot's border, never on the middle tile of a side (the gate), never on a road, a sign, a
     node, a tile someone stands on or beside another resident's building (``hglab.walls``). The nearest
@@ -571,13 +616,13 @@ def _wall_step(
             lots = ", ".join(sorted({lid for lid, _ in chosen}))
             return (
                 [{"action": "build", "type": "wall", "x": t[0], "y": t[1]} for _, t in chosen],
-                f"every store of the office is full: {len(chosen)} wall(s) on lot {lots} from the pack's {stone} stone, the middle of each side left open as a gate",
+                f"{why}: {len(chosen)} wall(s) on lot {lots} from the pack's {stone} stone, the middle of each side left open as a gate",
                 "crew",
             )
         lid, target = min(tiles, key=lambda pair: (chebyshev(position, pair[1]), pair[1]))
         step = _step_toward(position, {"x": target[0], "y": target[1]}, view)
         if step is not None and step != position:
-            return [{"action": "move", "x": step[0], "y": step[1]}], f"every store of the office is full: carry {stone} stone to lot {lid}, its wall ring open at {target}", "crew"
+            return [{"action": "move", "x": step[0], "y": step[1]}], f"{why}: carry {stone} stone to lot {lid}, its wall ring open at {target}", "crew"
         return None
     if 50 - pack < 10:
         return None  # no room to carry stone: the pack's other goods wait for a store with room
@@ -590,12 +635,12 @@ def _wall_step(
         where = (int(store["x"]), int(store["y"]))
         if chebyshev(position, where) <= 1:
             qty = min(int(storage["stone"]), 50 - pack, WALL_DRAW)
-            return [{"action": "take", "x": where[0], "y": where[1], "item": "stone", "qty": qty}], f"every store of the office is full: take {qty} stone from the store at {where} to wall the staked lots", "crew"
+            return [{"action": "take", "x": where[0], "y": where[1], "item": "stone", "qty": qty}], f"{why}: take {qty} stone from the store at {where} to wall the staked lots", "crew"
         if chebyshev(position, where) > CARRY_RANGE:
             continue
         step = _step_toward(position, {"x": where[0], "y": where[1]}, view)
         if step is not None and step != position:
-            return [{"action": "move", "x": step[0], "y": step[1]}], f"every store of the office is full: walk to the store at {where} for stone to wall with", "crew"
+            return [{"action": "move", "x": step[0], "y": step[1]}], f"{why}: walk to the store at {where} for stone to wall with", "crew"
     return None
 
 

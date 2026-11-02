@@ -38,7 +38,8 @@
               "description": "Walls on the staked lots (owner, 2026-10-25): when every office store is full the hands wall the lots with the stone, the middle of every side left open as a gate (hglab.walls)",
               "properties": {
                 "enabled": {"type": "boolean"},
-                "scope": {"enum": ["holdings", "staked"], "description": "holdings: the holdings only; staked: the holdings first, then every other staked lot"}
+                "scope": {"enum": ["holdings", "staked"], "description": "holdings: the holdings only; staked: the holdings first, then every other staked lot"},
+                "when": {"enum": ["full", "always"], "description": "full: only while every office store is full (owner, 2026-10-25); always: the hands' standing work, stone in the pack first and drawn from a store when it holds none (owner, 2026-11-02)"}
               }
             },
             "evict": {
@@ -50,10 +51,11 @@
               }
             },
             "tills": {"type": "array", "maxItems": 6, "items": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "integer", "minimum": 0, "maximum": 127}}, "description": "Tiles of the office's tills (owner, 2026-10-27): storehouses the mason raises for the price of land only; no one unloads into them and clients pay into them first"},
-            "stores_max": {"type": "integer", "minimum": 1, "maximum": 40, "description": "Office storehouses, tills included, up to which the mason raises another beside a full one while every store is full (owner, 2026-10-27)"}
+            "stores_max": {"type": "integer", "minimum": 1, "maximum": 40, "description": "Office storehouses, tills included, up to which the mason raises another beside a full one while every store is full (owner, 2026-10-27)"},
+            "overflow_at": {"type": "number", "minimum": 0.5, "maximum": 1.0, "description": "The share of its capacity past which an office store counts as full for the next-store decision (three quarters since the owner's brief of 2026-11-02; 1.0 is the old rule)"}
           }
         },
-        "stores_max": {"type": "integer", "minimum": 1, "maximum": 12, "description": "Storehouses at the works before the hands stop raising more for a full stock (default 6)"},
+        "stores_max": {"type": "integer", "minimum": 1, "maximum": 40, "description": "Storehouses at the works before the hands stop raising more for a full stock (default 6)"},
         "blueprint": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,40}$", "description": "The team's block design in teams/blueprints/<name>.yaml (hglab.factory)"},
         "next_blueprint": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,40}$", "description": "The design the builders take up once every step of the blueprint is done (the owner, 2026-10-27: Lower Manhattan after the factory)"},
         "builders": {"type": "object", "description": "Personas who place the blueprint, each with the sections it raises first", "additionalProperties": {"type": "array", "items": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,40}$"}}},

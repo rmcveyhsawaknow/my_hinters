@@ -52,6 +52,9 @@ def test_with_every_store_full_the_mason_raises_another_beside_one_paid_from_it(
     assert "every store of the office is full" in step[1] and "(81, 76)" in step[1]
     roomy = _step("office-steward", {"wood": 45, "berries": 5}, (80, 76), _view([_store(81, 76, storage={"stone": 100}), *tills]))
     assert roomy is None or all(a.get("type") != "storehouse" for a in roomy[0])  # a store with room: no new one
+    past = _step("office-steward", {"wood": 45, "berries": 5}, (80, 76), _view([_store(81, 76, storage={"stone": 300, "fiber": 100}), *tills]))
+    assert past[0][0]["type"] == "storehouse" and past[1].startswith("every store of the office is past 75%")  # 400 of 500 (owner, 2026-11-02): another before any give is refused
+    assert load_team(ROOT, "exchange").extra["pipeline"]["claims"]["overflow_at"] == 0.75
 
 
 def test_a_missing_till_is_raised_from_the_pack_where_the_office_put_it():
