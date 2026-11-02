@@ -47,7 +47,7 @@ Behaviour signatures (numeric ranges the persona expects):
 | farthest distance from Neverland's centre | 42.0 | 15–90 | yes |
 | share of energy exploring | 0.506 | 0.35–0.7 | yes |
 | share of wakes resting | 0.075 | 0.05–0.3 | yes |
-| intended vs actual energy mix | 0.899 | 0.5–1.0 | yes |
+| intended vs actual energy mix | 0.844 | 0.5–1.0 | yes |
 
 Judge (fixture fixture, 6 lines, 8 actions):
 

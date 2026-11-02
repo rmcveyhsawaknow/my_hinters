@@ -110,7 +110,7 @@
    {
     "id": "energy_mix",
     "label": "intended vs actual energy mix",
-    "value": 0.41,
+    "value": 0.39,
     "range": [
      0.6,
      1.0
