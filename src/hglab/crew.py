@@ -320,6 +320,13 @@ def plan_crew(
             target = _step_toward(position, {"x": site[0], "y": site[1]}, view)
             if target is not None and target != position:
                 return [{"action": "move", "x": target[0], "y": target[1]}], f"carrying the first store's cost to the works at {site}", "crew"
+        elif goods >= HEAVY and cfg.get("blueprint"):
+            # a heavy pack that cannot pay for the store, with no store to unload into (Neverland's woodcutter and mason, 2026-11-02:
+            # wood, fiber and berries to the brim, no stone, an hour of exploring): the pack's loads go into the blueprint, heaviest first
+            for load in sorted((k for k in inventory if k != "berries" and inventory[k] >= 1), key=lambda k: -inventory[k]):
+                step = _blueprint(persona, team, state, observe, view, inventory, position, room, mates, site, reach, teammates, floor_for, ranks, hands=True, gather=False, pack_only=load)
+                if step is not None:
+                    return step
         wanted = [*shortfall(inventory, "storehouse"), *ROLE_WANTED.get(role, [])]
         return _gather_toward(persona, team, list(dict.fromkeys(wanted)), inventory, position, view, site, reach, room, teammates, "for the first store", floor_for, ranks)
 
@@ -391,7 +398,8 @@ def _office_store_step(
     """
     structures = view.world_structures or view.structures
     standing = {(int(s["x"]), int(s["y"])) for s in structures if s.get("type") == "storehouse" and isinstance(s.get("x"), int) and isinstance(s.get("y"), int)}
-    ours = [s for s in structures if s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() in mates]
+    excluded = {str(lid).upper() for lid in claims.get("exclude") or []}
+    ours = [s for s in structures if s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() in mates and lot_id(int(s["x"]), int(s["y"])) not in excluded]  # the relics inside the factory's campus count for nothing (2026-11-02: 17 stood, the cap was 14)
     you = observe.get("you") or {}
     faction = you.get("faction")
     faction = str(faction.get("name") if isinstance(faction, dict) else faction or "")
