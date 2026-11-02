@@ -4,7 +4,7 @@ Build a walled factory far from other homesteads that everyone wants to visit, h
 
 | agent | alive | on mission | in character | working | next bet |
 | --- | --- | --- | --- | --- | --- |
-| Nougatpick | 62 | 0 | 37 | the crew pipeline step: 0 outcome for 923 energy over 156 wake(s) | keep testing the crew pipeline step; it has the best outcome per unit of energy |
+| Sherbetsack | 64 | 8 | 35 | the crew pipeline step: 0 outcome for 1560 energy over 165 wake(s) | keep testing the crew pipeline step; it has the best outcome per unit of energy |
 
 ## Influence links
 
@@ -28,4 +28,4 @@ Build a walled factory far from other homesteads that everyone wants to visit, h
 ## What each member's success costs the others
 
 
-Metric spec versions: v1. Tick 138949.
+Metric spec versions: v1. Tick 138967.

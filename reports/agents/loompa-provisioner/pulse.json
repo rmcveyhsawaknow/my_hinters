@@ -4,70 +4,70 @@
  "team": "chocolate-factory",
  "headline": "Keep the factory stores stocked with fiber and berries so th",
  "metric_version": 1,
- "tick": 130329,
- "day": 362,
- "date": "2026-11-01",
+ "tick": 138967,
+ "day": 386,
+ "date": "2026-11-02",
  "window_ticks": 60480,
  "events_considered": 600,
- "runs_considered": 128,
+ "runs_considered": 320,
  "alive": {
-  "score": 62,
-  "detail": "128/139 wakes, never lapsed, 26 failed",
+  "score": 64,
+  "detail": "320/339 wakes, never lapsed, 51 failed",
   "parts": {
-   "completed": 128,
-   "scheduled": 139,
+   "completed": 320,
+   "scheduled": 339,
    "lapsed": 0,
    "banned": false,
    "rate_limited": 0,
-   "failed_actions": 26,
+   "failed_actions": 51,
    "energy_zero": 0,
    "spam_blocked": 0
   }
  },
  "on_mission": {
-  "score": 19,
-  "detail": "5 fiber and berries stored · 10 gathers · 3 replies",
+  "score": 8,
+  "detail": "0 fiber and berries stored · 0 gathers · 2 replies",
   "rows": [
    {
     "id": "food_stored",
     "label": "fiber and berries given into the factory stores",
-    "value": 5.0,
+    "value": 0.0,
     "target": 120,
     "weight": 0.5,
-    "progress": 0.041666666666666664,
-    "shown": "5 fiber and berries stored",
+    "progress": 0.0,
+    "shown": "0 fiber and berries stored",
     "measure": "events.items_given_to_storehouse"
    },
    {
     "id": "gathers",
     "label": "fiber and berry gathers",
-    "value": 10.0,
+    "value": 0.0,
     "target": 60,
     "weight": 0.3,
-    "progress": 0.16666666666666666,
-    "shown": "10 gathers",
+    "progress": 0.0,
+    "shown": "0 gathers",
     "measure": "events.count"
    },
    {
     "id": "replies",
     "label": "replies from the crew and visitors",
-    "value": 3.0,
+    "value": 2.0,
     "target": 5,
     "weight": 0.2,
-    "progress": 0.6,
-    "shown": "3 replies",
+    "progress": 0.4,
+    "shown": "2 replies",
     "measure": "events.replies_received"
    }
   ]
  },
  "in_character": {
-  "score": 33,
-  "detail": "caring 1 · quick 1 · exact 1 · chatty 0",
+  "score": 35,
+  "detail": "caring 1 · quick 3 · exact 0 · chatty 0",
   "signatures": [
    {
     "id": "rest_share",
     "label": "share of wakes resting",
-    "value": 0.062,
+    "value": 0.041,
     "range": [
      0.0,
      0.3
@@ -78,7 +78,7 @@
    {
     "id": "energy_mix",
     "label": "intended vs actual energy mix",
-    "value": 0.133,
+    "value": 0.134,
     "range": [
      0.6,
      1.0
@@ -91,17 +91,17 @@
    {
     "name": "caring",
     "score": 1,
-    "reason": "Gave stone and 5 fiber to the store at 82,89, but no berries were delivered, and stone dominated over berries."
+    "reason": "Only moves are recorded, with no deliveries or store stocking visible, so berries going to the store first cannot be confirmed."
    },
    {
     "name": "quick",
-    "score": 1,
-    "reason": "Repeated stone gathering and returns to the store are visible, but there is no evidence of short trips to the nearest grass."
+    "score": 3,
+    "reason": "Eight short moves cluster around (88,98), with returns to that point between nearby spots, which fits short repeated trips, though the grass is not identified."
    },
    {
     "name": "exact",
-    "score": 1,
-    "reason": "Gave precise quantities to the store, but there is no evidence of counting or checking store holdings in view."
+    "score": 0,
+    "reason": "No counts of store contents appear in actions or lines."
    },
    {
     "name": "chatty",
@@ -111,7 +111,7 @@
    {
     "name": "sparing",
     "score": 1,
-    "reason": "Gathering was only stone, with no berry nodes touched, so leaving five on each node cannot be verified."
+    "reason": "No gather actions are recorded, so leaving five on each node cannot be shown."
    }
   ],
   "judge_meta": {
@@ -121,11 +121,11 @@
    "provider": "anthropic",
    "sampled_lines": 0,
    "sampled_actions": 8,
-   "created_utc": "2026-11-01T05:56:35.315477+00:00",
+   "created_utc": "2026-11-02T05:56:02.701489+00:00",
    "usage": {
     "calls": 1,
-    "input_tokens": 1152,
-    "output_tokens": 258,
+    "input_tokens": 1098,
+    "output_tokens": 242,
     "model": "claude-sonnet-5-5",
     "provider": "anthropic",
     "route": "review"
@@ -133,7 +133,7 @@
   }
  },
  "team_pull": {
-  "detail": "Hope 15 (MotherPail) → Inspiration 9",
+  "detail": "Hope 10 (MotherPail) → Inspiration 6",
   "sent": [],
   "received": [
    {
@@ -144,65 +144,71 @@
     "plain_english": "When MotherPail is contributing and resilient, Sherbetsack works with a lighter step.",
     "weight": 0.6,
     "half_life_hours": 24.0,
-    "value": 15.1,
-    "decayed_value": 15.1,
+    "value": 9.5,
+    "decayed_value": 9.5,
     "age_ticks": 0,
-    "explanation": "Hope 15: contribution 13, uplift 12, resilience 0 (decayed over a day)."
+    "explanation": "Hope 10: contribution 0, uplift 15, resilience 0 (decayed over a day)."
    }
   ],
   "effects": {
    "inspiration": {
-    "value": 9.1,
-    "tick": 130329,
-    "explanation": "hope from mrs-bucket 15"
+    "value": 5.7,
+    "tick": 138967,
+    "explanation": "hope from mrs-bucket 10"
    },
    "hope": {
-    "value": 15.1,
-    "tick": 130329,
-    "explanation": "Hope 15: contribution 13, uplift 12, resilience 0 (decayed over a day)."
+    "value": 9.5,
+    "tick": 138967,
+    "explanation": "Hope 10: contribution 0, uplift 15, resilience 0 (decayed over a day)."
    }
   }
  },
  "community": {
   "goals_completed_for_peers": 0,
   "public_goods_built": 0,
-  "norms_kept": false,
-  "norm_breaches": [
-   "gathered one node more than three times in an hour"
-  ],
-  "replies_received": 3
+  "norms_kept": true,
+  "norm_breaches": [],
+  "replies_received": 2
  },
  "approaches": {
   "rows": [
    {
     "id": "crew",
     "label": "the crew pipeline step",
-    "wakes": 71,
-    "energy": 791.0,
-    "outcome": 75.0,
-    "per_energy": 0.095,
+    "wakes": 165,
+    "energy": 1560.0,
+    "outcome": 0.0,
+    "per_energy": 0.0,
     "hypothesis": "H-20261023-loompa-provisioner-fed-crew-works-more",
     "bet_status": "proposed",
     "bet_title": "A stocked berry store keeps the crew working"
    }
   ],
-  "working": "the crew pipeline step: 75 outcome for 791 energy over 71 wake(s)",
+  "working": "the crew pipeline step: 0 outcome for 1560 energy over 165 wake(s)",
   "not_working": "nothing clearly failing",
   "next_bet": "keep testing the crew pipeline step; it has the best outcome per unit of energy"
  },
  "trend": {
-  "alive": "▅",
-  "on_mission": "▂",
-  "in_character": "▃"
+  "alive": "▅▅",
+  "on_mission": "▂▂",
+  "in_character": "▃▃"
  },
  "history": [
   {
-   "date": "2026-11-01",
-   "metric_version": 1,
    "alive": 62,
-   "on_mission": 19,
+   "date": "2026-11-01",
    "in_character": 33,
+   "metric_version": 1,
+   "on_mission": 19,
    "tick": 130329
+  },
+  {
+   "date": "2026-11-02",
+   "metric_version": 1,
+   "alive": 64,
+   "on_mission": 8,
+   "in_character": 35,
+   "tick": 138967
   }
  ],
  "signals": {}
