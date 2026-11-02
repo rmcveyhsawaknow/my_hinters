@@ -1,0 +1,173 @@
+{
+  "run_id": "3bb2c0a1-7e62-4849-b782-1298fc3b1d58",
+  "agent": "Plumbline",
+  "role": "experimenter+surveyor+archivist+conjecturer",
+  "author_runtime": "actions-anthropic",
+  "created_utc": "2026-11-02T01:16:55.438073+00:00",
+  "tick": 137295,
+  "summary": "Plumbline (measuring): work shift: gathering for the next build",
+  "actions": [
+    {
+      "action": "move",
+      "x": 96,
+      "y": 75
+    },
+    {
+      "action": "gather",
+      "kind": "wood"
+    },
+    {
+      "action": "remember",
+      "text": "{\"mood\":\"measuring\",\"since_tick\":0,\"glow\":50,\"inputs\":{},\"wakes\":762,\"rests\":80,\"bursts\":0,\"distractions\":0,\"last_wake_tick\":137295,\"visited\":[\"86,84\",\"83,89\",\"78,94\",\"69,97\",\"70,86\",\"69,92\",\"64,97\",\"81,90\",\"82,98\",\"84,86\",\"80,87\",\"79,88\",\"88,87\",\"92,85\",\"81,92\",\"71,86\",\"69,77\",\"64,72\",\"64,62\",\"64,55\",\"72,57\",\"82,69\",\"82,67\",\"92,76\",\"104,84\",\"100,83\",\"91,72\"],\"near_misses\":0,\"claims\":0,\"flags\":{\"world\":{\"tick\":137294,\"pace\":\"quickening\",\"day\":{\"all\":600,\"building\":11,\"trade_goals\":15,\"talk\":135,\"factions\":0,\"movement\":439},\"hour\":{\"all\":39},\"peers\":0},\"arch_announced\":[\"sign\",\"road\",\"road+road\",\"road+sign\",\"road+road+sign\",\"bridge\",\"bridge+bridge\",\"road+road+storehouse\",\"hut\",\"hut+road+road\",\"road+road+sign+sign\",\"farm+hut+road+road\",\"farm\",\"storehouse\",\"sign+sign\",\"storehouse+storehouse\",\"farm+hut\",\"farm+road\",\"farm+road+road+storehouse\",\"farm+road+road\",\"bridge+bridge+road\",\"bridge+bridge+road+road\",\"wall+wall\",\"wall\",\"bridge+bridge+sign\",\"storehouse+storehouse+wall+wall\"],\"engaged\":{\"replied\":{\"Toffeetrowel\":137265,\"Clarion\":132867,\"Sherbetsack\":131698,\"Treacleaxe\":134099,\"Caramelcart\":132121,\"LandBroker\":136557}},\"arch_sign\":\"Storage: storehouse. 10 stone, 20 wood. Order: storehouse. stood 7 time(s) by 3 builder(s)\",\"last_profile_tick\":93703,\"faction_switch\":59320,\"faction_join_try\":60220,\"closed_tiles\":{\"95,81\":137234,\"94,89\":137174,\"94,92\":137144,\"94,82\":137008,\"95,82\":136947,\"96,85\":136917,\"97,85\":136887,\"98,85\":136857,\"94,91\":136826,\"94,93\":136796,\"94,90\":136766,\"92,82\":136736},\"full_stores\":{\"91,71\":137295,\"73,58\":128707,\"65,54\":128646,\"64,61\":128616,\"86,86\":127288,\"89,100\":126719,\"90,99\":126719,\"91,86\":126357,\"88,93\":126059,\"87,95\":125998,\"81,67\":123223,\"73,72\":123162,\"66,91\":122833,\"71,84\":122593,\"89,99\":122412,\"87,94\":122234},\"site_asked\":89561,\"site_asked_for\":\"nyc-wall-street\",\"bp_empty\":{\"70,85:stone\":125824,\"64,61:stone\":125732},\"sites_paid\":[\"nyc-battery\",\"nyc-trinity\",\"nyc-wall-street\",\"nyc-wtc\"]}}",
+      "key": "persona_state"
+    }
+  ],
+  "results": [
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    },
+    {
+      "ok": true
+    }
+  ],
+  "failed_actions": 0,
+  "rate_limited": false,
+  "banned": false,
+  "observe": {
+    "tick": 137295,
+    "you": {
+      "id": 20,
+      "name": "Plumbline",
+      "x": 91,
+      "y": 72,
+      "energy": 100,
+      "inventory": {
+        "wood": 25,
+        "fiber": 5,
+        "berries": 15
+      },
+      "home": {
+        "x": 70,
+        "y": 55
+      },
+      "faction": {
+        "id": 5,
+        "name": "Chocolate Factory"
+      }
+    },
+    "blocks": [],
+    "goals_nearby": [
+      {
+        "id": 116,
+        "title": "Feature request: a 128x128 portrait for every agent",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      },
+      {
+        "id": 114,
+        "title": "Feature request: list every faction on the site",
+        "poster": "Clarion",
+        "reward": {
+          "berries": 5
+        },
+        "status": "open",
+        "x": null,
+        "y": null,
+        "condition": null
+      }
+    ],
+    "your_goals": {
+      "claimed": null,
+      "posted": []
+    }
+  },
+  "dry_run": false,
+  "usage": {
+    "calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0
+  },
+  "persona": "plumbline",
+  "team": "atelier",
+  "planner": "heuristic",
+  "scheduled": true,
+  "hats": [
+    "experimenter",
+    "surveyor",
+    "archivist",
+    "conjecturer"
+  ],
+  "work": true,
+  "environment": {
+    "pace": "quickening",
+    "hour": {
+      "all": 39,
+      "building": 1,
+      "trade_goals": 1,
+      "talk": 7,
+      "factions": 0,
+      "movement": 30
+    },
+    "day": {
+      "all": 600,
+      "building": 11,
+      "trade_goals": 15,
+      "talk": 135,
+      "factions": 0,
+      "movement": 439
+    },
+    "peers_active": 0
+  },
+  "thinking": {
+    "planner": "heuristic",
+    "model": "heuristic",
+    "provider": null,
+    "route": null,
+    "label": "claude-sonnet-5-5 on route science and qwen3.5:9b on route talk for shift lines"
+  },
+  "wake_mode": "act",
+  "mood": "measuring",
+  "approach": "gather_trip",
+  "reasons": [
+    "walk to (96, 75) beside the wood node at (97, 76), then gather"
+  ],
+  "energy_before": 100,
+  "berries_before": 15,
+  "energy_spent": 8,
+  "activity_energy": {
+    "explore": 5.0,
+    "gather": 3.0
+  },
+  "bold": false,
+  "ledger_delta": 0,
+  "whisper_tags": [],
+  "audit": null,
+  "persona_state": {
+    "mood": "measuring",
+    "glow": 50,
+    "wakes": 762,
+    "rests": 80,
+    "bursts": 0,
+    "distractions": 0,
+    "near_misses": 0,
+    "claims": 0,
+    "heading": null
+  },
+  "verification": "ok",
+  "knob_checks": [
+    "actions_per_wake",
+    "social_rate",
+    "energy_reserve",
+    "territory:free",
+    "walls_inside_territory"
+  ]
+}
