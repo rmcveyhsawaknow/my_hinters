@@ -13,6 +13,9 @@ inherits (never a wall across anyone's path) is kept by the shape and by what is
 - never on a lot near the spawn (``protect_spawn``), in a homestead's ring of lots
   (``protect_homesteads``), holding another resident's building, sold or deeded, or under contract
   to a client (``exclude``: the Chocolate Factory's four plots).
+
+By the owner's brief of 2026-11-02 the walls are the hands' standing work (``walls.when: always``):
+stone in the pack goes into them before another load, and a hand with none draws it from a store.
 """
 
 from __future__ import annotations

@@ -38,7 +38,8 @@
               "description": "Walls on the staked lots (owner, 2026-10-25): when every office store is full the hands wall the lots with the stone, the middle of every side left open as a gate (hglab.walls)",
               "properties": {
                 "enabled": {"type": "boolean"},
-                "scope": {"enum": ["holdings", "staked"], "description": "holdings: the holdings only; staked: the holdings first, then every other staked lot"}
+                "scope": {"enum": ["holdings", "staked"], "description": "holdings: the holdings only; staked: the holdings first, then every other staked lot"},
+                "when": {"enum": ["full", "always"], "description": "full: only while every office store is full (owner, 2026-10-25); always: the hands' standing work, stone in the pack first and drawn from a store when it holds none (owner, 2026-11-02)"}
               }
             },
             "evict": {
@@ -50,7 +51,8 @@
               }
             },
             "tills": {"type": "array", "maxItems": 6, "items": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "integer", "minimum": 0, "maximum": 127}}, "description": "Tiles of the office's tills (owner, 2026-10-27): storehouses the mason raises for the price of land only; no one unloads into them and clients pay into them first"},
-            "stores_max": {"type": "integer", "minimum": 1, "maximum": 40, "description": "Office storehouses, tills included, up to which the mason raises another beside a full one while every store is full (owner, 2026-10-27)"}
+            "stores_max": {"type": "integer", "minimum": 1, "maximum": 40, "description": "Office storehouses, tills included, up to which the mason raises another beside a full one while every store is full (owner, 2026-10-27)"},
+            "overflow_at": {"type": "number", "minimum": 0.5, "maximum": 1.0, "description": "The share of its capacity past which an office store counts as full for the next-store decision (three quarters since the owner's brief of 2026-11-02; 1.0 is the old rule)"}
           }
         },
         "stores_max": {"type": "integer", "minimum": 1, "maximum": 40, "description": "Storehouses at the works before the hands stop raising more for a full stock (default 6)"},
