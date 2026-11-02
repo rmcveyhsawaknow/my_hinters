@@ -40,6 +40,7 @@ North Star: [read first](NORTH_STAR.md)
 - **goal** [G-20261026-navy-chart-the-coast-and-bridge-the-shelf](goals/G-20261026-navy-chart-the-coast-and-bridge-the-shelf.md) — Fathomark: chart the coast and bridge the shelf
 - **goal** [G-20261102-every-hand-builds-and-no-store-blocks-it](goals/G-20261102-every-hand-builds-and-no-store-blocks-it.md) — Every hand builds and no store blocks it
 - **goal** [G-20261102-neverland-treetop](goals/G-20261102-neverland-treetop.md) — Neverland: a treetop hideaway in its own forest
+- **goal** [G-20261102-the-larger-new-york-replica-every-building-with-a-sign](goals/G-20261102-the-larger-new-york-replica-every-building-with-a-sign.md) — The larger New York replica, every building with a sign
 - **hypothesis** [H-20261017-bucket-stocks](hypotheses/H-20261017-bucket-stocks.md) — A stocked storehouse keeps teammates above the energy floor
 - **hypothesis** [H-20261017-bucket-thanks](hypotheses/H-20261017-bucket-thanks.md) — Specific thank-you lines earn replies
 - **hypothesis** [H-20261017-item-conservation](hypotheses/H-20261017-item-conservation.md) — Item conservation holds in the public event log

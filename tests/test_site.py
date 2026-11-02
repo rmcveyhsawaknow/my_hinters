@@ -254,3 +254,18 @@ def test_a_segment_bought_after_another_is_offered_once_the_first_is_deeded():
     later = {**settled, "nyc-midtown-south": {"client": "Plumbline", "deeded": 1}}
     due2 = {s["id"] for s in surveys_due(ledger, "LandBroker", {"surveys": later}, w, w["structures"], w["agents"], 150000)}
     assert "nyc-midtown-north" in due2 and "nyc-midtown-south" not in due2 and "nyc-park-south" not in due2
+
+
+def test_a_client_counts_the_ledgers_deeds_as_paid_and_asks_for_the_next_ground():
+    """Plumbline's notebook had lost Lower Manhattan's paid requests (2026-11-02); the ledger's deeds count, so he asks for Midtown, not Wall Street again."""
+    from hglab.mood import PersonaState
+
+    plumbline = load_personas(ROOT)["plumbline"]
+    view = WorldView(x0=25, y0=75, rows=["g" * 128] * 128, full_map=["g" * 128] * 128, tick=150000)
+    deeded = ["nyc-wall-street", "nyc-battery", "nyc-trinity", "nyc-wtc"]
+    state = PersonaState(mood="measuring")
+    step = _plan_site_trade(plumbline, state, {"wood": 10}, (35, 82), view, {"tick": 150000, "you": {"x": 35, "y": 82}, "inbox": [], "_deeded_requests": deeded}, "LandBroker", office_names=set(), tills=set())
+    assert step is not None and step[0][0]["action"] == "whisper" and state.flags["site_asked_for"] == "nyc-midtown-south"
+    again = PersonaState(mood="measuring")
+    _plan_site_trade(plumbline, again, {"wood": 10}, (35, 82), view, {"tick": 150000, "you": {"x": 35, "y": 82}, "inbox": []}, "LandBroker", office_names=set(), tills=set())
+    assert again.flags["site_asked_for"] == "nyc-wall-street"  # without the ledger's deeds the notebook alone decides, as before

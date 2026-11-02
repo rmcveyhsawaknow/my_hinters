@@ -52,8 +52,8 @@ knobs:
     size: 1
     style: blueprint  # the house is the team's blueprint (teams/blueprints/lower-manhattan.yaml)
     site_from: land_office
-    requests: [nyc-wall-street, nyc-battery, nyc-trinity, nyc-wtc]
-    brief: "LandBroker, the Atelier asks for the south-west shore by the inlet, in four parts: Wall Street (D08-NE, E08-NW) first, then the Battery, Trinity and the Trade Center lots. A scale study of Lower Manhattan. Name your price in wood for each; I pay into a till of the office."
+    requests: [nyc-wall-street, nyc-battery, nyc-trinity, nyc-wtc, nyc-midtown-south, nyc-midtown-north, nyc-park-south, nyc-park-north]  # the larger replica (the owner, 2026-11-02): Midtown, then Central Park, in two segments each
+    brief: "LandBroker, the Atelier asks for the south-west shore by the inlet, in four parts: Wall Street (D08-NE, E08-NW) first, then the Battery, Trinity and the Trade Center lots; after them the grass north of it up to the lake, Midtown in two parts and Central Park in two. A scale study of New York. Name your price in wood for each; I pay into a till of the office."
 voice:
   register: Calm, exact, a drafting-room voice; measurements and materials first,
     a dry aside at the end.
