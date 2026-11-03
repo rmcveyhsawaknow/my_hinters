@@ -1,0 +1,3 @@
+# generated beside the scripts: publish them as artifacts, never commit them
+*/data.json
+*/*-plan.html

@@ -1,0 +1,395 @@
+<title>Northern New York Plan</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* layout: a site-plan sheet: title block, the drawing beside its key, the section schedule, then land, builders, totals and progress */
+:root {
+  --paper: #f3f5f1; --sheet: #fbfcfa; --ink: #1f2a2b; --muted: #5d6a68; --line: #cdd5d0; --grid: #e3e8e4;
+  --ground: #eef2e7; --deep: #b9d4dd; --shallow: #d3e6ea; --sand: #f2ebd9; --forest: #dbe7d5; --hill: #e7e1d1; --mount: #ddd6ca;
+  --street: #77736d; --mid: #4567a0; --park: #3f8a4e; --up: #b05a2f; --on-fill: #ffffff;
+  --accent: #6e3b22; --accent-soft: #efe5db; --warn: #a2611a;
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif; --body: "Archivo", "Helvetica Neue", Arial, sans-serif; --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #161b1c; --sheet: #1c2224; --ink: #e4ebe8; --muted: #9aa8a5; --line: #34403f; --grid: #262f30;
+  --ground: #1f2729; --deep: #17323c; --shallow: #1f3f48; --sand: #2b2a22; --forest: #1c2a22; --hill: #2a2925; --mount: #3a3530;
+  --street: #a29d95; --mid: #86a8de; --park: #7cc48a; --up: #e5966a; --on-fill: #11181a;
+  --accent: #e0a982; --accent-soft: #33271f; --warn: #e2a35a; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #161b1c; --sheet: #1c2224; --ink: #e4ebe8; --muted: #9aa8a5; --line: #34403f; --grid: #262f30;
+  --ground: #1f2729; --deep: #17323c; --shallow: #1f3f48; --sand: #2b2a22; --forest: #1c2a22; --hill: #2a2925; --mount: #3a3530;
+  --street: #a29d95; --mid: #86a8de; --park: #7cc48a; --up: #e5966a; --on-fill: #11181a;
+  --accent: #e0a982; --accent-soft: #33271f; --warn: #e2a35a; color-scheme: dark }
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.55; margin: 0; }
+.wrap { max-width: 1160px; margin: 0 auto; padding-block: 28px 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 28px; }
+header { display: grid; gap: 8px; border-bottom: 2px solid var(--ink); padding-bottom: 16px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+h1 { font-family: var(--display); font-stretch: 78%; font-weight: 800; font-size: clamp(32px, 6vw, 52px); line-height: 1; margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+.lede { max-width: 72ch; margin: 0; }
+h2 { font-family: var(--display); font-stretch: 85%; font-weight: 700; font-size: 21px; margin: 0; text-wrap: balance; }
+h3 { font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; margin: 0; }
+.figures { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.figure { background: var(--sheet); padding: 14px 16px; display: grid; gap: 2px; min-width: 0; align-content: start; }
+.figure .k { font-family: var(--mono); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.figure .v { font-family: var(--display); font-stretch: 80%; font-weight: 700; font-size: 28px; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.figure .v small { font-size: 15px; font-weight: 500; color: var(--muted); }
+.figure .n { font-size: 13px; color: var(--muted); }
+.plan { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+.drawing { background: var(--sheet); border: 1px solid var(--line); padding: 12px; min-width: 0; }
+#map { width: 100%; height: auto; display: block; }
+.legend svg { flex: none; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 10px; font-size: 12.5px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.sw { width: 14px; height: 10px; display: inline-block; border: 1px solid var(--line); }
+.key { min-width: 0; display: grid; gap: 14px; }
+.detail { background: var(--sheet); border: 1px solid var(--line); border-left: 4px solid var(--accent); padding: 12px 14px; display: grid; gap: 6px; font-size: 14px; }
+@media (min-width: 861px) { .detail { position: sticky; top: 12px; z-index: 1; } }
+.detail .title { font-weight: 700; font-size: 16px; }
+.detail .where { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.detail dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 12px; margin: 0; font-size: 13px; }
+.detail dt { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding-top: 2px; }
+.detail dd { margin: 0; font-variant-numeric: tabular-nums; min-width: 0; }
+.detail .said { font-size: 13.5px; border-top: 1px solid var(--line); padding-top: 8px; }
+.group { display: grid; gap: 1px; }
+.group > summary { cursor: pointer; padding: 4px 0; }
+.group > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.group h3 { display: inline-flex; align-items: center; gap: 8px; }
+.group h3 i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+.bldg { display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; gap: 10px; align-items: baseline; padding: 4px 8px; border-radius: 4px; cursor: pointer; border: 0; background: none; color: inherit; font: inherit; font-size: 14px; text-align: left; width: 100%; }
+.bldg:hover, .bldg.on { background: var(--accent-soft); }
+.bldg:focus-visible, .filter button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.bldg .no { font-family: var(--mono); font-size: 12px; text-align: right; color: var(--muted); }
+.bldg .nm { font-weight: 600; min-width: 0; }
+.bldg .meta { font-family: var(--mono); font-size: 11.5px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+section.block { background: var(--sheet); border: 1px solid var(--line); padding: 18px 20px; display: grid; gap: 12px; min-width: 0; }
+.cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+ol.orders, ul.calls { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 76ch; }
+.tablebox { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+th, td { text-align: left; padding: 6px 9px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+td.num, th.num { text-align: right; }
+td.num, td.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; font-size: 12.5px; }
+tr.total td { font-weight: 700; border-top: 2px solid var(--ink); }
+tr.dz td:first-child { border-left: 4px solid var(--c, var(--line)); }
+.filter { display: flex; flex-wrap: wrap; gap: 6px; }
+.filter button { font: inherit; font-size: 13px; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--sheet); color: var(--ink); cursor: pointer; }
+.filter button[aria-pressed="true"] { background: var(--ink); color: var(--sheet); border-color: var(--ink); }
+.cards { display: grid; gap: 12px; }
+.card { border: 1px solid var(--line); border-radius: 4px; padding: 10px 12px; display: grid; gap: 4px; }
+.card .who { font-weight: 700; }
+.card .when { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.bar { height: 8px; background: var(--grid); border-radius: 4px; position: relative; min-width: 90px; margin-top: 6px; overflow: hidden; }
+.bar i { position: absolute; inset: 0 auto 0 0; background: var(--c, var(--accent)); border-radius: 4px; }
+code { font-family: var(--mono); font-size: 12.5px; background: var(--grid); padding: 1px 5px; border-radius: 3px; overflow-wrap: anywhere; }
+.foot { font-size: 12.5px; color: var(--muted); margin: 0; }
+svg text { font-family: var(--mono); }
+@media (max-width: 860px) { .plan, .cols { grid-template-columns: minmax(0, 1fr); } .figures { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (prefers-reduced-motion: no-preference) { .bldg { transition: background .15s; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow" id="eyebrow">The Atelier's New York · Midtown, Central Park and Uptown · 2026-11-03</div>
+    <h1>New York, the northern replica</h1>
+    <p class="lede">North of the finished Lower Manhattan, the replica goes up in three more designs. Midtown's skyline comes first, then Central Park round the inland lake, then Uptown north of the park. Every building and monument has a sign beside it, and every step rises on ground the land office sells to the Atelier one segment at a time.</p>
+  </header>
+
+  <div class="figures" id="figures"></div>
+
+  <div class="plan">
+    <div class="drawing">
+      <svg id="map" role="img" aria-labelledby="mapTitle"><title id="mapTitle">Site plan of Midtown, Central Park and Uptown on the world's tile grid, with the land office's lots and segments</title></svg>
+      <div class="legend" id="legend"></div>
+    </div>
+    <div class="key" id="key">
+      <div class="detail" id="detail" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <section class="block">
+    <h2>Section schedule</h2>
+    <p class="foot">One row per building or monument, in building order. Tiles are inclusive (x0,y0 to x1,y1). Top is the highest level a block reaches, from 0 to 15, plinth included. Each sign is the section's last step, on the tile named.</p>
+    <div class="filter" id="filter" role="group" aria-label="Show sections of"></div>
+    <div class="tablebox"><table id="schedule"><thead><tr><th>#</th><th>Section</th><th>Tiles</th><th>Size</th><th>Style</th><th class="num">Top</th><th class="num">Blocks</th><th class="num">Steps</th><th>Items</th><th>Sign</th><th>Segment</th><th class="num">Done</th></tr></thead><tbody></tbody></table></div>
+  </section>
+
+  <div class="cols">
+    <section class="block">
+      <h2>The land, segment by segment</h2>
+      <p class="foot">The land office offers each segment to Plumbline once the one before it is deeded. If a price is refused, the office offers it again two hours later. Plumbline's steps rise only on lots whose deed names it. The office's own hands may build on their lots before the deed is paid, and the deed then carries the ground with whatever stands on it.</p>
+      <div class="tablebox"><table id="segments"><thead><tr><th>#</th><th>Request</th><th>Lots</th><th>Wants</th><th class="num">Deeded</th></tr></thead><tbody></tbody></table></div>
+    </section>
+    <section class="block">
+      <h2>Who builds</h2>
+      <div class="cards" id="who"></div>
+    </section>
+  </div>
+
+  <section class="block">
+    <h2>Totals and materials</h2>
+    <p class="foot">Items are what the steps cost: one item per four blocks, and one wood for each sign. Stone pays for stone blocks, wood for wood blocks and fiber for thatch. No design uses metal, so no ore is needed. Every box is at most 160 cells, so a pack of fifty with its berries set aside pays for any single step.</p>
+    <div class="tablebox"><table id="totals"><thead><tr><th>Design</th><th class="num">Sections</th><th class="num">Tiles</th><th class="num">Steps</th><th class="num">Blocks</th><th class="num">Stone</th><th class="num">Wood</th><th class="num">Fiber</th><th class="num">Ore</th><th class="num">Tallest</th><th style="width:16%">Done</th></tr></thead><tbody></tbody></table></div>
+  </section>
+
+  <div class="cols">
+    <section class="block">
+      <h2>How progress is read</h2>
+      <ul class="calls" id="progress"></ul>
+    </section>
+    <section class="block">
+      <h2>Decisions in Uptown</h2>
+      <ul class="calls">
+        <li><b>The wrap unfolded.</b> In the real city, Uptown wraps around the park, with the Upper West Side on its west, the Upper East Side on its east and Harlem to the north. The glass has ground only to the north. So the West Side's landmarks stand on the west lots, Harlem's in the middle and the East Side's on the east lots, and each building keeps its real side of Broadway and Fifth Avenue.</li>
+        <li><b>The real order, where the nodes allow.</b> West of Broadway, the order from north to south is the city's own: the Cloisters, Grant's Tomb, Riverside Church, then the Natural History Museum. Low Library stands north of 125th Street because that is where the forest leaves a clear three tiles by two. St John the Divine takes the one clear square south of it.</li>
+        <li><b>No Dakota and no Lincoln Center.</b> The wood, berry and fiber nodes on the west lots leave room for only eight sections there.</li>
+        <li><b>Nodes stay open.</b> No building covers a node. Morningside Park's lawn lies over the valley's berry and fiber nodes, and the four streets cross nine nodes. Lawns and streets are slabs that close no tile, so walkers and gatherers can still reach every node.</li>
+        <li><b>The elevated station is the Park Avenue one.</b> Harlem's commuter station sits on 125th Street east of Fifth Avenue, under a viaduct at level 6 that rests on the station's roof and two piers. Broadway has a street on every tile, which leaves no room for piers.</li>
+        <li><b>Heights.</b> Riverside Church's tower reaches level 13, the same as St Patrick's. Only Midtown's Empire State Building reaches the ceiling.</li>
+      </ul>
+    </section>
+  </div>
+  <p class="foot" id="foot"></p>
+</div>
+
+<script>
+const D = __DATA__;
+const NS = "http://www.w3.org/2000/svg";
+const COLOR = {"midtown": "var(--mid)", "central-park": "var(--park)", "uptown": "var(--up)"};
+const LABEL = Object.fromEntries(D.designs.map(d => [d.key, d.label]));
+const TERRAIN = {W: "var(--deep)", w: "var(--shallow)", s: "var(--sand)", f: "var(--forest)", h: "var(--hill)", m: "var(--mount)"};
+const NODE = {wood: "#3e7a45", fiber: "#a08a2a", berries: "#c0392b", stone: "#7d8790", ore: "#8e44ad"};
+const fmt = n => Number(n).toLocaleString("en-US");
+const [X0, Y0, X1, Y1] = D.bounds, T = 12, PAD = 20;
+const Wd = (X1 - X0 + 1) * T, Ht = (Y1 - Y0 + 1) * T;
+const svg = document.getElementById("map");
+svg.setAttribute("viewBox", "0 0 " + (Wd + PAD + 4) + " " + (Ht + PAD + 4));
+function el(tag, attrs, parent) { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); (parent || svg).appendChild(e); return e; }
+function h(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
+const px = x => PAD + (x - X0) * T, py = y => PAD + (y - Y0) * T;
+const g = {};
+["ground", "grid", "lots", "street", "node", "struct", "bldg", "tube", "mark", "axis"].forEach(k => { g[k] = el("g", {}); });
+
+// terrain, in runs of one code along each row
+el("rect", {x: PAD, y: PAD, width: Wd, height: Ht, fill: "var(--ground)"}, g.ground);
+D.terrain.forEach((row, j) => {
+  let i = 0;
+  while (i < row.length) {
+    let k = i; while (k + 1 < row.length && row[k + 1] === row[i]) k++;
+    const fill = TERRAIN[row[i]];
+    if (fill) el("rect", {x: px(X0 + i), y: py(Y0 + j), width: (k - i + 1) * T, height: T, fill: fill}, g.ground);
+    i = k + 1;
+  }
+});
+for (let x = X0; x <= X1 + 1; x++) el("line", {x1: px(x), y1: PAD, x2: px(x), y2: PAD + Ht, stroke: "var(--grid)", "stroke-width": x % 5 === 0 ? 0.9 : 0.35}, g.grid);
+for (let y = Y0; y <= Y1 + 1; y++) el("line", {x1: PAD, y1: py(y), x2: PAD + Wd, y2: py(y), stroke: "var(--grid)", "stroke-width": y % 5 === 0 ? 0.9 : 0.35}, g.grid);
+for (let x = X0; x <= X1; x++) if (x % 5 === 0) el("text", {x: px(x) + 1, y: 13, "font-size": 8, fill: "var(--muted)"}, g.axis).textContent = x;
+for (let y = Y0; y <= Y1; y++) if (y % 5 === 0) el("text", {x: 1, y: py(y) + 8, "font-size": 8, fill: "var(--muted)"}, g.axis).textContent = y;
+
+// lots and segments: each segment outlined in its design's colour, numbered in the order the office offers them
+const segOf = {};
+D.lots.forEach(l => { segOf[l.rect[0] + "," + l.rect[1]] = l.segment; });
+D.lots.forEach(l => {
+  const [a, b, c, d] = l.rect, col = COLOR[l.design];
+  el("text", {x: px(a) + 1.5, y: py(b) + 7, "font-size": 5.6, fill: "var(--muted)"}, g.lots).textContent = l.id;
+  const edges = [["n", a, b - 5, [px(a), py(b), px(c + 1), py(b)]], ["s", a, d + 1, [px(a), py(d + 1), px(c + 1), py(d + 1)]], ["w", a - 5, b, [px(a), py(b), px(a), py(d + 1)]], ["e", c + 1, b, [px(c + 1), py(b), px(c + 1), py(d + 1)]]];
+  edges.forEach(([side, nx, ny, xy]) => {
+    if (segOf[nx + "," + ny] === l.segment) return;
+    el("line", {x1: xy[0], y1: xy[1], x2: xy[2], y2: xy[3], stroke: col, "stroke-width": 1.6, "stroke-dasharray": "4 2", "stroke-linecap": "square"}, g.lots);
+  });
+});
+D.context.forEach(l => {
+  const [a, b, c, d] = l.rect;
+  el("rect", {x: px(a), y: py(b), width: (c - a + 1) * T, height: (d - b + 1) * T, fill: "var(--muted)", "fill-opacity": 0.08, stroke: "var(--muted)", "stroke-width": 0.8, "stroke-dasharray": "2 2"}, g.lots);
+});
+if (D.context.length) el("text", {x: px(Math.min(...D.context.map(l => l.rect[0]))) + 2, y: py(Y1) + 9, "font-size": 7, fill: "var(--muted)"}, g.lots).textContent = "Lower Manhattan, built";
+D.segments.forEach(s => {
+  const first = D.lots.filter(l => s.lots.includes(l.id)).sort((p, q) => p.rect[1] - q.rect[1] || p.rect[0] - q.rect[0])[0];
+  if (!first) return;
+  const cx = px(first.rect[2] + 1) - 6, cy = py(first.rect[1]) + 6;
+  el("circle", {cx: cx, cy: cy, r: 5, fill: COLOR[s.design], stroke: "var(--sheet)", "stroke-width": 1}, g.mark);
+  el("text", {x: cx, y: cy + 2.6, "font-size": 7, "text-anchor": "middle", fill: "var(--on-fill)", "font-weight": 500}, g.mark).textContent = s.order;
+});
+
+// streets, nodes and what already stands
+D.designs.forEach(d => d.streets.forEach(st => {
+  const [a, b, c, e] = st.tiles;
+  const r = el("rect", {x: px(a) + 1, y: py(b) + 1, width: (c - a + 1) * T - 2, height: (e - b + 1) * T - 2, fill: "var(--street)", "fill-opacity": 0.5}, g.street);
+  el("title", {}, r).textContent = st.name + " (" + LABEL[d.key] + ")";
+}));
+D.nodes.forEach(([x, y, kind]) => {
+  const c = el("circle", {cx: px(x) + T * 0.72, cy: py(y) + T * 0.72, r: 1.5, fill: NODE[kind] || "var(--muted)", opacity: 0.85}, g.node);
+  el("title", {}, c).textContent = kind + " node (" + x + "," + y + ")";
+});
+D.structures.forEach(s => {
+  const x = px(s.x), y = py(s.y);
+  if (s.claim) {
+    el("path", {d: "M" + (x + 3.5) + " " + (y + 3.5) + "l5 5m0 -5l-5 5", stroke: "var(--muted)", "stroke-width": 1, fill: "none"}, g.struct);
+  } else {
+    const r = el("rect", {x: x + 3, y: y + 3, width: T - 6, height: T - 6, fill: "none", stroke: "var(--ink)", "stroke-width": 0.8}, g.struct);
+    el("title", {}, r).textContent = s.type + (s.owner ? " · " + s.owner : "") + " (" + s.x + "," + s.y + ")";
+  }
+});
+
+// the sections, coloured by design; lawns and pools are open ground, drawn lighter
+const shapes = {};
+D.sections.forEach(s => {
+  const [a, b, c, d] = s.tiles, col = COLOR[s.design];
+  const grp = el("g", {"data-id": s.design + "/" + s.id, style: "cursor:pointer"}, g.bldg);
+  const r = el("rect", {x: px(a) + 1, y: py(b) + 1, width: (c - a + 1) * T - 2, height: (d - b + 1) * T - 2, rx: 1.2, fill: col, "fill-opacity": s.open ? 0.28 : 0.92, stroke: s.open ? col : "var(--ink)", "stroke-width": s.open ? 1 : 0.6}, grp);
+  el("title", {}, grp).textContent = s.name + " · " + s.style.replace("_", " ") + " · top level " + s.top;
+  el("text", {x: px(a) + ((c - a + 1) * T) / 2, y: py(b) + ((d - b + 1) * T) / 2 + 2.8, "font-size": 7.5, "text-anchor": "middle", "font-weight": 500, fill: s.open ? "var(--ink)" : "var(--on-fill)", "pointer-events": "none"}, grp).textContent = s.no;
+  grp.addEventListener("click", () => pick(s.design, s.id));
+  let dot = null;
+  if (s.sign) dot = el("circle", {cx: px(s.sign[0]) + T / 2, cy: py(s.sign[1]) + T / 2, r: 1.9, fill: "var(--ink)"}, g.mark);
+  shapes[s.design + "/" + s.id] = {r: r, dot: dot, open: s.open};
+});
+D.designs.forEach(d => d.tubes.forEach(tb => {
+  const pts = [];
+  tb.path.forEach(([x, y]) => { const p = (px(x) + T / 2) + "," + (py(y) + T / 2); if (pts[pts.length - 1] !== p) pts.push(p); });
+  el("polyline", {points: pts.join(" "), fill: "none", stroke: "var(--sheet)", "stroke-width": 5, "stroke-linecap": "round"}, g.tube);
+  const line = el("polyline", {points: pts.join(" "), fill: "none", stroke: COLOR[d.key], "stroke-width": 2.6, "stroke-linecap": "round"}, g.tube);
+  el("title", {}, line).textContent = tb.name + ", at level 6 and above";
+  tb.path.filter(p => p[2] === 0).forEach(([x, y]) => el("rect", {x: px(x) + 3.5, y: py(y) + 3.5, width: T - 7, height: T - 7, fill: COLOR[d.key], stroke: "var(--ink)", "stroke-width": 0.6}, g.tube));
+}));
+const ring = el("circle", {cx: -20, cy: -20, r: 4.5, fill: "none", stroke: "var(--ink)", "stroke-width": 1.4}, g.mark);
+
+const legend = document.getElementById("legend");
+const sw = (bg, extra) => '<i class="sw" style="background:' + bg + ';' + (extra || "") + '"></i>';
+[[sw("var(--mid)"), "Midtown"], [sw("var(--park)"), "Central Park"], [sw("var(--up)"), "Uptown"], [sw("var(--up)", "opacity:.35"), "lawn or pool (closes no tile)"],
+ [sw("var(--street)", "opacity:.6"), "street (slab)"], [sw("var(--deep)"), "water"], [sw("var(--forest)"), "forest"], [sw("var(--sand)"), "sand"],
+ ['<svg width="10" height="10" aria-hidden="true"><circle cx="5" cy="5" r="2.2" fill="currentColor"/></svg>', "sign"],
+ ['<svg width="10" height="10" aria-hidden="true"><path d="M2 2l6 6m0-6l-6 6" stroke="currentColor" stroke-width="1.2"/></svg>', "office claim sign"],
+ ['<svg width="10" height="10" aria-hidden="true"><circle cx="5" cy="5" r="2" fill="' + NODE.berries + '"/></svg>', "node (wood, fiber, berries)"],
+ ['<svg width="14" height="10" aria-hidden="true"><rect x="1" y="1" width="8" height="8" fill="none" stroke="currentColor" stroke-dasharray="3 1.5"/></svg>', "segment, numbered in order"]].forEach(([icon, label]) => {
+  const s = document.createElement("span"); s.innerHTML = icon; s.append(label); legend.appendChild(s);
+});
+
+// figures
+const T0 = D.totals;
+const deeded = D.segments.reduce((n, s) => n + s.deeded, 0);
+const figs = [
+  ["Buildings and monuments", fmt(T0.sections), D.designs.map(d => d.sections + " " + d.label).join(", ")],
+  ["Tiles under them", fmt(T0.area), "plus " + fmt(D.designs.reduce((n, d) => n + d.streetTiles, 0)) + " street tiles"],
+  ["Blocks", fmt(T0.blocks), fmt(T0.steps) + " steps; " + fmt(T0.done) + " done"],
+  ["Ground", T0.lots + " <small>lots</small>", D.segments.length + " segments; " + deeded + " lots deeded to Plumbline"],
+];
+document.getElementById("figures").innerHTML = figs.map(([k, v, n]) => '<div class="figure"><span class="k">' + k + '</span><span class="v">' + v + '</span><span class="n">' + n + '</span></div>').join("");
+document.getElementById("eyebrow").textContent = "The Atelier's New York · Midtown, Central Park and Uptown · public world of tick " + fmt(D.tick) + ", 2026-11-03";
+
+// the key: a detail panel and the sections by design
+const key = document.getElementById("key"), detail = document.getElementById("detail");
+const size = s => (s.tiles[2] - s.tiles[0] + 1) + "×" + (s.tiles[3] - s.tiles[1] + 1);
+const items = m => Object.entries(m).map(([k, v]) => k + " " + v).join(", ") || "-";
+D.designs.forEach(d => {
+  const box = h("details", "group"); box.open = d.key === "uptown";
+  const sum = h("summary"), hd = h("h3"); hd.style.color = COLOR[d.key]; hd.innerHTML = '<i style="background:' + COLOR[d.key] + '"></i>'; hd.append(d.label + " · " + d.sections + " sections · " + d.lots.length + " lots");
+  sum.appendChild(hd); box.appendChild(sum);
+  D.sections.filter(s => s.design === d.key).forEach(s => {
+    const b = h("button", "bldg"); b.type = "button"; b.id = "b-" + d.key + "-" + s.id;
+    b.append(h("span", "no", String(s.no)), h("span", "nm", s.name), h("span", "meta", size(s) + " · lv " + s.top));
+    b.addEventListener("click", () => pick(d.key, s.id));
+    box.appendChild(b);
+  });
+  key.appendChild(box);
+});
+function pick(design, id) {
+  const s = D.sections.find(x => x.design === design && x.id === id); if (!s) return;
+  document.querySelectorAll(".bldg.on").forEach(b => b.classList.remove("on"));
+  const b = document.getElementById("b-" + design + "-" + id); if (b) { b.classList.add("on"); if (b.parentNode) b.parentNode.open = true; }
+  Object.entries(shapes).forEach(([k, v]) => v.r.setAttribute("stroke-width", k === design + "/" + id ? 2.4 : (v.open ? 1 : 0.6)));
+  if (s.sign) { ring.setAttribute("cx", px(s.sign[0]) + T / 2); ring.setAttribute("cy", py(s.sign[1]) + T / 2); }
+  detail.style.borderLeftColor = COLOR[design];
+  detail.innerHTML = "";
+  detail.append(h("div", "title", s.name), h("div", "where", LABEL[design] + " · section " + s.no + " · " + s.id));
+  const dl = h("dl");
+  [["Tiles", "(" + s.tiles[0] + "," + s.tiles[1] + ") to (" + s.tiles[2] + "," + s.tiles[3] + "), " + size(s)],
+   ["Style", s.style.replace("_", " ") + (s.open ? ", open ground" : "")],
+   ["Top", "level " + s.top + (s.plinth ? " on a plinth of " + s.plinth : "")],
+   ["Blocks", fmt(s.blocks) + " in " + s.steps + " steps"],
+   ["Items", items(s.mats)],
+   ["Sign", s.sign ? "(" + s.sign.join(",") + "), the last step" : "-"],
+   ["Land", s.lots.join(", ") + " · " + s.segment.join(", ")],
+   ["Done", s.done + " of " + s.steps + " steps"]].forEach(([k, v]) => { dl.append(h("dt", "", k), h("dd", "", v)); });
+  detail.append(dl, h("div", "said", s.signText));
+}
+const firstUp = D.sections.find(s => s.design === "uptown") || D.sections[0];
+if (firstUp) pick(firstUp.design, firstUp.id);
+
+// the schedule, filtered by design
+const tbody = document.querySelector("#schedule tbody"), filter = document.getElementById("filter");
+function schedule(which) {
+  tbody.innerHTML = "";
+  D.sections.filter(s => which === "all" || s.design === which).forEach(s => {
+    const tr = document.createElement("tr"); tr.className = "dz"; tr.style.setProperty("--c", COLOR[s.design]);
+    const cells = [[String(s.no), "num"], [s.name, ""], ["(" + s.tiles[0] + "," + s.tiles[1] + ")–(" + s.tiles[2] + "," + s.tiles[3] + ")", "mono"], [size(s), "mono"], [s.style.replace("_", " "), ""],
+      [String(s.top), "num"], [fmt(s.blocks), "num"], [String(s.steps), "num"], [items(s.mats), "mono"], [s.sign ? "(" + s.sign.join(",") + ")" : "-", "mono"], [s.segment.join(", "), "mono"], [s.done + "/" + s.steps, "num"]];
+    cells.forEach(([v, c]) => { const td = h("td", c, v); tr.appendChild(td); });
+    tr.style.cursor = "pointer"; tr.addEventListener("click", () => pick(s.design, s.id));
+    tbody.appendChild(tr);
+  });
+  filter.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.k === which)));
+}
+[["all", "All three"], ...D.designs.map(d => [d.key, d.label])].forEach(([k, label]) => {
+  const b = h("button", "", label); b.type = "button"; b.dataset.k = k; b.addEventListener("click", () => schedule(k)); filter.appendChild(b);
+});
+schedule("uptown");
+
+// the land
+const sbody = document.querySelector("#segments tbody");
+D.segments.forEach(s => {
+  const tr = document.createElement("tr"); tr.className = "dz"; tr.style.setProperty("--c", COLOR[s.design]);
+  const td1 = h("td", "num", String(s.order));
+  const td2 = h("td"); td2.append(h("b", "", s.id)); td2.append(h("div", "foot", LABEL[s.design] + (s.after ? " · after " + s.after : "")));
+  const td3 = h("td", "mono", s.lots.join(" "));
+  td3.style.whiteSpace = "normal";
+  const td4 = h("td", "", (s.wants || []).join(", "));
+  const td5 = h("td", "num", s.deeded + "/" + s.lots.length);
+  tr.append(td1, td2, td3, td4, td5); sbody.appendChild(tr);
+});
+
+// who builds
+const who = document.getElementById("who");
+const OTHER = {"lower-manhattan": "Lower Manhattan (built)", "nintendo-land": "Nintendo Land"};
+const order = ds => ds.filter(k => LABEL[k] || OTHER[k]).map(k => LABEL[k] || OTHER[k]).join(", then ");
+const own = D.who.office.builders || {};
+[{who: "The land office's six hands", when: "from today · " + order(D.who.office.designs), names: D.who.office.names,
+  text: "LandBroker's office stops its walls and builds the replica. Each hand takes the next step it can pay for or fetch before it unloads or gathers. It starts with its own Midtown sections, then the nearest section. The office builds on its own lots before the deed is paid."},
+ {who: "Plumbline, of the Atelier", when: "now · " + order(D.who.atelier.designs), names: D.who.atelier.names,
+  text: "The client. It buys each segment from the office in order, and its own steps wait for the deed. It brings the shortfall from the factory faction's stores, which are its ally's."},
+ {who: "The Chocolate Factory's crew", when: "after the factory · " + order(D.who.factory.designs), names: D.who.factory.names,
+  text: "Once every step of the factory is done, the crew takes up the next designs in order. A builder far from the site carries the material for its next step from its faction's stores and walks it over. GrandadPail builds nothing, by the owner's rule, and Toffeetrowel, at the world's cap of blocks, raises stores instead."}].forEach(c => {
+  const card = h("div", "card");
+  card.append(h("div", "who", c.who), h("div", "when", c.when), h("div", "", c.names.join(", ")), h("div", "foot", c.text));
+  if (c.who.startsWith("The land office") && Object.keys(own).length) {
+    card.append(h("div", "foot", "Own Midtown sections: " + Object.entries(own).map(([n, ss]) => n + " (" + ss.join(", ") + ")").join("; ") + "."));
+  }
+  who.appendChild(card);
+});
+
+// totals
+const tb = document.querySelector("#totals tbody");
+const row = (label, d, cls, col) => {
+  const tr = document.createElement("tr"); if (cls) tr.className = cls; if (col) tr.style.setProperty("--c", col);
+  const m = d.mats || {};
+  [[label, ""], [fmt(d.sections), "num"], [fmt(d.area), "num"], [fmt(d.steps), "num"], [fmt(d.blocks), "num"], [fmt(m.stone || 0), "num"], [fmt(m.wood || 0), "num"], [fmt(m.fiber || 0), "num"], [fmt(m.ore || 0), "num"], [d.tallest === undefined ? "" : "level " + d.tallest, "num"]].forEach(([v, c]) => tr.appendChild(h("td", c, v)));
+  const pct = d.steps ? Math.round(100 * d.done / d.steps) : 0;
+  const td = h("td", "num", d.done + "/" + d.steps);
+  const bar = h("div", "bar"); bar.setAttribute("role", "img"); bar.setAttribute("aria-label", pct + "% of steps done");
+  const fill = document.createElement("i"); fill.style.width = pct + "%"; bar.appendChild(fill); td.appendChild(bar);
+  tr.appendChild(td); tb.appendChild(tr);
+};
+D.designs.forEach(d => row(d.label, d, "dz", COLOR[d.key]));
+row("All three", {sections: T0.sections, area: T0.area, steps: T0.steps, blocks: T0.blocks, mats: T0.mats, done: T0.done}, "total");
+
+// progress
+const pl = document.getElementById("progress");
+const li = html => { const e = document.createElement("li"); e.innerHTML = html; pl.appendChild(e); };
+D.designs.forEach(d => li("<b>" + d.label + "</b>: <code>hglab factory progress --name " + d.key + "</code> lists the last steps done and who placed them, from the ledger <code>" + d.ledger + "</code>. " + d.done + " of " + fmt(d.steps) + " steps done."));
+li("<code>hglab factory show --name &lt;design&gt;</code> prints each section's steps, blocks and the materials still needed. <code>hglab factory check --name &lt;design&gt;</code> checks the world's rules against the live map: " + D.designs.map(d => d.label + " " + (d.problems ? d.problems + " problem" + (d.problems === 1 ? "" : "s") : "no problems")).join(", ") + " at tick " + fmt(D.tick) + ".");
+li("Land: the office records a deed for each segment it sells. Its signs and registry show which lots Plumbline holds, and <code>config/plots.yaml</code> lists the requests in order. " + deeded + " of " + T0.lots + " lots are deeded so far.");
+li("Each of the " + T0.sections + " signs appears in the public world beside its building, as the building's last step.");
+document.getElementById("foot").innerHTML = "Drawn from <code>teams/blueprints/midtown.yaml</code>, <code>central-park.yaml</code> and <code>uptown.yaml</code>, <code>config/plots.yaml</code> and the public world of tick " + fmt(D.tick) + ". One square is one tile, four cells across. North is up.";
+</script>
