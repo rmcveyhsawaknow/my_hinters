@@ -187,3 +187,14 @@ def test_the_walls_are_standing_work_since_the_owners_brief_of_2026_11_02():
     depot = {"id": 2, "type": "storehouse", "x": 80, "y": 74, "owner": "Lintelstave", "policy": "faction", "faction": "Land Office", "storage": {"stone": 100, "wood": 200}}
     draw = _step("office-feller", {"berries": 5}, (74, 73), _world({"stone": 100}, extra=[depot]))  # the vault is the registrar's: the depot admits the hand
     assert draw[0][0]["action"] in ("take", "move") and "stone" in draw[1] and draw[1].startswith("the office walls its staked lots")
+
+
+def test_a_pack_heavy_with_little_but_its_wall_stone_walls_first():
+    """2026-11-03: the thirty stone a hand drew for the walls was HEAVY by itself, so it was unloaded the next wake and drawn again, and no wall rose."""
+    x0, y0, _x1, _y1 = lot_bounds(LOT)
+    here = (x0 - 1, y0 + 1)
+    roomy = _world({"stone": 100})
+    drawn = _step("office-quarrier", {"stone": 30, "wood": 5, "berries": 15}, here, roomy)
+    assert [a["type"] for a in drawn[0]] == ["wall", "wall"] and drawn[1].startswith("the office walls its staked lots")
+    mixed = _step("office-quarrier", {"stone": 10, "wood": 30, "berries": 5}, (74, 73), roomy)  # heavy with wood besides: the load goes into the store first
+    assert mixed[0][0]["action"] in ("give", "move") and all(a.get("type") != "wall" for a in mixed[0])

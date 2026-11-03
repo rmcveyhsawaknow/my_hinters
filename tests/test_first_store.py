@@ -36,7 +36,7 @@ def test_a_full_pack_with_no_store_at_the_works_raises_the_blueprint_with_what_i
 def test_the_office_counts_no_relic_inside_the_campus_toward_its_cap_of_stores():
     personas = load_personas(ROOT)
     steward, team = personas["office-steward"], load_team(ROOT, "exchange")
-    assert team.extra["pipeline"]["claims"]["stores_max"] == 24
+    assert team.extra["pipeline"]["claims"]["stores_max"] == 32
     full = {"ore": 20, "wood": 64, "fiber": 114, "stone": 236, "berries": 66}
 
     def store(x, y):

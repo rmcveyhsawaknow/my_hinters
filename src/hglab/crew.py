@@ -264,7 +264,11 @@ def plan_crew(
     every_full = bool(office_stores) and not any(_has_room(s, full) for s in office_stores)
     heavy = pack >= 46 if role == "mason" else (goods >= HEAVY or pack >= 46)
     always = walls is not None and str(walls.get("when", "full")) == "always" and role in GATHERERS  # the mason's stone pays for depots and stores; the drayman keeps the vault supplied
-    if walls is not None and office_stores and (every_full or (always and not heavy and int(inventory.get("stone", 0) or 0) >= WALL_LOAD)):
+    stone = int(inventory.get("stone", 0) or 0)
+    # 2026-11-03: the thirty stone a hand draws for the walls (WALL_DRAW) is HEAVY on its own, so every draw was unloaded the next
+    # wake and drawn again, and no wall rose: a pack heavy with little but the walls' stone goes to the walls first
+    stone_heavy = heavy and goods - stone < HEAVY
+    if walls is not None and office_stores and (every_full or (always and stone >= WALL_LOAD and (not heavy or stone_heavy))):
         step = _wall_step(persona, claims, held, inventory, position, view, mates, office_stores, room, energy, reserve, state, tick, observe, team=team, why=WALLS_WHY if every_full else WALLS_ALWAYS_WHY)
         if step is not None:
             return step
@@ -349,7 +353,10 @@ def plan_crew(
         step = _mason(persona, team, cfg, inventory, position, view, stores, site, radius, reach, room, teammates, observe, floor_for, ranks, stores_max=stores_max, open_stores=open_stores)
         if step is not None:
             return step
-        return _blueprint(persona, team, state, observe, view, inventory, position, room, mates, site, reach, teammates, floor_for, ranks)
+        step = _blueprint(persona, team, state, observe, view, inventory, position, room, mates, site, reach, teammates, floor_for, ranks)
+        if step is not None or not claims:
+            return step
+        return _till_round(tills, position, view, state, tick)
     if role == "hauler":
         step = _haul(persona, cfg, inventory, position, view, stores, field, collective_names, mates, pack, observe, state, tick)
         if step is not None:
@@ -394,7 +401,9 @@ def _office_store_step(
     First the tills (``claims.tills``), raised where none stands and kept out of every unload. Then,
     while every store of the office is full and fewer than ``claims.stores_max`` stand, another store
     beside a full one: a build pays from the pack and then from stores within a tile, so the wood and
-    stone come out of the full store itself.
+    stone come out of the full store itself. A till in view past the mark counts the same, and the next
+    store rises beside it first: the price of land goes there, and on 2026-11-03 both tills stood full
+    while the mason, among stores with room in the east, raised nothing, and Midtown's deed waited.
     """
     structures = view.world_structures or view.structures
     standing = {(int(s["x"]), int(s["y"])) for s in structures if s.get("type") == "storehouse" and isinstance(s.get("x"), int) and isinstance(s.get("y"), int)}
@@ -407,6 +416,10 @@ def _office_store_step(
     room_min = overflow_room(claims)
     every_full = bool(office_stores) and not any(_has_room(s, full, room_min) for s in office_stores)
     why = WALLS_WHY if not any(_has_room(s, full) for s in office_stores) else f"every store of the office is past {round(100 * (1 - room_min / STOREHOUSE_CAPACITY))}%"
+    full_tills = [s for s in view.structures if s.get("type") == "storehouse" and (int(s.get("x", -1)), int(s.get("y", -1))) in tills and isinstance(s.get("storage"), dict) and not _has_room(s, full, room_min)]
+    if full_tills:
+        every_full = True
+        why = f"the till at {(int(full_tills[0]['x']), int(full_tills[0]['y']))} for the price of land is past {round(100 * (1 - room_min / STOREHOUSE_CAPACITY))}%"
     missing = sorted((t for t in tills if t not in standing and view.free_tile(*t)), key=lambda t: (chebyshev(position, t), t))
     if missing:
         target = missing[0]
@@ -447,7 +460,7 @@ def _office_store_step(
         return options[0] if options else None
 
     payers = []
-    for store in office_stores:
+    for store in [*full_tills, *office_stores]:  # beside a full till first: that is where the office is paid
         where = (int(store["x"]), int(store["y"]))
         storage = store.get("storage") if isinstance(store.get("storage"), dict) else None
         if not _admits(persona, store, faction) or lot_id(*where) in excluded:
@@ -455,7 +468,7 @@ def _office_store_step(
         if storage is not None and not materials_ok(with_storage(inventory, {k: int(v or 0) for k, v in storage.items()}), "storehouse"):
             continue
         payers.append((where, store))
-    payers.sort(key=lambda pair: (chebyshev(position, pair[0]), pair[0]))
+    payers.sort(key=lambda pair: (pair[0] not in tills, chebyshev(position, pair[0]), pair[0]))
     for where, store in payers:
         if chebyshev(position, where) <= 1 and isinstance(store.get("storage"), dict):
             tile = spot(position)
@@ -468,8 +481,36 @@ def _office_store_step(
         stand = min(stands, key=lambda t: (chebyshev(position, t), t))
         step = _step_toward(position, {"x": stand[0], "y": stand[1]}, view)
         if step is not None and step != position:
-            return [{"action": "move", "x": step[0], "y": step[1]}], f"every store of the office is full ({len(ours)} of {cap} standing): walk to the store at {where} to raise another beside it", "crew"
+            return [{"action": "move", "x": step[0], "y": step[1]}], f"{why} ({len(ours)} of {cap} standing): walk to the store at {where} to raise another beside it", "crew"
     return None
+
+
+TILL_ROUND_TICKS = 720  # the office's mason looks in on a till he has not seen for two hours
+
+
+def _till_round(tills: set[tuple[int, int]], position: tuple[int, int], view: WorldView, state: PersonaState, tick: int) -> Step | None:
+    """The office's mason, with nothing else to raise, walks to the till he has seen least recently.
+
+    A till's fill shows only in view, and a till past the mark is where the next store rises (``_office_store_step``):
+    on 2026-11-03 both tills stood full for a day while the mason worked the east among stores with room, every
+    land price bounced, and Midtown's deed waited.
+    """
+    if not tills:
+        return None
+    seen = dict(state.flags.get("tills_seen") or {}) if isinstance(state.flags.get("tills_seen"), dict) else {}
+    in_view = {(int(s["x"]), int(s["y"])) for s in view.structures if s.get("type") == "storehouse" and isinstance(s.get("x"), int) and isinstance(s.get("y"), int)}
+    for t in tills:
+        if t in in_view:
+            seen[f"{t[0]},{t[1]}"] = tick
+    state.flags["tills_seen"] = seen
+    due = [t for t in tills if t not in in_view and tick - int(seen.get(f"{t[0]},{t[1]}", -(10**9)) or 0) >= TILL_ROUND_TICKS]
+    if not due:
+        return None
+    target = min(due, key=lambda t: (int(seen.get(f"{t[0]},{t[1]}", 0) or 0), chebyshev(position, t), t))
+    step = _step_toward(position, {"x": target[0], "y": target[1]}, view)
+    if step is None or step == position:
+        return None
+    return [{"action": "move", "x": step[0], "y": step[1]}], f"the office's tills take the price of land: walk to the till at {target} to see whether it has room", "crew"
 
 
 def _has_room(store: dict[str, Any], full: set[tuple[int, int]], room_min: int = OVERFLOW_ROOM) -> bool:

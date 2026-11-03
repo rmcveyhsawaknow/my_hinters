@@ -292,7 +292,9 @@ def _treehouse_steps(section: dict[str, Any], ceiling: int) -> list[tuple[str, d
     ``trunks`` are tiles inside the section, each a column two cells square (a trunk closes its tile, so it
     stands on forest with no node, structure or block); ``cabin`` an inner tile rect; ``doors`` the cabin's door
     sides; ``deck`` the deck level (6 by default; never lower). A treehouse stands on its trunks and keeps no
-    plinth: the deck is its one plane. The deck is laid in strips a pack pays for (``PACK_CELLS``).
+    plinth: the deck is its one plane. The deck is laid in strips of one tile row (``TREE_DECK_CELLS``): Neverland's
+    hands gather about twenty-five wood a shift beside the berries they keep, and the two-row strips of 2026-11-02
+    (128 cells, 32 wood) were never affordable, so the trees stood as bare trunks.
     """
     tiles = tuple(int(v) for v in section["tiles"])
     rect = cells_rect(tiles)
@@ -316,11 +318,11 @@ def _treehouse_steps(section: dict[str, Any], ceiling: int) -> list[tuple[str, d
         cx, cy = 4 * tx + 1, 4 * ty + 1
         steps.append((f"trunk {i + 1} ({tx},{ty})", box(cx, cy, 0, cx + 1, cy + 1, deck - 1, material=trunk[0], color=trunk[1])))
     bx0, _by0, bx1, _by1 = rect
-    rows = max(1, PACK_CELLS // (4 * (bx1 - bx0 + 1)))  # tile rows per deck strip
+    rows = max(1, TREE_DECK_CELLS // (4 * (bx1 - bx0 + 1)))  # tile rows per deck strip
     y = y0
     while y <= y1:
         y2 = min(y1, y + rows - 1)
-        name = "deck" if (y, y2) == (y0, y1) else f"deck rows {y - y0 + 1}-{y2 - y0 + 1}"
+        name = "deck" if (y, y2) == (y0, y1) else f"deck row {y - y0 + 1}" if y == y2 else f"deck rows {y - y0 + 1}-{y2 - y0 + 1}"
         steps.append((name, box(bx0, 4 * y, deck, bx1, 4 * y2 + 3, deck, material=deck_block[0], shape="slab", color=deck_block[1])))
         y = y2 + 1
     steps.append(("railing", _ring(rect, deck + 1, deck + 1, railing[0], color=railing[1])))
@@ -346,6 +348,7 @@ def _treehouse_steps(section: dict[str, Any], ceiling: int) -> list[tuple[str, d
 # ---------------------------------------------------------------- city styles (the owner's brief of 2026-10-27: a replica of Lower Manhattan)
 
 PACK_CELLS = 160  # a city box a pack pays for with its berries aside (40 items): no step needs a store beside it
+TREE_DECK_CELLS = 64  # a treehouse deck strip (16 wood): what a Neverland hand carries from one trip to the woods beside its berries (2026-11-03)
 CITY_STYLES = {"skyscraper", "temple", "church", "park", "fort", "pool", "statue"}
 
 
@@ -813,12 +816,19 @@ def _cells_of(action: dict[str, Any]) -> set[tuple[int, int, int]]:
     return _box_cells(action)
 
 
-def _touches(cells: set[tuple[int, int, int]], filled: set[tuple[int, int, int]]) -> bool:
+def _touching(cells: set[tuple[int, int, int]], filled: set[tuple[int, int, int]]) -> set[tuple[int, int, int]]:
+    """The filled cells the placement touches face to face: what holds it up."""
+    out: set[tuple[int, int, int]] = set()
     for x, y, z in cells:
         for d in ((1, 0, 0), (-1, 0, 0), (0, 1, 0), (0, -1, 0), (0, 0, 1), (0, 0, -1)):
-            if (x + d[0], y + d[1], z + d[2]) in filled:
-                return True
-    return False
+            c = (x + d[0], y + d[1], z + d[2])
+            if c in filled:
+                out.add(c)
+    return out
+
+
+def _touches(cells: set[tuple[int, int, int]], filled: set[tuple[int, int, int]]) -> bool:
+    return bool(_touching(cells, filled))
 
 
 def tiles_of(action: dict[str, Any]) -> Rect:
@@ -842,11 +852,12 @@ def expand(design: dict[str, Any]) -> list[dict[str, Any]]:
 
     Each step carries ``id`` (section and index), ``section``, ``name``, ``kind`` (place or build),
     ``action``, ``tiles`` (the tile rectangle it touches), ``cells`` (blocks it adds after earlier steps),
-    ``items`` and ``item`` (what it costs), ``supported`` (the world's support rule holds in this order)
-    and ``top`` (its highest level).
+    ``items`` and ``item`` (what it costs), ``supported`` (the world's support rule holds in this order),
+    ``rests_on`` (the earlier steps whose blocks hold it up, when it reaches no ground) and ``top`` (its highest level).
     """
     steps: list[dict[str, Any]] = []
     filled: set[tuple[int, int, int]] = set()
+    cell_step: dict[tuple[int, int, int], str] = {}  # which step first fills each cell: what a later step rests on
     for i, depot in enumerate(design.get("depots") or []):
         x, y = int(depot["x"]), int(depot["y"])
         steps.append({
@@ -859,22 +870,28 @@ def expand(design: dict[str, Any]) -> list[dict[str, Any]]:
 
     def add(section: str, index: int | None, name: str, action: dict[str, Any], prop: bool = False, flags: dict[str, Any] | None = None) -> None:
         cells = _cells_of(action)
-        supported = any(z == 0 for _, _, z in cells) or _touches(cells, filled)
+        grounded = any(z == 0 for _, _, z in cells)
+        touching = set() if grounded else _touching(cells, filled)
+        supported = grounded or bool(touching)
         if not supported and prop:
             # a piece over a lower plinth than its neighbours touches nothing: a hidden column from the ground holds it
             xs, ys = sorted({c[0] for c in cells}), sorted({c[1] for c in cells})
             cx, cy, z = xs[len(xs) // 2], ys[len(ys) // 2], min(c[2] for c in cells)
             add(section, None, f"{name}: support", box(cx, cy, 0, cx, cy, z - 1, material=str(action["material"]), color=str(action.get("color") or "natural")))
+            touching = _touching(cells, filled)
             supported = True
         new = cells - filled
         filled.update(cells)
         n = counters[section]
         counters[section] += 1
+        sid = f"{section}:{n:02d}"
+        for c in new:
+            cell_step[c] = sid
         steps.append({
-            "id": f"{section}:{n:02d}", "section": section, "name": name, "kind": "place", "action": action,
+            "id": sid, "section": section, "name": name, "kind": "place", "action": action,
             "tiles": tiles_of(action), "cells": len(new), "items": max(1, math.ceil(len(new) / 4)) if new else 0,
             "item": MATERIAL_ITEM[str(action["material"])], "supported": supported, "top": max(z for _, _, z in cells),
-            "box_cells": len(cells), **(flags or {}),
+            "box_cells": len(cells), "rests_on": sorted({cell_step[c] for c in touching if c in cell_step}), **(flags or {}),
         })
 
     plinth_block = _pair(design.get("foundation_block"), ("stone", "grey"))
@@ -1218,7 +1235,13 @@ def reconcile(root: Path, name: str, cells: dict[tuple[int, int, int], str], str
 
 
 def ready_steps(steps: list[dict[str, Any]], done: set[str], skip: set[str] | frozenset[str] = frozenset()) -> list[dict[str, Any]]:
-    """The first undone step of each section: a section rises in order, sections in parallel."""
+    """The first undone step of each section: a section rises in order, sections in parallel.
+
+    A step that reaches no ground waits until one of the steps it rests on (``rests_on``) is done or planned
+    this wake: the world refuses a placement that touches no block (``not_allowed``, unsupported). On
+    2026-11-03 Neverland's rope bridges, their own sections, were tried before the decks they hang from and
+    refused nine wakes running.
+    """
     out: list[dict[str, Any]] = []
     seen: set[str] = set()
     for step in steps:
@@ -1229,6 +1252,9 @@ def ready_steps(steps: list[dict[str, Any]], done: set[str], skip: set[str] | fr
             # planned earlier this wake: the next step of the section may follow it
             seen.discard(step["section"])
             continue
+        rests_on = step.get("rests_on") or []
+        if rests_on and not any(r in done or r in skip for r in rests_on):
+            continue  # nothing stands to hold it yet: the section waits
         out.append(step)
     return out
 
