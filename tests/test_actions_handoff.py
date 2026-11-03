@@ -29,7 +29,7 @@ def _standing(steps, upto=None):
 
 def test_a_host_without_the_ledger_finds_the_factory_standing_and_never_clears_the_new_walls():
     _design, steps, _ = factory.blueprint(ROOT, "chocolate-factory")
-    stores = [{"type": "storehouse", "x": s["action"]["x"], "y": s["action"]["y"]} for s in steps if s["kind"] == "build"]
+    stores = [{"type": s["action"]["type"], "x": s["action"]["x"], "y": s["action"]["y"]} for s in steps if s["kind"] == "build"]  # the depots, and the signs beside the buildings (2026-11-03)
     assert not factory.design_complete(ROOT, "chocolate-factory")  # an Actions run starts with no ledger
     added = factory.reconcile(ROOT, "chocolate-factory", _standing(steps), stores, tick=118800)
     assert factory.design_complete(ROOT, "chocolate-factory") and len(added) == len(steps)

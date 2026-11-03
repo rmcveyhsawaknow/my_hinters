@@ -28,11 +28,11 @@ def test_the_blueprint_keeps_every_rule_of_the_world_and_reaches_the_ceiling():
     assert set(needs) == {"wood", "stone", "fiber", "ore"} and needs["ore"] <= 40  # ore is scarce: doors and one crown
     assert len(index) == sum(1 for s in steps if s["kind"] in ("place", "remove"))  # every placement and removal has its own signature
     plots = {str(p) for p in design["plots"]}
-    assert plots == {"I08", "J08", "I09", "J09"}
+    assert plots == {"I08", "J08", "I09", "J09", "K06", "K07", "K08", "K09"}  # the East Works on the K column since 2026-11-03
     from hglab.lots import lot_id
 
     touched = {lot_id(x, y)[:3] for s in steps for x in range(s["tiles"][0], s["tiles"][2] + 1) for y in range(s["tiles"][1], s["tiles"][3] + 1)}
-    assert touched == plots  # the factory spans all four plots and no other
+    assert touched == plots  # the factory spans its eight plots and no other
 
 
 def test_the_river_joins_every_section_and_closes_no_tile():
@@ -115,7 +115,7 @@ def test_a_builder_places_from_its_pack_or_carries_the_material_from_a_store(tmp
     personas = load_personas(ROOT)
     mason = personas["loompa-mason"]
     team = load_team(ROOT, "chocolate-factory")
-    assert factory.builder_sections(team, "loompa-mason")[:2] == ["depots", "elevator"] and factory.builder_sections(team, "loompa-woodcutter") == ["silo", "tubes-fudge"]  # every hand builds (2026-11-02)
+    assert factory.builder_sections(team, "loompa-mason")[:2] == ["depots", "elevator"] and factory.builder_sections(team, "loompa-woodcutter")[:2] == ["silo", "tubes-fudge"]  # every hand builds (2026-11-02)
     design, steps, _ = _bp()
     led = factory.ledger_name(design, "chocolate-factory")
     clears = [s for s in steps if s["kind"] == "remove"]
@@ -169,7 +169,8 @@ def test_the_four_plots_leave_the_office_holdings_and_are_sold_as_one_ground():
     assert len(lots) == 16 and {lid[:3] for lid in lots} == {"I08", "J08", "I09", "J09"}
     exchange = load_team(ROOT, "exchange")
     nyc = {lid for r in requests.values() if str(r["id"]).startswith("nyc-") for lid in r["lots"]}  # Lower Manhattan's ground, under contract too (2026-10-27)
-    assert set(exchange.extra["pipeline"]["claims"]["exclude"]) == lots | nyc and len(nyc) == 30  # Lower Manhattan's twelve, Midtown's nine and Central Park's nine (2026-11-02)
+    east = {f"K{n:02d}-{q}" for n in (6, 7, 8, 9) for q in ("NW", "NE", "SW", "SE")}  # the factory's East Works (2026-11-03)
+    assert set(exchange.extra["pipeline"]["claims"]["exclude"]) == lots | nyc | east and len(nyc) == 30  # Lower Manhattan's twelve, Midtown's nine and Central Park's nine (2026-11-02)
     from hglab.lots import holdings, lot_anchor, stake_text
 
     signs = [{"type": "sign", "x": lot_anchor(lid)[0], "y": lot_anchor(lid)[1], "owner": "LandBroker", "text": stake_text(lid, "LandBroker")} for lid in ("I08-SE", "K04-NW")]

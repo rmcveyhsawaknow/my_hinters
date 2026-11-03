@@ -9,6 +9,11 @@ from hglab.persona import load_team
 ROOT = Path(__file__).parents[1]
 OLD_SECTIONS = {"depots", "elevator", "lookout", "mill", "terrace", "candy", "packing", "tubes-candy", "tubes-packing", "campus-north", "campus-south", "campus-east", "campus-west", "campus-gate", "river-west", "river-terrace", "river-east"}
 NEW_SECTIONS = {"silo", "boiler", "mast", "tubes-spine", "tubes-fudge", "tubes-haul", "tubes-sky", "tubes-bay", "tubes-crossing"}
+EAST_SECTIONS = {  # the East Works (the owner, 2026-11-03)
+    "gobstopper", "sherbet", "licorice", "toffee", "fizz", "nougat", "marzipan", "mint", "caramel", "bubblegum", "butterscotch",
+    "cocoa-store", "dairy", "jelly", "kiln", "honeycomb", "lighthouse", "sugar-mouse",
+    "tubes-annex-cross", "tubes-annex-north", "tubes-annex-forest", "tubes-annex-shore", "river-annex-west", "river-annex-east", "river-annex-link",
+}
 
 
 def test_a_long_leg_is_laid_in_runs_of_five_tiles_and_a_vertical_leg_in_one():
@@ -30,8 +35,8 @@ def test_a_thick_tube_grows_from_the_path_toward_plus_y_and_plus_z():
 
 def test_the_expansion_leaves_every_old_step_alone_and_keeps_the_worlds_rules():
     design, steps, _index = factory.blueprint(ROOT, "chocolate-factory")
-    assert sum(1 for s in steps if s["section"] in OLD_SECTIONS) == 517  # the ledger's ids still name the same boxes
-    assert {s["section"] for s in steps} == OLD_SECTIONS | NEW_SECTIONS
+    assert sum(1 for s in steps if s["section"] in OLD_SECTIONS) == 517 + 6 + 3  # the ledger's ids still name the same boxes; six old buildings gained a sign as their last step, the depots three more (2026-11-03)
+    assert {s["section"] for s in steps} == OLD_SECTIONS | NEW_SECTIONS | EAST_SECTIONS
     assert factory.check(design, steps) == []  # boxes within reach, supported in order, under the ceiling, every step adds something
     new = [s for s in steps if s["section"] in NEW_SECTIONS]
     assert all(int(s["action"]["bz"]) >= 6 for s in new if s["section"].startswith("tubes"))  # no tube closes a tile
@@ -41,7 +46,7 @@ def test_the_expansion_leaves_every_old_step_alone_and_keeps_the_worlds_rules():
 
 def test_every_hand_has_sections_of_the_expansion_to_raise():
     team = load_team(ROOT, "chocolate-factory")
-    assert builder_sections(team, "loompa-woodcutter") == ["silo", "tubes-fudge"]
-    assert builder_sections(team, "loompa-quarrier") == ["tubes-spine"] and builder_sections(team, "loompa-provisioner") == ["tubes-haul"] and builder_sections(team, "loompa-hauler") == ["tubes-crossing"]
+    assert builder_sections(team, "loompa-woodcutter")[:2] == ["silo", "tubes-fudge"]  # the East Works follow (2026-11-03)
+    assert builder_sections(team, "loompa-quarrier")[0] == "tubes-spine" and builder_sections(team, "loompa-provisioner")[0] == "tubes-haul" and builder_sections(team, "loompa-hauler")[0] == "tubes-crossing"
     assert "mast" in builder_sections(team, "wonka") and "boiler" in builder_sections(team, "mrs-bucket")
     assert builder_sections(team, "grandpa-joe") is None  # GrandadPail builds nothing (owner, 2026-10-24)

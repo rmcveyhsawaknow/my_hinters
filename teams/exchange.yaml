@@ -35,7 +35,8 @@ pipeline:
     exclude: [I08-NW, I08-NE, I08-SW, I08-SE, J08-NW, J08-NE, J08-SW, J08-SE, I09-NW, I09-NE, I09-SW, I09-SE, J09-NW, J09-NE, J09-SW, J09-SE,  # the Chocolate Factory's four plots, under contract (2026-10-24)
       C07-SE, D07-SW, D07-SE, E07-SW, C08-NE, D08-NW, D08-NE, E08-NW, C08-SE, D08-SW, D08-SE, E08-SW,  # Lower Manhattan's twelve lots, under contract to the Atelier (2026-10-27): never walled, policed or worked
       E07-NW, E07-NE, E06-SW, E06-SE, D06-NW, D06-NE, E06-NW, E06-NE, D06-SE,  # Midtown's nine lots (2026-11-02)
-      D05-SW, D05-SE, E05-SW, E05-SE, D05-NE, E05-NW, D04-NE, E04-NW, E04-SE]  # Central Park's nine lots (2026-11-02)
+      D05-SW, D05-SE, E05-SW, E05-SE, D05-NE, E05-NW, D04-NE, E04-NW, E04-SE,  # Central Park's nine lots (2026-11-02)
+      K06-NW, K06-NE, K06-SW, K06-SE, K07-NW, K07-NE, K07-SW, K07-SE, K08-NW, K08-NE, K08-SW, K08-SE, K09-NW, K09-NE, K09-SW, K09-SE]  # the factory's East Works (2026-11-03), under contract like its first four plots
     text: 'Lot {lot}: land office holding ({tags}). Not for sale: its nodes are the
       office''s stock. Walled by the office, a gate open mid-side.'
     walls:  # the owner, 2026-10-25: when every office store is full the hands wall the staked lots with the stone (hglab.walls)

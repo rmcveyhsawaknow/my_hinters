@@ -935,8 +935,9 @@ def expand(design: dict[str, Any]) -> list[dict[str, Any]]:
             add(str(street.get("section", "streets")), None, name, action)
     river = design.get("river") or {}
     material, color = _pair(river.get("block"), ("stone", "brown"))
-    width = int(river.get("width_cells", 4))
+    widths = river.get("widths") if isinstance(river.get("widths"), dict) else {}  # a branch's own width in cells (the East Works' are two, 2026-11-03)
     for branch, path in (river.get("branches") or {}).items():
+        width = int(widths.get(branch, river.get("width_cells", 4)))
         for i, run in enumerate(_river_runs(path)):
             xs, ys = [t[0] for t in run], [t[1] for t in run]
             pad = (4 - width) // 2
