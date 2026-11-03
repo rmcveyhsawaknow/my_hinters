@@ -7,6 +7,8 @@ from it; the tills take the price of land and nothing else.
 
 from pathlib import Path
 
+from conftest import office_team
+
 from hglab.crew import plan_crew, team_tills
 from hglab.land import pay_store
 from hglab.mood import PersonaState
@@ -33,7 +35,7 @@ def _step(slug, inventory, position, view, room=3, state=None):
     persona = personas[slug]
     observe = {"you": {"x": position[0], "y": position[1], "faction": {"id": 7, "name": "Land Office"}}, "tick": 1000}
     return plan_crew(
-        persona, load_team(ROOT, "exchange"), state or PersonaState(mood="busy"), observe, view, dict(inventory), position, 80, persona.energy_reserve, room,
+        persona, office_team(), state or PersonaState(mood="busy"), observe, view, dict(inventory), position, 80, persona.energy_reserve, room,
         {p.name for p in personas.values()}, {p.name: s for s, p in personas.items()}, None,
     )
 

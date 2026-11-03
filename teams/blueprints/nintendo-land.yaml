@@ -1,0 +1,628 @@
+# Nintendo Land, as blocks (the owner's instruction of 2026-11-03): a large themed land for every team of the
+# collective to build once its own works are done, inspired by the worlds of Nintendo's games and built in our own
+# words and shapes (no logos, no quoted text; the names of places and things only).
+#
+# The site: the open north of the island, x 55-94, y 20-39, forty tiles by twenty on thirty-two lots (F02-NE,
+# F02-SE, F03-NE, F03-SE, G02-*, G03-*, H02-*, H03-*, I02-*, I03-*, J02-NW, J02-SW, J03-NW, J03-SW), the ground the
+# collective holds by contract with the land office (no `land` block: nothing waits on a deed). Read from the public
+# world of tick 153228 (`hglab factory survey --x0 53 --y0 18 --x1 96 --y1 41`, runs/local/world.json): grass in the
+# north and west, a band of sand from (73,31) south to the edge, forest in the south-west (x 66-73, y 33-39), the
+# south-east (x 79-94, y 32-39) and the north-east corner; some two hundred wood, fiber and berry nodes scattered
+# over it and no stone or ore node at all; no resident's building. The office's claim sign stands on every lot's
+# centre tile (x 57, 62, ..., 92; y 22, 27, 32, 37): no block below level 6 stands on one, so every footprint keeps
+# to the bands between them (x 58-61, 63-66, ... or y 23-26, 28-31, 33-36) unless it is a lawn whose slabs ring the
+# sign or a treehouse whose deck passes over it. Lagalong's roads at (58,38), (63,28) and (70-71,37) and
+# Sheafwell's walls at (68-69,39) stay as they are, clear of every step. Buildings keep a lane at least a tile wide
+# between them and every door opens onto open ground; lawns, ponds, the pad and the circuit are slabs at level 0
+# and leave the nodes under them open.
+#
+# Ten districts, west to east and north to south. North: the Mushroom Kingdom (the castle with its keep and
+# turrets, the giant mushroom, the first course with its floating blocks, warp pipes, flagpole and goal fort), the
+# Kart Circuit (a black loop with red and white bends, the start gantry over the south straight, the grandstand
+# and the pit garage in the infield), Dream Land (Kirby's house and the Warp Star pond) and the Pokemon village
+# (the healing centre, the gym, the professor's lab and the route pond). The middle: the History Walk of four
+# small pavilions leading east to the Nintendo Museum at the heart, and Inkopolis (two bright towers and a plaza).
+# South: the Animal Crossing village (Resident Services, the shop, the town square and the orchard), Hyrule's
+# woods (the Lost Woods clearing with the blade in its stone, the Temple of Time, the Sage's Spire), the sands of
+# planet Zebes (the landing pad with a gunship hovering on struts, a Chozo statue and the Chozo ruins) and the
+# Donkey Kong jungle (two treehouses joined by rope bridges to the barrel tower, the old ape's cabin and the
+# banana hoard). The tallest things stand at the ceiling: the castle's keep and turrets, the mushroom and the
+# Sage's Spire; most buildings stand four to ten levels so the skyline rises and falls. No metal anywhere.
+#
+# Who builds it: every team, once its own works are done (the owner, 2026-11-03): the Chocolate Factory's crew
+# after the factory, Lower Manhattan, Midtown and Central Park; the land office's hands once their walls stand and
+# their stores are full; Neverland's builders after the Treetop Hideaway; Plumbline after the Atelier's replicas;
+# the Admiralty and the commons as they like. Every box is at most 160 cells, so a pack with its berries aside pays
+# for any step; the site lies far from every store, so builders carry each step's material there (`commute`).
+# Tubes start on the ground or rest on a building, so `hglab factory check` finds every step supported in order.
+# Buildings stand on surveyed plinths (`foundation`, from `hglab factory level --write`); the lawns, ponds, the pad
+# and the treehouses keep none, since a plinth would close the tiles their slabs and decks leave open (strip their
+# rows again if the survey is rerun; tests/test_nintendo_land.py checks it). Eighteen nodes lie under footprints
+# (twelve fiber, five berry, one wood), none of them stone or ore; the other nodes of the site stay open.
+#
+# Tiles are [x0, y0, x1, y1], inclusive; cells are 4 per tile. Colours: natural white grey black brown red orange
+# yellow lime green teal cyan blue indigo purple pink tan. Materials: wood (wood), stone (stone), thatch (fiber).
+name: Nintendo Land
+title: the Nintendo Land blueprint  # how a builder's reasons name it
+team: commons  # the whole collective's: every team builds it after its own works (the field is informational)
+plots: [F02, F03, G02, G03, H02, H03, I02, I03, J02, J03]  # only the east half of F and the west half of J are ours
+version: 1
+foundation_block: [stone, grey]
+commute: true
+story: >-
+  A theme park of play on the island's open north, laid out as ten small worlds a visitor walks through: a pink
+  castle under a mushroom as tall as the sky allows, a first course of floating blocks and green pipes, a racing
+  loop with its grandstand, a pink house in a land of dreams, a village of healing centres and gyms, a walk of
+  pavilions through a hundred and thirty years of games to the museum at the heart, a city of bright towers, an
+  animal village round its square, the woods of a sword in stone and a temple of time, a gunship on desert sand,
+  and a jungle of treehouses and barrels.
+sections:
+  # ---- the Mushroom Kingdom (F02-NE, F02-SE, G02-NW, G02-SW)
+  - id: peach-castle
+    name: Princess Peach's Castle
+    tiles: [55, 23, 59, 26]  # the kingdom's north-west, off the claim signs at (57,22) and (57,27)
+    foundation: [[2, 1, 1, 1, 1], [1, 1, 1, 1, 1], [1, 0, 0, 0, 0], [0, 0, 0, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 60, y: 26, text: "Princess Peach's Castle, the pink heart of the Mushroom Kingdom: a plumber has come to its princess's aid since 1985, and in 1996 the paintings in its halls opened onto whole worlds."}
+    style: hall
+    levels: 10
+    doors: [east]
+    door: [wood, red]
+    turrets: {size: 2, levels: 15, block: [stone, white], cap: [stone, red]}
+    chimney: {x: 228, y: 98, levels: 16, stripes: [white, pink], stripe_levels: 4}  # the keep, up through the roof to the ceiling
+    courses: [pink, white]
+    course_levels: 2
+    window_levels: [3, 7]
+    window_color: yellow
+    roof_slope: [stone, red]
+    roof_cap: [stone, red]
+  - id: super-mushroom
+    name: The Super Mushroom
+    tiles: [64, 23, 65, 24]  # the stem; its red cap is the four tubes of tubes-mushroom-cap, three cells out all round
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 64, y: 25, text: "The Super Mushroom: red with white spots, the power-up that doubles a small hero's size; here it grows as tall as the world allows."}
+    style: stripe_tower
+    levels: 16
+    doors: [west]
+    door: [wood, brown]
+    stripes: [white, tan]
+    window_levels: [3, 7]
+    window_color: yellow
+    crown_slope: [stone, red]
+    crown_cap: [stone, white]
+  - id: course-meadow
+    name: The First Course
+    tiles: [55, 28, 59, 31]  # a lawn under the floating blocks; the warp pipe stands at its south edge
+    sign: {x: 60, y: 28, text: "The first course: run right over the grass, bump the floating blocks, duck down the green pipe and leap for the flag. Players learned to jump here in 1985."}
+    style: park
+    hedge: [thatch, green]
+    trees: [[59, 28]]
+    paths: [[55, 29, 59, 29]]
+    path_color: tan
+  - id: goal-fort
+    name: The Goal Fort
+    tiles: [64, 28, 66, 30]  # the end of the course, east of the flagpole at (62,29)
+    foundation: [[0, 0, 0], [1, 0, 0], [1, 1, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 65, y: 31, text: "The goal fort at the end of the course: slide down the flagpole and walk in at its door; good timing once set off fireworks overhead."}
+    style: hall
+    levels: 6
+    doors: [west]
+    door: [wood, black]
+    turrets: {size: 2, levels: 9, block: [stone, brown], cap: [stone, black]}
+    courses: [brown, tan]
+    course_levels: 2
+    window_levels: [3]
+    window_color: black
+    roof_slope: [stone, brown]
+    roof_cap: [stone, black]
+  # ---- the Kart Circuit (G02-NE, H02-NW, H02-NE): the loop is the streets below, the gantry tubes-kart
+  - id: grandstand
+    name: The Grandstand
+    tiles: [69, 21, 71, 24]  # in the infield, facing the start on the south straight; the gantry's leg at (67,24) keeps a lane
+    foundation: [[1, 1, 1], [0, 1, 1], [0, 0, 0], [0, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 72, y: 24, text: "The Grandstand, facing the start line: karts have raced loops like this one since 1992, with shells and banana skins thrown on every lap."}
+    style: hall
+    levels: 5
+    doors: [south]
+    door: [wood, red]
+    pillars: [stone, red]
+    courses: [white, red]
+    window_levels: [2, 3]
+    window_color: yellow
+    roof_slope: [stone, red]
+    roof_cap: [stone, white]
+  - id: pit-garage
+    name: The Pit Garage
+    tiles: [73, 21, 76, 24]
+    foundation: [[1, 1, 1, 1], [1, 1, 1, 1], [0, 1, 1, 1], [0, 0, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 77, y: 24, text: "The Pit Garage: between races the karts come in here to swap wheels, bodies and gliders to suit the next track."}
+    style: hall
+    levels: 4
+    doors: [south]
+    door: [wood, grey]
+    pillars: [stone, black]
+    courses: [grey]
+    window_levels: [2]
+    window_color: orange
+    roof_slope: [stone, black]
+    roof_cap: [stone, grey]
+  # ---- the History Walk and the Nintendo Museum (H02-SW, H02-SE, I02-SW)
+  - id: hanafuda-house
+    name: The Card Workshop, 1889
+    tiles: [68, 29, 68, 29]
+    foundation: [[0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 69, y: 29, text: "1889: the company began in Kyoto as a small workshop painting hanafuda by hand, the flower cards of an old Japanese game."}
+    style: hall
+    levels: 6
+    doors: [north]
+    door: [wood, brown]
+    pillars: [wood, brown]
+    courses: [red]
+    window_levels: [4]
+    window_color: white
+    roof_slope: [thatch, red]
+    roof_cap: [thatch, white]
+  - id: game-and-watch
+    name: The Pocket Game, 1980
+    tiles: [70, 29, 70, 29]
+    foundation: [[0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 71, y: 29, text: "1980: Game & Watch, a pocket game with a liquid-crystal screen and a clock; a later model brought the cross-shaped direction pad."}
+    style: hall
+    levels: 6
+    doors: [north]
+    door: [wood, black]
+    pillars: [stone, grey]
+    courses: [tan]
+    window_levels: [4]
+    window_color: lime
+    roof_slope: [stone, black]
+    roof_cap: [stone, grey]
+  - id: family-computer
+    name: The Family Computer, 1983
+    tiles: [72, 29, 72, 29]
+    foundation: [[0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 73, y: 29, text: "1983: the Family Computer, red and white, came out in Japan; two years later a grey cousin carried its games to America."}
+    style: hall
+    levels: 6
+    doors: [north]
+    door: [wood, red]
+    pillars: [stone, red]
+    courses: [white]
+    window_levels: [4]
+    window_color: red
+    roof_slope: [stone, red]
+    roof_cap: [stone, white]
+  - id: handheld
+    name: The Handheld, 1989
+    tiles: [74, 29, 74, 29]
+    foundation: [[0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 75, y: 29, text: "1989: Game Boy, a grey handheld with a green-tinted screen, four batteries and a falling-block puzzle that went everywhere."}
+    style: hall
+    levels: 6
+    doors: [north]
+    door: [wood, grey]
+    pillars: [stone, grey]
+    courses: [grey]
+    window_levels: [4]
+    window_color: lime
+    roof_slope: [stone, purple]
+    roof_cap: [stone, grey]
+  - id: museum
+    name: The Nintendo Museum
+    tiles: [78, 27, 81, 31]  # the heart of the land, the History Walk leading to its west door
+    foundation: [[0, 0, 1, 1], [0, 0, 0, 1], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 77, y: 30, text: "The Nintendo Museum: well over a century of play, from cards and toys to consoles for the pocket and the living room. The real one opened in Uji, Kyoto, in 2024."}
+    style: hall
+    levels: 9
+    doors: [west, north]
+    door: [wood, red]
+    pillars: [stone, white]
+    courses: [white, red]
+    course_levels: 2
+    window_levels: [2, 5, 7]
+    window_color: cyan
+    roof_slope: [stone, red]
+    roof_cap: [stone, white]
+  # ---- Dream Land (I02-NW, I02-NE)
+  - id: kirby-house
+    name: Kirby's House
+    tiles: [83, 23, 86, 25]
+    foundation: [[1, 1, 1, 1], [0, 1, 1, 1], [0, 0, 0, 1]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 87, y: 24, text: "Kirby's House in Dream Land: a round pink home for a round pink hero who swallows foes whole and floats off on a deep breath, since 1992."}
+    style: hall
+    levels: 5
+    doors: [south]
+    door: [wood, red]
+    pillars: [stone, pink]
+    courses: [pink]
+    course_levels: 2
+    window_levels: [2]
+    window_color: red
+    roof_slope: [thatch, pink]
+    roof_cap: [thatch, red]
+  - id: warp-star-pond
+    name: The Warp Star Pond
+    tiles: [82, 20, 86, 21]
+    sign: {x: 87, y: 21, text: "The Warp Star Pond: in Dream Land a fallen star is a ride, not a wish, and it carries its rider from one land to the next."}
+    style: pool
+    rim: [stone, white]
+    water: yellow
+  # ---- Inkopolis (I02-SE, I03-NW, I03-NE)
+  - id: inkopolis-tower
+    name: Inkopolis Tower
+    tiles: [83, 27, 85, 29]
+    foundation: [[0, 1, 1], [0, 0, 1], [0, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 86, y: 28, text: "Inkopolis Tower: in the city of the squid kids, teams of four paint the ground in their own colour and the side with more turf wins. Since 2015."}
+    style: skyscraper
+    doors: [south]
+    door: [wood, black]
+    stages:
+      - {levels: 4, courses: [black], window_every: 2, window_color: lime}
+      - {levels: 4, inset: 1, glass: true, window_color: orange, band: 2}
+      - {levels: 3, inset: 1, glass: true, window_color: purple, band: 2}
+    roof: [stone, black]
+    crown: {style: spire, block: [stone, lime], mast_levels: 2}
+  - id: ink-spire
+    name: The Ink Spire
+    tiles: [83, 31, 84, 32]
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 82, y: 31, text: "The Ink Spire: glass in the city's team colours, orange, purple, lime and pink, the shades that end up sprayed across the square."}
+    style: glass_tower
+    levels: 10
+    doors: [west]
+    door: [wood, black]
+    pillars: [stone, black]
+    band_levels: 2
+    bands: [orange, purple, lime, pink]
+    crown: [stone, pink]
+  - id: inkopolis-plaza
+    name: Inkopolis Plaza
+    tiles: [85, 30, 88, 33]  # a square round the claim sign at (87,32)
+    sign: {x: 89, y: 32, text: "Inkopolis Plaza, where the squid kids gather between battles to show off their gear and their scribbles."}
+    style: park
+    hedge: [thatch, pink]
+    trees: [[86, 31]]
+    paths: [[85, 32, 86, 32]]
+    path_color: orange
+  # ---- the Pokemon village (I02-NE, J02-NW, I02-SE, J02-SW)
+  - id: healing-centre
+    name: The Healing Centre
+    tiles: [88, 21, 91, 25]
+    foundation: [[0, 1, 1, 1], [0, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 92, y: 24, text: "The Healing Centre: a red-roofed hall in every town where trainers' partners rest and recover for nothing, to a short happy tune."}
+    style: hall
+    levels: 6
+    doors: [north]
+    door: [wood, red]
+    pillars: [stone, red]
+    courses: [white]
+    course_levels: 2
+    window_levels: [2, 4]
+    window_color: cyan
+    roof_slope: [stone, red]
+    roof_cap: [stone, red]
+  - id: gym
+    name: The Gym
+    tiles: [89, 28, 92, 31]
+    foundation: [[1, 1, 1, 1], [1, 1, 1, 1], [0, 0, 1, 1], [0, 0, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 90, y: 32, text: "The Gym: a trainer beats its leader for a badge, and eight badges open the road to the league. The first journey began in 1996."}
+    style: hall
+    levels: 6
+    doors: [west]
+    door: [wood, grey]
+    pillars: [stone, grey]
+    courses: [grey, red]
+    course_levels: 2
+    window_levels: [2, 4]
+    window_color: yellow
+    roof_slope: [stone, grey]
+    roof_cap: [stone, red]
+  - id: professor-lab
+    name: The Professor's Laboratory
+    tiles: [93, 20, 94, 23]
+    foundation: [[1, 1], [1, 1], [0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 92, y: 23, text: "The Professor's Laboratory, where every journey starts: three young partners wait on a table and a new trainer picks one."}
+    style: hall
+    levels: 5
+    doors: [west]
+    door: [wood, white]
+    pillars: [stone, white]
+    courses: [white]
+    window_levels: [2]
+    window_color: cyan
+    roof_slope: [stone, grey]
+    roof_cap: [stone, grey]
+  - id: route-pond
+    name: The Route Pond
+    tiles: [93, 27, 94, 31]
+    sign: {x: 92, y: 26, text: "The Route Pond at the edge of the woods: fishing rods and swimming partners find here what the tall grass does not hold."}
+    style: pool
+    rim: [stone, tan]
+    water: blue
+  # ---- the Animal Crossing village (F03-NE, F03-SE, G03-NW, G03-SW)
+  - id: resident-services
+    name: Resident Services
+    tiles: [56, 33, 58, 35]  # x 55 stays open, the way in from Uptown's 125th Street at (54,34)
+    foundation: [[0, 0, 0], [1, 1, 1], [1, 1, 1]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 59, y: 33, text: "Resident Services: the village office, where a cheerful dog at the desk keeps the notices, the mail and the residents' complaints."}
+    style: hall
+    levels: 5
+    doors: [south]
+    door: [wood, green]
+    pillars: [wood, brown]
+    courses: [tan, white]
+    course_levels: 2
+    window_levels: [2]
+    window_color: yellow
+    roof_slope: [thatch, green]
+    roof_cap: [thatch, green]
+  - id: village-shop
+    name: The Village Shop
+    tiles: [60, 33, 61, 34]
+    foundation: [[0, 1], [1, 1]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 62, y: 33, text: "The village shop, run by a raccoon who sells tools and furniture, and the loan on your first house, which he is always glad to extend."}
+    style: hall
+    levels: 5
+    doors: [south]
+    door: [wood, green]
+    pillars: [wood, brown]
+    courses: [brown]
+    window_levels: [2]
+    window_color: yellow
+    roof_slope: [thatch, brown]
+    roof_cap: [thatch, green]
+  - id: town-square
+    name: The Town Square
+    tiles: [60, 35, 64, 39]  # round the claim sign at (62,37), which stands like the village notice board
+    sign: {x: 65, y: 39, text: "The Town Square: the animal neighbours of the village games, since 2001, gather round its tree for fireworks, fishing contests and the countdown to the new year."}
+    style: park
+    hedge: [thatch, green]
+    trees: [[61, 38], [63, 36], [63, 38]]
+    paths: [[60, 37, 61, 37], [63, 37, 64, 37], [62, 35, 62, 36], [62, 38, 62, 39]]
+    path_color: tan
+  - id: orchard
+    name: The Orchard
+    tiles: [55, 36, 59, 39]  # round the claim sign at (57,37); Lagalong's road at (58,38) stays clear
+    sign: {x: 59, y: 35, text: "The Orchard: every village starts with one kind of fruit on its trees; shake one and fruit falls, shake another and it might be a wasp nest."}
+    style: park
+    hedge: [thatch, lime]
+    trees: [[56, 37], [56, 39], [59, 37]]
+    leaves: [thatch, lime]
+  # ---- Hyrule's woods (G03-NE, G03-SE, H03-NW, H03-SW)
+  - id: lost-woods
+    name: The Lost Woods Clearing
+    tiles: [65, 34, 69, 38]  # round the claim sign at (67,37); the blade stands in the middle
+    sign: {x: 67, y: 33, text: "The Lost Woods clearing: a grove the forest hides from all but the worthy, where a blade sealed in stone waits for a hero in green."}
+    style: park
+    hedge: [thatch, green]
+    trees: [[68, 34], [65, 37], [68, 36], [66, 38], [68, 38]]
+    paths: [[67, 34, 67, 34]]
+    path_color: tan
+  - id: master-sword
+    name: The Blade in the Stone
+    tiles: [67, 35, 67, 35]  # a grey stone with a cyan blade standing out of it
+    foundation: [[0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 66, y: 35, text: "The blade in its pedestal, drawn again in each age of Hyrule's long story by a young swordsman in green. The story began in 1986."}
+    style: skyscraper
+    doors: [south]
+    door: [stone, grey]
+    stages:
+      - {levels: 2, courses: [grey], window_every: 0}
+    roof: [stone, grey]
+    crown: {style: spire, block: [stone, cyan], mast_levels: 4}
+  - id: temple-of-time
+    name: The Temple of Time
+    tiles: [70, 33, 72, 36]  # its columns face south over the roads at (70-71,37)
+    foundation: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 73, y: 37, text: "The Temple of Time: white stone at Hyrule's heart whose door opens to a song played on an ocarina; inside, the hero sleeps for seven years."}
+    style: temple
+    facing: south
+    levels: 7
+    walls: [stone, white]
+    columns: [stone, white]
+    podium: [stone, grey]
+    roof: [stone, blue]
+  - id: sages-spire
+    name: The Sage's Spire
+    tiles: [63, 32, 64, 33]  # at the edge of the woods, its spire at the ceiling
+    foundation: [[0, 0], [1, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 63, y: 31, text: "The Sage's Spire: a tower of the sages who keep Hyrule's temples, each guarding one of the old seals until the hero comes."}
+    style: church
+    levels: 5
+    walls: [stone, green]
+    window_color: lime
+    door: [wood, brown]
+    roof: [stone, green]
+    tower: {at: north, levels: 13, block: [stone, white], spire: [stone, green], spire_levels: 3}
+  # ---- the sands of planet Zebes (H03-NE, H03-SE)
+  - id: landing-pad
+    name: The Landing Pad
+    tiles: [73, 33, 77, 36]  # the gunship of tubes-gunship hovers over it on two struts
+    sign: {x: 78, y: 33, text: "The Landing Pad: a bounty hunter's orange gunship rests here between missions on far planets. Its pilot, sealed in a powered suit, first landed in 1986."}
+    style: pool
+    rim: [stone, yellow]
+    water: grey
+  - id: chozo-statue
+    name: The Chozo Statue
+    tiles: [78, 34, 78, 34]
+    foundation: [[0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 79, y: 34, text: "A Chozo statue: the bird-like elders who raised the hunter left seated figures like this across their ruins, often with an upgrade in their hands."}
+    style: statue
+    block: [stone, tan]
+    plinth: grey
+  - id: chozo-ruins
+    name: The Chozo Ruins
+    tiles: [73, 38, 77, 39]
+    foundation: [[0, 1, 1, 1, 0], [0, 0, 1, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 78, y: 39, text: "The Chozo Ruins: low walls half buried in the sand of a planet where an old bird-like people once lived and hid their secrets."}
+    style: fort
+    walls: [stone, tan]
+    levels: 3
+    gate: north
+  # ---- the Donkey Kong jungle (I03-*, J03-*)
+  - id: kong-treehouse
+    name: The Kong Treehouse
+    tiles: [84, 34, 88, 38]  # its deck passes over the claim sign at (87,37) and three wood nodes at level 6
+    sign: {x: 83, y: 35, text: "The Kong Treehouse: a great ape's home in the canopy, beside the banana hoard he guards from thieving crocodiles. The jungle adventures began in 1994."}
+    style: treehouse
+    deck: 6
+    trunks: [[84, 34], [88, 34], [84, 38], [87, 38]]
+    trunk: [wood, brown]
+    deck_block: [wood, natural]
+    railing: [wood, tan]
+    cabin: [85, 35, 87, 36]
+    doors: [west]
+    door: [wood, red]
+    cabin_color: brown
+    window_color: yellow
+    roof_slope: [thatch, natural]
+    roof_cap: [thatch, lime]
+    ladders: true
+  - id: little-treehouse
+    name: The Little Monkey's Treehouse
+    tiles: [79, 35, 82, 39]  # its deck passes over the claim sign at (82,37)
+    sign: {x: 83, y: 39, text: "The little monkey's treehouse: a small monkey in a red cap who cartwheels through the jungle beside his big friend and jumps higher than he does."}
+    style: treehouse
+    deck: 6
+    trunks: [[82, 35], [79, 36], [79, 39], [82, 39]]
+    trunk: [wood, brown]
+    deck_block: [wood, natural]
+    railing: [wood, tan]
+    cabin: [80, 37, 81, 38]
+    doors: [east]
+    door: [wood, red]
+    cabin_color: red
+    window_color: yellow
+    roof_slope: [thatch, natural]
+    roof_cap: [thatch, red]
+    ladders: true
+  - id: old-ape-cabin
+    name: The Old Ape's Cabin
+    tiles: [80, 33, 81, 34]
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 82, y: 33, text: "The old ape's cabin: the first king of the jungle retired here to rock in his chair and grumble that games were better in his day."}
+    style: hall
+    levels: 4
+    doors: [south]
+    door: [wood, brown]
+    pillars: [wood, brown]
+    courses: [brown]
+    window_levels: [2]
+    window_color: yellow
+    roof_slope: [thatch, natural]
+    roof_cap: [thatch, brown]
+  - id: barrel-tower
+    name: The Barrel Tower
+    tiles: [92, 34, 94, 36]
+    foundation: [[0, 0, 1], [0, 0, 1], [0, 1, 1]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 91, y: 34, text: "The Barrel Tower, stacked like the barrels a great ape rolled down a building site at a carpenter in 1981, the arcade game that made the company's name."}
+    style: stripe_tower
+    levels: 10
+    doors: [west]
+    door: [wood, brown]
+    stripes: [brown, tan]
+    window_levels: [4, 7]
+    window_color: orange
+    crown_slope: [wood, brown]
+    crown_cap: [wood, tan]
+  - id: banana-hoard
+    name: The Banana Hoard
+    tiles: [91, 38, 94, 39]
+    sign: {x: 93, y: 37, text: "The Banana Hoard: a golden heap in a hollow of the jungle, every one counted; a hundred of them is worth an extra life."}
+    style: pool
+    rim: [wood, brown]
+    water: yellow
+tubes:
+  # ---- the Mushroom Kingdom
+  - name: the warp pipe arch
+    section: tubes-warp-pipes  # up out of (56,20), over the castle's north lane at level 8, down into (60,20)
+    color: green
+    size: 3
+    path: [[225, 81, 0], [225, 81, 8], [241, 81, 8], [241, 81, 0]]
+  - name: the little pipe arch
+    section: tubes-warp-pipes  # up out of (61,21), over (62,21) at level 7, down into (63,21)
+    color: green
+    size: 2
+    path: [[245, 85, 0], [245, 85, 7], [253, 85, 7], [253, 85, 0]]
+  - name: the course pipe
+    section: tubes-warp-pipes  # a lone pipe at the course's south edge, the way down to the underground
+    color: green
+    size: 3
+    path: [[229, 125, 0], [229, 125, 6]]
+  - name: the west block pillar
+    section: tubes-question-blocks  # a thin pole under the first floating block
+    color: tan
+    path: [[223, 122, 0], [223, 122, 5]]
+  - {name: question block 1, section: tubes-question-blocks, color: yellow, size: 3, path: [[222, 121, 6], [224, 121, 6]]}
+  - {name: brick block 1, section: tubes-question-blocks, color: brown, size: 3, path: [[225, 121, 6], [227, 121, 6]]}
+  - {name: question block 2, section: tubes-question-blocks, color: yellow, size: 3, path: [[228, 121, 6], [230, 121, 6]]}
+  - {name: brick block 2, section: tubes-question-blocks, color: brown, size: 3, path: [[231, 121, 6], [233, 121, 6]]}
+  - {name: question block 3, section: tubes-question-blocks, color: yellow, size: 3, path: [[234, 121, 6], [236, 121, 6]]}
+  - name: the east block pillar
+    section: tubes-question-blocks  # the pole under the last block
+    color: tan
+    path: [[235, 122, 0], [235, 122, 5]]
+  - name: the flagpole
+    section: tubes-flagpole  # at (62,29), between the course and the goal fort
+    color: white
+    path: [[249, 117, 0], [249, 117, 13]]
+  - name: the flag
+    section: tubes-flagpole
+    color: green
+    size: 2
+    path: [[250, 117, 10], [252, 117, 10]]
+  - name: the cap's north side
+    section: tubes-mushroom-cap  # four red legs round the stem's top three levels, three cells out
+    color: red
+    size: 3
+    path: [[253, 89, 12], [266, 89, 12]]
+  - {name: the cap's south side, section: tubes-mushroom-cap, color: red, size: 3, path: [[253, 100, 12], [266, 100, 12]]}
+  - {name: the cap's west side, section: tubes-mushroom-cap, color: red, size: 3, path: [[253, 92, 12], [253, 99, 12]]}
+  - {name: the cap's east side, section: tubes-mushroom-cap, color: red, size: 3, path: [[264, 92, 12], [264, 99, 12]]}
+  - {name: a white spot to the north-west, section: tubes-mushroom-cap, color: white, path: [[254, 90, 15], [256, 90, 15]]}
+  - {name: a white spot to the north-east, section: tubes-mushroom-cap, color: white, path: [[262, 90, 15], [264, 90, 15]]}
+  - {name: a white spot to the south, section: tubes-mushroom-cap, color: white, path: [[258, 101, 15], [261, 101, 15]]}
+  - {name: a white spot to the west, section: tubes-mushroom-cap, color: white, path: [[254, 94, 15], [254, 97, 15]]}
+  - {name: a white spot to the east, section: tubes-mushroom-cap, color: white, path: [[265, 94, 15], [265, 97, 15]]}
+  # ---- the Kart Circuit
+  - name: the start gantry
+    section: tubes-kart  # up out of (67,24) in the infield, over the start line at level 8, down at (67,26)
+    color: white
+    size: 2
+    path: [[269, 97, 0], [269, 97, 8], [269, 105, 8], [269, 105, 0]]
+  - name: the start lights
+    section: tubes-kart  # hung under the gantry's beam over the start line
+    color: red
+    path: [[269, 100, 7], [269, 103, 7]]
+  # ---- the sands of planet Zebes: the gunship hovering over the landing pad
+  - {name: the gunship's west strut, section: tubes-gunship, color: grey, path: [[300, 140, 0], [300, 140, 5]]}
+  - {name: the gunship's east strut, section: tubes-gunship, color: grey, path: [[307, 140, 0], [307, 140, 5]]}
+  - {name: the gunship's hull, section: tubes-gunship, color: orange, size: 3, path: [[298, 139, 6], [309, 139, 6]]}
+  - {name: the gunship's wings, section: tubes-gunship, color: orange, size: 2, path: [[302, 134, 7], [302, 146, 7]]}
+  - {name: the gunship's dome, section: tubes-gunship, color: orange, size: 2, path: [[300, 139, 9], [307, 139, 9]]}
+  - {name: the gunship's canopy, section: tubes-gunship, color: lime, size: 2, path: [[310, 139, 7], [312, 139, 7]]}
+  - {name: the gunship's engines, section: tubes-gunship, color: red, path: [[296, 140, 7], [297, 140, 7]]}
+  # ---- the Donkey Kong jungle: rope bridges, wood a cell thick, sagging a level mid-way
+  - name: the west rope bridge
+    section: tubes-rope-bridges  # from the little monkey's east railing to the Kong Treehouse's west railing, over (83,37)
+    material: wood
+    color: tan
+    path: [[332, 148, 7], [333, 148, 7], [333, 148, 6], [334, 148, 6], [334, 148, 7], [335, 148, 7]]
+  - name: the east rope bridge
+    section: tubes-rope-bridges  # from the Kong Treehouse's east railing to the Barrel Tower's west wall, over (89-91,35)
+    material: wood
+    color: tan
+    path: [[356, 142, 7], [361, 142, 7], [361, 142, 6], [362, 142, 6], [362, 142, 7], [367, 142, 7]]
+streets:
+  # the Kart Circuit: black straights, red and white bends; the start line is the white tile under the gantry
+  - {name: the north straight, section: streets, tiles: [66, 20, 80, 20], block: [stone, black]}
+  - {name: the south straight (west), section: streets, tiles: [66, 25, 66, 25], block: [stone, black]}
+  - {name: the start line, section: streets, tiles: [67, 25, 67, 25], block: [stone, white]}
+  - {name: the south straight, section: streets, tiles: [68, 25, 80, 25], block: [stone, black]}
+  - {name: the west bend 1, section: streets, tiles: [66, 21, 66, 21], block: [stone, red]}
+  - {name: the west bend 2, section: streets, tiles: [66, 22, 66, 22], block: [stone, white]}
+  - {name: the west bend 3, section: streets, tiles: [66, 23, 66, 23], block: [stone, red]}
+  - {name: the west bend 4, section: streets, tiles: [66, 24, 66, 24], block: [stone, white]}
+  - {name: the east bend 1, section: streets, tiles: [80, 21, 80, 21], block: [stone, white]}
+  - {name: the east bend 2, section: streets, tiles: [80, 22, 80, 22], block: [stone, red]}
+  - {name: the east bend 3, section: streets, tiles: [80, 23, 80, 23], block: [stone, white]}
+  - {name: the east bend 4, section: streets, tiles: [80, 24, 80, 24], block: [stone, red]}

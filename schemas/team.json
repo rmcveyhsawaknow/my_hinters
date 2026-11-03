@@ -59,6 +59,8 @@
         "blueprint": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,40}$", "description": "The team's block design in teams/blueprints/<name>.yaml (hglab.factory)"},
         "next_blueprint": {"description": "The design, or the designs in order, the builders take up once every step of the one before is done (the owner, 2026-10-27: Lower Manhattan after the factory; 2026-11-02: then Midtown, then Central Park)", "anyOf": [{"type": "string", "pattern": "^[a-z][a-z0-9-]{1,40}$"}, {"type": "array", "minItems": 1, "maxItems": 6, "items": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,40}$"}}]},
         "builders": {"type": "object", "description": "Personas who place the blueprint, each with the sections it raises first", "additionalProperties": {"type": "array", "items": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,40}$"}}},
+        "focus": {"type": "string", "enum": ["blueprint"], "description": "blueprint: the next step of the design before unloading, walling or gathering (the owner, 2026-11-03: the land office builds the larger New York)"},
+        "roam": {"type": "boolean", "description": "A hand with nothing to raise and nobody to help walks the design's grounds, one move a wake (Neverland, 2026-11-03)"},
         "plan": {"type": "array", "maxItems": 20, "items": {"type": "object", "required": ["type"], "additionalProperties": false, "properties": {
           "type": {"enum": ["sign", "road", "wall", "bridge", "hut", "farm", "storehouse", "tower", "monument"]},
           "count": {"type": "integer", "minimum": 1, "maximum": 40},

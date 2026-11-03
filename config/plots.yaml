@@ -107,6 +107,18 @@ site_requests:
     lots: [D05-NE, E05-NW, D04-NE, E04-NW, E04-SE]
     wants: [wood]
     note: Central Park's northern half; Belvedere Castle over the lake, the Great Lawn, the Reservoir's shore, the Obelisk and the museum on Fifth Avenue.
+  - id: nyc-uptown-west
+    client: Plumbline
+    after: nyc-park-north
+    lots: [D03-NW, D03-NE, D03-SW, D03-SE]
+    wants: [stone]
+    note: Uptown's West Side, north of the park; the Cloisters, Grant's Tomb, Riverside Church and the Natural History Museum by the sea, Columbia's library and St John the Divine east of Broadway, Morningside Park.
+  - id: nyc-uptown-east
+    client: Plumbline
+    after: nyc-uptown-west
+    lots: [E03-NW, E03-NE, E03-SW, E03-SE, F03-NW, F03-SW]
+    wants: [stone]
+    note: Uptown's Harlem and East Side; Strivers' Row, the Apollo on 125th Street, the Harlem Meer, the station under the Park Avenue viaduct, the Guggenheim and Gracie Mansion.
 sales:
   - {id: ore-for-wood, sell: {ore: 10}, price: {wood: 30}, min_stock: 20, status: open}
   - {id: stone-for-berries, sell: {stone: 20}, price: {berries: 10}, min_stock: 60, status: open}

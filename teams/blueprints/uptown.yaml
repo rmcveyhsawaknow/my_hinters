@@ -1,0 +1,281 @@
+# Uptown Manhattan, as blocks (the owner's instruction of 2026-11-03): the larger New York replica continues north of
+# Central Park on land bought from the land office, segment by segment, every building with a sign beside it.
+#
+# The site: x 30-54, y 30-39, the ten lots north of the park (D03-NW, D03-NE, D03-SW, D03-SE, E03-NW, E03-NE, E03-SW,
+# E03-SE, F03-NW, F03-SW), staked by the office with no stone or ore node and no resident's holding; the office's claim
+# sign stands on each lot's centre tile ((32,32), (37,32), (42,32), (47,32), (52,32), (32,37), (37,37), (42,37), (47,37),
+# (52,37)) and nothing but a street's slab or a lawn crosses one. The survey of tick 153228 (`hglab factory survey
+# --x0 28 --y0 28 --x1 56 --y1 41`): the west lots are forest with wood nodes and sand by the sea, the middle a sand
+# valley with berries and fiber on its western grass (x 37-40, y 34-39), the east grass rising toward the shore (the
+# public 3D ground from 0.6 to 1.15). A pocket of shallow water at (43-44, 29-30) keeps (43,30) and (44,30) free. Every
+# footprint stands off the nodes; five berry and fiber nodes (x 37-39, y 36-38) lie under Morningside Park's
+# lawn, which closes no tile, and the streets' slabs cross nine nodes, which stay open to walkers and gatherers.
+#
+# North is up, the sea to the west for the Hudson. In the city Uptown wraps the park: the Upper West Side on its west,
+# the Upper East Side on its east and Harlem to the north. The glass has ground only north of the park, so the wrap is
+# unfolded onto the ten lots: the West Side's landmarks on the west lots, each on its real side of Broadway (the
+# Cloisters, Grant's Tomb, Riverside Church and the Natural History Museum west of it, north to south in the real
+# order; Columbia's Low Library and St John the Divine east of it), Harlem in the middle (Strivers' Row, the Apollo on
+# 125th Street, Morningside Park on the cliff, the Harlem Meer at the park's north-east corner), and the East Side on
+# the east lots (the Park Avenue viaduct and the Harlem station on 125th Street, the Guggenheim, Gracie Mansion on the
+# rise above the shore). Two buildings moved for the nodes: Low Library stands north of 125th Street, where the forest
+# leaves a clear three tiles by two (in the city it faces 116th Street), and St John the Divine takes the one clear
+# square south of it. The Dakota and Lincoln Center found no ground: the forest's wood nodes leave the west lots room
+# for eight sections.
+#
+# Streets are slabs at level 0 (they close no tile): Broadway north-south at x 33, Fifth Avenue at x 43 from y 31 (the
+# water keeps (43,30)), 125th Street east-west at y 34 and 110th Street, Central Park North, at y 39, the park's edge.
+# Heights are the world's, sixteen levels at most, and Midtown's Empire State Building alone reaches the ceiling:
+# Riverside Church's tower is the tallest here, level 13 with St Patrick's, then St John the Divine's unfinished tower;
+# the halls and museums keep to level 6 or under. The Park Avenue viaduct is a tube at level 6 (closing no tile) on
+# two piers, resting on the station's roof. Every box is at most 160 cells, so a pack with its berries aside pays for
+# any step; no step needs a store beside it.
+#
+# Land: a step rises only on lots the office has deeded to Plumbline (`land`); the segments are nyc-uptown-west (D03-NW,
+# D03-NE, D03-SW, D03-SE) and nyc-uptown-east (E03-NW, E03-NE, E03-SW, E03-SE, F03-NW, F03-SW) in config/plots.yaml,
+# each offered once the one before is deeded, after Central Park's. Every section stands within one segment, so a
+# building is never half bought. Builders far from the site carry the next step's material from their faction's
+# stores and walk there (`commute`). Each section's `sign` is its last step: a sign on the tile beside it, off the
+# nodes, the claim signs and the streets, its words written fresh for the glass.
+name: Uptown Manhattan
+title: the Uptown blueprint  # how a builder's reasons name it
+team: atelier
+plots: [D03, E03, F03]
+version: 1
+foundation_block: [stone, grey]
+commute: true
+land:
+  client: Plumbline
+  registrar: LandBroker
+  lots: [D03-NW, D03-NE, D03-SW, D03-SE, E03-NW, E03-NE, E03-SW, E03-SE, F03-NW, F03-SW]
+story: >-
+  The Atelier's third study of the real city: Uptown, north of the park. On the heights by the Hudson the Cloisters
+  keep their medieval walls, Grant's Tomb looks over the river and Riverside Church raises the tallest church tower in
+  the country; Columbia's domed library and the unfinished cathedral of St John the Divine stand east of Broadway.
+  Harlem fills the middle: the three brick rows of Strivers' Row, the Apollo's marquee on 125th Street, Morningside
+  Park under its cliff and the Harlem Meer at the park's corner. The East Side keeps the trains on their viaduct over
+  Park Avenue, the Guggenheim's white spiral and the mayor's wooden house above the river.
+sections:
+  # ---- the West Side (segment nyc-uptown-west: D03-NW, D03-NE, D03-SW, D03-SE)
+  - id: cloisters
+    name: The Cloisters
+    tiles: [30, 30, 32, 31]  # the far north-west, on the heights by the sea
+    foundation: [[1, 0, 0], [1, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 31, y: 32, text: "The Cloisters: the Metropolitan Museum's house of medieval art, opened in 1938 on a hill above the Hudson and built round cloisters carried stone by stone from French abbeys."}
+    style: fort
+    walls: [stone, grey]
+    levels: 4
+    gate: south
+  - id: grants-tomb
+    name: Grant's Tomb
+    tiles: [30, 33, 31, 33]  # on the riverside above 125th Street, its portico to the south
+    foundation: [[0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 32, y: 33, text: "Grant's Tomb: the resting place of Ulysses S. Grant, general and president, and his wife Julia; finished in 1897 with gifts from some ninety thousand people."}
+    style: temple
+    facing: south
+    levels: 6
+    walls: [stone, white]
+    columns: [stone, white]
+    podium: [stone, grey]
+    roof: [stone, grey]
+  - id: riverside-church
+    name: Riverside Church
+    tiles: [30, 35, 31, 36]  # south of Grant's Tomb, as in the city; its tower at the south end, the door to 125th Street
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 32, y: 36, text: "Riverside Church: a Gothic church of 1930 paid for by John D. Rockefeller Jr.; its tower, the tallest of any church in the country, holds a carillon of seventy-four bells."}
+    style: church
+    levels: 5
+    walls: [stone, white]
+    window_color: blue
+    door: [wood, brown]
+    roof: [stone, grey]
+    tower: {at: south, levels: 12, block: [stone, white], spire: [stone, grey], spire_levels: 2}  # level 13, St Patrick's height, two under the Empire State
+  - id: amnh
+    name: The American Museum of Natural History
+    tiles: [30, 38, 31, 38]  # by the park's north-west corner, its columns facing the park
+    foundation: [[0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 30, y: 37, text: "The American Museum of Natural History: founded in 1869 on the park's west side; dinosaur skeletons fill its upper halls and a life-size blue whale hangs over the ocean hall."}
+    style: temple
+    facing: south
+    levels: 6
+    walls: [stone, tan]
+    columns: [stone, white]
+    podium: [stone, grey]
+    roof: [stone, grey]
+  - id: rose-center
+    name: The Rose Center for Earth and Space
+    tiles: [32, 38, 32, 38]  # the museum's glass cube, against its east end beside Broadway
+    foundation: [[0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 31, y: 37, text: "The Rose Center for Earth and Space: the museum's glass cube of 2000, with a white sphere hung inside it that holds the planetarium's dome."}
+    style: skyscraper
+    doors: [north]
+    door: [wood, white]
+    stages:
+      - {levels: 5, glass: true, window_color: cyan, band: 4}
+    roof: [stone, white]
+  - id: low-library
+    name: Low Memorial Library, Columbia University
+    tiles: [34, 30, 36, 31]  # east of Broadway north of 125th Street, where the forest leaves room; in the city at 116th Street
+    foundation: [[0, 0, 0], [0, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 35, y: 32, text: "Low Memorial Library: Columbia's domed hall of 1897, given by its president Seth Low in memory of his father; the books left for a new library in 1934 and the offices moved in."}
+    style: skyscraper
+    doors: [south]
+    door: [wood, brown]
+    stages:
+      - {levels: 3, courses: [white], window_every: 2, window_color: yellow}
+      - {levels: 1, inset: 1, courses: [white], window_every: 0, ledge: [stone, grey]}
+    roof: [stone, grey]
+    crown: {style: pyramid, block: [stone, grey]}  # the dome, in rings of slopes stepping in
+  - id: st-john-the-divine
+    name: The Cathedral of St John the Divine
+    tiles: [35, 36, 36, 37]  # east of Broadway above the park; its west towers to Broadway, its east door to Morningside Park
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 34, y: 36, text: "The Cathedral of St John the Divine: begun in 1892 and never finished; its builders changed from the Romanesque to the Gothic halfway up, and it is among the largest churches anywhere."}
+    style: church
+    levels: 5
+    walls: [stone, grey]
+    window_color: purple
+    door: [wood, brown]
+    roof: [stone, grey]
+    tower: {at: west, levels: 9, block: [stone, grey], spire: [stone, grey], spire_levels: 1}  # the unfinished west tower, no spire raised
+  - id: morningside-park
+    name: Morningside Park
+    tiles: [37, 35, 39, 38]  # below the heights, over the valley's berry and fiber nodes; its lawn closes no tile
+    foundation: [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 40, y: 37, text: "Morningside Park: drawn by Olmsted and Vaux, the makers of Central Park, along the cliff that parts Morningside Heights from Harlem; long stone stairs climb the rock."}
+    style: park
+    hedge: [thatch, green]
+    trees: [[39, 35], [39, 36], [38, 38]]  # off the nodes and clear of the cathedral's corner
+    paths: [[38, 35, 38, 37]]
+    path_color: tan
+  # ---- Harlem and the East Side (segment nyc-uptown-east: E03-NW, E03-NE, E03-SW, E03-SE, F03-NW, F03-SW)
+  - id: strivers-row-lord
+    name: "Strivers' Row: the red brick houses"
+    tiles: [40, 30, 40, 30]  # the row's west house; the three step down the slope toward the pond
+    foundation: [[0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 40, y: 31, text: "Strivers' Row: James Brown Lord's red brick houses, one of three rows that a developer, David King, had three architects build together on 138th and 139th Streets in 1891."}
+    style: hall
+    levels: 6  # walls to level 4, the roof at 5; a one-tile house is all door on its south side below level 4, so its windows sit above it
+    doors: [south]
+    door: [wood, brown]
+    pillars: [stone, white]
+    courses: [red]
+    course_levels: 1
+    window_levels: [4]
+    window_color: white
+    roof_slope: [stone, black]
+    roof_cap: [stone, black]
+  - id: strivers-row-price
+    name: "Strivers' Row: the yellow brick houses"
+    tiles: [41, 30, 41, 30]
+    foundation: [[0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 41, y: 31, text: "Strivers' Row: Bruce Price and Clarence Luce's yellow brick houses with white stone trim; the alleys behind them still bear old notices asking riders to lead their horses."}
+    style: hall
+    levels: 6
+    doors: [south]
+    door: [wood, brown]
+    pillars: [stone, white]
+    courses: [yellow]
+    course_levels: 1
+    window_levels: [4]
+    window_color: white
+    roof_slope: [stone, black]
+    roof_cap: [stone, black]
+  - id: strivers-row-white
+    name: "Strivers' Row: the dark brick houses"
+    tiles: [42, 30, 42, 30]  # the row's east house, beside the pond
+    foundation: [[0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 42, y: 31, text: "Strivers' Row: Stanford White's dark brick houses; in the 1920s Black doctors, lawyers and musicians bought along these streets, and Harlem named the row for their ambition."}
+    style: hall
+    levels: 6
+    doors: [south]
+    door: [wood, black]
+    pillars: [stone, brown]
+    courses: [brown]
+    course_levels: 1
+    window_levels: [4]
+    window_color: yellow
+    roof_slope: [stone, black]
+    roof_cap: [stone, black]
+  - id: apollo
+    name: The Apollo Theater
+    tiles: [40, 32, 41, 33]  # on the north side of 125th Street, south of Strivers' Row on the same avenues
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 39, y: 33, text: "The Apollo Theater: a burlesque house of 1914 that opened to Black audiences in 1934; its Wednesday amateur nights launched Ella Fitzgerald and a long line of singers after her."}
+    style: hall
+    levels: 6
+    doors: [south]
+    door: [wood, red]
+    pillars: [stone, red]
+    courses: [red, white]
+    course_levels: 1
+    window_levels: [2]
+    window_color: yellow  # the marquee's lights
+    roof_slope: [stone, black]
+    roof_cap: [stone, black]
+  - id: harlem-125th-station
+    name: The Harlem-125th Street station
+    tiles: [45, 32, 46, 33]  # north of 125th Street under the Park Avenue viaduct, which rests on its roof
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 44, y: 33, text: "The Harlem-125th Street station: since 1897 the trains to the northern suburbs have run above Park Avenue on a viaduct here, stopping once more before they cross the Harlem River."}
+    style: hall
+    levels: 6  # its roof at level 5, under the viaduct at level 6
+    doors: [south]
+    door: [wood, brown]
+    pillars: [stone, grey]
+    courses: [brown, tan]
+    course_levels: 1
+    window_levels: [2]
+    window_color: yellow
+    roof_slope: [stone, black]
+    roof_cap: [stone, black]
+  - id: harlem-meer
+    name: The Harlem Meer
+    tiles: [44, 37, 46, 38]  # at the park's north-east corner, east of Fifth Avenue
+    foundation: [[0, 0, 0], [0, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 47, y: 38, text: "The Harlem Meer: the pond at the park's north-east corner, its name Dutch for a lake, after the village of Harlem that the Dutch founded here in 1658."}
+    style: pool
+    rim: [stone, grey]
+    water: blue
+  - id: guggenheim
+    name: The Solomon R. Guggenheim Museum
+    tiles: [50, 36, 51, 37]  # on the east lots facing the park; white bands with the ribbon of windows between them
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 49, y: 37, text: "The Guggenheim Museum: Frank Lloyd Wright's white spiral of 1959, one long ramp climbing past the paintings to a glass dome; Wright died six months before it opened."}
+    style: stripe_tower
+    doors: [south]
+    door: [wood, white]
+    levels: 6
+    stripes: [white]
+    window_levels: [1, 3]
+    window_color: grey
+    crown_slope: [stone, white]
+    crown_cap: [stone, cyan]  # the glass dome over the rotunda
+  - id: gracie-mansion
+    name: Gracie Mansion
+    tiles: [53, 31, 54, 32]  # on the rise above the shore, the east end of the site
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    sign: {x: 52, y: 31, text: "Gracie Mansion: a merchant's wooden country house of 1799 above a swift channel of the East River, the official home of the city's mayors since 1942."}
+    style: hall
+    levels: 4
+    doors: [west]
+    door: [wood, green]
+    pillars: [wood, white]
+    courses: [yellow, white]
+    course_levels: 1
+    window_levels: [1]
+    window_color: white
+    roof_slope: [stone, grey]
+    roof_cap: [stone, grey]
+tubes:
+  - name: Park Avenue viaduct
+    section: park-avenue-viaduct  # the Harlem line's tracks over 125th Street: a pier from the ground at (46,35), north at level 6 over the station's roof, down a pier at (46,30), clear of the station's north side
+    material: stone
+    color: black
+    size: 2
+    path: [[185, 141, 0], [185, 141, 6], [185, 121, 6], [185, 121, 0]]
+streets:
+  - {name: Broadway, section: streets, tiles: [33, 30, 33, 39], block: [stone, black]}
+  - {name: Fifth Avenue, section: streets, tiles: [43, 31, 43, 39], block: [stone, black]}
+  - {name: 125th Street, section: streets, tiles: [30, 34, 54, 34], block: [stone, grey]}
+  - {name: 110th Street (Central Park North), section: streets, tiles: [30, 39, 54, 39], block: [stone, grey]}

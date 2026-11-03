@@ -269,6 +269,17 @@ def plan_crew(
         if step is not None:
             return step
 
+    # a1c. the blueprint as the hands' standing work (the owner, 2026-11-03: the office stops its walls and builds the larger
+    # New York, Midtown first; `pipeline.focus: blueprint`): every hand takes the next step it can pay for or fetch, before
+    # unloading, walling or gathering; what no store holds is gathered for it
+    if cfg.get("blueprint") and str(cfg.get("focus") or "") == "blueprint" and not away:
+        load = max((k for k in inventory if k != "berries"), key=lambda k: inventory[k], default=None) if goods >= HEAVY else None
+        step = _blueprint(persona, team, state, observe, view, inventory, position, room, mates, site, reach, teammates, floor_for, ranks, hands=True, gather=False, pack_only=load) if load else None
+        if step is None:  # a heavy pack lays what its main load pays for first; otherwise the next step, its own sections first
+            step = _blueprint(persona, team, state, observe, view, inventory, position, room, mates, site, reach, teammates, floor_for, ranks, hands=True)
+        if step is not None:
+            return step
+
     # a2. the office's walls (owner, 2026-10-25): every store full, the stone goes into walls on the staked lots; since the
     # owner's brief of 2026-11-02 (`walls.when: always`) the walls are the hands' standing work, and stone in the pack goes into them first
     walls = walls_cfg(claims) if claims else None

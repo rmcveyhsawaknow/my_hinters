@@ -170,7 +170,10 @@ def test_the_four_plots_leave_the_office_holdings_and_are_sold_as_one_ground():
     exchange = load_team(ROOT, "exchange")
     nyc = {lid for r in requests.values() if str(r["id"]).startswith("nyc-") for lid in r["lots"]}  # Lower Manhattan's ground, under contract too (2026-10-27)
     east = {f"K{n:02d}-{q}" for n in (6, 7, 8, 9) for q in ("NW", "NE", "SW", "SE")}  # the factory's East Works (2026-11-03)
-    assert set(exchange.extra["pipeline"]["claims"]["exclude"]) == lots | nyc | east and len(nyc) == 30  # Lower Manhattan's twelve, Midtown's nine and Central Park's nine (2026-11-02)
+    exclude = set(exchange.extra["pipeline"]["claims"]["exclude"])
+    north = {lid for lid in exclude if lid[1:3] in ("02", "03")}  # Uptown's ten lots and Nintendo Land's thirty-two (2026-11-03)
+    hideaway = {"G10-NW", "G10-NE", "G10-SE", "H09-SW", "H09-SE", "H10-NW", "H10-SW", "H10-SE", "I10-SW"}  # Neverland's nine trees (2026-11-03)
+    assert exclude == lots | nyc | east | north | hideaway and len(nyc) == 40 and len(north) == 42  # Lower Manhattan's twelve, Midtown's nine, Central Park's nine (2026-11-02) and Uptown's ten (2026-11-03)
     from hglab.lots import holdings, lot_anchor, stake_text
 
     signs = [{"type": "sign", "x": lot_anchor(lid)[0], "y": lot_anchor(lid)[1], "owner": "LandBroker", "text": stake_text(lid, "LandBroker")} for lid in ("I08-SE", "K04-NW")]

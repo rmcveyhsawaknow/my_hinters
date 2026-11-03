@@ -35,7 +35,7 @@ CHANGED = {
     "say", "whisper", "post_goal", "claim_goal", "confirm_goal", "invite", "join_faction", "found_faction",
 }  # an accepted action of these kinds changed the world or the record; moves and notes alone did not
 QUIET = ("keepalive", "announce", "rest")
-ROUTABLE = {"deposit", "deposit_trip", "gather_trip", "forage", "harvest", "build", "social", "engage", "reclaim", "draw", "patrol"}
+ROUTABLE = {"deposit", "deposit_trip", "gather_trip", "forage", "harvest", "build", "social", "engage", "reclaim", "draw", "patrol", "help"}
 CHARACTER_SHARE = 0.15  # a character is routed only to work its own intended mix gives at least this share: its personality stands
 MIX_OF = {"build": "build", "gather": "gather", "explore": "explore", "social": "social", "engage": "social", "trade": "trade"}
 
@@ -129,6 +129,14 @@ def route_for(persona: Any, team: Any | None, prod: dict[str, Any], pats: dict[t
                     f" the team's blueprint wakes changed the world in {int(team_bp['rate'] * 100)}% of {team_bp['wakes']}, so the pack's material goes into blocks"
                 ),
             }
+    from hglab.factory import builder_sections, design_complete, root_of, team_designs
+
+    builder = builder_sections(team, persona.slug) is not None
+    if (crew is not None or builder) and not (has_blueprint and not all(design_complete(root_of(team), d) for d in team_designs(team))):
+        # the owner, 2026-11-03: nobody who can build stands idle while another team's blueprint is open
+        state = "every key result met" if done else mine
+        own = "its team's designs are done" if has_blueprint else "its team has no blueprint"
+        return {"approach": "help", "why": f"routed to help: {state}; {own}, so it lends a hand to the nearest open blueprint (hglab.help)"}
     if prod["share"] > IDLE_SHARE:
         return None  # met its goals but busy, and not a hand: it carries on
     if crew is not None:

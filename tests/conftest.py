@@ -1,5 +1,7 @@
 """Tests never read or write this host's live state under runs/local."""
 
+from pathlib import Path
+
 import pytest
 
 
@@ -23,6 +25,23 @@ def _private_office_ledger(tmp_path_factory, monkeypatch):
 
     folder = tmp_path_factory.mktemp("office")
     monkeypatch.setattr(evict, "shared_path", lambda root: folder / "evictions.json")
+
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def office_team(walls=False):
+    """The exchange team as it stood before 2026-11-03: without the New York blueprint focus (tests/test_office_builds.py
+    covers that), and with the walls enabled when a test is about them (the mechanism stands, switched off by the owner)."""
+    from hglab.persona import load_team as _load_team
+
+    team = _load_team(ROOT, "exchange")
+    cfg = team.extra["pipeline"]
+    for key in ("blueprint", "next_blueprint", "builders", "focus"):
+        cfg.pop(key, None)
+    if walls:
+        cfg["claims"]["walls"]["enabled"] = True
+    return team
 
 
 @pytest.fixture(autouse=True)

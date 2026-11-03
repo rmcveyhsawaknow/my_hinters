@@ -60,7 +60,7 @@ def test_a_far_target_is_walked_to_and_an_unknown_resident_is_left_alone():
 def test_the_border_signs_rise_nearest_first_with_their_own_words():
     bell = load_personas(ROOT)["tinker-bell"]
     team = load_team(ROOT, bell.team)
-    assert team.border and len(team.border["signs"]) == 8 and all(len(s["text"]) <= 200 for s in team.border["signs"])
+    assert team.border and len(team.border["signs"]) == 13 and all(len(s["text"]) <= 200 for s in team.border["signs"])  # five more on the north since 2026-11-03
     assert team.binding_territory and team.binding_territory["status"] == "confirmed"
     names = {"tinkerglow": "tinker-bell", "stoutheart": "nibs"}
     view = WorldView(x0=70, y0=96, rows=ROWS, world_structures=[{"type": "sign", "x": 74, "y": 102, "owner": "Stoutheart"}])
@@ -109,7 +109,7 @@ def test_the_gatekeeper_reclaims_only_near_neverland_and_an_expedition_holds_the
     bucket = personas["mrs-bucket"]
     bteam = load_team(ROOT, bucket.team)
     observe = load_fixture(ROOT / "tests/fixtures/observe/mrs-bucket.json")
-    observe["you"].update({"x": 76, "y": 72, "energy": 100, "inventory": {"wood": 5, "berries": 10}})
+    observe["you"].update({"x": 76, "y": 72, "energy": 100, "inventory": {"berries": 10}})  # nothing a step of the factory could take: with wood she would carry it there (2026-11-03)
     observe["resources"] = []
     observe["structures"] = []
     observe["tick"] = 30000

@@ -24,7 +24,7 @@ def test_a_builder_clears_its_berries_before_it_fetches_materials(tmp_path, monk
     store = {"type": "storehouse", "x": 84, "y": 89, "owner": "Treacleaxe", "policy": "faction", "faction": "Chocolate Factory", "storage": {"stone": 200, "wood": 100}}  # beside the builder, too far from the elevator to pay for it there
     view = WorldView(x0=79, y0=82, rows=GRASS, full_map=GRASS, structures=[store], world_structures=[store], tick=70000)
     observe = {"tick": 70000, "you": {"name": mason.name, "x": 84, "y": 88, "energy": 100, "faction": {"id": 5, "name": "Chocolate Factory"}, "blocks_owned": 0}}
-    clogged = {"berries": 29, "wood": 15, "fiber": 5}
+    clogged = {"berries": 29, "wood": 1, "fiber": 5}  # one wood pays for no step (since 2026-11-03 a payable step is laid before any fetch)
     step = factory.plan_step(mason, team, PersonaState(mood="busy"), observe, view, dict(clogged), (84, 88), 3, mates={"Treacleaxe"})
     assert step is not None and step[0][0] == {"action": "give", "x": 84, "y": 89, "item": "berries", "qty": 24}  # five kept, the rest put away
     take = next(a for a in step[0] if a["action"] == "take")

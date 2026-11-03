@@ -1,9 +1,9 @@
 ```
 STOUTHEART: the one who stays                                day 182
 Alive         █████████░   92   ██████▇  55/56 wakes, never lapsed, 3 failed
-On mission    ███████░░░   72   ▅▅▅▅▅▆▆  56% inside · 3/3 in place · 2 hard jobs · 100% standing
-In character  ███████░░░   70   ▇▇▇▇▇▇▆  brave 4 · cheerful 5 · steadfast 5 · protective 4
-Team pull     Escape 71 (Lagalong) → Resolve 36 · Courage 49 → Tinkerglow · Belief 42 → Tinkerglow
+On mission    ████████░░   75   ▅▅▅▅▅▆▆  67% inside · 3/3 in place · 2 hard jobs · 100% standing
+In character  ██████░░░░   58   ▇▇▇▇▇▇▅  brave 4 · cheerful 5 · steadfast 5 · protective 4
+Team pull     Escape 63 (Lagalong) → Resolve 31 · Courage 49 → Tinkerglow · Belief 43 → Tinkerglow
 Working       farm plus stocked storehouse: 3 outcome for 33 energy over 12 wake(s)
 Not working   nothing clearly failing
 Next bet      try greeting visitors at least once this week; it has a bet but no wakes
@@ -32,7 +32,7 @@ One formula for every agent: wakes completed vs scheduled, verification never la
 
 | key result | value | target | weight | progress |
 | --- | --- | --- | --- | --- |
-| share of time inside Neverland | 56% inside | 1.0 | 0.3 | 56% |
+| share of time inside Neverland | 67% inside | 1.0 | 0.3 | 67% |
 | farm, storehouse and stocked stores | 3/3 in place | 3 | 0.3 | 100% |
 | hard jobs done inside | 2 hard jobs | 5 | 0.25 | 40% |
 | team structures kept standing | 100% standing | 0.9 | 0.15 | 100% |
@@ -43,7 +43,7 @@ Behaviour signatures (numeric ranges the persona expects):
 
 | signature | value | expected | in range |
 | --- | --- | --- | --- |
-| mean distance from Neverland's centre | 1.868 | 0–6 | yes |
+| mean distance from Neverland's centre | 8.637 | 0–6 | no |
 | share of energy building | 0.15 | 0.3–0.6 | no |
 | visitors greeted over 7 days | 4.0 | 0–10 | yes |
 | intended vs actual energy mix | 0.39 | 0.6–1.0 | no |
@@ -61,13 +61,13 @@ Judge (fixture fixture, 6 lines, 8 actions):
 
 | direction | signal | from → to | value | effect | plain English |
 | --- | --- | --- | --- | --- | --- |
-| received | escape | tootles → nibs | 71 | resolve | The more Lagalong leaves, the more firmly Stoutheart stays and stocks the stores. |
+| received | escape | tootles → nibs | 63 | resolve | The more Lagalong leaves, the more firmly Stoutheart stays and stocks the stores. |
 | sent | courage | nibs → tinker-bell | 49 | glow | Hard jobs done inside Neverland and visitors greeted brighten Tinkerglow's Glow. |
-| sent | belief | nibs → tinker-bell | 42 | glow | Stoutheart arriving where she pointed, using her bridges and staying inside is Belief, and Belief sets her Glow. |
+| sent | belief | nibs → tinker-bell | 43 | glow | Stoutheart arriving where she pointed, using her bridges and staying inside is Belief, and Belief sets her Glow. |
 
 - Courage 49: 2 hard job(s) inside, 4 greeting(s), structures standing 100%.
-- Belief 42: 5 arrival(s) inside, 0 bridge crossing(s), staying inside.
-- Escape 71: 100% of moves outside, farthest 42 tiles from the centre.
+- Belief 43: 6 arrival(s) inside, 0 bridge crossing(s), staying inside.
+- Escape 63: 86% of moves outside, farthest 40 tiles from the centre.
 
 ## Community lens (informational, never ranked)
 
@@ -98,6 +98,6 @@ Judge (fixture fixture, 6 lines, 8 actions):
 | 2026-10-14 | 98 | 59 | 88 |
 | 2026-10-15 | 98 | 60 | 91 |
 | 2026-10-16 | 99 | 67 | 83 |
-| 2026-10-17 | 92 | 72 | 70 |
+| 2026-10-17 | 92 | 75 | 58 |
 
 Sources: public event log, redacted run records, kb. Metric spec v1.
