@@ -450,7 +450,8 @@ def plan_wake(
                 or (_plan_reclaim(persona, team, state, inventory, here, view, observe, teammates, collective_names, room=budget - len(actions)) if here == position else None)
             )
         elif activity == "gather":
-            step = (
+            gate = _office_gate(persona, team, state, view, observe, names, cast)
+            step = None if gate is not None and not gate[0] else (
                 _plan_gather(persona, team, inventory, here, view, teammates, rng)
                 or _plan_deposit(persona, inventory, here, view, None, mates=set(collective_names or ()) | set(names or ()), state=state, faction=our_faction, skip=no_drop)
                 or _plan_deposit_trip(persona, team, inventory, here, view, teammates, {n.casefold() for n in set(collective_names or ()) | set(names or ())} | {persona.name.casefold()}, state=state, faction=our_faction, skip=no_drop)
@@ -608,6 +609,23 @@ def _plan_team_faction(
     actions: list[dict[str, Any]] = [{"action": "found_faction", "name": wanted, "motto": str(cfg.get("motto") or team.aim)[:120], "membership": str(cfg.get("membership") or "invite")}]
     actions.extend({"action": "invite", "name": m} for m in invites)
     return (actions, f"found {wanted} for {team.name}" + (f" and invite {', '.join(invites)}" if invites else ""), "team")
+
+
+def _office_gate(
+    persona: Persona,
+    team: Team | None,
+    state: PersonaState,
+    view: WorldView,
+    observe: dict[str, Any],
+    names: dict[str, str] | None,
+    cast: dict[str, Any] | None,
+) -> tuple[bool, str] | None:
+    """The land office's gathering throttle (``hglab.crew.office_gathering``); None outside the office."""
+    if team is None or not isinstance(((team.extra or {}).get("pipeline") or {}).get("claims"), dict):
+        return None
+    from hglab.crew import office_gathering
+
+    return office_gathering(persona, team, state, view, observe, names, (cast or {}).get("crew_roles"))
 
 
 def _plan_crew(
@@ -768,6 +786,9 @@ def _plan_work(
     used: set[str] = set()  # labels the preferred pass already took this wake
     if persona.knobs.get("crew"):
         used.update({"build", "hearth", "house", "border", "stash", "deposit", "deposit_trip"})  # a hand builds and unloads through the team's plan only
+    office_gate = _office_gate(persona, team, state, view, observe, names, cast)
+    if office_gate is not None and not office_gate[0]:
+        used.update({"gather_trip", "forage"})  # the land office's stores past the mark (the owner, 2026-11-03): its members gather nothing
     ours = set(collective_names or ()) | set(names or ())
     our_faction = _faction_name((observe.get("you") or {}).get("faction")) or None
     tills = frozenset((int(t[0]), int(t[1])) for t in (cast or {}).get("office_tills") or ())  # the land office's tills: the price of land only (2026-10-27)
