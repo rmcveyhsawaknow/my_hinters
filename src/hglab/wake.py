@@ -618,6 +618,16 @@ def persona_wake(
             state, mode, tick, position if all(isinstance(v, int) for v in position) else None
         )
         actions = list(plan.get("actions", []))
+        if any(a.get("action") == "gather" for a in actions) and team is not None and isinstance(((team.extra or {}).get("pipeline") or {}).get("claims"), dict):
+            # the land office's throttle holds whoever planned the wake, a model included (the owner, 2026-11-03; hglab.fill)
+            from hglab.crew import office_gathering
+            from hglab.planner import WorldView
+
+            seen = WorldView.from_observe(observe, terrain_rows, owned_counts, public_structures, public_agents, public_resources)
+            gate = office_gathering(persona, team, state, seen, observe, names, cast.get("crew_roles"))
+            if gate is not None and not gate[0]:
+                actions = [a for a in actions if a.get("action") != "gather"]
+                extras["office_gate"] = gate[1]
         room = min(3, persona.actions_per_wake)  # a note counts against the knob: 2026-10-31 GrandadPail's model plan of two moves and a note failed the wake whole
         for note in plan.get("remember", []) or []:
             chosen = sum(1 for a in actions if not (a.get("action") == "remember" and a.get("key") in BOOKKEEPING_KEYS))
@@ -817,6 +827,7 @@ def persona_wake(
     )
     if isinstance(record, dict) and not dry_run:
         settle_ledgers(root, team, record, client, persona.name)  # under Actions too: a shift's wakes share no host, only this ledger
+        record_office_fill(root, team, personas, context.get("observe"))
     if os.environ.get("HGLAB_RUNTIME") == "local":
         settle_tasks(
             persona.name, root, record.get("run_id") if isinstance(record, dict) else None, dry_run
@@ -832,6 +843,20 @@ def persona_wake(
             if said:
                 mark_announced(root, said, int(record.get("tick", 0) or 0))
     return record
+
+
+def record_office_fill(root: Path, team: Team | None, personas: dict[str, Persona], observe: dict[str, Any] | None) -> int:
+    """The office's stores this live wake saw, with their contents, onto the fill board every member reads (``hglab.fill``, 2026-11-03)."""
+    claims = (((team.extra or {}).get("pipeline") or {}).get("claims")) if team is not None else None
+    if not isinstance(claims, dict) or not isinstance(observe, dict):
+        return 0
+    from hglab.fill import record
+
+    owners = {personas[m].name for m in team.members if m in personas}
+    try:
+        return record(root, list(observe.get("structures") or []), owners, int(observe.get("tick", 0) or 0))
+    except OSError:
+        return 0
 
 
 def settle_ledgers(root: Path, team: Team | None, record: dict[str, Any], client: Any, by: str) -> list[str]:

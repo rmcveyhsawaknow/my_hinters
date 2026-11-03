@@ -208,6 +208,13 @@ def plan_crew(
 
     stores = [s for s in factory_stores(view, mates, site, radius, blueprint_depots(team)) if ours(s)]
     tick = int(view.tick or observe.get("tick", 0) or 0)
+    board: dict[str, dict[str, Any]] = {}
+    if claims:
+        from hglab.factory import root_of
+        from hglab.fill import enrich, load_board
+
+        board = load_board(root_of(team))
+        stores = enrich(stores, board, tick)  # the office's stores out of view as its members last saw them (2026-11-03)
     full = _full_stores(state, tick)
     open_stores = [s for s in stores if (int(s["x"]), int(s["y"])) not in full and storehouse_room(s) >= OVERFLOW_ROOM]
     stores_max = int(cfg.get("stores_max", STORES_MAX) or STORES_MAX)
@@ -225,6 +232,10 @@ def plan_crew(
         return floor_default
 
     field = [s for s in depots(view, mates, site, radius) if ours(s)] if claims else []
+    if claims:
+        from hglab.fill import enrich
+
+        field = enrich(field, board, tick)
     drop_points = [*stores, *field] if role != "hauler" else stores
     office_stores = [*stores, *field]
 
@@ -368,7 +379,42 @@ def plan_crew(
         if step is not None:
             return step
     wanted = _role_wanted(role, levels)
+    if claims and team is not None:
+        # the owner, 2026-11-03: no gathering while every store of the office is past the mark; under it, as many
+        # hands as the room holds packs, the one whose kinds the office is shortest of first (hglab.fill)
+        from hglab.fill import decide
+
+        ok, why = decide(persona.slug, list(team.members), crew_roles, office_stores, full, overflow_room(claims), dict(cfg.get("stock") or {}))
+        if not ok:
+            state._gather_capped = why
+            return None
     return _gather_toward(persona, team, wanted, inventory, position, view, site, reach, room, teammates, "for the works", floor_for, ranks)
+
+
+def office_gathering(
+    persona: Persona,
+    team: Team | None,
+    state: PersonaState,
+    view: WorldView,
+    observe: dict[str, Any],
+    names: dict[str, str] | None,
+    crew_roles: dict[str, str] | None,
+) -> tuple[bool, str] | None:
+    """The land office's gathering throttle for one of its members (``hglab.fill``, the owner 2026-11-03), for the
+    planners' own gathering (a shift's gather trip, a wake's gather); None for a team that keeps no claims."""
+    cfg = pipeline_of(team)
+    claims = cfg.get("claims") if cfg else None
+    if not isinstance(claims, dict) or team is None:
+        return None
+    from hglab.factory import root_of
+    from hglab.fill import decide, enrich, load_board
+
+    tick = int(view.tick or observe.get("tick", 0) or 0)
+    tills = till_tiles(claims)
+    excluded = {str(lid).upper() for lid in claims.get("exclude") or []}
+    stores = [s for where, s in _team_stores(view, team_member_names(persona, team, names)).items() if where not in tills and lot_id(*where) not in excluded]
+    stores = enrich(stores, load_board(root_of(team)), tick)
+    return decide(persona.slug, list(team.members), crew_roles, stores, _full_stores(state, tick), overflow_room(claims), dict(cfg.get("stock") or {}))
 
 
 def stock_at_target(levels: dict[str, tuple[int, int]]) -> bool:
