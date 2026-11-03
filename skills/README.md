@@ -9,3 +9,5 @@ Science: `goal-inference`, `idea-generation`, `hypothesis-design`, `experiment-p
 Ops: `kb-curation`, `safety-check`, `handoff`.
 
 Personas and play: `hg-be-agent`, `hg-community`, `hg-new-agent`, `hg-pulse`, `hg-deploy-agent`, `hg-collector`, `hg-land-office`.
+
+Pair programming for the owner's chats (2026-11-03): `hg-blueprint-design` (a new blueprint from idea to merged design), `hg-graph-optimize` (the memory graph, agent performance and the levers that change it), `hg-team-lifecycle` (decommission, create or repurpose a team).

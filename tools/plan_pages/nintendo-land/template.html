@@ -1,0 +1,330 @@
+<meta charset="utf-8">
+<title>Nintendo Land Plan</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* layout: a site-plan sheet: title block and figures, the drawing across the page with its key, the districts' tables, then the build order and the reasoning */
+:root {
+  --paper: #f3f5f1; --sheet: #fbfcfa; --ink: #1f2a2b; --muted: #5d6a68; --line: #cdd5d0; --grid: #e3e8e4;
+  --ground: #f2f4ec; --forest: #dde8d3; --sand: #f1e8cf; --water: #cfe2e7; --mount: #ddd6ca; --hill: #e6e0d2;
+  --accent: #2a5f8a; --accent-soft: #e1ebf3; --warn: #a2611a; --road: #c9b48c; --wallc: #4d4a46;
+  --n-wood: #7b5a36; --n-fiber: #6f8f3a; --n-berries: #b2456b;
+  --d-mushroom: #e34948; --d-kart: #8b9094; --d-dreamland: #e87ba4; --d-pokemon: #eda100; --d-history: #3a4445;
+  --d-inkopolis: #1baf7a; --d-village: #2a78d6; --d-hyrule: #008300; --d-zebes: #6250d6; --d-jungle: #eb6834;
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif; --body: "Archivo", "Helvetica Neue", Arial, sans-serif; --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #161b1c; --sheet: #1c2224; --ink: #e4ebe8; --muted: #9aa8a5; --line: #34403f; --grid: #252e2f;
+  --ground: #20282a; --forest: #1b3424; --sand: #3a3323; --water: #1c3640; --mount: #3a3530; --hill: #2f2c27;
+  --accent: #8fbde3; --accent-soft: #1f3242; --warn: #e2a35a; --road: #7d6c4c; --wallc: #b9b2a8;
+  --n-wood: #c49a6c; --n-fiber: #a6c46c; --n-berries: #e47b9e;
+  --d-mushroom: #e66767; --d-kart: #7d8388; --d-dreamland: #d55181; --d-pokemon: #c98500; --d-history: #c9d2cf;
+  --d-inkopolis: #199e70; --d-village: #3987e5; --d-hyrule: #008300; --d-zebes: #9085e9; --d-jungle: #d95926; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #161b1c; --sheet: #1c2224; --ink: #e4ebe8; --muted: #9aa8a5; --line: #34403f; --grid: #252e2f;
+  --ground: #20282a; --forest: #1b3424; --sand: #3a3323; --water: #1c3640; --mount: #3a3530; --hill: #2f2c27;
+  --accent: #8fbde3; --accent-soft: #1f3242; --warn: #e2a35a; --road: #7d6c4c; --wallc: #b9b2a8;
+  --n-wood: #c49a6c; --n-fiber: #a6c46c; --n-berries: #e47b9e;
+  --d-mushroom: #e66767; --d-kart: #7d8388; --d-dreamland: #d55181; --d-pokemon: #c98500; --d-history: #c9d2cf;
+  --d-inkopolis: #199e70; --d-village: #3987e5; --d-hyrule: #008300; --d-zebes: #9085e9; --d-jungle: #d95926; color-scheme: dark }
+body { background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.55; margin: 0; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 28px 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; }
+header { display: grid; gap: 8px; border-bottom: 2px solid var(--ink); padding-bottom: 16px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+h1 { font-family: var(--display); font-stretch: 78%; font-weight: 800; font-size: clamp(32px, 6vw, 52px); line-height: 1; margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+.lede { max-width: 72ch; margin: 0; }
+h2 { font-family: var(--display); font-stretch: 85%; font-weight: 700; font-size: 21px; margin: 0; text-wrap: balance; }
+h3 { font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; margin: 0; }
+.figures { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.figure { background: var(--sheet); padding: 14px 16px; display: grid; gap: 2px; min-width: 0; }
+.figure .k { font-family: var(--mono); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.figure .v { font-family: var(--display); font-stretch: 80%; font-weight: 700; font-size: 28px; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.figure .v small { font-size: 15px; font-weight: 500; color: var(--muted); }
+.figure .n { font-size: 13px; color: var(--muted); }
+.drawing { background: var(--sheet); border: 1px solid var(--line); padding: 12px; min-width: 0; display: grid; gap: 10px; }
+.drawing svg { width: 100%; height: auto; display: block; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12.5px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.sw { width: 14px; height: 10px; display: inline-block; border: 1px solid var(--line); flex: none; }
+.signline { font-size: 14px; padding: 10px 12px; border-left: 3px solid var(--accent); background: var(--paper); min-height: 4.4em; }
+.signline .where { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.keygrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px 20px; }
+.works { display: grid; gap: 2px; align-content: start; min-width: 0; }
+.works h3 { display: flex; align-items: center; gap: 8px; margin-bottom: 2px; }
+.chip { display: inline-block; width: 10px; height: 10px; border-radius: 2px; outline: 1px solid var(--line); flex: none; }
+.bldg { display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; gap: 8px; align-items: baseline; padding: 4px 8px; border-radius: 4px; cursor: pointer; border: 0; background: none; color: inherit; font: inherit; font-size: 14px; text-align: left; width: 100%; }
+.bldg:hover, .bldg.on { background: var(--accent-soft); }
+.bldg:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.bldg .no { font-family: var(--mono); font-size: 12px; text-align: right; color: var(--muted); }
+.bldg .nm { font-weight: 600; min-width: 0; }
+.bldg .meta { font-family: var(--mono); font-size: 11.5px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+section.block { background: var(--sheet); border: 1px solid var(--line); padding: 18px 20px; display: grid; gap: 12px; min-width: 0; }
+.cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.dgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 24px; }
+.dcard { display: grid; gap: 6px; min-width: 0; align-content: start; }
+.dcard p { margin: 0; font-size: 13.5px; color: var(--muted); }
+ol.orders, ul.calls { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 76ch; }
+.tablebox { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--mono); font-size: 10.5px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+td.num, th.num { text-align: right; }
+td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+td.mono { font-family: var(--mono); font-size: 12px; white-space: nowrap; }
+.shares { display: grid; gap: 6px; }
+.share { display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr) 64px; gap: 10px; align-items: center; font-size: 13.5px; }
+.share .bar { height: 8px; background: var(--grid); border-radius: 4px; position: relative; }
+.share .bar i { position: absolute; inset: 0 auto 0 0; border-radius: 4px; }
+.share .val { font-family: var(--mono); font-size: 12.5px; text-align: right; font-variant-numeric: tabular-nums; }
+.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.step { font-family: var(--mono); font-size: 12px; padding: 3px 8px; border: 1px solid var(--line); border-radius: 4px; background: var(--paper); white-space: nowrap; }
+.step.last { border-color: var(--accent); background: var(--accent-soft); color: var(--ink); font-weight: 500; }
+.arrow { color: var(--muted); font-size: 12px; }
+.team { display: grid; gap: 6px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.team:last-child { border-bottom: 0; }
+.team b { font-size: 14.5px; }
+code { font-family: var(--mono); font-size: 12.5px; background: var(--grid); padding: 1px 5px; border-radius: 3px; }
+.mats { display: flex; flex-wrap: wrap; gap: 8px 18px; font-family: var(--mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+.foot { font-size: 12.5px; color: var(--muted); margin: 0; }
+svg text { font-family: var(--mono); }
+.num-label { paint-order: stroke; stroke: var(--sheet); stroke-width: 3px; stroke-linejoin: round; fill: var(--ink); }
+@media (max-width: 860px) { .cols, .dgrid { grid-template-columns: minmax(0, 1fr); } .figures { grid-template-columns: repeat(2, minmax(0, 1fr)); } .share { grid-template-columns: minmax(0, 1fr) 64px; } .share .bar { grid-column: 1 / -1; grid-row: 2; } }
+@media (prefers-reduced-motion: no-preference) { .bldg { transition: background .15s; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow" id="eyebrow">The collective &middot; teams/blueprints/nintendo-land.yaml &middot; version 1</div>
+    <h1>Nintendo Land</h1>
+    <p class="lede">The collective's last great work, for every team once its own works stand: a theme park on the open north of the island, forty tiles by twenty, laid out as ten small worlds inspired by Nintendo's games and built in our own words and shapes. A visitor walks in past a pink castle under a giant mushroom, round a racing loop, through a village of healing centres and gyms, along a walk of the company's history to the museum at the heart, and on through an animal village, Hyrule's woods, a desert landing pad and a jungle of treehouses.</p>
+  </header>
+
+  <div class="figures" id="figures"></div>
+
+  <div class="drawing">
+    <svg id="map" role="img" aria-labelledby="mapTitle"><title id="mapTitle">Site plan of Nintendo Land on the world's tile grid, x 53 to 96 and y 18 to 41, buildings coloured by district and numbered as in the key</title></svg>
+    <div class="legend" id="legend"></div>
+    <div class="signline" id="signline" aria-live="polite"></div>
+  </div>
+
+  <section class="block">
+    <h2>Key</h2>
+    <p class="foot">Pick a building to read its sign. Numbers match the drawing; each district's colour is repeated in its heading, and the district tables below carry the same figures in words.</p>
+    <div class="keygrid" id="key"></div>
+  </section>
+
+  <section class="block">
+    <h2>The districts</h2>
+    <div class="dgrid" id="districts"></div>
+  </section>
+
+  <div class="cols">
+    <section class="block">
+      <h2>Totals and materials</h2>
+      <div class="mats" id="mats"></div>
+      <div class="shares" id="shares"></div>
+      <p class="foot" id="totalsfoot"></p>
+    </section>
+    <section class="block">
+      <h2>Who comes to it, after what</h2>
+      <p class="foot">Each team's own designs come first, in its pipeline's order; Nintendo Land is the last entry of every list. The counts are the steps each ledger on this host records as done.</p>
+      <div id="order"></div>
+      <p class="foot">The Admiralty, the Commons and the Square keep no build pipeline; their members may lend a hand whenever they like. The world caps each builder at 4,096 blocks, so the land needs the hands of four builders at the very least and most of the collective in practice.</p>
+    </section>
+  </div>
+
+  <div class="cols">
+    <section class="block">
+      <h2>Decisions</h2>
+      <ul class="calls">
+        <li><b>The claim signs keep their tiles.</b> The office's sign stands on every lot's centre, so every building keeps to the bands between them. Only a lawn, whose hedge slabs ring the sign, or a treehouse, whose deck passes over it at level 6, spans a lot's centre.</li>
+        <li><b>No plinth under the open ground.</b> The lawns, ponds, the landing pad and the treehouses carry no foundation, since a plinth would close the tiles their slabs and decks leave open. The buildings stand on surveyed plinths.</li>
+        <li><b>The mushroom's cap is four red tubes</b> round the stem's top three levels, three cells out on every side, with white spots on top. No style makes a cap wider than its stem.</li>
+        <li><b>The gunship hovers.</b> A statue cannot stand on the pad's slabs, so the ship is tubes on two struts at levels 6 to 10. The Chozo statue beside it is the land's statue.</li>
+        <li><b>The blade in its stone</b> is a one-tile tower, two levels of grey stone with a cyan mast standing out of it, because the statue shape reads as an animal.</li>
+        <li><b>Thirty-six sections, no more.</b> Toad House was left out to stay inside the brief's range. Lane x 55 stays open where Uptown's 125th Street ends at (54,34).</li>
+        <li><b>No metal anywhere</b>, and no stone or ore node lies under any step. Eighteen fiber, berry and wood nodes lie under footprints; every other node of the site stays open.</li>
+      </ul>
+    </section>
+    <section class="block">
+      <h2>How progress is read</h2>
+      <ul class="calls">
+        <li><code>hglab factory progress --name nintendo-land</code> lists the last steps done and who placed them.</li>
+        <li><code>hglab factory check --name nintendo-land</code> checks the world's rules against the public world; it finds no problem today.</li>
+        <li><code>tests/test_nintendo_land.py</code> holds the land to its brief: at least 28 sections in at least ten styles, a sign beside each, every box a pack can pay for, the claim signs clear and the lawns without plinths.</li>
+        <li>Each of the 36 signs appears in the public world beside its building once that building's last step is placed.</li>
+      </ul>
+    </section>
+  </div>
+  <p class="foot" id="foot"></p>
+</div>
+
+<script>
+const D = __DATA__;
+const PAINT = {natural:"#b89a74", white:"#f2f1ec", grey:"#9aa0a6", black:"#33302e", brown:"#7a4a2a", red:"#d23b2f", orange:"#e8892e", yellow:"#f0c52a", lime:"#9bcb3c", green:"#3e9a4b", teal:"#2a9d8f", cyan:"#3dbfdc", blue:"#3a6fd8", indigo:"#4b3fa8", purple:"#8e44ad", pink:"#ea7fae", tan:"#d8b98a"};
+const DCOL = k => "var(--d-" + k + ")";
+const fmt = n => Number(n).toLocaleString("en-US");
+const [X0, Y0, X1, Y1] = D.bounds, T = 20, PAD = 24;
+const Wd = (X1 - X0 + 1) * T, Ht = (Y1 - Y0 + 1) * T;
+const svg = document.getElementById("map");
+svg.setAttribute("viewBox", "0 0 " + (Wd + PAD + 4) + " " + (Ht + PAD + 4));
+const NS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent) { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); (parent || svg).appendChild(e); return e; }
+const px = x => PAD + (x - X0) * T, py = y => PAD + (y - Y0) * T;
+const defs = el("defs", {});
+const pat = el("pattern", {id: "hatch", patternUnits: "userSpaceOnUse", width: 6, height: 6, patternTransform: "rotate(45)"}, defs);
+el("line", {x1: 0, y1: 0, x2: 0, y2: 6, stroke: "var(--sheet)", "stroke-width": 2, "stroke-opacity": 0.55}, pat);
+const g = {};
+["ground", "grid", "lots", "streets", "struct", "bldg", "tube", "nodes", "mark", "labels", "axis"].forEach(k => { g[k] = el("g", {}); });
+const TERR = {g: "var(--ground)", f: "var(--forest)", s: "var(--sand)", w: "var(--water)", W: "var(--water)", m: "var(--mount)", h: "var(--hill)"};
+D.terrain.forEach((row, j) => [...row].forEach((c, i) => el("rect", {x: px(X0 + i), y: py(Y0 + j), width: T + 0.3, height: T + 0.3, fill: TERR[c] || "var(--ground)"}, g.ground)));
+for (let x = X0; x <= X1 + 1; x++) el("line", {x1: px(x), y1: PAD, x2: px(x), y2: PAD + Ht, stroke: x % 10 === 0 ? "var(--line)" : "var(--grid)", "stroke-width": x % 5 === 0 ? 1 : 0.5}, g.grid);
+for (let y = Y0; y <= Y1 + 1; y++) el("line", {x1: PAD, y1: py(y), x2: PAD + Wd, y2: py(y), stroke: y % 10 === 0 ? "var(--line)" : "var(--grid)", "stroke-width": y % 5 === 0 ? 1 : 0.5}, g.grid);
+for (let x = X0; x <= X1; x++) if (x % 5 === 0) el("text", {x: px(x) + 1, y: 15, "font-size": 10, fill: "var(--muted)"}, g.axis).textContent = x;
+for (let y = Y0; y <= Y1; y++) if (y % 5 === 0) el("text", {x: 1, y: py(y) + 11, "font-size": 10, fill: "var(--muted)"}, g.axis).textContent = y;
+D.lots.forEach(([id, x0, y0]) => el("text", {x: px(x0) + 2, y: py(y0) + 8, "font-size": 6.5, fill: "var(--muted)", opacity: 0.75}, g.lots).textContent = id);
+const [SX0, SY0, SX1, SY1] = D.site;
+el("rect", {x: px(SX0), y: py(SY0), width: (SX1 - SX0 + 1) * T, height: (SY1 - SY0 + 1) * T, fill: "none", stroke: "var(--accent)", "stroke-dasharray": "6 3", "stroke-width": 1.6}, g.mark);
+D.streets.forEach(s => {
+  const [x0, y0, x1, y1] = s.tiles;
+  const r = el("rect", {x: px(x0) + 0.5, y: py(y0) + 0.5, width: (x1 - x0 + 1) * T - 1, height: (y1 - y0 + 1) * T - 1, fill: PAINT[s.color] || PAINT.black, stroke: "var(--line)", "stroke-width": 0.6}, g.streets);
+  el("title", {}, r).textContent = "the Kart Circuit: " + s.name;
+});
+D.structures.forEach(([x, y, type]) => {
+  if (type === "road") el("rect", {x: px(x) + 2, y: py(y) + 2, width: T - 4, height: T - 4, fill: "var(--road)"}, g.struct);
+  else if (type === "wall") el("rect", {x: px(x) + 3, y: py(y) + 3, width: T - 6, height: T - 6, fill: "var(--wallc)"}, g.struct);
+  else if (type === "bridge") el("rect", {x: px(x) + 1, y: py(y) + 6, width: T - 2, height: T - 12, fill: "var(--muted)", opacity: 0.5}, g.struct);
+  else el("rect", {x: px(x) + 7, y: py(y) + 7, width: T - 14, height: T - 14, fill: "var(--muted)"}, g.struct);
+});
+const rects = {};
+D.sections.forEach(s => {
+  const [x0, y0, x1, y1] = s.tiles, col = DCOL(s.district);
+  const grp = el("g", {"data-id": s.id, style: "cursor:pointer"}, g.bldg);
+  const attrs = {x: px(x0) + 1, y: py(y0) + 1, width: (x1 - x0 + 1) * T - 2, height: (y1 - y0 + 1) * T - 2, fill: col, rx: 2};
+  if (s.kind === "open") Object.assign(attrs, {"fill-opacity": 0.3, stroke: col, "stroke-width": 1.6, "stroke-dasharray": "4 2"});
+  else if (s.kind === "deck") Object.assign(attrs, {"fill-opacity": 0.4, stroke: col, "stroke-width": 1.6});
+  else Object.assign(attrs, {stroke: "var(--ink)", "stroke-width": 1});
+  const r = el("rect", attrs, grp);
+  if (s.district === "kart" && s.kind === "solid") el("rect", {x: attrs.x, y: attrs.y, width: attrs.width, height: attrs.height, fill: "url(#hatch)", rx: 2, "pointer-events": "none"}, grp);
+  s.trunks.forEach(([tx, ty]) => el("rect", {x: px(tx) + 5, y: py(ty) + 5, width: T - 10, height: T - 10, fill: col, stroke: "var(--ink)", "stroke-width": 0.8}, grp));
+  el("title", {}, grp).textContent = s.n + ". " + s.name + " · " + s.style + " · up to level " + s.top + " · " + fmt(s.blocks) + " blocks";
+  const tx = el("text", {x: px(x0) + ((x1 - x0 + 1) * T) / 2, y: py(y0) + ((y1 - y0 + 1) * T) / 2 + 4, "font-size": 11, "text-anchor": "middle", "font-weight": 500, class: "num-label", "pointer-events": "none"}, g.labels);
+  tx.textContent = s.n;
+  rects[s.id] = {r: r, base: attrs["stroke-width"], stroke: attrs.stroke};
+  grp.addEventListener("click", () => pick(s.id));
+  el("circle", {cx: px(s.sign[0]) + T / 2, cy: py(s.sign[1]) + T / 2, r: 2.8, fill: "var(--ink)", stroke: "var(--sheet)", "stroke-width": 1}, g.mark);
+});
+D.centres.forEach(([x, y]) => {
+  const cx = px(x) + T / 2, cy = py(y) + T / 2;
+  el("path", {d: "M" + (cx - 3.5) + " " + cy + "h7M" + cx + " " + (cy - 3.5) + "v7", stroke: "var(--accent)", "stroke-width": 1.4}, g.mark);
+});
+const NODE = {wood: "var(--n-wood)", fiber: "var(--n-fiber)", berries: "var(--n-berries)", stone: "var(--muted)", ore: "var(--warn)"};
+D.nodes.forEach(([x, y, kind, under]) => {
+  const c = el("circle", {cx: px(x) + T - 5, cy: py(y) + 5, r: 2, fill: NODE[kind] || "var(--muted)", opacity: 0.85}, g.nodes);
+  if (under) el("circle", {cx: px(x) + T - 5, cy: py(y) + 5, r: 3.6, fill: "none", stroke: "var(--warn)", "stroke-width": 1}, g.nodes);
+});
+D.tubes.forEach(tb => {
+  const pts = tb.path.map(([x, y]) => (PAD + (x - X0) * T) + "," + (PAD + (y - Y0) * T)).join(" ");
+  const w = 2 + tb.size * 1.7;
+  el("polyline", {points: pts, fill: "none", stroke: "var(--sheet)", "stroke-width": w + 2.2, "stroke-linecap": "round", "stroke-linejoin": "round", opacity: 0.9}, g.tube);
+  const line = el("polyline", {points: pts, fill: "none", stroke: PAINT[tb.color] || PAINT.grey, "stroke-width": w, "stroke-linecap": "round", "stroke-linejoin": "round"}, g.tube);
+  el("title", {}, line).textContent = "tube: " + tb.name + " · levels " + tb.z[0] + "-" + tb.z[1] + (tb.ground ? " · stands on the ground" : " · rests on a building");
+});
+const legend = document.getElementById("legend");
+const items = [
+  ['<i class="sw" style="background:var(--ground)"></i>grass'], ['<i class="sw" style="background:var(--forest)"></i>forest'], ['<i class="sw" style="background:var(--sand)"></i>sand'], ['<i class="sw" style="background:var(--water)"></i>water'],
+  ['<i class="sw" style="background:var(--muted);opacity:.5"></i>building, lawn or pond (dashed), deck'],
+  ['<svg width="12" height="12" aria-hidden="true"><path d="M2.5 6h7M6 2.5v7" stroke="var(--accent)" stroke-width="1.4"/></svg>office claim sign'],
+  ['<svg width="10" height="10" aria-hidden="true"><circle cx="5" cy="5" r="2.8" fill="var(--ink)"/></svg>building sign'],
+  ['<svg width="12" height="10" aria-hidden="true"><polyline points="1,8 6,3 11,8" fill="none" stroke="#3e9a4b" stroke-width="3" stroke-linecap="round"/></svg>tube (at level 6 and up)'],
+  ['<i class="sw" style="background:#33302e"></i>circuit slabs'], ['<i class="sw" style="background:var(--road)"></i>Lagalong\'s roads'], ['<i class="sw" style="background:var(--wallc)"></i>office walls'],
+  ['<svg width="22" height="10" aria-hidden="true"><circle cx="4" cy="5" r="2" fill="var(--n-wood)"/><circle cx="11" cy="5" r="2" fill="var(--n-fiber)"/><circle cx="18" cy="5" r="2" fill="var(--n-berries)"/></svg>wood, fiber, berry nodes'],
+  ['<svg width="10" height="10" aria-hidden="true"><circle cx="5" cy="5" r="3.6" fill="none" stroke="var(--warn)"/></svg>node under a footprint'],
+];
+items.forEach(([h]) => { const s = document.createElement("span"); s.innerHTML = h; legend.appendChild(s); });
+const t = D.totals;
+document.getElementById("eyebrow").textContent = "The collective · teams/blueprints/nintendo-land.yaml · version 1 · surveyed at tick 153,228, drawn on the world of tick " + fmt(D.tick) + ", 2026-11-03";
+const figs = [
+  ["Sections", t.sections + " <small>in " + t.districts + " districts</small>", t.styles + " styles, each with its sign"],
+  ["Tiles under sections", fmt(t.tiles) + " <small>of " + fmt(t.siteTiles) + "</small>", "buildings, lawns, ponds and decks; " + t.streetTiles + " more of circuit"],
+  ["Blocks", fmt(t.blocks), fmt(t.steps) + " steps; " + fmt(t.plinth) + " of them in plinths"],
+  ["Tallest", "level " + t.tallest, "the castle's keep, the mushroom, the Sage's Spire"],
+];
+document.getElementById("figures").innerHTML = figs.map(([k, v, n]) => '<div class="figure"><span class="k">' + k + '</span><span class="v">' + v + '</span><span class="n">' + n + '</span></div>').join("");
+const key = document.getElementById("key");
+const dist = {}; D.districts.forEach(d => { dist[d.key] = d; });
+D.districts.forEach(d => {
+  const box = document.createElement("div"); box.className = "works";
+  const h = document.createElement("h3"); h.innerHTML = '<i class="chip" style="background:' + DCOL(d.key) + '"></i>'; h.append(d.title); box.appendChild(h);
+  D.sections.filter(s => s.district === d.key).forEach(s => {
+    const b = document.createElement("button"); b.className = "bldg"; b.type = "button"; b.id = "b-" + s.id;
+    b.innerHTML = '<span class="no">' + s.n + '</span><span class="nm"></span><span class="meta">' + s.w + "×" + s.h + " · lv " + s.top + "</span>";
+    b.querySelector(".nm").textContent = s.name;
+    b.addEventListener("click", () => pick(s.id));
+    box.appendChild(b);
+  });
+  key.appendChild(box);
+});
+const signline = document.getElementById("signline");
+function pick(id) {
+  const s = D.sections.find(x => x.id === id); if (!s) return;
+  document.querySelectorAll(".bldg.on").forEach(b => b.classList.remove("on"));
+  const b = document.getElementById("b-" + id); if (b) b.classList.add("on");
+  Object.entries(rects).forEach(([k, v]) => { v.r.setAttribute("stroke-width", k === id ? 3.2 : v.base); if (k === id) v.r.setAttribute("stroke", "var(--ink)"); else v.r.setAttribute("stroke", v.stroke); });
+  signline.innerHTML = "";
+  const head = document.createElement("div"); head.innerHTML = "<b></b> <span class='where'></span>";
+  head.querySelector("b").textContent = s.n + ". " + s.name;
+  head.querySelector(".where").textContent = dist[s.district].title + " · " + s.style + " · sign at (" + s.sign.join(",") + ")";
+  const text = document.createElement("div"); text.textContent = s.text;
+  signline.append(head, text);
+}
+pick("museum");
+const dbox = document.getElementById("districts");
+D.districts.forEach(d => {
+  const card = document.createElement("div"); card.className = "dcard";
+  const h = document.createElement("h3"); h.style.display = "flex"; h.style.gap = "8px"; h.style.alignItems = "center";
+  h.innerHTML = '<i class="chip" style="background:' + DCOL(d.key) + '"></i>'; h.append(d.title);
+  const p = document.createElement("p");
+  p.textContent = d.blurb + ". " + d.tiles + " tiles, " + fmt(d.blocks) + " blocks" + (d.extraBlocks ? " (" + fmt(d.extraBlocks) + " of them in its tubes" + (d.key === "kart" ? " and the circuit" : "") + ")" : "") + "; lots " + d.lots.join(", ") + ".";
+  const tb = document.createElement("div"); tb.className = "tablebox";
+  const rows = D.sections.filter(s => s.district === d.key).map(s => {
+    const [x0, y0, x1, y1] = s.tiles;
+    const where = x0 === x1 && y0 === y1 ? "(" + x0 + "," + y0 + ")" : "(" + x0 + "," + y0 + ")–(" + x1 + "," + y1 + ")";
+    return "<tr><td class='num'>" + s.n + "</td><td>" + s.name.replace(/&/g, "&amp;").replace(/</g, "&lt;") + "</td><td>" + s.style + "</td><td class='mono'>" + where + " " + s.w + "×" + s.h + "</td><td class='num'>" + s.top + "</td><td class='num'>" + fmt(s.blocks) + "</td><td class='mono'>(" + s.sign.join(",") + ")</td></tr>";
+  }).join("");
+  tb.innerHTML = "<table><thead><tr><th class='num'>#</th><th>Building</th><th>Style</th><th>Tiles</th><th class='num'>Top</th><th class='num'>Blocks</th><th>Sign</th></tr></thead><tbody>" + rows + "</tbody></table>";
+  card.append(h, p, tb);
+  dbox.appendChild(card);
+});
+const it = t.items, mb = t.matBlocks;
+document.getElementById("mats").innerHTML = "<span>stone " + fmt(it.stone || 0) + "</span><span>wood " + fmt(it.wood || 0) + "</span><span>fiber " + fmt(it.fiber || 0) + "</span><span>ore " + fmt(it.ore || 0) + "</span><span style='color:var(--muted)'>items to gather (a block costs a quarter item)</span>";
+const shares = document.getElementById("shares");
+const maxB = Math.max(...D.districts.map(d => d.blocks));
+D.districts.forEach(d => {
+  const row = document.createElement("div"); row.className = "share";
+  row.innerHTML = '<span></span><div class="bar" role="img" aria-label="' + d.title + ': ' + fmt(d.blocks) + ' blocks"><i style="width:' + Math.round(100 * d.blocks / maxB) + '%;background:' + DCOL(d.key) + '"></i></div><span class="val">' + fmt(d.blocks) + '</span>';
+  row.querySelector("span").textContent = d.title;
+  shares.appendChild(row);
+});
+const nu = t.nodesUnder;
+document.getElementById("totalsfoot").textContent = "Blocks by material: stone " + fmt(mb.stone || 0) + ", wood " + fmt(mb.wood || 0) + ", thatch " + fmt(mb.thatch || 0) + (mb.metal ? ", metal " + fmt(mb.metal) : ", no metal") + ". " + t.tubes + " tubes and " + t.signs + " signs. Nodes under footprints: " + Object.entries(nu).map(([k, v]) => v + " " + k).join(", ") + "; hglab factory check: " + t.problems + " problems.";
+const ob = document.getElementById("order");
+D.order.forEach(o => {
+  const box = document.createElement("div"); box.className = "team";
+  const GLOSS = {exchange: "the land office's hands", "chocolate-factory": "the crew", atelier: "Plumbline", neverland: "the hideaway's builders"};
+  const b = document.createElement("b"); b.textContent = o.team + (GLOSS[o.slug] ? ", " + GLOSS[o.slug] : "") + (o.builders ? " · " + o.builders + (o.builders === 1 ? " builder" : " builders") : "");
+  const flow = document.createElement("div"); flow.className = "flow";
+  o.works.forEach((w, i) => {
+    if (i) { const a = document.createElement("span"); a.className = "arrow"; a.textContent = "→"; flow.appendChild(a); }
+    const s = document.createElement("span"); s.className = "step" + (w.id === "nintendo-land" ? " last" : "");
+    s.textContent = w.name.replace(/^The /, "") + " " + fmt(w.done) + "/" + fmt(w.steps);
+    s.title = fmt(w.blocks) + " blocks";
+    flow.appendChild(s);
+  });
+  box.append(b, flow);
+  ob.appendChild(box);
+});
+document.getElementById("foot").textContent = "Drawn from teams/blueprints/nintendo-land.yaml, its expanded steps (hglab.factory) and the public world of tick " + fmt(D.tick) + ". One square is one tile, four cells across; the dashed outline is the site, x 55-94, y 20-39.";
+</script>

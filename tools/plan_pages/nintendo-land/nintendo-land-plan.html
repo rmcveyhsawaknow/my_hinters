@@ -1,0 +1,330 @@
+<meta charset="utf-8">
+<title>Nintendo Land Plan</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* layout: a site-plan sheet: title block and figures, the drawing across the page with its key, the districts' tables, then the build order and the reasoning */
+:root {
+  --paper: #f3f5f1; --sheet: #fbfcfa; --ink: #1f2a2b; --muted: #5d6a68; --line: #cdd5d0; --grid: #e3e8e4;
+  --ground: #f2f4ec; --forest: #dde8d3; --sand: #f1e8cf; --water: #cfe2e7; --mount: #ddd6ca; --hill: #e6e0d2;
+  --accent: #2a5f8a; --accent-soft: #e1ebf3; --warn: #a2611a; --road: #c9b48c; --wallc: #4d4a46;
+  --n-wood: #7b5a36; --n-fiber: #6f8f3a; --n-berries: #b2456b;
+  --d-mushroom: #e34948; --d-kart: #8b9094; --d-dreamland: #e87ba4; --d-pokemon: #eda100; --d-history: #3a4445;
+  --d-inkopolis: #1baf7a; --d-village: #2a78d6; --d-hyrule: #008300; --d-zebes: #6250d6; --d-jungle: #eb6834;
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif; --body: "Archivo", "Helvetica Neue", Arial, sans-serif; --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #161b1c; --sheet: #1c2224; --ink: #e4ebe8; --muted: #9aa8a5; --line: #34403f; --grid: #252e2f;
+  --ground: #20282a; --forest: #1b3424; --sand: #3a3323; --water: #1c3640; --mount: #3a3530; --hill: #2f2c27;
+  --accent: #8fbde3; --accent-soft: #1f3242; --warn: #e2a35a; --road: #7d6c4c; --wallc: #b9b2a8;
+  --n-wood: #c49a6c; --n-fiber: #a6c46c; --n-berries: #e47b9e;
+  --d-mushroom: #e66767; --d-kart: #7d8388; --d-dreamland: #d55181; --d-pokemon: #c98500; --d-history: #c9d2cf;
+  --d-inkopolis: #199e70; --d-village: #3987e5; --d-hyrule: #008300; --d-zebes: #9085e9; --d-jungle: #d95926; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #161b1c; --sheet: #1c2224; --ink: #e4ebe8; --muted: #9aa8a5; --line: #34403f; --grid: #252e2f;
+  --ground: #20282a; --forest: #1b3424; --sand: #3a3323; --water: #1c3640; --mount: #3a3530; --hill: #2f2c27;
+  --accent: #8fbde3; --accent-soft: #1f3242; --warn: #e2a35a; --road: #7d6c4c; --wallc: #b9b2a8;
+  --n-wood: #c49a6c; --n-fiber: #a6c46c; --n-berries: #e47b9e;
+  --d-mushroom: #e66767; --d-kart: #7d8388; --d-dreamland: #d55181; --d-pokemon: #c98500; --d-history: #c9d2cf;
+  --d-inkopolis: #199e70; --d-village: #3987e5; --d-hyrule: #008300; --d-zebes: #9085e9; --d-jungle: #d95926; color-scheme: dark }
+body { background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.55; margin: 0; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 28px 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; }
+header { display: grid; gap: 8px; border-bottom: 2px solid var(--ink); padding-bottom: 16px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+h1 { font-family: var(--display); font-stretch: 78%; font-weight: 800; font-size: clamp(32px, 6vw, 52px); line-height: 1; margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+.lede { max-width: 72ch; margin: 0; }
+h2 { font-family: var(--display); font-stretch: 85%; font-weight: 700; font-size: 21px; margin: 0; text-wrap: balance; }
+h3 { font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; margin: 0; }
+.figures { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.figure { background: var(--sheet); padding: 14px 16px; display: grid; gap: 2px; min-width: 0; }
+.figure .k { font-family: var(--mono); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.figure .v { font-family: var(--display); font-stretch: 80%; font-weight: 700; font-size: 28px; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.figure .v small { font-size: 15px; font-weight: 500; color: var(--muted); }
+.figure .n { font-size: 13px; color: var(--muted); }
+.drawing { background: var(--sheet); border: 1px solid var(--line); padding: 12px; min-width: 0; display: grid; gap: 10px; }
+.drawing svg { width: 100%; height: auto; display: block; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12.5px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.sw { width: 14px; height: 10px; display: inline-block; border: 1px solid var(--line); flex: none; }
+.signline { font-size: 14px; padding: 10px 12px; border-left: 3px solid var(--accent); background: var(--paper); min-height: 4.4em; }
+.signline .where { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.keygrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px 20px; }
+.works { display: grid; gap: 2px; align-content: start; min-width: 0; }
+.works h3 { display: flex; align-items: center; gap: 8px; margin-bottom: 2px; }
+.chip { display: inline-block; width: 10px; height: 10px; border-radius: 2px; outline: 1px solid var(--line); flex: none; }
+.bldg { display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; gap: 8px; align-items: baseline; padding: 4px 8px; border-radius: 4px; cursor: pointer; border: 0; background: none; color: inherit; font: inherit; font-size: 14px; text-align: left; width: 100%; }
+.bldg:hover, .bldg.on { background: var(--accent-soft); }
+.bldg:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.bldg .no { font-family: var(--mono); font-size: 12px; text-align: right; color: var(--muted); }
+.bldg .nm { font-weight: 600; min-width: 0; }
+.bldg .meta { font-family: var(--mono); font-size: 11.5px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+section.block { background: var(--sheet); border: 1px solid var(--line); padding: 18px 20px; display: grid; gap: 12px; min-width: 0; }
+.cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.dgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 24px; }
+.dcard { display: grid; gap: 6px; min-width: 0; align-content: start; }
+.dcard p { margin: 0; font-size: 13.5px; color: var(--muted); }
+ol.orders, ul.calls { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 76ch; }
+.tablebox { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--mono); font-size: 10.5px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+td.num, th.num { text-align: right; }
+td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+td.mono { font-family: var(--mono); font-size: 12px; white-space: nowrap; }
+.shares { display: grid; gap: 6px; }
+.share { display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr) 64px; gap: 10px; align-items: center; font-size: 13.5px; }
+.share .bar { height: 8px; background: var(--grid); border-radius: 4px; position: relative; }
+.share .bar i { position: absolute; inset: 0 auto 0 0; border-radius: 4px; }
+.share .val { font-family: var(--mono); font-size: 12.5px; text-align: right; font-variant-numeric: tabular-nums; }
+.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.step { font-family: var(--mono); font-size: 12px; padding: 3px 8px; border: 1px solid var(--line); border-radius: 4px; background: var(--paper); white-space: nowrap; }
+.step.last { border-color: var(--accent); background: var(--accent-soft); color: var(--ink); font-weight: 500; }
+.arrow { color: var(--muted); font-size: 12px; }
+.team { display: grid; gap: 6px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.team:last-child { border-bottom: 0; }
+.team b { font-size: 14.5px; }
+code { font-family: var(--mono); font-size: 12.5px; background: var(--grid); padding: 1px 5px; border-radius: 3px; }
+.mats { display: flex; flex-wrap: wrap; gap: 8px 18px; font-family: var(--mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+.foot { font-size: 12.5px; color: var(--muted); margin: 0; }
+svg text { font-family: var(--mono); }
+.num-label { paint-order: stroke; stroke: var(--sheet); stroke-width: 3px; stroke-linejoin: round; fill: var(--ink); }
+@media (max-width: 860px) { .cols, .dgrid { grid-template-columns: minmax(0, 1fr); } .figures { grid-template-columns: repeat(2, minmax(0, 1fr)); } .share { grid-template-columns: minmax(0, 1fr) 64px; } .share .bar { grid-column: 1 / -1; grid-row: 2; } }
+@media (prefers-reduced-motion: no-preference) { .bldg { transition: background .15s; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow" id="eyebrow">The collective &middot; teams/blueprints/nintendo-land.yaml &middot; version 1</div>
+    <h1>Nintendo Land</h1>
+    <p class="lede">The collective's last great work, for every team once its own works stand: a theme park on the open north of the island, forty tiles by twenty, laid out as ten small worlds inspired by Nintendo's games and built in our own words and shapes. A visitor walks in past a pink castle under a giant mushroom, round a racing loop, through a village of healing centres and gyms, along a walk of the company's history to the museum at the heart, and on through an animal village, Hyrule's woods, a desert landing pad and a jungle of treehouses.</p>
+  </header>
+
+  <div class="figures" id="figures"></div>
+
+  <div class="drawing">
+    <svg id="map" role="img" aria-labelledby="mapTitle"><title id="mapTitle">Site plan of Nintendo Land on the world's tile grid, x 53 to 96 and y 18 to 41, buildings coloured by district and numbered as in the key</title></svg>
+    <div class="legend" id="legend"></div>
+    <div class="signline" id="signline" aria-live="polite"></div>
+  </div>
+
+  <section class="block">
+    <h2>Key</h2>
+    <p class="foot">Pick a building to read its sign. Numbers match the drawing; each district's colour is repeated in its heading, and the district tables below carry the same figures in words.</p>
+    <div class="keygrid" id="key"></div>
+  </section>
+
+  <section class="block">
+    <h2>The districts</h2>
+    <div class="dgrid" id="districts"></div>
+  </section>
+
+  <div class="cols">
+    <section class="block">
+      <h2>Totals and materials</h2>
+      <div class="mats" id="mats"></div>
+      <div class="shares" id="shares"></div>
+      <p class="foot" id="totalsfoot"></p>
+    </section>
+    <section class="block">
+      <h2>Who comes to it, after what</h2>
+      <p class="foot">Each team's own designs come first, in its pipeline's order; Nintendo Land is the last entry of every list. The counts are the steps each ledger on this host records as done.</p>
+      <div id="order"></div>
+      <p class="foot">The Admiralty, the Commons and the Square keep no build pipeline; their members may lend a hand whenever they like. The world caps each builder at 4,096 blocks, so the land needs the hands of four builders at the very least and most of the collective in practice.</p>
+    </section>
+  </div>
+
+  <div class="cols">
+    <section class="block">
+      <h2>Decisions</h2>
+      <ul class="calls">
+        <li><b>The claim signs keep their tiles.</b> The office's sign stands on every lot's centre, so every building keeps to the bands between them. Only a lawn, whose hedge slabs ring the sign, or a treehouse, whose deck passes over it at level 6, spans a lot's centre.</li>
+        <li><b>No plinth under the open ground.</b> The lawns, ponds, the landing pad and the treehouses carry no foundation, since a plinth would close the tiles their slabs and decks leave open. The buildings stand on surveyed plinths.</li>
+        <li><b>The mushroom's cap is four red tubes</b> round the stem's top three levels, three cells out on every side, with white spots on top. No style makes a cap wider than its stem.</li>
+        <li><b>The gunship hovers.</b> A statue cannot stand on the pad's slabs, so the ship is tubes on two struts at levels 6 to 10. The Chozo statue beside it is the land's statue.</li>
+        <li><b>The blade in its stone</b> is a one-tile tower, two levels of grey stone with a cyan mast standing out of it, because the statue shape reads as an animal.</li>
+        <li><b>Thirty-six sections, no more.</b> Toad House was left out to stay inside the brief's range. Lane x 55 stays open where Uptown's 125th Street ends at (54,34).</li>
+        <li><b>No metal anywhere</b>, and no stone or ore node lies under any step. Eighteen fiber, berry and wood nodes lie under footprints; every other node of the site stays open.</li>
+      </ul>
+    </section>
+    <section class="block">
+      <h2>How progress is read</h2>
+      <ul class="calls">
+        <li><code>hglab factory progress --name nintendo-land</code> lists the last steps done and who placed them.</li>
+        <li><code>hglab factory check --name nintendo-land</code> checks the world's rules against the public world; it finds no problem today.</li>
+        <li><code>tests/test_nintendo_land.py</code> holds the land to its brief: at least 28 sections in at least ten styles, a sign beside each, every box a pack can pay for, the claim signs clear and the lawns without plinths.</li>
+        <li>Each of the 36 signs appears in the public world beside its building once that building's last step is placed.</li>
+      </ul>
+    </section>
+  </div>
+  <p class="foot" id="foot"></p>
+</div>
+
+<script>
+const D = {"bounds":[53,18,96,41],"site":[55,20,94,39],"tick":153607,"terrain":["wsssfffggggggggggggggggggsswwsssssfffggggssw","wsssfffggggggggggggggggggssssssssffffggggggs","sssggggggggggggggggggggggsssssfffffffggggggg","sgggggggggggggggggggggggggssggggggfggggggggg","gggggggggggggggggggggggggggggggggggggggggfff","gggggggggggggggggsggggggggggggggggggggggffff","gggggggggggggggggggggggggggggggggggggggfffff","gggggggggggggggggggggggggggggggggggggggfffff","gggggggggggggggggggggggggggggggggggggggfffff","gggggggggggggggggggggggggggggggggggggggfffff","gggggggggggggggggggggggggggggggggggggggfffff","gggggggggggggggggggggggggggggggggggggggfffff","ggggggggggggggggggggggggggggggggggggggffffff","ggggggggggggggggggggssssssgggggggggggfffffff","ggggggggssggggggggggsssssssgggggggffffffffff","ggggggggssgggggggfffsssssssggggfffffffffffff","gggggggggggggggffffffssssssggfffffffffffffff","ggggggggggggggfffffffsssssggffffffffffffffff","gggggggggggggffffffffsssssffffffffffffffffff","gggggggggggggffffffffssssfffffffffffffffffff","gggggggggggggffffffffssssfffffffffffffffffff","gggggggggggggffffffffsssffffffffffffffffffff","gggggggggggggfffffffffffffffffffffffffffffff","gggggggggggggfffffffffffffffffffffffffffffff"],"lots":[["F02-NE",55,20,59,24],["F02-SE",55,25,59,29],["F03-NE",55,30,59,34],["F03-SE",55,35,59,39],["G02-NW",60,20,64,24],["G02-NE",65,20,69,24],["G02-SW",60,25,64,29],["G02-SE",65,25,69,29],["G03-NW",60,30,64,34],["G03-NE",65,30,69,34],["G03-SW",60,35,64,39],["G03-SE",65,35,69,39],["H02-NW",70,20,74,24],["H02-NE",75,20,79,24],["H02-SW",70,25,74,29],["H02-SE",75,25,79,29],["H03-NW",70,30,74,34],["H03-NE",75,30,79,34],["H03-SW",70,35,74,39],["H03-SE",75,35,79,39],["I02-NW",80,20,84,24],["I02-NE",85,20,89,24],["I02-SW",80,25,84,29],["I02-SE",85,25,89,29],["I03-NW",80,30,84,34],["I03-NE",85,30,89,34],["I03-SW",80,35,84,39],["I03-SE",85,35,89,39],["J02-NW",90,20,94,24],["J02-SW",90,25,94,29],["J03-NW",90,30,94,34],["J03-SW",90,35,94,39]],"centres":[[57,22],[57,27],[57,32],[57,37],[62,22],[62,27],[62,32],[62,37],[67,22],[67,27],[67,32],[67,37],[72,22],[72,27],[72,32],[72,37],[77,22],[77,27],[77,32],[77,37],[82,22],[82,27],[82,32],[82,37],[87,22],[87,27],[87,32],[87,37],[92,22],[92,27],[92,32],[92,37]],"nodes":[[53,25,"fiber",0],[53,26,"fiber",0],[53,29,"fiber",0],[54,22,"fiber",0],[54,24,"berries",0],[54,26,"berries",0],[54,27,"berries",0],[54,38,"berries",0],[54,39,"fiber",0],[55,21,"berries",0],[55,22,"fiber",0],[55,29,"berries",0],[55,37,"berries",0],[55,38,"berries",0],[56,21,"berries",0],[56,28,"fiber",0],[56,36,"berries",0],[57,19,"wood",0],[57,22,"fiber",0],[57,30,"berries",0],[57,36,"berries",0],[57,41,"fiber",0],[58,20,"fiber",0],[58,29,"fiber",0],[58,31,"fiber",0],[58,32,"berries",0],[59,26,"fiber",1],[59,31,"berries",0],[60,23,"berries",0],[60,25,"fiber",0],[60,27,"berries",0],[60,37,"fiber",0],[60,38,"fiber",0],[61,23,"berries",0],[61,24,"berries",0],[61,26,"berries",0],[61,29,"fiber",0],[61,30,"fiber",0],[61,36,"berries",0],[61,37,"berries",0],[62,26,"fiber",0],[62,27,"fiber",0],[62,30,"berries",0],[62,34,"berries",0],[62,40,"fiber",0],[62,41,"fiber",0],[63,18,"fiber",0],[63,19,"berries",0],[63,22,"berries",0],[63,23,"fiber",0],[63,26,"berries",0],[63,29,"berries",0],[63,30,"berries",0],[63,39,"berries",0],[64,21,"fiber",0],[64,28,"berries",1],[64,30,"berries",1],[64,34,"berries",0],[64,36,"fiber",0],[65,26,"berries",0],[65,32,"berries",0],[65,33,"berries",0],[65,35,"fiber",0],[65,41,"fiber",0],[66,20,"berries",0],[66,23,"fiber",0],[66,33,"berries",0],[66,36,"wood",0],[66,39,"wood",0],[66,40,"wood",0],[67,21,"berries",0],[67,22,"berries",0],[67,25,"berries",0],[67,36,"wood",0],[67,37,"wood",0],[68,26,"fiber",0],[68,28,"fiber",0],[69,20,"fiber",0],[69,23,"berries",1],[69,25,"fiber",0],[69,26,"fiber",0],[69,28,"fiber",0],[69,30,"berries",0],[69,33,"berries",0],[69,35,"wood",0],[70,20,"berries",0],[70,21,"fiber",1],[70,26,"berries",0],[70,38,"wood",0],[70,41,"wood",0],[71,28,"fiber",0],[71,31,"berries",0],[71,33,"wood",1],[71,38,"wood",0],[71,41,"wood",0],[72,21,"berries",0],[72,23,"berries",0],[72,26,"fiber",0],[72,28,"fiber",0],[72,30,"berries",0],[72,31,"berries",0],[72,37,"wood",0],[72,38,"wood",0],[73,19,"berries",0],[73,20,"fiber",0],[73,30,"fiber",0],[73,34,"wood",0],[73,40,"wood",0],[74,18,"berries",0],[74,21,"fiber",1],[74,25,"berries",0],[74,27,"berries",0],[74,30,"berries",0],[75,19,"berries",0],[75,24,"fiber",1],[75,28,"fiber",0],[76,25,"berries",0],[76,27,"berries",0],[76,28,"fiber",0],[76,29,"fiber",0],[76,40,"wood",0],[76,41,"wood",0],[77,18,"berries",0],[77,27,"fiber",0],[77,41,"wood",0],[78,26,"fiber",0],[78,30,"berries",1],[78,37,"wood",0],[79,22,"fiber",0],[79,40,"wood",0],[80,25,"berries",0],[80,32,"berries",0],[80,38,"wood",0],[80,41,"wood",0],[81,29,"fiber",1],[81,39,"wood",0],[81,40,"wood",0],[82,24,"berries",0],[82,27,"berries",0],[82,38,"wood",0],[83,26,"fiber",0],[83,33,"fiber",0],[83,36,"wood",0],[83,37,"wood",0],[83,40,"wood",0],[84,28,"fiber",0],[85,22,"fiber",0],[85,23,"fiber",1],[85,29,"fiber",1],[85,31,"fiber",0],[85,37,"wood",0],[85,40,"wood",0],[86,24,"fiber",1],[86,26,"fiber",0],[86,32,"berries",0],[86,38,"wood",0],[86,41,"wood",0],[87,20,"wood",0],[87,22,"berries",0],[87,23,"fiber",0],[87,30,"berries",0],[87,33,"wood",0],[87,34,"wood",0],[87,40,"wood",0],[88,20,"wood",0],[88,28,"berries",0],[88,32,"wood",0],[88,38,"wood",0],[88,41,"wood",0],[89,26,"berries",0],[90,28,"fiber",1],[90,33,"wood",0],[90,35,"wood",0],[91,21,"fiber",1],[91,24,"berries",1],[91,29,"fiber",1],[91,33,"wood",0],[91,37,"wood",0],[91,38,"wood",0],[91,39,"wood",0],[91,40,"wood",0],[92,22,"fiber",0],[92,25,"wood",0],[93,24,"wood",0],[93,40,"wood",0],[94,20,"fiber",1],[94,25,"wood",0],[94,29,"wood",0],[94,31,"wood",0],[94,33,"wood",0],[95,19,"fiber",0],[95,25,"wood",0],[95,27,"wood",0],[95,32,"wood",0],[96,20,"berries",0],[96,23,"wood",0],[96,26,"wood",0],[96,27,"wood",0],[96,28,"wood",0],[96,30,"wood",0],[96,32,"wood",0],[96,41,"wood",0]],"structures":[[71,37,"road"],[70,37,"road"],[58,38,"road"],[63,28,"road"],[76,41,"road"],[93,41,"road"],[69,39,"wall"],[68,39,"wall"],[70,40,"wall"],[81,18,"bridge"],[96,18,"bridge"],[81,19,"sign"],[78,40,"wall"],[79,41,"wall"]],"sections":[{"n":1,"id":"peach-castle","name":"Princess Peach's Castle","district":"mushroom","style":"hall","tiles":[55,23,59,26],"w":5,"h":4,"top":15,"blocks":1280,"steps":97,"sign":[60,26],"text":"Princess Peach's Castle, the pink heart of the Mushroom Kingdom: a plumber has come to its princess's aid since 1985, and in 1996 the paintings in its halls opened onto whole worlds.","kind":"solid","trunks":[],"plinth":2,"nodesUnder":1},{"n":2,"id":"super-mushroom","name":"The Super Mushroom","district":"mushroom","style":"stripe tower","tiles":[64,23,65,24],"w":2,"h":2,"top":15,"blocks":484,"steps":28,"sign":[64,25],"text":"The Super Mushroom: red with white spots, the power-up that doubles a small hero's size; here it grows as tall as the world allows.","kind":"solid","trunks":[],"plinth":0,"nodesUnder":0},{"n":3,"id":"course-meadow","name":"The First Course","district":"mushroom","style":"park","tiles":[55,28,59,31],"w":5,"h":4,"top":4,"blocks":125,"steps":8,"sign":[60,28],"text":"The first course: run right over the grass, bump the floating blocks, duck down the green pipe and leap for the flag. Players learned to jump here in 1985.","kind":"open","trunks":[],"plinth":0,"nodesUnder":0},{"n":4,"id":"goal-fort","name":"The Goal Fort","district":"mushroom","style":"hall","tiles":[64,28,66,30],"w":3,"h":3,"top":10,"blocks":496,"steps":48,"sign":[65,31],"text":"The goal fort at the end of the course: slide down the flagpole and walk in at its door; good timing once set off fireworks overhead.","kind":"solid","trunks":[],"plinth":1,"nodesUnder":2},{"n":5,"id":"grandstand","name":"The Grandstand","district":"kart","style":"hall","tiles":[69,21,71,24],"w":3,"h":4,"top":5,"blocks":480,"steps":45,"sign":[72,24],"text":"The Grandstand, facing the start line: karts have raced loops like this one since 1992, with shells and banana skins thrown on every lap.","kind":"solid","trunks":[],"plinth":1,"nodesUnder":2},{"n":6,"id":"pit-garage","name":"The Pit Garage","district":"kart","style":"hall","tiles":[73,21,76,24],"w":4,"h":4,"top":4,"blocks":612,"steps":45,"sign":[77,24],"text":"The Pit Garage: between races the karts come in here to swap wheels, bodies and gliders to suit the next track.","kind":"solid","trunks":[],"plinth":1,"nodesUnder":2},{"n":7,"id":"kirby-house","name":"Kirby's House","district":"dreamland","style":"hall","tiles":[83,23,86,25],"w":4,"h":3,"top":5,"blocks":528,"steps":43,"sign":[87,24],"text":"Kirby's House in Dream Land: a round pink home for a round pink hero who swallows foes whole and floats off on a deep breath, since 1992.","kind":"solid","trunks":[],"plinth":1,"nodesUnder":2},{"n":8,"id":"warp-star-pond","name":"The Warp Star Pond","district":"dreamland","style":"pool","tiles":[82,20,86,21],"w":5,"h":2,"top":0,"blocks":160,"steps":6,"sign":[87,21],"text":"The Warp Star Pond: in Dream Land a fallen star is a ride, not a wish, and it carries its rider from one land to the next.","kind":"open","trunks":[],"plinth":0,"nodesUnder":0},{"n":9,"id":"healing-centre","name":"The Healing Centre","district":"pokemon","style":"hall","tiles":[88,21,91,25],"w":4,"h":5,"top":6,"blocks":756,"steps":46,"sign":[92,24],"text":"The Healing Centre: a red-roofed hall in every town where trainers' partners rest and recover for nothing, to a short happy tune.","kind":"solid","trunks":[],"plinth":1,"nodesUnder":2},{"n":10,"id":"gym","name":"The Gym","district":"pokemon","style":"hall","tiles":[89,28,92,31],"w":4,"h":4,"top":6,"blocks":716,"steps":50,"sign":[90,32],"text":"The Gym: a trainer beats its leader for a badge, and eight badges open the road to the league. The first journey began in 1996.","kind":"solid","trunks":[],"plinth":1,"nodesUnder":2},{"n":11,"id":"professor-lab","name":"The Professor's Laboratory","district":"pokemon","style":"hall","tiles":[93,20,94,23],"w":2,"h":4,"top":5,"blocks":368,"steps":42,"sign":[92,23],"text":"The Professor's Laboratory, where every journey starts: three young partners wait on a table and a new trainer picks one.","kind":"solid","trunks":[],"plinth":1,"nodesUnder":1},{"n":12,"id":"route-pond","name":"The Route Pond","district":"pokemon","style":"pool","tiles":[93,27,94,31],"w":2,"h":5,"top":0,"blocks":160,"steps":6,"sign":[92,26],"text":"The Route Pond at the edge of the woods: fishing rods and swimming partners find here what the tall grass does not hold.","kind":"open","trunks":[],"plinth":0,"nodesUnder":0},{"n":13,"id":"hanafuda-house","name":"The Card Workshop, 1889","district":"history","style":"hall","tiles":[68,29,68,29],"w":1,"h":1,"top":5,"blocks":76,"steps":19,"sign":[69,29],"text":"1889: the company began in Kyoto as a small workshop painting hanafuda by hand, the flower cards of an old Japanese game.","kind":"solid","trunks":[],"plinth":0,"nodesUnder":0},{"n":14,"id":"game-and-watch","name":"The Pocket Game, 1980","district":"history","style":"hall","tiles":[70,29,70,29],"w":1,"h":1,"top":5,"blocks":76,"steps":19,"sign":[71,29],"text":"1980: Game & Watch, a pocket game with a liquid-crystal screen and a clock; a later model brought the cross-shaped direction pad.","kind":"solid","trunks":[],"plinth":0,"nodesUnder":0},{"n":15,"id":"family-computer","name":"The Family Computer, 1983","district":"history","style":"hall","tiles":[72,29,72,29],"w":1,"h":1,"top":5,"blocks":76,"steps":19,"sign":[73,29],"text":"1983: the Family Computer, red and white, came out in Japan; two years later a grey cousin carried its games to America.","kind":"solid","trunks":[],"plinth":0,"nodesUnder":0},{"n":16,"id":"handheld","name":"The Handheld, 1989","district":"history","style":"hall","tiles":[74,29,74,29],"w":1,"h":1,"top":5,"blocks":76,"steps":19,"sign":[75,29],"text":"1989: Game Boy, a grey handheld with a green-tinted screen, four batteries and a falling-block puzzle that went everywhere.","kind":"solid","trunks":[],"plinth":0,"nodesUnder":0},{"n":17,"id":"museum","name":"The Nintendo Museum","district":"history","style":"hall","tiles":[78,27,81,31],"w":4,"h":5,"top":9,"blocks":912,"steps":58,"sign":[77,30],"text":"The Nintendo Museum: well over a century of play, from cards and toys to consoles for the pocket and the living room. The real one opened in Uji, Kyoto, in 2024.","kind":"solid","trunks":[],"plinth":1,"nodesUnder":2},{"n":18,"id":"inkopolis-tower","name":"Inkopolis Tower","district":"inkopolis","style":"skyscraper","tiles":[83,27,85,29],"w":3,"h":3,"top":13,"blocks":598,"steps":71,"sign":[86,28],"text":"Inkopolis Tower: in the city of the squid kids, teams of four paint the ground in their own colour and the side with more turf wins. Since 2015.","kind":"solid","trunks":[],"plinth":1,"nodesUnder":1},{"n":19,"id":"ink-spire","name":"The Ink Spire","district":"inkopolis","style":"glass tower","tiles":[83,31,84,32],"w":2,"h":2,"top":9,"blocks":316,"steps":27,"sign":[82,31],"text":"The Ink Spire: glass in the city's team colours, orange, purple, lime and pink, the shades that end up sprayed across the square.","kind":"solid","trunks":[],"plinth":0,"nodesUnder":0},{"n":20,"id":"inkopolis-plaza","name":"Inkopolis Plaza","district":"inkopolis","style":"park","tiles":[85,30,88,33],"w":4,"h":4,"top":4,"blocks":93,"steps":8,"sign":[89,32],"text":"Inkopolis Plaza, where the squid kids gather between battles to show off their gear and their scribbles.","kind":"open","trunks":[],"plinth":0,"nodesUnder":0},{"n":21,"id":"resident-services","name":"Resident Services","district":"village","style":"hall","tiles":[56,33,58,35],"w":3,"h":3,"top":5,"blocks":416,"steps":38,"sign":[59,33],"text":"Resident Services: the village office, where a cheerful dog at the desk keeps the notices, the mail and the residents' complaints.","kind":"solid","trunks":[],"plinth":1,"nodesUnder":0},{"n":22,"id":"village-shop","name":"The Village Shop","district":"village","style":"hall","tiles":[60,33,61,34],"w":2,"h":2,"top":5,"blocks":224,"steps":42,"sign":[62,33],"text":"The village shop, run by a raccoon who sells tools and furniture, and the loan on your first house, which he is always glad to extend.","kind":"solid","trunks":[],"plinth":1,"nodesUnder":0},{"n":23,"id":"town-square","name":"The Town Square","district":"village","style":"park","tiles":[60,35,64,39],"w":5,"h":5,"top":4,"blocks":187,"steps":15,"sign":[65,39],"text":"The Town Square: the animal neighbours of the village games, since 2001, gather round its tree for fireworks, fishing contests and the countdown to the new year.","kind":"open","trunks":[],"plinth":0,"nodesUnder":0},{"n":24,"id":"orchard","name":"The Orchard","district":"village","style":"park","tiles":[55,36,59,39],"w":5,"h":4,"top":4,"blocks":131,"steps":11,"sign":[59,35],"text":"The Orchard: every village starts with one kind of fruit on its trees; shake one and fruit falls, shake another and it might be a wasp nest.","kind":"open","trunks":[],"plinth":0,"nodesUnder":0},{"n":25,"id":"lost-woods","name":"The Lost Woods Clearing","district":"hyrule","style":"park","tiles":[65,34,69,38],"w":5,"h":5,"top":4,"blocks":185,"steps":16,"sign":[67,33],"text":"The Lost Woods clearing: a grove the forest hides from all but the worthy, where a blade sealed in stone waits for a hero in green.","kind":"open","trunks":[],"plinth":0,"nodesUnder":0},{"n":26,"id":"master-sword","name":"The Blade in the Stone","district":"hyrule","style":"skyscraper","tiles":[67,35,67,35],"w":1,"h":1,"top":6,"blocks":46,"steps":5,"sign":[66,35],"text":"The blade in its pedestal, drawn again in each age of Hyrule's long story by a young swordsman in green. The story began in 1986.","kind":"solid","trunks":[],"plinth":0,"nodesUnder":0},{"n":27,"id":"temple-of-time","name":"The Temple of Time","district":"hyrule","style":"temple","tiles":[70,33,72,36],"w":3,"h":4,"top":6,"blocks":760,"steps":19,"sign":[73,37],"text":"The Temple of Time: white stone at Hyrule's heart whose door opens to a song played on an ocarina; inside, the hero sleeps for seven years.","kind":"solid","trunks":[],"plinth":0,"nodesUnder":1},{"n":28,"id":"sages-spire","name":"The Sage's Spire","district":"hyrule","style":"church","tiles":[63,32,64,33],"w":2,"h":2,"top":14,"blocks":315,"steps":32,"sign":[63,31],"text":"The Sage's Spire: a tower of the sages who keep Hyrule's temples, each guarding one of the old seals until the hero comes.","kind":"solid","trunks":[],"plinth":1,"nodesUnder":0},{"n":29,"id":"landing-pad","name":"The Landing Pad","district":"zebes","style":"pool","tiles":[73,33,77,36],"w":5,"h":4,"top":0,"blocks":320,"steps":7,"sign":[78,33],"text":"The Landing Pad: a bounty hunter's orange gunship rests here between missions on far planets. Its pilot, sealed in a powered suit, first landed in 1986.","kind":"open","trunks":[],"plinth":0,"nodesUnder":0},{"n":30,"id":"chozo-statue","name":"The Chozo Statue","district":"zebes","style":"statue","tiles":[78,34,78,34],"w":1,"h":1,"top":3,"blocks":20,"steps":6,"sign":[79,34],"text":"A Chozo statue: the bird-like elders who raised the hunter left seated figures like this across their ruins, often with an upgrade in their hands.","kind":"solid","trunks":[],"plinth":0,"nodesUnder":0},{"n":31,"id":"chozo-ruins","name":"The Chozo Ruins","district":"zebes","style":"fort","tiles":[73,38,77,39],"w":5,"h":2,"top":3,"blocks":202,"steps":14,"sign":[78,39],"text":"The Chozo Ruins: low walls half buried in the sand of a planet where an old bird-like people once lived and hid their secrets.","kind":"solid","trunks":[],"plinth":1,"nodesUnder":0},{"n":32,"id":"kong-treehouse","name":"The Kong Treehouse","district":"jungle","style":"treehouse","tiles":[84,34,88,38],"w":5,"h":5,"top":11,"blocks":836,"steps":27,"sign":[83,35],"text":"The Kong Treehouse: a great ape's home in the canopy, beside the banana hoard he guards from thieving crocodiles. The jungle adventures began in 1994.","kind":"deck","trunks":[[84,34],[88,34],[84,38],[87,38]],"plinth":0,"nodesUnder":0},{"n":33,"id":"little-treehouse","name":"The Little Monkey's Treehouse","district":"jungle","style":"treehouse","tiles":[79,35,82,39],"w":4,"h":5,"top":11,"blocks":684,"steps":27,"sign":[83,39],"text":"The little monkey's treehouse: a small monkey in a red cap who cartwheels through the jungle beside his big friend and jumps higher than he does.","kind":"deck","trunks":[[82,35],[79,36],[79,39],[82,39]],"plinth":0,"nodesUnder":0},{"n":34,"id":"old-ape-cabin","name":"The Old Ape's Cabin","district":"jungle","style":"hall","tiles":[80,33,81,34],"w":2,"h":2,"top":3,"blocks":148,"steps":17,"sign":[82,33],"text":"The old ape's cabin: the first king of the jungle retired here to rock in his chair and grumble that games were better in his day.","kind":"solid","trunks":[],"plinth":0,"nodesUnder":0},{"n":35,"id":"barrel-tower","name":"The Barrel Tower","district":"jungle","style":"stripe tower","tiles":[92,34,94,36],"w":3,"h":3,"top":10,"blocks":604,"steps":70,"sign":[91,34],"text":"The Barrel Tower, stacked like the barrels a great ape rolled down a building site at a carpenter in 1981, the arcade game that made the company's name.","kind":"solid","trunks":[],"plinth":1,"nodesUnder":0},{"n":36,"id":"banana-hoard","name":"The Banana Hoard","district":"jungle","style":"pool","tiles":[91,38,94,39],"w":4,"h":2,"top":0,"blocks":128,"steps":6,"sign":[93,37],"text":"The Banana Hoard: a golden heap in a hollow of the jungle, every one counted; a hundred of them is worth an extra life.","kind":"open","trunks":[],"plinth":0,"nodesUnder":0}],"districts":[{"key":"mushroom","title":"The Mushroom Kingdom","blurb":"the castle and its keep, the giant mushroom, the first course and its goal fort","sections":[1,2,3,4],"tiles":53,"lots":["F02-NE","F02-SE","F03-NE","G02-NE","G02-NW","G02-SE","G02-SW","G03-NE","G03-NW"],"blocks":3413,"steps":206,"extraBlocks":1028},{"key":"kart","title":"The Kart Circuit","blurb":"a black loop with red and white bends, the start gantry, the grandstand and the pit garage","sections":[5,6],"tiles":28,"lots":["G02-NE","H02-NE","H02-NW"],"blocks":1802,"steps":110,"extraBlocks":710},{"key":"dreamland","title":"Dream Land","blurb":"Kirby's house and the Warp Star pond","sections":[7,8],"tiles":22,"lots":["I02-NE","I02-NW","I02-SE","I02-SW"],"blocks":688,"steps":49,"extraBlocks":0},{"key":"pokemon","title":"The Pok\u00e9mon village","blurb":"the healing centre, the gym, the professor's lab and the route pond","sections":[9,10,11,12],"tiles":54,"lots":["I02-NE","I02-SE","I03-NE","J02-NW","J02-SW","J03-NW"],"blocks":2000,"steps":144,"extraBlocks":0},{"key":"history","title":"The History Walk and the Museum","blurb":"four pavilions of the company's story leading to the museum at the heart","sections":[13,14,15,16,17],"tiles":24,"lots":["G02-SE","H02-SE","H02-SW","H03-NE","I02-SW","I03-NW"],"blocks":1216,"steps":134,"extraBlocks":0},{"key":"inkopolis","title":"Inkopolis","blurb":"two bright towers over a plaza","sections":[18,19,20],"tiles":29,"lots":["I02-SE","I02-SW","I03-NE","I03-NW"],"blocks":1007,"steps":106,"extraBlocks":0},{"key":"village","title":"The animal village","blurb":"Resident Services, the shop, the town square and the orchard","sections":[21,22,23,24],"tiles":58,"lots":["F03-NE","F03-SE","G03-NW","G03-SW"],"blocks":958,"steps":106,"extraBlocks":0},{"key":"hyrule","title":"Hyrule's woods","blurb":"the Lost Woods clearing and its blade, the Temple of Time, the Sage's Spire","sections":[25,26,27,28],"tiles":41,"lots":["G03-NE","G03-NW","G03-SE","H03-NW","H03-SW"],"blocks":1306,"steps":72,"extraBlocks":0},{"key":"zebes","title":"The sands of Zebes","blurb":"the landing pad and its hovering gunship, a Chozo statue and the Chozo ruins","sections":[29,30,31],"tiles":31,"lots":["H03-NE","H03-NW","H03-SE","H03-SW"],"blocks":746,"steps":34,"extraBlocks":204},{"key":"jungle","title":"The Kong jungle","blurb":"two treehouses and their rope bridges, the barrel tower, the old ape's cabin and the banana hoard","sections":[32,33,34,35,36],"tiles":66,"lots":["H03-SE","I03-NE","I03-NW","I03-SE","I03-SW","J03-NW","J03-SW"],"blocks":2420,"steps":157,"extraBlocks":20}],"tubes":[{"name":"the warp pipe arch","color":"green","size":3,"path":[[56.375,20.375],[60.375,20.375]],"z":[0,10],"district":"mushroom","ground":true},{"name":"the little pipe arch","color":"green","size":2,"path":[[61.375,21.375],[63.375,21.375]],"z":[0,8],"district":"mushroom","ground":true},{"name":"the course pipe","color":"green","size":3,"path":[[57.375,31.375],[57.376,31.375]],"z":[0,8],"district":"mushroom","ground":true},{"name":"the west block pillar","color":"tan","size":1,"path":[[55.875,30.625],[55.876,30.625]],"z":[0,5],"district":"mushroom","ground":true},{"name":"question block 1","color":"yellow","size":3,"path":[[55.625,30.375],[56.125,30.375]],"z":[6,8],"district":"mushroom","ground":false},{"name":"brick block 1","color":"brown","size":3,"path":[[56.375,30.375],[56.875,30.375]],"z":[6,8],"district":"mushroom","ground":false},{"name":"question block 2","color":"yellow","size":3,"path":[[57.125,30.375],[57.625,30.375]],"z":[6,8],"district":"mushroom","ground":false},{"name":"brick block 2","color":"brown","size":3,"path":[[57.875,30.375],[58.375,30.375]],"z":[6,8],"district":"mushroom","ground":false},{"name":"question block 3","color":"yellow","size":3,"path":[[58.625,30.375],[59.125,30.375]],"z":[6,8],"district":"mushroom","ground":false},{"name":"the east block pillar","color":"tan","size":1,"path":[[58.875,30.625],[58.876,30.625]],"z":[0,5],"district":"mushroom","ground":true},{"name":"the flagpole","color":"white","size":1,"path":[[62.375,29.375],[62.376,29.375]],"z":[0,13],"district":"mushroom","ground":true},{"name":"the flag","color":"green","size":2,"path":[[62.625,29.375],[63.125,29.375]],"z":[10,11],"district":"mushroom","ground":false},{"name":"the cap's north side","color":"red","size":3,"path":[[63.375,22.375],[66.625,22.375]],"z":[12,14],"district":"mushroom","ground":false},{"name":"the cap's south side","color":"red","size":3,"path":[[63.375,25.125],[66.625,25.125]],"z":[12,14],"district":"mushroom","ground":false},{"name":"the cap's west side","color":"red","size":3,"path":[[63.375,23.125],[63.375,24.875]],"z":[12,14],"district":"mushroom","ground":false},{"name":"the cap's east side","color":"red","size":3,"path":[[66.125,23.125],[66.125,24.875]],"z":[12,14],"district":"mushroom","ground":false},{"name":"a white spot to the north-west","color":"white","size":1,"path":[[63.625,22.625],[64.125,22.625]],"z":[15,15],"district":"mushroom","ground":false},{"name":"a white spot to the north-east","color":"white","size":1,"path":[[65.625,22.625],[66.125,22.625]],"z":[15,15],"district":"mushroom","ground":false},{"name":"a white spot to the south","color":"white","size":1,"path":[[64.625,25.375],[65.375,25.375]],"z":[15,15],"district":"mushroom","ground":false},{"name":"a white spot to the west","color":"white","size":1,"path":[[63.625,23.625],[63.625,24.375]],"z":[15,15],"district":"mushroom","ground":false},{"name":"a white spot to the east","color":"white","size":1,"path":[[66.375,23.625],[66.375,24.375]],"z":[15,15],"district":"mushroom","ground":false},{"name":"the start gantry","color":"white","size":2,"path":[[67.375,24.375],[67.375,26.375]],"z":[0,9],"district":"kart","ground":true},{"name":"the start lights","color":"red","size":1,"path":[[67.375,25.125],[67.375,25.875]],"z":[7,7],"district":"kart","ground":false},{"name":"the gunship's west strut","color":"grey","size":1,"path":[[75.125,35.125],[75.126,35.125]],"z":[0,5],"district":"zebes","ground":true},{"name":"the gunship's east strut","color":"grey","size":1,"path":[[76.875,35.125],[76.876,35.125]],"z":[0,5],"district":"zebes","ground":true},{"name":"the gunship's hull","color":"orange","size":3,"path":[[74.625,34.875],[77.375,34.875]],"z":[6,8],"district":"zebes","ground":false},{"name":"the gunship's wings","color":"orange","size":2,"path":[[75.625,33.625],[75.625,36.625]],"z":[7,8],"district":"zebes","ground":false},{"name":"the gunship's dome","color":"orange","size":2,"path":[[75.125,34.875],[76.875,34.875]],"z":[9,10],"district":"zebes","ground":false},{"name":"the gunship's canopy","color":"lime","size":2,"path":[[77.625,34.875],[78.125,34.875]],"z":[7,8],"district":"zebes","ground":false},{"name":"the gunship's engines","color":"red","size":1,"path":[[74.125,35.125],[74.375,35.125]],"z":[7,7],"district":"zebes","ground":false},{"name":"the west rope bridge","color":"tan","size":1,"path":[[83.125,37.125],[83.375,37.125],[83.625,37.125],[83.875,37.125]],"z":[6,7],"district":"jungle","ground":false},{"name":"the east rope bridge","color":"tan","size":1,"path":[[89.125,35.625],[90.375,35.625],[90.625,35.625],[91.875,35.625]],"z":[6,7],"district":"jungle","ground":false}],"streets":[{"name":"the north straight","tiles":[66,20,80,20],"color":"black"},{"name":"the south straight (west)","tiles":[66,25,66,25],"color":"black"},{"name":"the start line","tiles":[67,25,67,25],"color":"white"},{"name":"the south straight","tiles":[68,25,80,25],"color":"black"},{"name":"the west bend 1","tiles":[66,21,66,21],"color":"red"},{"name":"the west bend 2","tiles":[66,22,66,22],"color":"white"},{"name":"the west bend 3","tiles":[66,23,66,23],"color":"red"},{"name":"the west bend 4","tiles":[66,24,66,24],"color":"white"},{"name":"the east bend 1","tiles":[80,21,80,21],"color":"white"},{"name":"the east bend 2","tiles":[80,22,80,22],"color":"red"},{"name":"the east bend 3","tiles":[80,23,80,23],"color":"white"},{"name":"the east bend 4","tiles":[80,24,80,24],"color":"red"}],"totals":{"sections":36,"districts":10,"styles":11,"tiles":406,"siteTiles":800,"blocks":15556,"steps":1118,"tallest":15,"items":{"stone":2871,"wood":966,"fiber":345},"matBlocks":{"stone":10896,"wood":3392,"thatch":1268},"plinth":1328,"nodesUnder":{"fiber":12,"berries":5,"wood":1},"problems":0,"tubes":32,"streetTiles":38,"signs":36},"order":[{"team":"The Chocolate Factory","slug":"chocolate-factory","builders":7,"works":[{"id":"chocolate-factory","name":"The Chocolate Factory","steps":1467,"done":800,"blocks":20143},{"id":"lower-manhattan","name":"Lower Manhattan","steps":543,"done":543,"blocks":6751},{"id":"midtown","name":"Midtown Manhattan","steps":580,"done":21,"blocks":5602},{"id":"central-park","name":"Central Park","steps":198,"done":0,"blocks":2339},{"id":"uptown","name":"Uptown Manhattan","steps":268,"done":0,"blocks":3783},{"id":"nintendo-land","name":"Nintendo Land","steps":1118,"done":0,"blocks":15556}]},{"team":"The Atelier","slug":"atelier","builders":1,"works":[{"id":"lower-manhattan","name":"Lower Manhattan","steps":543,"done":543,"blocks":6751},{"id":"midtown","name":"Midtown Manhattan","steps":580,"done":21,"blocks":5602},{"id":"central-park","name":"Central Park","steps":198,"done":0,"blocks":2339},{"id":"uptown","name":"Uptown Manhattan","steps":268,"done":0,"blocks":3783},{"id":"nintendo-land","name":"Nintendo Land","steps":1118,"done":0,"blocks":15556}]},{"team":"The Exchange","slug":"exchange","builders":6,"works":[{"id":"midtown","name":"Midtown Manhattan","steps":580,"done":21,"blocks":5602},{"id":"central-park","name":"Central Park","steps":198,"done":0,"blocks":2339},{"id":"uptown","name":"Uptown Manhattan","steps":268,"done":0,"blocks":3783},{"id":"nintendo-land","name":"Nintendo Land","steps":1118,"done":0,"blocks":15556}]},{"team":"Neverland","slug":"neverland","builders":4,"works":[{"id":"treetop-hideaway","name":"The Treetop Hideaway","steps":272,"done":68,"blocks":4503},{"id":"nintendo-land","name":"Nintendo Land","steps":1118,"done":0,"blocks":15556}]}]};
+const PAINT = {natural:"#b89a74", white:"#f2f1ec", grey:"#9aa0a6", black:"#33302e", brown:"#7a4a2a", red:"#d23b2f", orange:"#e8892e", yellow:"#f0c52a", lime:"#9bcb3c", green:"#3e9a4b", teal:"#2a9d8f", cyan:"#3dbfdc", blue:"#3a6fd8", indigo:"#4b3fa8", purple:"#8e44ad", pink:"#ea7fae", tan:"#d8b98a"};
+const DCOL = k => "var(--d-" + k + ")";
+const fmt = n => Number(n).toLocaleString("en-US");
+const [X0, Y0, X1, Y1] = D.bounds, T = 20, PAD = 24;
+const Wd = (X1 - X0 + 1) * T, Ht = (Y1 - Y0 + 1) * T;
+const svg = document.getElementById("map");
+svg.setAttribute("viewBox", "0 0 " + (Wd + PAD + 4) + " " + (Ht + PAD + 4));
+const NS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent) { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); (parent || svg).appendChild(e); return e; }
+const px = x => PAD + (x - X0) * T, py = y => PAD + (y - Y0) * T;
+const defs = el("defs", {});
+const pat = el("pattern", {id: "hatch", patternUnits: "userSpaceOnUse", width: 6, height: 6, patternTransform: "rotate(45)"}, defs);
+el("line", {x1: 0, y1: 0, x2: 0, y2: 6, stroke: "var(--sheet)", "stroke-width": 2, "stroke-opacity": 0.55}, pat);
+const g = {};
+["ground", "grid", "lots", "streets", "struct", "bldg", "tube", "nodes", "mark", "labels", "axis"].forEach(k => { g[k] = el("g", {}); });
+const TERR = {g: "var(--ground)", f: "var(--forest)", s: "var(--sand)", w: "var(--water)", W: "var(--water)", m: "var(--mount)", h: "var(--hill)"};
+D.terrain.forEach((row, j) => [...row].forEach((c, i) => el("rect", {x: px(X0 + i), y: py(Y0 + j), width: T + 0.3, height: T + 0.3, fill: TERR[c] || "var(--ground)"}, g.ground)));
+for (let x = X0; x <= X1 + 1; x++) el("line", {x1: px(x), y1: PAD, x2: px(x), y2: PAD + Ht, stroke: x % 10 === 0 ? "var(--line)" : "var(--grid)", "stroke-width": x % 5 === 0 ? 1 : 0.5}, g.grid);
+for (let y = Y0; y <= Y1 + 1; y++) el("line", {x1: PAD, y1: py(y), x2: PAD + Wd, y2: py(y), stroke: y % 10 === 0 ? "var(--line)" : "var(--grid)", "stroke-width": y % 5 === 0 ? 1 : 0.5}, g.grid);
+for (let x = X0; x <= X1; x++) if (x % 5 === 0) el("text", {x: px(x) + 1, y: 15, "font-size": 10, fill: "var(--muted)"}, g.axis).textContent = x;
+for (let y = Y0; y <= Y1; y++) if (y % 5 === 0) el("text", {x: 1, y: py(y) + 11, "font-size": 10, fill: "var(--muted)"}, g.axis).textContent = y;
+D.lots.forEach(([id, x0, y0]) => el("text", {x: px(x0) + 2, y: py(y0) + 8, "font-size": 6.5, fill: "var(--muted)", opacity: 0.75}, g.lots).textContent = id);
+const [SX0, SY0, SX1, SY1] = D.site;
+el("rect", {x: px(SX0), y: py(SY0), width: (SX1 - SX0 + 1) * T, height: (SY1 - SY0 + 1) * T, fill: "none", stroke: "var(--accent)", "stroke-dasharray": "6 3", "stroke-width": 1.6}, g.mark);
+D.streets.forEach(s => {
+  const [x0, y0, x1, y1] = s.tiles;
+  const r = el("rect", {x: px(x0) + 0.5, y: py(y0) + 0.5, width: (x1 - x0 + 1) * T - 1, height: (y1 - y0 + 1) * T - 1, fill: PAINT[s.color] || PAINT.black, stroke: "var(--line)", "stroke-width": 0.6}, g.streets);
+  el("title", {}, r).textContent = "the Kart Circuit: " + s.name;
+});
+D.structures.forEach(([x, y, type]) => {
+  if (type === "road") el("rect", {x: px(x) + 2, y: py(y) + 2, width: T - 4, height: T - 4, fill: "var(--road)"}, g.struct);
+  else if (type === "wall") el("rect", {x: px(x) + 3, y: py(y) + 3, width: T - 6, height: T - 6, fill: "var(--wallc)"}, g.struct);
+  else if (type === "bridge") el("rect", {x: px(x) + 1, y: py(y) + 6, width: T - 2, height: T - 12, fill: "var(--muted)", opacity: 0.5}, g.struct);
+  else el("rect", {x: px(x) + 7, y: py(y) + 7, width: T - 14, height: T - 14, fill: "var(--muted)"}, g.struct);
+});
+const rects = {};
+D.sections.forEach(s => {
+  const [x0, y0, x1, y1] = s.tiles, col = DCOL(s.district);
+  const grp = el("g", {"data-id": s.id, style: "cursor:pointer"}, g.bldg);
+  const attrs = {x: px(x0) + 1, y: py(y0) + 1, width: (x1 - x0 + 1) * T - 2, height: (y1 - y0 + 1) * T - 2, fill: col, rx: 2};
+  if (s.kind === "open") Object.assign(attrs, {"fill-opacity": 0.3, stroke: col, "stroke-width": 1.6, "stroke-dasharray": "4 2"});
+  else if (s.kind === "deck") Object.assign(attrs, {"fill-opacity": 0.4, stroke: col, "stroke-width": 1.6});
+  else Object.assign(attrs, {stroke: "var(--ink)", "stroke-width": 1});
+  const r = el("rect", attrs, grp);
+  if (s.district === "kart" && s.kind === "solid") el("rect", {x: attrs.x, y: attrs.y, width: attrs.width, height: attrs.height, fill: "url(#hatch)", rx: 2, "pointer-events": "none"}, grp);
+  s.trunks.forEach(([tx, ty]) => el("rect", {x: px(tx) + 5, y: py(ty) + 5, width: T - 10, height: T - 10, fill: col, stroke: "var(--ink)", "stroke-width": 0.8}, grp));
+  el("title", {}, grp).textContent = s.n + ". " + s.name + " · " + s.style + " · up to level " + s.top + " · " + fmt(s.blocks) + " blocks";
+  const tx = el("text", {x: px(x0) + ((x1 - x0 + 1) * T) / 2, y: py(y0) + ((y1 - y0 + 1) * T) / 2 + 4, "font-size": 11, "text-anchor": "middle", "font-weight": 500, class: "num-label", "pointer-events": "none"}, g.labels);
+  tx.textContent = s.n;
+  rects[s.id] = {r: r, base: attrs["stroke-width"], stroke: attrs.stroke};
+  grp.addEventListener("click", () => pick(s.id));
+  el("circle", {cx: px(s.sign[0]) + T / 2, cy: py(s.sign[1]) + T / 2, r: 2.8, fill: "var(--ink)", stroke: "var(--sheet)", "stroke-width": 1}, g.mark);
+});
+D.centres.forEach(([x, y]) => {
+  const cx = px(x) + T / 2, cy = py(y) + T / 2;
+  el("path", {d: "M" + (cx - 3.5) + " " + cy + "h7M" + cx + " " + (cy - 3.5) + "v7", stroke: "var(--accent)", "stroke-width": 1.4}, g.mark);
+});
+const NODE = {wood: "var(--n-wood)", fiber: "var(--n-fiber)", berries: "var(--n-berries)", stone: "var(--muted)", ore: "var(--warn)"};
+D.nodes.forEach(([x, y, kind, under]) => {
+  const c = el("circle", {cx: px(x) + T - 5, cy: py(y) + 5, r: 2, fill: NODE[kind] || "var(--muted)", opacity: 0.85}, g.nodes);
+  if (under) el("circle", {cx: px(x) + T - 5, cy: py(y) + 5, r: 3.6, fill: "none", stroke: "var(--warn)", "stroke-width": 1}, g.nodes);
+});
+D.tubes.forEach(tb => {
+  const pts = tb.path.map(([x, y]) => (PAD + (x - X0) * T) + "," + (PAD + (y - Y0) * T)).join(" ");
+  const w = 2 + tb.size * 1.7;
+  el("polyline", {points: pts, fill: "none", stroke: "var(--sheet)", "stroke-width": w + 2.2, "stroke-linecap": "round", "stroke-linejoin": "round", opacity: 0.9}, g.tube);
+  const line = el("polyline", {points: pts, fill: "none", stroke: PAINT[tb.color] || PAINT.grey, "stroke-width": w, "stroke-linecap": "round", "stroke-linejoin": "round"}, g.tube);
+  el("title", {}, line).textContent = "tube: " + tb.name + " · levels " + tb.z[0] + "-" + tb.z[1] + (tb.ground ? " · stands on the ground" : " · rests on a building");
+});
+const legend = document.getElementById("legend");
+const items = [
+  ['<i class="sw" style="background:var(--ground)"></i>grass'], ['<i class="sw" style="background:var(--forest)"></i>forest'], ['<i class="sw" style="background:var(--sand)"></i>sand'], ['<i class="sw" style="background:var(--water)"></i>water'],
+  ['<i class="sw" style="background:var(--muted);opacity:.5"></i>building, lawn or pond (dashed), deck'],
+  ['<svg width="12" height="12" aria-hidden="true"><path d="M2.5 6h7M6 2.5v7" stroke="var(--accent)" stroke-width="1.4"/></svg>office claim sign'],
+  ['<svg width="10" height="10" aria-hidden="true"><circle cx="5" cy="5" r="2.8" fill="var(--ink)"/></svg>building sign'],
+  ['<svg width="12" height="10" aria-hidden="true"><polyline points="1,8 6,3 11,8" fill="none" stroke="#3e9a4b" stroke-width="3" stroke-linecap="round"/></svg>tube (at level 6 and up)'],
+  ['<i class="sw" style="background:#33302e"></i>circuit slabs'], ['<i class="sw" style="background:var(--road)"></i>Lagalong\'s roads'], ['<i class="sw" style="background:var(--wallc)"></i>office walls'],
+  ['<svg width="22" height="10" aria-hidden="true"><circle cx="4" cy="5" r="2" fill="var(--n-wood)"/><circle cx="11" cy="5" r="2" fill="var(--n-fiber)"/><circle cx="18" cy="5" r="2" fill="var(--n-berries)"/></svg>wood, fiber, berry nodes'],
+  ['<svg width="10" height="10" aria-hidden="true"><circle cx="5" cy="5" r="3.6" fill="none" stroke="var(--warn)"/></svg>node under a footprint'],
+];
+items.forEach(([h]) => { const s = document.createElement("span"); s.innerHTML = h; legend.appendChild(s); });
+const t = D.totals;
+document.getElementById("eyebrow").textContent = "The collective · teams/blueprints/nintendo-land.yaml · version 1 · surveyed at tick 153,228, drawn on the world of tick " + fmt(D.tick) + ", 2026-11-03";
+const figs = [
+  ["Sections", t.sections + " <small>in " + t.districts + " districts</small>", t.styles + " styles, each with its sign"],
+  ["Tiles under sections", fmt(t.tiles) + " <small>of " + fmt(t.siteTiles) + "</small>", "buildings, lawns, ponds and decks; " + t.streetTiles + " more of circuit"],
+  ["Blocks", fmt(t.blocks), fmt(t.steps) + " steps; " + fmt(t.plinth) + " of them in plinths"],
+  ["Tallest", "level " + t.tallest, "the castle's keep, the mushroom, the Sage's Spire"],
+];
+document.getElementById("figures").innerHTML = figs.map(([k, v, n]) => '<div class="figure"><span class="k">' + k + '</span><span class="v">' + v + '</span><span class="n">' + n + '</span></div>').join("");
+const key = document.getElementById("key");
+const dist = {}; D.districts.forEach(d => { dist[d.key] = d; });
+D.districts.forEach(d => {
+  const box = document.createElement("div"); box.className = "works";
+  const h = document.createElement("h3"); h.innerHTML = '<i class="chip" style="background:' + DCOL(d.key) + '"></i>'; h.append(d.title); box.appendChild(h);
+  D.sections.filter(s => s.district === d.key).forEach(s => {
+    const b = document.createElement("button"); b.className = "bldg"; b.type = "button"; b.id = "b-" + s.id;
+    b.innerHTML = '<span class="no">' + s.n + '</span><span class="nm"></span><span class="meta">' + s.w + "×" + s.h + " · lv " + s.top + "</span>";
+    b.querySelector(".nm").textContent = s.name;
+    b.addEventListener("click", () => pick(s.id));
+    box.appendChild(b);
+  });
+  key.appendChild(box);
+});
+const signline = document.getElementById("signline");
+function pick(id) {
+  const s = D.sections.find(x => x.id === id); if (!s) return;
+  document.querySelectorAll(".bldg.on").forEach(b => b.classList.remove("on"));
+  const b = document.getElementById("b-" + id); if (b) b.classList.add("on");
+  Object.entries(rects).forEach(([k, v]) => { v.r.setAttribute("stroke-width", k === id ? 3.2 : v.base); if (k === id) v.r.setAttribute("stroke", "var(--ink)"); else v.r.setAttribute("stroke", v.stroke); });
+  signline.innerHTML = "";
+  const head = document.createElement("div"); head.innerHTML = "<b></b> <span class='where'></span>";
+  head.querySelector("b").textContent = s.n + ". " + s.name;
+  head.querySelector(".where").textContent = dist[s.district].title + " · " + s.style + " · sign at (" + s.sign.join(",") + ")";
+  const text = document.createElement("div"); text.textContent = s.text;
+  signline.append(head, text);
+}
+pick("museum");
+const dbox = document.getElementById("districts");
+D.districts.forEach(d => {
+  const card = document.createElement("div"); card.className = "dcard";
+  const h = document.createElement("h3"); h.style.display = "flex"; h.style.gap = "8px"; h.style.alignItems = "center";
+  h.innerHTML = '<i class="chip" style="background:' + DCOL(d.key) + '"></i>'; h.append(d.title);
+  const p = document.createElement("p");
+  p.textContent = d.blurb + ". " + d.tiles + " tiles, " + fmt(d.blocks) + " blocks" + (d.extraBlocks ? " (" + fmt(d.extraBlocks) + " of them in its tubes" + (d.key === "kart" ? " and the circuit" : "") + ")" : "") + "; lots " + d.lots.join(", ") + ".";
+  const tb = document.createElement("div"); tb.className = "tablebox";
+  const rows = D.sections.filter(s => s.district === d.key).map(s => {
+    const [x0, y0, x1, y1] = s.tiles;
+    const where = x0 === x1 && y0 === y1 ? "(" + x0 + "," + y0 + ")" : "(" + x0 + "," + y0 + ")–(" + x1 + "," + y1 + ")";
+    return "<tr><td class='num'>" + s.n + "</td><td>" + s.name.replace(/&/g, "&amp;").replace(/</g, "&lt;") + "</td><td>" + s.style + "</td><td class='mono'>" + where + " " + s.w + "×" + s.h + "</td><td class='num'>" + s.top + "</td><td class='num'>" + fmt(s.blocks) + "</td><td class='mono'>(" + s.sign.join(",") + ")</td></tr>";
+  }).join("");
+  tb.innerHTML = "<table><thead><tr><th class='num'>#</th><th>Building</th><th>Style</th><th>Tiles</th><th class='num'>Top</th><th class='num'>Blocks</th><th>Sign</th></tr></thead><tbody>" + rows + "</tbody></table>";
+  card.append(h, p, tb);
+  dbox.appendChild(card);
+});
+const it = t.items, mb = t.matBlocks;
+document.getElementById("mats").innerHTML = "<span>stone " + fmt(it.stone || 0) + "</span><span>wood " + fmt(it.wood || 0) + "</span><span>fiber " + fmt(it.fiber || 0) + "</span><span>ore " + fmt(it.ore || 0) + "</span><span style='color:var(--muted)'>items to gather (a block costs a quarter item)</span>";
+const shares = document.getElementById("shares");
+const maxB = Math.max(...D.districts.map(d => d.blocks));
+D.districts.forEach(d => {
+  const row = document.createElement("div"); row.className = "share";
+  row.innerHTML = '<span></span><div class="bar" role="img" aria-label="' + d.title + ': ' + fmt(d.blocks) + ' blocks"><i style="width:' + Math.round(100 * d.blocks / maxB) + '%;background:' + DCOL(d.key) + '"></i></div><span class="val">' + fmt(d.blocks) + '</span>';
+  row.querySelector("span").textContent = d.title;
+  shares.appendChild(row);
+});
+const nu = t.nodesUnder;
+document.getElementById("totalsfoot").textContent = "Blocks by material: stone " + fmt(mb.stone || 0) + ", wood " + fmt(mb.wood || 0) + ", thatch " + fmt(mb.thatch || 0) + (mb.metal ? ", metal " + fmt(mb.metal) : ", no metal") + ". " + t.tubes + " tubes and " + t.signs + " signs. Nodes under footprints: " + Object.entries(nu).map(([k, v]) => v + " " + k).join(", ") + "; hglab factory check: " + t.problems + " problems.";
+const ob = document.getElementById("order");
+D.order.forEach(o => {
+  const box = document.createElement("div"); box.className = "team";
+  const GLOSS = {exchange: "the land office's hands", "chocolate-factory": "the crew", atelier: "Plumbline", neverland: "the hideaway's builders"};
+  const b = document.createElement("b"); b.textContent = o.team + (GLOSS[o.slug] ? ", " + GLOSS[o.slug] : "") + (o.builders ? " · " + o.builders + (o.builders === 1 ? " builder" : " builders") : "");
+  const flow = document.createElement("div"); flow.className = "flow";
+  o.works.forEach((w, i) => {
+    if (i) { const a = document.createElement("span"); a.className = "arrow"; a.textContent = "→"; flow.appendChild(a); }
+    const s = document.createElement("span"); s.className = "step" + (w.id === "nintendo-land" ? " last" : "");
+    s.textContent = w.name.replace(/^The /, "") + " " + fmt(w.done) + "/" + fmt(w.steps);
+    s.title = fmt(w.blocks) + " blocks";
+    flow.appendChild(s);
+  });
+  box.append(b, flow);
+  ob.appendChild(box);
+});
+document.getElementById("foot").textContent = "Drawn from teams/blueprints/nintendo-land.yaml, its expanded steps (hglab.factory) and the public world of tick " + fmt(D.tick) + ". One square is one tile, four cells across; the dashed outline is the site, x 55-94, y 20-39.";
+</script>
