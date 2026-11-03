@@ -107,7 +107,7 @@ def test_the_factory_takes_up_lower_manhattan_only_once_the_factory_stands():
     observe = {"tick": 90000, "you": {"name": "MotherPail", "x": 38, "y": 82, "faction": {"id": 5, "name": "Chocolate Factory"}, "blocks_owned": 0}}
     view = WorldView(x0=32, y0=76, rows=GRASS, full_map=GRASS, world_structures=_deeds("D08-NE", "E08-NW"), tick=90000)
     before = factory.plan_step(personas["mrs-bucket"], team, PersonaState(mood="warm"), observe, view, {"stone": 40, "berries": 5}, (38, 82), 3)
-    assert before is None or "factory" in before[1]  # the factory is not done: its own design first
+    assert before is None or "factory" in before[1].casefold()  # the factory is not done: its own design first (since 2026-11-03 a far builder carries its next step's material there)
     design, steps, _ = factory.blueprint(ROOT, "chocolate-factory")
     factory.mark_done(ROOT, factory.ledger_name(design, "chocolate-factory"), [s["id"] for s in steps], 1, "test")
     after = factory.plan_step(personas["mrs-bucket"], team, PersonaState(mood="warm"), observe, view, {"stone": 40, "berries": 5}, (38, 82), 3)
@@ -242,7 +242,7 @@ def test_once_the_factory_stands_its_hands_build_manhattan_and_are_not_called_ba
         return plan_crew(hand, team, PersonaState(mood="busy"), observe, view, {"stone": 35, "berries": 5}, (64, 101), 80, hand.energy_reserve, 3, {p.name for p in personas.values()}, names, None)
 
     before = wake()
-    assert before is not None and "from the works" in before[1]  # the factory is not done: 25 tiles out, the hand walks back
+    assert before is not None and "factory" in before[1].casefold() and before[0][0]["action"] == "move" and before[0][0]["x"] > 64  # the factory is not done: 25 tiles out, the hand heads back east to it
     design, steps, _ = factory.blueprint(ROOT, "chocolate-factory")
     factory.mark_done(ROOT, factory.ledger_name(design, "chocolate-factory"), [s["id"] for s in steps], 1, "test")
     after = wake()

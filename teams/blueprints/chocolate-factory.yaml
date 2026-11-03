@@ -13,7 +13,8 @@
 # green teal cyan blue indigo purple pink tan. Materials: wood (wood), stone (stone), thatch (fiber), metal (ore).
 name: The Chocolate Factory
 team: chocolate-factory
-plots: [I08, J08, I09, J09]
+plots: [I08, J08, I09, J09, K06, K07, K08, K09]  # the East Works on the K column since the owner's instruction of 2026-11-03
+commute: true  # the owner, 2026-11-03: the East Works lie up to 38 tiles from the works; a builder far from every ready step carries the next one's material there
 version: 2  # the level rebuild of 2026-10-25: surveyed plinths, windows facing out of their own walls (ledger chocolate-factory.v2)
 foundation_block: [stone, grey]
 story: >-
@@ -25,6 +26,7 @@ sections:
   - id: elevator
     name: The Glass Elevator
     tiles: [89, 84, 90, 85]  # hills under the eastern peak; the mountain stands at (89-90, 83)
+    sign: {x: 88, y: 85, text: "The Glass Elevator: a lift of coloured glass pressed against the peak, up past every band of light."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0, 1], [4, 5]]  # plinth levels per tile, rows north to south (hglab factory level)
     clear: {by: loompa-mason, tiles: all}  # version 1 stepped with the slope: Toffeetrowel takes it down, his own blocks come out whole
     style: glass_tower
@@ -38,6 +40,7 @@ sections:
   - id: lookout
     name: The Peppermint Lookout
     tiles: [96, 80, 98, 81]  # the head of the east hillside, the plots' northern edge
+    sign: {x: 96, y: 82, text: "The Peppermint Lookout: red and white rings at the head of the east hillside, the factory's watch over the bay."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0, 3, 4], [0, 3, 4]]  # plinth levels per tile, rows north to south (hglab factory level)
     clear: {by: loompa-mason, tiles: all}
     style: stripe_tower
@@ -52,6 +55,7 @@ sections:
   - id: mill
     name: The Fudge Mill
     tiles: [89, 87, 91, 89]  # the hill belt two tiles below the elevator
+    sign: {x: 88, y: 87, text: "The Fudge Mill: fudge ground and beaten on the hill belt; the striped chimney is the mill's fire."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0, 1, 2], [2, 4, 5], [5, 6, 6]]  # plinth levels per tile, rows north to south (hglab factory level)
     clear: {by: loompa-mason, tiles: all}
     style: hall
@@ -69,6 +73,7 @@ sections:
   - id: terrace
     name: The Cocoa Terrace
     tiles: [81, 87, 83, 88]  # the western hill belt
+    sign: {x: 83, y: 86, text: "The Cocoa Terrace: cocoa dried on the western hill belt in the morning sun."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0, 2, 3], [2, 4, 5]]  # plinth levels per tile, rows north to south (hglab factory level)
     clear: {by: loompa-mason, tiles: all}
     style: hall
@@ -85,6 +90,7 @@ sections:
   - id: candy
     name: The Candy Hall
     tiles: [93, 90, 96, 93]  # mid-slope grass
+    sign: {x: 97, y: 93, text: "The Candy Hall: sweets made under lemon-drop turrets, joined to the packing hall by three tubes."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
     clear: {by: wonka, boxes: [[374, 360, 2, 385, 360, 2], [372, 362, 2, 372, 366, 2], [387, 362, 2, 387, 366, 2], [372, 369, 2, 372, 373, 2], [387, 369, 2, 387, 373, 2], [374, 375, 2, 385, 375, 2]]}  # the windows that faced north on every side
     style: hall
@@ -101,6 +107,7 @@ sections:
   - id: packing
     name: The Packing Hall
     tiles: [93, 95, 97, 98]  # sand and grass on the bay
+    sign: {x: 92, y: 97, text: "The Packing Hall: every sweet of the factory wrapped and boxed here on the bay behind the golden gate."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
     clear: {by: mrs-bucket, boxes: [[373, 380, 2, 390, 380, 2], [372, 381, 2, 372, 386, 2], [391, 381, 2, 391, 394, 2], [372, 389, 2, 372, 394, 2], [373, 395, 2, 380, 395, 2], [383, 395, 2, 390, 395, 2], [373, 380, 6, 390, 380, 6], [372, 381, 6, 372, 394, 6], [391, 381, 6, 391, 394, 6], [373, 395, 6, 390, 395, 6]]}  # the windows that faced north on every side
     style: hall
@@ -119,6 +126,7 @@ sections:
   - id: silo
     name: The Cocoa Silo
     tiles: [86, 89, 87, 89]  # grass between the terrace's depot and the mill, below the hill belt
+    sign: {x: 85, y: 88, text: "The Cocoa Silo: the beans' store before the mill, fed by a yellow tube from the terrace."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0, 2]]  # plinth levels per tile, rows north to south (hglab factory level)
     style: stripe_tower
     levels: 14
@@ -132,6 +140,7 @@ sections:
   - id: boiler
     name: The Boiler House
     tiles: [98, 84, 98, 85]  # the strip between the east river and the campus wall
+    sign: {x: 98, y: 86, text: "The Boiler House: the fire that warms the river and the halls; its striped chimney is the tallest flame."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0], [0]]  # plinth levels per tile, rows north to south (hglab factory level)
     style: hall
     levels: 8
@@ -148,6 +157,7 @@ sections:
   - id: mast
     name: The Taffy Mast
     tiles: [96, 84, 96, 85]  # grass east of the vault, west of the river
+    sign: {x: 97, y: 86, text: "The Taffy Mast: taffy pulled on a pink and white mast by the river."}  # the owner, 2026-11-02: a sign beside every building
     foundation: [[0], [0]]  # plinth levels per tile, rows north to south (hglab factory level)
     style: stripe_tower
     levels: 14
@@ -158,6 +168,292 @@ sections:
     window_color: red
     crown_slope: [thatch, pink]
     crown_cap: [thatch, red]
+  # The East Works (the owner's instruction of 2026-11-03): the factory grows by twice what stood, eighteen buildings on the
+  # office's lots of the K column under contract to the factory (x 100-109, y 61-96), in three works: the North Works on
+  # the grass, the Forest Works among the trees, the Shore Works between the campus wall and the sea. Chosen from the world
+  # of tick 149812: every tile walkable, no structure under a building, no stone or ore node, a lane at least a tile wide
+  # round each, every door onto open ground, two tiles from the resident's house at (110-112,61-64). The old campus keeps
+  # its wall; tubes high over it join the two.
+  - id: gobstopper
+    name: The Gobstopper Foundry
+    tiles: [103, 61, 106, 64]  # grass of the north works, between the office's claim signs at x 102 and 107
+    sign: {x: 103, y: 65, text: "The Gobstopper Foundry: sweets cast in rings of colour, one ring a day, so a gobstopper is as old as its colours."}
+    foundation: [[0, 0, 0, 0], [1, 1, 0, 0], [1, 1, 1, 0], [1, 1, 1, 1]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: hall
+    levels: 8
+    doors: [south]
+    door: [wood, purple]
+    pillars: [stone, black]
+    courses: [purple, lime]
+    course_levels: 1
+    window_levels: [3, 6]
+    window_color: pink
+    chimney: {levels: 14, stripe_levels: 2, stripes: [purple, lime], x: 424, y: 245}
+    roof_slope: [thatch, purple]
+    roof_cap: [thatch, lime]
+  - id: sherbet
+    name: The Sherbet Spire
+    tiles: [100, 61, 101, 62]  # the north-west corner of the north works
+    sign: {x: 101, y: 63, text: "The Sherbet Spire: lemon and orange powder dried in the tower's warm top and poured down a chute into tins."}
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: stripe_tower
+    levels: 12
+    doors: [south]
+    door: [wood, yellow]
+    stripes: [yellow, white]
+    window_levels: [4, 9]
+    window_color: orange
+    crown_slope: [thatch, yellow]
+    crown_cap: [thatch, orange]
+  - id: licorice
+    name: The Licorice Loom
+    tiles: [100, 64, 101, 68]  # the west edge of the north works, by the office's lots
+    sign: {x: 100, y: 69, text: "The Licorice Loom: black and red licorice spun on looms into ropes, laces and wheels."}
+    foundation: [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: hall
+    levels: 7
+    doors: [east]
+    door: [wood, red]
+    pillars: [stone, black]
+    courses: [black, red]
+    course_levels: 2
+    window_levels: [3]
+    window_color: red
+    roof_slope: [thatch, black]
+    roof_cap: [thatch, red]
+  - id: toffee
+    name: The Toffee Kitchens
+    tiles: [103, 66, 106, 69]  # below the foundry across the north works' lane
+    sign: {x: 105, y: 65, text: "The Toffee Kitchens: butter and sugar boiled in copper pans till they crack; the orange turrets vent the steam."}
+    foundation: [[1, 1, 1, 0], [1, 1, 1, 0], [1, 1, 0, 0], [1, 0, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: hall
+    levels: 8
+    doors: [north]
+    door: [wood, orange]
+    turrets: {block: [stone, orange], cap: [thatch, brown], levels: 10, size: 2}
+    courses: [orange, tan]
+    course_levels: 1
+    window_levels: [3, 6]
+    window_color: yellow
+    roof_slope: [thatch, orange]
+    roof_cap: [thatch, brown]
+  - id: fizz
+    name: The Fizz Tower
+    tiles: [108, 67, 109, 68]  # the east edge, two tiles from a resident's house to the north-east
+    sign: {x: 109, y: 69, text: "The Fizz Tower: bubbles for the fizzy drinks rise through glass floors of every colour and are caught at the top."}
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: glass_tower
+    levels: 12
+    doors: [south]
+    door: [wood, cyan]
+    pillars: [stone, white]
+    band_levels: 2
+    bands: [cyan, teal, blue, indigo, purple, pink, red]
+    crown: [stone, cyan]
+  - id: nougat
+    name: The Nougat Press
+    tiles: [103, 71, 106, 74]  # forest of the middle works
+    sign: {x: 103, y: 75, text: "The Nougat Press: honey, nuts and egg white beaten and pressed into slabs between rice paper."}
+    foundation: [[1, 1, 0, 0], [1, 1, 0, 0], [1, 1, 0, 0], [1, 1, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: hall
+    levels: 8
+    doors: [south]
+    door: [wood, tan]
+    pillars: [stone, white]
+    courses: [tan, white]
+    course_levels: 2
+    window_levels: [3, 6]
+    window_color: pink
+    roof_slope: [thatch, tan]
+    roof_cap: [thatch, white]
+  - id: marzipan
+    name: The Marzipan Works
+    tiles: [103, 76, 106, 79]  # the south edge of the forest, over the lane to the shore
+    sign: {x: 105, y: 75, text: "The Marzipan Works: almonds ground to paste and shaped into fruit and animals; the striped chimney dries the paint."}
+    foundation: [[0, 0, 0, 0], [0, 0, 0, 0], [1, 0, 0, 0], [1, 1, 1, 1]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: hall
+    levels: 8
+    doors: [south]
+    door: [wood, pink]
+    pillars: [stone, white]
+    courses: [pink, white]
+    course_levels: 1
+    window_levels: [3, 6]
+    window_color: lime
+    chimney: {levels: 14, stripe_levels: 2, stripes: [pink, white], x: 424, y: 305}
+    roof_slope: [thatch, pink]
+    roof_cap: [thatch, green]
+  - id: mint
+    name: The Mint Spire
+    tiles: [100, 71, 101, 72]  # the west edge of the forest works
+    sign: {x: 101, y: 73, text: "The Mint Spire: mint leaves from the forest pressed for oil and stirred into the creams."}
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: stripe_tower
+    levels: 12
+    doors: [south]
+    door: [wood, green]
+    stripes: [green, white]
+    window_levels: [4, 8]
+    window_color: lime
+    crown_slope: [thatch, green]
+    crown_cap: [thatch, white]
+  - id: caramel
+    name: The Caramel Cellars
+    tiles: [100, 74, 101, 78]  # the west edge of the forest, low under the trees
+    sign: {x: 100, y: 79, text: "The Caramel Cellars: caramel left to darken in cool cellars under the trees."}
+    foundation: [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: hall
+    levels: 7
+    doors: [east]
+    door: [wood, brown]
+    pillars: [stone, brown]
+    courses: [brown, orange]
+    course_levels: 2
+    window_levels: [3]
+    window_color: orange
+    roof_slope: [thatch, brown]
+    roof_cap: [thatch, orange]
+  - id: bubblegum
+    name: The Bubblegum Mill
+    tiles: [108, 70, 109, 74]  # the east edge of the forest works
+    sign: {x: 109, y: 75, text: "The Bubblegum Mill: gum rolled, stretched and cut; a pink tube carries it to the nougat press."}
+    foundation: [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: hall
+    levels: 7
+    doors: [north]
+    door: [wood, pink]
+    pillars: [stone, pink]
+    courses: [pink, cyan]
+    course_levels: 1
+    window_levels: [3]
+    window_color: cyan
+    roof_slope: [thatch, pink]
+    roof_cap: [thatch, cyan]
+  - id: butterscotch
+    name: The Butterscotch Brewery
+    tiles: [108, 76, 109, 79]  # the south-east corner of the forest, by the office's walls
+    sign: {x: 107, y: 76, text: "The Butterscotch Brewery: butterscotch brewed in vats by the office's walls and piped west."}
+    foundation: [[0, 0], [0, 0], [1, 1], [1, 1]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: hall
+    levels: 7
+    doors: [north]
+    door: [wood, yellow]
+    pillars: [stone, tan]
+    courses: [yellow, tan]
+    course_levels: 2
+    window_levels: [3]
+    window_color: orange
+    roof_slope: [thatch, yellow]
+    roof_cap: [thatch, orange]
+  - id: cocoa-store
+    name: The Cocoa Bean Store
+    tiles: [103, 81, 106, 84]  # the head of the shore strip
+    sign: {x: 103, y: 85, text: "The Cocoa Bean Store: beans from the boats dried and kept here before the roasting."}
+    foundation: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: hall
+    levels: 8
+    doors: [north]
+    door: [wood, brown]
+    pillars: [stone, brown]
+    courses: [brown, tan]
+    course_levels: 2
+    window_levels: [3, 6]
+    window_color: yellow
+    roof_slope: [thatch, brown]
+    roof_cap: [thatch, tan]
+  - id: dairy
+    name: The Whipped Cream Dairy
+    tiles: [100, 81, 101, 85]  # against the campus wall, across from the boiler house
+    sign: {x: 100, y: 80, text: "The Whipped Cream Dairy: cream whipped and chilled against the campus wall; a tube brings steam from the boiler house."}
+    foundation: [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: hall
+    levels: 7
+    doors: [east]
+    door: [wood, white]
+    pillars: [stone, white]
+    courses: [white, cyan]
+    course_levels: 2
+    window_levels: [3]
+    window_color: cyan
+    roof_slope: [thatch, white]
+    roof_cap: [thatch, cyan]
+  - id: jelly
+    name: The Jelly Bean Vats
+    tiles: [103, 86, 104, 90]  # the middle of the shore strip, between the office's walls
+    sign: {x: 104, y: 85, text: "The Jelly Bean Vats: jelly in every colour set in vats, then sugared and polished."}
+    foundation: [[1, 1], [1, 1], [1, 1], [0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: hall
+    levels: 7
+    doors: [west]
+    door: [wood, lime]
+    pillars: [stone, green]
+    courses: [red, lime, purple, yellow]
+    course_levels: 1
+    window_levels: [3]
+    window_color: pink
+    roof_slope: [thatch, green]
+    roof_cap: [thatch, red]
+  - id: kiln
+    name: The Rock Candy Kiln
+    tiles: [100, 88, 101, 92]  # against the campus wall, below the dairy
+    sign: {x: 100, y: 87, text: "The Rock Candy Kiln: sugar crystals grown on strings in the heat of the kiln."}
+    foundation: [[1, 0], [1, 0], [1, 0], [0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: hall
+    levels: 7
+    doors: [east]
+    door: [wood, red]
+    pillars: [stone, grey]
+    courses: [grey, pink]
+    course_levels: 2
+    window_levels: [3]
+    window_color: orange
+    chimney: {levels: 15, stripe_levels: 3, stripes: [pink, white], x: 401, y: 357}
+    roof_slope: [thatch, grey]
+    roof_cap: [thatch, pink]
+  - id: honeycomb
+    name: The Honeycomb Hive
+    tiles: [103, 92, 104, 96]  # the south of the shore strip, above the bay
+    sign: {x: 105, y: 95, text: "The Honeycomb Hive: honeycomb toffee foamed up in moulds and broken into gold pieces."}
+    foundation: [[0, 0], [0, 0], [0, 0], [0, 0], [1, 1]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: hall
+    levels: 7
+    doors: [east]
+    door: [wood, yellow]
+    pillars: [stone, orange]
+    courses: [yellow, orange]
+    course_levels: 1
+    window_levels: [3]
+    window_color: yellow
+    roof_slope: [thatch, orange]
+    roof_cap: [thatch, yellow]
+  - id: lighthouse
+    name: The Candy Cane Lighthouse
+    tiles: [100, 95, 101, 96]  # the shore's south-west corner, over the bay
+    sign: {x: 101, y: 94, text: "The Candy Cane Lighthouse: a red and white light over the bay for the cocoa boats coming in."}
+    foundation: [[0, 0], [0, 0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: stripe_tower
+    levels: 12
+    doors: [north]
+    door: [wood, red]
+    stripes: [red, white]
+    window_levels: [4, 9]
+    window_color: yellow
+    crown_slope: [thatch, red]
+    crown_cap: [thatch, white]
+  - id: sugar-mouse
+    name: The Sugar Mouse Tower
+    tiles: [106, 87, 106, 88]  # a narrow tile between the office's walls on the shore
+    sign: {x: 106, y: 86, text: "The Sugar Mouse Tower: sugar mice made one at a time in a tower one tile wide."}
+    foundation: [[0], [0]]  # plinth levels per tile, rows north to south (hglab factory level)
+    style: stripe_tower
+    levels: 12
+    doors: [east]
+    door: [wood, pink]
+    stripes: [pink, white]
+    window_levels: [4, 8]
+    window_color: pink
+    crown_slope: [thatch, pink]
+    crown_cap: [thatch, white]
 # Tubes (the owner's brief of 2026-10-27): coloured pipes that come out of the factory and go back in, to make it
 # look wonky. Cell points [bx, by, bz], each leg straight; every tube starts and ends beside a hall's wall and keeps
 # to level 6 and above, where a block closes no tile. The candy hall's walls are cells 372-387 x 360-375, the
@@ -235,6 +531,90 @@ tubes:
     color: tan
     size: 3
     path: [[373, 376, 7], [373, 379, 7]]
+  # The East Works' tubes (the owner, 2026-11-03): three high crossings from the old campus over its wall, and a tube
+  # between every pair of neighbouring buildings of the new works, all at level 6 and above.
+  - name: east crossing
+    section: tubes-annex-cross
+    color: orange
+    path: [[396, 338, 6], [397, 338, 6], [397, 338, 11], [399, 338, 11], [399, 323, 11], [401, 323, 11], [401, 323, 6]]
+  - name: north bridge
+    section: tubes-annex-cross
+    color: indigo
+    path: [[396, 325, 13], [411, 325, 13], [411, 325, 7]]
+  - name: packing link
+    section: tubes-annex-cross
+    color: teal
+    path: [[392, 381, 10], [399, 381, 10]]
+  - name: sherbet sky
+    section: tubes-annex-north
+    color: yellow
+    path: [[408, 246, 10], [411, 246, 10], [411, 246, 7]]
+  - name: licorice twist
+    section: tubes-annex-north
+    color: red
+    path: [[408, 270, 6], [409, 270, 6], [409, 270, 10], [411, 270, 10], [411, 270, 8]]
+  - name: gobstopper drop
+    section: tubes-annex-north
+    color: purple
+    size: 2
+    path: [[421, 260, 8], [421, 263, 8]]
+  - name: fizz loop
+    section: tubes-annex-north
+    color: cyan
+    path: [[431, 270, 9], [430, 270, 9], [430, 270, 12], [428, 270, 12], [428, 270, 7]]
+  - name: toffee chute
+    section: tubes-annex-forest
+    color: orange
+    size: 3
+    path: [[417, 280, 7], [417, 283, 7]]
+  - name: mint line
+    section: tubes-annex-forest
+    color: green
+    size: 2
+    path: [[408, 286, 8], [411, 286, 8]]
+  - name: bubblegum chute
+    section: tubes-annex-forest
+    color: pink
+    size: 2
+    path: [[431, 290, 6], [428, 290, 6]]
+  - name: caramel pipe
+    section: tubes-annex-forest
+    color: brown
+    path: [[408, 312, 6], [411, 312, 6]]
+  - name: butterscotch spout
+    section: tubes-annex-forest
+    color: yellow
+    path: [[431, 310, 6], [430, 310, 6], [430, 310, 11], [428, 310, 11], [428, 310, 7]]
+  - name: cocoa conveyor
+    section: tubes-annex-shore
+    color: tan
+    size: 3
+    path: [[414, 320, 8], [414, 321, 8], [414, 321, 7], [414, 323, 7]]
+  - name: cream line
+    section: tubes-annex-shore
+    color: white
+    path: [[408, 330, 6], [411, 330, 6]]
+  - name: jelly drop
+    section: tubes-annex-shore
+    color: lime
+    path: [[413, 340, 7], [413, 343, 7]]
+  - name: kiln flue
+    section: tubes-annex-shore
+    color: red
+    path: [[408, 358, 6], [409, 358, 6], [409, 358, 11], [411, 358, 11], [411, 358, 6]]
+  - name: honey pipe
+    section: tubes-annex-shore
+    color: yellow
+    size: 2
+    path: [[414, 364, 6], [414, 367, 6]]
+  - name: lighthouse line
+    section: tubes-annex-shore
+    color: blue
+    path: [[408, 383, 9], [409, 383, 9], [409, 383, 6], [411, 383, 6]]
+  - name: mouse run
+    section: tubes-annex-shore
+    color: pink
+    path: [[423, 350, 9], [421, 350, 9], [421, 350, 7], [420, 350, 7]]
 # The campus wall (the owner's brief of 2026-10-27): a high wall round the whole campus and one large yellow
 # gate with a round arch on one side. Surveyed against the live world on 2026-10-27: the wall stands on every
 # walkable edge tile of the four plots that closes no one's access to a node, the collective's own roads on
@@ -265,16 +645,26 @@ campus_wall:
 river:
   block: [stone, brown]
   width_cells: 4
+  widths: {annex-west: 2, annex-east: 2, annex-link: 2}  # the East Works' branches (2026-11-03): half as wide, so the blocks go into the buildings
   # computed by `hglab factory route --write` from the doors' front tiles; regenerate after a design change
   waypoints:
     west: [[88, 85], [88, 88], [92, 91], [92, 96], [92, 98]]
     terrace: [[88, 88], [84, 87]]
     east: [[97, 82], [97, 91], [98, 94], [99, 99]]
+    annex-west: [[102, 61], [102, 96]]
+    annex-east: [[107, 61], [107, 91]]
+    annex-link: [[103, 80], [106, 80]]
   branches:
     west: [[88, 85], [88, 86], [88, 87], [88, 88], [88, 89], [88, 90], [88, 91], [89, 91], [90, 91], [91, 91], [92, 91], [92, 92], [92, 93], [92, 94], [92, 95], [92, 96], [92, 97], [92, 98]]
     terrace: [[88, 88], [87, 88], [86, 88], [85, 88], [85, 87], [84, 87]]
     east: [[97, 82], [97, 83], [97, 84], [97, 85], [97, 86], [97, 87], [97, 88], [97, 89], [97, 90], [97, 91], [98, 91], [98, 92], [98, 93], [98, 94], [99, 94], [99, 95], [99, 96], [99, 97], [99, 98], [99, 99]]
+    annex-west: [[102, 61], [102, 62], [102, 63], [102, 64], [102, 65], [102, 66], [102, 67], [102, 68], [102, 69], [102, 70], [102, 71], [102, 72], [102, 73], [102, 74], [102, 75], [102, 76], [102, 77], [102, 78], [102, 79], [102, 80], [102, 81], [102, 82], [102, 83], [102, 84], [102, 85], [102, 86], [102, 87], [102, 88], [102, 89], [102, 90], [102, 91], [102, 92], [102, 93], [102, 94], [102, 95], [102, 96]]
+    annex-east: [[107, 61], [107, 62], [107, 63], [107, 64], [107, 65], [107, 66], [107, 67], [107, 68], [107, 69], [107, 70], [107, 71], [107, 72], [107, 73], [107, 74], [107, 75], [107, 76], [107, 77], [107, 78], [107, 79], [107, 80], [107, 81], [107, 82], [107, 83], [107, 84], [107, 85], [107, 86], [107, 87], [107, 88], [107, 89], [107, 90], [107, 91]]
+    annex-link: [[103, 80], [104, 80], [105, 80], [106, 80]]
 depots:
   - {x: 92, y: 88, name: the mill depot}
   - {x: 98, y: 82, name: the lookout depot}
   - {x: 82, y: 89, name: the terrace depot}
+  - {x: 100, y: 70, name: the north works depot}  # the East Works (2026-11-03): materials beside the work
+  - {x: 108, y: 80, name: the forest works depot}
+  - {x: 105, y: 96, name: the shore works depot}

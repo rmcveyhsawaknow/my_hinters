@@ -21,24 +21,26 @@ pipeline:
     x: 89
     y: 99
   radius: 7
-  range: 16
+  range: 40  # the East Works (2026-11-03) lie up to 38 tiles from the works: a hand there is at the works, not far from it
   stores_max: 10
   blueprint: chocolate-factory  # teams/blueprints/chocolate-factory.yaml (the owner's brief of 2026-10-24)
   next_blueprint: [lower-manhattan, midtown, central-park]  # the owner, 2026-10-27: once every step of the factory is done, the builders and hands take up the Atelier's Lower Manhattan; 2026-11-02: then the larger replica, Midtown and Central Park
   builders:
     loompa-mason: [depots, elevator, mill, terrace, lookout, campus-north, campus-east]
-    wonka: [candy, tubes-candy, campus-gate, campus-west, elevator, depots, lookout, mast, tubes-sky]
-    mrs-bucket: [packing, tubes-packing, campus-south, river-west, river-terrace, river-east, campus-east, boiler, tubes-bay]
+    # the owner, 2026-11-03: the East Works, shared by the block room each builder has left under the world's cap (a
+    # builder's own sections first, then any section nearest; one at the cap leaves the rest to the others)
+    wonka: [candy, tubes-candy, campus-gate, campus-west, elevator, depots, lookout, mast, tubes-sky, gobstopper, sherbet]
+    mrs-bucket: [packing, tubes-packing, campus-south, river-west, river-terrace, river-east, campus-east, boiler, tubes-bay, cocoa-store, dairy, sugar-mouse, tubes-annex-cross, river-annex-east, river-annex-link]
     # the owner's brief of 2026-11-02: every hand builds; the hands take the wild tubes and the silo (Toffeetrowel stands at the world's cap of blocks)
-    loompa-woodcutter: [silo, tubes-fudge]
-    loompa-quarrier: [tubes-spine]
-    loompa-provisioner: [tubes-haul]
-    loompa-hauler: [tubes-crossing]
+    loompa-woodcutter: [silo, tubes-fudge, nougat, mint, caramel, tubes-annex-forest]
+    loompa-quarrier: [tubes-spine, toffee, licorice, fizz, tubes-annex-north]
+    loompa-provisioner: [tubes-haul, marzipan, bubblegum, butterscotch, river-annex-west]
+    loompa-hauler: [tubes-crossing, jelly, kiln, honeycomb, lighthouse, tubes-annex-shore]
     # GrandadPail rests by the family hut and holds court from it (owner, 2026-10-24); he builds nothing
-  stock:  # the blueprint's remaining cost sets the mix (hglab factory show): stone first, then wood and fiber
-    wood: 400
+  stock:  # the blueprint's remaining cost sets the mix (hglab factory show): stone first, then fiber and wood
+    wood: 800  # the East Works (2026-11-03) ask 1,743 stone, 714 fiber and 505 wood, and no ore; the targets follow the whole blueprint's cost, up to 800
     stone: 800
-    fiber: 300  # the wild expansion of 2026-11-02 asks 268 fiber of thatch roofs and crowns
+    fiber: 800  # the wild expansion of 2026-11-02 asked 268 fiber of thatch roofs and crowns; the East Works' roofs 714
     berries: 60
     ore: 40
   plan:

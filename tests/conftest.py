@@ -23,3 +23,13 @@ def _private_office_ledger(tmp_path_factory, monkeypatch):
 
     folder = tmp_path_factory.mktemp("office")
     monkeypatch.setattr(evict, "shared_path", lambda root: folder / "evictions.json")
+
+
+@pytest.fixture(autouse=True)
+def _private_fill_board(tmp_path_factory, monkeypatch):
+    """Every test starts with an empty fill board: the live one is at runs/local/office/fill.json (hglab.fill, 2026-11-03)."""
+    from hglab import fill
+
+    folder = tmp_path_factory.mktemp("fill")
+    monkeypatch.setattr(fill, "board_path", lambda root: folder / "fill.json")
+
