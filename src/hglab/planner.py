@@ -293,9 +293,9 @@ def plan_wake(
     reserve = persona.energy_reserve
     names = dict(team_names or {})
     names.setdefault(persona.name.casefold(), persona.slug)
-    tills = frozenset((int(t[0]), int(t[1])) for t in (cast or {}).get("office_tills") or ()) | frozenset(
-        (int(t[0]), int(t[1])) for t in (cast or {}).get("office_relics") or ()
-    )  # the land office's tills (the price of land only) and its relic stores on ground under contract (inside the factory's campus, 2026-11-02): nobody unloads into either
+    tills = frozenset((int(t[0]), int(t[1])) for t in (cast or {}).get("office_tills") or ())  # the land office's tills: the price of land only (2026-10-27)
+    relics = frozenset((int(t[0]), int(t[1])) for t in (cast or {}).get("office_relics") or ())  # its relic stores on ground under contract (inside the factory's campus, 2026-11-02): no unload, and no land price either (2026-11-03: folded into the tills, they were paid into first, and stood full)
+    no_drop = tills | relics
     actions: list[dict[str, Any]] = []
     reasons: list[str] = []
     remember: list[dict[str, str]] = []
@@ -441,7 +441,7 @@ def plan_wake(
                 _plan_repair(persona, team, inventory, here, view, teammates)
                 or _no_walk_with_price(_plan_harvest(persona, team, inventory, here, view, teammates), state, inventory, int(observe.get("tick", 0) or 0))
                 or _plan_stake(persona, inventory, here, view)
-                or (_plan_site_trade(persona, state, inventory, here, view, observe, registrar_name, office_names=(cast or {}).get("office_names"), mates=set(collective_names or ()) | set(names or ()), tills=tills) if here == position else None)
+                or (_plan_site_trade(persona, state, inventory, here, view, observe, registrar_name, office_names=(cast or {}).get("office_names"), mates=set(collective_names or ()) | set(names or ()), tills=tills, relics=relics) if here == position else None)
                 or (_plan_blueprint(persona, team, state, observe, view, inventory, here, budget - len(actions), set(names or ())) if not persona.knobs.get("crew") and here == position and not _owes_price(state, int(observe.get("tick", 0) or 0)) else None)
                 or (_plan_hearth(persona, inventory, here, view, home, state) if here == position else None)
                 or _plan_house(persona, inventory, here, view, home, observe, state=state)
@@ -452,8 +452,8 @@ def plan_wake(
         elif activity == "gather":
             step = (
                 _plan_gather(persona, team, inventory, here, view, teammates, rng)
-                or _plan_deposit(persona, inventory, here, view, None, mates=set(collective_names or ()) | set(names or ()), state=state, faction=our_faction, skip=tills)
-                or _plan_deposit_trip(persona, team, inventory, here, view, teammates, {n.casefold() for n in set(collective_names or ()) | set(names or ())} | {persona.name.casefold()}, state=state, faction=our_faction, skip=tills)
+                or _plan_deposit(persona, inventory, here, view, None, mates=set(collective_names or ()) | set(names or ()), state=state, faction=our_faction, skip=no_drop)
+                or _plan_deposit_trip(persona, team, inventory, here, view, teammates, {n.casefold() for n in set(collective_names or ()) | set(names or ())} | {persona.name.casefold()}, state=state, faction=our_faction, skip=no_drop)
                 or _plan_forage(persona, team, inventory, here, view, teammates)
             )
         elif activity == "explore":
@@ -770,9 +770,9 @@ def _plan_work(
         used.update({"build", "hearth", "house", "border", "stash", "deposit", "deposit_trip"})  # a hand builds and unloads through the team's plan only
     ours = set(collective_names or ()) | set(names or ())
     our_faction = _faction_name((observe.get("you") or {}).get("faction")) or None
-    tills = frozenset((int(t[0]), int(t[1])) for t in (cast or {}).get("office_tills") or ()) | frozenset(
-        (int(t[0]), int(t[1])) for t in (cast or {}).get("office_relics") or ()
-    )  # the land office's tills (the price of land only) and its relic stores on ground under contract (inside the factory's campus, 2026-11-02): nobody unloads into either
+    tills = frozenset((int(t[0]), int(t[1])) for t in (cast or {}).get("office_tills") or ())  # the land office's tills: the price of land only (2026-10-27)
+    relics = frozenset((int(t[0]), int(t[1])) for t in (cast or {}).get("office_relics") or ())  # its relic stores on ground under contract (inside the factory's campus, 2026-11-02): no unload, and no land price either (2026-11-03: folded into the tills, they were paid into first, and stood full)
+    no_drop = tills | relics
 
     def fits_as(label: str, step: tuple[list[dict[str, Any]], str, str] | None) -> bool:
         if label in skip or label in used:
@@ -883,7 +883,7 @@ def _plan_work(
     # 0.5 one engagement with a neighbour when there is one: a word, a gift, a deal, a contest (one action, before the build spends the cap)
     engaged = fits(_plan_engage(persona, team, state, inventory, here, view, observe, teammates, names, rng, collective_names, allowed))
     # 0.6 the trade for the house's ground: the brief to the land office, its answer, the payment
-    trade = _plan_site_trade(persona, state, inventory, here, view, observe, registrar_name, office_names=(cast or {}).get("office_names"), mates=ours, tills=tills) if not moved() else None
+    trade = _plan_site_trade(persona, state, inventory, here, view, observe, registrar_name, office_names=(cast or {}).get("office_names"), mates=ours, tills=tills, relics=relics) if not moved() else None
     if fits_as("site_trade", trade):
         approach = approach or "site_trade"
         if trade is not None and trade[2] in {"deed_draw", "deed_trip"}:
@@ -906,8 +906,8 @@ def _plan_work(
             "hearth": lambda: _plan_hearth(persona, inventory, here, view, home, state) if not moved() else None,
             "border": lambda: _plan_border_sign(persona, team, inventory, here, view, teammates, names) if not moved() else None,
             "reclaim": lambda: _plan_reclaim(persona, team, state, inventory, here, view, observe, teammates, collective_names, room=cap - len(actions)) if not moved() else None,
-            "deposit": lambda: _plan_deposit(persona, inventory, here, view, registrar_name, mates=ours, state=state, faction=our_faction, skip=tills),
-            "deposit_trip": lambda: _plan_deposit_trip(persona, team, inventory, position, view, teammates, {n.casefold() for n in ours} | {persona.name.casefold()}, state=state, faction=our_faction, skip=tills) if not moved() else None,
+            "deposit": lambda: _plan_deposit(persona, inventory, here, view, registrar_name, mates=ours, state=state, faction=our_faction, skip=no_drop),
+            "deposit_trip": lambda: _plan_deposit_trip(persona, team, inventory, position, view, teammates, {n.casefold() for n in ours} | {persona.name.casefold()}, state=state, faction=our_faction, skip=no_drop) if not moved() else None,
             "draw": lambda: _plan_draw(persona, state, inventory, here, view, observe, (cast or {}).get("supply_owners")) if not moved() else None,
             "stash": lambda: _plan_stash(persona, inventory, position, view, team) if not moved() and here == position else None,
             "gather_trip": lambda: _plan_gather(persona, team, inventory, here, view, teammates, rng),
@@ -991,10 +991,10 @@ def _plan_work(
     if not moved() and fits_as("draw", _plan_draw(persona, state, inventory, here, view, observe, (cast or {}).get("supply_owners"))):
         approach = approach or "draw"
     # 4. deposit surplus into an adjacent storehouse of ours (so the monument can draw on it)
-    if fits_as("deposit", _plan_deposit(persona, inventory, here, view, registrar_name, mates=ours, state=state, faction=our_faction, skip=tills)):
+    if fits_as("deposit", _plan_deposit(persona, inventory, here, view, registrar_name, mates=ours, state=state, faction=our_faction, skip=no_drop)):
         approach = approach or "deposit"
     # 4.2 a full pack walks to the nearest storehouse of ours to unload (a word or a meal may precede the walk)
-    if not moved() and fits_as("deposit_trip", _plan_deposit_trip(persona, team, inventory, position, view, teammates, {n.casefold() for n in ours} | {persona.name.casefold()}, state=state, faction=our_faction, skip=tills)):
+    if not moved() and fits_as("deposit_trip", _plan_deposit_trip(persona, team, inventory, position, view, teammates, {n.casefold() for n in ours} | {persona.name.casefold()}, state=state, faction=our_faction, skip=no_drop)):
         approach = approach or "deposit_trip"
     # 4.3 a full pack with no storehouse of ours in reach raises one of its own and unloads next wake
     if not moved() and here == position and fits_as("stash", _plan_stash(persona, inventory, position, view, team)):
@@ -1162,6 +1162,7 @@ def _plan_site_trade(
     office_names: set[str] | None = None,
     mates: set[str] | None = None,
     tills: set[tuple[int, int]] | frozenset[tuple[int, int]] = frozenset(),
+    relics: set[tuple[int, int]] | frozenset[tuple[int, int]] = frozenset(),
 ) -> tuple[list[dict[str, Any]], str, str] | None:
     """The trade for the house's ground with the land office, in three movements.
 
@@ -1226,16 +1227,20 @@ def _plan_site_trade(
         return _draw_price(persona, state, inventory, position, view, observe, mates, currency, owed, bought)
     structures = view.world_structures or view.structures
     office = {registrar_name.casefold()} | {str(n).casefold() for n in (office_names or ())}  # any storehouse of the land office takes the price
-    vaults = sorted(
-        ((int(s["x"]), int(s["y"])) for s in structures if s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() in office),
-        key=lambda t: chebyshev(position, t),
-    )
+    vaults = [(int(s["x"]), int(s["y"])) for s in structures if s.get("type") == "storehouse" and str(s.get("owner", "")).casefold() in office]
     ground = (int(bought.get("x", position[0])), int(bought.get("y", position[1])))
-    till_vaults = [v for v in vaults if v in tills]  # the office's tills first, wherever they stand: kept for the price of land (2026-10-27)
-    near_ground = [v for v in vaults if chebyshev(ground, v) <= DEED_TRIP_RANGE and v not in tills]
-    vaults = till_vaults + (near_ground or [v for v in vaults if v not in tills])  # then the office's stores by the ground being bought when it has any there; else its nearest anywhere
+    has_near = any(v not in tills and v not in relics and chebyshev(ground, v) <= DEED_TRIP_RANGE for v in vaults)  # the office keeps stores by the ground: then no walk to a far one (2026-10-25: Fudgewright toured the island)
     full = _full_stores(state, tick, within=DEED_FULL_TICKS)
-    vaults = [v for v in vaults if v not in full and storehouse_room(view.structure_at(*v) or {}) >= min(owed, 5)]  # a full vault takes nothing
+    refused_at = {tuple(int(c) for c in k.split(",")): int(t or 0) for k, t in state.flags["full_stores"].items()} if isinstance(state.flags.get("full_stores"), dict) else {}
+    vaults = [
+        v for v in vaults
+        if v not in relics and v not in full and storehouse_room(view.structure_at(*v) or {}) >= min(owed, 5)  # a relic inside the campus and a full vault take nothing
+        and (v in tills or not has_near or chebyshev(ground, v) <= DEED_TRIP_RANGE)
+    ]
+    # never refused first (a till, kept for the price of land, before a store by the ground being bought, before the nearest anywhere), then the
+    # one refused longest ago: on 2026-11-03 a till refused two hours before was tried again the moment its mark expired, every two hours, while
+    # a store the mason raised beside it would have stood untried
+    vaults.sort(key=lambda v: (refused_at.get(v, -(10**9)), 0 if v in tills else 1 if chebyshev(ground, v) <= DEED_TRIP_RANGE else 2, chebyshev(position, v), v))
     if not vaults:
         return _pay_in_person(registrar_name, state, bought, view, position, currency, carried, owed, tick=tick)
     vault = vaults[0]

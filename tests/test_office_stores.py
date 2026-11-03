@@ -114,3 +114,18 @@ def test_an_idle_mason_looks_in_on_the_till_he_has_not_seen_for_two_hours():
     state.flags["tills_seen"] = {"72,73": 1000 - TILL_ROUND_TICKS + 1, "78,95": 1000 - TILL_ROUND_TICKS + 1}  # both looked at within two hours
     rested = _step("office-steward", {"stone": 10, "berries": 5}, (110, 70), view, state=state)
     assert rested is None or "walk to the till at" not in rested[1]
+
+
+def test_a_relic_store_takes_no_land_price_and_a_refused_till_is_not_tried_first_again():
+    """2026-11-03: Plumbline carried Midtown's price to the office's relic store at (86,86) inside the factory campus, full, because the
+    relics were folded into the tills; and a till that refused the price two hours before would be tried again the moment its mark expired."""
+    wonka = load_personas(ROOT)["wonka"]
+    site = {"id": "works", "x": 87, "y": 97, "lot": "I09-SE", "price": 40, "currency": "wood", "paid": 16, "tick": 57000}
+    office = [_store(86, 86, storage={}), _store(78, 95, storage={}), _store(81, 90, storage={})]  # the relic inside the campus, the till by the west gate, a store raised beside it
+    view = WorldView(x0=70, y0=80, rows=ROWS, full_map=ROWS, structures=office, world_structures=office, tick=57100)
+    beside_relic = _plan_site_trade(wonka, PersonaState(mood="mercurial", flags={"house_site": dict(site)}), {"wood": 45}, (85, 87), view, {"tick": 57100, "you": {"x": 85, "y": 87}, "inbox": []}, "LandBroker", office_names={"Lintelstave"}, tills=TILLS, relics={(86, 86)})
+    assert beside_relic[0][0]["action"] == "move" and "(78, 95)" in beside_relic[1]  # past the relic beside him, to the till
+    refused = PersonaState(mood="mercurial", flags={"house_site": dict(site), "full_stores": {"78,95": 57100 - 800}})  # the till refused the price more than two hours ago
+    again = _plan_site_trade(wonka, refused, {"wood": 45}, (79, 94), view, {"tick": 57100, "you": {"x": 79, "y": 94}, "inbox": []}, "LandBroker", office_names={"Lintelstave"}, tills=TILLS, relics={(86, 86)})
+    assert again[0][0]["action"] == "move" and "(81, 90)" in again[1]  # the store never refused, not the till beside him again
+
