@@ -28,12 +28,12 @@ def _view(stores):
     return WorldView(x0=60, y0=60, rows=ROWS, full_map=ROWS, structures=[vault, *stores], world_structures=[vault, *stores], tick=1000)
 
 
-def _step(slug, inventory, position, view, room=3):
+def _step(slug, inventory, position, view, room=3, state=None):
     personas = load_personas(ROOT)
     persona = personas[slug]
     observe = {"you": {"x": position[0], "y": position[1], "faction": {"id": 7, "name": "Land Office"}}, "tick": 1000}
     return plan_crew(
-        persona, load_team(ROOT, "exchange"), PersonaState(mood="busy"), observe, view, dict(inventory), position, 80, persona.energy_reserve, room,
+        persona, load_team(ROOT, "exchange"), state or PersonaState(mood="busy"), observe, view, dict(inventory), position, 80, persona.energy_reserve, room,
         {p.name for p in personas.values()}, {p.name: s for s, p in personas.items()}, None,
     )
 
@@ -85,3 +85,32 @@ def test_the_client_pays_into_a_till_and_the_registrar_names_it():
     assert walk[0][0]["action"] == "move" and "(78, 95)" in walk[1]  # past the full store by the ground, to the till
     assert pay_store(office, "LandBroker", {"Lintelstave"}, (87, 97), TILLS)["x"] == 78
     assert pay_store(office, "LandBroker", {"Lintelstave"}, (86, 88), TILLS)["x"] == 78 and pay_store(office, "LandBroker", {"Lintelstave"}, (86, 88))["x"] == 86  # without tills: the store nearest the ground
+
+
+def test_a_till_past_the_mark_has_the_mason_raise_the_next_store_beside_it():
+    """2026-11-03: both tills stood full while the mason, among stores with room in the east, raised nothing, and Midtown's deed waited."""
+    till = _store(72, 73, storage={"wood": 400})  # the till by the vault, past three quarters
+    other = _store(78, 95, storage={})
+    roomy = _store(81, 76, storage={"stone": 100})
+    step = _step("office-steward", {"wood": 25, "stone": 10, "berries": 5}, (71, 74), _view([roomy, till, other]))
+    build = step[0][0]
+    assert build["action"] == "build" and build["type"] == "storehouse" and max(abs(build["x"] - 71), abs(build["y"] - 74)) == 1 and (build["x"], build["y"]) not in TILLS
+    assert step[1].startswith("the till at (72, 73) for the price of land is past 75%")
+    far = _step("office-steward", {"wood": 25, "stone": 10, "berries": 5}, (80, 76), _view([roomy, till, other]))
+    assert far[0][0]["action"] == "move" and "the till at (72, 73)" in far[1] and "raise another beside it" in far[1]
+    assert load_team(ROOT, "exchange").extra["pipeline"]["claims"]["stores_max"] == 32
+
+
+def test_an_idle_mason_looks_in_on_the_till_he_has_not_seen_for_two_hours():
+    from hglab.crew import TILL_ROUND_TICKS
+
+    vault = _store(73, 72, owner="LandBroker", policy="private")
+    east = _store(111, 76, storage={"stone": 100})
+    public = [{k: v for k, v in s.items() if k != "storage"} for s in (vault, east, _store(75, 70), _store(72, 73), _store(78, 95))]  # the public snapshot shows no contents; the works has its store
+    view = WorldView(x0=104, y0=64, rows=ROWS, full_map=ROWS, structures=[east], world_structures=public, tick=1000)
+    state = PersonaState(mood="busy")
+    step = _step("office-steward", {"stone": 10, "berries": 5}, (110, 70), view, state=state)  # no store's cost in hand: nothing of his own to raise
+    assert step[0][0]["action"] == "move" and "walk to the till at" in step[1]
+    state.flags["tills_seen"] = {"72,73": 1000 - TILL_ROUND_TICKS + 1, "78,95": 1000 - TILL_ROUND_TICKS + 1}  # both looked at within two hours
+    rested = _step("office-steward", {"stone": 10, "berries": 5}, (110, 70), view, state=state)
+    assert rested is None or "walk to the till at" not in rested[1]

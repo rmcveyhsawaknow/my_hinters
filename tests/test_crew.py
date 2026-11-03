@@ -309,7 +309,7 @@ def test_a_heavy_pack_goes_to_the_nearest_depot_and_the_drayman_carries_depot_lo
     world = [vault, depot, *signs]
     beside_depot = (depot["x"] + 1, depot["y"])
     view = WorldView(x0=beside_depot[0] - 6, y0=beside_depot[1] - 6, rows=rows, full_map=rows, structures=[depot], world_structures=world, world_resources=nodes)
-    step = _office_step("office-quarrier", {"stone": 20, "ore": 14, "berries": 5}, beside_depot, view)
+    step = _office_step("office-quarrier", {"stone": 6, "ore": 28, "berries": 5}, beside_depot, view)  # under ten stone: no wall before the unload (2026-11-03)
     assert step[0][0]["action"] == "give" and (step[0][0]["x"], step[0][0]["y"]) == (depot["x"], depot["y"])  # the depot on the holding, not the vault forty tiles away
     drayman = _office_step("office-drayman", {"berries": 6}, beside_depot, view)
     assert drayman[0][0]["action"] == "take" and (drayman[0][0]["x"], drayman[0][0]["y"]) == (depot["x"], depot["y"]) and drayman[0][0]["item"] == "ore"  # ore is the vault's shortest stock

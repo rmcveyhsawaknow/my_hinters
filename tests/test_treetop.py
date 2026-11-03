@@ -86,3 +86,24 @@ def test_strayling_fells_the_forest_for_the_hideaway_when_the_store_is_short():
     kinds = [a["action"] for a in step[0]]
     assert "gather" in kinds or "move" in kinds
     assert all(a.get("kind") == "wood" for a in step[0] if a["action"] == "gather") and "wood" in step[1]
+
+
+def test_the_decks_come_in_one_row_strips_and_a_bridge_waits_for_the_railing_it_hangs_from():
+    """2026-11-03: the trunks stood and nothing rose on them. The two-row deck strips (32 wood) were more than a hand's
+    pack carries beside its berries, and the rope bridges, their own sections, were tried first and refused as unsupported."""
+    design, steps, _ = _bp()
+    decks = [s for s in steps if "deck row" in s["name"]]
+    assert len(decks) == 10 and all(s["box_cells"] <= factory.TREE_DECK_CELLS and s["items"] <= 16 for s in decks)
+    assert all(s["items"] <= 16 for s in steps if s["kind"] == "place")  # one trip to the woods pays for any step
+    for s in steps:
+        if s["kind"] == "place" and not any(z == 0 for _, _, z in factory._cells_of(s["action"])):
+            assert s["rests_on"], s["id"]  # every step off the ground names what holds it up
+    trunks = {s["id"] for s in steps if "trunk" in s["name"]}
+    ready = factory.ready_steps(steps, trunks)
+    assert {s["name"] for s in ready} == {"The Great Tree: deck row 1", "The West Tree: deck row 1", "The Lookout Tree: deck row 1"}
+    bridge = next(s for s in steps if s["id"] == "bridge-west:00")
+    assert bridge["rests_on"] == ["west-tree:06"] and next(s for s in steps if s["id"] == "west-tree:06")["name"].endswith("railing")
+    held_up = trunks | {s["id"] for s in steps if s["section"] == "west-tree"}
+    assert "bridge-west:00" in {s["id"] for s in factory.ready_steps(steps, held_up)}
+    assert "bridge-west:00" in {s["id"] for s in factory.ready_steps(steps, trunks, skip={"west-tree:06"})}  # planned this wake counts as standing
+    assert factory.check(design, steps) == []

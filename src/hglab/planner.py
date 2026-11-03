@@ -1279,7 +1279,7 @@ PRICE_SPENDERS = frozenset({"build", "build_monument", "house", "hearth", "draw"
 PAY_IN_PERSON_RANGE = 40  # how far the client walks to put the price into the registrar's hands when every office store is full (a few wakes)
 DEED_TRIP_RANGE = 16  # the office's stores within this of the ground being bought are the ones a client pays into, when it has any there; the registrar is paid in person within this of the client. On 2026-10-25 the office's stores by the factory were full and Fudgewright went from one office store to the next across the island
 DRAW_PRICE_RANGE = 40  # how far the client walks to a team store for the price
-DEED_BACKOFF_TICKS = 2160  # after a refused deed payment the client builds for six hours before it tries to pay again (2026-10-27: Fudgewright spent every wake carrying 19 wood from one full office store to the next, and the Candy Hall stood without its roof)
+DEED_BACKOFF_TICKS = 720  # after a refused deed payment the client builds for two hours before it tries to pay again (2026-10-27: Fudgewright spent every wake carrying 19 wood from one full office store to the next, and the Candy Hall stood without its roof; six hours then, two since 2026-11-03, when Plumbline had nothing to build without Midtown's deed and the office was raising stores)
 DEED_FULL_TICKS = 720  # an office store that refused the price is tried again after two hours: the office's hands wall its stone away when its stores are full (2026-10-25)
 
 
