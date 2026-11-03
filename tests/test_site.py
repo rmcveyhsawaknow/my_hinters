@@ -15,7 +15,7 @@ from hglab.persona import load_personas, load_team
 from hglab.planner import WorldView, _house_shortfall, _house_site, _plan_site_trade
 
 ROOT = Path(__file__).resolve().parents[1]
-NYC_DEEDED = {rid: {"client": "Plumbline", "deeded": 1} for rid in ("nyc-wall-street", "nyc-battery", "nyc-trinity", "nyc-wtc", "nyc-midtown-south", "nyc-midtown-north", "nyc-park-south", "nyc-park-north")}  # the Atelier's ground (2026-10-27, 2026-11-02), settled: these tests follow the factory's
+NYC_DEEDED = {rid: {"client": "Plumbline", "deeded": 1} for rid in ("nyc-wall-street", "nyc-battery", "nyc-trinity", "nyc-wtc", "nyc-midtown-south", "nyc-midtown-north", "nyc-park-south", "nyc-park-north", "nyc-uptown-west", "nyc-uptown-east")}  # the Atelier's ground (2026-10-27, 2026-11-02, 2026-11-03), settled: these tests follow the factory's
 
 
 def _world():

@@ -62,5 +62,5 @@ def test_the_atelier_takes_the_park_up_after_midtown_on_the_office_s_ground():
     requests = {r["id"]: r for r in load_ledger(ROOT).get("site_requests") or []}
     for rid, lots in SEGMENTS.items():
         assert requests[rid]["client"] == "Plumbline" and requests[rid]["lots"] == lots
-    assert factory.team_designs(load_team(ROOT, "atelier")) == ["lower-manhattan", "midtown", "central-park"]
+    assert factory.team_designs(load_team(ROOT, "atelier")) == ["lower-manhattan", "midtown", "central-park", "uptown", "nintendo-land"]  # Uptown and Nintendo Land follow (2026-11-03)
     assert set(_bp()[0]["land"]["lots"]) <= set(load_team(ROOT, "exchange").extra["pipeline"]["claims"]["exclude"])

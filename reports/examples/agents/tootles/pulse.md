@@ -1,9 +1,9 @@
 ```
 LAGALONG: always just behind the adventure                   day 182
 Alive         █████████░   87   ██████▇  40/42 wakes, never lapsed, 4 failed
-On mission    █████████░   87   ▄▄▄▄▄▅▇  100% outside · 35/40 saved · 2 landmarks · 3 near misses · humility 5/5
+On mission    █████████░   87   ▄▄▄▄▄▅▇  86% outside · 35/40 saved · 2 landmarks · 3 near misses · humility 5/5
 In character  ██████████   95   ▇▇▇▇▇▇█  humble 5 · persistent 4 · gentle 5 · wistful 4
-Team pull     Escape 71 → Tinkerglow, Stoutheart · Belief 0 → Tinkerglow
+Team pull     Escape 63 → Tinkerglow, Stoutheart · Belief 0 → Tinkerglow
 Working       saving materials in a far hut: 35 outcome for 24 energy over 7 wake(s)
 Not working   ranging ever farther: 2 outcome for 14 energy over 6 wake(s)
 Next bet      keep testing saving materials in a far hut; it has the best outcome per unit of energy
@@ -32,7 +32,7 @@ One formula for every agent: wakes completed vs scheduled, verification never la
 
 | key result | value | target | weight | progress |
 | --- | --- | --- | --- | --- |
-| share of time outside Neverland | 100% outside | 0.7 | 0.3 | 100% |
+| share of time outside Neverland | 86% outside | 0.7 | 0.3 | 100% |
 | stone and ore saved toward the Big Thing | 35/40 saved | 40 | 0.25 | 88% |
 | landmarks found | 2 landmarks | 4 | 0.2 | 50% |
 | near misses | 3 near misses | 3 | 0.15 | 100% |
@@ -44,7 +44,7 @@ Behaviour signatures (numeric ranges the persona expects):
 
 | signature | value | expected | in range |
 | --- | --- | --- | --- |
-| farthest distance from Neverland's centre | 42.0 | 15–90 | yes |
+| farthest distance from Neverland's centre | 40.0 | 15–90 | yes |
 | share of energy exploring | 0.506 | 0.35–0.7 | yes |
 | share of wakes resting | 0.075 | 0.05–0.3 | yes |
 | intended vs actual energy mix | 0.844 | 0.5–1.0 | yes |
@@ -62,12 +62,12 @@ Judge (fixture fixture, 6 lines, 8 actions):
 
 | direction | signal | from → to | value | effect | plain English |
 | --- | --- | --- | --- | --- | --- |
-| sent | escape | tootles → tinker-bell | 71 | glow | Time and distance Lagalong spends outside Neverland dim Tinkerglow's Glow; she feels abandoned. |
-| sent | escape | tootles → nibs | 71 | resolve | The more Lagalong leaves, the more firmly Stoutheart stays and stocks the stores. |
+| sent | escape | tootles → tinker-bell | 63 | glow | Time and distance Lagalong spends outside Neverland dim Tinkerglow's Glow; she feels abandoned. |
+| sent | escape | tootles → nibs | 63 | resolve | The more Lagalong leaves, the more firmly Stoutheart stays and stocks the stores. |
 | sent | belief | tootles → tinker-bell | 0 | glow | Even Lagalong crossing her bridges or returning inside counts as Belief. |
 
-- Escape 71: 100% of moves outside, farthest 42 tiles from the centre.
-- Belief 0: 0 arrival(s) inside, 0 bridge crossing(s), not currently inside.
+- Escape 63: 86% of moves outside, farthest 40 tiles from the centre.
+- Belief 0: 1 arrival(s) inside, 0 bridge crossing(s), not currently inside.
 
 ## Community lens (informational, never ranked)
 

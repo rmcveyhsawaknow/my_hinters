@@ -255,8 +255,10 @@ def test_a_hand_s_character_wake_is_the_pipeline_too_and_never_wanders_back(tmp_
 
 
 def _office(slug):
+    from conftest import office_team
+
     personas = load_personas(ROOT)
-    return personas[slug], load_team(ROOT, "exchange"), personas
+    return personas[slug], office_team(), personas
 
 
 def _office_step(slug, inventory, position, view, observe=None, room=3, energy=80, state=None):

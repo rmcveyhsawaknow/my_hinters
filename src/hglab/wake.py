@@ -274,6 +274,12 @@ def _cast(root: Path, persona: Any, team: Any, personas: dict[str, Any], registr
     faction = (team.extra or {}).get("faction") if team is not None else None
     if isinstance(faction, dict) and faction.get("allies"):
         cast["allies"] = {str(a): personas[str(a)].name for a in faction["allies"] if str(a) in personas}
+    try:
+        from hglab.persona import load_teams
+
+        cast["teams"] = load_teams(root)  # every team's pipeline: a hand with nothing of its own to raise lends a hand to another's blueprint (2026-11-03)
+    except (OSError, ValueError):
+        cast["teams"] = {}
     return cast
 
 

@@ -81,12 +81,14 @@ WORK_SUMMARIES = {
     "forage": "walking toward a node the map knows",
     "reclaim_trip": "walking to what the departed left standing",
     "border_trip": "walking to the next border sign",
+    "help": "lending a hand to another team's blueprint",
+    "roam": "walking the team's own grounds",
 }
 REPAIR_WORTH = 10  # mend only when at least half a repair's 20 hp is missing; a scratch is not worth a unit of material
 NODE_FLOOR = 5  # never take a node below this many units: local norm, never strip nodes
 ACTIVITIES = ("build", "gather", "social", "explore", "trade")
 LABEL_ACTIVITY = {  # a shift-planner step label -> the tick activity that runs it
-    "build": "build", "house": "build", "hearth": "build", "repair": "build", "harvest": "build", "border": "build", "reclaim": "build", "stash": "build", "draw": "build", "blueprint": "build",
+    "build": "build", "house": "build", "hearth": "build", "repair": "build", "harvest": "build", "border": "build", "reclaim": "build", "stash": "build", "draw": "build", "blueprint": "build", "help": "build", "roam": "explore",
     "deposit": "gather", "deposit_trip": "gather", "gather_trip": "gather", "forage": "gather", "gather_near": "gather",
     "explore": "explore", "migrate": "explore", "social": "social", "engage": "engage", "trade": "trade", "market_watch": "trade",
     "team": "team", "team_goal": "team_goal", "news": "news", "research": "research", "patrol": "patrol", "lighten": "lighten", "crew": "crew", "fool": "fool", "profile": "profile", "navy": "navy",
@@ -645,12 +647,28 @@ def _plan_crew(
     cast: dict[str, Any] | None = None,
     route: str | None = None,
 ) -> tuple[list[dict[str, Any]], str, str] | None:
-    """The team pipeline's step for a persona with a ``crew`` knob (``hglab.crew``); None for everyone else."""
+    """The team pipeline's step for a persona with a ``crew`` knob (``hglab.crew``); None for everyone else.
+
+    When the pipeline has nothing for the hand this wake (or the graph routed it to ``help``), it lends a hand to
+    another team's open blueprint, and failing that walks its own team's grounds (``hglab.help``, the owner, 2026-11-03).
+    """
     if not isinstance(persona.knobs.get("crew"), dict):
         return None
-    from hglab.crew import plan_crew
+    from hglab.crew import plan_crew, team_member_names
+    from hglab.help import plan_help, plan_roam
 
-    return plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, room, collective_names, names, teammates, crew_roles=(cast or {}).get("crew_roles"), route=route)
+    teams = (cast or {}).get("teams")
+    mates = team_member_names(persona, team, names)
+    if route == "help":
+        step = plan_help(persona, team, teams, state, observe, view, inventory, here, room, mates=mates)
+        if step is not None:
+            return step
+    step = plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, room, collective_names, names, teammates, crew_roles=(cast or {}).get("crew_roles"), route=route)
+    if step is None and route != "help":
+        step = plan_help(persona, team, teams, state, observe, view, inventory, here, room, mates=mates)
+    if step is None:
+        step = plan_roam(persona, team, state, observe, view, here, room)
+    return step
 
 
 def _plan_blueprint(
@@ -1011,6 +1029,14 @@ def _plan_work(
     # 3.8 the next build's shortfall drawn from an allied team's store (the atelier draws on the factory's)
     if not moved() and fits_as("draw", _plan_draw(persona, state, inventory, here, view, observe, (cast or {}).get("supply_owners"))):
         approach = approach or "draw"
+    # 3.9 a builder with nothing of its own to raise this wake lends a hand to another team's open blueprint (the owner,
+    # 2026-11-03): after its own blueprint, monument, house and border work, before it unloads, gathers or wanders
+    if not persona.knobs.get("crew") and "blueprint" not in skip and not _owes_price(state, int(observe.get("tick", 0) or 0)) and len(actions) < cap and not any(a.get("action") in {"place", "build"} for a in actions):
+        from hglab.help import plan_help
+
+        step = plan_help(persona, team, (cast or {}).get("teams"), state, observe, view, inventory, here, cap - len(actions), mates=set(names or ()))
+        if step is not None and not (moved() and any(a.get("action") == "move" for a in step[0])) and fits_as("help", step):
+            approach = approach or "help"
     # 4. deposit surplus into an adjacent storehouse of ours (so the monument can draw on it)
     if fits_as("deposit", _plan_deposit(persona, inventory, here, view, registrar_name, mates=ours, state=state, faction=our_faction, skip=no_drop)):
         approach = approach or "deposit"

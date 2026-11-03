@@ -22,15 +22,17 @@ pipeline:  # the owner, 2026-11-02: Neverland builds a treetop hideaway in its o
   range: 24
   floor: 5
   stores_max: 4
-  blueprint: treetop-hideaway  # teams/blueprints/treetop-hideaway.yaml
-  builders:
-    tinker-bell: [lookout-tree, great-tree, west-tree, bridge-east, bridge-west]
-    nibs: [great-tree, west-tree, lookout-tree, bridge-west, bridge-east]
-    lost-boy: [west-tree, great-tree, lookout-tree]
-    tootles: [great-tree, lookout-tree, west-tree]
-  stock:  # the blueprint is wood and thatch (hglab factory show --name treetop-hideaway)
-    wood: 200
-    fiber: 80
+  blueprint: treetop-hideaway  # teams/blueprints/treetop-hideaway.yaml; 2026-11-03: nine trees with rope ladders and bridges, the forest north of the ring
+  next_blueprint: [nintendo-land]  # the owner, 2026-11-03: the collective's Nintendo Land when the hideaway stands
+  roam: true  # the owner, 2026-11-03: a hand with nothing to raise and nobody to help walks the hideaway's grounds, tree to tree (hglab.help.plan_roam)
+  builders:  # 2026-11-03: the six new trees and their bridges follow each hand's old trees
+    tinker-bell: [lookout-tree, great-tree, west-tree, bridge-east, bridge-west, watch-tree, strays-tree, bridge-strays-lookout, bridge-watch]
+    nibs: [great-tree, west-tree, lookout-tree, bridge-west, bridge-east, story-tree, mending-tree, bridge-ring, bridge-mending]
+    lost-boy: [west-tree, great-tree, lookout-tree, hollow-oak, crows-nest-tree, bridge-hollow, bridge-crows-nest]
+    tootles: [great-tree, lookout-tree, west-tree, strays-tree, story-tree, bridge-strays, bridge-ring]
+  stock:  # the blueprint is wood and thatch (hglab factory show --name treetop-hideaway): 978 wood and 213 fiber for nine trees (2026-11-03)
+    wood: 400
+    fiber: 160
     stone: 40
     berries: 40
   plan:
@@ -44,11 +46,13 @@ home:
   note: Farthest grass from residents on 2026-10-17 (about 52 tiles), with shallow water and wood within a few tiles. Tinkerglow confirms in-world.
 territory:
   kind: circle
-  x: 74
-  y: 112
-  radius: 10
+  x: 70
+  y: 104
+  radius: 14
   status: confirmed
-  note: Confirmed by the owner on 2026-10-20 with the border of riddle signs; the sea holds the south.
+  note: >-
+    Confirmed by the owner on 2026-10-20 with the border of riddle signs; the sea holds the south. Grown on 2026-11-03
+    (Neverland by twice): the circle moves north over the new trees' forest, short of the factory's campus at x 85.
 social_budget:
   says_per_hour: 8
   open_goals: 4
@@ -113,3 +117,9 @@ border:
     - {x: 84, y: 108, text: "Fifth: if you can read this you have passed the opening. Turn back three steps and wait. If no light comes, you were not found; try at another hour."}
     - {x: 64, y: 105, text: "Sixth: from the west there is no way; the sand ends in the sea. Walk the north ring east and read as you go."}
     - {x: 64, y: 109, text: "Seventh: the one who finds you is Tinkerglow. Do not look for her hut; she will know yours. Stoutheart keeps the store; ask him for a price, not a favour."}
+    # 2026-11-03: the ring grows north over the forest of the six new trees (the owner: Neverland by twice)
+    - {x: 58, y: 95, text: "Eighth: the ring has grown north into the trees, so the old corner by the sand is no longer the end; follow these signs east and count the trees, not the stones."}
+    - {x: 63, y: 96, text: "Ninth: the walls around you are the land office's, not ours, and our border is only words; go round their stones by the gaps they leave and read on."}
+    - {x: 67, y: 96, text: "Tenth: south of here nine houses sit in the branches, and the one you cannot see from this sign is the one that has already seen you."}
+    - {x: 72, y: 95, text: "Eleventh: every rope ladder hangs on the west side of its trunk, so whoever climbs faces the morning; climb only when the light says yes."}
+    - {x: 76, y: 95, text: "Twelfth: east of the Watch Tree the ground belongs to the factory and the riddle stops; turn south and find the opening by the water."}

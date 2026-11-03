@@ -11,6 +11,24 @@
 #
 # Tiles are [x0, y0, x1, y1], inclusive; cells are 4 per tile. Colours: natural white grey black brown red orange
 # yellow lime green teal cyan blue indigo purple pink tan. Materials: wood (wood), thatch (fiber).
+#
+# Grown by twice what stood (the owner's instruction of 2026-11-03): six more treehouses, a rope ladder up every
+# trunk, and seven more rope bridges, so the nine trees make one hideaway. Read from the public world of tick
+# 153234 (runs/local/world.json and the public blocks): inside the ring only two spots were still clear of huts,
+# roads and the old trees' blocks, the Strays' Tree by Tinkerglow's hut and the Crow's Nest Tree under the West
+# Tree, so four of the new trees stand in the forest north of the ring, rows 96-102, between the land office's
+# walled lots on the west (G09, F09) and the roads to the Chocolate Factory's west gate on the east. Every new
+# tile keeps three tiles or more from the campus wall (x 80, y 99), so nothing new stands east of x 77 north of
+# row 102. Every new trunk is on forest with no node, structure, block or lot centre, and none on the ring's rows or
+# columns; the decks pass over roads, nodes, Tinkerglow's sign at (66,102) and five lot centres with no claim sign on
+# them, at levels 6 and 7, where they close nothing, and over no wall, hut, farm or store. The Mending Tree and the
+# Crow's Nest Tree touch the West Tree's deck edge to edge, a level higher, so they read as its terraces.
+#
+# The new trees carry `ladders: true`. The old three get their ladders as thatch tubes in their own sections,
+# after their last step (great-tree:22-25, west-tree:19-21, lookout-tree:20-22): `ladders: true` on an old tree
+# would put each ladder straight after its trunk and renumber the steps the ledger already names. The cells and
+# the actions are the ones `ladders: true` makes, so the ledger would carry over if the expander ever hangs the
+# ladders after a tree's last step.
 name: The Treetop Hideaway
 title: the Treetop Hideaway blueprint  # how a builder's reasons name it
 team: neverland
@@ -72,6 +90,117 @@ sections:
     roof_slope: [thatch, natural]
     roof_cap: [thatch, pink]
     lantern: [335, 412]  # the north-east corner of the deck, a light for the opening
+  # 2026-11-03: six more trees (the owner's instruction: Neverland grows by twice what stands)
+  - id: story-tree
+    name: The Story Tree
+    tiles: [70, 98, 73, 101]  # the hall tree, free forest north of the ring; the road at (70-71,101) and two wood nodes run under the deck
+    style: treehouse
+    deck: 7
+    trunks: [[70, 98], [73, 98], [71, 100], [73, 101]]
+    trunk: [wood, brown]
+    deck_block: [wood, natural]
+    railing: [wood, tan]
+    cabin: [71, 99, 72, 100]
+    doors: [south, east]
+    door: [wood, pink]
+    cabin_color: purple
+    window_color: yellow
+    roof_slope: [thatch, natural]
+    roof_cap: [thatch, orange]
+    lantern: [295, 407]  # the south-east corner of the deck, over the ring bridge
+    ladders: true
+    sign: {x: 74, y: 100, text: "The Story Tree, the big house of the woods. Bring up one thing that truly happened to you; you may carry down one that never did."}
+  - id: watch-tree
+    name: The Watch Tree
+    tiles: [75, 96, 77, 98]  # forest north-east of the hall, three tiles short of the campus wall at x 80; the road at x 78 stays clear
+    style: treehouse
+    deck: 7
+    trunks: [[75, 96], [77, 96], [76, 98]]
+    trunk: [wood, brown]
+    deck_block: [wood, natural]
+    railing: [wood, tan]
+    cabin: [76, 97, 77, 98]
+    doors: [west, north]
+    door: [wood, white]
+    cabin_color: blue
+    window_color: cyan
+    roof_slope: [thatch, natural]
+    roof_cap: [thatch, blue]
+    lantern: [311, 384]  # the north-east corner of the deck, a light toward the road north
+    ladders: true
+    sign: {x: 74, y: 97, text: "The Watch Tree. From its deck the road north and the factory chimneys are in sight; whoever we see coming gets a wave and a ladder."}
+  - id: mending-tree
+    name: The Mending Tree
+    tiles: [65, 100, 67, 102]  # free forest above the West Tree, its deck a level up from the West Tree's railing; Tinkerglow's sign at (66,102) stands under it
+    style: treehouse
+    deck: 7
+    trunks: [[65, 100], [65, 101], [67, 101]]
+    trunk: [wood, brown]
+    deck_block: [wood, natural]
+    railing: [wood, tan]
+    cabin: [65, 101, 66, 102]
+    doors: [north, east]
+    door: [wood, yellow]
+    cabin_color: lime
+    window_color: white
+    roof_slope: [thatch, natural]
+    roof_cap: [thatch, yellow]
+    ladders: true
+    sign: {x: 64, y: 101, text: "The Mending Tree. Torn sails, lost buttons and quarrels between friends are patched up here; the quarrels take the longest."}
+  - id: hollow-oak
+    name: The Hollow Oak
+    tiles: [61, 100, 63, 102]  # the forest's north-west corner, outside the ring above the sands; the roads at (62,100) and (63,101) run under the deck
+    style: treehouse
+    deck: 6
+    trunks: [[61, 100], [62, 101], [61, 102]]
+    trunk: [wood, brown]
+    deck_block: [wood, natural]
+    railing: [wood, tan]
+    cabin: [62, 101, 63, 102]
+    doors: [north, west]
+    door: [wood, red]
+    cabin_color: brown
+    window_color: orange
+    roof_slope: [thatch, natural]
+    roof_cap: [thatch, red]
+    ladders: true
+    sign: {x: 62, y: 103, text: "The Hollow Oak, where the forest gives way to sand. Knock and it sounds full; the hollow is up on the deck, kept for whatever the tide brings."}
+  - id: strays-tree
+    name: The Strays' Tree
+    tiles: [77, 106, 79, 108]  # free forest inside the ring between the Great Tree and Tinkerglow's hut; the wood nodes at (77-78,107) stay open under the deck
+    style: treehouse
+    deck: 6
+    trunks: [[77, 106], [79, 106], [77, 108], [79, 108]]
+    trunk: [wood, brown]
+    deck_block: [wood, natural]
+    railing: [wood, tan]
+    cabin: [78, 107, 79, 108]
+    doors: [north, west]
+    door: [wood, brown]
+    cabin_color: orange
+    window_color: yellow
+    roof_slope: [thatch, natural]
+    roof_cap: [thatch, teal]
+    ladders: true
+    sign: {x: 76, y: 108, text: "The Strays' Tree. Whoever has forgotten where they were going may rest up here until they remember, or until it stops mattering."}
+  - id: crows-nest-tree
+    name: The Crow's Nest Tree
+    tiles: [65, 106, 67, 108]  # free forest inside the ring under the West Tree, a level up from its railing; the wood nodes at (65-67,107) stay open
+    style: treehouse
+    deck: 7
+    trunks: [[65, 106], [67, 106], [66, 108]]
+    trunk: [wood, brown]
+    deck_block: [wood, natural]
+    railing: [wood, tan]
+    cabin: [65, 107, 66, 108]
+    doors: [north, east]
+    door: [wood, cyan]
+    cabin_color: indigo
+    window_color: white
+    roof_slope: [thatch, natural]
+    roof_cap: [thatch, white]
+    ladders: true
+    sign: {x: 68, y: 107, text: "The Crow's Nest Tree, by the western sands. Climb up and count the ships that never come and the clouds that always do."}
 tubes:  # rope bridges: wood one cell thick at the railings' level, each leg straight and short, sagging a level mid-way
   - name: west rope bridge
     section: bridge-west  # from the West Tree's east railing to the Great Tree's west railing, over (69-71,104)
@@ -83,3 +212,52 @@ tubes:  # rope bridges: wood one cell thick at the railings' level, each leg str
     material: wood
     color: tan
     path: [[304, 420, 7], [309, 420, 7], [309, 420, 6], [318, 420, 6], [318, 420, 7], [323, 420, 7]]
+  # 2026-11-03: rope ladders for the three old trees, thatch from the ground to under the deck on each trunk's west
+  # face, in the trees' own sections after their last step, so no step the ledger names is renumbered
+  - {name: "rope ladder 1 (73,104)", section: great-tree, material: thatch, color: tan, path: [[292, 417, 0], [292, 417, 5]]}
+  - {name: "rope ladder 2 (75,105)", section: great-tree, material: thatch, color: tan, path: [[300, 421, 0], [300, 421, 5]]}
+  - {name: "rope ladder 3 (72,106)", section: great-tree, material: thatch, color: tan, path: [[288, 425, 0], [288, 425, 5]]}
+  - {name: "rope ladder 4 (74,107)", section: great-tree, material: thatch, color: tan, path: [[296, 429, 0], [296, 429, 5]]}
+  - {name: "rope ladder 1 (67,103)", section: west-tree, material: thatch, color: tan, path: [[268, 413, 0], [268, 413, 5]]}
+  - {name: "rope ladder 2 (66,105)", section: west-tree, material: thatch, color: tan, path: [[264, 421, 0], [264, 421, 5]]}
+  - {name: "rope ladder 3 (68,104)", section: west-tree, material: thatch, color: tan, path: [[272, 417, 0], [272, 417, 5]]}
+  - {name: "rope ladder 1 (82,103)", section: lookout-tree, material: thatch, color: tan, path: [[328, 413, 0], [328, 413, 5]]}
+  - {name: "rope ladder 2 (81,105)", section: lookout-tree, material: thatch, color: tan, path: [[324, 421, 0], [324, 421, 5]]}
+  - {name: "rope ladder 3 (83,104)", section: lookout-tree, material: thatch, color: tan, path: [[332, 417, 0], [332, 417, 5]]}
+  # 2026-11-03: the new trees' rope bridges, each from one railing to another (level 8 at a deck-7 tree's railing,
+  # 7 at a deck-6 tree's), sagging a level or two mid-way; none crosses a cabin, a hut, a wall or a store
+  - name: ring rope bridge
+    section: bridge-ring  # from the Story Tree's south railing over the ring at (72,102-103) to the Great Tree's north railing
+    material: wood
+    color: tan
+    path: [[290, 408, 8], [290, 409, 8], [290, 409, 7], [290, 410, 7], [290, 410, 6], [290, 413, 6], [290, 413, 7], [290, 415, 7]]
+  - name: watch rope bridge
+    section: bridge-watch  # from the Story Tree's east railing to the Watch Tree's west railing, over (74,98)
+    material: wood
+    color: tan
+    path: [[296, 394, 8], [297, 394, 8], [297, 394, 7], [298, 394, 7], [298, 394, 8], [299, 394, 8]]
+  - name: mending rope bridge
+    section: bridge-mending  # from the Mending Tree's east railing to the Story Tree's west railing, over (68-69,100)
+    material: wood
+    color: tan
+    path: [[272, 401, 8], [274, 401, 8], [274, 401, 7], [277, 401, 7], [277, 401, 8], [279, 401, 8]]
+  - name: hollow rope bridge
+    section: bridge-hollow  # from the Hollow Oak's east railing to the Mending Tree's west railing, over (64,100)
+    material: wood
+    color: tan
+    path: [[256, 401, 7], [257, 401, 7], [257, 401, 6], [258, 401, 6], [258, 401, 8], [259, 401, 8]]
+  - name: crow's nest rope bridge
+    section: bridge-crows-nest  # from the Crow's Nest Tree's east railing to the Great Tree's west railing, over (68-71,106), north of Stoutheart's hut
+    material: wood
+    color: tan
+    path: [[272, 425, 8], [274, 425, 8], [274, 425, 7], [278, 425, 7], [278, 425, 6], [282, 425, 6], [282, 425, 7], [287, 425, 7]]
+  - name: strays rope bridge
+    section: bridge-strays  # from the Strays' Tree's west railing to the Great Tree's east railing, over (76,107)
+    material: wood
+    color: tan
+    path: [[307, 429, 7], [306, 429, 7], [306, 429, 6], [305, 429, 6], [305, 429, 7], [304, 429, 7]]
+  - name: lookout rope bridge
+    section: bridge-strays-lookout  # from the Strays' Tree's east railing over (80-81,106) and north to the Lookout Tree's south railing
+    material: wood
+    color: tan
+    path: [[320, 426, 7], [322, 426, 7], [322, 426, 6], [325, 426, 6], [325, 426, 7], [327, 426, 7], [327, 424, 7]]

@@ -292,7 +292,9 @@ def _treehouse_steps(section: dict[str, Any], ceiling: int) -> list[tuple[str, d
     ``trunks`` are tiles inside the section, each a column two cells square (a trunk closes its tile, so it
     stands on forest with no node, structure or block); ``cabin`` an inner tile rect; ``doors`` the cabin's door
     sides; ``deck`` the deck level (6 by default; never lower). A treehouse stands on its trunks and keeps no
-    plinth: the deck is its one plane. The deck is laid in strips of one tile row (``TREE_DECK_CELLS``): Neverland's
+    plinth: the deck is its one plane. ``ladders: true`` hangs a rope ladder (``ladder``, thatch and tan by default) up
+    every trunk from the ground to the deck (2026-11-03): walkers in this world have no height, so the ladders are how
+    the decks read as reachable in the viewer. The deck is laid in strips of one tile row (``TREE_DECK_CELLS``): Neverland's
     hands gather about twenty-five wood a shift beside the berries they keep, and the two-row strips of 2026-11-02
     (128 cells, 32 wood) were never affordable, so the trees stood as bare trunks.
     """
@@ -311,12 +313,17 @@ def _treehouse_steps(section: dict[str, Any], ceiling: int) -> list[tuple[str, d
     cap = _pair(section.get("roof_cap"), ("thatch", "lime"))
     x0, y0, x1, y1 = tiles
     steps: list[tuple[str, dict[str, Any]]] = []
+    ladder = _pair(section.get("ladder"), ("thatch", "tan")) if section.get("ladders") else None
     for i, (tx, ty) in enumerate(section.get("trunks") or []):
         tx, ty = int(tx), int(ty)
         if not (x0 <= tx <= x1 and y0 <= ty <= y1):
             raise ValueError(f"section {section.get('id')}: trunk ({tx},{ty}) stands outside its tiles")
         cx, cy = 4 * tx + 1, 4 * ty + 1
         steps.append((f"trunk {i + 1} ({tx},{ty})", box(cx, cy, 0, cx + 1, cy + 1, deck - 1, material=trunk[0], color=trunk[1])))
+        if ladder is not None:
+            # a rope ladder up the trunk's west face (the owner, 2026-11-03: a way up onto the decks): a column of rope from the
+            # ground to under the deck, in the trunk's own tile, which the trunk already closes, so it closes no tile of its own
+            steps.append((f"rope ladder {i + 1} ({tx},{ty})", box(cx - 1, cy, 0, cx - 1, cy, deck - 1, material=ladder[0], color=ladder[1])))
     bx0, _by0, bx1, _by1 = rect
     rows = max(1, TREE_DECK_CELLS // (4 * (bx1 - bx0 + 1)))  # tile rows per deck strip
     y = y0
@@ -1365,6 +1372,15 @@ def land_wanted(root: Path, design: dict[str, Any], structures: list[dict[str, A
     return {lid for lid in lots if str(held.get(lid, "")).casefold() != client}
 
 
+def lands_own(team: Any, land: dict[str, Any]) -> bool:
+    """The builder's team is the registrar's office (the owner, 2026-11-03: the office builds the larger New York): it raises a
+    client's design on its own staked lots before the deed, and the deed, when paid, carries the ground with what stands on it."""
+    cfg = (getattr(team, "extra", None) or {}).get("pipeline") if team is not None else None
+    claims = cfg.get("claims") if isinstance(cfg, dict) and isinstance(cfg.get("claims"), dict) else {}
+    registrar = str(claims.get("registrar") or "")
+    return bool(registrar) and registrar.casefold() == str(land.get("registrar") or "LandBroker").casefold()
+
+
 COMMUTE_RANGE = 64  # how far a builder of a far design walks for its material: to its faction's stores (the factory's, from Lower Manhattan)
 
 
@@ -1419,7 +1435,10 @@ def _commute(design: dict[str, Any], ready: list[dict[str, Any]], persona: Any, 
     """Far from the design: carry the nearest step's material from a store that admits us, then walk there with it."""
     from hglab.planner import _step_toward, chebyshev
 
-    target = min(ready, key=lambda s: (chebyshev(position, centre(s)), s["id"]))
+    def pays(step: dict[str, Any]) -> bool:
+        return step["kind"] != "remove" and all(int(inventory.get(i, 0) or 0) >= q for i, q in dict(step.get("costs") or {step["item"]: int(step["items"])}).items())
+
+    target = min(ready, key=lambda s: (not pays(s), chebyshev(position, centre(s)), s["id"]))  # what the pack already pays for first (2026-11-03)
     costs = dict(target.get("costs") or {target["item"]: int(target["items"])})
     lacking = {item: qty - int(inventory.get(item, 0) or 0) for item, qty in costs.items() if qty - int(inventory.get(item, 0) or 0) > 0}
     if lacking:
@@ -1517,7 +1536,7 @@ def plan_step(
     planned: set[str] = getattr(state, "_bp_planned", None) or set()
     ready = [s for s in ready_steps(steps, done, planned) if not s.get("only") or s["only"] == persona.slug]  # a clear is its owner's: their blocks come out whole
     land = design.get("land") if isinstance(design.get("land"), dict) else None
-    if land and ready:
+    if land and ready and not lands_own(team, land):
         unheld = land_wanted(root, design, structures)
         ready = [s for s in ready if not (step_lots(s) & unheld)]  # a building rises only on ground its client holds
         if unheld:
@@ -1542,7 +1561,10 @@ def plan_step(
         ready = [s for s in ready if payable(s) and pack_only in dict(s.get("costs") or {s["item"]: int(s["items"])})]
         if not ready:
             return None
-    ready.sort(key=lambda s: (rank.get(s["section"], len(rank)), not payable(s), chebyshev(position, centre(s)), s["id"]))
+    # 2026-11-03: what the pack already pays for comes first, the builder's own sections next. Ranked the other way, a
+    # provisioner carrying two wood for the Lighthouse's door turned back for the Marzipan Works' stone every other wake,
+    # the commute sent it east again, and the factory stood still for three hours.
+    ready.sort(key=lambda s: (not payable(s), rank.get(s["section"], len(rank)), chebyshev(position, centre(s)), s["id"]))
     faction = you.get("faction")
     faction = str(faction.get("name") if isinstance(faction, dict) else faction or "")
     me = str(getattr(persona, "name", ""))
@@ -1595,6 +1617,13 @@ def plan_step(
                 return [act], f"{title}: {label}", "blueprint"
             verb = "take down" if step["kind"] == "remove" else "raise"
             return [{"action": "move", "x": stand[0], "y": stand[1]}, act], f"{title}: walk to {stand} and {verb} {label}", "blueprint"
+        if step["kind"] == "place" and payable(step):
+            # the pack pays for it but no stand is within one move: carry it there rather than turn to a step that needs a store
+            goal = centre(step)
+            target = _step_toward(position, {"x": goal[0], "y": goal[1]}, view)
+            if target is not None and target != position:
+                return [{"action": "move", "x": target[0], "y": target[1]}], f"{title}: carrying {', '.join(f'{q} {i}' for i, q in costs.items())} toward {step['name']} at {goal}", "blueprint"
+            continue
         if step["kind"] == "place" and sum(costs.values()) > PACK_LIMIT:
             missing.append(step["item"])  # more than a pack can bring and no store beside a stand: never a shuttle between stores
             continue
@@ -1648,6 +1677,6 @@ def plan_step(
 
 
 __all__ = [
-    "LEDGER_DIR", "blueprint", "builder_sections", "cells_rect", "check", "decode_blocks", "design_complete", "expand", "foundation_map", "land_wanted", "ledger_name", "load_design", "load_ledger", "mark_done",
+    "LEDGER_DIR", "blueprint", "builder_sections", "cells_rect", "check", "decode_blocks", "design_complete", "expand", "foundation_map", "land_wanted", "lands_own", "ledger_name", "load_design", "load_ledger", "mark_done",
     "materials", "next_design_active", "plan_step", "ready_steps", "reconcile", "root_of", "route", "settle", "signature", "step_lots", "summary", "team_designs", "tiles_of",
 ]

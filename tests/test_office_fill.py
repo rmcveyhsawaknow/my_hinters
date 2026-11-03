@@ -4,10 +4,12 @@ is past the mark; under it, as many hands gather as the room under the mark hold
 import random
 from pathlib import Path
 
+from conftest import office_team
+
 from hglab import fill
 from hglab.crew import plan_crew
 from hglab.mood import PersonaState
-from hglab.persona import load_personas, load_team
+from hglab.persona import load_personas
 from hglab.planner import WorldView, plan_wake
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -65,7 +67,7 @@ def test_slots_follow_the_room_under_the_mark_and_the_shortest_kind_goes_first()
 def _quarrier(storage, monkeypatch=None, board=None, in_view=True):
     personas = load_personas(ROOT)
     persona = personas["office-quarrier"]
-    team = load_team(ROOT, "exchange")
+    team = office_team()
     store = _store(73, 74, storage)
     public = {k: v for k, v in store.items() if k != "storage"}
     nodes = [{"kind": "stone", "x": 76, "y": 72, "amount": 20}]
@@ -93,7 +95,7 @@ def test_the_quarrier_gathers_only_while_the_office_has_room_under_the_mark(monk
 def test_the_registrar_gathers_nothing_on_his_rounds_while_every_store_is_past_the_mark():
     personas = load_personas(ROOT)
     broker = personas["land-broker"]
-    team = load_team(ROOT, "exchange")
+    team = office_team()
     names = {personas[m].name.casefold(): m for m in team.members}  # as the wake hands them over
 
     def gathers(storage):
@@ -129,7 +131,7 @@ def test_a_model_s_plan_obeys_the_throttle_too(tmp_path, monkeypatch):
         observe = copy.deepcopy(base)
         observe["structures"] = [*observe.get("structures", []), _store(65, 63, storage)]
         client = FixtureClient(observe)
-        return persona_wake(persona=broker, team=load_team(ROOT, "exchange"), personas=personas, client=client, lease=acquire(client, broker.name), root=ROOT, output_dir=tmp_path, dry_run=True, planner_mode="llm", llm_call=picker, seed="gate")
+        return persona_wake(persona=broker, team=office_team(), personas=personas, client=client, lease=acquire(client, broker.name), root=ROOT, output_dir=tmp_path, dry_run=True, planner_mode="llm", llm_call=picker, seed="gate")
 
     roomy = wake({"wood": 10})  # room for seven packs: the registrar, last of the six, gathers too
     assert any(a["action"] == "gather" for a in roomy["actions"]) and "office_gate" not in roomy

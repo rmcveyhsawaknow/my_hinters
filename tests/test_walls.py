@@ -2,6 +2,8 @@
 
 from pathlib import Path
 
+from conftest import office_team
+
 from hglab.crew import plan_crew
 from hglab.lots import HOLDING_TEXT, lot_anchor, lot_bounds, lot_id, stake_text
 from hglab.mood import PersonaState
@@ -16,7 +18,7 @@ LOT = lot_id(85, 75)  # east of the vault, far from the spawn, no homestead near
 
 
 def _claims(**walls):
-    claims = dict(load_team(ROOT, "exchange").extra["pipeline"]["claims"])
+    claims = dict(office_team(walls=True).extra["pipeline"]["claims"])
     claims["walls"] = {**claims.get("walls", {}), **walls}
     return claims
 
@@ -29,7 +31,7 @@ def _sign(lid, text=None):
 def _step(slug, inventory, position, view, state=None, room=3, energy=80, when=None):
     personas = load_personas(ROOT)
     persona = personas[slug]
-    team = load_team(ROOT, "exchange")
+    team = office_team(walls=True)
     if when is not None:
         team.extra["pipeline"]["claims"]["walls"]["when"] = when
     observe = {"you": {"x": position[0], "y": position[1], "faction": {"id": 7, "name": "Land Office"}}, "tick": 1000}
@@ -105,7 +107,7 @@ def test_a_planned_wall_passes_the_persona_knob_check():
     view = _world({"stone": 500})
     step = _step("office-quarrier", {"stone": 20, "berries": 5}, here, view)
     personas = load_personas(ROOT)
-    persona, team = personas["office-quarrier"], load_team(ROOT, "exchange")
+    persona, team = personas["office-quarrier"], office_team(walls=True)
     office = {personas[m].name for m in team.members}
     observe = {"you": {"x": here[0], "y": here[1]}, "tick": 1000, "structures": list(view.world_structures)}
     enforce_knobs(step[0], persona, team, observe, member_names=office)
@@ -178,7 +180,8 @@ def test_the_walls_are_standing_work_since_the_owners_brief_of_2026_11_02():
     """A hand with stone walls the lots whether the stores are full or not; with none it draws stone from a store with some; a heavy pack unloads first."""
     x0, y0, _x1, _y1 = lot_bounds(LOT)
     here = (x0 - 1, y0 + 1)
-    assert load_team(ROOT, "exchange").extra["pipeline"]["claims"]["walls"]["when"] == "always"
+    walls = load_team(ROOT, "exchange").extra["pipeline"]["claims"]["walls"]
+    assert walls["when"] == "always" and walls["enabled"] is False  # the owner, 2026-11-03: the walls stop for now; the hands build the larger New York
     roomy = _world({"stone": 100})
     walls = _step("office-feller", {"stone": 12, "berries": 5}, here, roomy)
     assert [a["type"] for a in walls[0]] == ["wall", "wall"] and walls[1].startswith("the office walls its staked lots")  # two tiles beside, the third is the gate

@@ -90,7 +90,7 @@ def test_far_settlers_migrate_before_building(tmp_path):
     observe["structures"] = []
     observe["view"]["x0"], observe["view"]["y0"] = 56, 50
     record, _ = _wake("mrs-bucket", observe, tmp_path)
-    assert record["approach"] == "migrate"
+    assert record["approach"] in {"migrate", "blueprint"}  # since 2026-11-03 the wood in her pack is carried toward the step it pays for, which is the way home
     assert record["actions"][0]["action"] == "move"
     assert all(a["action"] != "build" for a in record["actions"])
 
@@ -384,8 +384,8 @@ def test_reachability_costs_hills_double_and_a_trip_stops_beside_a_structure():
     assert step is not None and step != (70, 64) and max(abs(step[0] - 70), abs(step[1] - 64)) == 1  # beside the store, never on it
     bell = load_personas(ROOT)["tinker-bell"]
     team = load_team(ROOT, bell.team)
-    far = WorldView(x0=68, y0=106, rows=rows, full_map=rows, world_structures=[{"type": "storehouse", "x": 85, "y": 92, "owner": "MotherPail"}])
-    assert _plan_deposit_trip(bell, team, {"wood": 3, "berries": 45}, (74, 112), far, None, {"motherpail", "tinkerglow"}) is None  # twenty tiles out of Neverland: the migration would only walk her back
+    far = WorldView(x0=68, y0=106, rows=rows, full_map=rows, world_structures=[{"type": "storehouse", "x": 99, "y": 88, "owner": "MotherPail"}])
+    assert _plan_deposit_trip(bell, team, {"wood": 3, "berries": 45}, (74, 112), far, None, {"motherpail", "tinkerglow"}) is None  # far out of Neverland (its ring grew north on 2026-11-03): the migration would only walk her back
     near = WorldView(x0=68, y0=106, rows=rows, full_map=rows, world_structures=[{"type": "storehouse", "x": 78, "y": 106, "owner": "Stoutheart"}])
     assert _plan_deposit_trip(bell, team, {"wood": 3, "berries": 45}, (74, 112), near, None, {"stoutheart", "tinkerglow"}) is not None
 
@@ -433,7 +433,7 @@ def test_a_full_pack_eats_one_berry_after_its_walk_and_never_gifts_a_collective_
     nibs = personas["nibs"]
     team = load_team(ROOT, nibs.team)
     observe = load_fixture(FIX / "observe/nibs.json")
-    observe["you"].update({"energy": 100, "inventory": {"wood": 22, "berries": 28}})
+    observe["you"].update({"energy": 100, "inventory": {"stone": 22, "berries": 28}})  # stone pays for no treehouse step: with wood he would lay one first (2026-11-03)
     observe["resources"] = []
     observe["structures"] = []
     names = {personas[m].name.casefold(): m for m in team.members if m in personas}
@@ -552,10 +552,12 @@ def test_a_route_step_never_runs_past_twelve_steps_along_a_road():
     assert toward is not None and max(abs(toward[0]), abs(toward[1] - 2)) <= 12
 
 
-def test_a_storehouse_that_refuses_a_give_as_full_is_remembered_full(tmp_path):
+def test_a_storehouse_that_refuses_a_give_as_full_is_remembered_full(tmp_path, monkeypatch):
     from hglab.client import HinterglassError
     from hglab.persona import PERSONA_STATE_KEY
 
+    monkeypatch.setattr("hglab.planner._plan_blueprint", lambda *a, **k: None)  # nothing of Lower Manhattan to lay and nobody to help: the deposit is the step
+    monkeypatch.setattr("hglab.help.plan_help", lambda *a, **k: None)
     observe = load_fixture(FIX / "observe/plumbline.json")  # no border duty, no road stone: the deposit is the first step
     observe["you"]["inventory"] = {"wood": 45, "fiber": 3}  # no stone for a road, no fiber for a hut: the deposit is the step
     observe["you"]["home"] = None

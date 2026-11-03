@@ -41,7 +41,12 @@ North Star: [read first](NORTH_STAR.md)
 - **goal** [G-20261102-every-hand-builds-and-no-store-blocks-it](goals/G-20261102-every-hand-builds-and-no-store-blocks-it.md) — Every hand builds and no store blocks it
 - **goal** [G-20261102-neverland-treetop](goals/G-20261102-neverland-treetop.md) — Neverland: a treetop hideaway in its own forest
 - **goal** [G-20261102-the-larger-new-york-replica-every-building-with-a-sign](goals/G-20261102-the-larger-new-york-replica-every-building-with-a-sign.md) — The larger New York replica, every building with a sign
+- **goal** [G-20261103-neverland-grows-by-twice-what-stands](goals/G-20261103-neverland-grows-by-twice-what-stands.md) — Neverland's Treetop Hideaway grows by twice what stands, with rope ladders and rope bridges
+- **goal** [G-20261103-nintendo-land-the-collectives-last-great-work](goals/G-20261103-nintendo-land-the-collectives-last-great-work.md) — Nintendo Land, the collective's last great work
+- **goal** [G-20261103-nobody-who-can-build-stands-idle](goals/G-20261103-nobody-who-can-build-stands-idle.md) — Nobody who can build stands idle while another team's blueprint is open
 - **goal** [G-20261103-the-factory-grows-by-twice-what-stood](goals/G-20261103-the-factory-grows-by-twice-what-stood.md) — The factory grows by twice what stood, in buildings and in ground
+- **goal** [G-20261103-the-office-builds-the-larger-new-york](goals/G-20261103-the-office-builds-the-larger-new-york.md) — The land office stops its walls and builds the larger New York
+- **goal** [G-20261103-uptown-the-third-replica-north-of-central-park](goals/G-20261103-uptown-the-third-replica-north-of-central-park.md) — Uptown, the third New York replica, north of Central Park
 - **hypothesis** [H-20261017-bucket-stocks](hypotheses/H-20261017-bucket-stocks.md) — A stocked storehouse keeps teammates above the energy floor
 - **hypothesis** [H-20261017-bucket-thanks](hypotheses/H-20261017-bucket-thanks.md) — Specific thank-you lines earn replies
 - **hypothesis** [H-20261017-item-conservation](hypotheses/H-20261017-item-conservation.md) — Item conservation holds in the public event log

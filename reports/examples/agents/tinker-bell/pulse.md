@@ -1,11 +1,11 @@
 ```
 TINKERGLOW: a safe haven, and everyone in it                 day 182
 Alive         ████████░░   85   ██████▇  53/56 wakes, never lapsed, 2 failed, 2 rate-limited
-On mission    ██████░░░░   61   ▄▄▄▄▄▄▅  1/3 inside · 2/6 built · 7 led · Glow 58 · 100% one-emotion wakes
+On mission    ███████░░░   71   ▄▄▄▄▄▄▆  2/3 inside · 2/6 built · 7 led · Glow 58 · 100% one-emotion wakes
 In character  █████████░   92   ▇▆▇▆▆▇▇  fierce 4 · loyal 5 · jealous 4 · vain 3
-Team pull     Courage 49 (Stoutheart) → Glow 62 · Escape 71 (Lagalong) → Glow 62 · Belief 42 (Stoutheart) → Glow 62 · Belief 23 (Strayling) → Glow 62 · Discoveries 73 (Strayling) → Adventure Options 73
+Team pull     Courage 49 (Stoutheart) → Glow 85 · Escape 63 (Lagalong) → Glow 85 · Belief 43 (Stoutheart) → Glow 85 · Belief 70 (Strayling) → Glow 85 · Discoveries 73 (Strayling) → Adventure Options 73
 Working       second-star exploration rule: 10 outcome for 31 energy over 4 wake(s)
-Not working   whispered directions: 1 outcome for 49 energy over 12 wake(s)
+Not working   whispered directions: 2 outcome for 49 energy over 12 wake(s)
 Next bet      keep testing second-star exploration rule; it has the best outcome per unit of energy
 ```
 
@@ -32,7 +32,7 @@ One formula for every agent: wakes completed vs scheduled, verification never la
 
 | key result | value | target | weight | progress |
 | --- | --- | --- | --- | --- |
-| teammates inside Neverland | 1/3 inside | 3 | 0.3 | 33% |
+| teammates inside Neverland | 2/3 inside | 3 | 0.3 | 67% |
 | structures standing in Neverland | 2/6 built | 6 | 0.2 | 33% |
 | adventures led (trail signs and bridges) | 7 led | 8 | 0.2 | 88% |
 | Glow | Glow 58 | 70 | 0.2 | 83% |
@@ -64,15 +64,15 @@ Judge (fixture fixture, 6 lines, 8 actions):
 | direction | signal | from → to | value | effect | plain English |
 | --- | --- | --- | --- | --- | --- |
 | received | courage | nibs → tinker-bell | 49 | glow | Hard jobs done inside Neverland and visitors greeted brighten Tinkerglow's Glow. |
-| received | escape | tootles → tinker-bell | 71 | glow | Time and distance Lagalong spends outside Neverland dim Tinkerglow's Glow; she feels abandoned. |
-| received | belief | nibs → tinker-bell | 42 | glow | Stoutheart arriving where she pointed, using her bridges and staying inside is Belief, and Belief sets her Glow. |
+| received | escape | tootles → tinker-bell | 63 | glow | Time and distance Lagalong spends outside Neverland dim Tinkerglow's Glow; she feels abandoned. |
+| received | belief | nibs → tinker-bell | 43 | glow | Stoutheart arriving where she pointed, using her bridges and staying inside is Belief, and Belief sets her Glow. |
 | received | belief | tootles → tinker-bell | 0 | glow | Even Lagalong crossing her bridges or returning inside counts as Belief. |
-| received | belief | lost-boy → tinker-bell | 23 | glow | Strayling wandering back inside or over a bridge counts as Belief. |
+| received | belief | lost-boy → tinker-bell | 70 | glow | Strayling wandering back inside or over a bridge counts as Belief. |
 | received | discoveries | lost-boy → tinker-bell | 73 | adventure_options | Every discovery Strayling files becomes an adventure Tinkerglow can lead. |
 
 - Courage 49: 2 hard job(s) inside, 4 greeting(s), structures standing 100%.
-- Escape 71: 100% of moves outside, farthest 42 tiles from the centre.
-- Belief 23: 4 arrival(s) inside, 0 bridge crossing(s), not currently inside.
+- Escape 63: 86% of moves outside, farthest 40 tiles from the centre.
+- Belief 70: 8 arrival(s) inside, 0 bridge crossing(s), staying inside.
 - Discoveries 73: 14 tiles, 4 action types, 2 idea card(s), 0 adopted.
 
 ## Community lens (informational, never ranked)
@@ -85,13 +85,13 @@ Judge (fixture fixture, 6 lines, 8 actions):
 ## Working, not working, next bet
 
 - Working: second-star exploration rule: 10 outcome for 31 energy over 4 wake(s)
-- Not working: whispered directions: 1 outcome for 49 energy over 12 wake(s)
+- Not working: whispered directions: 2 outcome for 49 energy over 12 wake(s)
 - Next bet: keep testing second-star exploration rule; it has the best outcome per unit of energy
 
 | approach | wakes | energy | outcome | outcome per energy | bet | status |
 | --- | --- | --- | --- | --- | --- | --- |
-| pixie-trail signs | 5 | 16.0 | 1.0 | 0.062 | H-20261017-tink-pixie-trails | proposed |
-| whispered directions | 12 | 49.0 | 1.0 | 0.02 | — | — |
+| pixie-trail signs | 5 | 16.0 | 2.0 | 0.125 | H-20261017-tink-pixie-trails | proposed |
+| whispered directions | 12 | 49.0 | 2.0 | 0.041 | — | — |
 | second-star exploration rule | 4 | 31.0 | 10.0 | 0.323 | H-20261017-tink-second-star | proposed |
 
 ## Trend (7 days)
@@ -104,6 +104,6 @@ Judge (fixture fixture, 6 lines, 8 actions):
 | 2026-10-14 | 93 | 44 | 76 |
 | 2026-10-15 | 95 | 42 | 75 |
 | 2026-10-16 | 95 | 48 | 83 |
-| 2026-10-17 | 85 | 61 | 92 |
+| 2026-10-17 | 85 | 71 | 92 |
 
 Sources: public event log, redacted run records, kb. Metric spec v1.

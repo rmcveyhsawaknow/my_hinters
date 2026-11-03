@@ -162,7 +162,7 @@
   }
  },
  "team_pull": {
-  "detail": "Belief 23 → Tinkerglow · Discoveries 73 → Tinkerglow",
+  "detail": "Belief 70 → Tinkerglow · Discoveries 73 → Tinkerglow",
   "sent": [
    {
     "from": "lost-boy",
@@ -172,10 +172,10 @@
     "plain_english": "Strayling wandering back inside or over a bridge counts as Belief.",
     "weight": 0.4,
     "half_life_hours": 24.0,
-    "value": 22.9,
-    "decayed_value": 22.9,
+    "value": 70.0,
+    "decayed_value": 70.0,
     "age_ticks": 0,
-    "explanation": "Belief 23: 4 arrival(s) inside, 0 bridge crossing(s), not currently inside."
+    "explanation": "Belief 70: 8 arrival(s) inside, 0 bridge crossing(s), staying inside."
    },
    {
     "from": "lost-boy",
@@ -311,12 +311,12 @@
    "tick": 65760
   },
   "belief": {
-   "value": 22.9,
-   "explanation": "Belief 23: 4 arrival(s) inside, 0 bridge crossing(s), not currently inside.",
+   "value": 70.0,
+   "explanation": "Belief 70: 8 arrival(s) inside, 0 bridge crossing(s), staying inside.",
    "parts": {
-    "arrivals": 5.2,
+    "arrivals": 14.1,
     "bridge_crossings": 0,
-    "staying": 0.0
+    "staying": 10.0
    },
    "tick": 65760
   }
