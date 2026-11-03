@@ -14,7 +14,7 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-ROOT = Path(r"C:\Users\rjmcv\source\repos\my_hinters")
+ROOT = Path(__file__).resolve().parents[3]  # the repository: tools/plan_pages/<name>/make_plan.py
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "src"))
 
