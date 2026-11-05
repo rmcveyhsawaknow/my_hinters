@@ -1374,7 +1374,7 @@ def _draw_price(
             shed = min(extra, space) if room < owed else 0
             shed = shed if shed >= 5 else 0
             qty = min(room + shed, owed, int(store["storage"].get(currency, 0) or 0) - 10)
-            if qty >= 10:
+            if qty >= min(10, owed):  # the last few owed are taken too (2026-11-05: Plumbline owed 6 wood and walked between two stores for twelve hours)
                 give = [{"action": "give", "x": where[0], "y": where[1], "item": item, "qty": shed}] if shed else []
                 return [*give, {"action": "take", "x": where[0], "y": where[1], "item": currency, "qty": qty}], f"the deed for lot {bought.get('lot')} wants {owed} {currency}: take {qty} from the team's store at {where}" + (f" after putting {shed} {item} away" if give else ""), "deed_draw"
             continue

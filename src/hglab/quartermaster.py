@@ -97,18 +97,25 @@ def plan_quartermaster(
     over = sorted((s for s in readable if int(held(s) or 0) > mark), key=lambda s: (-int(held(s) or 0), chebyshev(position, _where(s))))
     if not over:
         return None
-    full = over[0]
-    where = _where(full)
-    if chebyshev(position, where) > int(cfg["range"]):
-        return None
-    partners = [s for s in readable if _where(s) != where and chebyshev(_where(s), where) <= 1 and int(held(s) or 0) < mark]
-    if partners:
-        partner = max(partners, key=lambda s: mark - int(held(s) or 0))
-        return _balance(full, partner, inventory, position, view, room, mark)
     ours = [s for s in stores if admits(persona, s, faction)]
-    if len(ours) >= int(cfg["stores_max"]):
-        return None  # at the cap of stores: the pipeline's own full-store rules take over
-    return _raise(persona, full, readable, inventory, position, view, faction, mates)
+    built = {(int(b["x"]), int(b["y"])) for b in observe.get("blocks") or [] if isinstance(b, dict) and b.get("x") is not None and b.get("y") is not None and int(b.get("count", 1) or 0) > 0}
+    # 2026-11-05: the fullest store stood among the factory's buildings with no open tile beside it; the quartermaster
+    # walked toward a tile of blocks every wake for two days and never served the next store. Each full store in turn.
+    for full in over:
+        where = _where(full)
+        if chebyshev(position, where) > int(cfg["range"]):
+            continue
+        partners = [s for s in readable if _where(s) != where and chebyshev(_where(s), where) <= 1 and int(held(s) or 0) < mark]
+        if partners:
+            partner = max(partners, key=lambda s: mark - int(held(s) or 0))
+            step = _balance(full, partner, inventory, position, view, room, mark)
+        elif len(ours) >= int(cfg["stores_max"]):
+            step = None  # at the cap of stores: the pipeline's own full-store rules take over
+        else:
+            step = _raise(persona, full, readable, inventory, position, view, faction, mates, built)
+        if step is not None:
+            return step
+    return None
 
 
 def _balance(full: dict[str, Any], partner: dict[str, Any], inventory: dict[str, int], position: tuple[int, int], view: WorldView, room: int, mark: int) -> Step | None:
@@ -135,11 +142,16 @@ def _balance(full: dict[str, Any], partner: dict[str, Any], inventory: dict[str,
     return [{"action": "move", "x": step[0], "y": step[1]}], f"the store at {where} holds {held(full)} of {STOREHOUSE_CAPACITY}, past three quarters: walk to it to move the excess into the store at {into}", "crew"
 
 
-def _raise(persona: Persona, full: dict[str, Any], readable: list[dict[str, Any]], inventory: dict[str, int], position: tuple[int, int], view: WorldView, faction: str, mates: set[str]) -> Step | None:
-    """Another storehouse beside the full one, paid by the full one; its wood and stone fetched first when it holds neither."""
+def _raise(
+    persona: Persona, full: dict[str, Any], readable: list[dict[str, Any]], inventory: dict[str, int], position: tuple[int, int], view: WorldView, faction: str, mates: set[str],
+    built: set[tuple[int, int]] | frozenset[tuple[int, int]] = frozenset(),
+) -> Step | None:
+    """Another storehouse beside the full one, paid by the full one; its wood and stone fetched first when it holds neither.
+    ``built``: tiles holding blocks, where a store never rises; the tiles blocks close are left out too."""
     where = _where(full)
     nodes = {(int(r["x"]), int(r["y"])) for r in (view.world_resources or view.resources) if isinstance(r.get("x"), int) and isinstance(r.get("y"), int)}
-    tiles = [t for t in neighbours(*where) if view.free_tile(*t) and t not in nodes and not _beside_a_stranger(t, view, mates, faction)]
+    taken = {*built, *view.closed}
+    tiles = [t for t in neighbours(*where) if view.free_tile(*t) and t not in nodes and t not in taken and not _beside_a_stranger(t, view, mates, faction)]
     if not tiles:
         return None
     tile = min(tiles, key=lambda t: (chebyshev(position, t), t))

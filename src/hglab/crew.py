@@ -889,6 +889,11 @@ def _unload(
     keep: dict[str, int] | None = None,
 ) -> Step | None:
     """Give the pack into the nearest store with room; ``keep`` holds back what the next build needs (the mason's case)."""
+    spare = {item: int(inventory.get(item, 0) or 0) - (BERRY_KEEP if item == "berries" else int((keep or {}).get(item, 0) or 0)) for item in ("wood", "stone", "ore", "fiber", "berries")}
+    if max(spare.values()) < 1:
+        # 2026-11-05: Toffeetrowel, the mason, held exactly the next store's cost and fifteen berries, a heavy pack with
+        # nothing to give; beside each full store it walked to the next, and back, for a day. Nothing to unload: no walk.
+        return None
     full = _full_stores(state, tick)
     candidates = sorted(
         (s for s in stores if (int(s["x"]), int(s["y"])) not in full),
