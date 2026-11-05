@@ -251,8 +251,7 @@ def plan_tickets(
     number = found + 1
     room, cell = draw(str(persona.slug), number, int(note.get("tries", 0) or 0), rooms)
     vault = next(v for v in every if room in v.strongrooms())
-    if not all(in_view(t) for t in vault.tiles()):
-        return walk_to(vault, f"{TITLE} {number} of {cfg['count']}: to the vault at {vault.corners()[0]} to hide it")
+    far = not all(in_view(t) for t in vault.tiles())
     levels = int(cfg["levels"])
     reach = reachable_tiles(view, position) | {position}
     inside = set(vault.tiles())
@@ -282,17 +281,22 @@ def plan_tickets(
         if not lacking:
             return None
         item, qty = max(lacking.items(), key=lambda kv: kv[1])
-        if 50 - sum(pack.values()) < qty + 5:
-            keep = {**dict(cfg["reward"]), **costs, "stone": 50, "ore": 50}
+        free = 50 - sum(pack.values())
+        if free < qty + 5:
+            # Ore beyond what is owed goes back too, as much as the store beside can take. 2026-11-05: a fetch for five ore
+            # took forty, kept up to fifty; the pack had no room for the reward's berries and nothing it would put away.
+            keep = {**dict(cfg["reward"]), **costs, "stone": 50}
             surplus = sorted(((i, q - int(keep.get(i, 0))) for i, q in pack.items() if q - int(keep.get(i, 0)) > 0), key=lambda kv: -kv[1])
+            need = qty + 5 - free
             beside = [
                 s for s in view.structures
                 if s.get("type") == "storehouse" and chebyshev(position, (int(s["x"]), int(s["y"]))) <= 1 and isinstance(s.get("storage"), dict)
-                and _open_to(s, persona, observe) and surplus and storehouse_room(s) >= surplus[0][1]
+                and _open_to(s, persona, observe) and surplus and storehouse_room(s) >= min(need, surplus[0][1])
             ]
             if beside:
-                give_item, give_qty = surplus[0]
-                return [{"action": "give", "x": int(beside[0]["x"]), "y": int(beside[0]["y"]), "item": give_item, "qty": give_qty}], f"{what}: room in the pack first, {give_qty} {give_item} into the store at ({beside[0]['x']},{beside[0]['y']})"
+                into = max(beside, key=storehouse_room)
+                give_item, give_qty = surplus[0][0], min(surplus[0][1], storehouse_room(into))
+                return [{"action": "give", "x": int(into["x"]), "y": int(into["y"]), "item": give_item, "qty": give_qty}], f"{what}: room in the pack first, {give_qty} {give_item} into the store at ({into['x']},{into['y']})"
         step = _provision(VAULT, {"name": what}, item, qty, persona, state, observe, view, pack, position)
         return (step[0], step[1]) if step else None
 
@@ -320,6 +324,16 @@ def plan_tickets(
         if changed:
             actions.append({"action": "remember", "key": NOTE_KEY, "text": json.dumps(note, separators=(",", ":"))})
         return (actions, reasons) if actions else None
+
+    if far:
+        # A fetch for the reward that brought us beside a store is finished there before the walk back: from the store the
+        # vault is out of view. 2026-11-05: Fudgewright walked between the vault and the store at (89, 93) for five berries.
+        reward = dict(cfg["reward"])
+        if any(int(pack.get(i, 0) or 0) < q for i, q in reward.items()):
+            got = provide(reward, f"the reward of {TITLE} {number}")
+            if got and got[0] and all(a.get("action") in ("give", "take") for a in got[0]):
+                return got[0], [got[1]]
+        return walk_to(vault, f"{TITLE} {number} of {cfg['count']}: to the vault at {vault.corners()[0]} to hide it")
 
     def fetch(costs: dict[str, int], what: str) -> tuple[list[dict[str, Any]], list[str]] | None:
         step = provide(costs, what)

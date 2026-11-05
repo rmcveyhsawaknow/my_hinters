@@ -139,3 +139,22 @@ def test_a_builder_at_the_cap_of_blocks_still_raises_the_designs_structures(tmp_
     assert plan(4090) is None  # only blocks left: nothing a capped builder can raise
     free = plan(0)
     assert free is not None and any(a["action"] == "place" for a in free[0])  # under the cap the block is placed as before
+
+
+def test_a_tickets_reward_is_fetched_from_a_store_out_of_the_vaults_view():
+    """Fudgewright, hiding ticket 1 again, held forty ore from an earlier fetch and five berries; the reward wants ten. The
+    berries stood in a store out of the vault's view: beside it the vault was out of sight, so he walked back to the vault,
+    then to the store again, and his pack had no room for berries anyway."""
+    persona = load_personas(ROOT)["wonka"]
+    from test_tickets import STORE, World
+
+    world = World(persona)
+    assert world.run_until_posted()
+    world.goals[0]["status"] = "expired"
+    world.pack = {"ore": 40, "stone": 2, "berries": 5}
+    world.stores[STORE]["storage"]["berries"] = 0
+    world.stores[(89, 93)] = {"type": "storehouse", "x": 89, "y": 93, "owner": "Toffeetrowel", "policy": "faction", "faction": "Chocolate Factory", "storage": {"berries": 300, "stone": 180}}
+    ore_before = sum(s["storage"].get("ore", 0) for s in world.stores.values())
+    assert world.run_until_posted(wakes=30)
+    assert world.goals[-1]["title"].startswith("Golden Ticket 1 of 5") and world.goals[-1]["reward"] == {"ore": 5, "berries": 10}
+    assert sum(s["storage"].get("ore", 0) for s in world.stores.values()) > ore_before  # the ore past the reward went back into a store
