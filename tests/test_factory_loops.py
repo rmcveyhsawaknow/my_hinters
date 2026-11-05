@@ -111,3 +111,31 @@ def test_the_last_few_wood_of_a_deed_are_taken_from_the_store_beside():
     bought = {"id": "nyc-park-south", "lot": "D05-NE", "price": 61, "paid": 55, "currency": "wood"}
     draw = _draw_price(plumbline, PersonaState(mood="measuring"), {"stone": 4, "berries": 5}, (87, 93), view, {"you": {"faction": FACTION}}, {"Toffeetrowel", "Plumbline"}, "wood", 6, bought)
     assert draw is not None and draw[0] == [{"action": "take", "x": 88, "y": 93, "item": "wood", "qty": 6}] and draw[2] == "deed_draw"
+
+
+def test_a_builder_at_the_cap_of_blocks_still_raises_the_designs_structures(tmp_path, monkeypatch):
+    """Toffeetrowel stood at the world's cap of blocks for two days, exploring, while the East Works waited on their depots:
+    a storehouse or a sign is no block, so a capped builder raises those and never places a block."""
+    monkeypatch.setattr(factory, "ledger_path", lambda root, name: tmp_path / f"{name}.json")
+    personas = load_personas(ROOT)
+    mason = personas["loompa-mason"]
+    team = load_team(ROOT, "chocolate-factory")
+    design, steps, _ = factory.blueprint(ROOT, "chocolate-factory")
+    depot = next(s for s in steps if s["kind"] == "build" and "forest works depot" in s["name"])
+    block = next(s for s in steps if s["section"] == "dairy" and s["kind"] == "place")
+    led = factory.ledger_name(design, "chocolate-factory")
+    factory.mark_done(ROOT, led, sorted(s["id"] for s in steps if s["id"] not in (depot["id"], block["id"])), 1, "test")
+    view = WorldView(x0=100, y0=74, rows=GRASS, full_map=GRASS, tick=70000)
+    pack = {"wood": 30, "stone": 30, "berries": 5}
+
+    def plan(owned):
+        observe = {"tick": 70000, "you": {"name": mason.name, "x": 104, "y": 81, "faction": FACTION, "blocks_owned": owned}}
+        return factory.plan_step(mason, team, PersonaState(mood="busy"), observe, view, dict(pack), (104, 81), 3, mates={"Treacleaxe"})
+
+    capped = plan(4090)
+    assert capped is not None and all(a["action"] != "place" for a in capped[0]) and "forest works depot" in capped[1]
+    assert any(a["action"] == "build" and a["type"] == "storehouse" for a in capped[0]) or capped[0][0]["action"] == "move"
+    factory.mark_done(ROOT, led, [depot["id"]], 2, "test")
+    assert plan(4090) is None  # only blocks left: nothing a capped builder can raise
+    free = plan(0)
+    assert free is not None and any(a["action"] == "place" for a in free[0])  # under the cap the block is placed as before

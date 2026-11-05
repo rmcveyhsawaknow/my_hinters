@@ -1510,8 +1510,9 @@ def plan_step(
     if prefs is None or room < 1:
         return None
     you = observe.get("you") or {}
-    if int(you.get("blocks_owned", 0) or 0) >= OWNED_CAP:
-        return None
+    # At the world's cap of blocks a builder still raises the design's structures: a storehouse or a sign is no block.
+    # 2026-11-05: Toffeetrowel stood at the cap for two days, exploring, while the East Works waited on their depots.
+    at_cap = int(you.get("blocks_owned", 0) or 0) >= OWNED_CAP
     root = root or root_of(team)
     if design_name is None:
         designs = team_designs(team)
@@ -1541,6 +1542,8 @@ def plan_step(
         ready = [s for s in ready if not (step_lots(s) & unheld)]  # a building rises only on ground its client holds
         if unheld:
             state._bp_land = sorted(unheld)[:8]
+    if at_cap:
+        ready = [s for s in ready if s["kind"] == "build"]
     if not ready:
         return None
     rank = {sec: i for i, sec in enumerate(prefs)}
