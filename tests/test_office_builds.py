@@ -31,7 +31,7 @@ def _step(slug, inventory, position, view=None, room=3, state=None):
 def test_the_team_file_turns_the_office_to_new_york_and_its_walls_off():
     team = load_team(ROOT, "exchange")
     cfg = team.extra["pipeline"]
-    assert factory.team_designs(team) == ["midtown", "central-park", "uptown", "nintendo-land"] and cfg["focus"] == "blueprint"
+    assert factory.team_designs(team) == ["midtown", "central-park", "uptown", "nintendo-land", "signposts", "halloween"] and cfg["focus"] == "blueprint"
     assert walls_cfg(cfg["claims"]) is None and cfg["claims"]["walls"]["enabled"] is False  # the walls stop for now; the mechanism stays for when the owner turns it back on
     assert set(cfg["builders"]) == set(OFFICE)  # every hand and the registrar
     midtown = {s["id"] for s in factory.load_design(ROOT, "midtown")["sections"]} | {"streets"}

@@ -47,6 +47,7 @@ North Star: [read first](NORTH_STAR.md)
 - **goal** [G-20261103-the-factory-grows-by-twice-what-stood](goals/G-20261103-the-factory-grows-by-twice-what-stood.md) — The factory grows by twice what stood, in buildings and in ground
 - **goal** [G-20261103-the-office-builds-the-larger-new-york](goals/G-20261103-the-office-builds-the-larger-new-york.md) — The land office stops its walls and builds the larger New York
 - **goal** [G-20261103-uptown-the-third-replica-north-of-central-park](goals/G-20261103-uptown-the-third-replica-north-of-central-park.md) — Uptown, the third New York replica, north of Central Park
+- **goal** [G-20261105-halloween-at-winter-river](goals/G-20261105-halloween-at-winter-river.md) — Halloween at Winter River, after every work stands and is signed
 - **hypothesis** [H-20261017-bucket-stocks](hypotheses/H-20261017-bucket-stocks.md) — A stocked storehouse keeps teammates above the energy floor
 - **hypothesis** [H-20261017-bucket-thanks](hypotheses/H-20261017-bucket-thanks.md) — Specific thank-you lines earn replies
 - **hypothesis** [H-20261017-item-conservation](hypotheses/H-20261017-item-conservation.md) — Item conservation holds in the public event log

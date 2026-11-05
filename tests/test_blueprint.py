@@ -171,14 +171,15 @@ def test_the_four_plots_leave_the_office_holdings_and_are_sold_as_one_ground():
     nyc = {lid for r in requests.values() if str(r["id"]).startswith("nyc-") for lid in r["lots"]}  # Lower Manhattan's ground, under contract too (2026-10-27)
     east = {f"K{n:02d}-{q}" for n in (6, 7, 8, 9) for q in ("NW", "NE", "SW", "SE")}  # the factory's East Works (2026-11-03)
     exclude = set(exchange.extra["pipeline"]["claims"]["exclude"])
-    north = {lid for lid in exclude if lid[1:3] in ("02", "03")}  # Uptown's ten lots and Nintendo Land's thirty-two (2026-11-03)
+    halloween = {f"{c}-{q}" for c, qs in {"J02": "SE", "J03": "NE SE", "J04": "NE SE", "J05": "NE", "K02": "SW", "K03": "NW NE SW SE", "K04": "NW NE SW SE", "K05": "NW NE", "L03": "SW", "L04": "NW SW", "L05": "NW"}.items() for q in qs.split()}  # Halloween at Winter River's 21 lots (2026-11-05)
+    north = {lid for lid in exclude if lid[1:3] in ("02", "03")} - halloween  # Uptown's ten lots and Nintendo Land's thirty-two (2026-11-03)
     hideaway = {"G10-NW", "G10-NE", "G10-SE", "H09-SW", "H09-SE", "H10-NW", "H10-SW", "H10-SE", "I10-SW"}  # Neverland's nine trees (2026-11-03)
-    assert exclude == lots | nyc | east | north | hideaway and len(nyc) == 40 and len(north) == 42  # Lower Manhattan's twelve, Midtown's nine, Central Park's nine (2026-11-02) and Uptown's ten (2026-11-03)
+    assert len(halloween) == 21 and exclude == lots | nyc | east | north | hideaway | halloween and len(nyc) == 40 and len(north) == 42  # Lower Manhattan's twelve, Midtown's nine, Central Park's nine (2026-11-02) and Uptown's ten (2026-11-03)
     from hglab.lots import holdings, lot_anchor, stake_text
 
-    signs = [{"type": "sign", "x": lot_anchor(lid)[0], "y": lot_anchor(lid)[1], "owner": "LandBroker", "text": stake_text(lid, "LandBroker")} for lid in ("I08-SE", "K04-NW")]
+    signs = [{"type": "sign", "x": lot_anchor(lid)[0], "y": lot_anchor(lid)[1], "owner": "LandBroker", "text": stake_text(lid, "LandBroker")} for lid in ("I08-SE", "J07-NE")]
     held = holdings(exchange.extra["pipeline"]["claims"], signs, lambda x, y: "h", [], [], 1000, "LandBroker")
-    assert [h["lot"] for h in held] == ["K04-NW"]  # the factory's lot is under contract: not the office's to work
+    assert [h["lot"] for h in held] == ["J07-NE"]  # the factory's lot is under contract: not the office's to work
 
 
 def test_a_live_wake_records_its_removals_in_the_blueprint_ledger():

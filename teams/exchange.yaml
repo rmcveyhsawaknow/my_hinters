@@ -22,7 +22,7 @@ pipeline:
   # deed, when Plumbline pays it, carries the ground with what stands on it. The registrar builds too (no crew knob:
   # the blueprint step of a work shift). Each hand's own sections come first, then any section nearest.
   blueprint: midtown  # teams/blueprints/midtown.yaml
-  next_blueprint: [central-park, uptown, nintendo-land]
+  next_blueprint: [central-park, uptown, nintendo-land, signposts, halloween]  # 2026-11-05: a sign beside every landmark, then Halloween at Winter River
   focus: blueprint
   builders:
     land-broker: [grand-central, one-vanderbilt, metlife, chrysler]
@@ -56,7 +56,9 @@ pipeline:
       D03-NW, D03-NE, D03-SW, D03-SE, E03-NW, E03-NE, E03-SW, E03-SE, F03-NW, F03-SW,  # Uptown's ten lots (2026-11-03), the third replica north of Central Park
       F02-NE, F02-SE, F03-NE, F03-SE, G02-NW, G02-NE, G02-SW, G02-SE, G03-NW, G03-NE, G03-SW, G03-SE, H02-NW, H02-NE, H02-SW, H02-SE,  # Nintendo Land's 32 lots (2026-11-03): the collective's ground by contract, built by every team when its own works are done
       H03-NW, H03-NE, H03-SW, H03-SE, I02-NW, I02-NE, I02-SW, I02-SE, I03-NW, I03-NE, I03-SW, I03-SE, J02-NW, J02-SW, J03-NW, J03-SW,
-      G10-NW, G10-NE, G10-SE, H09-SW, H09-SE, H10-NW, H10-SW, H10-SE, I10-SW]  # Neverland's nine trees and their bridges (2026-11-03): never worked, walled or policed
+      G10-NW, G10-NE, G10-SE, H09-SW, H09-SE, H10-NW, H10-SW, H10-SE, I10-SW,  # Neverland's nine trees and their bridges (2026-11-03): never worked, walled or policed
+      J02-SE, J03-NE, J03-SE, J04-NE, J04-SE, J05-NE, K02-SW, K03-NW, K03-NE, K03-SW, K03-SE, K04-NW, K04-NE, K04-SW, K04-SE,  # Halloween at Winter River's 21 lots (2026-11-05):
+      K05-NW, K05-NE, L03-SW, L04-NW, L04-SW, L05-NW]  # the collective's ground by contract, every team's last design
     text: 'Lot {lot}: land office holding ({tags}). Not for sale: its nodes are the
       office''s stock. Walled by the office, a gate open mid-side.'
     walls:  # the owner, 2026-10-25: when every office store is full the hands wall the staked lots with the stone (hglab.walls)

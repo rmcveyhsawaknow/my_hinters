@@ -23,7 +23,7 @@ pipeline:  # the owner, 2026-11-02: Neverland builds a treetop hideaway in its o
   floor: 5
   stores_max: 4
   blueprint: treetop-hideaway  # teams/blueprints/treetop-hideaway.yaml; 2026-11-03: nine trees with rope ladders and bridges, the forest north of the ring
-  next_blueprint: [nintendo-land]  # the owner, 2026-11-03: the collective's Nintendo Land when the hideaway stands
+  next_blueprint: [nintendo-land, signposts, halloween]  # the owner, 2026-11-03: the collective's Nintendo Land when the hideaway stands; 2026-11-05: then the signposts and Halloween at Winter River
   roam: true  # the owner, 2026-11-03: a hand with nothing to raise and nobody to help walks the hideaway's grounds, tree to tree (hglab.help.plan_roam)
   builders:  # 2026-11-03: the six new trees and their bridges follow each hand's old trees
     tinker-bell: [lookout-tree, great-tree, west-tree, bridge-east, bridge-west, watch-tree, strays-tree, bridge-strays-lookout, bridge-watch]
