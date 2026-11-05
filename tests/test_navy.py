@@ -69,6 +69,21 @@ def test_a_finished_work_gets_its_sign_and_then_the_coast_is_charted():
     assert chart_on[0][0]["action"] == "move" and "charting the coast" in chart_on[1]
 
 
+def test_a_blank_sign_of_ours_at_a_finished_work_gets_its_words_back():
+    """Pier-10's sign stood empty on 2026-11-05: the work was signed, so nothing wrote it again."""
+    c = _chart()
+    bridges = [{"type": "bridge", "x": x, "y": y, "owner": "Fathomark"} for w in c.works for x, y in w.tiles]
+    pier = next(w for w in c.works if w.id == "pier-01")
+    blank = {"type": "sign", "x": pier.shore[0], "y": pier.shore[1], "owner": "Fathomark", "text": ""}
+    state = PersonaState(mood="steady")
+    state.flags["navy"] = {"signed": [w.id for w in c.works]}
+    step = navy.plan_step(_navy(), state, {"tick": 1000, "you": {"name": "Fathomark"}}, _view([*bridges, blank]), {"wood": 3}, pier.shore, 3)
+    assert step[0] == [{"action": "write", "x": pier.shore[0], "y": pier.shore[1], "text": navy.sign_text(pier)}]
+    someone_elses = {**blank, "owner": "Quill"}
+    other = navy.plan_step(_navy(), state, {"tick": 1000, "you": {"name": "Fathomark"}}, _view([*bridges, someone_elses]), {"wood": 3}, pier.shore, 3)
+    assert other[0][0]["action"] != "write"  # only our own signs are ours to write
+
+
 def test_the_model_plans_every_navy_wake_within_its_own_daily_cap():
     from hglab.budget import status
     from hglab.cli_personas import effective_planner

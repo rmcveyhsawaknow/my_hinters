@@ -198,6 +198,8 @@ def _section_steps(section: dict[str, Any]) -> list[tuple[str, dict[str, Any]]]:
     levels = int(section.get("levels", 10))
     lift = foundation_map(section)
     ceiling = TOP_LEVEL - max(lift.values(), default=0)  # the tallest plinth comes off the top
+    if style == "landmark":
+        return []  # a sign beside something that already stands (the owner, 2026-11-05: every structure labelled): no blocks
     if style == "treehouse":
         return _treehouse_steps(section, ceiling)
     if style in CITY_STYLES:
@@ -356,7 +358,7 @@ def _treehouse_steps(section: dict[str, Any], ceiling: int) -> list[tuple[str, d
 
 PACK_CELLS = 160  # a city box a pack pays for with its berries aside (40 items): no step needs a store beside it
 TREE_DECK_CELLS = 64  # a treehouse deck strip (16 wood): what a Neverland hand carries from one trip to the woods beside its berries (2026-11-03)
-CITY_STYLES = {"skyscraper", "temple", "church", "park", "fort", "pool", "statue"}
+CITY_STYLES = {"skyscraper", "temple", "church", "park", "fort", "pool", "statue", "sculpture"}
 
 
 def _inset(rect: Rect, k: int) -> Rect:
@@ -588,6 +590,18 @@ def _city_boxes(section: dict[str, Any], ceiling: int) -> list[tuple[str, dict[s
         steps.append(("legs", box(bx + 1, by + 1, 1, bx + 3, by + 1, 1, material=mat, color=color)))
         steps.append(("head", box(bx, by, 2, bx, by, 2, material=mat, color=color)))
         steps.append(("horns", box(bx, by, 3, bx, by + 1, 3, material=mat, color=color)))
+        return steps
+    if style == "sculpture":
+        # Figures no style draws (the owner's brief of 2026-11-05, Halloween: the spider on the roof, the striped ghost, the
+        # sandworm): ``boxes`` of cells from the section's north-west cell and its plane, in building order.
+        bx0, by0, bx1, by1 = rect
+        for n, piece in enumerate(section.get("boxes") or []):
+            x0, y0, z0, x1, y1, z1 = (int(v) for v in piece["cells"])
+            if not (0 <= x0 <= x1 <= bx1 - bx0 and 0 <= y0 <= y1 <= by1 - by0 and 0 <= z0 <= z1):
+                raise ValueError(f"section {section.get('id')}: piece {piece.get('name') or n + 1} lies outside its tiles")
+            material, color = _pair(piece.get("block"), ("stone", "grey"))
+            extra = {k: str(piece[k]) for k in ("shape", "facing") if piece.get(k)}
+            steps.append((str(piece.get("name") or f"piece {n + 1}"), box(bx0 + x0, by0 + y0, z0, bx0 + x1, by0 + y1, z1, material=material, color=color, **extra)))
         return steps
     raise ValueError(f"unknown city style {style}")
 
@@ -914,7 +928,7 @@ def expand(design: dict[str, Any]) -> list[dict[str, Any]]:
                 "top": int(action["bz2"]), "box_cells": len(_cells_of(action)),
             })
         lift = foundation_map(section)
-        for name, action in _plinth(section, plinth_block):
+        for name, action in _plinth(section, _pair(section.get("foundation_block"), plinth_block)):  # a section's own: a green hill (2026-11-05)
             add(sid, None, f"{label}: {name}", action)
         for name, action in _section_steps(section):
             for part_name, part in _lift(name, action, lift):
@@ -1337,6 +1351,16 @@ def next_design_active(team: Any, root: Path | None = None) -> bool:
     return len(designs) > 1 and design_complete(root or root_of(team), designs[0])
 
 
+def design_open(root: Path, name: str) -> bool:
+    """Every design named in the design's ``after`` is done (the owner, 2026-11-05: Halloween once all the building and
+    its signs are done), so a team's chain never reaches it before the collective's other works stand."""
+    try:
+        design, _steps, _index = blueprint(root, name)
+    except (OSError, ValueError):
+        return True
+    return all(design_complete(root, str(other)) for other in design.get("after") or [])
+
+
 def design_complete(root: Path, name: str) -> bool:
     try:
         design, steps, _index = blueprint(root, name)
@@ -1517,8 +1541,8 @@ def plan_step(
     if design_name is None:
         designs = team_designs(team)
         for i, name in enumerate(designs):
-            if i and not design_complete(root, designs[i - 1]):
-                break  # the next design waits for the one before
+            if (i and not design_complete(root, designs[i - 1])) or not design_open(root, name):
+                break  # the next design waits for the one before, and for every design it names in ``after``
             step = plan_step(persona, team, state, observe, view, inventory, position, room, mates=mates, root=root, hands=hands, pack_only=pack_only, design_name=name)
             if step is not None:
                 return step
@@ -1534,6 +1558,18 @@ def plan_step(
     for step in steps:
         if step["kind"] == "build" and (step["action"]["x"], step["action"]["y"], str(step["action"].get("type"))) in standing:
             done.add(step["id"])
+    # A sign or depot whose tile another structure took since the design was drawn could never rise there: the world
+    # refuses it every wake. It is recorded as blocked, so the design still completes and the chain moves on (the owner,
+    # 2026-11-05: the signposts' tiles are chosen a day before the builders reach them).
+    occupied = {(int(s.get("x", -1)), int(s.get("y", -1))): str(s.get("type")) for s in structures}
+    blocked = [
+        s["id"] for s in steps
+        if s["kind"] == "build" and s["id"] not in done and occupied.get((s["action"]["x"], s["action"]["y"]), str(s["action"].get("type"))) != str(s["action"].get("type"))
+    ]
+    if blocked:
+        where = ", ".join(f"{sid} ({occupied[(a['x'], a['y'])]})" for sid, a in ((s["id"], s["action"]) for s in steps if s["id"] in blocked))
+        mark_done(root, ledger_name(design, name), blocked, int(observe.get("tick", 0) or 0), f"blocked: another structure stands on its tile: {where}"[:200])
+        done.update(blocked)
     planned: set[str] = getattr(state, "_bp_planned", None) or set()
     ready = [s for s in ready_steps(steps, done, planned) if not s.get("only") or s["only"] == persona.slug]  # a clear is its owner's: their blocks come out whole
     land = design.get("land") if isinstance(design.get("land"), dict) else None
@@ -1683,6 +1719,6 @@ def plan_step(
 
 
 __all__ = [
-    "LEDGER_DIR", "blueprint", "builder_sections", "cells_rect", "check", "decode_blocks", "design_complete", "expand", "foundation_map", "land_wanted", "lands_own", "ledger_name", "load_design", "load_ledger", "mark_done",
+    "LEDGER_DIR", "blueprint", "builder_sections", "cells_rect", "check", "decode_blocks", "design_complete", "design_open", "expand", "foundation_map", "land_wanted", "lands_own", "ledger_name", "load_design", "load_ledger", "mark_done",
     "materials", "next_design_active", "plan_step", "ready_steps", "reconcile", "root_of", "route", "settle", "signature", "step_lots", "summary", "team_designs", "tiles_of",
 ]

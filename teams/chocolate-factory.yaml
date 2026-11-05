@@ -24,7 +24,7 @@ pipeline:
   range: 40  # the East Works (2026-11-03) lie up to 38 tiles from the works: a hand there is at the works, not far from it
   stores_max: 10
   blueprint: chocolate-factory  # teams/blueprints/chocolate-factory.yaml (the owner's brief of 2026-10-24)
-  next_blueprint: [lower-manhattan, midtown, central-park, uptown, nintendo-land]  # the owner, 2026-10-27: once every step of the factory is done, the builders and hands take up the Atelier's Lower Manhattan; 2026-11-02: then the larger replica, Midtown and Central Park; 2026-11-03: then Uptown, and Nintendo Land last of all
+  next_blueprint: [lower-manhattan, midtown, central-park, uptown, nintendo-land, signposts, halloween]  # the owner, 2026-10-27: once every step of the factory is done, the builders and hands take up the Atelier's Lower Manhattan; 2026-11-02: then the larger replica, Midtown and Central Park; 2026-11-03: then Uptown, and Nintendo Land last of all; 2026-11-05: then the signposts, and Halloween at Winter River once everything stands
   builders:
     loompa-mason: [depots, elevator, mill, terrace, lookout, campus-north, campus-east]
     # the owner, 2026-11-03: the East Works, shared by the block room each builder has left under the world's cap (a

@@ -1,0 +1,112 @@
+# The signposts (the owner's brief of 2026-11-05): "when all nintendo land is complete, then need to ensure that all
+# structures in all areas are labeled with signs like NYC is". Every building and monument of every design already
+# carries its sign as the design's own last step (the owner, 2026-11-02): Lower Manhattan's 21, Midtown's 18, Central
+# Park's 16, Uptown's 16 and six of the hideaway's nine trees stand, read from the public world of tick 170600, and
+# the factory's and Nintendo Land's go up with their last steps. The Admiralty signs its own works: a sign stands at
+# the shore of every pier and of the causeway (the Navy's rules write a blank one again, 2026-11-05).
+#
+# What no design labels is here, one section per landmark, style `landmark` (the sign alone: what it names already
+# stands): the three oldest treehouses of the hideaway, whose ladders took the step ids after their last step (a sign in
+# their own sections would renumber what the ledger holds), the members' homes outside every design, the Atelier's
+# towers, the factory's west gate and the vault of the golden tickets. A section's tiles are the landmark's footprint
+# (a homestead's hut, tower, farm and stores together), and each sign stands on a free tile beside it: no node, no
+# structure, no block of anyone's, no lot centre and no tile of any design. Two landmarks have no free tile beside them
+# and stay unlabelled: Tinkerglow's hut by the spawn (66,54), ringed by roads and a store, and Fudgewright's tower
+# inside the campus (87,91), ringed by roads, nodes and the factory's blocks.
+#
+# Who builds it: every team after Nintendo Land (`after`, and the `next_blueprint` tails), any member any section;
+# a sign is one wood and no block, so builders at the world's cap of blocks raise them too. A sign whose tile another
+# structure takes before a builder arrives is recorded as blocked (factory.plan_step), so the design still completes.
+name: The Signposts
+title: the Signposts blueprint  # how a builder's reasons name it
+team: commons  # the whole collective's (the field is informational)
+version: 1
+commute: true
+after: [nintendo-land]  # the owner, 2026-11-05: once Nintendo Land is complete
+story: >-
+  A sign beside everything the collective has raised that does not yet say what it is, so a visitor anywhere on the
+  island can read where they are, as in the New York replica.
+sections:
+  # ---- the Treetop Hideaway's three oldest trees
+  - id: great-tree
+    name: The Great Tree
+    tiles: [72, 104, 75, 107]
+    style: landmark
+    sign: {x: 76, y: 106, text: "The Great Tree, heart of the Treetop Hideaway: the fire is kept on its deck and the store waits among its roots. Every rope bridge in these woods leads back here in the end."}
+  - id: west-tree
+    name: The West Tree
+    tiles: [66, 103, 68, 105]
+    style: landmark
+    sign: {x: 69, y: 105, text: "The West Tree. Climb up meaning to do something and you may come down having forgotten what; up here that counts as a rest, not a failure."}
+  - id: lookout-tree
+    name: The Lookout Tree
+    tiles: [81, 103, 83, 105]
+    style: landmark
+    sign: {x: 84, y: 106, text: "The Lookout Tree, by the opening in the ring of riddles. From its deck the gate is kept and the water read for whoever comes next."}
+  # ---- the members' homes
+  - id: hut-fudgewright
+    name: Fudgewright's hut
+    tiles: [65, 71, 65, 71]
+    style: landmark
+    sign: {x: 65, y: 70, text: "Fudgewright's hut, home of the Chocolate Factory's maker on the nights the works let anyone go home. Knock loudly: the mind inside is usually three inventions away."}
+  - id: hut-clarion
+    name: Clarion's hut
+    tiles: [63, 71, 63, 71]
+    style: landmark
+    sign: {x: 62, y: 71, text: "Clarion's hut. The town crier sleeps here between announcements; if a bell rings at an odd hour, the news is usually worth getting up for."}
+  - id: hut-motherpail
+    name: MotherPail's hut
+    tiles: [62, 56, 62, 56]
+    style: landmark
+    sign: {x: 61, y: 55, text: "MotherPail's hut: a warm stove, a full pail and a long patience. The factory's hands come here when the work has worn them thin."}
+  - id: hut-lagalong
+    name: Lagalong's hut
+    tiles: [60, 58, 60, 58]
+    style: landmark
+    sign: {x: 60, y: 59, text: "Lagalong's hut. Neverland's hauler rests here between loads, a little behind the others as a rule and never lost for long."}
+  - id: hut-strayling
+    name: Strayling's hut
+    tiles: [57, 79, 57, 79]
+    style: landmark
+    sign: {x: 56, y: 80, text: "Strayling's hut, raised wherever a wander happened to stop. Neverland's woodcutter finds the way back to it by surprise more often than on purpose."}
+  - id: hut-stoutheart
+    name: Stoutheart's hut
+    tiles: [69, 107, 69, 107]
+    style: landmark
+    sign: {x: 69, y: 108, text: "Stoutheart's hut inside the ring of riddles: Neverland's mason keeps the hideaway's tools here, and a greeting for whoever finds the way in."}
+  - id: hut-landbroker
+    name: LandBroker's hut
+    tiles: [71, 65, 71, 65]
+    style: landmark
+    sign: {x: 70, y: 64, text: "LandBroker's hut, the land office's first desk: lots were staked and deeds drawn up here before the office had a single store to fill."}
+  - id: gatehouse-tinkerglow
+    name: Tinkerglow's hut by the opening
+    tiles: [80, 104, 80, 104]
+    style: landmark
+    sign: {x: 80, y: 103, text: "Tinkerglow's hut by the opening in the ring. Neverland's gatekeeper waits here to find visitors before they find the way."}
+  - id: hut-plumbline
+    name: Plumbline's hut
+    tiles: [70, 55, 70, 55]
+    style: landmark
+    sign: {x: 70, y: 54, text: "Plumbline's hut, home of the Atelier: every New York tower on this island was drawn and measured twice in here before a block was laid."}
+  - id: house-toffeetrowel
+    name: Toffeetrowel's homestead
+    tiles: [87, 94, 90, 95]
+    style: landmark
+    sign: {x: 91, y: 95, text: "Toffeetrowel's homestead on the south shore: hut, tower, farm and the stores the factory's mason raised, all within sight of the works."}
+  # ---- the works' landmarks outside their designs
+  - id: towers-atelier
+    name: The Atelier's towers
+    tiles: [68, 85, 69, 87]
+    style: landmark
+    sign: {x: 68, y: 88, text: "The Atelier's towers: four stone lookouts Plumbline raised so the replicas could be checked from above while they rose."}
+  - id: west-gate
+    name: The West Gate
+    tiles: [80, 90, 80, 94]
+    style: landmark
+    sign: {x: 79, y: 93, text: "The West Gate of the Chocolate Factory: yellow pillars under a round arch, the one way in by land. Inside, the river is brown stone; please do not drink it."}
+  - id: ticket-vault
+    name: The vault of the golden tickets
+    tiles: [93, 84, 95, 88]
+    style: landmark
+    sign: {x: 96, y: 87, text: "The vault of the golden tickets. One ticket at a time lies on a yellow square in a strongroom's floor; break in, find it, and the reward pays out at once."}

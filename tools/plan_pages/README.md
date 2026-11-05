@@ -8,6 +8,7 @@ beside the script and is published with the Artifact tool, never committed (see 
 
 - `nyc-north`: several designs on one map with the land office's segments (Midtown, Central Park, Uptown; 2026-11-03).
 - `nintendo-land`: districts, tubes and the build order across the teams (2026-11-03).
+- `halloween`: the whole design drawn block by block in 3D with a fly-over, the gates that open it, and the signposts (2026-11-05).
 
 To make a new one, copy the nearer folder, change its `DESIGNS`, `BOUNDS` and builders, and keep the page's rules:
 data inline as one JSON literal, no external scripts, light and dark themes from CSS tokens on `:root`, readable at

@@ -265,7 +265,22 @@ def plan_step(
     open_works = [w for w in c.works if next_tile(w, bridges, taken) is not None]
     open_works.sort(key=lambda w: (chebyshev(position, w.shore) - (CAUSEWAY_HEAD_START if w.kind == "causeway" else 0), w.id))  # the nearest work, a causeway counted 20 tiles nearer
     current = next((w for w in open_works if w.id == note.get("work")), None) or (open_works[0] if open_works else None)
-    # 1. a finished work of ours gets its sign on the shore
+    # 1. a finished work of ours gets its sign on the shore, and a sign of ours there that stands blank gets its words back
+    # (the owner, 2026-11-05: every structure labelled; Pier-10's sign stood empty)
+    me = str((observe.get("you") or {}).get("name") or persona.name)
+    for work in c.works:
+        if not finished(work, bridges):
+            continue
+        blank = next((s for s in structures if s.get("type") == "sign" and s.get("owner") == me and not str(s.get("text") or "").strip() and chebyshev((int(s["x"]), int(s["y"])), work.shore) <= 1), None)
+        if blank is None:
+            continue
+        at = (int(blank["x"]), int(blank["y"]))
+        if chebyshev(position, at) <= 1:
+            return [{"action": "write", "x": at[0], "y": at[1], "text": sign_text(work, ground)}], f"{work.id}'s sign at {at} stands blank: its words go back on", "navy"
+        if chebyshev(position, work.shore) <= 12:
+            target = _step_toward(position, {"x": at[0], "y": at[1]}, view)
+            if target is not None and target != position:
+                return [{"action": "move", "x": target[0], "y": target[1]}], f"{work.id}'s sign stands blank: walk to its shore to write it", "navy"
     signed = {str(s) for s in note.get("signed") or []}
     for work in c.works:
         if work.id in signed or not finished(work, bridges) or wood < 1:

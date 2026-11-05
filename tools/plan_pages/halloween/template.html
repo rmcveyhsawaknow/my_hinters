@@ -1,0 +1,395 @@
+<title>Halloween at Winter River</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: the model on the attic table. A night scene of the whole town first, then the gates that open it, the map,
+   the buildings by quarter, and the signs that come before it. Tokens below; the scene keeps one night look. */
+:root {
+  --bg: #eceee6; --surface: #f7f8f2; --ink: #1c1e1a; --muted: #5d6258; --line: #c8ccbf;
+  --accent: #4d6a1c; --accent-soft: #dfe8c8; --pumpkin: #b9530c; --plum: #5e3c70; --bar: #d6d9cd;
+  --t-grass: #a7b977; --t-forest: #66804a; --t-sand: #dccb98; --t-water: #7895b5; --t-hill: #a5946e; --t-deep: #5b7899;
+  --river: #3f6fb0; --street: #8b8b84; --sec-opening: #5e3c70; --sec-street: #4d6a1c; --sec-afterlife: #1c1e1a; --sec-harvest: #b9530c;
+  --scene-top: #0b0c1a; --scene-bottom: #2b1c3c; --scene-ink: #ece8f4; --scene-muted: #b7aecb; --scene-btn: rgba(236, 232, 244, 0.12); --scene-btn-line: rgba(236, 232, 244, 0.35);
+  --display: "IM Fell English SC", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --body: "Alegreya Sans", "Gill Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121318; --surface: #1a1c23; --ink: #e8e9e2; --muted: #9ca296; --line: #30333c;
+    --accent: #a8c45b; --accent-soft: #2a3320; --pumpkin: #f0893b; --plum: #c09ad6; --bar: #2a2d35;
+    --t-grass: #4f5f37; --t-forest: #33452a; --t-sand: #7d7152; --t-water: #2c3f57; --t-hill: #5c5240; --t-deep: #22324a;
+    --river: #5d8fd6; --street: #6e6e6a; --sec-opening: #c09ad6; --sec-street: #a8c45b; --sec-afterlife: #e8e9e2; --sec-harvest: #f0893b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121318; --surface: #1a1c23; --ink: #e8e9e2; --muted: #9ca296; --line: #30333c;
+  --accent: #a8c45b; --accent-soft: #2a3320; --pumpkin: #f0893b; --plum: #c09ad6; --bar: #2a2d35;
+  --t-grass: #4f5f37; --t-forest: #33452a; --t-sand: #7d7152; --t-water: #2c3f57; --t-hill: #5c5240; --t-deep: #22324a;
+  --river: #5d8fd6; --street: #6e6e6a; --sec-opening: #c09ad6; --sec-street: #a8c45b; --sec-afterlife: #e8e9e2; --sec-harvest: #f0893b;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 16px/1.55 var(--body); }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 28px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 40px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; text-wrap: balance; margin: 0; letter-spacing: 0.01em; }
+h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.05; }
+h2 { font-size: 1.7rem; line-height: 1.15; }
+h3 { font-size: 1.25rem; }
+p { margin: 0; max-width: 68ch; }
+.muted { color: var(--muted); }
+.mono, code { font-family: var(--mono); font-size: 0.86em; }
+.num { font-variant-numeric: tabular-nums; }
+header { display: grid; gap: 14px; }
+.stripes { height: 10px; background: repeating-linear-gradient(90deg, var(--ink) 0 9px, transparent 9px 18px); border-radius: 1px; }
+.lede { font-size: 1.12rem; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 0.95rem; }
+.facts b { font-weight: 700; font-variant-numeric: tabular-nums; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 999px; font-size: 0.82rem; font-weight: 500; border: 1px solid var(--line); }
+.pill.closed { color: var(--pumpkin); border-color: currentColor; }
+.pill.open { color: var(--accent); border-color: currentColor; }
+.scene { position: relative; border-radius: 6px; overflow: hidden; background: linear-gradient(180deg, var(--scene-top), var(--scene-bottom)); color: var(--scene-ink); }
+.scene canvas { display: block; width: 100%; height: clamp(320px, 62vw, 620px); touch-action: none; cursor: grab; }
+.scene canvas:active { cursor: grabbing; }
+.scene .controls { position: absolute; top: 12px; right: 12px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+.scene button { font: 500 0.9rem var(--body); color: var(--scene-ink); background: var(--scene-btn); border: 1px solid var(--scene-btn-line); border-radius: 4px; padding: 6px 12px; cursor: pointer; }
+.scene button:hover { background: rgba(236, 232, 244, 0.22); }
+.scene button:focus-visible { outline: 2px solid var(--scene-ink); outline-offset: 2px; }
+.caption { position: absolute; left: 14px; bottom: 12px; right: 14px; font-family: var(--display); font-size: clamp(1.05rem, 2.4vw, 1.45rem); text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8); max-width: 46ch; pointer-events: none; }
+.caption small { display: block; font-family: var(--body); font-size: 0.82rem; color: var(--scene-muted); }
+.grid2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 32px; align-items: start; }
+@media (max-width: 860px) { .grid2 { grid-template-columns: minmax(0, 1fr); } }
+section { display: grid; gap: 16px; min-width: 0; }
+.gate { display: grid; gap: 10px; }
+.row { display: grid; grid-template-columns: minmax(0, 11rem) minmax(0, 1fr) 7.5rem; gap: 12px; align-items: center; font-size: 0.93rem; }
+.bar { height: 8px; background: var(--bar); border-radius: 4px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--accent); }
+.bar.part i { background: var(--pumpkin); }
+.chains { display: grid; gap: 10px; font-size: 0.9rem; }
+.chain { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.chain .team { font-weight: 700; min-width: 9.5rem; }
+.chain .d { padding: 1px 8px; border-radius: 3px; border: 1px solid var(--line); white-space: nowrap; }
+.chain .d.done { background: var(--accent-soft); border-color: transparent; }
+.chain .d.last { border-color: var(--pumpkin); color: var(--pumpkin); }
+.chain .sep { color: var(--muted); }
+.map { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+.map svg { display: block; }
+.map .grass { fill: var(--t-grass); } .map .forest { fill: var(--t-forest); } .map .sand { fill: var(--t-sand); }
+.map .water { fill: var(--t-water); } .map .deep { fill: var(--t-deep); } .map .hill { fill: var(--t-hill); }
+.map .river { fill: var(--river); } .map .street { fill: var(--street); }
+.map .lot { fill: none; stroke: var(--ink); stroke-opacity: 0.25; stroke-dasharray: 3 3; }
+.map .centre { fill: var(--ink); fill-opacity: 0.45; }
+.map .sec { fill-opacity: 0.18; stroke-width: 2; }
+.map .sec.opening { fill: var(--sec-opening); stroke: var(--sec-opening); } .map .sec.street { fill: var(--sec-street); stroke: var(--sec-street); }
+.map .sec.afterlife { fill: var(--sec-afterlife); stroke: var(--sec-afterlife); } .map .sec.harvest { fill: var(--sec-harvest); stroke: var(--sec-harvest); }
+.map .num { font: 700 11px var(--body); fill: var(--surface); }
+.map .badge { stroke: var(--surface); stroke-width: 1.5; }
+.map .badge.opening { fill: var(--sec-opening); } .map .badge.street { fill: var(--sec-street); } .map .badge.afterlife { fill: var(--sec-afterlife); } .map .badge.harvest { fill: var(--sec-harvest); }
+.map .sign { fill: var(--surface); stroke: var(--ink); stroke-width: 1.4; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 0.85rem; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 12px; height: 12px; border-radius: 2px; display: inline-block; }
+.quarters { display: grid; gap: 32px; }
+.quarter { display: grid; gap: 10px; }
+.qhead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
+.swatch { width: 14px; height: 14px; border-radius: 2px; display: inline-block; align-self: center; }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-weight: 500; color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
+td.n { font-variant-numeric: tabular-nums; color: var(--muted); width: 2rem; }
+td.name { font-weight: 700; min-width: 11rem; }
+td.data { font-family: var(--mono); font-size: 0.8rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
+td.text { color: var(--muted); min-width: 18rem; font-style: italic; }
+.items { display: flex; flex-wrap: wrap; gap: 12px 28px; }
+.items div { display: grid; }
+.items b { font-size: 1.6rem; font-family: var(--display); font-weight: 400; font-variant-numeric: tabular-nums; }
+.items span { font-size: 0.85rem; color: var(--muted); }
+pre { margin: 0; font: 0.85rem/1.6 var(--mono); background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 10px 12px; overflow-x: auto; }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="stripes" aria-hidden="true"></div>
+    <h1>Halloween at Winter River</h1>
+    <p class="lede">Every team's last design: a small New England town on Halloween night, laid out like the model a man once built in his attic, with the ghost in the striped suit waiting in its graveyard.</p>
+    <div class="facts" id="facts"></div>
+  </header>
+
+  <div class="scene" id="scene">
+    <canvas id="town" aria-label="The Halloween town in 3D: every block of the design, at night"></canvas>
+    <div class="controls">
+      <button type="button" id="glide">Glide in</button>
+      <button type="button" id="turn">Turn the model</button>
+      <button type="button" id="whole">Whole town</button>
+    </div>
+    <div class="caption" id="caption" aria-live="polite"></div>
+  </div>
+
+  <div class="grid2">
+    <section aria-labelledby="h-gate">
+      <h2 id="h-gate">When it opens</h2>
+      <p class="muted" id="gate-lede"></p>
+      <div class="gate" id="gate"></div>
+      <h3>Every team's chain</h3>
+      <div class="chains" id="chains"></div>
+    </section>
+    <section aria-labelledby="h-map">
+      <h2 id="h-map">The ground</h2>
+      <p class="muted" id="map-lede"></p>
+      <div class="map" id="map"></div>
+      <div class="legend" id="legend"></div>
+    </section>
+  </div>
+
+  <section aria-labelledby="h-quarters">
+    <h2 id="h-quarters">The buildings</h2>
+    <p class="muted">Each building has its sign beside it, written fresh: the names of places and things from the film, none of its lines.</p>
+    <div class="quarters" id="quarters"></div>
+  </section>
+
+  <section aria-labelledby="h-signs">
+    <h2 id="h-signs">First, the signposts</h2>
+    <p class="muted" id="signs-lede"></p>
+    <div class="tablewrap"><table id="signs"></table></div>
+  </section>
+
+  <section aria-labelledby="h-cost">
+    <h2 id="h-cost">What it costs, and how progress is read</h2>
+    <div class="items" id="items"></div>
+    <p class="muted">Every box is at most 160 cells, so one pack pays for any step; builders carry each step's material from their team's stores (<code>commute</code>). Progress is the ledger:</p>
+    <pre>hglab factory progress --name signposts
+hglab factory progress --name halloween
+hglab factory check --name halloween</pre>
+  </section>
+</div>
+
+<script>
+const DATA = __DATA__;
+const $ = (id) => document.getElementById(id);
+const fmt = (n) => n.toLocaleString("en-US");
+const [X0, Y0, X1, Y1] = DATA.bounds;
+const GROUP = Object.fromEntries(DATA.groups.map((g) => [g.key, g]));
+
+// ---------------------------------------------------------------- facts and gates
+$("facts").innerHTML = [
+  `<span><b>${DATA.totals.sections}</b> buildings and monuments</span>`,
+  `<span><b>${fmt(DATA.totals.steps)}</b> steps</span>`,
+  `<span><b>${fmt(DATA.totals.blocks)}</b> blocks</span>`,
+  `<span><b>${DATA.totals.lots}</b> lots at x ${X0 + 2}–${X1 - 2}, y ${Y0 + 3}–${Y1 - 2}</span>`,
+  DATA.open ? `<span class="pill open">open</span>` : `<span class="pill closed">waits for ${DATA.gate.filter((g) => g.done < g.steps).length} designs</span>`,
+].join("");
+const behind = DATA.gate.filter((g) => g.done < g.steps);
+$("gate-lede").textContent = `Halloween opens in no team's chain until every design below is done and its signs made. At tick ${fmt(DATA.tick)}, ${behind.length} of ${DATA.gate.length} are still open.`;
+$("gate").innerHTML = DATA.gate.map((g) => {
+  const pct = g.steps ? Math.round((100 * g.done) / g.steps) : 100;
+  return `<div class="row"><span>${g.name}</span><span class="bar ${pct < 100 ? "part" : ""}" role="img" aria-label="${pct}% done"><i style="width:${pct}%"></i></span><span class="mono num">${fmt(g.done)} / ${fmt(g.steps)}</span></div>`;
+}).join("");
+$("chains").innerHTML = DATA.chains.map((c) => {
+  const items = c.designs.map((d, i) => {
+    const cls = d.done >= d.steps ? "done" : i === c.designs.length - 1 ? "last" : "";
+    const pct = d.steps ? Math.round((100 * d.done) / d.steps) : 100;
+    return `<span class="d ${cls}" title="${fmt(d.done)} of ${fmt(d.steps)} steps">${d.name}${cls === "done" ? "" : ` ${pct}%`}</span>`;
+  }).join('<span class="sep" aria-hidden="true">›</span>');
+  return `<div class="chain"><span class="team">${c.team}</span>${items}</div>`;
+}).join("");
+
+// ---------------------------------------------------------------- the map
+(function drawMap() {
+  const T = 18, W = (X1 - X0 + 1) * T, H = (Y1 - Y0 + 1) * T;
+  const cls = { g: "grass", f: "forest", s: "sand", w: "water", W: "deep", h: "hill", m: "hill" };
+  const out = [`<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Tile map of the site with every building numbered">`];
+  DATA.terrain.forEach((row, j) => [...row].forEach((c, i) => out.push(`<rect class="${cls[c] || "grass"}" x="${i * T}" y="${j * T}" width="${T}" height="${T}"/>`)));
+  const px = (x) => (x - X0) * T, py = (y) => (y - Y0) * T;
+  DATA.river.forEach(([x, y]) => out.push(`<rect class="river" x="${px(x) + 3}" y="${py(y)}" width="${T - 6}" height="${T}"/>`));
+  DATA.streets.forEach((s) => { const [a, b, c, d] = s.tiles; out.push(`<rect class="street" x="${px(a) + 2}" y="${py(b) + 2}" width="${(c - a + 1) * T - 4}" height="${(d - b + 1) * T - 4}"><title>${s.name}</title></rect>`); });
+  DATA.lots.forEach(([id, a, b, c, d]) => out.push(`<rect class="lot" x="${px(a)}" y="${py(b)}" width="${(c - a + 1) * T}" height="${(d - b + 1) * T}"><title>${id}</title></rect>`));
+  DATA.centres.forEach(([x, y]) => { if (x >= X0 && x <= X1 && y >= Y0 && y <= Y1) out.push(`<rect class="centre" x="${px(x) + T / 2 - 2}" y="${py(y) + T / 2 - 2}" width="4" height="4"><title>the office's claim sign (${x}, ${y})</title></rect>`); });
+  DATA.sections.forEach((s) => { const [a, b, c, d] = s.tiles; out.push(`<rect class="sec ${s.group}" x="${px(a) + 1}" y="${py(b) + 1}" width="${(c - a + 1) * T - 2}" height="${(d - b + 1) * T - 2}"><title>${s.n}. ${s.name}</title></rect>`); });
+  DATA.sections.forEach((s) => out.push(`<circle class="sign" cx="${px(s.sign[0]) + T / 2}" cy="${py(s.sign[1]) + T / 2}" r="3.2"><title>sign of ${s.name} (${s.sign[0]}, ${s.sign[1]})</title></circle>`));
+  DATA.sections.forEach((s) => {
+    const [a, b, c, d] = s.tiles, cx = (px(a) + px(c + 1)) / 2, cy = (py(b) + py(d + 1)) / 2;
+    out.push(`<circle class="badge ${s.group}" cx="${cx}" cy="${cy}" r="9"/><text class="num" x="${cx}" y="${cy + 4}" text-anchor="middle">${s.n}</text>`);
+  });
+  out.push("</svg>");
+  $("map").innerHTML = out.join("");
+  $("map-lede").textContent = `x ${X0}–${X1}, y ${Y0}–${Y1}, one square a tile. The river runs down column 102 and Village Street down 107 as slabs that close no tile, over the land office's claim signs; nothing else stands on a lot centre.`;
+  $("legend").innerHTML = DATA.groups.map((g) => `<span><i style="background:var(--sec-${g.key})"></i>${g.title}</span>`).join("")
+    + `<span><i style="background:var(--river)"></i>Winter River</span><span><i style="background:var(--street)"></i>streets</span><span><i style="background:var(--surface);border:1.4px solid var(--ink);border-radius:50%"></i>sign</span>`;
+})();
+
+// ---------------------------------------------------------------- the buildings and the signposts
+$("quarters").innerHTML = DATA.groups.map((g) => {
+  const rows = DATA.sections.filter((s) => s.group === g.key).map((s) => `<tr><td class="n">${s.n}</td><td class="name">${s.name}</td><td>${s.style}</td>`
+    + `<td class="data">${s.tiles[0]}–${s.tiles[2]}, ${s.tiles[1]}–${s.tiles[3]}</td><td class="data">${fmt(s.blocks)}</td><td class="data">${s.top}</td><td class="text">${s.text}</td></tr>`).join("");
+  return `<div class="quarter"><div class="qhead"><span class="swatch" style="background:var(--sec-${g.key})"></span><h3>${g.title}</h3><span class="muted">${g.blurb} · ${fmt(g.blocks)} blocks</span></div>`
+    + `<div class="tablewrap"><table><thead><tr><th>#</th><th>Building</th><th>Style</th><th>Tiles x, y</th><th>Blocks</th><th>Top level</th><th>Its sign</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+}).join("");
+const np = DATA.gate.find((g) => g.id === "nintendo-land");
+$("signs-lede").textContent = `Before Halloween, every team raises a sign beside each landmark no design labels yet: ${DATA.totals.signposts} signs, one wood each. They open when Nintendo Land is complete (${fmt(np.done)} of ${fmt(np.steps)} steps at tick ${fmt(DATA.tick)}). Two landmarks have no free tile beside them and stay unlabelled: Tinkerglow's hut by the spawn and Fudgewright's tower inside the campus.`;
+$("signs").innerHTML = `<thead><tr><th>Landmark</th><th>Sign at</th><th>Text</th></tr></thead><tbody>`
+  + DATA.signposts.map((s) => `<tr><td class="name">${s.name}</td><td class="data">${s.sign[0]}, ${s.sign[1]}</td><td class="text">${s.text}</td></tr>`).join("") + "</tbody>";
+const it = DATA.totals.items;
+$("items").innerHTML = [["stone", it.stone], ["wood", it.wood], ["fiber, as thatch", it.fiber], ["ore", it.ore || 0]]
+  .map(([k, v]) => `<div><b>${fmt(v || 0)}</b><span>${k}</span></div>`).join("")
+  + `<div><b>${fmt(DATA.totals.blocks)}</b><span>blocks in ${fmt(DATA.totals.steps)} steps</span></div>`;
+
+// ---------------------------------------------------------------- the town in 3D
+const PALETTE = {
+  natural: "#c9a675", white: "#ecebe6", grey: "#8f9196", black: "#26262b", brown: "#7a5232", red: "#b8382f", orange: "#e0782a",
+  yellow: "#f2cf4a", lime: "#9fdc4c", green: "#4f8f3a", teal: "#2f8f8a", cyan: "#4cc3d9", blue: "#3a67c4", indigo: "#4a4aa0",
+  purple: "#8a4fb5", pink: "#e58bb0", tan: "#cdb486",
+};
+const COLORS = ["natural", "white", "grey", "black", "brown", "red", "orange", "yellow", "lime", "green", "teal", "cyan", "blue", "indigo", "purple", "pink", "tan"];
+const SHAPES = ["cube", "slab", "slope", "window", "door"];
+const GROUND = { g: "#3e5a33", f: "#2c4426", s: "#7a6c4c", w: "#1d3550", W: "#132538", h: "#5a4d3a", m: "#4e4a46" };
+const GW = 4 * (X1 - X0 + 1), GH = 4 * (Y1 - Y0 + 1);
+const A = 2, B = 1, HZ = 2.3, S = 4, PAD = 24;
+
+function rgb(hex, k) {
+  const n = parseInt(hex.slice(1), 16);
+  const r = Math.min(255, Math.round(((n >> 16) & 255) * k)), g = Math.min(255, Math.round(((n >> 8) & 255) * k)), b = Math.min(255, Math.round((n & 255) * k));
+  return `rgb(${r},${g},${b})`;
+}
+function rotate(x, y, r) {
+  if (r === 1) return [GH - y, x];
+  if (r === 2) return [GW - x, GH - y];
+  if (r === 3) return [y, GW - x];
+  return [x, y];
+}
+const dims = (r) => (r % 2 ? [GH, GW] : [GW, GH]);
+
+const cells = [];
+for (let i = 0; i < DATA.cells.length; i += 7) cells.push(DATA.cells.slice(i, i + 7));
+let turn = 0, image = null, origin = [0, 0];
+
+function render(r) {
+  const [w, h] = dims(r);
+  const iw = Math.ceil((w + h) * A * S + 2 * PAD), ih = Math.ceil((w + h) * B * S + 16 * HZ * S + 2 * PAD);
+  const off = document.createElement("canvas");
+  off.width = iw; off.height = ih;
+  const g = off.getContext("2d");
+  const ox = h * A * S + PAD, oy = 16 * HZ * S + PAD;
+  const P = (x, y, z) => [ox + (x - y) * A * S, oy + (x + y) * B * S - z * HZ * S];
+  const poly = (pts, fill) => { g.beginPath(); g.moveTo(...pts[0]); for (let k = 1; k < pts.length; k++) g.lineTo(...pts[k]); g.closePath(); g.fillStyle = fill; g.fill(); };
+  // the ground: each tile a rhombus, darkened for the night
+  DATA.terrain.forEach((row, j) => [...row].forEach((c, i) => {
+    const corners = [[0, 0], [4, 0], [4, 4], [0, 4]].map(([dx, dy]) => rotate(4 * i + dx, 4 * j + dy, r));
+    poly(corners.map(([x, y]) => P(x, y, 0)), GROUND[c] || GROUND.g);
+  }));
+  // the signs: a post and a pale board on each sign tile
+  const signs = DATA.sections.map((s) => { const [x, y] = rotate(4 * (s.sign[0] - X0) + 2, 4 * (s.sign[1] - Y0) + 2, r); return [x, y]; });
+  // every block, back to front
+  const filled = new Set(cells.filter((c) => SHAPES[c[5]] !== "slab" && SHAPES[c[5]] !== "slope").map((c) => `${c[0]},${c[1]},${c[2]}`));
+  const items = cells.map((c) => {
+    const [x, y] = rotate(c[0], c[1], r);
+    return { x: r === 1 || r === 2 ? x - 1 : x, y: r === 2 || r === 3 ? y - 1 : y, z: c[2], c: COLORS[c[3]], m: c[4], s: SHAPES[c[5]], key: `${c[0]},${c[1]},${c[2]}`, raw: c };
+  });
+  const nb = (it, dx, dy, dz) => {
+    // the neighbour in rotated space, looked up in the design's own coordinates
+    const inv = [[dx, dy], [dy, -dx], [-dx, -dy], [-dy, dx]][r];
+    return filled.has(`${it.raw[0] + inv[0]},${it.raw[1] + inv[1]},${it.raw[2] + dz}`);
+  };
+  items.sort((p, q) => p.x + p.y + p.z - (q.x + q.y + q.z) || p.z - q.z || p.x - q.x);
+  const glows = [];
+  for (const it of items) {
+    const h = it.s === "slab" ? 0.5 : it.s === "slope" ? 0.62 : 1;
+    const base = it.c === "natural" ? (it.m === 1 ? PALETTE.natural : it.m === 2 ? "#c7b27a" : "#b4b0a6") : PALETTE[it.c];
+    const lit = it.s === "window";
+    const k = lit ? 1.15 : 0.66;
+    const { x, y, z } = it;
+    if (!nb(it, 0, 0, 1) || h < 1) poly([P(x, y, z + h), P(x + 1, y, z + h), P(x + 1, y + 1, z + h), P(x, y + 1, z + h)], rgb(base, k));
+    if (!nb(it, 1, 0, 0) || h < 1) poly([P(x + 1, y, z), P(x + 1, y + 1, z), P(x + 1, y + 1, z + h), P(x + 1, y, z + h)], rgb(base, k * 0.62));
+    if (!nb(it, 0, 1, 0) || h < 1) poly([P(x, y + 1, z), P(x + 1, y + 1, z), P(x + 1, y + 1, z + h), P(x, y + 1, z + h)], rgb(base, k * 0.8));
+    if (lit) glows.push([P(x + 0.5, y + 0.5, z + 0.5), base]);
+  }
+  // lit windows spill a little light
+  g.globalCompositeOperation = "lighter";
+  for (const [[gx, gy], col] of glows) {
+    const grad = g.createRadialGradient(gx, gy, 0, gx, gy, 7 * S);
+    grad.addColorStop(0, rgb(col, 0.35)); grad.addColorStop(1, "rgba(0,0,0,0)");
+    g.fillStyle = grad; g.fillRect(gx - 7 * S, gy - 7 * S, 14 * S, 14 * S);
+  }
+  g.globalCompositeOperation = "source-over";
+  for (const [x, y] of signs) {
+    poly([P(x, y, 0), P(x + 0.4, y, 0), P(x + 0.4, y, 2.2), P(x, y, 2.2)], "#5b4630");
+    poly([P(x - 0.6, y, 1.6), P(x + 1, y, 1.6), P(x + 1, y, 2.8), P(x - 0.6, y, 2.8)], "#d8cdb2");
+  }
+  return { canvas: off, P };
+}
+
+const view = $("town"), ctx = view.getContext("2d");
+let cam = { x: 0, y: 0, k: 1 }, stars = [];
+function fitCam() {
+  const r = view.getBoundingClientRect();
+  return { x: image.canvas.width / 2, y: image.canvas.height / 2, k: Math.min(r.width / image.canvas.width, r.height / image.canvas.height) * 0.98 };
+}
+function size() {
+  const r = view.getBoundingClientRect(), d = window.devicePixelRatio || 1;
+  view.width = Math.round(r.width * d); view.height = Math.round(r.height * d);
+  stars = Array.from({ length: 70 }, (_, i) => [((i * 97) % 101) / 101, ((i * 53) % 61) / 61 * 0.5, (i % 3) * 0.4 + 0.5]);
+}
+function draw() {
+  const r = view.getBoundingClientRect(), d = window.devicePixelRatio || 1;
+  ctx.setTransform(d, 0, 0, d, 0, 0);
+  ctx.clearRect(0, 0, r.width, r.height);
+  ctx.fillStyle = "rgba(236,232,244,0.75)";
+  for (const [sx, sy, sz] of stars) ctx.fillRect(sx * r.width, sy * r.height, sz, sz);
+  ctx.beginPath(); ctx.arc(r.width - 70, 64, 26, 0, Math.PI * 2); ctx.fillStyle = "rgba(243,236,210,0.92)"; ctx.fill();
+  ctx.beginPath(); ctx.arc(r.width - 60, 58, 24, 0, Math.PI * 2); ctx.fillStyle = "rgba(11,12,26,0.85)"; ctx.fill();
+  ctx.imageSmoothingEnabled = true;
+  ctx.setTransform(d * cam.k, 0, 0, d * cam.k, d * (r.width / 2 - cam.x * cam.k), d * (r.height / 2 - cam.y * cam.k));
+  ctx.drawImage(image.canvas, 0, 0);
+}
+function setCaption(title, note) { $("caption").innerHTML = title ? `${title}${note ? `<small>${note}</small>` : ""}` : ""; }
+function build() { image = render(turn); cam = fitCam(); draw(); }
+
+// the glide: the film's opening, over the town to the house on the hill and the spider on its roof
+const STOPS = [
+  { at: [110, 53, 4], k: 2.1, title: "The end of Village Street", note: "the waiting room of the afterlife and the sandworm in its dunes" },
+  { at: [107, 44, 3], k: 2.3, title: "Up Village Street", note: "the fire house and the barber's pole, the library and its lions, the green" },
+  { at: [102.5, 39.5, 3], k: 2.8, title: "The covered bridge", note: "red, over the Winter River, on the road to the hill" },
+  { at: [99.5, 42.5, 6], k: 3.0, title: "The model graveyard", note: "where the ghost in the striped suit stands beside his crypt" },
+  { at: [99.5, 34.5, 13], k: 4.4, title: "The house on the hill", note: "a spider crosses the roof: the whole town is a model in the attic" },
+];
+const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+function stopCam(s) {
+  const [tx, ty, tz] = s.at;
+  const [x, y] = rotate(4 * (tx - X0) + 2, 4 * (ty - Y0) + 2, turn);
+  const [px, py] = image.P(x, y, tz);
+  return { x: px, y: py, k: fitCam().k * s.k };
+}
+let anim = 0;
+function glide() {
+  cancelAnimationFrame(anim);
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const last = STOPS[STOPS.length - 1];
+  if (reduce) { cam = stopCam(last); draw(); setCaption(last.title, last.note); return; }
+  const path = [fitCam(), ...STOPS.map(stopCam)], leg = 2600, hold = 900;
+  setCaption("Winter River on Halloween night", "the camera glides in over the town");
+  const t0 = performance.now();
+  const step = (now) => {
+    const t = now - t0, i = Math.min(path.length - 2, Math.floor(t / (leg + hold)));
+    const u = Math.min(1, Math.max(0, (t - i * (leg + hold)) / leg)), e = ease(u), a = path[i], b = path[i + 1];
+    cam = { x: a.x + (b.x - a.x) * e, y: a.y + (b.y - a.y) * e, k: a.k * Math.pow(b.k / a.k, e) };
+    draw();
+    if (u >= 1) setCaption(STOPS[i].title, STOPS[i].note);
+    if (t < (path.length - 1) * (leg + hold)) anim = requestAnimationFrame(step);
+  };
+  anim = requestAnimationFrame(step);
+}
+$("glide").addEventListener("click", glide);
+$("turn").addEventListener("click", () => { cancelAnimationFrame(anim); turn = (turn + 1) % 4; build(); setCaption("The model, turned a quarter", ["from the south-east", "from the south-west", "from the north-west", "from the north-east"][turn]); });
+$("whole").addEventListener("click", () => { cancelAnimationFrame(anim); cam = fitCam(); draw(); setCaption("", ""); });
+let drag = null;
+view.addEventListener("pointerdown", (e) => { cancelAnimationFrame(anim); drag = [e.clientX, e.clientY, cam.x, cam.y]; view.setPointerCapture(e.pointerId); });
+view.addEventListener("pointermove", (e) => { if (!drag) return; cam.x = drag[2] - (e.clientX - drag[0]) / cam.k; cam.y = drag[3] - (e.clientY - drag[1]) / cam.k; draw(); });
+view.addEventListener("pointerup", () => { drag = null; });
+window.addEventListener("resize", () => { size(); cam = fitCam(); draw(); });
+size(); build();
+setCaption("Winter River on Halloween night", "press Glide in for the opening; drag to look around");
+</script>
