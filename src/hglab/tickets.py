@@ -207,10 +207,23 @@ def plan_tickets(
         spots = sorted((t for t in reach if t not in inside and chebyshev(t, centre) <= 3), key=lambda t: (chebyshev(position, t), t))
         if spots:
             return [{"action": "move", "x": spots[0][0], "y": spots[0][1]}], [why]
-        from hglab.planner import _step_toward
+        from hglab.planner import _route_step, _step_toward
 
-        step = _step_toward(position, {"x": centre[0], "y": centre[1]}, view)
-        return ([{"action": "move", "x": step[0], "y": step[1]}], [why]) if step and step != position else None
+        if not view.full_map:
+            step = _step_toward(position, {"x": centre[0], "y": centre[1]}, view)
+            return ([{"action": "move", "x": step[0], "y": step[1]}], [why]) if step and step != position else None
+        # Every tile beside the vault's middle is a wall, so no route ends there: route to an open tile near it instead.
+        # 2026-11-05: from the East Works the greedy step stood Fudgewright against the campus wall's east face, a stone
+        # trip walked him north again on the next wake, and the ticket and the works each lost every other wake for a day.
+        near = sorted(
+            ((x, y) for x in range(centre[0] - 3, centre[0] + 4) for y in range(centre[1] - 3, centre[1] + 4) if (x, y) not in inside and view.walkable(x, y)),
+            key=lambda t: (chebyshev(position, t), t),
+        )
+        for spot in near[:4]:
+            step = _route_step(position, spot, view)
+            if step is not None and step != position:
+                return [{"action": "move", "x": step[0], "y": step[1]}], [why]
+        return None  # no way in from here: the wake goes to the works
 
     # the last ticket posted is no longer open: found if its storehouse took the berry since, else it lapsed unclaimed
     if note.get("posted"):

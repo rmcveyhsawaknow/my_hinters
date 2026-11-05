@@ -1643,7 +1643,10 @@ def plan_step(
                 if take >= 1:
                     note = f" after putting {freed} of the pack's clutter away" if freed else ""
                     return [*shed, {"action": "take", "x": where[0], "y": where[1], "item": item, "qty": take}], f"{title} needs {qty} {item} for {step['name']}: take {take} from the store at {where}{note}", "blueprint"
-            for s in [s for s in seen_stores if chebyshev(position, (int(s["x"]), int(s["y"]))) <= 1 and not int(s["storage"].get(item, 0) or 0)]:
+            # A store in view that holds less than a take's worth is passed over for four hours, wherever it stands: its
+            # contents show. 2026-11-05: MotherPail found 1-3 stone at the north works depot, walked for the lookout depot,
+            # lost sight of the first, took it for a full one again and walked back, for six hours.
+            for s in [s for s in seen_stores if int(s["storage"].get(item, 0) or 0) < min(qty, 4)]:
                 empty[f"{s['x']},{s['y']}:{item}"] = tick
             targets = sorted((s for s in holders if not need_free or _room(s) >= max(need_free, 5)), key=lambda s: chebyshev(position, (int(s["x"]), int(s["y"]))))  # _shed puts away five at the least
             targets += sorted(
