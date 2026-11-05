@@ -82,7 +82,7 @@ def test_a_lapsed_ticket_seen_from_beyond_the_campus_wall_is_walked_round_to():
     """Ticket 1 lapsed while Fudgewright worked the East Works: every tile beside the vault's middle is a wall, so the route
     found nothing, the greedy step stood him against the campus wall's east face, and a stone trip walked him north again."""
     persona = load_personas(ROOT)["wonka"]
-    from tests.test_tickets import World
+    from test_tickets import World
 
     world = World(persona)
     assert world.run_until_posted()
