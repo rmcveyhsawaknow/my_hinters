@@ -1538,6 +1538,15 @@ def builder_sections(team: Any, slug: str) -> list[str] | None:
     return [] if slug in builders else None
 
 
+def _works_range(team: Any) -> int:
+    """How far the team's works reach from its site (``pipeline.range``): the factory's 40 takes in the East Works."""
+    cfg = (getattr(team, "extra", None) or {}).get("pipeline") if team is not None else None
+    try:
+        return int(cfg.get("range") or 0) if isinstance(cfg, dict) else 0
+    except (TypeError, ValueError):
+        return 0
+
+
 def _home_ground(persona: Any, team: Any, root: Path) -> Any | None:
     """The confirmed territory a builder who never leaves it keeps to (``stay_inside``), else None: the knob check refuses a
     whole wake that walks out of it. 2026-11-06: Stoutheart carried stone for Nintendo Land to the edge of Neverland's ring,
@@ -1661,10 +1670,14 @@ def plan_step(
         if design.get("commute"):
             return _commute(design, ready, persona, state, observe, view, inventory, position, centre)
         return None  # far from the factory: the migration walks there first, and errands nearer home still run
-    ready = [s for s in ready if chebyshev(position, centre(s)) <= BUILD_RANGE + 10]
     def payable(step: dict[str, Any]) -> bool:
         return step["kind"] != "remove" and all(int(inventory.get(item, 0) or 0) >= qty for item, qty in dict(step.get("costs") or {step["item"]: int(step["items"])}).items())
 
+    # 2026-11-06: a step the pack pays for stays in the plan as far as the works reach (``pipeline.range``), not only ten
+    # tiles past a builder's range. Treacleaxe carried 30 wood and Sherbetsack 40 fiber into full stores for nine hours, the
+    # steps they paid for 28-37 tiles off in the East Works, while every step within 26 wanted stone no store held.
+    span = max(BUILD_RANGE + 10, _works_range(team))
+    ready = [s for s in ready if chebyshev(position, centre(s)) <= BUILD_RANGE + 10 or (payable(s) and chebyshev(position, centre(s)) <= span)]
     if pack_only:
         ready = [s for s in ready if payable(s) and pack_only in dict(s.get("costs") or {s["item"]: int(s["items"])})]
         if not ready:

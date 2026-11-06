@@ -74,6 +74,7 @@ ROLE_WANTED: dict[str, list[str]] = {
     "mason": [],
 }
 HEAVY = 30  # goods in the pack (berries beyond the keep aside) that send a hand to the store
+AWAY_GATHER = 26  # how far from where it stands a hand away from its own works looks for what the blueprint needs
 CARRY_RANGE = 40  # how far a load is carried to a store
 HUNGRY = 3  # berries below this, with the energy near the reserve, draw ten from a store beside us
 EMPTY_DEPOT_TICKS = 2160  # a depot found empty is left alone for six hours
@@ -788,6 +789,11 @@ def _blueprint(
         return step
     need = getattr(state, "_bp_need", None)
     if need and gather:
+        if chebyshev(position, site) > reach:
+            # 2026-11-06: a hand at a design far from its own works (the next one, or another team's it helps) gathers near
+            # where it stands. Strayling, at Nintendo Land, set out for the stone beside Neverland 66 tiles south, found no
+            # way and planned nothing for nine hours, with stone 19 tiles off.
+            return _gather_toward(persona, team, [str(need)], inventory, position, view, position, AWAY_GATHER, room, teammates, f"for the blueprint's {need}", floor_for)
         return _gather_toward(persona, team, [str(need)], inventory, position, view, site, reach, room, teammates, f"for the blueprint's {need}", floor_for, ranks)
     return None
 

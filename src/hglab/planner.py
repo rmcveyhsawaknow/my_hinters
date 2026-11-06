@@ -686,10 +686,12 @@ def _plan_crew(
 
 
 def _plan_escape(observe: dict[str, Any], view: WorldView, inventory: dict[str, int], position: tuple[int, int]) -> tuple[list[dict[str, Any]], str] | None:
-    """A door out for a walker every neighbouring tile of which is closed (``hglab.blocks.escape_door``); the wake
-    feeds the filled cells near it (``_cells_near``) only when a neighbouring tile is closed."""
+    """A door out for a walker walled in, alone or in a pocket of a few open tiles (``hglab.blocks.escape_door`` floods
+    the open ground round it and leaves a yard of more than ``ESCAPE_REGION`` tiles be); the wake feeds the filled cells
+    near it (``_cells_near``) only when a neighbouring tile is closed. 2026-11-06: Strayling, a Neverland hand lent to
+    Nintendo Land, stood in the Nintendo Museum's six open tiles, its doors the office's and shut to him, for nine hours."""
     cells = observe.get("_cells_near")
-    if not isinstance(cells, list) or any(view.walkable(*t) for t in neighbours(*position)):
+    if not isinstance(cells, list) or all(view.walkable(*t) for t in neighbours(*position)):
         return None
     from hglab.blocks import escape_door
 
