@@ -1538,6 +1538,23 @@ def builder_sections(team: Any, slug: str) -> list[str] | None:
     return [] if slug in builders else None
 
 
+def _home_ground(persona: Any, team: Any, root: Path) -> Any | None:
+    """The confirmed territory a builder who never leaves it keeps to (``stay_inside``), else None: the knob check refuses a
+    whole wake that walks out of it. 2026-11-06: Stoutheart carried stone for Nintendo Land to the edge of Neverland's ring,
+    and every step past it would have been refused."""
+    if getattr(persona, "territory_mode", "") != "stay_inside":
+        return None
+    home = team if team is not None and getattr(team, "slug", None) == getattr(persona, "team", None) else None
+    if home is None:  # a hand lent to another team's design keeps to its own team's ground
+        from hglab.persona import load_team
+
+        try:
+            home = load_team(root, str(getattr(persona, "team", "")))
+        except (OSError, ValueError):
+            return None
+    return home if home.binding_territory else None
+
+
 def plan_step(
     persona: Any,
     team: Any,
@@ -1627,6 +1644,11 @@ def plan_step(
             state._bp_land = sorted(unheld)[:8]
     if at_cap:
         ready = [s for s in ready if s["kind"] == "build"]
+    home = _home_ground(persona, team, root)
+    if home is not None:
+        from hglab.persona import in_territory
+
+        ready = [s for s in ready if in_territory(home, (s["tiles"][0] + s["tiles"][2]) // 2, (s["tiles"][1] + s["tiles"][3]) // 2)]
     if not ready:
         return None
     rank = {sec: i for i, sec in enumerate(prefs)}
@@ -1677,7 +1699,7 @@ def plan_step(
             stands = [(x, y) for x in range(x0 - 1, x1 + 2) for y in range(y0 - 1, y1 + 2) if (x, y) != (x0, y0)]
         else:
             stands = [(x, y) for x in range(x1 - REACH, x0 + REACH + 1) for y in range(y1 - REACH, y0 + REACH + 1)]
-        stands = [t for t in stands if t == position or view.walkable(*t)]
+        stands = [t for t in stands if t == position or (view.walkable(*t) and (home is None or in_territory(home, *t)))]
         if not stands:
             continue
         stands = [t for t in stands if t not in traps] or stands  # never inside what the design closes or walls in, while another stand will do

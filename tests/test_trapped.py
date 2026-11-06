@@ -174,3 +174,20 @@ def test_the_factory_hands_build_before_they_gather():
     view = WorldView(x0=70, y0=90, rows=GRASS, full_map=GRASS, tick=100)
     step = plan_crew(woodcutter, team, PersonaState(mood="busy"), observe, view, {"wood": 5}, here, 80, woodcutter.energy_reserve, 3, {p.name for p in personas.values()}, {p.name: s for s, p in personas.items()}, None)
     assert step is not None and step[2] == "blueprint"  # five wood in the pack go into the works, not into a store first
+
+
+def test_a_builder_who_never_leaves_its_ground_takes_only_the_steps_inside_it():
+    personas = load_personas(ROOT)
+    nibs, neverland = personas["nibs"], load_team(ROOT, "neverland")
+    here = (73, 109)
+    observe = {"you": {"x": here[0], "y": here[1], "faction": {"id": 6, "name": "Neverland"}, "blocks_owned": 0}, "tick": 1000}
+    view = WorldView(x0=here[0] - 6, y0=here[1] - 6, rows=GRASS, full_map=GRASS, tick=1000)
+    pack = {"stone": 30, "wood": 10, "berries": 5}
+    nintendo = factory.plan_step(nibs, neverland, PersonaState(mood="busy"), observe, view, dict(pack), here, 3, hands=True, design_name="nintendo-land")
+    assert nintendo is None  # every step of Nintendo Land lies outside the ring: no carry toward its edge
+    office = load_team(ROOT, "exchange")
+    assert factory.plan_step(nibs, office, PersonaState(mood="busy"), observe, view, dict(pack), here, 3, hands=True, design_name="nintendo-land") is None  # nor as a hand lent to the office
+    lagalong = personas["tootles"]
+    assert factory.plan_step(lagalong, neverland, PersonaState(mood="busy"), {**observe, "you": {**observe["you"]}}, view, dict(pack), here, 3, hands=True, design_name="nintendo-land") is not None  # a wanderer still goes
+    signs = factory.plan_step(nibs, neverland, PersonaState(mood="busy"), observe, view, dict(pack), here, 3, hands=True, design_name="signposts")
+    assert signs is not None and not leaves_territory(nibs, neverland, signs[0])  # the signposts inside the ring are his
