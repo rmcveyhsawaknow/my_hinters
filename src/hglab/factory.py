@@ -1256,6 +1256,53 @@ def reconcile(root: Path, name: str, cells: dict[tuple[int, int, int], str], str
     return new
 
 
+_TRAPS: dict[int, tuple[list[dict[str, Any]], set[tuple[int, int]]]] = {}
+
+
+def trap_tiles(steps: list[dict[str, Any]]) -> set[tuple[int, int]]:
+    """Tiles a builder should not stand on while another stand will do: every tile a step of the design closes (a block
+    below level 6 that is no floor; a door opens its tile), and every open tile the finished design walls in on all sides.
+
+    2026-11-06: Fudgewright stood on the one open tile inside the Gobstopper Foundry (105,62) while the foundry's courses
+    rose round him, and stood walled in for 22 hours, his wakes planning nothing.
+    """
+    hit = _TRAPS.get(id(steps))
+    if hit is not None and hit[0] is steps:
+        return hit[1]
+    closes: set[tuple[int, int]] = set()
+    doors: set[tuple[int, int]] = set()
+    for step in steps:
+        act = step.get("action") or {}
+        if step.get("kind") != "place" or act.get("bx") is None:
+            continue
+        z0 = int(act.get("bz", 0) or 0)
+        z1 = int(act["bz2"]) if act.get("bz2") is not None else z0
+        shape = str(act.get("shape") or "cube")
+        if min(z0, z1) > 5 or (shape in ("slab", "slope") and max(z0, z1) == 0):
+            continue  # above the walkers, or a floor or a ramp
+        x0, y0 = int(act["bx"]), int(act["by"])
+        x1 = int(act["bx2"]) if act.get("bx2") is not None else x0
+        y1 = int(act["by2"]) if act.get("by2") is not None else y0
+        tiles = {(tx, ty) for tx in range(min(x0, x1) // 4, max(x0, x1) // 4 + 1) for ty in range(min(y0, y1) // 4, max(y0, y1) // 4 + 1)}
+        (doors if shape == "door" else closes).update(tiles)
+    closes -= doors
+    traps = set(closes)
+    if closes:
+        lo_x, lo_y = min(t[0] for t in closes) - 1, min(t[1] for t in closes) - 1
+        hi_x, hi_y = max(t[0] for t in closes) + 1, max(t[1] for t in closes) + 1
+        out = {(x, y) for x in range(lo_x, hi_x + 1) for y in (lo_y, hi_y)} | {(x, y) for y in range(lo_y, hi_y + 1) for x in (lo_x, hi_x)}
+        frontier = list(out)
+        while frontier:  # what the open ground round the design reaches; an open tile it never reaches is walled in
+            x, y = frontier.pop()
+            for nxt in ((x + dx, y + dy) for dx in (-1, 0, 1) for dy in (-1, 0, 1)):
+                if lo_x <= nxt[0] <= hi_x and lo_y <= nxt[1] <= hi_y and nxt not in out and nxt not in closes:
+                    out.add(nxt)
+                    frontier.append(nxt)
+        traps |= {(x, y) for x in range(lo_x, hi_x + 1) for y in range(lo_y, hi_y + 1)} - out
+    _TRAPS[id(steps)] = (steps, traps)
+    return traps
+
+
 def ready_steps(steps: list[dict[str, Any]], done: set[str], skip: set[str] | frozenset[str] = frozenset()) -> list[dict[str, Any]]:
     """The first undone step of each section: a section rises in order, sections in parallel.
 
@@ -1621,6 +1668,7 @@ def plan_step(
     ]
     reach = reachable_tiles(view, position) | {position}
     pack = sum(int(v) for v in inventory.values())
+    traps = trap_tiles(steps)
     missing: list[str] = []
     for step in ready:
         costs = dict(step.get("costs") or {step["item"]: int(step["items"])})
@@ -1632,6 +1680,7 @@ def plan_step(
         stands = [t for t in stands if t == position or view.walkable(*t)]
         if not stands:
             continue
+        stands = [t for t in stands if t not in traps] or stands  # never inside what the design closes or walls in, while another stand will do
 
         def near_stock(tile: tuple[int, int], item: str) -> int:
             return sum(int(s["storage"].get(item, 0) or 0) for s in seen_stores if chebyshev(tile, (int(s["x"]), int(s["y"]))) <= 1)
@@ -1659,7 +1708,8 @@ def plan_step(
         if step["kind"] == "place" and payable(step):
             # the pack pays for it but no stand is within one move: carry it there rather than turn to a step that needs a store
             goal = centre(step)
-            target = _step_toward(position, {"x": goal[0], "y": goal[1]}, view)
+            aim = goal if goal not in traps else min(stands, key=lambda t: (chebyshev(goal, t), t))  # toward a stand, not into the building
+            target = _step_toward(position, {"x": aim[0], "y": aim[1]}, view)
             if target is not None and target != position:
                 return [{"action": "move", "x": target[0], "y": target[1]}], f"{title}: carrying {', '.join(f'{q} {i}' for i, q in costs.items())} toward {step['name']} at {goal}", "blueprint"
             continue
@@ -1721,4 +1771,5 @@ def plan_step(
 __all__ = [
     "LEDGER_DIR", "blueprint", "builder_sections", "cells_rect", "check", "decode_blocks", "design_complete", "design_open", "expand", "foundation_map", "land_wanted", "lands_own", "ledger_name", "load_design", "load_ledger", "mark_done",
     "materials", "next_design_active", "plan_step", "ready_steps", "reconcile", "root_of", "route", "settle", "signature", "step_lots", "summary", "team_designs", "tiles_of",
+    "trap_tiles",
 ]

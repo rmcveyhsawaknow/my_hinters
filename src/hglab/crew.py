@@ -35,7 +35,7 @@ from hglab.evict import (
 from hglab.lots import holdings as office_holdings
 from hglab.lots import lot_anchor, lot_bounds, lot_id, node_floor, till_tiles
 from hglab.mood import PersonaState
-from hglab.persona import Persona, Team
+from hglab.persona import Persona, Team, leaves_territory
 from hglab.planner import (
     BERRY_KEEP,
     BLUEPRINTS,
@@ -246,8 +246,8 @@ def plan_crew(
     away = bool(cfg.get("blueprint")) and next_design_active(team)
     if away:
         step = _blueprint(persona, team, state, observe, view, inventory, position, room, mates, site, reach, teammates, floor_for, ranks, hands=True)
-        if step is not None:
-            return step
+        if step is not None and not leaves_territory(persona, team, step[0]):
+            return step  # a hand who never leaves the team's ground keeps to the works' own pipeline instead
 
     # a. far from the works: walk there first
     distance = chebyshev(position, site)
@@ -272,7 +272,8 @@ def plan_crew(
     # a1c. the blueprint as the hands' standing work (the owner, 2026-11-03: the office stops its walls and builds the larger
     # New York, Midtown first; `pipeline.focus: blueprint`): every hand takes the next step it can pay for or fetch, before
     # unloading, walling or gathering; what no store holds is gathered for it
-    if cfg.get("blueprint") and str(cfg.get("focus") or "") == "blueprint" and not away:
+    # 2026-11-06: the factory's hands too; its quartermaster keeps the stores under the mark first (the owner, 2026-11-02)
+    if cfg.get("blueprint") and str(cfg.get("focus") or "") == "blueprint" and not away and not persona.knobs.get("quartermaster"):
         load = max((k for k in inventory if k != "berries"), key=lambda k: inventory[k], default=None) if goods >= HEAVY else None
         step = _blueprint(persona, team, state, observe, view, inventory, position, room, mates, site, reach, teammates, floor_for, ranks, hands=True, gather=False, pack_only=load) if load else None
         if step is None:  # a heavy pack lays what its main load pays for first; otherwise the next step, its own sections first

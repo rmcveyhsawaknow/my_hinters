@@ -465,6 +465,13 @@ def persona_wake(
 
             doors_of = {persona.name, *(personas[m].name for m in (team.members if team else ()) if m in personas)}
             observe["_closed_world"] = sorted(closed_tiles(packed, doors_of))  # 2026-11-02: a route beyond the view knows the campus wall and the vault
+            me_at = observe.get("you") or {}
+            if isinstance(me_at.get("x"), int) and isinstance(me_at.get("y"), int):
+                shut = set(map(tuple, observe["_closed_world"]))
+                if any((me_at["x"] + dx, me_at["y"] + dy) in shut for dx in (-1, 0, 1) for dy in (-1, 0, 1) if dx or dy):
+                    from hglab.blocks import cells_near
+
+                    observe["_cells_near"] = cells_near(packed, me_at["x"], me_at["y"])  # where a walled-in walker's door can go (hglab.blocks.escape_door)
             if tickets.hunting(persona, observe):
                 observe["_vault_golden"] = tickets.golden_cells(packed, rooms, persona.name)
         plan = plan_wake(
@@ -708,6 +715,7 @@ def persona_wake(
         observe.pop("_vault_golden", None)
         observe.pop("_vault", None)
         observe.pop("_closed_world", None)
+        observe.pop("_cells_near", None)
         observe.pop("_deeded_requests", None)
         context["observe"] = observe
         context["approach"] = plan.get("approach")
