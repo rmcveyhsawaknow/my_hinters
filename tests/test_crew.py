@@ -1,5 +1,6 @@
 """The factory crew: the pipeline step a hand runs before anything else."""
 
+import copy
 import json
 from pathlib import Path
 
@@ -20,7 +21,14 @@ GRASSY = ["g" * 128] * 95 + ["s" * 128] * 10 + ["g" * 128] * 23  # sand rows 95.
 
 def _crew(slug):
     personas = load_personas(ROOT)
-    return personas[slug], load_team(ROOT, "chocolate-factory"), personas
+    return personas[slug], gathering(load_team(ROOT, "chocolate-factory")), personas
+
+
+def gathering(team):
+    """The crew pipeline as a team without `focus: blueprint` runs it: the factory's hands build first since 2026-11-06."""
+    team = copy.deepcopy(team)
+    team.extra["pipeline"].pop("focus", None)
+    return team
 
 
 def _names(personas):

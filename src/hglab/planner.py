@@ -28,6 +28,7 @@ from hglab.persona import (
     chebyshev,
     in_region,
     in_territory,
+    leaves_territory,
     territory_center,
 )
 
@@ -155,10 +156,13 @@ class WorldView:
             closed={
                 (int(b["x"]), int(b["y"]))
                 for b in (observe.get("blocks") or []) if isinstance(b, dict) and b.get("closed") and b.get("x") is not None and b.get("y") is not None
-            } | {
+            } | ({
                 (int(t[0]), int(t[1]))
                 for t in (observe.get("_closed_world") or []) if isinstance(t, (list, tuple)) and len(t) == 2  # the whole world's closed tiles, from the public blocks file (hglab.blocks.closed_tiles)
-            },
+            } - {
+                (int(b["x"]), int(b["y"]))
+                for b in (observe.get("blocks") or []) if isinstance(b, dict) and b.get("closed") is False and b.get("x") is not None and b.get("y") is not None
+            }),  # the view's own reading is newer than the public file: a door just put in opens its tile now
         )
 
     def terrain(self, x: int, y: int) -> str | None:
@@ -321,6 +325,12 @@ def plan_wake(
             else:
                 reasons.append("no berries and low energy: rest where I stand")
             return _result(persona, mood, "resting to recover", actions, reasons, "rest", remember)
+
+    escape = _plan_escape(observe, view, inventory, position) if allowed is None or "place" in allowed else None
+    if escape is not None:  # walled in: the wake is the way out
+        actions.extend(escape[0])
+        reasons.append(escape[1])
+        return _result(persona, mood, "walled in: a door of my own to walk out", actions, reasons, "escape", remember)
 
     if mode == "rest":
         lounge = _plan_lounge(persona, team, state, observe, view, position, energy, reserve, names, allowed, rng)
@@ -659,16 +669,35 @@ def _plan_crew(
 
     teams = (cast or {}).get("teams")
     mates = team_member_names(persona, team, names)
+
+    def home(step: tuple[list[dict[str, Any]], str, str] | None) -> tuple[list[dict[str, Any]], str, str] | None:
+        return None if step is not None and leaves_territory(persona, team, step[0]) else step  # the knob check would refuse the whole wake
+
     if route == "help":
-        step = plan_help(persona, team, teams, state, observe, view, inventory, here, room, mates=mates)
+        step = home(plan_help(persona, team, teams, state, observe, view, inventory, here, room, mates=mates))
         if step is not None:
             return step
-    step = plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, room, collective_names, names, teammates, crew_roles=(cast or {}).get("crew_roles"), route=route)
+    step = home(plan_crew(persona, team, state, observe, view, inventory, here, energy, reserve, room, collective_names, names, teammates, crew_roles=(cast or {}).get("crew_roles"), route=route))
     if step is None and route != "help":
-        step = plan_help(persona, team, teams, state, observe, view, inventory, here, room, mates=mates)
+        step = home(plan_help(persona, team, teams, state, observe, view, inventory, here, room, mates=mates))
     if step is None:
-        step = plan_roam(persona, team, state, observe, view, here, room)
+        step = home(plan_roam(persona, team, state, observe, view, here, room))
     return step
+
+
+def _plan_escape(observe: dict[str, Any], view: WorldView, inventory: dict[str, int], position: tuple[int, int]) -> tuple[list[dict[str, Any]], str] | None:
+    """A door out for a walker every neighbouring tile of which is closed (``hglab.blocks.escape_door``); the wake
+    feeds the filled cells near it (``_cells_near``) only when a neighbouring tile is closed."""
+    cells = observe.get("_cells_near")
+    if not isinstance(cells, list) or any(view.walkable(*t) for t in neighbours(*position)):
+        return None
+    from hglab.blocks import escape_door
+
+    def openable(x: int, y: int) -> bool:
+        return (x, y) in view.closed and view.terrain(x, y) in WALKABLE and str((view.structure_at(x, y) or {}).get("type")) not in BLOCKING
+
+    filled = {(int(c[0]), int(c[1]), int(c[2])) for c in cells if isinstance(c, (list, tuple)) and len(c) == 3}
+    return escape_door(position, view.walkable, openable, filled, inventory)
 
 
 def _plan_blueprint(

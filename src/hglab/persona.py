@@ -406,6 +406,15 @@ def territory_center(team: Team | None) -> tuple[int, int] | None:
     return _area_center(area) if area else None
 
 
+def leaves_territory(persona: Persona, team: Team | None, actions: list[dict[str, Any]]) -> bool:
+    """A move or build of these actions would take a persona who never leaves its team's confirmed territory out of it:
+    the knob check refuses the whole wake for that, so a planner asks first (2026-11-06: Stoutheart's crew wakes were
+    refused hour after hour for a walk toward Nintendo Land, and his shifts ended with no wake at all)."""
+    if persona.territory_mode != "stay_inside" or team is None or not team.binding_territory:
+        return False
+    return any(a.get("action") in {"move", "build"} and a.get("x") is not None and a.get("y") is not None and not in_territory(team, int(a["x"]), int(a["y"])) for a in actions)
+
+
 def in_territory(team: Team | None, x: int, y: int) -> bool | None:
     """Binding check: True/False inside a confirmed territory, None when none is confirmed."""
     if team is None or not team.binding_territory:

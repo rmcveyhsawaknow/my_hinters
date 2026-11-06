@@ -25,6 +25,11 @@ pipeline:
   stores_max: 10
   blueprint: chocolate-factory  # teams/blueprints/chocolate-factory.yaml (the owner's brief of 2026-10-24)
   next_blueprint: [lower-manhattan, midtown, central-park, uptown, nintendo-land, signposts, halloween]  # the owner, 2026-10-27: once every step of the factory is done, the builders and hands take up the Atelier's Lower Manhattan; 2026-11-02: then the larger replica, Midtown and Central Park; 2026-11-03: then Uptown, and Nintendo Land last of all; 2026-11-05: then the signposts, and Halloween at Winter River once everything stands
+  # 2026-11-06: the stock's target (800 of each kind, 40 ore) never stood in the stores a hand could see, so the hands
+  # gathered on and MotherPail alone raised the East Works: 11 steps in 12 hours while the office's six hands laid 138 of
+  # Nintendo Land's. `focus: blueprint`, as the office's: the next step a hand's pack pays for or a store supplies comes
+  # before unloading or gathering (hglab.crew a1c), and what no store holds is gathered for it.
+  focus: blueprint
   builders:
     loompa-mason: [depots, elevator, mill, terrace, lookout, campus-north, campus-east]
     # the owner, 2026-11-03: the East Works, shared by the block room each builder has left under the world's cap (a

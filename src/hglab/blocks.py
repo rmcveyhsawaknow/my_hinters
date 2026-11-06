@@ -52,6 +52,80 @@ def closed_tiles(packed: dict[str, Any], doors_of: set[str] | frozenset[str] = f
     return blocking - opened
 
 
+def cells_near(packed: dict[str, Any], x: int, y: int, radius: int = 4) -> list[tuple[int, int, int]]:
+    """The filled cells of the tiles within ``radius`` of (x, y), from the public blocks file: where a door can go."""
+    import base64
+    import struct
+
+    data = base64.b64decode(str(packed.get("data") or ""))
+    out: list[tuple[int, int, int]] = []
+    for i in range(min(len(data) // 10, max(0, int(packed.get("count") or 0)))):
+        bx, by, _owner, bz = struct.unpack_from("<HHHB", data, i * 10)
+        if max(abs(bx // 4 - x), abs(by // 4 - y)) <= radius:
+            out.append((bx, by, bz))
+    return out
+
+
+ESCAPE_REGION = 30  # open ground bigger than this many tiles round a walker is a yard, not a trap
+DOOR_MATERIALS = ("wood", "thatch", "stone", "metal")  # the first the pack can pay for
+
+
+def escape_door(
+    here: tuple[int, int],
+    walkable: Any,
+    openable: Any,
+    filled: set[tuple[int, int, int]],
+    inventory: dict[str, int],
+) -> tuple[list[dict[str, Any]], str] | None:
+    """A walker walled in on every side puts a door of its own in a wall tile that opens onto open ground, and walks
+    out through it next wake: a door one may use opens its whole tile. None when the way out is open, or no wall
+    tile within reach has two free cells at the ground or opens onto anything.
+
+    2026-11-06: Fudgewright stood on the one open tile inside the Gobstopper Foundry while its courses rose round him
+    (the foundry's own door opens onto its plinth, not onto him) and planned nothing for 22 hours.
+    ``walkable(x, y)`` and ``openable(x, y)`` (a land tile that blocks close) come from the planner's view.
+    """
+    region = {here}
+    frontier = [here]
+    while frontier:
+        x, y = frontier.pop()
+        for nxt in ((x + dx, y + dy) for dx in (-1, 0, 1) for dy in (-1, 0, 1) if dx or dy):
+            if nxt not in region and walkable(*nxt):
+                region.add(nxt)
+                frontier.append(nxt)
+                if len(region) > ESCAPE_REGION:
+                    return None
+    material = next((m for m in DOOR_MATERIALS if int(inventory.get(MATERIAL_ITEM[m], 0) or 0) >= 1), None)
+    if material is None:
+        return None
+    best: tuple[tuple[int, ...], tuple[int, int], tuple[int, int], tuple[int, int]] | None = None
+    for inside in region:
+        for dx, dy in ((dx, dy) for dx in (-1, 0, 1) for dy in (-1, 0, 1) if dx or dy):
+            wall = (inside[0] + dx, inside[1] + dy)
+            if wall in region or not openable(*wall):
+                continue
+            beyond = [(wall[0] + ex, wall[1] + ey) for ex in (-1, 0, 1) for ey in (-1, 0, 1) if ex or ey]
+            if not any(t not in region and walkable(*t) for t in beyond):
+                continue  # a door into another wall leads nowhere
+            x0, y0, x1, y1 = tile_cells(*wall)
+            cell = next(((bx, by) for by in range(y0, y1 + 1) for bx in range(x0, x1 + 1) if (bx, by, 0) not in filled and (bx, by, 1) not in filled), None)
+            if cell is None:
+                continue
+            rank = (max(abs(wall[0] - here[0]), abs(wall[1] - here[1])), abs(dx) + abs(dy), max(abs(inside[0] - here[0]), abs(inside[1] - here[1])), *wall)
+            if best is None or rank < best[0]:
+                best = (rank, wall, inside, cell)
+    if best is None:
+        return None
+    _rank, wall, inside, cell = best
+    dx, dy = wall[0] - inside[0], wall[1] - inside[1]
+    facing = "east" if dx > 0 else "west" if dx < 0 else "south" if dy > 0 else "north"
+    door = box(cell[0], cell[1], 0, bz2=1, material=material, color="brown", shape="door", facing=facing)
+    reason = f"walled in at {here}: a door of my own in the wall at {wall} ({material}), to walk out through it"
+    if max(abs(wall[0] - here[0]), abs(wall[1] - here[1])) <= 2:
+        return [door], reason
+    return [{"action": "move", "x": inside[0], "y": inside[1]}, door], reason
+
+
 def tile_cells(x: int, y: int) -> tuple[int, int, int, int]:
     """Inclusive (bx0, by0, bx1, by1) of one tile."""
     return 4 * x, 4 * y, 4 * x + 3, 4 * y + 3
