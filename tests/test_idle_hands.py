@@ -96,3 +96,26 @@ def test_a_hand_shut_in_a_building_whose_doors_are_another_teams_puts_in_a_door_
     # beside one closed tile on open ground there is nothing to escape
     yard = {**observe, "blocks": [{"x": 78, "y": 30, "count": 4, "top": 1, "owner": "Sheafwell", "closed": True, "door": False}], "_closed_world": [[78, 30]]}
     assert plan_wake(hand, team, PersonaState(mood="busy"), yard, "work", random.Random(1), terrain_rows=GRASS, work=True)["approach"] != "escape"
+
+
+def test_a_pack_too_full_for_a_fetch_puts_its_clutter_away_and_takes_the_whole_load():
+    # 2026-11-07: Nintendo Land's Landing Pad wants 36 stone, more than any hand keeping 15 berries had room for, and four
+    # hands walked between the stores beside them for hours: now the clutter goes into the store and the stone comes out
+    hand = load_personas(ROOT)["office-quarrier"]
+    here, at = (50, 50), (51, 50)
+    store = {"type": "storehouse", "x": at[0], "y": at[1], "owner": hand.name, "policy": "private", "storage": {"stone": 300}}
+    other = {"type": "storehouse", "x": 50, "y": 53, "owner": hand.name, "policy": "private", "storage": {"stone": 300}}
+    view = WorldView(x0=45, y0=45, rows=GRASS, full_map=GRASS, tick=1000, structures=[store, other], world_structures=[store, other])
+    observe = {"you": {"x": here[0], "y": here[1], "faction": None}, "tick": 1000}
+    design, target = {"name": "Nintendo Land"}, {"name": "The Landing Pad: water 1"}
+
+    def fetch(pack):
+        return factory._provision(design, target, "stone", 36, hand, PersonaState(mood="busy"), observe, view, dict(pack), here, 3)
+
+    actions, reason, _ = fetch({"fiber": 4, "berries": 15})  # Strayling's pack: room for 31
+    assert [a["action"] for a in actions] == ["give", "give", "take"] and actions[-1]["qty"] >= 36, reason
+    assert {(a["item"], a["qty"]) for a in actions[:2]} == {("fiber", 4), ("berries", 10)} and all((a["x"], a["y"]) == at for a in actions)
+    actions, reason, _ = fetch({"wood": 22, "fiber": 10, "berries": 15})  # Boundstone's: room for 3, and three gives to make it
+    assert [a["action"] for a in actions] == ["give", "give", "give"] and "put 42 of the pack away" in reason, reason
+    actions, _, _ = fetch({"berries": 5})  # the next wake, beside the same store
+    assert actions == [{"action": "take", "x": at[0], "y": at[1], "item": "stone", "qty": 40}]
