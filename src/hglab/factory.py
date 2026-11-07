@@ -1377,6 +1377,26 @@ def _shed(inventory: dict[str, int], store: dict[str, Any], costs: dict[str, int
     return out[: max(0, room - 1)]
 
 
+def _make_room(inventory: dict[str, int], store: dict[str, Any], item: str, qty: int, budget: int) -> list[dict[str, Any]]:
+    """Gives into the store beside that leave a pack room to take ``qty`` of ``item``: the goods the fetch does not use,
+    the largest first, then the berries down to ``SHED_KEEP``, within the store's room and ``budget`` actions."""
+    short = qty - (50 - sum(int(v) for v in inventory.values()))
+    space = _room(store)
+    where = (int(store["x"]), int(store["y"]))
+    goods = sorted(((k, int(v)) for k, v in inventory.items() if k not in {item, "berries"} and int(v) > 0), key=lambda kv: -kv[1])
+    goods.append(("berries", int(inventory.get("berries", 0)) - SHED_KEEP))
+    out: list[dict[str, Any]] = []
+    for kind, have in goods:
+        if short <= 0 or len(out) >= budget or space <= 0:
+            break
+        give = min(have, space)
+        if give >= 1:
+            out.append({"action": "give", "x": where[0], "y": where[1], "item": kind, "qty": give})
+            short -= give
+            space -= give
+    return out
+
+
 def root_of(team: Any) -> Path:
     """The repository a team file lives in (``teams/<slug>.yaml``), else the working directory."""
     path = getattr(team, "path", None)
@@ -1455,7 +1475,7 @@ def lands_own(team: Any, land: dict[str, Any]) -> bool:
 COMMUTE_RANGE = 64  # how far a builder of a far design walks for its material: to its faction's stores (the factory's, from Lower Manhattan)
 
 
-def _provision(design: dict[str, Any], target: dict[str, Any], item: str, qty: int, persona: Any, state: Any, observe: dict[str, Any], view: Any, inventory: dict[str, int], position: tuple[int, int]) -> tuple[list[dict[str, Any]], str, str] | None:
+def _provision(design: dict[str, Any], target: dict[str, Any], item: str, qty: int, persona: Any, state: Any, observe: dict[str, Any], view: Any, inventory: dict[str, int], position: tuple[int, int], room: int = 3) -> tuple[list[dict[str, Any]], str, str] | None:
     """The material for a far design's step: taken from a store in view that admits us, or a walk to the nearest
     store of our faction within ``COMMUTE_RANGE`` not lately found without it."""
     from hglab.planner import _step_toward, chebyshev
@@ -1477,10 +1497,19 @@ def _provision(design: dict[str, Any], target: dict[str, Any], item: str, qty: i
             empty[f"{where[0]},{where[1]}:{item}"] = tick
             continue
         if chebyshev(position, where) <= 1:
-            take = min(50 - pack, have, PACK_LIMIT - 5)
+            # 2026-11-07: a pack too full for the whole fetch puts away what the step does not use first. The Landing Pad's
+            # 36 stone never fit beside a hand's 15 berries, and four hands walked from one store to the next for hours.
+            clear = _make_room(inventory, store, item, qty, max(0, room - 1))
+            freed = sum(int(a["qty"]) for a in clear)
+            take = min(50 - pack + freed, have, PACK_LIMIT - 5)
             if take >= qty:
                 state.flags["bp_empty"] = dict(sorted(empty.items(), key=lambda kv: -int(kv[1]))[:12])
-                return [{"action": "take", "x": where[0], "y": where[1], "item": item, "qty": take}], f"{title}: take {take} {item} at {where} for {target['name']}, then carry it there", "blueprint"
+                note = f" after putting {freed} of the pack away" if freed else ""
+                return [*clear, {"action": "take", "x": where[0], "y": where[1], "item": item, "qty": take}], f"{title}: take {take} {item} at {where} for {target['name']}{note}, then carry it there", "blueprint"
+            clear = _make_room(inventory, store, item, qty, room)
+            if clear:  # more to put away than one wake holds: the rest, and the take, next wake beside the same store
+                state.flags["bp_empty"] = dict(sorted(empty.items(), key=lambda kv: -int(kv[1]))[:12])
+                return clear, f"{title}: put {sum(int(a['qty']) for a in clear)} of the pack away at {where} to carry {qty} {item} for {target['name']}", "blueprint"
             continue
         step = _step_toward(position, {"x": where[0], "y": where[1]}, view)
         if step is not None and step != position:
@@ -1502,7 +1531,7 @@ def _provision(design: dict[str, Any], target: dict[str, Any], item: str, qty: i
     return None
 
 
-def _commute(design: dict[str, Any], ready: list[dict[str, Any]], persona: Any, state: Any, observe: dict[str, Any], view: Any, inventory: dict[str, int], position: tuple[int, int], centre: Any) -> tuple[list[dict[str, Any]], str, str] | None:
+def _commute(design: dict[str, Any], ready: list[dict[str, Any]], persona: Any, state: Any, observe: dict[str, Any], view: Any, inventory: dict[str, int], position: tuple[int, int], centre: Any, room: int = 3) -> tuple[list[dict[str, Any]], str, str] | None:
     """Far from the design: carry the nearest step's material from a store that admits us, then walk there with it."""
     from hglab.planner import _step_toward, chebyshev
 
@@ -1514,7 +1543,7 @@ def _commute(design: dict[str, Any], ready: list[dict[str, Any]], persona: Any, 
     lacking = {item: qty - int(inventory.get(item, 0) or 0) for item, qty in costs.items() if qty - int(inventory.get(item, 0) or 0) > 0}
     if lacking:
         item, qty = max(lacking.items(), key=lambda kv: kv[1])
-        return _provision(design, target, item, qty, persona, state, observe, view, inventory, position)
+        return _provision(design, target, item, qty, persona, state, observe, view, inventory, position, room)
     goal = centre(target)
     step = _step_toward(position, {"x": goal[0], "y": goal[1]}, view)
     if step is None or step == position:
@@ -1668,7 +1697,7 @@ def plan_step(
 
     if min(chebyshev(position, centre(s)) for s in ready) > BUILD_RANGE:
         if design.get("commute"):
-            return _commute(design, ready, persona, state, observe, view, inventory, position, centre)
+            return _commute(design, ready, persona, state, observe, view, inventory, position, centre, room)
         return None  # far from the factory: the migration walks there first, and errands nearer home still run
     def payable(step: dict[str, Any]) -> bool:
         return step["kind"] != "remove" and all(int(inventory.get(item, 0) or 0) >= qty for item, qty in dict(step.get("costs") or {step["item"]: int(step["items"])}).items())
@@ -1791,7 +1820,7 @@ def plan_step(
         target = ready[0]
         costs = dict(target.get("costs") or {target["item"]: int(target["items"])})
         item = missing[0]
-        return _provision(design, target, item, max(1, costs.get(item, 1) - int(inventory.get(item, 0) or 0)), persona, state, observe, view, inventory, position)
+        return _provision(design, target, item, max(1, costs.get(item, 1) - int(inventory.get(item, 0) or 0)), persona, state, observe, view, inventory, position, room)
     if missing:
         state._bp_need = missing[0]
         return None
